@@ -21,18 +21,18 @@ const SafeList = ({ address }: { address?: string }) => {
     const { connectWalletModel: connectWalletState, safeModel: safeState } =
         useStoreState((state) => state)
 
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
     const safes = useMemo(() => {
         if (safeState.list.length > 0) {
             return showEmpty
                 ? safeState.list
                 : safeState.list.filter(
-                      (safe) => returnState(safe.riskState) !== ''
-                  )
+                    (safe) => returnState(safe.riskState) !== ''
+                )
         }
         return []
     }, [safeState.list, showEmpty])
+
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const isOwner = useMemo(
         () =>
@@ -73,36 +73,6 @@ const SafeList = ({ address }: { address?: string }) => {
                         </Col>
                     </Header>
 
-                    <InfoBox>
-                        <LeftSide>
-                            <InfoTitle>
-                                <BarChart2 size="16" /> Pools And Incentives
-                            </InfoTitle>
-                            <InfoText>
-                                Check about FLX distribution campaigns from our{' '}
-                                <Link to="/earn/incentives">
-                                    Incentives page
-                                </Link>
-                                , also you can read more about incentives from
-                                our{' '}
-                                <a
-                                    href="https://docs.reflexer.finance/incentives/rai-mint-+-lp-incentives-program"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    docs
-                                </a>
-                            </InfoText>
-                        </LeftSide>
-                        <RightSide onClick={handleTopup}>
-                            <InfoTitle>
-                                <Settings size="16" /> View / Top-up other Safes
-                            </InfoTitle>
-                            <InfoText className="bigFont">
-                                You can add ETH or repay RAI for any Safe
-                            </InfoText>
-                        </RightSide>
-                    </InfoBox>
                     <SafeBlocks>
                         <Header className="safesList">
                             <Col>Safes({safeState.list.length})</Col>

@@ -37,7 +37,6 @@ jobs:
             REACT_APP_COIN_TICKER_PRODUCTION: ${{ secrets.REACT_APP_COIN_TICKER_PRODUCTION }}
             REACT_APP_SYSTEM_STATUS: ${{ secrets.REACT_APP_SYSTEM_STATUS }}
             REACT_APP_GOOGLE_ANALYTICS_ID: ${{ secrets.REACT_APP_GOOGLE_ANALYTICS_ID_PRODUCTION }}
-            REACT_APP_SHOW_AUCTIONS: ${{ secrets.REACT_APP_SHOW_AUCTIONS_PRODUCTION }}
             REACT_APP_WYRE_WORKER: ${{ secrets.REACT_APP_WYRE_WORKER }}
         steps:
             - name: Checkout

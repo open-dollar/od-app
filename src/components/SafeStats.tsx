@@ -1,9 +1,14 @@
-import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { useStoreActions, useStoreState } from '../store'
-import Button from './Button'
 import Numeral from 'numeral'
+import { useMemo, useState } from 'react'
+import { Info } from 'react-feather'
+import { useTranslation } from 'react-i18next'
+import ReactTooltip from 'react-tooltip'
+import styled from 'styled-components'
+import { useActiveWeb3React } from '../hooks'
+import { handleTransactionError } from '../hooks/TransactionHooks'
+import { useTokenBalanceInUSD } from '../hooks/useGeb'
+import { useSafeInfo } from '../hooks/useSafe'
+import { useStoreActions, useStoreState } from '../store'
 import {
     formatNumber,
     getRatePercentage,
@@ -11,13 +16,7 @@ import {
     returnState,
     timeout,
 } from '../utils/helper'
-import { useActiveWeb3React } from '../hooks'
-import { handleTransactionError } from '../hooks/TransactionHooks'
-import { Info } from 'react-feather'
-import ReactTooltip from 'react-tooltip'
-import { useTokenBalanceInUSD } from '../hooks/useGeb'
-import { LIQUIDATION_CRATIO } from '../hooks/useSaviour'
-import { useSafeInfo } from '../hooks/useSafe'
+import Button from './Button'
 
 const SafeStats = ({
     isModifying,
@@ -56,11 +55,11 @@ const SafeStats = ({
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
     const collateralInUSD = useTokenBalanceInUSD('ETH', collateral as string)
-    const totalDebtInUSD = useTokenBalanceInUSD('RAI', totalDebt as string)
+    const totalDebtInUSD = useTokenBalanceInUSD('HAI', totalDebt as string)
 
     const liquidationPenalty = '18-20'
 
-    const raiPrice = singleSafe
+    const haiPrice = singleSafe
         ? formatNumber(singleSafe.currentRedemptionPrice, 3)
         : '0'
 
@@ -89,27 +88,27 @@ const SafeStats = ({
         }
     }
 
-    const handleCollectSurplus = async () => {
-        if (!library || !account) throw new Error('No library or account')
-        if (!singleSafe) throw new Error('no safe')
-        setIsLoading(true)
-        try {
-            popupsActions.setIsWaitingModalOpen(true)
-            popupsActions.setWaitingPayload({
-                title: 'Waiting For Confirmation',
-                text: 'Collecting ETH',
-                hint: 'Confirm this transaction in your wallet',
-                status: 'loading',
-            })
-            const signer = library.getSigner(account)
-            await safeActions.collectETH({ signer, safe: singleSafe })
-            await timeout(3000)
-        } catch (e) {
-            handleTransactionError(e)
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    // const handleCollectSurplus = async () => {
+    //     if (!library || !account) throw new Error('No library or account')
+    //     if (!singleSafe) throw new Error('no safe')
+    //     setIsLoading(true)
+    //     try {
+    //         popupsActions.setIsWaitingModalOpen(true)
+    //         popupsActions.setWaitingPayload({
+    //             title: 'Waiting For Confirmation',
+    //             text: 'Collecting ETH',
+    //             hint: 'Confirm this transaction in your wallet',
+    //             status: 'loading',
+    //         })
+    //         const signer = library.getSigner(account)
+    //         await safeActions.collectETH({ signer, safe: singleSafe })
+    //         await timeout(3000)
+    //     } catch (e) {
+    //         handleTransactionError(e)
+    //     } finally {
+    //         setIsLoading(false)
+    //     }
+    // }
 
     const modified = useMemo(() => {
         if (isModifying) {
@@ -120,9 +119,10 @@ const SafeStats = ({
 
     return (
         <>
-            {isOwner &&
-            singleSafe &&
-            Number(singleSafe.internalCollateralBalance) > 0 ? (
+            {// TODO: This allows the user to collect surplus ETH from their safe. This is disabled for now.
+            /* {isOwner &&
+                singleSafe &&
+                Number(singleSafe.internalCollateralBalance) > 0 ? (
                 <SurplusBlock>
                     <StateInner>
                         <Inline>
@@ -141,14 +141,14 @@ const SafeStats = ({
                         </Inline>
                     </StateInner>
                 </SurplusBlock>
-            ) : null}
+            ) : null} */}
             <Flex>
                 <Left>
                     <Inner className="main">
                         <Main>
-                            <MainLabel>ETH Collateral</MainLabel>
+                            <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
                             <MainValue>
-                                {collateral} <span>ETH</span>
+                                {collateral} <span>{singleSafe?.collateralName}</span>
                             </MainValue>
                             <MainChange>
                                 {modified ? (
@@ -159,7 +159,7 @@ const SafeStats = ({
                                                 isDeposit ? 'green' : 'yellow'
                                             }
                                         >
-                                            {newCollateral} ETH
+                                            {newCollateral} {singleSafe?.collateralName}
                                         </span>
                                     </>
                                 ) : (
@@ -169,9 +169,9 @@ const SafeStats = ({
                         </Main>
 
                         <Main className="mid">
-                            <MainLabel>RAI Debt</MainLabel>
+                            <MainLabel>HAI Debt</MainLabel>
                             <MainValue>
-                                {totalDebt} <span>RAI</span>
+                                {totalDebt} <span>HAI</span>
                             </MainValue>
                             <MainChange>
                                 {' '}
@@ -183,7 +183,7 @@ const SafeStats = ({
                                                 isDeposit ? 'green' : 'yellow'
                                             }
                                         >
-                                            {newDebt} RAI
+                                            {newDebt} HAI
                                         </span>
                                     </>
                                 ) : (
@@ -195,22 +195,22 @@ const SafeStats = ({
                         <Main>
                             <MainLabel>
                                 <Circle
-                                    data-tip={`${
-                                        singleSafe &&
+                                    data-tip={`${singleSafe &&
                                         returnState(singleSafe.riskState)
-                                            ? returnState(singleSafe.riskState)
-                                            : 'No'
-                                    } Risk`}
+                                        ? returnState(singleSafe.riskState)
+                                        : 'No'
+                                        } Risk`}
                                     className={
                                         singleSafe &&
-                                        returnState(singleSafe.riskState)
+                                            returnState(singleSafe.riskState)
                                             ? returnState(
-                                                  singleSafe.riskState
-                                              ).toLowerCase()
+                                                singleSafe.riskState
+                                            ).toLowerCase()
                                             : 'dimmed'
                                     }
                                 />{' '}
-                                Ratio (min {LIQUIDATION_CRATIO}%)
+                                {/* TODO: check if this is needed */}
+                                Ratio (min ?%)
                             </MainLabel>
                             <MainValue>
                                 {singleSafe?.collateralRatio}%
@@ -243,16 +243,16 @@ const SafeStats = ({
                             <InfoIcon data-tip={t('eth_osm_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>ETH Price (OSM)</SideTitle>
+                            <SideTitle>{singleSafe?.collateralName} Price (OSM)</SideTitle>
                             <SideValue>{ethPrice}</SideValue>
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('rai_red_price_tip')}>
+                            <InfoIcon data-tip={t('hai_red_price_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>RAI Redemption Price</SideTitle>
-                            <SideValue>{raiPrice}</SideValue>
+                            <SideTitle>HAI Redemption Price</SideTitle>
+                            <SideValue>{haiPrice}</SideValue>
                         </Side>
 
                         <Side>
@@ -265,16 +265,15 @@ const SafeStats = ({
                                     <div className="sideNote">
                                         After:{' '}
                                         <span
-                                            className={`${
-                                                isDeposit ? 'green' : 'yellow'
-                                            }`}
+                                            className={`${isDeposit ? 'green' : 'yellow'
+                                                }`}
                                         >
                                             ${newLiquidationPrice}
                                         </span>
                                     </div>
                                 ) : null}
                             </SideTitle>
-                            <SideValue>{`$${singleSafe?.liquidationPrice}`}</SideValue>
+                            <SideValue>{`$${singleSafe?.liquidationPrice || '-'}`}</SideValue>
                         </Side>
 
                         <Side>
@@ -290,14 +289,13 @@ const SafeStats = ({
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>Stability Fee</SideTitle>
-                            <SideValue>{`${
-                                singleSafe?.totalAnnualizedStabilityFee
-                                    ? getRatePercentage(
-                                          singleSafe?.totalAnnualizedStabilityFee,
-                                          2
-                                      )
-                                    : 0
-                            }%`}</SideValue>
+                            <SideValue>{`${singleSafe?.totalAnnualizedStabilityFee
+                                ? getRatePercentage(
+                                    singleSafe?.totalAnnualizedStabilityFee,
+                                    2
+                                )
+                                : 0
+                                }%`}</SideValue>
                         </Side>
 
                         <Side>

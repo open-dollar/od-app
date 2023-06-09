@@ -19,19 +19,19 @@ describe('safe model', () => {
     describe('setsEthBalance', () => {
         it('sets ethBalance', () => {
             store.getActions().updateEthBalance({ chainId: 42, balance: 123 })
-            expect(store.getState().ethBalance).toEqual({ 1: 0, 42: 123 })
+            expect(store.getState().ethBalance).toEqual({ 1: 0, 42: 123, 420: 0 })
         })
     })
 
     describe('setsEthBalance', () => {
-        it('sets raiBalance for mainnet', () => {
+        it('sets haiBalance for mainnet', () => {
             store.getActions().updateEthBalance({ chainId: 1, balance: 123 })
-            expect(store.getState().ethBalance).toEqual({ 1: 123, 42: 0 })
+            expect(store.getState().ethBalance).toEqual({ 1: 123, 42: 0, 420: 0 })
         })
 
-        it('sets raiBalance for rinkeby', () => {
+        it('sets haiBalance for rinkeby', () => {
             store.getActions().updateEthBalance({ chainId: 4, balance: 123 })
-            expect(store.getState().ethBalance).toEqual({ 1: 0, 42: 0, 4: 123 })
+            expect(store.getState().ethBalance).toEqual({ 1: 0, 42: 0, 4: 123, 420: 0 })
         })
     })
 })

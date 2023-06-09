@@ -5,10 +5,13 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../hooks'
 import useGeb from '../hooks/useGeb'
-import { fetchUserSafes } from '../services/graphql'
-import { useStoreActions, useStoreState } from '../store'
+import { fetchUserSafesRaw } from '../services/safes'
+import { useStoreActions } from '../store'
 import { timeout } from '../utils/helper'
 import Button from './Button'
+import {
+    IUserSafeList,
+} from '../utils/interfaces'
 
 const SafeManager = () => {
     const { t } = useTranslation()
@@ -19,11 +22,7 @@ const SafeManager = () => {
 
     const history = useHistory()
 
-    const { settingsModel: settingsState } = useStoreState((state) => state)
-
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
-    const { isRPCAdapterOn } = settingsState
 
     const handleCancel = () => {
         popupsActions.setIsSafeManagerOpen(false)
@@ -41,10 +40,8 @@ const SafeManager = () => {
         }
 
         try {
-            const userSafes = await fetchUserSafes(
-                { address: value, geb, isRPCAdapterOn },
-                true
-            )
+            const userSafes: IUserSafeList | undefined = await fetchUserSafesRaw(
+                { address: value, geb })
 
             if (!userSafes || (userSafes && !userSafes.safes.length)) {
                 setError('Address has no Safes')

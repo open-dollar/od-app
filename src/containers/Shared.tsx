@@ -29,16 +29,15 @@ import usePrevious from '../hooks/usePrevious'
 import { useHistory } from 'react-router-dom'
 import ProxyModal from '../components/Modals/ProxyModal'
 import ImagePreloader from '../components/ImagePreloader'
-import AuctionsModal from '../components/Modals/AuctionsModal'
 import AlertLabel from '../components/AlertLabel'
 import useGeb from '../hooks/useGeb'
 import { isAddress } from '@ethersproject/address'
-import DistributionsModal from '../components/Modals/DistributionsModal'
 import { ChainId } from '../utils/interfaces'
 import { ethers } from 'ethers'
 import MulticallUpdater from '../services/MulticallUpdater'
 import BlockedAddress from 'src/components/BlockedAddress'
 import { blockedAddresses } from 'src/utils/blockedAddresses'
+import { TOKENS } from 'src/utils/tokens'
 
 interface Props {
     children: ReactNode
@@ -79,6 +78,16 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
     }
+    const forceUpdateTokens = connectWalletState.forceUpdateTokens;
+    useEffect(() => {
+        if (account && geb && forceUpdateTokens) {
+            connectWalletActions.fetchTokenData({ geb, user: account })
+        }
+    }, [account, geb, TOKENS, forceUpdateTokens])
+
+    useEffect(() => {
+        connectWalletActions.fetchFiatPrice()
+    }, [connectWalletActions])
 
     async function accountChecker() {
         if (!account || !chainId || !library || !geb) return
@@ -88,7 +97,6 @@ const Shared = ({ children, ...rest }: Props) => {
         })
         popupsActions.setIsWaitingModalOpen(true)
         try {
-            connectWalletActions.setIsUserCreated(false)
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)
             if (
@@ -96,7 +104,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 userProxy.proxyAddress &&
                 userProxy.proxyAddress !== EMPTY_ADDRESS
             ) {
-                connectWalletActions.setIsUserCreated(true)
                 connectWalletActions.setProxyAddress(userProxy.proxyAddress)
             }
             const txs = localStorage.getItem(`${account}-${chainId}`)
@@ -107,12 +114,6 @@ const Shared = ({ children, ...rest }: Props) => {
             if (!connectWalletState.ctHash) {
                 connectWalletActions.setStep(2)
                 const { pathname } = history.location
-                const flxBalanceRes =
-                    await geb.contracts.protocolToken.balanceOf(account)
-                connectWalletActions.updateFlxBalance({
-                    chainId: NETWORK_ID,
-                    balance: ethers.utils.formatEther(flxBalanceRes),
-                })
 
                 let address = ''
                 if (pathname && pathname !== '/') {
@@ -124,7 +125,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 await safeActions.fetchUserSafes({
                     address: address ? address : (account as string),
                     geb,
-                    isRPCAdapterOn: settingsState.isRPCAdapterOn,
                 })
             }
         } catch (error) {
@@ -143,7 +143,6 @@ const Shared = ({ children, ...rest }: Props) => {
         if (!account) {
             connectWalletActions.setStep(0)
             safeActions.setIsSafeCreated(false)
-            connectWalletActions.setIsUserCreated(false)
             transactionsActions.setTransactions({})
         }
         if (isAccountSwitched) {
@@ -155,12 +154,11 @@ const Shared = ({ children, ...rest }: Props) => {
     function networkChecker() {
         accountChange()
         const id: ChainId = NETWORK_ID
-        connectWalletActions.fetchFiatPrice()
         popupsActions.setIsSafeManagerOpen(false)
         if (chainId && chainId !== id) {
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)
-            settingsActions.setBlockBody(true)
+            // settingsActions.setBlockBody(true)
             toast(
                 <ToastPayload
                     icon={'AlertTriangle'}
@@ -214,9 +212,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ApplicationUpdater />
             <BalanceUpdater />
             <TransactionUpdater />
-            <DistributionsModal />
             <LoadingModal />
-            <AuctionsModal />
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />

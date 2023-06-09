@@ -31,9 +31,9 @@ describe('utils', () => {
                 'https://etherscan.io/address/abc'
             )
         })
-        it('ropsten', () => {
-            expect(getEtherscanLink(3, 'abc', 'address')).toEqual(
-                'https://ropsten.etherscan.io/address/abc'
+        it('goerli optimism', () => {
+            expect(getEtherscanLink(420, 'abc', 'address')).toEqual(
+                'https://goerli-optimism.etherscan.io/address/abc'
             )
         })
     })

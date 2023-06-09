@@ -1,4 +1,4 @@
-import { utils as gebUtils } from 'geb.js'
+import { utils as gebUtils } from '@hai-on-op/sdk'
 import {
     TransactionResponse,
     TransactionRequest,

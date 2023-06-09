@@ -1,28 +1,29 @@
 import { action, Action, Thunk, thunk } from 'easy-peasy'
-import { NETWORK_ID } from '../connectors'
+import { TOKENS } from 'src/utils/tokens'
+import { fetchTokenData, TokenData } from 'src/utils/virtual/tokenData'
 import api from '../services/api'
-import { fetchFLXBalance, fetchUser } from '../services/graphql'
-import { IBlockNumber, ITokenBalance } from '../utils/interfaces'
+import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
 
 export interface ConnectWalletModel {
+    forceUpdateTokens: boolean
+    tokensData: { [token: string]: TokenData }
     blockNumber: IBlockNumber
     fiatPrice: number
     flxPrice: number
     step: number
     ethPriceChange: number
-    isUserCreated: boolean
     proxyAddress: string
     coinAllowance: string
     protAllowance: string
     ctHash: string
     ethBalance: ITokenBalance
-    raiBalance: ITokenBalance
-    flxBalance: ITokenBalance
+    haiBalance: ITokenBalance
     uniswapPoolBalance: ITokenBalance
     claimableFLX: string
     isWrongNetwork: boolean
     isStepLoading: boolean
     fetchFiatPrice: Thunk<ConnectWalletModel>
+    fetchTokenData: Thunk<ConnectWalletModel, IFetchTokensDataPayload>
     setFiatPrice: Action<ConnectWalletModel, number>
     setFlxPrice: Action<ConnectWalletModel, number>
     setIsWrongNetwork: Action<ConnectWalletModel, boolean>
@@ -34,11 +35,7 @@ export interface ConnectWalletModel {
         ConnectWalletModel,
         { chainId: number; balance: number }
     >
-    updateRaiBalance: Action<
-        ConnectWalletModel,
-        { chainId: number; balance: string }
-    >
-    updateFlxBalance: Action<
+    updateHaiBalance: Action<
         ConnectWalletModel,
         { chainId: number; balance: string }
     >
@@ -46,10 +43,7 @@ export interface ConnectWalletModel {
         ConnectWalletModel,
         { chainId: number; balance: string }
     >
-    fetchUser: Thunk<ConnectWalletModel, string>
-    fetchProtBalance: Thunk<ConnectWalletModel, string>
     setStep: Action<ConnectWalletModel, number>
-    setIsUserCreated: Action<ConnectWalletModel, boolean>
     setProxyAddress: Action<ConnectWalletModel, string>
     setCoinAllowance: Action<ConnectWalletModel, string>
     setProtAllowance: Action<ConnectWalletModel, string>
@@ -57,6 +51,8 @@ export interface ConnectWalletModel {
     setCtHash: Action<ConnectWalletModel, string>
     setEthPriceChange: Action<ConnectWalletModel, number>
     setClaimableFLX: Action<ConnectWalletModel, string>
+    setTokensData: Action<ConnectWalletModel, { [token: string]: TokenData }>
+    setForceUpdateTokens: Action<ConnectWalletModel, boolean>
 }
 
 const ctHashState = localStorage.getItem('ctHash')
@@ -64,11 +60,12 @@ const ctHashState = localStorage.getItem('ctHash')
 const blockNumberState = localStorage.getItem('blockNumber')
 
 const connectWalletModel: ConnectWalletModel = {
+    forceUpdateTokens: true,
     blockNumber: blockNumberState ? JSON.parse(blockNumberState) : {},
-    ethBalance: { 1: 0, 42: 0 },
-    raiBalance: { 1: '0', 42: '0' },
-    flxBalance: { 1: '0', 42: '0' },
-    uniswapPoolBalance: { 1: '0', 42: '0' },
+    ethBalance: { 1: 0, 42: 0, 420: 0 },
+    haiBalance: { 1: '0', 42: '0', 420: '0' },
+    uniswapPoolBalance: { 1: '0', 42: '0', 420: '0' },
+    tokensData: TOKENS,
     claimableFLX: '0',
     fiatPrice: 0,
     flxPrice: 0,
@@ -80,43 +77,25 @@ const connectWalletModel: ConnectWalletModel = {
     ctHash: ctHashState || '',
     isStepLoading: false,
     isWrongNetwork: false,
-    isUserCreated: false,
     fetchFiatPrice: thunk(async (actions, payload) => {
         const res = await api.fetchFiatPrice()
-        const flxRes = await api.fetchFiatPrice('reflexer-ungovernance-token')
-        if (res && res.used) {
+        if (res && res.usd) {
             actions.setFiatPrice(res.usd)
-        }
-        if (flxRes && flxRes.usd) {
-            actions.setFlxPrice(flxRes.usd)
         }
 
         if (res && res.usd_24h_change) {
             actions.setEthPriceChange(res.usd_24h_change)
         }
     }),
-
-    fetchUser: thunk(async (actions, payload) => {
-        const user = await fetchUser(payload.toLowerCase())
-        if (user) {
-            actions.setIsUserCreated(true)
-            return true
-        } else {
-            actions.setIsUserCreated(false)
-            return false
+    fetchTokenData: thunk(
+        async (actions, payload) => {
+            const fetched = await fetchTokenData(payload.geb, payload.user, payload.tokens || Object.keys(TOKENS))
+            if (fetched) {
+                actions.setTokensData(fetched)
+                actions.setForceUpdateTokens(false)
+            }
         }
-    }),
-    fetchProtBalance: thunk(async (actions, payload) => {
-        const res = await fetchFLXBalance(payload.toLowerCase())
-        actions.updateFlxBalance({
-            chainId: NETWORK_ID,
-            balance:
-                res && res.protBalance.length > 0
-                    ? res.protBalance[0].balance
-                    : '0',
-        })
-    }),
-
+    ),
     setFiatPrice: action((state, payload) => {
         state.fiatPrice = payload
     }),
@@ -144,13 +123,9 @@ const connectWalletModel: ConnectWalletModel = {
         const { chainId, balance } = payload
         state.ethBalance[chainId] = balance
     }),
-    updateRaiBalance: action((state, payload) => {
+    updateHaiBalance: action((state, payload) => {
         const { chainId, balance } = payload
-        state.raiBalance[chainId] = balance
-    }),
-    updateFlxBalance: action((state, payload) => {
-        const { chainId, balance } = payload
-        state.flxBalance[chainId] = balance
+        state.haiBalance[chainId] = balance
     }),
     updateUniswapPoolBalance: action((state, payload) => {
         const { chainId, balance } = payload
@@ -159,9 +134,6 @@ const connectWalletModel: ConnectWalletModel = {
     setStep: action((state, payload) => {
         state.step = payload
         state.isStepLoading = false
-    }),
-    setIsUserCreated: action((state, payload) => {
-        state.isUserCreated = payload
     }),
     setProxyAddress: action((state, payload) => {
         state.proxyAddress = payload
@@ -185,6 +157,12 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     setClaimableFLX: action((state, payload) => {
         state.claimableFLX = payload
+    }),
+    setTokensData: action((state, payload) => {
+        state.tokensData = payload
+    }),
+    setForceUpdateTokens: action((state, payload) => {
+        state.forceUpdateTokens = payload
     }),
 }
 

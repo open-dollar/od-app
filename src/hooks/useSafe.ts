@@ -1,8 +1,10 @@
 import { BigNumber, ethers } from 'ethers'
-import { useCallback, useMemo } from 'react'
-import { useActiveWeb3React } from '.'
 import numeral from 'numeral'
+import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useActiveWeb3React } from '.'
 import { useStoreActions, useStoreState } from '../store'
+import { DEFAULT_SAFE_STATE } from '../utils/constants'
 import {
     formatNumber,
     getCollateralRatio,
@@ -16,9 +18,6 @@ import {
     toFixedString,
 } from '../utils/helper'
 import { useProxyAddress } from './useGeb'
-import { useTranslation } from 'react-i18next'
-import { DEFAULT_SAFE_STATE } from '../utils/constants'
-import { useTokenBalances } from './Wallet'
 
 export const LIQUIDATION_RATIO = 135 // percent
 export const ONE_DAY_WORTH_SF = ethers.utils.parseEther('0.00001')
@@ -46,6 +45,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const { t } = useTranslation()
     const {
         safeModel: { safeData, singleSafe, liquidationData },
+        connectWalletModel: { tokensData }
     } = useStoreState((state) => state)
 
     // parsed amounts of deposit/repay withdraw/borrow as in left input and right input, they get switched based on if its Deposit & Borrow or Repay & Withdraw
@@ -56,17 +56,14 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const { leftInput, rightInput } = parsedAmounts
 
-    // get eth and rai balances
-    const { eth, rai } = useTokenBalances(account as string)
-
     const balances = useMemo(() => {
         return {
-            eth: eth.balance,
-            rai: rai.balance,
+            weth: tokensData.WETH?.balance,
+            hai: tokensData.HAI?.balance,
         }
-    }, [eth, rai])
+    }, [tokensData])
 
-    const { eth: ethBalance, rai: raiBalance } = balances
+    const { hai: haiBalance } = balances
 
     // returns collateral amount and takes into consideration if its a new safe or not
     const collateral = useTotalCollateral(leftInput, type)
@@ -75,6 +72,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const totalCollateral = useMemo(() => collateral, [collateral])
     const totalDebt = useMemo(() => debt, [debt])
+    const collateralName = safeData.collateral
 
     // Checks if for collateralRatio safety if its safe or not
     const isSafe = useSafeIsSafe(totalCollateral, totalDebt)
@@ -86,19 +84,19 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     // returns available ETH (collateral)
     // singleSafe means already a deployed safe
     const availableEth = useMemo(() => {
-        if (type === 'deposit_borrow') {
-            return formatNumber(ethBalance)
-        } else {
-            if (singleSafe) {
+        if (singleSafe) {
+            if (type === 'deposit_borrow' && singleSafe.collateralName != '') {
+                return formatNumber(tokensData[singleSafe.collateralName].balance)
+            } else {
                 return singleSafe.collateral
             }
-        }
+        } 
         return '0.00'
-    }, [ethBalance, singleSafe, type])
+    }, [tokensData, singleSafe, type])
 
-    // returns available RAI (debt)
+    // returns available HAI (debt)
     // singleSafe means already a deployed safe
-    const availableRai = useMemo(() => {
+    const availableHai = useMemo(() => {
         if (type === 'create') {
             return returnAvaiableDebt(
                 liquidationData.currentPrice.safetyPrice,
@@ -137,12 +135,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const availableEthBN = BigNumber.from(
         toFixedString(availableEth.toString(), 'WAD')
     )
-    const availableRaiBN = BigNumber.from(
-        toFixedString(availableRai.toString(), 'WAD')
+    const availableHaiBN = BigNumber.from(
+        toFixedString(availableHai.toString(), 'WAD')
     )
-    // account's RAI balance into BigNumber
-    const raiBalanceBN = raiBalance
-        ? BigNumber.from(toFixedString(raiBalance.toString(), 'WAD'))
+    // account's HAI balance into BigNumber
+    const haiBalanceBN = haiBalance
+        ? BigNumber.from(toFixedString(haiBalance.toString(), 'WAD'))
         : BigNumber.from('0')
 
     const leftInputBN = leftInput
@@ -163,12 +161,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         return {
             data: [
                 {
-                    label: 'Total ETH Collateral',
+                    label: `Total ${collateralName} Collateral`,
                     value: totalCollateral === '0' ? '-' : totalCollateral,
                     plainValue: totalCollateral,
                 },
                 {
-                    label: 'Total RAI Debt',
+                    label: 'Total HAI Debt',
                     value: totalDebt === '0' ? '-' : totalDebt,
                     plainValue: totalDebt,
                 },
@@ -179,12 +177,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                 },
                 {
                     label: 'Collateral Type',
-                    value: 'ETH-A',
+                    value: collateralName,
                 },
             ],
             prices: [
                 {
-                    label: 'ETH Price (OSM)',
+                    label: `${collateralName} Price (OSM)`,
                     value:
                         '$' +
                         formatNumber(
@@ -194,7 +192,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                     tip: t('eth_osm_tip'),
                 },
                 {
-                    label: 'RAI Redemption Price',
+                    label: 'HAI Redemption Price',
                     value:
                         '$' +
                         formatNumber(liquidationData.currentRedemptionPrice, 3),
@@ -205,7 +203,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                     value:
                         liquidationPrice > 0
                             ? (liquidationPrice as number) >
-                              Number(liquidationData.currentPrice.value)
+                                Number(liquidationData.currentPrice.value)
                                 ? 'Invalid'
                                 : '$' + liquidationPrice
                             : '$' + 0,
@@ -236,6 +234,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         t,
         totalCollateral,
         totalDebt,
+        collateralName,
     ])
 
     let error: string | undefined
@@ -252,13 +251,13 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (leftInputBN.gt(availableEthBN)) {
             error = error ?? 'Insufficient balance'
         }
-        if (rightInputBN.gt(availableRaiBN)) {
-            error = error ?? `RAI borrowed cannot exceed available amount`
+        if (rightInputBN.gt(availableHaiBN)) {
+            error = error ?? `HAI borrowed cannot exceed available amount`
         }
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
             error =
                 error ??
-                `Please enter the amount of ETH to be deposited or amount of RAI to be borrowed`
+                `Please enter the amount of ${collateralName} to be deposited or amount of HAI to be borrowed`
         }
     }
 
@@ -266,35 +265,35 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
             error =
                 error ??
-                `Please enter the amount of ETH to free or the amount of RAI to repay`
+                `Please enter the amount of ${collateralName} to free or the amount of HAI to repay`
         }
         if (leftInputBN.gt(availableEthBN)) {
-            error = error ?? 'ETH to unlock cannot exceed available amount'
+            error = error ?? '${collateralName} to unlock cannot exceed available amount'
         }
 
-        if (rightInputBN.gt(availableRaiBN)) {
-            error = error ?? `RAI to repay cannot exceed owed amount`
+        if (rightInputBN.gt(availableHaiBN)) {
+            error = error ?? `HAI to repay cannot exceed owed amount`
         }
 
         if (!rightInputBN.isZero()) {
             const repayPercent = returnPercentAmount(
                 rightInput,
-                availableRai as string
+                availableHai as string
             )
 
             if (
                 rightInputBN
                     .add(ONE_DAY_WORTH_SF)
-                    .lt(BigNumber.from(availableRaiBN)) &&
+                    .lt(BigNumber.from(availableHaiBN)) &&
                 repayPercent > 95
             ) {
                 error =
                     error ??
-                    `You can only repay a minimum of ${availableRai} RAI to avoid leaving residual values`
+                    `You can only repay a minimum of ${availableHai} HAI to avoid leaving residual values`
             }
         }
 
-        if (!rightInputBN.isZero() && rightInputBN.gt(raiBalanceBN)) {
+        if (!rightInputBN.isZero() && rightInputBN.gt(haiBalanceBN)) {
             error = error ?? `balance_issue`
         }
     }
@@ -304,14 +303,13 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             error ??
             `The resulting debt should be at least ${Math.ceil(
                 Number(formatNumber(liquidationData.debtFloor))
-            )} RAI or zero`
+            )} HAI or zero`
     }
 
     if (!isSafe && (collateralRatio as number) >= 0) {
         error =
             error ??
-            `Too much debt, below ${
-                Number(liquidationData.safetyCRatio) * 100
+            `Too much debt, below ${Number(liquidationData.safetyCRatio) * 100
             }% collateralization ratio`
     }
 
@@ -326,12 +324,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         numeral(totalDebt).value() >
         numeral(liquidationData.debtCeiling).value()
     ) {
-        error = error ?? `Cannot exceed RAI debt ceiling`
+        error = error ?? `Cannot exceed HAI debt ceiling`
     }
 
     if (type === 'create') {
         if (leftInputBN.isZero()) {
-            error = error ?? 'Enter ETH Amount'
+            error = error ?? `Enter ${collateralName} Amount`
         }
     }
 
@@ -343,7 +341,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (totalDebtBN.gte(perSafeDebtCeilingBN)) {
             error =
                 error ??
-                `Individual safe can't have more than ${liquidationData.perSafeDebtCeiling} RAI of debt`
+                `Individual safe can't have more than ${liquidationData.perSafeDebtCeiling} HAI of debt`
         }
     }
 
@@ -355,7 +353,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         collateralRatio,
         liquidationPrice,
         availableEth,
-        availableRai,
+        availableHai,
         liquidationData,
         liquidationPenaltyPercentage,
         stats,

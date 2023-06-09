@@ -39,7 +39,7 @@ const Steps = () => {
 
     const handleCreateAccount = async () => {
         if (!account || !library || !chainId) return false
-        const txData = geb.deployProxy()
+        const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
         const signer = library.getSigner(account)
 
         try {

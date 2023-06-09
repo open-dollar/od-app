@@ -29,7 +29,8 @@ const OnBoarding = ({ ...props }) => {
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
-            !library
+            !library || 
+            connectWalletState.isWrongNetwork
         )
             return
 
@@ -37,12 +38,16 @@ const OnBoarding = ({ ...props }) => {
             await safeActions.fetchUserSafes({
                 address: address || (account as string),
                 geb,
-                isRPCAdapterOn: true,
             })
         }
         fetchSafes()
         const ms = 3000
         const interval = setInterval(() => {
+            if (
+                (!account && !address) ||
+                (address && !isAddress(address.toLowerCase())) ||
+                !library || 
+                connectWalletState.isWrongNetwork)
             fetchSafes()
         }, ms)
 

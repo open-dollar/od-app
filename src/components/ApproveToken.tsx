@@ -1,5 +1,5 @@
 import { ethers, utils as ethersUtils } from 'ethers'
-import { Geb, utils as gebUtils } from 'geb.js'
+import { Geb, utils as gebUtils } from '@hai-on-op/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import styled from 'styled-components'
@@ -13,9 +13,7 @@ import Loader from './Loader'
 
 export type ApproveMethod =
     | 'coin'
-    | 'uniswapPairCoinEth'
     | 'protocolToken'
-    | 'stakingToken'
 
 interface Props {
     handleBackBtn: () => void
@@ -102,7 +100,7 @@ const ApproveToken = ({
         passedCheckCB(allowance, amount, isPaid)
     }, [passedCheckCB, allowance, amount, isPaid])
 
-    const unlockRAI = async () => {
+    const unlockHAI = async () => {
         try {
             if (!account || !library) return false
             if (!proxyAddress) {
@@ -117,21 +115,13 @@ const ApproveToken = ({
                 status: 'loading',
             })
             const signer = library.getSigner(account)
-            const geb = new Geb(ETH_NETWORK, signer.provider)
-            let tx
-            if (methodName === 'protocolToken') {
-                tx = geb.contracts[methodName].approve__AddressUint256(
-                    proxyAddress,
-                    ethers.constants.MaxUint256
-                )
-            } else {
-                tx = geb.contracts[methodName].approve(
-                    proxyAddress,
-                    ethers.constants.MaxUint256
-                )
-            }
+            const geb = new Geb(ETH_NETWORK, signer)
 
-            const txResponse = await signer.sendTransaction(tx)
+            let txResponse: ethers.ContractTransaction = await geb.contracts[methodName].approve(
+                proxyAddress,
+                ethers.constants.MaxUint256
+            );
+
             setTextPayload({
                 title: `Unlocking ${coinName}`,
                 text: `Confirming transaction and unlocking ${coinName}`,
@@ -193,7 +183,7 @@ const ApproveToken = ({
                                     ? 'Try again'
                                     : 'Unlock'
                             }
-                            onClick={unlockRAI}
+                            onClick={unlockHAI}
                         />
                     </BtnContainer>
                 ) : null}

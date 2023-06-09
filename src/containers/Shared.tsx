@@ -26,7 +26,7 @@ import ToastPayload from '../components/ToastPayload'
 import WaitingModal from '../components/Modals/WaitingModal'
 import TransactionUpdater from '../services/TransactionUpdater'
 import usePrevious from '../hooks/usePrevious'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import ProxyModal from '../components/Modals/ProxyModal'
 import ImagePreloader from '../components/ImagePreloader'
 import AlertLabel from '../components/AlertLabel'
@@ -50,6 +50,9 @@ const Shared = ({ children, ...rest }: Props) => {
     const history = useHistory()
 
     const previousAccount = usePrevious(account)
+
+    const location = useLocation()
+    const isSplash = location.pathname === '/'
 
     const {
         settingsModel: settingsState,
@@ -113,10 +116,10 @@ const Shared = ({ children, ...rest }: Props) => {
             await timeout(200)
             if (!connectWalletState.ctHash) {
                 connectWalletActions.setStep(2)
-                const { pathname } = history.location
+                const { pathname } = location
 
                 let address = ''
-                if (pathname && pathname !== '/') {
+                if (pathname && pathname !== '/' && pathname !== '/safes') {
                     const route = pathname.split('/')[1]
                     if (isAddress(route)) {
                         address = route.toLowerCase()
@@ -216,11 +219,16 @@ const Shared = ({ children, ...rest }: Props) => {
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />
-            <WaitingModal />
+            {!isSplash && (
+                <WaitingModal />
+            )}
             <TopUpModal />
-            <EmptyDiv>
-                <Navbar />
-            </EmptyDiv>
+            {!isSplash && (
+                <EmptyDiv>
+                    <Navbar />
+                </EmptyDiv>
+            )}
+
             {SYSTEM_STATUS && SYSTEM_STATUS.toLowerCase() === 'shutdown' ? (
                 <AlertContainer>
                     <AlertLabel type="danger" text={t('shutdown_text')} />

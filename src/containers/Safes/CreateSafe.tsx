@@ -147,7 +147,7 @@ const CreateSafe = () => {
                     safeData: safeState.safeData,
                     signer,
                 })
-                history.push('/')
+                history.push('/safes')
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)
                 reset()

@@ -34,7 +34,6 @@ const NavLinks = () => {
                 to="/"
                 onClick={(e) => handleLinkClick(e, false)}
                 className={
-                    location.pathname === '/' ||
                     location.pathname.startsWith('/safes')
                         ? 'activeLink'
                         : ''

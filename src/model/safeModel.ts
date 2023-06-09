@@ -1,53 +1,42 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
-import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
+import { StoreModel } from '.'
+import { NETWORK_ID } from '../connectors'
 import {
-    ISafeData,
-    ISafePayload,
-    ILiquidationData,
-    ISafe,
-    ISafeHistory,
-    IFetchSafesPayload,
-    IFetchSafeById,
-    FetchSaviourPayload,
-} from '../utils/interfaces'
-import {
-    handleCollectETH,
     handleDepositAndBorrow,
     handleRepayAndWithdraw,
 } from '../services/blockchain'
 import {
     fetchSafeById,
-    fetchSafeHistory,
     fetchUserSafes,
-} from '../services/graphql'
+} from '../services/safes'
 import { DEFAULT_SAFE_STATE, EMPTY_ADDRESS } from '../utils/constants'
 import { timeout } from '../utils/helper'
-import { StoreModel } from '.'
-import { NETWORK_ID } from '../connectors'
-import { fetchSaviourData, SaviourData } from '../hooks/useSaviour'
+import {
+    IFetchSafeById,
+    IFetchSafesPayload,
+    ILiquidationData,
+    ISafe,
+    ISafeData,
+    ISafePayload,
+} from '../utils/interfaces'
 
-export type SaviourType = 'uniswap' | 'curve'
 export interface SafeModel {
     list: Array<ISafe>
-    saviourData: SaviourData | undefined
     safeCreated: boolean
     singleSafe: ISafe | null
     operation: number
     targetedCRatio: number
     totalEth: string
     isMaxWithdraw: boolean
-    totalRAI: string
+    totalHAI: string
     amount: string
     isES: boolean
     isUniSwapPoolChecked: boolean
     stage: number
-    isSaviourDeposit: boolean
     isSuccessfulTx: boolean
-    saviourType: SaviourType
     safeData: ISafeData
     liquidationData: ILiquidationData
     uniSwapPool: ISafeData
-    historyList: Array<ISafeHistory>
     depositAndBorrow: Thunk<
         SafeModel,
         ISafePayload & { safeId?: string },
@@ -62,34 +51,28 @@ export interface SafeModel {
     >
     fetchSafeById: Thunk<SafeModel, IFetchSafeById, any, StoreModel>
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
-    fetchSafeHistory: Thunk<SafeModel, string>
-    collectETH: Thunk<
-        SafeModel,
-        { signer: JsonRpcSigner; safe: ISafe },
-        any,
-        StoreModel
-    >
-    fetchSaviourData: Thunk<SafeModel, FetchSaviourPayload, any, StoreModel>
+    // collectETH: Thunk<
+    //     SafeModel,
+    //     { signer: JsonRpcSigner; safe: ISafe },
+    //     any,
+    //     StoreModel
+    // >
     setIsSafeCreated: Action<SafeModel, boolean>
     setList: Action<SafeModel, Array<ISafe>>
     setSingleSafe: Action<SafeModel, ISafe | null>
     setOperation: Action<SafeModel, number>
     setTotalEth: Action<SafeModel, string>
-    setTotalRAI: Action<SafeModel, string>
+    setTotalHAI: Action<SafeModel, string>
     setIsES: Action<SafeModel, boolean>
     setLiquidationData: Action<SafeModel, ILiquidationData>
     setSafeData: Action<SafeModel, ISafeData>
     setUniSwapPool: Action<SafeModel, ISafeData>
     setIsUniSwapPoolChecked: Action<SafeModel, boolean>
     setStage: Action<SafeModel, number>
-    setSafeHistoryList: Action<SafeModel, Array<ISafeHistory>>
     setIsSuccessfulTx: Action<SafeModel, boolean>
-    setIsSaviourDeposit: Action<SafeModel, boolean>
     setAmount: Action<SafeModel, string>
     setTargetedCRatio: Action<SafeModel, number>
     setIsMaxWithdraw: Action<SafeModel, boolean>
-    setSaviourData: Action<SafeModel, SaviourData | undefined>
-    setSaviourType: Action<SafeModel, SaviourType>
 }
 
 const safeModel: SafeModel = {
@@ -99,16 +82,13 @@ const safeModel: SafeModel = {
     operation: 0,
     amount: '',
     targetedCRatio: 0,
-    saviourData: undefined,
     singleSafe: null,
     totalEth: '0.00',
-    totalRAI: '0.00',
+    totalHAI: '0.00',
     isSuccessfulTx: true,
     isES: true,
     isUniSwapPoolChecked: true,
     stage: 0,
-    isSaviourDeposit: true,
-    saviourType: 'uniswap',
     safeData: DEFAULT_SAFE_STATE,
     liquidationData: {
         accumulatedRate: '0',
@@ -130,7 +110,6 @@ const safeModel: SafeModel = {
         globalDebtCeiling: '0',
     },
     uniSwapPool: DEFAULT_SAFE_STATE,
-    historyList: [],
     depositAndBorrow: thunk(async (actions, payload, { getStoreActions }) => {
         const storeActions = getStoreActions()
         const txResponse = await handleDepositAndBorrow(
@@ -170,6 +149,7 @@ const safeModel: SafeModel = {
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
             await txResponse.wait()
+            storeActions.connectWalletModel.setForceUpdateTokens(true)
         } else {
             storeActions.connectWalletModel.setIsStepLoading(false)
             storeActions.connectWalletModel.setStep(2)
@@ -204,31 +184,32 @@ const safeModel: SafeModel = {
                 actions.setUniSwapPool(DEFAULT_SAFE_STATE)
                 actions.setSafeData(DEFAULT_SAFE_STATE)
                 await txResponse.wait()
+                storeActions.connectWalletModel.setForceUpdateTokens(true)
             }
         }
     ),
-    collectETH: thunk(async (actions, payload, { getStoreActions }) => {
-        const storeActions = getStoreActions()
-        const txResponse = await handleCollectETH(payload.signer, payload.safe)
-        if (txResponse) {
-            const { hash, chainId } = txResponse
-            storeActions.transactionsModel.addTransaction({
-                chainId,
-                hash,
-                from: txResponse.from,
-                summary: 'Collecting ETH',
-                addedTime: new Date().getTime(),
-                originalTx: txResponse,
-            })
-            storeActions.popupsModel.setIsWaitingModalOpen(true)
-            storeActions.popupsModel.setWaitingPayload({
-                title: 'Transaction Submitted',
-                hash: txResponse.hash,
-                status: 'success',
-            })
-            await txResponse.wait()
-        }
-    }),
+    // collectETH: thunk(async (actions, payload, { getStoreActions }) => {
+    //     const storeActions = getStoreActions()
+    //     const txResponse = await handleCollectETH(payload.signer, payload.safe)
+    //     if (txResponse) {
+    //         const { hash, chainId } = txResponse
+    //         storeActions.transactionsModel.addTransaction({
+    //             chainId,
+    //             hash,
+    //             from: txResponse.from,
+    //             summary: 'Collecting ETH',
+    //             addedTime: new Date().getTime(),
+    //             originalTx: txResponse,
+    //         })
+    //         storeActions.popupsModel.setIsWaitingModalOpen(true)
+    //         storeActions.popupsModel.setWaitingPayload({
+    //             title: 'Transaction Submitted',
+    //             hash: txResponse.hash,
+    //             status: 'success',
+    //         })
+    //         await txResponse.wait()
+    //     }
+    // }),
     fetchUserSafes: thunk(
         async (actions, payload, { getStoreActions, getState }) => {
             const storeActions = getStoreActions()
@@ -248,10 +229,10 @@ const safeModel: SafeModel = {
                 }
                 actions.setLiquidationData(fetched.liquidationData)
                 const chainId = NETWORK_ID
-                if (fetched.availableRAI && chainId) {
-                    storeActions.connectWalletModel.updateRaiBalance({
+                if (fetched.availableHAI && chainId) {
+                    storeActions.connectWalletModel.updateHaiBalance({
                         chainId,
-                        balance: fetched.availableRAI,
+                        balance: fetched.availableHAI,
                     })
                 }
                 await timeout(200)
@@ -266,7 +247,7 @@ const safeModel: SafeModel = {
         if (res) {
             actions.setSingleSafe(res.safe[0])
             actions.setLiquidationData(res.liquidationData)
-            storeActions.connectWalletModel.updateRaiBalance({
+            storeActions.connectWalletModel.updateHaiBalance({
                 chainId: NETWORK_ID,
                 balance: res.erc20Balance,
             })
@@ -287,22 +268,6 @@ const safeModel: SafeModel = {
         }
     }),
 
-    fetchSafeHistory: thunk(async (actions, payload) => {
-        const res = await fetchSafeHistory(payload)
-        if (res && res.length > 0) {
-            actions.setSafeHistoryList(res)
-            return res
-        }
-    }),
-
-    fetchSaviourData: thunk(async (actions, payload) => {
-        const res = await fetchSaviourData(payload)
-        actions.setSaviourData(res)
-        if (res && res.hasSaviour && res.saviourType) {
-            actions.setSaviourType(res.saviourType as SaviourType)
-        }
-        return res
-    }),
     setIsSafeCreated: action((state, payload) => {
         state.safeCreated = payload
     }),
@@ -318,8 +283,8 @@ const safeModel: SafeModel = {
     setTotalEth: action((state, payload) => {
         state.totalEth = payload
     }),
-    setTotalRAI: action((state, payload) => {
-        state.totalRAI = payload
+    setTotalHAI: action((state, payload) => {
+        state.totalHAI = payload
     }),
     setIsES: action((state, payload) => {
         state.isES = payload
@@ -341,14 +306,8 @@ const safeModel: SafeModel = {
     setStage: action((state, payload) => {
         state.stage = payload
     }),
-    setSafeHistoryList: action((state, payload) => {
-        state.historyList = payload
-    }),
     setIsSuccessfulTx: action((state, payload) => {
         state.isSuccessfulTx = payload
-    }),
-    setIsSaviourDeposit: action((state, payload) => {
-        state.isSaviourDeposit = payload
     }),
     setAmount: action((state, payload) => {
         state.amount = payload
@@ -358,12 +317,6 @@ const safeModel: SafeModel = {
     }),
     setIsMaxWithdraw: action((state, payload) => {
         state.isMaxWithdraw = payload
-    }),
-    setSaviourData: action((state, payload) => {
-        state.saviourData = payload
-    }),
-    setSaviourType: action((state, payload) => {
-        state.saviourType = payload
     }),
 }
 

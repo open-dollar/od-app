@@ -48,7 +48,7 @@ const SafeBlock = ({ ...props }) => {
                     </BlockHeader>
                     <Block>
                         <Item>
-                            <Label>{'ETH Deposited'}</Label>
+                            <Label>{`${props.collateralName} Deposited`}</Label>
                             <Value>{collateral}</Value>
                         </Item>
                         <Item>

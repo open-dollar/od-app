@@ -79,10 +79,10 @@ describe('App Page - Safe Details', () => {
         cy.contains('Insufficient balance')
     })
 
-    it('should show error if RAI exceeds available amount to borrow', () => {
+    it('should show error if HAI exceeds available amount to borrow', () => {
         cy.get('#deposit_borrow').click()
         cy.get('[data-test-id="deposit_borrow_right"]').type('3000')
-        cy.contains('RAI borrowed cannot exceed available amount')
+        cy.contains('HAI borrowed cannot exceed available amount')
     })
 
     it('should show error if no amount to repay or withdraw', () => {
@@ -90,7 +90,7 @@ describe('App Page - Safe Details', () => {
         cy.get('[data-test-id="repay_withdraw_left"]').type('0')
         cy.get('[data-test-id="repay_withdraw_right"]').type('0')
         cy.contains(
-            'Please enter the amount of ETH to free or the amount of RAI to repay'
+            'Please enter the amount of ETH to free or the amount of HAI to repay'
         )
     })
 
@@ -103,7 +103,7 @@ describe('App Page - Safe Details', () => {
     it('should show error if amount to repay exeeds owed amount', () => {
         cy.get('#repay_withdraw').click()
         cy.get('[data-test-id="repay_withdraw_right"]').type('1000')
-        cy.contains('RAI to repay cannot exceed owed amount')
+        cy.contains('HAI to repay cannot exceed owed amount')
     })
 
     it('should show error if too much debt', () => {

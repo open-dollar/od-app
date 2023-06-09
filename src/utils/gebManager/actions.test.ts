@@ -1,13 +1,7 @@
 // tests
 import gebManager from '.'
 import '../../setupTests'
-import axios from 'axios'
-import { GRAPH_API_URLS } from '../constants'
-import { liquidationQuery } from '../queries/safe'
 import { BigNumber, FixedNumber } from 'ethers'
-import { ISafeQuery, IUserSafeList } from '../interfaces'
-import { geb } from '../../setupTests'
-import { fetchSafeById, fetchUserSafes } from '../../services/graphql'
 
 // Add custom match type
 declare global {
@@ -118,148 +112,107 @@ const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
     }
 }
 
-describe('actions', () => {
-    // Address and safe to run the test against
-    // !! This safe needs to exist on the deployment tested against
-    const address = '0x6C5CCF22147A96e27855E26bC6824EB76497D112'.toLowerCase()
-    let safeId: string
+// TODO: This tests compared the rpc calls with graphql. We don't use graphql anymore
+// We need to mock the calls to the geb package to test that the function works correctly
+// describe('actions', () => {
+//     // Address and safe to run the test against
+//     // !! This safe needs to exist on the deployment tested against
+//     const address = '0xabfE7805bf9BBeb0DA3B4AaF53e5af00b7204fD5'.toLowerCase()
+//     let safeId: string
 
-    beforeAll(async () => {
-        const userSafes = await gebManager.getUserSafesRpc({ geb, address })
-        if (!userSafes || !userSafes.safes.length) {
-            console.log(`WARNING => ADDRESS HAS NO PROXY OR HAS NO SAFES`)
-        } else {
-            safeId = userSafes.safes[0].safeId
-        }
-    })
+//     beforeAll(async () => {
+//         const userSafes = await gebManager.getUserSafesRpc({ geb, address })
+//         if (!userSafes || !userSafes.safes.length) {
+//             console.log(`WARNING => ADDRESS HAS NO PROXY OR HAS NO SAFES`)
+//         } else {
+//             safeId = userSafes.safes[0].safeId
+//         }
+//     })
 
-    describe('FetchLiquidationData', () => {
-        // prettier-ignore
+//     describe('FetchLiquidationData', () => {
+//         // prettier-ignore
 
-        it('Data from RPC and GQL should be the same for liquidation data', async () => {
-      const rpcResponse = await gebManager.getLiquidationDataRpc(geb);
+//         it('Data from liquidation data', async () => {
+//             const rpcResponse = await gebManager.getLiquidationDataRpc(geb);
 
-      const gqlQuery = `{ ${liquidationQuery} }`;
-      const gqlResponse : IUserSafeList = (
-        await axios.post(GRAPH_API_URLS[0], JSON.stringify({ query: gqlQuery }))
-      ).data.data;
+//             expect(rpcResponse).toBeTruthy();
 
-      expect(rpcResponse).toBeTruthy();
-      expect(gqlResponse).toBeTruthy();
+//             // It can't be an exact match since the the RPC read function is in reality a state changing function applying the price change every second  
 
-      verifyKeys(rpcResponse, gqlResponse)
+//             expect(rpcResponse.systemState.currentRedemptionPrice.value).not.toBeNull();
+//             // Since we're using JS instead of solidity for the exponentiation, an approximation is enough
+//             expect(rpcResponse.systemState.currentRedemptionRate.annualizedRate).not.toBeNull()
+//             expect(rpcResponse.systemState.globalDebt).not.toBeNull();
+//             expect(rpcResponse.systemState.globalDebtCeiling).not.toBeNull()
+//             expect(rpcResponse.systemState.perSafeDebtCeiling).not.toBeNull()
+//             expect(rpcResponse.collateralType.accumulatedRate).not.toBeNull()
+//             expect(rpcResponse.collateralType.currentPrice.liquidationPrice).not.toBeNull()
+//             expect(rpcResponse.collateralType.currentPrice.safetyPrice).not.toBeNull()
+//             // This value is derive from other value and therefore can have a small deviation
+//             expect(rpcResponse.collateralType.currentPrice.value).not.toBeNull()
+//             expect(rpcResponse.collateralType.debtCeiling).not.toBeNull()
+//             expect(rpcResponse.collateralType.debtFloor).not.toBeNull()
+//             expect(rpcResponse.collateralType.liquidationCRatio).not.toBeNull()
+//             expect(rpcResponse.collateralType.liquidationPenalty).not.toBeNull()
+//             expect(rpcResponse.collateralType.safetyCRatio).not.toBeNull()
+//             // Here we're using JS exponentiation again, so get an approximate value 
+//             expect(rpcResponse.collateralType.totalAnnualizedStabilityFee).not.toBeNull()
+//         });
+//     })
 
-      // It can't be an exact match since the the RPC read function is in reality a state changing function applying the price change every second  
+//     describe('FetchUserSafeList', () => {
+//         it('fetches a list of user safes', async () => {
+//             const rpcResponse = await gebManager.getUserSafesRpc({
+//                 geb,
+//                 address,
+//             })
 
-      expect(rpcResponse.systemState.currentRedemptionPrice.value).almostEqual(gqlResponse.systemState.currentRedemptionPrice.value, 0.0001);      
-      // Since we're using JS instead of solidity for the exponentiation, an approximation is enough
-      expect(rpcResponse.systemState.currentRedemptionRate.annualizedRate).almostEqual(gqlResponse.systemState.currentRedemptionRate.annualizedRate, 0.0001)
-      expect(rpcResponse.systemState.globalDebt).fixedNumberMatch(gqlResponse.systemState.globalDebt);
-      expect(rpcResponse.systemState.globalDebtCeiling).fixedNumberMatch(gqlResponse.systemState.globalDebtCeiling)
-      expect(rpcResponse.systemState.perSafeDebtCeiling).fixedNumberMatch(gqlResponse.systemState.perSafeDebtCeiling)
-      expect(rpcResponse.collateralType.accumulatedRate).fixedNumberMatch(gqlResponse.collateralType.accumulatedRate)
-      expect(rpcResponse.collateralType.currentPrice.liquidationPrice).fixedNumberMatch(gqlResponse.collateralType.currentPrice.liquidationPrice)
-      expect(rpcResponse.collateralType.currentPrice.safetyPrice).fixedNumberMatch(gqlResponse.collateralType.currentPrice.safetyPrice)
-      // This value is derive from other value and therefore can have a small deviation
-      expect(rpcResponse.collateralType.currentPrice.value).almostEqual(gqlResponse.collateralType.currentPrice.value, 0.01)
-      expect(rpcResponse.collateralType.debtCeiling).fixedNumberMatch(gqlResponse.collateralType.debtCeiling)
-      expect(rpcResponse.collateralType.debtFloor).fixedNumberMatch(gqlResponse.collateralType.debtFloor)
-      expect(rpcResponse.collateralType.liquidationCRatio).fixedNumberMatch(gqlResponse.collateralType.liquidationCRatio)
-      expect(rpcResponse.collateralType.liquidationPenalty).fixedNumberMatch(gqlResponse.collateralType.liquidationPenalty)
-      expect(rpcResponse.collateralType.safetyCRatio).fixedNumberMatch(gqlResponse.collateralType.safetyCRatio)
-      // Here we're using JS exponentiation again, so get an approximate value 
-      expect(rpcResponse.collateralType.totalAnnualizedStabilityFee).almostEqual(gqlResponse.collateralType.totalAnnualizedStabilityFee, 0.00001)
-    });
-    })
+//             expect(rpcResponse).toBeTruthy()
 
-    describe('FetchUserSafeList', () => {
-        it('fetches a list of user safes', async () => {
-            const rpcResponse = await gebManager.getUserSafesRpc({
-                geb,
-                address,
-            })
-            const gqlResponse: IUserSafeList = await fetchUserSafes(
-                { geb, address },
-                true
-            )
+//             // Check that every safe is the same
+//             for (let i = 0; i < rpcResponse.safes.length; i++) {
+//                 let rpcSafe = rpcResponse.safes[i]
+//                 expect(rpcSafe.collateral).not.toBeNull()
+//                 expect(rpcSafe.debt).not.toBeNull()
+//                 expect(rpcSafe.safeHandler).not.toBeNull()
+//                 expect(rpcSafe.safeId).not.toBeNull()
+//                 // !! There is no way to fetch this over RPC, so we return 0
+//                 expect(rpcSafe.createdAt).toBeNull()
+//             }
+//         })
+//     })
 
-            expect(gqlResponse).toBeTruthy()
-            expect(rpcResponse).toBeTruthy()
+//     describe('FetchSafeById', () => {
+//         // prettier-ignore
+//         it('fetches a safe by id', async () => {
+//             const rpcResponse = await gebManager.getSafeByIdRpc({ geb, safeId, address });
 
-            // This will als make that we have the same number of safe on both sides
-            verifyKeys(rpcResponse, gqlResponse)
+//             expect(rpcResponse).toBeTruthy();
 
-            expect(rpcResponse.erc20Balances[0].balance).fixedNumberMatch(
-                gqlResponse.erc20Balances[0].balance
-            )
+//             expect(rpcResponse.safes.length).toEqual(1);
 
-            // Sort the safes by id to compare each
-            rpcResponse.safes.sort(
-                (a: any, b: any) => Number(a.safeId) - Number(b.safeId)
-            )
-            gqlResponse.safes.sort(
-                (a, b) => Number(a.safeId) - Number(b.safeId)
-            )
+//             const safeRpc = rpcResponse.safes[0];
 
-            // Check that every safe is the same
-            for (let i = 0; i < rpcResponse.safes.length; i++) {
-                let rpcSafe = rpcResponse.safes[i]
-                let gqlSafe = gqlResponse.safes[i]
-                expect(rpcSafe.collateral).fixedNumberMatch(gqlSafe.collateral)
-                expect(rpcSafe.debt).fixedNumberMatch(gqlSafe.debt)
-                expect(rpcSafe.safeHandler).toEqual(gqlSafe.safeHandler)
-                expect(rpcSafe.safeId).toEqual(gqlSafe.safeId)
-                // !! There is no way to fetch this over RPC, so we return 0
-                expect(rpcSafe.createdAt).toBeNull()
-            }
-        })
-    })
+//             expect(safeRpc.collateral).not.toBeNull();
+//             // There is no way to fetch this over RPC, so we return null
+//             expect(safeRpc.createdAt).toBeNull();
+//             expect(safeRpc.debt).not.toBeNull();
+//             expect(safeRpc.internalCollateralBalance.balance).not.toBeNull();
+//             // There is no way to fetch this over RPC, so we return null
+//             expect(safeRpc.liquidationDiscount).toBeNull()
+//             // There is no way to fetch this over RPC, so we return null
+//             expect(safeRpc.modifySAFECollateralization).toBeNull()
+//             expect(safeRpc.safeId).not.toBeNull();
 
-    describe('FetchSafeById', () => {
-        // prettier-ignore
-        it('fetches a safe by id', async () => {
-      const rpcResponse = await gebManager.getSafeByIdRpc({ geb, safeId, address });
-      const gqlResponse: ISafeQuery = await fetchSafeById(
-        { geb, address, safeId },
-        true
-      );
+//             expect(rpcResponse.erc20Balances.length).toEqual(1);
+//             expect(rpcResponse.erc20Balances[0].balance).not.toBeNull()
 
-      expect(gqlResponse).toBeTruthy();
-      expect(rpcResponse).toBeTruthy();
+//             expect(rpcResponse.userProxies.length).toEqual(1);
+//             expect(rpcResponse.userProxies[0].address).not.toBeNull();
 
-      // We set check array to false because the safe history will be missing
-      verifyKeys(rpcResponse, gqlResponse, false);
-
-      expect(rpcResponse.safes.length).toEqual(1);
-      expect(gqlResponse.safes.length).toEqual(1);
-
-      const safeRpc = rpcResponse.safes[0];
-      const safeGql = gqlResponse.safes[0];
-
-      expect(safeRpc.collateral).fixedNumberMatch(safeGql.collateral);
-      // There is no way to fetch this over RPC, so we return null
-      expect(safeRpc.createdAt).toBeNull();
-      expect(safeRpc.debt).fixedNumberMatch(safeGql.debt);
-      expect(safeRpc.internalCollateralBalance.balance).fixedNumberMatch(safeGql.internalCollateralBalance.balance);
-      // There is no way to fetch this over RPC, so we return null
-      expect(safeRpc.liquidationDiscount).toBeNull()
-      // There is no way to fetch this over RPC, so we return null
-      expect(safeRpc.modifySAFECollateralization).toBeNull()
-      expect(safeRpc.safeId).fixedNumberMatch(safeGql.safeId);
-        
-      expect(rpcResponse.erc20Balances.length).toEqual(1);
-      expect(gqlResponse.erc20Balances.length).toEqual(1);
-      expect(rpcResponse.erc20Balances[0].balance).fixedNumberMatch(gqlResponse.erc20Balances[0].balance)
-
-      expect(rpcResponse.userProxies.length).toEqual(1);
-      expect(gqlResponse.userProxies.length).toEqual(1);
-      expect(rpcResponse.userProxies[0].address).toEqual(gqlResponse.userProxies[0].address);
-
-      expect(!!rpcResponse.userProxies[0].coinAllowance).toEqual(!!gqlResponse.userProxies[0].coinAllowance);
-      
-      if(rpcResponse.userProxies[0].coinAllowance && gqlResponse.userProxies[0].coinAllowance) {
-        expect(rpcResponse.userProxies[0].coinAllowance.amount).fixedNumberMatch(gqlResponse.userProxies[0].coinAllowance.amount);
-      }
-    });
-    })
-})
+//             if (rpcResponse.userProxies[0].coinAllowance) {
+//                 expect(rpcResponse.userProxies[0].coinAllowance.amount).not.toBeNull();
+//             }
+//         });
+//     })
+// })

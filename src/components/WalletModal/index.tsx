@@ -234,7 +234,8 @@ export default function WalletModal() {
                     </HeaderRow>
                     <ContentWrapper>
                         {error instanceof UnsupportedChainIdError ? (
-                            <h5>{t('not_supported')}</h5>
+                            <h5>{t('not_supported')}{' '}
+                            <a target="_blank" href="//chainlist.org/chain/420">Optimism Goerli</a>.</h5>
                         ) : (
                             t('error_try_refresh')
                         )}
@@ -314,8 +315,7 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
     padding: 1rem 1rem;
-    font-weight: 500;
-    color: blue;
+    font-weight: 800;
 `
 
 const ContentWrapper = styled.div`

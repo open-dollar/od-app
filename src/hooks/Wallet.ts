@@ -4,7 +4,7 @@ import { getAddress } from '@ethersproject/address'
 import ERC20ABI from '../abis/erc20.json'
 import { Erc20Interface } from '../abis/Erc20'
 import { useMultipleContractSingleData } from './Multicall'
-import { TokenName, TOKENS, Tokens } from '../utils/tokens'
+import { TOKENS, Tokens } from '../utils/tokens'
 import useGeb from './useGeb'
 import { ethers } from 'ethers'
 import { isAddress } from '../utils/helper'
@@ -31,15 +31,11 @@ export function useTokenBalancesWithLoadingIndicator(
                       let address = ''
 
                       if (
-                          tokens[t as TokenName].address &&
-                          tokens[t as TokenName].address !== ''
+                          tokens[t].address &&
+                          tokens[t].address !== ''
                       ) {
-                          address = tokens[t as TokenName].address
-                      } else if (tokens[t as TokenName].gebName) {
-                          address =
-                              // @ts-ignore
-                              geb.contracts[tokens[t].gebName].address
-                      }
+                          address = tokens[t].address
+                      } 
                       return { name: t, address }
                   })
                 : [],
@@ -80,8 +76,8 @@ export function useTokenBalancesWithLoadingIndicator(
                                   ? ethers.utils.formatEther(value)
                                   : undefined
 
-                              memo[token.name as TokenName] = {
-                                  ...TOKENS[token.name as TokenName],
+                              memo[token.name] = {
+                                  ...TOKENS[token.name],
                                   address: token.address,
                                   balance:
                                       token.name === 'eth'

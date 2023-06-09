@@ -57,7 +57,7 @@ describe('App Page - No Safes', () => {
         cy.contains('Transaction Failed')
     })
 
-    it('should shows RAI Allowance unlock if I have a proxy', () => {
+    it('should shows HAI Allowance unlock if I have a proxy', () => {
         cy.contains('✓ Accept').click()
         cy.get('[data-test-id="topup-btn"]').click()
         cy.get('#topup_input').type(TEST_ADDRESS_NEVER_USE)
@@ -72,6 +72,6 @@ describe('App Page - No Safes', () => {
         cy.get('[data-test-id="repay_withdraw_left"]').should('be.disabled')
         cy.get('[data-test-id="repay_withdraw_right"]').type('0.001')
         cy.wait(10000)
-        cy.contains('Unlock RAI')
+        cy.contains('Unlock HAI')
     })
 })

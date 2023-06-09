@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
-import { utils as gebUtils } from 'geb.js'
+import { utils as gebUtils } from '@hai-on-op/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import {
     ETHERSCAN_PREFIXES,
@@ -12,11 +12,11 @@ import {
     ChainId,
     ILiquidationData,
     ISafe,
-    ISafeHistory,
     ITransaction,
 } from './interfaces'
 import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
+import { COLLATERAL_TYPES } from '@hai-on-op/sdk/lib/utils'
 
 export const IS_IN_IFRAME = window.parent !== window
 
@@ -172,6 +172,8 @@ export const formatUserSafe = (
                 date: s.createdAt,
                 riskState: ratioChecker(Number(collateralRatio)),
                 collateral: s.collateral,
+                collateralType: s.collateralType,
+                collateralName: COLLATERAL_TYPES[s.collateralType],
                 debt: s.debt,
                 totalDebt,
                 availableDebt,
@@ -358,113 +360,14 @@ export const returnTotalDebtPlusInterest = (
     const accumulatedRateBN = BigNumber.from(
         toFixedString(accumulatedRate, 'RAY')
     )
-    const owedRAI = collateralBN
+    const owedHAI = collateralBN
         .mul(safetyPriceRay)
         .mul(accumulatedRateBN)
         .div(gebUtils.RAY)
         .div(gebUtils.RAY)
 
-    if (!beautify) return owedRAI
-    return formatNumber(gebUtils.wadToFixed(owedRAI).toString()).toString()
-}
-
-export const formatHistoryArray = (
-    history: Array<any>,
-    liquidationItems: Array<any>
-): Array<ISafeHistory> => {
-    const items: Array<ISafeHistory> = []
-    const networkId = NETWORK_ID
-
-    history = history.sort((a, b) => Number(a.createdAt) - Number(b.createdAt))
-
-    if (history.length > 0) {
-        items.push({
-            title: 'Open Safe',
-            txHash: history[0].createdAtTransaction,
-            date: Number(history[0].createdAt - 1).toString(),
-            amount: 0,
-            link: getEtherscanLink(
-                networkId,
-                history[0].createdAtTransaction,
-                'transaction'
-            ),
-            icon: 'ArrowRightCircle',
-            color: '',
-        })
-    }
-
-    for (let i of liquidationItems) {
-        items.push({
-            title: 'Liquidated Safe',
-            date: i.createdAt,
-            amount: parseFloat(i.sellInitialAmount) - parseFloat(i.sellAmount),
-            link: getEtherscanLink(
-                networkId,
-                i.createdAtTransaction,
-                'transaction'
-            ),
-            txHash: i.createdAtTransaction,
-            icon: 'XCircle',
-            color: 'red',
-        })
-    }
-
-    for (let item of history) {
-        const deltaDebt = numeral(item.deltaDebt).value()
-        const deltaCollateral = numeral(item.deltaCollateral).value()
-
-        const sharedObj = {
-            date: item.createdAt,
-            txHash: item.createdAtTransaction,
-            link: getEtherscanLink(
-                networkId,
-                item.createdAtTransaction,
-                'transaction'
-            ),
-        }
-        if (deltaDebt > 0) {
-            items.push({
-                ...sharedObj,
-                title: `Borrowed ${COIN_TICKER}`,
-                amount: numeral(deltaDebt)
-                    .multiply(item.accumulatedRate)
-                    .value(),
-                icon: 'ArrowUpCircle',
-                color: 'green',
-            })
-        }
-        if (deltaDebt < 0) {
-            items.push({
-                ...sharedObj,
-                title: `Repaid ${COIN_TICKER}`,
-                amount: numeral(deltaDebt)
-                    .multiply(-1)
-                    .multiply(item.accumulatedRate)
-                    .value(),
-                icon: 'ArrowDownCircle',
-                color: 'green',
-            })
-        }
-        if (deltaCollateral > 0) {
-            items.push({
-                ...sharedObj,
-                title: 'Deposited ETH',
-                amount: deltaCollateral,
-                icon: 'ArrowDownCircle',
-                color: 'gray',
-            })
-        }
-        if (deltaCollateral < 0) {
-            items.push({
-                ...sharedObj,
-                title: 'Withdrew ETH',
-                amount: -1 * deltaCollateral,
-                icon: 'ArrowUpCircle',
-                color: 'gray',
-            })
-        }
-    }
-    return items.sort((a, b) => Number(b.date) - Number(a.date))
+    if (!beautify) return owedHAI
+    return formatNumber(gebUtils.wadToFixed(owedHAI).toString()).toString()
 }
 
 export const newTransactionsFirst = (a: ITransaction, b: ITransaction) => {

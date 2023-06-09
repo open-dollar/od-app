@@ -1,4 +1,4 @@
-import { MulticallRequest } from '@reflexer-finance/geb-contract-base'
+import { MulticallRequest } from '@hai-on-op/sdk'
 import { Provider, Listener } from '@ethersproject/providers'
 import { BytesLike } from '@ethersproject/bytes'
 import { BigNumberish } from '@ethersproject/bignumber'

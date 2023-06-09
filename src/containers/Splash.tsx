@@ -56,10 +56,7 @@ const Splash = () => {
                     <div className="lg:max-w-split  h-full flex flex-col items-center justify-center">
                         <img
                             className="h-24 w-24 lg:h-48 lg:w-48"
-                            src={
-                                require('../assets/splash/partly-cloudy.svg')
-                                    .default
-                            }
+                            src={require('../assets/hai-logo.svg').default}
                             alt={''}
                         />
                     </div>

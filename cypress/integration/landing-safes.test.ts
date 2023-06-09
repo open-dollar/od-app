@@ -46,7 +46,7 @@ describe('App Page - Has Safes', () => {
         cy.get('.safeBlock').each(($el: any) => {
             cy.get($el).contains('Safe #')
             cy.get($el).contains('ETH Deposited')
-            cy.get($el).contains('RAI Borrowed')
+            cy.get($el).contains('HAI Borrowed')
             cy.get($el).contains('Collateralization Ratio')
             cy.get($el).contains('Liquidation Price')
         })

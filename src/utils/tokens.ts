@@ -1,15 +1,5 @@
-export type TokenName =
-    | 'eth'
-    | 'rai'
-    | 'flx'
-    | 'stake'
-    | 'unstake'
-    | 'uniswapv2'
-    | 'curve'
-    | 'flx_lp'
-
 export type Tokens = {
-    [key in TokenName]: {
+    [key: string]: {
         name: string
         icon: string
         gebName: string
@@ -18,60 +8,25 @@ export type Tokens = {
     }
 }
 export const TOKENS: Tokens = {
-    eth: {
-        name: 'ETH',
+    OP: {
+        name: 'OP',
+        icon: require('../assets/op-img.svg').default,
+        gebName: '',
+        balance: '0',
+        address: '0x4200000000000000000000000000000000000042',
+    },
+    WETH: {
+        name: 'WETH',
         icon: require('../assets/eth-img.svg').default,
         gebName: '',
-        balance: '',
-        address: '',
+        balance: '0',
+        address: '0x4200000000000000000000000000000000000006',
     },
-    rai: {
-        name: 'RAI',
-        icon: require('../assets/rai-logo.svg').default,
+    HAI: {
+        name: 'HAI',
+        icon: require('../assets/hai-logo.svg').default,
         gebName: 'coin',
-        balance: '',
-        address: '',
-    },
-    flx: {
-        name: 'FLX',
-        icon: require('../assets/flx-logo.svg').default,
-        gebName: 'protocolToken',
-        balance: '',
-        address: '',
-    },
-    stake: {
-        name: 'FLX/ETH',
-        icon: require('../assets/flx_uni_eth.svg').default,
-        gebName: 'stakingToken',
-        balance: '',
-        address: '',
-    },
-    unstake: {
-        name: 'FLX/ETH',
-        icon: require('../assets/stFLX.svg').default,
-        gebName: 'stakingToken',
-        balance: '',
-        address: '',
-    },
-    uniswapv2: {
-        name: 'RAI/ETH',
-        icon: require('../assets/uniswap-icon.svg').default,
-        gebName: 'uniswapPairCoinEth',
-        balance: '',
-        address: '',
-    },
-    curve: {
-        name: 'RAI3CRV',
-        icon: require('../assets/curve.svg').default,
-        gebName: '',
-        balance: '',
-        address: '',
-    },
-    flx_lp: {
-        name: 'FLX LP',
-        icon: require('../assets/stFLX.svg').default,
-        gebName: '',
-        balance: '',
-        address: '0x3a6FAA9b05c09252432EbffaAaE111e7bFa269a7',
+        balance: '0',
+        address: '0xEaE90F3b07fBE00921173298FF04f416398f7101',
     },
 }

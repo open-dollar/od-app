@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from 'geb.js'
+import { Geb } from '@hai-on-op/sdk'
 import { css } from 'styled-components'
 import { injected, walletconnect, walletlink } from '../connectors'
 import { SupportedChainId } from './chains'
@@ -12,36 +12,31 @@ const {
     REACT_APP_NETWORK_ID,
     REACT_APP_SYSTEM_STATUS,
     REACT_APP_MAILCHIMP_URL,
-    REACT_APP_SHOW_AUCTIONS,
     REACT_APP_NETWORK_URL,
     REACT_APP_WYRE_WORKER,
 } = process.env
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
-    [SupportedChainId.MAINNET]: '0x51812e07497586ce025D798Bb44b6d11bBEe3a01',
-    [SupportedChainId.KOVAN]: '0x551283ecB1257B5aE0A4b2DFe42e06E5F29b8068',
+    [SupportedChainId.OPTIMISM_GOERLI]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export enum Network {
-    MAINNET = 'mainnet',
-    KOVAN = 'kovan',
+    OPTIMISM_GOERLI = 'optimism-goerli',
 }
 
-export const ETH_NETWORK =
-    REACT_APP_NETWORK_ID === '1' ? Network.MAINNET : Network.KOVAN
+export const ETH_NETWORK = Network.OPTIMISM_GOERLI
 
-export const COIN_TICKER = 'RAI'
+export const COIN_TICKER = 'HAI'
 
 export const COLLATERAL_TYPE_ID = 'ETH-A'
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const SYSTEM_STATUS = REACT_APP_SYSTEM_STATUS || ''
-export const SHOW_AUCTIONS = REACT_APP_SHOW_AUCTIONS || ''
 export const WYRE_WORKER = REACT_APP_WYRE_WORKER || ''
 
 // 'https://api.thegraph.com/subgraphs/name/guifel/kovan_1_3_0'
 export const GRAPH_API_URLS = REACT_APP_GRAPH_API_URLS
     ? REACT_APP_GRAPH_API_URLS.split(',')
-    : ['https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/rai']
+    : ['https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/hai']
 
 export const MAILCHIMP_URL = REACT_APP_MAILCHIMP_URL
 
@@ -96,10 +91,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     1: '',
-    3: 'ropsten.',
-    4: 'rinkeby.',
     5: 'goerli.',
-    42: 'kovan.',
+    420: 'goerli-optimism.',
 }
 
 const MEDIA_WIDTHS = {
@@ -127,6 +120,7 @@ export const DEFAULT_SAFE_STATE = {
     rightInput: '',
     collateralRatio: 0,
     liquidationPrice: 0,
+    collateral: ''
 }
 
 export const floatsTypes = {
@@ -163,9 +157,9 @@ export const INITIAL_INCENTIVE_STATE = [
         dailyFLX: 0,
         uniSwapLink: '',
         ethStake: '',
-        raiStake: '',
+        haiStake: '',
         myRewardRate: '',
-        reserveRAI: '',
+        reserveHAI: '',
         reserveETH: '',
         token0: '',
         token0Price: '',
@@ -192,11 +186,11 @@ const INIT_VALUES = {
 
 export const INITIAL_INCENTIVE_ASSETS_STATE = {
     eth: INIT_VALUES,
-    rai: INIT_VALUES,
+    hai: INIT_VALUES,
     flx: INIT_VALUES,
 }
 export const network_name =
-    process.env.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'kovan'
+    process.env.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 export const geb = new Geb(network_name, provider)

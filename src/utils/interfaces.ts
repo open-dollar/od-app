@@ -4,16 +4,13 @@ import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { DefaultTheme, ThemedCssFunction } from 'styled-components'
 import { IconName } from '../components/FeatherIconWrapper'
 import { ApproveMethod } from '../components/ApproveToken'
-import { Geb } from 'geb.js'
+import { Geb } from '@hai-on-op/sdk'
 import { BigNumber } from 'ethers'
-import { SaviourType } from 'src/model/safeModel'
 
 export declare enum ChainId {
     MAINNET = 1,
-    ROPSTEN = 3,
-    RINKEBY = 4,
-    GÖRLI = 5,
-    KOVAN = 42,
+    GOERLI = 5,
+    OPTIMISM_GOERLI = 420,
 }
 
 export interface DynamicObject {
@@ -104,6 +101,7 @@ export interface ISafeData {
     collateralRatio: number
     liquidationPrice: number
     isGnosisSafe?: boolean
+    collateral: string
 }
 
 export interface IBlockNumber {
@@ -145,6 +143,8 @@ export interface ISafe {
     liquidationPrice: string
     totalAnnualizedStabilityFee: string
     currentRedemptionRate: string
+    collateralType: string
+    collateralName: string
 }
 
 export interface LoadingPayload {
@@ -232,15 +232,6 @@ export interface ITransaction {
     approval?: { tokenAddress: string; spender: string }
 }
 
-export interface ISafeHistory {
-    title: string
-    date: string
-    amount: number
-    link: string
-    txHash: string
-    icon: IconName
-    color: string
-}
 export interface NumberMap {
     [key: string]: number
 }
@@ -257,7 +248,7 @@ export interface AssetData {
 }
 export interface IIncentiveAssets {
     eth: AssetData
-    rai: AssetData
+    hai: AssetData
     flx: AssetData
     uni: AssetData
 }
@@ -274,6 +265,7 @@ export interface ISafeResponse {
     debt: string
     safeHandler: string
     safeId: string
+    collateralType: string
 }
 
 // query responses for the safes
@@ -350,10 +342,15 @@ export interface ISafeQuery extends ILiquidationResponse {
     ]
 }
 
+export interface IFetchTokensDataPayload {
+    geb: Geb
+    user: string
+    tokens?: string[]
+}
+
 export interface IFetchSafesPayload {
     address: string
     geb: Geb
-    isRPCAdapterOn?: boolean
 }
 
 export interface IFetchSafeById extends IFetchSafesPayload {
@@ -414,8 +411,6 @@ export interface IManageSafe {
     }
 }
 
-export type Distributions = Distribution[]
-
 export interface Distribution {
     distributionIndex: number
     distributorAddress: string
@@ -425,30 +420,6 @@ export interface Distribution {
     amount: string
     proof: string[]
     createdAt: number
-}
-
-export interface SaviourDepositPayload {
-    safeHandler: string
-    targetedCRatio: number
-    safeId: number
-    amount: string
-    isTargetedCRatioChanged: boolean
-    saviourType: SaviourType
-    curvelpTokenAddress: string
-}
-export interface SaviourWithdrawPayload extends SaviourDepositPayload {
-    isMaxWithdraw: boolean
-}
-export interface GetReservesFromSaviour {
-    saviourAddress: string
-    safeId: number
-}
-
-export interface FetchSaviourPayload {
-    account: string
-    safeId: string
-    ethPrice: number
-    geb: Geb
 }
 
 export interface Distro {
@@ -509,13 +480,13 @@ export interface Tranche {
 }
 
 export interface ILiquidityData {
-    raiAmount: string
+    haiAmount: string
     ethAmount: string
     totalLiquidity: string
 }
 export interface IStakedLP {
     eth: string
-    rai: string
+    hai: string
 }
 
 export interface IStakingData {

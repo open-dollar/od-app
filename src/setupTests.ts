@@ -6,7 +6,7 @@ import path from 'path'
 import crypto from 'crypto'
 import '@testing-library/jest-dom/extend-expect'
 import { ethers } from 'ethers'
-import { Geb } from 'geb.js'
+import { Geb } from '@hai-on-op/sdk'
 
 import dotenv from 'dotenv'
 
@@ -26,5 +26,5 @@ export const provider = new ethers.providers.JsonRpcProvider(
     env.parsed?.REACT_APP_NETWORK_URL
 )
 const network_name =
-    env.parsed?.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'kovan'
+    env.parsed?.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
 export const geb = new Geb(network_name, provider)

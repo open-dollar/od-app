@@ -6,8 +6,8 @@ import styled from 'styled-components'
 type Item =
     | string
     | {
-          item: string
-          img: string
+          name: string
+          icon: string
           href?: string
           isExternal?: boolean
           [U: string]: boolean | number | string | undefined
@@ -54,7 +54,7 @@ const Dropdown = (props: Props) => {
         if (typeof selected === 'string') {
             getSelectedItem && getSelectedItem(selected)
         } else {
-            getSelectedItem && getSelectedItem(selected.item)
+            getSelectedItem && getSelectedItem(selected.name)
         }
     }
 
@@ -99,7 +99,7 @@ const Dropdown = (props: Props) => {
                         ) : (
                             <ItemImg>
                                 <img
-                                    src={selectedItem.img}
+                                    src={selectedItem.icon}
                                     alt=""
                                     style={{
                                         width: imgSize || '20px',
@@ -114,11 +114,11 @@ const Dropdown = (props: Props) => {
                                                 : ''
                                         }
                                     >
-                                        {selectedItem.item}{' '}
+                                        {selectedItem.name}{' '}
                                         <ArrowUpRight width={17} height={17} />
                                     </Link>
                                 ) : (
-                                    selectedItem.item
+                                    selectedItem.name
                                 )}
                             </ItemImg>
                         )}
@@ -149,13 +149,13 @@ const Dropdown = (props: Props) => {
                                     ) : (
                                         <ItemImg>
                                             <img
-                                                src={item.img}
+                                                src={item.icon}
                                                 alt=""
                                                 style={{
                                                     width: imgSize || '20px',
                                                 }}
                                             />{' '}
-                                            {item.item}
+                                            {item.name}
                                         </ItemImg>
                                     )}
                                 </DropDownItem>

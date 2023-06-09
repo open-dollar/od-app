@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, Info } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import ReactTooltip from 'react-tooltip'
+import { ApprovalState, useTokenApproval } from 'src/hooks/useTokenApproval'
 import styled from 'styled-components'
 import Button from '../../components/Button'
 import Dropdown from '../../components/Dropdown'
@@ -11,18 +12,33 @@ import TokenInput from '../../components/TokenInput'
 import { useActiveWeb3React } from '../../hooks'
 import { handleTransactionError } from '../../hooks/TransactionHooks'
 import { useTokenBalanceInUSD } from '../../hooks/useGeb'
-import { useSafeInfo, StatsType, useInputsHandlers } from '../../hooks/useSafe'
+import { StatsType, useInputsHandlers, useSafeInfo } from '../../hooks/useSafe'
 import { useStoreActions, useStoreState } from '../../store'
 import { DEFAULT_SAFE_STATE } from '../../utils/constants'
-import { TOKENS } from '../../utils/tokens'
 import { formatNumber } from '../../utils/helper'
+import { TOKENS } from '../../utils/tokens'
 import Review from './Review'
+import { ethers } from 'ethers'
 
 const CollateralTypes = [
-    { item: 'ETH-A', img: require('../../assets/eth-img.svg').default },
+    TOKENS.WETH,
 ]
 
 const CreateSafe = () => {
+    const {
+        liquidationData,
+        stats,
+        error,
+        balances,
+        availableHai,
+        parsedAmounts,
+        totalCollateral,
+        totalDebt,
+        collateralRatio,
+        liquidationPrice,
+    } = useSafeInfo('create')
+    const [selectedItem, setSelectedItem] = useState<string>(CollateralTypes[0].name);
+    const selectedCollateral = TOKENS[selectedItem]
     const { library, account } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const { safeModel: safeState } = useStoreState((state) => state)
@@ -32,45 +48,43 @@ const CreateSafe = () => {
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
     } = useStoreActions((state) => state)
-    const {
-        liquidationData,
-        stats,
-        error,
-        balances,
-        availableRai,
-        parsedAmounts,
-        totalCollateral,
-        totalDebt,
-        collateralRatio,
-        liquidationPrice,
-    } = useSafeInfo('create')
     const { leftInput, rightInput } = parsedAmounts
     const { onLeftInput, onRightInput } = useInputsHandlers()
     const { t } = useTranslation()
     const isValid = !error
 
-    const ethBalanceUSD = useTokenBalanceInUSD('ETH', balances.eth)
-    const raiBalanceUSD = useTokenBalanceInUSD(
-        'RAI',
-        rightInput ? rightInput : availableRai
+    const { connectWalletModel: {proxyAddress, tokensData} } =
+        useStoreState((state) => state)
+
+    const parsedWethBalance = tokensData.WETH.balance ? ethers.utils.formatEther(tokensData.WETH.balance) : '0'
+    const wethBalanceUSD = useTokenBalanceInUSD('WETH', parsedWethBalance)
+
+    const haiBalanceUSD = useTokenBalanceInUSD(
+        'HAI',
+        rightInput ? rightInput : availableHai
     )
 
     const formattedBalance = useMemo(() => {
         return {
-            eth: formatNumber(balances.eth, 2),
-            rai: formatNumber(balances.rai, 2),
+            weth: formatNumber(balances.weth, 2),
+            hai: formatNumber(balances.hai, 2),
         }
     }, [balances])
 
+    const selectedTokenBalance = useMemo(() => {
+        const parsedNumber = ethers.utils.formatEther(tokensData[selectedCollateral.name]?.balance)
+        return formatNumber(parsedNumber, 2)
+    }, [balances, selectedItem])
+
     const formattedBalanceInUSD = useMemo(() => {
         return {
-            eth: ethBalanceUSD,
-            rai: raiBalanceUSD,
+            weth: wethBalanceUSD,
+            hai: haiBalanceUSD,
         }
-    }, [ethBalanceUSD, raiBalanceUSD])
+    }, [wethBalanceUSD, haiBalanceUSD])
 
-    const onMaxLeftInput = () => onLeftInput(formattedBalance.eth.toString())
-    const onMaxRightInput = () => onRightInput(availableRai.toString())
+    const onMaxLeftInput = () => onLeftInput(formattedBalance.weth.toString())
+    const onMaxRightInput = () => onRightInput(availableHai.toString())
 
     const onClearAll = useCallback(() => {
         onLeftInput('')
@@ -91,14 +105,19 @@ const CreateSafe = () => {
             totalDebt,
             collateralRatio: collateralRatio as number,
             liquidationPrice: liquidationPrice as number,
+            collateral: selectedItem
         })
 
         setShowPreview(true)
     }
 
+    useEffect(() => {
+        reset()
+    }, [selectedItem])
+
     const reset = () => {
         onClearAll()
-        safeActions.setSafeData(DEFAULT_SAFE_STATE)
+        safeActions.setSafeData({ ...DEFAULT_SAFE_STATE, collateral: selectedItem })
         connectWalletActions.setIsStepLoading(true)
         safeActions.setIsSafeCreated(true)
     }
@@ -141,6 +160,11 @@ const CreateSafe = () => {
         }
     }
 
+    let [approvalState, approve] = useTokenApproval(leftInput,
+        selectedCollateral.address,
+        proxyAddress);
+
+
     return (
         <Container>
             <Modal
@@ -180,16 +204,17 @@ const CreateSafe = () => {
                                 <Dropdown
                                     items={CollateralTypes}
                                     itemSelected={CollateralTypes[0]}
+                                    getSelectedItem={setSelectedItem}
                                 />
                             </DropDownContainer>
 
                             <Inputs>
-                                <SideLabel>{`Deposit ETH and Borrow RAI`}</SideLabel>
+                                <SideLabel>{`Deposit ${selectedItem} and Borrow HAI`}</SideLabel>
 
                                 <TokenInput
-                                    token={TOKENS.eth}
-                                    label={`Balance: ${formattedBalance.eth} ${TOKENS.eth.name}`}
-                                    rightLabel={`~$${formattedBalanceInUSD.eth}`}
+                                    token={{ name: selectedCollateral.name, icon: selectedCollateral.icon }}
+                                    label={`Balance: ${selectedTokenBalance} ${selectedCollateral.name}`}
+                                    rightLabel={`~$${formattedBalanceInUSD.weth}`}
                                     onChange={onLeftInput}
                                     value={leftInput}
                                     handleMaxClick={onMaxLeftInput}
@@ -198,12 +223,13 @@ const CreateSafe = () => {
 
                                 <br />
                                 <TokenInput
-                                    token={TOKENS.rai}
-                                    label={`Borrow RAI: ${formatNumber(
-                                        availableRai,
+                                    token={TOKENS.HAI}
+                                    label={`Borrow HAI: ${formatNumber(
+                                        availableHai,
                                         2
-                                    )} ${TOKENS.rai.name}`}
-                                    rightLabel={`~$${formattedBalanceInUSD.rai}`}
+                                    )} ${TOKENS.HAI.name}`}
+                                    rightLabel={`~$${formattedBalanceInUSD.hai}`}
+
                                     onChange={onRightInput}
                                     value={rightInput}
                                     handleMaxClick={onMaxRightInput}
@@ -259,11 +285,22 @@ const CreateSafe = () => {
                             <span>Note:</span>
                             {` The minimum amount to mint per safe is ${Math.ceil(
                                 Number(formatNumber(liquidationData.debtFloor))
-                            )} RAI`}
+                            )} HAI`}
                         </Note>
-                        <Button onClick={handleSubmit} disabled={!isValid}>
-                            {error ?? 'Review Transaction'}
-                        </Button>
+                        {(approvalState === ApprovalState.APPROVED) ?
+                            <Button onClick={handleSubmit} disabled={!isValid}>
+                                {error ?? 'Review Transaction'}
+                            </Button>
+                            :
+                            (approvalState === ApprovalState.PENDING) ?
+                                <Button disabled={true}>
+                                    Pending Approval..
+                                </Button>
+                                :
+                                <Button onClick={approve} disabled={!isValid}>
+                                    {error ?? `Approve ${selectedItem}`}
+                                </Button>
+                        }
                     </Flex>
                     <ReactTooltip multiline type="light" data-effect="solid" />
                 </Content>

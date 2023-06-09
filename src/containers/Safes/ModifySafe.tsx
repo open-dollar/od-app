@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from 'ethers'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { gnosisSafe } from 'src/connectors'
 import styled from 'styled-components'
 import Button from '../../components/Button'
 import Modal from '../../components/Modals/Modal'
@@ -10,14 +11,13 @@ import useGeb, {
     useProxyAddress,
     useTokenBalanceInUSD,
 } from '../../hooks/useGeb'
-import { useSafeInfo, useInputsHandlers } from '../../hooks/useSafe'
+import { useInputsHandlers, useSafeInfo } from '../../hooks/useSafe'
 import { ApprovalState, useTokenApproval } from '../../hooks/useTokenApproval'
 import { useStoreActions, useStoreState } from '../../store'
 import { DEFAULT_SAFE_STATE } from '../../utils/constants'
-import { TOKENS } from '../../utils/tokens'
 import { formatNumber } from '../../utils/helper'
+import { TOKENS } from '../../utils/tokens'
 import Review from './Review'
-import { gnosisSafe } from 'src/connectors'
 
 const ModifySafe = ({
     isDeposit,
@@ -30,7 +30,8 @@ const ModifySafe = ({
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
     const [showPreview, setShowPreview] = useState(false)
-    const { safeModel: safeState } = useStoreState((state) => state)
+    const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
+    const { singleSafe } = safeState
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
     const {
         safeModel: safeActions,
@@ -38,11 +39,12 @@ const ModifySafe = ({
         popupsModel: popupsActions,
     } = useStoreActions((state) => state)
 
+
     const {
         error,
         balances,
         availableEth,
-        availableRai,
+        availableHai,
         parsedAmounts,
         totalCollateral,
         totalDebt,
@@ -50,9 +52,18 @@ const ModifySafe = ({
         liquidationPrice,
     } = useSafeInfo(type)
 
+    const tokenBalances = connectWalletModel.tokensData
+    const depositTokenBalance = singleSafe ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balance) : '-'
+
     const [unlockState, approveUnlock] = useTokenApproval(
         parsedAmounts.rightInput,
-        geb?.contracts.coin.address,
+        TOKENS.HAI.address,
+        proxyAddress
+    )
+
+    const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(
+        parsedAmounts.leftInput,
+        singleSafe ? TOKENS[singleSafe?.collateralName!].address : undefined,
         proxyAddress
     )
 
@@ -61,32 +72,27 @@ const ModifySafe = ({
     const { onLeftInput, onRightInput } = useInputsHandlers()
     const isValid = !error
 
-    const ethBalanceUSD = useTokenBalanceInUSD(
-        'ETH',
-        isDeposit ? balances.eth : (availableEth as string)
+    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI.balance)
+    const parsedWethBalance = ethers.utils.formatEther(tokenBalances.WETH.balance)
+    const wethBalanceUSD = useTokenBalanceInUSD(
+        'WETH',
+        isDeposit ? parsedWethBalance : (availableEth as string)
     )
-    const raiBalanceUSD = useTokenBalanceInUSD(
-        'RAI',
-        rightInput ? rightInput : availableRai
+    const haiBalanceUSD = useTokenBalanceInUSD(
+        'HAI',
+        rightInput ? rightInput : availableHai
     )
-
-    const formattedBalance = useMemo(() => {
-        return {
-            eth: formatNumber(balances.eth, 2),
-            rai: formatNumber(balances.rai, 2),
-        }
-    }, [balances])
 
     const formattedBalanceInUSD = useMemo(() => {
         return {
-            eth: ethBalanceUSD,
-            rai: raiBalanceUSD,
+            weth: wethBalanceUSD,
+            hai: haiBalanceUSD,
         }
-    }, [ethBalanceUSD, raiBalanceUSD])
+    }, [wethBalanceUSD, haiBalanceUSD])
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
-            onLeftInput(balances.eth.toString())
+            onLeftInput(tokenBalances[singleSafe?.collateralName!].balance.toString())
         } else {
             onLeftInput(availableEth as string)
         }
@@ -94,22 +100,22 @@ const ModifySafe = ({
 
     const onMaxRightInput = () => {
         if (isDeposit) {
-            onRightInput(availableRai.toString())
+            onRightInput(availableHai.toString())
         } else {
-            const availableRaiBN = ethers.utils.parseEther(availableRai)
+            const availableHaiBN = ethers.utils.parseEther(availableHai)
 
-            const raiBalanceBN = balances.rai
-                ? ethers.utils.parseEther(balances.rai.toString())
+            const haiBalanceBN = balances.hai
+                ? ethers.utils.parseEther(balances.hai.toString())
                 : BigNumber.from('0')
 
-            const isMore = raiBalanceBN.gt(availableRaiBN)
+            const isMore = haiBalanceBN.gt(availableHaiBN)
 
             onRightInput(
                 isMore
-                    ? availableRai.toString()
-                    : balances.rai
-                    ? balances.rai.toString()
-                    : '0'
+                    ? availableHai.toString()
+                    : tokenBalances.HAI.balance
+                        ? tokenBalances.HAI.balance
+                        : '0'
             )
         }
     }
@@ -133,6 +139,7 @@ const ModifySafe = ({
             totalDebt,
             collateralRatio: collateralRatio as number,
             liquidationPrice: liquidationPrice as number,
+            collateral: singleSafe?.collateralName!
         })
 
         setShowPreview(true)
@@ -143,6 +150,7 @@ const ModifySafe = ({
         safeActions.setSafeData(DEFAULT_SAFE_STATE)
         connectWalletActions.setIsStepLoading(true)
         safeActions.setIsSafeCreated(true)
+        safeActions.fetchUserSafes({ address: account as string, geb })
     }
 
     const handleConfirm = async () => {
@@ -191,106 +199,121 @@ const ModifySafe = ({
         }
     }
     return (
-        <Container>
-            <Modal
-                isModalOpen={showPreview}
-                closeModal={() => setShowPreview(false)}
-                maxWidth={'450px'}
-                backDropClose
-                hideHeader
-                hideFooter
-                handleModalContent
-            >
-                <ReviewContainer>
-                    <Review type={type} />
-                    <BtnContainer>
-                        <Button id="confirm_tx" onClick={handleConfirm}>
-                            {'Confirm Transaction'}
-                        </Button>{' '}
-                    </BtnContainer>
-                </ReviewContainer>
-            </Modal>
-            <Inner>
-                <InputBlock>
-                    <SideLabel>
-                        {isDeposit ? `Deposit ETH` : 'Withdraw ETH'}
-                    </SideLabel>
+        <>
+            {singleSafe &&
+                <Container>
+                    <Modal
+                        isModalOpen={showPreview}
+                        closeModal={() => setShowPreview(false)}
+                        maxWidth={'450px'}
+                        backDropClose
+                        hideHeader
+                        hideFooter
+                        handleModalContent
+                    >
+                        <ReviewContainer>
+                            <Review type={type} />
+                            <BtnContainer>
+                                <Button id="confirm_tx" onClick={handleConfirm}>
+                                    {'Confirm Transaction'}
+                                </Button>{' '}
+                            </BtnContainer>
+                        </ReviewContainer>
+                    </Modal>
+                    <Inner>
+                        <InputBlock>
+                            <SideLabel>
+                                {isDeposit ? `Deposit ${singleSafe?.collateralName}` : `Withdraw ${singleSafe?.collateralName}`}
+                            </SideLabel>
 
-                    <TokenInput
-                        data_test_id={`${
-                            isDeposit ? 'deposit_borrow' : 'repay_withdraw'
-                        }_left`}
-                        token={TOKENS.eth}
-                        label={
-                            isDeposit
-                                ? `Balance: ${formattedBalance.eth} ${TOKENS.eth.name}`
-                                : `Available: ${availableEth} ${TOKENS.eth.name}`
-                        }
-                        rightLabel={`~$${formattedBalanceInUSD.eth}`}
-                        onChange={onLeftInput}
-                        value={leftInput}
-                        handleMaxClick={onMaxLeftInput}
-                        disabled={!isDeposit && !isOwner}
-                    />
-                </InputBlock>
-                <InputBlock>
-                    <SideLabel>
-                        {isDeposit ? `Borrow RAI` : 'Repay RAI'}
-                    </SideLabel>
-                    <TokenInput
-                        data_test_id={`${
-                            isDeposit ? 'deposit_borrow' : 'repay_withdraw'
-                        }_right`}
-                        token={TOKENS.rai}
-                        label={
-                            isDeposit
-                                ? `Borrow RAI: ${formatNumber(
-                                      availableRai,
-                                      2
-                                  )} ${TOKENS.rai.name}`
-                                : `Balance: ${formatNumber(balances.rai, 2)} ${
-                                      TOKENS.rai.name
-                                  }`
-                        }
-                        rightLabel={
-                            isDeposit
-                                ? `~$${formattedBalanceInUSD.rai}`
-                                : `RAI Owed: ${formatNumber(
-                                      availableRai,
-                                      4,
-                                      true
-                                  )}`
-                        }
-                        onChange={onRightInput}
-                        value={rightInput}
-                        handleMaxClick={onMaxRightInput}
-                        disabled={isDeposit && !isOwner}
-                    />
-                </InputBlock>
-            </Inner>
-            <ButtonContainer>
-                {isValid &&
-                !isDeposit &&
-                (unlockState === ApprovalState.PENDING ||
-                    unlockState === ApprovalState.NOT_APPROVED) ? (
-                    <Button
-                        disabled={
-                            !isValid || unlockState === ApprovalState.PENDING
-                        }
-                        text={
-                            unlockState === ApprovalState.PENDING
-                                ? 'Pending Approval..'
-                                : 'Unlock RAI'
-                        }
-                        onClick={approveUnlock}
-                    />
-                ) : (
-                    <Button onClick={handleSubmit} disabled={!isValid}>
-                        {error ?? 'Review Transaction'}
-                    </Button>
-                )}
-            </ButtonContainer>
-        </Container>
+                            <TokenInput
+                                data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'
+                                    }_left`}
+                                token={{ name: singleSafe.collateralName, icon: TOKENS[singleSafe.collateralName].icon }}
+                                label={
+                                    isDeposit
+                                        ? `Balance: ${depositTokenBalance} ${singleSafe.collateralName}`
+                                        : `Available: ${availableEth} ${singleSafe.collateralName}`
+                                }
+                                rightLabel={`~$${formattedBalanceInUSD.weth}`}
+                                onChange={onLeftInput}
+                                value={leftInput}
+                                handleMaxClick={onMaxLeftInput}
+                                disabled={!isDeposit && !isOwner}
+                            />
+                        </InputBlock>
+                        <InputBlock>
+                            <SideLabel>
+                                {isDeposit ? `Borrow HAI` : 'Repay HAI'}
+                            </SideLabel>
+                            <TokenInput
+                                data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'
+                                    }_right`}
+                                token={TOKENS.HAI}
+                                label={
+                                    isDeposit
+                                        ? `Borrow HAI: ${formatNumber(
+                                            availableHai,
+                                            2
+                                        )} ${TOKENS.HAI.name}`
+                                        : `Balance: ${formatNumber(haiBalance, 2)} ${TOKENS.HAI.name}`
+                                }
+                                rightLabel={
+                                    isDeposit
+                                        ? `~$${formattedBalanceInUSD.hai}`
+                                        : `HAI Owed: ${formatNumber(
+                                            availableHai,
+                                            4,
+                                            true
+                                        )}`
+                                }
+                                onChange={onRightInput}
+                                value={rightInput}
+                                handleMaxClick={onMaxRightInput}
+                                disabled={isDeposit && !isOwner}
+                            />
+                        </InputBlock>
+                    </Inner>
+                    <ButtonContainer>
+                        {isValid &&
+                            !isDeposit ?
+                            (unlockState === ApprovalState.PENDING ||
+                                unlockState === ApprovalState.NOT_APPROVED) ? (
+                                <Button
+                                    disabled={
+                                        !isValid || unlockState === ApprovalState.PENDING
+                                    }
+                                    text={
+                                        unlockState === ApprovalState.PENDING
+                                            ? 'Pending Approval..'
+                                            : 'Unlock HAI'
+                                    }
+                                    onClick={approveUnlock}
+                                />
+                            ) : <Button onClick={handleSubmit} disabled={!isValid}>
+                                {error ?? 'Review Transaction'}
+                            </Button> :
+                            (
+                                (collateralUnlockState === ApprovalState.PENDING ||
+                                    collateralUnlockState === ApprovalState.NOT_APPROVED) ?
+                                    <Button
+                                        disabled={
+                                            !isValid || collateralUnlockState === ApprovalState.PENDING
+                                        }
+                                        text={
+                                            collateralUnlockState === ApprovalState.PENDING
+                                                ? 'Pending Approval..'
+                                                : `Unlock ${singleSafe?.collateralName}`
+                                        }
+                                        onClick={collateralApproveUnlock}
+                                    /> :
+                                    <Button onClick={handleSubmit} disabled={!isValid}>
+                                        {error ?? 'Review Transaction'}
+                                    </Button>
+                            )}
+                    </ButtonContainer>
+                </Container>}
+        </>
     )
 }
 

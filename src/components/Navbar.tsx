@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useStoreActions, useStoreState } from '../store'
 import Brand from './Brand'
 import Button from './Button'
-import FLXLogoSmall from './Icons/FLXLogoSmall'
 import { newTransactionsFirst, returnWalletAddress } from '../utils/helper'
 import { useWeb3React } from '@web3-react/core'
 import { isTransactionRecent } from '../hooks/TransactionHooks'
@@ -15,7 +14,6 @@ const Navbar = () => {
     const { t } = useTranslation()
     const {
         transactionsModel: transactionsState,
-        connectWalletModel: connectWalletState,
     } = useStoreState((state) => state)
 
     const { transactions } = transactionsState
@@ -49,23 +47,6 @@ const Navbar = () => {
                 <NavLinks />
             </HideMobile>
             <RightSide>
-                {active && account ? (
-                    <Button
-                        style={{ marginRight: '10px' }}
-                        data-test-id="flx-btn"
-                        onClick={() =>
-                            popupsActions.setIsDistributionsModalOpen(true)
-                        }
-                        secondary
-                    >
-                        <Flex>
-                            <LogoBox>
-                                <FLXLogoSmall />
-                            </LogoBox>
-                            {connectWalletState.claimableFLX.slice(0, 10)} FLX
-                        </Flex>
-                    </Button>
-                ) : null}
                 <BtnContainer>
                     <Button
                         primary={active && account ? true : false}
@@ -177,7 +158,6 @@ const HideMobile = styled.div`
 `
 
 const Left = styled.div<{ isBigWidth?: boolean }>`
-    min-width: ${({ theme, isBigWidth }) => (isBigWidth ? '315px' : '171px')};
     display: flex;
     align-items: center;
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -190,11 +170,7 @@ const Flex = styled.div`
     display: flex;
     justify-content: center;
 `
-const LogoBox = styled.div`
-    margin-right: 5px;
-    display: flex;
-    align-items: center;
-`
+
 const InnerBtn = styled(Flex)`
     div {
         display: block !important;

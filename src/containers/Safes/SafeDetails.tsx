@@ -48,7 +48,7 @@ const SafeDetails = ({ ...props }) => {
     useEffect(() => {
         if (!account || !library) return
         if (!isNumeric(safeId)) {
-            props.history.push('/')
+            props.history.push('/safes')
         }
     }, [account, library, safeId])
 

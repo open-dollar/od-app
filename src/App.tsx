@@ -14,6 +14,7 @@ import { initI18n } from './utils/i18n'
 import { Theme } from './utils/interfaces'
 import { darkTheme } from './utils/themes/dark'
 
+import Splash from './containers/Splash'
 import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import Privacy from './containers/Privacy'
 import CreateSafe from './containers/Safes/CreateSafe'
@@ -29,10 +30,6 @@ const App = () => {
 
     const { lang, bodyOverflow } = settingsState
 
-    useEffect(() => {
-        initI18n(lang)
-    }, [lang])
-
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={darkTheme}>
@@ -43,6 +40,12 @@ const App = () => {
                             <Route component={GoogleTagManager} />
                             <Web3ReactManager>
                                 <Switch>
+                                    <Route
+                                        exact
+                                        strict
+                                        component={Splash}
+                                        path={'/'}
+                                    />
                                     <Route
                                         exact
                                         strict
@@ -76,13 +79,13 @@ const App = () => {
                                         exact
                                         strict
                                         component={Safes}
-                                        path={'/:address'}
+                                        path={'/safes'}
                                     />
                                     <Route
                                         exact
                                         strict
                                         component={Safes}
-                                        path={'/'}
+                                        path={'/:address'}
                                     />
 
                                     <Redirect from="*" to="/" />

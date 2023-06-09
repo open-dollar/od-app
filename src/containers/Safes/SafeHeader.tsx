@@ -19,7 +19,7 @@ const SafeHeader = ({
         if (isModifying && safeId) {
             history.push(`/safes/${safeId}`)
         } else {
-            history.push(`/`)
+            history.push(`/safes`)
         }
     }, [history, isModifying, safeId])
 

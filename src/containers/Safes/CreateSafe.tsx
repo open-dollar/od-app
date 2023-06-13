@@ -64,13 +64,6 @@ const CreateSafe = () => {
         rightInput ? rightInput : availableHai
     )
 
-    const formattedBalance = useMemo(() => {
-        return {
-            weth: formatNumber(balances.weth, 2),
-            hai: formatNumber(balances.hai, 2),
-        }
-    }, [balances])
-
     const selectedTokenBalance = useMemo(() => {
         const parsedNumber = ethers.utils.formatEther(tokensData[selectedCollateral.name]?.balance)
         return formatNumber(parsedNumber, 2)
@@ -83,7 +76,7 @@ const CreateSafe = () => {
         }
     }, [wethBalanceUSD, haiBalanceUSD])
 
-    const onMaxLeftInput = () => onLeftInput(formattedBalance.weth.toString())
+    const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     const onMaxRightInput = () => onRightInput(availableHai.toString())
 
     const onClearAll = useCallback(() => {

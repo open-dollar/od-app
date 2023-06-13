@@ -92,7 +92,7 @@ const ModifySafe = ({
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
-            onLeftInput(tokenBalances[singleSafe?.collateralName!].balance.toString())
+            onLeftInput(depositTokenBalance.toString())
         } else {
             onLeftInput(availableEth as string)
         }

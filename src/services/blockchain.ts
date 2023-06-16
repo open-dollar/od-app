@@ -32,13 +32,13 @@ export const handleDepositAndBorrow = async (
         if (collateralBN.isZero() && !debtBN.isZero()) {
             txData = await proxy.generateDebt(safeId, debtBN)
         } else if (!collateralBN.isZero() && debtBN.isZero()) {
-            txData = await proxy.lockTokenCollateral(gebUtils.WETH, safeId, collateralBN, true)
+            txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN, true)
         } else {
-            txData = await proxy.lockTokenCollateralAndGenerateDebt(gebUtils.WETH, safeId, collateralBN, debtBN, true)
+            txData = await proxy.lockTokenCollateralAndGenerateDebt(safeData.collateral, safeId, collateralBN, debtBN, true)
         }
     } else {
         txData = await proxy.openLockTokenCollateralAndGenerateDebt(
-            gebUtils.WETH,
+            safeData.collateral,
             collateralBN,
             debtBN,
             true
@@ -83,7 +83,7 @@ export const handleRepayAndWithdraw = async (
         totalCollateralBN.isZero() &&
         totalDebtBN.isZero()
     ) {
-        txData = await proxy.repayAllDebtAndFreeTokenCollateral(gebUtils.WETH, safeId, collateralToFree)
+        txData = await proxy.repayAllDebtAndFreeTokenCollateral(safeData.collateral, safeId, collateralToFree)
     } else if (
         collateralToFree.isZero() &&
         totalDebtBN.isZero() &&
@@ -93,9 +93,9 @@ export const handleRepayAndWithdraw = async (
     } else if (collateralToFree.isZero() && !haiToRepay.isZero()) {
         txData = await proxy.repayDebt(safeId, haiToRepay)
     } else if (!collateralToFree.isZero() && haiToRepay.isZero()) {
-        txData = await proxy.freeTokenCollateral(gebUtils.WETH, safeId, collateralToFree)
+        txData = await proxy.freeTokenCollateral(safeData.collateral, safeId, collateralToFree)
     } else {
-        txData = await proxy.repayDebtAndFreeTokenCollateral(gebUtils.WETH, safeId, collateralToFree, haiToRepay)
+        txData = await proxy.repayDebtAndFreeTokenCollateral(safeData.collateral, safeId, collateralToFree, haiToRepay)
     }
 
     if (!txData) throw new Error('No transaction request!')

@@ -1,12 +1,13 @@
 import { action, Action, Thunk, thunk } from 'easy-peasy'
-import { TOKENS } from 'src/utils/tokens'
-import { fetchTokenData, TokenData } from 'src/utils/virtual/tokenData'
+import { fetchTokenData, TokenFetchData } from 'src/utils/virtual/tokenData'
 import api from '../services/api'
 import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
 export interface ConnectWalletModel {
     forceUpdateTokens: boolean
     tokensData: { [token: string]: TokenData }
+    tokensFetchedData: { [token: string]: TokenFetchData }
     blockNumber: IBlockNumber
     fiatPrice: number
     flxPrice: number
@@ -52,6 +53,7 @@ export interface ConnectWalletModel {
     setEthPriceChange: Action<ConnectWalletModel, number>
     setClaimableFLX: Action<ConnectWalletModel, string>
     setTokensData: Action<ConnectWalletModel, { [token: string]: TokenData }>
+    setTokensFetchedData: Action<ConnectWalletModel, { [token: string]: TokenFetchData }>
     setForceUpdateTokens: Action<ConnectWalletModel, boolean>
 }
 
@@ -65,7 +67,8 @@ const connectWalletModel: ConnectWalletModel = {
     ethBalance: { 1: 0, 42: 0, 420: 0 },
     haiBalance: { 1: '0', 42: '0', 420: '0' },
     uniswapPoolBalance: { 1: '0', 42: '0', 420: '0' },
-    tokensData: TOKENS,
+    tokensData: {},
+    tokensFetchedData: {},
     claimableFLX: '0',
     fiatPrice: 0,
     flxPrice: 0,
@@ -89,9 +92,10 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     fetchTokenData: thunk(
         async (actions, payload) => {
-            const fetched = await fetchTokenData(payload.geb, payload.user, payload.tokens || Object.keys(TOKENS))
+            const tokenList = payload.geb.tokenList;
+            const fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
             if (fetched) {
-                actions.setTokensData(fetched)
+                actions.setTokensFetchedData(fetched)
                 actions.setForceUpdateTokens(false)
             }
         }
@@ -160,6 +164,9 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     setTokensData: action((state, payload) => {
         state.tokensData = payload
+    }),
+    setTokensFetchedData: action((state, payload) => {
+        state.tokensFetchedData = payload
     }),
     setForceUpdateTokens: action((state, payload) => {
         state.forceUpdateTokens = payload

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { formatNumber, returnState } from '../utils/helper'
 import { jdenticonConfig, COIN_TICKER } from '../utils/constants'
+import { TOKEN_LOGOS } from 'src/utils/tokens'
 
 const SafeBlock = ({ ...props }) => {
     const { t } = useTranslation()
@@ -26,7 +27,11 @@ const SafeBlock = ({ ...props }) => {
                 >
                     <BlockHeader>
                         <SafeInfo>
-                            {<div dangerouslySetInnerHTML={createImage()} />}
+                            <img
+                                    src={TOKEN_LOGOS[props.collateralName]}
+                                    width={'24px'}
+                                    height={'24px'}
+                                />
                             <SafeData>
                                 <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
                             </SafeData>
@@ -56,7 +61,7 @@ const SafeBlock = ({ ...props }) => {
                             <Value>{totalDebt}</Value>
                         </Item>
                         <Item>
-                            <Label>{'Collateralization Ratio'}</Label>
+                            <Label>{'Collateral Ratio'}</Label>
                             <Value>{`${props.collateralRatio}%`}</Value>
                         </Item>
                         <Item>
@@ -129,6 +134,7 @@ const Circle = styled.div`
 const SafeState = styled.div`
     display: flex;
     align-items: center;
+    width: 80px;
     color: ${(props) => props.theme.colors.customSecondary};
     font-size: ${(props) => props.theme.font.small};
     span {
@@ -157,6 +163,7 @@ const SafeState = styled.div`
   `}
     @media (max-width: 414px) {
         margin-top: 5px;
+        width: auto;
     }
 `
 
@@ -177,9 +184,10 @@ const Block = styled.div`
 
 const Item = styled.div`
     margin: 0 10px;
+    width: 105px;
     @media (max-width: 767px) {
         display: flex;
-
+        width: auto;
         align-items: center;
         justify-content: space-between;
         margin: 0 0 3px 0;

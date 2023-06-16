@@ -1,7 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import { Geb, utils } from '@hai-on-op/sdk';
-import {bytecode} from '../../artifacts/contracts/VirtualUserSafes.sol/VirtualUserSafes.json';
-import { TOKENS } from '../tokens';
+import { bytecode } from '../../artifacts/contracts/VirtualUserSafes.sol/VirtualUserSafes.json';
 
 interface SafeData {
   addy: string;
@@ -11,11 +10,11 @@ interface SafeData {
   collateralType: string;
 }
 
-export async function fetchUserSafes(geb: Geb, userAddress: string): Promise<[BigNumber, SafeData[]]> {
+export async function fetchUserSafes(geb: Geb, userAddress: string, haiAddress: string): Promise<[BigNumber, SafeData[]]> {
   // Encoded input data to be sent to the batch contract constructor
   const inputData = ethers.utils.defaultAbiCoder.encode(
     ['address', 'address', 'address', 'address', 'address', 'address'],
-    [TOKENS.HAI.address, geb.contracts.proxyRegistry.address, geb.contracts.getSafes.address, geb.contracts.safeEngine.address, geb.contracts.safeManager.address, userAddress]
+    [haiAddress, geb.contracts.proxyRegistry.address, geb.contracts.getSafes.address, geb.contracts.safeEngine.address, geb.contracts.safeManager.address, userAddress]
   );
   // Generate payload from input data
   const payload = bytecode.concat(inputData.slice(2));

@@ -17,6 +17,8 @@ const SafeDetails = ({ ...props }) => {
     const { safeModel: safeActions } =
         useStoreActions((state) => state)
 
+    const { safeModel: { liquidationData, singleSafe } } = useStoreState((state) => state)
+
     const safeId = props.match.params.id as string
 
     const isDeposit = useMemo(() => {
@@ -52,6 +54,7 @@ const SafeDetails = ({ ...props }) => {
         }
     }, [account, library, safeId])
 
+    const isLoading = !(liquidationData && singleSafe?.collateralName)
 
     return (
         <Container>
@@ -70,13 +73,15 @@ const SafeDetails = ({ ...props }) => {
                 isDeposit={isDeposit}
             />
 
-            <SafeStats
-                isModifying={isDeposit || isWithdraw}
-                isDeposit={isDeposit}
-                isOwner={isOwner}
-            />
+            {!isLoading &&
+                < SafeStats
+                    isModifying={isDeposit || isWithdraw}
+                    isDeposit={isDeposit}
+                    isOwner={isOwner}
+                />
+            }
 
-            {isDeposit || isWithdraw ? (
+            {(isDeposit || isWithdraw) && !isLoading ? (
                 <ModifySafe isDeposit={isDeposit} isOwner={isOwner} />
             ) : null}
         </Container>

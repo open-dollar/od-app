@@ -54,7 +54,8 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
     const dropdownSelected = collateralsDropdown.find(item => item.name === selectedItem)!
 
     const selectedCollateral = tokensData && tokensData[selectedItem]
-    const selectedCollateralBalance = ethers.utils.formatEther(tokensFetchedData[selectedItem].balance)
+    const selectedCollateralBalance = ethers.utils.formatEther(tokensFetchedData[selectedItem].balanceE18)
+    const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
 
     const haiBalanceUSD = useTokenBalanceInUSD(
         'HAI',
@@ -68,7 +69,7 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
         return formatNumber('0', 2)
     }, [selectedItem])
 
-    const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[selectedCollateral.symbol].currentPrice.value, 2)
+    const collateralUnitPriceUSD = formatNumber(safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0', 2)
     const selectedTokenBalanceInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString(), 2)
 
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
@@ -142,9 +143,13 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
         }
     }
 
-    let [approvalState, approve] = useTokenApproval(leftInput,
+    let [approvalState, approve] = useTokenApproval(
+        leftInput,
         selectedCollateral?.address,
-        proxyAddress);
+        proxyAddress,
+        selectedCollateralDecimals,
+        true
+    );
 
 
     return (
@@ -193,13 +198,15 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
                                 <SideLabel>{`Deposit ${selectedItem} and Borrow HAI`}</SideLabel>
 
                                 <TokenInput
-                                    token={selectedCollateral?.symbol ? { name: selectedCollateral?.symbol || '-', icon: TOKEN_LOGOS[selectedCollateral?.symbol] } : undefined}
+                                    token={selectedCollateral?.symbol ?
+                                        { name: selectedCollateral?.symbol || '-', icon: TOKEN_LOGOS[selectedCollateral?.symbol] } : undefined}
                                     label={`Balance: ${selectedTokenBalance} ${selectedCollateral?.symbol}`}
                                     rightLabel={`~$${selectedTokenBalanceInUSD}`}
                                     onChange={onLeftInput}
                                     value={leftInput}
                                     handleMaxClick={onMaxLeftInput}
                                     data_test_id="deposit_borrow"
+                                    decimals={Number(selectedCollateralDecimals)}
                                 />
 
                                 <br />

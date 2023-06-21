@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useCallback, useMemo } from 'react'
@@ -12,6 +12,8 @@ import {
 import { useTokenContract } from './useContract'
 import { useActiveWeb3React } from '.'
 import useGeb from './useGeb'
+
+const decimals18 = BigNumber.from(10).pow(18)
 
 export enum ApprovalState {
     UNKNOWN,
@@ -38,9 +40,11 @@ export function useTokenAllowance(
 }
 
 export function useTokenApproval(
-    amount: string,
+    amount: string, // in 18 decimals
     tokenAddress?: string,
-    spender?: string
+    spender?: string,
+    decimals: string = '18',
+    exactApproval: boolean = false
 ): [ApprovalState, () => Promise<void>] {
     const { account } = useActiveWeb3React()
     const geb = useGeb()
@@ -50,6 +54,7 @@ export function useTokenApproval(
         spender
     )
     const pendingApproval = useHasPendingApproval(tokenAddress, spender)
+    const tokenDecimals = BigNumber.from(10).pow(decimals)
 
     // check the current approval status
     const approvalState: ApprovalState = useMemo(() => {
@@ -57,12 +62,12 @@ export function useTokenApproval(
             return ApprovalState.UNKNOWN
         }
 
-        const amountBN = ethers.utils.parseEther(amount)
+        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
         // we might not have enough data to know whether or not we need to approve
         if (!currentAllowance) return ApprovalState.UNKNOWN
 
         // amountToApprove will be defined if currentAllowance is
-        return currentAllowance.lt(amountBN)
+        return currentAllowance.lt(approvalAmount)
             ? pendingApproval
                 ? ApprovalState.PENDING
                 : ApprovalState.NOT_APPROVED
@@ -104,17 +109,19 @@ export function useTokenApproval(
             status: 'loading',
         })
 
-        let useExact = false
+        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
+
+        let useExact = exactApproval
         const estimatedGas = await tokenContract.estimateGas
             .approve(spender, MaxUint256)
             .catch(() => {
                 // general fallback for tokens who restrict approval amounts
                 useExact = true
-                return tokenContract.estimateGas.approve(spender, amount)
+                return tokenContract.estimateGas.approve(spender, approvalAmount.toString())
             })
 
         return tokenContract
-            .approve(spender, useExact ? amount : MaxUint256, {
+            .approve(spender, useExact ? approvalAmount.toString() : MaxUint256, {
                 gasLimit: calculateGasMargin(estimatedGas),
             })
             .then((txResponse: TransactionResponse) => {

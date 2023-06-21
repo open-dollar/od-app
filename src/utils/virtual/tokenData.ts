@@ -4,7 +4,8 @@ import TokensData from '../../artifacts/contracts/TokensData.sol/TokensData.json
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses';
 
 export interface TokenFetchData {
-  balance: string;
+  balanceE18: string;
+  decimals: string;
 }
 
 export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: string]: TokenData }): Promise<{ [token: string]: TokenFetchData }> {
@@ -23,7 +24,7 @@ export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: s
   // Parse the returned value to the struct type in order
   const decoded = ethers.utils.defaultAbiCoder.decode(
     [
-      'tuple(uint256 balance)[]'
+      'tuple(uint256 balanceE18, uint256 decimals)[]'
     ],
     returnedData
   )[0] as TokenFetchData[];
@@ -33,7 +34,7 @@ export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: s
   const parsedResult = Object.entries(result).reduce((newObj, [key, value]) => {
     return {
       ...newObj,
-      [key]: { ...value, balance: value.balance.toString() }
+      [key]: { ...value, balanceE18: value.balanceE18.toString(), decimals: value.decimals.toString() }
     };
   }, {})
 

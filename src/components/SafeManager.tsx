@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from '../hooks'
 import useGeb from '../hooks/useGeb'
 import { fetchUserSafesRaw } from '../services/safes'
-import { useStoreActions } from '../store'
+import { useStoreActions, useStoreState } from '../store'
 import { timeout } from '../utils/helper'
 import Button from './Button'
 import {
@@ -23,6 +23,7 @@ const SafeManager = () => {
     const history = useHistory()
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const { tokensData } = useStoreState((state) => state.connectWalletModel)
 
     const handleCancel = () => {
         popupsActions.setIsSafeManagerOpen(false)
@@ -41,7 +42,7 @@ const SafeManager = () => {
 
         try {
             const userSafes: IUserSafeList | undefined = await fetchUserSafesRaw(
-                { address: value, geb })
+                { address: value, geb , tokensData})
 
             if (!userSafes || (userSafes && !userSafes.safes.length)) {
                 setError('Address has no Safes')

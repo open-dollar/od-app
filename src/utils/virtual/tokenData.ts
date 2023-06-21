@@ -1,21 +1,21 @@
 import { BigNumber, ethers } from 'ethers';
 import { Geb, utils } from '@hai-on-op/sdk';
-import { bytecode } from '../../artifacts/contracts/TokensData.sol/TokensData.json';
-import { TOKENS } from '../tokens';
+import TokensData from '../../artifacts/contracts/TokensData.sol/TokensData.json';
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses';
 
-export interface TokenData {
+export interface TokenFetchData {
   balance: string;
 }
 
-export async function fetchTokenData(geb: Geb, user: string, tokens: string[]): Promise<{ [token: string]: TokenData }> {
+export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: string]: TokenData }): Promise<{ [token: string]: TokenFetchData }> {
   // Encoded input data to be sent to the batch contract constructor
   const inputData = ethers.utils.defaultAbiCoder.encode(
     ['address', 'address[]'],
-    [user, tokens.map(token => TOKENS[token].address).filter(address => address !== undefined && address !== '')]
+    [user, Object.values(tokens).map(token => token.address).filter(address => address !== undefined && address !== '')]
   );
 
   // Generate payload from input data
-  const payload = bytecode.concat(inputData.slice(2));
+  const payload = TokensData.bytecode.concat(inputData.slice(2));
 
   // Call the deployment transaction with the payload
   const returnedData = await geb.provider.call({ data: payload });
@@ -26,10 +26,10 @@ export async function fetchTokenData(geb: Geb, user: string, tokens: string[]): 
       'tuple(uint256 balance)[]'
     ],
     returnedData
-  )[0] as TokenData[];
+  )[0] as TokenFetchData[];
 
-  const result: { [token: string]: TokenData } = tokens.reduce((obj, key, i) => ({ ...obj, [key]: decoded[i] }), {});
-  
+  const result: { [token: string]: TokenFetchData } = Object.keys(tokens).reduce((obj, key, i) => ({ ...obj, [key]: decoded[i] }), {});
+
   const parsedResult = Object.entries(result).reduce((newObj, [key, value]) => {
     return {
       ...newObj,

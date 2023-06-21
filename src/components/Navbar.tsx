@@ -127,7 +127,6 @@ const BtnContainer = styled.div`
     svg {
         stroke: white;
         position: relative;
-        top: 2px;
         margin-right: 5px;
     }
 `

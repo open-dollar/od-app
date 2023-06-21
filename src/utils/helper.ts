@@ -16,7 +16,7 @@ import {
 } from './interfaces'
 import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
-import { COLLATERAL_TYPES } from '@hai-on-op/sdk/lib/utils'
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
 export const IS_IN_IFRAME = window.parent !== window
 
@@ -38,9 +38,8 @@ export const getEtherscanLink = (
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block'
 ): string => {
-    const prefix = `https://${
-        ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]
-    }etherscan.io`
+    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]
+        }etherscan.io`
 
     switch (type) {
         case 'transaction': {
@@ -126,20 +125,29 @@ export const toFixedString = (
 
 export const formatUserSafe = (
     safes: Array<any>,
-    liquidationData: ILiquidationData
+    liquidationData: ILiquidationData,
+    tokensData: {[key: string]: TokenData}
 ): Array<ISafe> => {
+
+    const collateralBytes32: {[key: string]: string}  = Object.values(tokensData).filter(token => token.isCollateral).reduce((accum, token) => {
+        return {...accum, [token.bytes32String]: token.symbol}
+    }, {});
+
     const {
         currentRedemptionPrice,
-        currentPrice,
-        liquidationCRatio,
-        accumulatedRate,
-        totalAnnualizedStabilityFee,
-        liquidationPenalty,
         currentRedemptionRate,
+        collateralLiquidationData
     } = liquidationData
 
     return safes
         .map((s) => {
+            const token = collateralBytes32[s.collateralType]
+            const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
+            const currentPrice = collateralLiquidationData[token]?.currentPrice
+            const liquidationCRatio = collateralLiquidationData[token]?.liquidationCRatio
+            const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
+            const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
+
             const availableDebt = returnAvaiableDebt(
                 currentPrice?.safetyPrice,
                 '0',
@@ -173,7 +181,7 @@ export const formatUserSafe = (
                 riskState: ratioChecker(Number(collateralRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
-                collateralName: COLLATERAL_TYPES[s.collateralType],
+                collateralName: collateralBytes32[s.collateralType],
                 debt: s.debt,
                 totalDebt,
                 availableDebt,

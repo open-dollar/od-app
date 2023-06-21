@@ -2,10 +2,9 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { TransactionResponse } from '@ethersproject/providers'
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { DefaultTheme, ThemedCssFunction } from 'styled-components'
-import { IconName } from '../components/FeatherIconWrapper'
-import { ApproveMethod } from '../components/ApproveToken'
 import { Geb } from '@hai-on-op/sdk'
 import { BigNumber } from 'ethers'
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
 export declare enum ChainId {
     MAINNET = 1,
@@ -176,23 +175,12 @@ export interface IVotingTx {
 }
 
 export interface ILiquidationData {
-    accumulatedRate: string
-    currentPrice: {
-        liquidationPrice: string
-        safetyPrice: string
-        value: string
-    }
-    debtFloor: string
-    liquidationCRatio: string
-    liquidationPenalty: string
-    safetyCRatio: string
     currentRedemptionPrice: string
-    totalAnnualizedStabilityFee: string
-    debtCeiling: string
-    globalDebt: string
     currentRedemptionRate: string
+    globalDebt: string
     perSafeDebtCeiling: string
     globalDebtCeiling: string
+    collateralLiquidationData: { [key: string]: CollateralLiquidationData }
 }
 
 export interface ISafePayload {
@@ -253,12 +241,6 @@ export interface IIncentiveAssets {
     uni: AssetData
 }
 
-export interface IApprove {
-    allowance: string
-    coinName: string
-    methodName: ApproveMethod
-    amount: string
-}
 export interface ISafeResponse {
     collateral: string
     createdAt: string | null // Will be null in RPC mode;
@@ -270,31 +252,34 @@ export interface ISafeResponse {
 
 // query responses for the safes
 export interface ILiquidationResponse {
-    collateralType: {
-        accumulatedRate: string
-        currentPrice: {
-            liquidationPrice: string
-            safetyPrice: string
-            value: string
-        }
-        debtCeiling: string
-        debtFloor: string
-        liquidationCRatio: string
-        liquidationPenalty: string
-        safetyCRatio: string
-        totalAnnualizedStabilityFee: string
+    collateralLiquidationData: { [key: string]: CollateralLiquidationData }
+    systemState: SystemSate
+}
+
+export interface CollateralLiquidationData {
+    accumulatedRate: string
+    currentPrice: {
+        liquidationPrice: string
+        safetyPrice: string
+        value: string
     }
-    systemState: {
-        currentRedemptionPrice: {
-            value: string
-        }
-        currentRedemptionRate: {
-            annualizedRate: string
-        }
-        globalDebt: string
-        globalDebtCeiling: string
-        perSafeDebtCeiling: string
-    }
+    debtFloor: string
+    liquidationCRatio: string
+    liquidationPenalty: string
+    safetyCRatio: string
+    totalAnnualizedStabilityFee: string
+}
+
+export interface SystemSate {
+    currentRedemptionPrice: {
+        value: string
+    },
+    currentRedemptionRate: {
+        annualizedRate: string
+    },
+    globalDebt: string,
+    globalDebtCeiling: string,
+    perSafeDebtCeiling: string
 }
 
 export interface IUserSafeList extends ILiquidationResponse {
@@ -351,6 +336,7 @@ export interface IFetchTokensDataPayload {
 export interface IFetchSafesPayload {
     address: string
     geb: Geb
+    tokensData: { [key: string]: TokenData }
 }
 
 export interface IFetchSafeById extends IFetchSafesPayload {

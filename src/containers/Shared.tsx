@@ -37,7 +37,6 @@ import { ethers } from 'ethers'
 import MulticallUpdater from '../services/MulticallUpdater'
 import BlockedAddress from 'src/components/BlockedAddress'
 import { blockedAddresses } from 'src/utils/blockedAddresses'
-import { TOKENS } from 'src/utils/tokens'
 
 interface Props {
     children: ReactNode
@@ -53,6 +52,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const location = useLocation()
     const isSplash = location.pathname === '/'
+    const tokensData = geb?.tokenList
 
     const {
         settingsModel: settingsState,
@@ -86,7 +86,11 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && geb && forceUpdateTokens) {
             connectWalletActions.fetchTokenData({ geb, user: account })
         }
-    }, [account, geb, TOKENS, forceUpdateTokens])
+    }, [account, geb, forceUpdateTokens])
+
+    useEffect(() => {
+        connectWalletActions.setTokensData(tokensData);
+    }, [tokensData])
 
     useEffect(() => {
         connectWalletActions.fetchFiatPrice()
@@ -128,6 +132,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 await safeActions.fetchUserSafes({
                     address: address ? address : (account as string),
                     geb,
+                    tokensData
                 })
             }
         } catch (error) {

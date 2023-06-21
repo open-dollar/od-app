@@ -1,17 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
+import Logo from '../assets/hai-logo.png'
 
 interface Props {
     height?: number
 }
 
 const Brand = ({ height }: Props) => {
-    const imgUrl = require(`../assets/hai-logo.png`).default
 
     return (
         <Container>
             <a href={'/'}>
-                <img src={imgUrl} alt="HAI" height={'25px'} width={'25px'} />
+                <img src={Logo} alt="HAI" height={'25px'} width={'25px'} />
             </a>
         </Container>
     )

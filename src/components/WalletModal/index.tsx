@@ -29,6 +29,7 @@ import Option from './Option'
 import PendingView from './PendingView'
 import { useStoreActions, useStoreState } from '../../store'
 import { useTranslation } from 'react-i18next'
+import MetamaskLogo from '../../assets/connectors/metamask.png'
 
 const WALLET_VIEWS = {
     OPTIONS: 'options',
@@ -153,7 +154,6 @@ export default function WalletModal() {
                             subheader={null}
                             icon={
                                 require(`../../assets/connectors/${option.iconName}`)
-                                    .default
                             }
                         />
                     )
@@ -175,8 +175,7 @@ export default function WalletModal() {
                                 subheader={null}
                                 link={'https://metamask.io/'}
                                 icon={
-                                    require('../../assets/connectors/metamask.png')
-                                        .default
+                                    MetamaskLogo
                                 }
                             />
                         )
@@ -204,7 +203,7 @@ export default function WalletModal() {
                             option.connector === connector
                                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
                                 : !option.href &&
-                                  tryActivation(option.connector)
+                                tryActivation(option.connector)
                         }}
                         key={key}
                         active={option.connector === connector}
@@ -214,7 +213,6 @@ export default function WalletModal() {
                         subheader={null} //use option.descriptio to bring back multi-line
                         icon={
                             require(`../../assets/connectors/${option.iconName}`)
-                                .default
                         }
                     />
                 )

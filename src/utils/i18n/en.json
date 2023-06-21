@@ -118,11 +118,11 @@
     "claim_flx": "Claim FLX",
     "hide_faq": "Hide FAQ",
     "show_faq": "Show FAQ",
-    "rai_bid": "{{hai}} Bid",
+    "hai_bid": "{{hai}} Bid",
     "no_auctions": "No {{type}} auctions to bid into",
     "settle": "Settle",
     "min": "Min",
-    "how_rai_auctions_work": " How do HAI {{type}} auctions work",
+    "how_hai_auctions_work": " How do HAI {{type}} auctions work",
     "debt_auction_minting_flx_header": "Minting FLX",
     "debt_auction_minting_flx_desc": "Debt auctions are meant to mint and auction new FLX in exchange for HAI. The HAI that is received by an auction will be used to eliminate bad (or otherwise called uncovered) debt from the system.",
     "debt_auction_how_to_bid": "How do I bid?",
@@ -180,7 +180,7 @@
     "eth_next_osm_tip": "Next ETH price that will be used by the system. This price is updated once per hour",
     "eth_osm_tip": "Current ETH price used by the system. This price is delayed 1h from the live ETH price feed and it’s only updated once per hour",
     "stability_fee_tip": " It is the annual interest rate paid by Safe owners on their debt. Proceeds from the borrow rate go to the protocol’s balance sheet",
-    "rai_red_price_tip": "HAI’s “moving peg”. It’s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price",
+    "hai_red_price_tip": "HAI’s “moving peg”. It’s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price",
     "curve_saviour_desc": "The current saviour for this Safe will try to withdraw your Curve HAI Metapool liquidity and repay as much of your debt as possible. Any leftover HAI that wasn't used to save your Safe as well as withdrawn 3Pool LP tokens will be available for you to withdraw from the Saviour. <b>NOTE: if the saviour doesn't have enough LP tokens to save your Safe (withdraw enough HAI and repay your debt), the Safe will get liquidated.</b> <a href='https://docs.reflexer.finance/liquidation-protection/liquidation-protection-guide' target='_blank'>Read More</a>",
     "moneygod_desc": "The Money God League is an initiative to help other teams launch their own HAI like assets and share a stake in each of their protocols with the Reflexer community. You can stake FLX or FLX/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants."
 }

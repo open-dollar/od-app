@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
+import { Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -59,11 +60,16 @@ const TokenInput = ({
             <Content className={disabled ? 'disabled' : ''}>
                 <Flex>
                     <TokenBox>
-                        <Icon
-                            src={token?.icon}
-                            width={iconSize || '24px'}
-                            height={iconSize || '24px'}
-                        />
+                        {
+                            token?.icon ?
+                                <Icon
+                                    src={token?.icon}
+                                    width={iconSize || '24px'}
+                                    height={iconSize || '24px'}
+                                />
+                                :
+                                <Loader width={iconSize || '24px'} />
+                        }
                         {token?.name}
                     </TokenBox>
                     <CustomInput

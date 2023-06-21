@@ -3,7 +3,6 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import path from 'path'
-import crypto from 'crypto'
 import '@testing-library/jest-dom/extend-expect'
 import { ethers } from 'ethers'
 import { Geb } from '@hai-on-op/sdk'
@@ -14,11 +13,11 @@ const env = dotenv.config({
     path: path.resolve(__dirname, '../.env.development.local'),
 })
 
-Object.defineProperty(global, 'crypto', {
-    value: {
-        getRandomValues: (arr: any) => crypto.randomBytes(arr.length),
-    },
-})
+// Object.defineProperty(global, 'crypto', {
+//     value: {
+//         getRandomValues: (arr: any) => crypto.randomBytes(arr.length),
+//     },
+// })
 
 jest.setTimeout(10000)
 

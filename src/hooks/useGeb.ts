@@ -113,7 +113,7 @@ export function useSafeHandler(safeId: string): string {
 export function useTokenBalanceInUSD(token: TokenType, balance: string) {
     const ethPrice = store.getState().connectWalletModel.fiatPrice
     const haiPrice =
-        store.getState().safeModel.liquidationData.currentRedemptionPrice
+        store.getState().safeModel.liquidationData!.currentRedemptionPrice
 
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice

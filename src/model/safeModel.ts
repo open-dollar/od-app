@@ -6,7 +6,6 @@ import {
     handleRepayAndWithdraw,
 } from '../services/blockchain'
 import {
-    fetchSafeById,
     fetchUserSafes,
 } from '../services/safes'
 import { DEFAULT_SAFE_STATE, EMPTY_ADDRESS } from '../utils/constants'
@@ -35,7 +34,7 @@ export interface SafeModel {
     stage: number
     isSuccessfulTx: boolean
     safeData: ISafeData
-    liquidationData: ILiquidationData
+    liquidationData: ILiquidationData | null
     uniSwapPool: ISafeData
     depositAndBorrow: Thunk<
         SafeModel,
@@ -49,7 +48,6 @@ export interface SafeModel {
         any,
         StoreModel
     >
-    fetchSafeById: Thunk<SafeModel, IFetchSafeById, any, StoreModel>
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
     // collectETH: Thunk<
     //     SafeModel,
@@ -90,25 +88,7 @@ const safeModel: SafeModel = {
     isUniSwapPoolChecked: true,
     stage: 0,
     safeData: DEFAULT_SAFE_STATE,
-    liquidationData: {
-        accumulatedRate: '0',
-        currentPrice: {
-            liquidationPrice: '0',
-            safetyPrice: '',
-            value: '',
-        },
-        debtFloor: '0',
-        debtCeiling: '0',
-        globalDebt: '0',
-        liquidationCRatio: '1', // Rate percentage
-        liquidationPenalty: '1', // Rate percentage
-        safetyCRatio: '0',
-        currentRedemptionPrice: '0',
-        totalAnnualizedStabilityFee: '',
-        currentRedemptionRate: '0',
-        perSafeDebtCeiling: '0',
-        globalDebtCeiling: '0',
-    },
+    liquidationData: null,
     uniSwapPool: DEFAULT_SAFE_STATE,
     depositAndBorrow: thunk(async (actions, payload, { getStoreActions }) => {
         const storeActions = getStoreActions()
@@ -240,33 +220,6 @@ const safeModel: SafeModel = {
             }
         }
     ),
-
-    fetchSafeById: thunk(async (actions, payload, { getStoreActions }) => {
-        const storeActions = getStoreActions()
-        const res = await fetchSafeById(payload)
-        if (res) {
-            actions.setSingleSafe(res.safe[0])
-            actions.setLiquidationData(res.liquidationData)
-            storeActions.connectWalletModel.updateHaiBalance({
-                chainId: NETWORK_ID,
-                balance: res.erc20Balance,
-            })
-            if (res.proxyData) {
-                const { address, coinAllowance } = res.proxyData
-                if (address && address !== EMPTY_ADDRESS) {
-                    storeActions.connectWalletModel.setProxyAddress(address)
-                }
-                if (coinAllowance) {
-                    storeActions.connectWalletModel.setCoinAllowance(
-                        coinAllowance.amount
-                    )
-                } else {
-                    storeActions.connectWalletModel.setCoinAllowance('')
-                }
-            }
-            return res.safe[0]
-        }
-    }),
 
     setIsSafeCreated: action((state, payload) => {
         state.safeCreated = payload

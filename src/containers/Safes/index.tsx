@@ -29,7 +29,7 @@ const OnBoarding = ({ ...props }) => {
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
-            !library || 
+            !library ||
             connectWalletState.isWrongNetwork
         )
             return
@@ -38,6 +38,7 @@ const OnBoarding = ({ ...props }) => {
             await safeActions.fetchUserSafes({
                 address: address || (account as string),
                 geb,
+                tokensData: connectWalletState.tokensData
             })
         }
         fetchSafes()
@@ -46,9 +47,9 @@ const OnBoarding = ({ ...props }) => {
             if (
                 (!account && !address) ||
                 (address && !isAddress(address.toLowerCase())) ||
-                !library || 
+                !library ||
                 connectWalletState.isWrongNetwork)
-            fetchSafes()
+                fetchSafes()
         }, ms)
 
         return () => clearInterval(interval)
@@ -64,7 +65,7 @@ const OnBoarding = ({ ...props }) => {
         <Container id="app-page">
             <Content>
                 {(account && !safeState.safeCreated) ||
-                (!isOwner && !safeState.list.length) ? (
+                    (!isOwner && !safeState.list.length) ? (
                     <BtnContainer className="top-up">
                         <Button
                             data-test-id="topup-btn"

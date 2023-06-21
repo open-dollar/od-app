@@ -39,14 +39,12 @@ const SafeStats = ({
             ? isDeposit
                 ? 'deposit_borrow'
                 : 'repay_withdraw'
-            : 'create'
+            : 'info'
     )
     const { library, account } = useActiveWeb3React()
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const { popupsModel: popupsActions, safeModel: safeActions } =
-        useStoreActions((state) => state)
     const { safeModel: safeState } = useStoreState((state) => state)
 
     const { singleSafe, liquidationData } = safeState
@@ -54,8 +52,11 @@ const SafeStats = ({
     const collateral = formatNumber(singleSafe?.collateral || '0')
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
-    const collateralInUSD = useTokenBalanceInUSD('ETH', collateral as string)
     const totalDebtInUSD = useTokenBalanceInUSD('HAI', totalDebt as string)
+    
+    const collateralName = singleSafe!.collateralName
+    const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value,2)
+    const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString(), 2)
 
     const liquidationPenalty = '18-20'
 
@@ -64,7 +65,7 @@ const SafeStats = ({
         : '0'
 
     const ethPrice = liquidationData
-        ? formatNumber(liquidationData.currentPrice.value, 2)
+        ? formatNumber(liquidationData.collateralLiquidationData.WETH.currentPrice.value, 2)
         : '0'
 
     const returnRedRate = () => {
@@ -244,7 +245,7 @@ const SafeStats = ({
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>{singleSafe?.collateralName} Price (OSM)</SideTitle>
-                            <SideValue>{ethPrice}</SideValue>
+                            <SideValue>${collateralUnitPriceUSD}</SideValue>
                         </Side>
 
                         <Side>
@@ -313,6 +314,8 @@ const SafeStats = ({
         </>
     )
 }
+
+
 
 export default SafeStats
 

@@ -4,14 +4,16 @@ import {
     ILiquidationResponse,
     ISafeQuery,
     IUserSafeList,
+    SystemSate,
 } from '../interfaces'
-import { fetchLiquidationData } from '../virtual/virtualLiquidationData'
+import { TokenLiquidationData, fetchLiquidationData } from '../virtual/virtualLiquidationData'
 import { fetchUserSafes } from '../virtual/virtualUserSafes'
-
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
 interface UserListConfig {
     geb: Geb
     address: string
+    tokensData: { [key: string]: TokenData }
     proxy_not?: null
     safeId_not?: null
 }
@@ -21,55 +23,62 @@ type SingleSafeConfig = UserListConfig & { safeId: string }
 // returns LiquidationData
 const getLiquidationDataRpc = async (
     geb: Geb,
-    collateralTypeId = 'ETH-A',
-    systemStateTypeId = 'current'
+    tokensData: { [key: string]: TokenData }
 ): Promise<ILiquidationResponse> => {
-    if (collateralTypeId !== 'ETH-A') {
-        throw Error(`Collateral ${collateralTypeId} not supported`)
-    }
+    const liquidationData = await fetchLiquidationData(geb, tokensData);
 
-    const liquidationData = await fetchLiquidationData(geb);
-
-    return {
-        systemState: {
-            currentRedemptionPrice: {
-                value: parseRay(liquidationData.redemptionPrice),
-            },
-            currentRedemptionRate: {
-                // Calculate 8h exponentiation of the redemption rate in JS instead of solidity
-                annualizedRate: Math.pow(
-                    Number(parseRay(liquidationData.redemptionRate)),
-                    3600 * 24 * 365
-                ).toString(),
-            },
-            globalDebt: parseRad(liquidationData.globalDebt),
-            globalDebtCeiling: parseRad(liquidationData.globalDebtCeiling),
-            perSafeDebtCeiling: parseWad(liquidationData.safeDebtCeiling),
+    const systemState = {
+        currentRedemptionPrice: {
+            value: parseRay(liquidationData.redemptionPrice),
         },
-        collateralType: {
-            accumulatedRate: parseRay(liquidationData.accumulatedRate),
-            currentPrice: {
-                liquidationPrice: parseRay(liquidationData.liquidationPrice),
-                safetyPrice: parseRay(liquidationData.safetyPrice),
-                // Price not directly available but can be calculated
-                // Price feed price = safetyPrice * safetyCRatio * redemptionPrice
-                value: parseRad(
-                    liquidationData.safetyPrice
-                        .mul(liquidationData.safetyCRatio)
-                        .mul(liquidationData.redemptionPrice)
-                        .div(BigNumber.from(10).pow(36))
-                ),
-            },
-            debtCeiling: parseWad(liquidationData.safeDebtCeiling),
-            debtFloor: parseRad(liquidationData.debtFloor),
-            liquidationCRatio: parseRay(liquidationData.liquidationCRatio),
-            liquidationPenalty: parseWad(liquidationData.liquidationPenalty),
-            safetyCRatio: parseRay(liquidationData.safetyCRatio),
-            totalAnnualizedStabilityFee: Math.pow(
-                Number(parseRay(liquidationData.stabilityFee)),
-                3600 * 24 * 365 // Second per year
+        currentRedemptionRate: {
+            // Calculate 8h exponentiation of the redemption rate in JS instead of solidity
+            annualizedRate: Math.pow(
+                Number(parseRay(liquidationData.redemptionRate)),
+                3600 * 24 * 365
             ).toString(),
         },
+        globalDebt: parseRad(liquidationData.globalDebt),
+        globalDebtCeiling: parseRad(liquidationData.globalDebtCeiling),
+        perSafeDebtCeiling: parseWad(liquidationData.safeDebtCeiling),
+    }
+
+    const parsedLiquidationData = liquidationData.tokensLiquidationData.map((tokenLiquidationData) =>
+    parseTokenLiquidationData(liquidationData.redemptionPrice, tokenLiquidationData))
+
+    const collateralLiquidationData = Object.keys(tokensData).reduce((accumulator, key, index) => {
+        return {...accumulator, [key]: parsedLiquidationData[index]};
+    }, {});
+
+    return {
+        systemState,
+        collateralLiquidationData 
+    }
+}
+
+function parseTokenLiquidationData(redemptionPrice: BigNumber, tokenLiquidationData: TokenLiquidationData) {
+    return {
+        accumulatedRate: parseRay(tokenLiquidationData.accumulatedRate),
+        currentPrice: {
+            liquidationPrice: parseRay(tokenLiquidationData.liquidationPrice),
+            safetyPrice: parseRay(tokenLiquidationData.safetyPrice),
+            // Price not directly available but can be calculated
+            // Price feed price = safetyPrice * safetyCRatio * redemptionPrice
+            value: parseRad(
+                tokenLiquidationData.safetyPrice
+                    .mul(tokenLiquidationData.safetyCRatio)
+                    .mul(redemptionPrice)
+                    .div(BigNumber.from(10).pow(36))
+            ),
+        },
+        debtFloor: parseRad(tokenLiquidationData.debtFloor),
+        liquidationCRatio: parseRay(tokenLiquidationData.liquidationCRatio),
+        liquidationPenalty: parseWad(tokenLiquidationData.liquidationPenalty),
+        safetyCRatio: parseRay(tokenLiquidationData.safetyCRatio),
+        totalAnnualizedStabilityFee: Math.pow(
+            Number(parseRay(tokenLiquidationData.stabilityFee)),
+            3600 * 24 * 365 // Second per year
+        ).toString(),
     }
 }
 
@@ -77,7 +86,8 @@ const getLiquidationDataRpc = async (
 const getUserSafesRpc = async (
     config: UserListConfig
 ): Promise<IUserSafeList> => {
-    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address);
+    const haiAddress = config.tokensData.HAI.address;
+    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address, haiAddress);
 
     const safes = safesData.map(safe => ({
         collateral: parseWad(safe.lockedCollateral),
@@ -93,75 +103,12 @@ const getUserSafesRpc = async (
         erc20Balances: [{
             balance: parseWad(userCoinBalance),
         }],
-        ...await getLiquidationDataRpc(config.geb),
-    }
-}
-
-// returns single user safe by Id
-const getSafeByIdRpc = async (
-    config: SingleSafeConfig
-): Promise<ISafeQuery> => {
-    const { geb, address, safeId } = config
-    const multiCall1Request = Promise.all([
-        geb.contracts.safeManager.safes(safeId), // 0
-        geb.contracts.coin.balanceOf(address), // 1
-        geb.contracts.proxyRegistry.proxies(address), // 2
-    ])
-
-    // Fetch the liq data and the a multicall in parallel
-    const [multiCall1, liquidationDataRpc] = await Promise.all([
-        multiCall1Request,
-        getLiquidationDataRpc(geb),
-    ])
-
-    const safeHandler = multiCall1[0]
-
-    const multiCall2 = await Promise.all([
-        geb.contracts.safeEngine.safes(utils.ETH_A, safeHandler), // 0
-        geb.contracts.safeEngine.tokenCollateral(
-            utils.ETH_A,
-            safeHandler,
-        ), // 1
-        geb.contracts.coin.allowance(config.address, multiCall1[2]), // 2
-    ])
-
-    return {
-        safes: [
-            {
-                collateral: parseWad(multiCall2[0].lockedCollateral),
-                safeHandler,
-                // We can't get this over RPC
-                createdAt: null,
-                debt: parseWad(multiCall2[0].generatedDebt),
-                internalCollateralBalance: {
-                    balance: parseWad(multiCall2[1]),
-                },
-                // We can't get these over RPC
-                liquidationDiscount: null,
-                modifySAFECollateralization: null,
-                safeId: config.safeId,
-            },
-        ],
-        erc20Balances: [
-            {
-                balance: parseWad(multiCall1[1]),
-            },
-        ],
-        userProxies: [
-            {
-                address: multiCall1[2].toLowerCase(),
-                coinAllowance: {
-                    amount: parseWad(multiCall2[2]),
-                },
-            },
-        ],
-        ...liquidationDataRpc,
+        ...await getLiquidationDataRpc(config.geb, config.tokensData),
     }
 }
 
 const gebManager = {
     getUserSafesRpc,
-    getSafeByIdRpc,
     getLiquidationDataRpc,
 }
 

@@ -140,7 +140,6 @@ export function useTokenApproval(
             .catch((error: Error) => {
                 console.debug('Failed to approve token', error)
                 handleTransactionError(error)
-                throw error
             })
     }, [approvalState, tokenAddress, tokenContract, amount, spender])
 

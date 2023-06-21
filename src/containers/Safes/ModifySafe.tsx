@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { gnosisSafe } from 'src/connectors'
 import styled from 'styled-components'
 import Button from '../../components/Button'
@@ -16,7 +16,7 @@ import { ApprovalState, useTokenApproval } from '../../hooks/useTokenApproval'
 import { useStoreActions, useStoreState } from '../../store'
 import { DEFAULT_SAFE_STATE } from '../../utils/constants'
 import { formatNumber } from '../../utils/helper'
-import { TOKENS } from '../../utils/tokens'
+import { TOKEN_LOGOS } from '../../utils/tokens'
 import Review from './Review'
 
 const ModifySafe = ({
@@ -43,7 +43,7 @@ const ModifySafe = ({
     const {
         error,
         balances,
-        availableEth,
+        availableCollateral,
         availableHai,
         parsedAmounts,
         totalCollateral,
@@ -52,49 +52,48 @@ const ModifySafe = ({
         liquidationPrice,
     } = useSafeInfo(type)
 
-    const tokenBalances = connectWalletModel.tokensData
+    const tokenBalances = connectWalletModel.tokensFetchedData
+    const tokensData = connectWalletModel.tokensData
     const depositTokenBalance = singleSafe ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balance) : '-'
+
+    const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
+    const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value, 2)
+    const selectedTokenBalanceInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(leftInputBalance)).toString(), 2)
 
     const [unlockState, approveUnlock] = useTokenApproval(
         parsedAmounts.rightInput,
-        TOKENS.HAI.address,
+        tokensData?.HAI.address,
         proxyAddress
     )
 
     const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(
         parsedAmounts.leftInput,
-        singleSafe ? TOKENS[singleSafe?.collateralName!].address : undefined,
+        singleSafe ? tokensData[singleSafe?.collateralName!].address : undefined,
         proxyAddress
     )
 
+    const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
+
+    useEffect(() => {
+        return onClearAll
+    }, [])
+
     const { leftInput, rightInput } = parsedAmounts
 
-    const { onLeftInput, onRightInput } = useInputsHandlers()
     const isValid = !error
 
-    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI.balance)
-    const parsedWethBalance = ethers.utils.formatEther(tokenBalances.WETH.balance)
-    const wethBalanceUSD = useTokenBalanceInUSD(
-        'WETH',
-        isDeposit ? parsedWethBalance : (availableEth as string)
-    )
+    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI?.balance || '0')
+
     const haiBalanceUSD = useTokenBalanceInUSD(
         'HAI',
         rightInput ? rightInput : availableHai
     )
 
-    const formattedBalanceInUSD = useMemo(() => {
-        return {
-            weth: wethBalanceUSD,
-            hai: haiBalanceUSD,
-        }
-    }, [wethBalanceUSD, haiBalanceUSD])
-
     const onMaxLeftInput = () => {
         if (isDeposit) {
-            onLeftInput(tokenBalances[singleSafe?.collateralName!].balance.toString())
+            onLeftInput(depositTokenBalance.toString())
         } else {
-            onLeftInput(availableEth as string)
+            onLeftInput(availableCollateral as string)
         }
     }
 
@@ -119,11 +118,6 @@ const ModifySafe = ({
             )
         }
     }
-
-    const onClearAll = useCallback(() => {
-        onLeftInput('')
-        onRightInput('')
-    }, [onLeftInput, onRightInput])
 
     const handleWaitingTitle = () => {
         return 'Modifying Safe'
@@ -150,7 +144,11 @@ const ModifySafe = ({
         safeActions.setSafeData(DEFAULT_SAFE_STATE)
         connectWalletActions.setIsStepLoading(true)
         safeActions.setIsSafeCreated(true)
-        safeActions.fetchUserSafes({ address: account as string, geb })
+        safeActions.fetchUserSafes({
+            address: account as string,
+            geb,
+            tokensData: tokensData
+        })
     }
 
     const handleConfirm = async () => {
@@ -229,13 +227,13 @@ const ModifySafe = ({
                             <TokenInput
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'
                                     }_left`}
-                                token={{ name: singleSafe.collateralName, icon: TOKENS[singleSafe.collateralName].icon }}
+                                token={{ name: singleSafe.collateralName, icon: TOKEN_LOGOS[singleSafe.collateralName] }}
                                 label={
                                     isDeposit
-                                        ? `Balance: ${depositTokenBalance} ${singleSafe.collateralName}`
-                                        : `Available: ${availableEth} ${singleSafe.collateralName}`
+                                        ? `Balance: ${leftInputBalance} ${singleSafe.collateralName}`
+                                        : `Available: ${leftInputBalance} ${singleSafe.collateralName}`
                                 }
-                                rightLabel={`~$${formattedBalanceInUSD.weth}`}
+                                rightLabel={`~$${selectedTokenBalanceInUSD}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}
@@ -249,18 +247,18 @@ const ModifySafe = ({
                             <TokenInput
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'
                                     }_right`}
-                                token={TOKENS.HAI}
+                                token={tokensData.HAI && { icon: TOKEN_LOGOS[tokensData.HAI.symbol], name: tokensData.HAI.symbol }}
                                 label={
                                     isDeposit
                                         ? `Borrow HAI: ${formatNumber(
                                             availableHai,
                                             2
-                                        )} ${TOKENS.HAI.name}`
-                                        : `Balance: ${formatNumber(haiBalance, 2)} ${TOKENS.HAI.name}`
+                                        )} ${tokensData.HAI.symbol}`
+                                        : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
                                     isDeposit
-                                        ? `~$${formattedBalanceInUSD.hai}`
+                                        ? `~$${haiBalanceUSD}`
                                         : `HAI Owed: ${formatNumber(
                                             availableHai,
                                             4,
@@ -275,42 +273,45 @@ const ModifySafe = ({
                         </InputBlock>
                     </Inner>
                     <ButtonContainer>
-                        {isValid &&
-                            !isDeposit ?
-                            (unlockState === ApprovalState.PENDING ||
-                                unlockState === ApprovalState.NOT_APPROVED) ? (
-                                <Button
-                                    disabled={
-                                        !isValid || unlockState === ApprovalState.PENDING
-                                    }
-                                    text={
-                                        unlockState === ApprovalState.PENDING
-                                            ? 'Pending Approval..'
-                                            : 'Unlock HAI'
-                                    }
-                                    onClick={approveUnlock}
-                                />
-                            ) : <Button onClick={handleSubmit} disabled={!isValid}>
-                                {error ?? 'Review Transaction'}
+                        {!isValid ?
+                            <Button onClick={handleSubmit} disabled={!isValid}>
+                                {error}
                             </Button> :
-                            (
-                                (collateralUnlockState === ApprovalState.PENDING ||
-                                    collateralUnlockState === ApprovalState.NOT_APPROVED) ?
+                            !isDeposit ?
+                                (unlockState === ApprovalState.PENDING ||
+                                    unlockState === ApprovalState.NOT_APPROVED) ? (
                                     <Button
                                         disabled={
-                                            !isValid || collateralUnlockState === ApprovalState.PENDING
+                                            !isValid || unlockState === ApprovalState.PENDING
                                         }
                                         text={
-                                            collateralUnlockState === ApprovalState.PENDING
+                                            unlockState === ApprovalState.PENDING
                                                 ? 'Pending Approval..'
-                                                : `Unlock ${singleSafe?.collateralName}`
+                                                : 'Unlock HAI'
                                         }
-                                        onClick={collateralApproveUnlock}
-                                    /> :
-                                    <Button onClick={handleSubmit} disabled={!isValid}>
-                                        {error ?? 'Review Transaction'}
-                                    </Button>
-                            )}
+                                        onClick={approveUnlock}
+                                    />
+                                ) : <Button onClick={handleSubmit} disabled={!isValid}>
+                                    {'Review Transaction'}
+                                </Button> :
+                                (
+                                    (collateralUnlockState === ApprovalState.PENDING ||
+                                        collateralUnlockState === ApprovalState.NOT_APPROVED) ?
+                                        <Button
+                                            disabled={
+                                                !isValid || collateralUnlockState === ApprovalState.PENDING
+                                            }
+                                            text={
+                                                collateralUnlockState === ApprovalState.PENDING
+                                                    ? 'Pending Approval..'
+                                                    : `Unlock ${singleSafe?.collateralName}`
+                                            }
+                                            onClick={collateralApproveUnlock}
+                                        /> :
+                                        <Button onClick={handleSubmit} disabled={!isValid}>
+                                            {'Review Transaction'}
+                                        </Button>
+                                )}
                     </ButtonContainer>
                 </Container>}
         </>

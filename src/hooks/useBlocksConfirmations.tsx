@@ -43,7 +43,7 @@ export function use10BlocksConfirmations() {
         setBlocksSinceCheck(diff >= 10 ? 10 : diff)
         if (diff > 10) {
             await timeout(1000)
-            safeActions.fetchUserSafes({ address: account as string, geb })
+            safeActions.fetchUserSafes({ address: account as string, geb, tokensData: connectWalletState.tokensData })
             await timeout(2000)
             popupsActions.setIsWaitingModalOpen(false)
             connectWalletActions.setIsStepLoading(false)

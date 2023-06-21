@@ -23,7 +23,7 @@ const ImagePreloader = () => {
     return (
         <div style={{ display: 'none' }}>
             {INITIAL_STATE.map((img: string, i: number) => (
-                <img src={img} alt="" key={img + i} />
+                <img src={img} alt="" key={img + i.toString()} />
             ))}
         </div>
     )

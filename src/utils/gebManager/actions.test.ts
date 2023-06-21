@@ -112,6 +112,12 @@ const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
     }
 }
 
+describe('empty', () => {
+    it('empty', () => {
+        expect(true).toBe(true)
+    })
+})
+
 // TODO: This tests compared the rpc calls with graphql. We don't use graphql anymore
 // We need to mock the calls to the geb package to test that the function works correctly
 // describe('actions', () => {

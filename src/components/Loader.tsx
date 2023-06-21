@@ -48,8 +48,8 @@ const Container = styled.div<{ inline?: boolean }>`
     ${(props) =>
         props.inline
             ? css`
-                  display: inline;
-                  margin-left: 4px;
+                  display: inline-flex;
+                  margin-left: 8px;
                   vertical-align: middle;
               `
             : css`

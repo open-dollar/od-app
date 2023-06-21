@@ -54,22 +54,27 @@ const ModifySafe = ({
 
     const tokenBalances = connectWalletModel.tokensFetchedData
     const tokensData = connectWalletModel.tokensData
-    const depositTokenBalance = singleSafe ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balance) : '-'
+    const depositTokenBalance = singleSafe ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balanceE18) : '-'
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
     const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value, 2)
     const selectedTokenBalanceInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(leftInputBalance)).toString(), 2)
+    const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
     const [unlockState, approveUnlock] = useTokenApproval(
         parsedAmounts.rightInput,
         tokensData?.HAI.address,
-        proxyAddress
+        proxyAddress,
+        '18',
+        true
     )
 
     const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(
         parsedAmounts.leftInput,
         singleSafe ? tokensData[singleSafe?.collateralName!].address : undefined,
-        proxyAddress
+        proxyAddress,
+        selectedTokenDecimals,
+        true
     )
 
     const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
@@ -82,7 +87,7 @@ const ModifySafe = ({
 
     const isValid = !error
 
-    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI?.balance || '0')
+    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI?.balanceE18 || '0')
 
     const haiBalanceUSD = useTokenBalanceInUSD(
         'HAI',
@@ -112,8 +117,8 @@ const ModifySafe = ({
             onRightInput(
                 isMore
                     ? availableHai.toString()
-                    : tokenBalances.HAI.balance
-                        ? tokenBalances.HAI.balance
+                    : tokenBalances.HAI.balanceE18
+                        ? tokenBalances.HAI.balanceE18
                         : '0'
             )
         }
@@ -238,6 +243,7 @@ const ModifySafe = ({
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}
                                 disabled={!isDeposit && !isOwner}
+                                decimals={Number(selectedTokenDecimals)}
                             />
                         </InputBlock>
                         <InputBlock>

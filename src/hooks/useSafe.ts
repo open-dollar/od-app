@@ -58,8 +58,8 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const balances = useMemo(() => {
         return {
-            weth: tokensFetchedData.WETH?.balance,
-            hai: tokensFetchedData.HAI?.balance,
+            weth: tokensFetchedData.WETH?.balanceE18,
+            hai: tokensFetchedData.HAI?.balanceE18,
         }
     }, [tokensFetchedData])
 
@@ -94,7 +94,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const availableCollateral = useMemo(() => {
         if (singleSafe) {
             if (type === 'deposit_borrow' && singleSafe.collateralName != '') {
-                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balance)
+                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balanceE18)
                 return formatNumber(value, 2)
             } else {
                 return singleSafe.collateral

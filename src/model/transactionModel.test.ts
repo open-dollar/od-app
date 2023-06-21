@@ -20,6 +20,8 @@ const mockTx = (chainId: number, addon?: any) => {
         logs: [],
         cumulativeGasUsed: BigNumber.from('0'),
         byzantium: false,
+        effectiveGasPrice: BigNumber.from('0'),
+        type: 1,
     }
 
     const newTx: ITransaction = {

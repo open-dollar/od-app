@@ -1,7 +1,22 @@
 module.exports = {
-    style: {
-        postcss: {
-            plugins: [require('tailwindcss'), require('autoprefixer')],
-        },
+    content: ["./src/**/*.{html,js}"],
+    theme: {
+        extend: {},
     },
+    plugins: [],
+    webpack: {
+        configure: {
+            resolve: {
+                fallback: {
+                    "util": false,
+                    "assert": false,
+                    "http": false,
+                    "https": false,
+                    "os": false,
+                    "stream": false
+                }
+            }
+        }
+    }
+
 }

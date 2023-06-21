@@ -2,29 +2,33 @@ import { createStore, EasyPeasyConfig, Store } from 'easy-peasy'
 import safeModel, { SafeModel } from './safeModel'
 
 const liquidationDataMock = {
-    accumulatedRate: '1',
-    currentPrice: {
-        liquidationPrice: '123',
-        safetyPrice: '123',
-        value: '123',
-    },
-    debtCeiling: '1000',
-    debtFloor: '500',
-    liquidationCRatio: '1.45',
-    liquidationPenalty: '1.12',
-    safetyCRatio: '1.45',
-    totalAnnualizedStabilityFee: '1',
     currentRedemptionPrice: '3',
     currentRedemptionRate: '1',
     globalDebt: '1000',
     globalDebtCeiling: '1000',
     perSafeDebtCeiling: '1000',
+    collateralLiquidationData: {
+        'WETH': {
+            accumulatedRate: '1',
+            currentPrice: {
+                liquidationPrice: '123',
+                safetyPrice: '123',
+                value: '123',
+            },
+            debtFloor: '500',
+            liquidationCRatio: '1.45',
+            liquidationPenalty: '1.12',
+            safetyCRatio: '1.45',
+            totalAnnualizedStabilityFee: '1',
+        }
+    }
 }
 
 const listMock = [
     {
         id: '6',
         date: '1612881676',
+        safeHandler: 'handler',
         riskState: 3,
         collateral: '2',
         debt: '2',
@@ -40,6 +44,8 @@ const listMock = [
         liquidationPrice: '123',
         totalAnnualizedStabilityFee: '1',
         currentRedemptionRate: '1',
+        collateralName: 'WETH',
+        collateralType: 'WETH'
     },
 ]
 
@@ -53,20 +59,19 @@ describe('safe model', () => {
             store.getActions().setLiquidationData(liquidationDataMock)
             const liquidationData = store.getState().liquidationData
             expect(liquidationData).toBeTruthy()
-            expect(liquidationData.currentPrice).toBeTruthy()
-            expect(liquidationData.currentPrice.liquidationPrice).toEqual('123')
-            expect(liquidationData.currentPrice.safetyPrice).toEqual('123')
-            expect(liquidationData.currentPrice.value).toEqual('123')
-            expect(liquidationData.accumulatedRate).toEqual('1')
-            expect(liquidationData.debtCeiling).toEqual('1000')
-            expect(liquidationData.debtFloor).toEqual('500')
-            expect(liquidationData.liquidationCRatio).toEqual('1.45')
-            expect(liquidationData.liquidationPenalty).toEqual('1.12')
-            expect(liquidationData.safetyCRatio).toEqual('1.45')
-            expect(liquidationData.totalAnnualizedStabilityFee).toEqual('1')
-            expect(liquidationData.globalDebt).toEqual('1000')
-            expect(liquidationData.globalDebtCeiling).toEqual('1000')
-            expect(liquidationData.perSafeDebtCeiling).toEqual('1000')
+            expect(liquidationData!.collateralLiquidationData.WETH.currentPrice).toBeTruthy()
+            expect(liquidationData!.collateralLiquidationData.WETH.currentPrice.liquidationPrice).toEqual('123')
+            expect(liquidationData!.collateralLiquidationData.WETH.currentPrice.safetyPrice).toEqual('123')
+            expect(liquidationData!.collateralLiquidationData.WETH.currentPrice.value).toEqual('123')
+            expect(liquidationData!.collateralLiquidationData.WETH.accumulatedRate).toEqual('1')
+            expect(liquidationData!.collateralLiquidationData.WETH.debtFloor).toEqual('500')
+            expect(liquidationData!.collateralLiquidationData.WETH.liquidationCRatio).toEqual('1.45')
+            expect(liquidationData!.collateralLiquidationData.WETH.liquidationPenalty).toEqual('1.12')
+            expect(liquidationData!.collateralLiquidationData.WETH.safetyCRatio).toEqual('1.45')
+            expect(liquidationData!.collateralLiquidationData.WETH.totalAnnualizedStabilityFee).toEqual('1')
+            expect(liquidationData!.globalDebt).toEqual('1000')
+            expect(liquidationData!.globalDebtCeiling).toEqual('1000')
+            expect(liquidationData!.perSafeDebtCeiling).toEqual('1000')
         })
     })
 
@@ -89,30 +94,32 @@ describe('safe model', () => {
             expect(safe.collateralRatio).toEqual('2')
             expect(safe.internalCollateralBalance).toEqual('0')
             expect(safe.currentLiquidationPrice).toEqual('2')
+            expect(safe.collateralName).toEqual('WETH')
+            expect(safe.collateralType).toEqual('WETH')
 
             expect(safe.accumulatedRate).toEqual(
-                liquidationData.accumulatedRate
+                liquidationData!.collateralLiquidationData.WETH.accumulatedRate
             )
             expect(safe.accumulatedRate).toEqual(
-                liquidationData.accumulatedRate
+                liquidationData!.collateralLiquidationData.WETH.accumulatedRate
             )
             expect(safe.liquidationCRatio).toEqual(
-                liquidationData.liquidationCRatio
+                liquidationData!.collateralLiquidationData.WETH.liquidationCRatio
             )
             expect(safe.liquidationPenalty).toEqual(
-                liquidationData.liquidationPenalty
+                liquidationData!.collateralLiquidationData.WETH.liquidationPenalty
             )
             expect(safe.liquidationPrice).toEqual(
-                liquidationData.currentPrice.liquidationPrice
+                liquidationData!.collateralLiquidationData.WETH.currentPrice.liquidationPrice
             )
             expect(safe.totalAnnualizedStabilityFee).toEqual(
-                liquidationData.totalAnnualizedStabilityFee
+                liquidationData!.collateralLiquidationData.WETH.totalAnnualizedStabilityFee
             )
             expect(safe.currentRedemptionRate).toEqual(
-                liquidationData.currentRedemptionRate
+                liquidationData!.currentRedemptionRate
             )
             expect(safe.currentRedemptionPrice).toEqual(
-                liquidationData.currentRedemptionPrice
+                liquidationData!.currentRedemptionPrice
             )
         })
     })

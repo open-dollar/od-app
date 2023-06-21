@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import { Geb, utils } from '@hai-on-op/sdk';
-import { bytecode } from '../../artifacts/contracts/VirtualLiquidationData.sol/VirtualLiquidationData.json';
+import VirtualLiquidationData from '../../artifacts/contracts/VirtualLiquidationData.sol/VirtualLiquidationData.json';
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses';
 
 interface LiquidationData {
@@ -34,7 +34,7 @@ export async function fetchLiquidationData(geb: Geb, tokensData: { [key: string]
   );
 
   // Generate payload from input data
-  const payload = bytecode.concat(inputData.slice(2));
+  const payload = VirtualLiquidationData.bytecode.concat(inputData.slice(2));
 
   // Call the deployment transaction with the payload
   const returnedData = await geb.provider.call({ data: payload });

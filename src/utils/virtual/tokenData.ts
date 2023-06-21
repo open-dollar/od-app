@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import { Geb, utils } from '@hai-on-op/sdk';
-import { bytecode } from '../../artifacts/contracts/TokensData.sol/TokensData.json';
+import TokensData from '../../artifacts/contracts/TokensData.sol/TokensData.json';
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses';
 
 export interface TokenFetchData {
@@ -15,7 +15,7 @@ export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: s
   );
 
   // Generate payload from input data
-  const payload = bytecode.concat(inputData.slice(2));
+  const payload = TokensData.bytecode.concat(inputData.slice(2));
 
   // Call the deployment transaction with the payload
   const returnedData = await geb.provider.call({ data: payload });
@@ -29,7 +29,7 @@ export async function fetchTokenData(geb: Geb, user: string, tokens: { [token: s
   )[0] as TokenFetchData[];
 
   const result: { [token: string]: TokenFetchData } = Object.keys(tokens).reduce((obj, key, i) => ({ ...obj, [key]: decoded[i] }), {});
-  
+
   const parsedResult = Object.entries(result).reduce((newObj, [key, value]) => {
     return {
       ...newObj,

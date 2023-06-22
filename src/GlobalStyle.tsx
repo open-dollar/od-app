@@ -12,8 +12,7 @@ const GlobalStyle = createGlobalStyle`
           background-size: contain;
           background-position: center 100px;
           background-repeat: no-repeat;
-          overflow: ${(props: Props) =>
-              props.bodyOverflow ? 'hidden' : 'visible'};
+          overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 
 .web3modal-modal-lightbox {
   z-index: 999;
@@ -113,12 +112,7 @@ export const ExternalLinkArrow = css`
 
 export const BtnStyle = css<{
     disabled?: boolean
-    color?:
-        | 'blueish'
-        | 'greenish'
-        | 'yellowish'
-        | 'colorPrimary'
-        | 'colorSecondary'
+    color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
 }>`
     pointer-events: ${({ theme, disabled }) => (disabled ? 'none' : 'inherit')};
     outline: none;
@@ -132,9 +126,7 @@ export const BtnStyle = css<{
     padding: 8px 30px;
     color: ${(props) => props.theme.colors.neutral};
     background: ${({ theme, disabled, color }) =>
-        disabled
-            ? theme.colors.dimmedBackground
-            : theme.colors[color ?? 'blueish']};
+        disabled ? theme.colors.dimmedBackground : theme.colors[color ?? 'blueish']};
     border-radius: ${(props) => props.theme.global.borderRadius};
     transition: all 0.3s ease;
     display: flex;

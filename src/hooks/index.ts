@@ -85,10 +85,7 @@ export function useInactiveListener(suppress = false) {
             if (accounts.length > 0) {
                 // eat errors
                 activate(injected, undefined, true).catch((error) => {
-                    console.error(
-                        'Failed to activate after accounts changed',
-                        error
-                    )
+                    console.error('Failed to activate after accounts changed', error)
                 })
             }
         }
@@ -107,10 +104,7 @@ export function useInactiveListener(suppress = false) {
             return () => {
                 if (ethereum.removeListener) {
                     ethereum.removeListener('chainChanged', handleChainChanged)
-                    ethereum.removeListener(
-                        'accountsChanged',
-                        handleAccountsChanged
-                    )
+                    ethereum.removeListener('accountsChanged', handleAccountsChanged)
                 }
             }
         }

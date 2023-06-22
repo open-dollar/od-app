@@ -20,8 +20,7 @@ const OnBoarding = ({ ...props }) => {
         safeModel: safeState,
         popupsModel: popupsState,
     } = useStoreState((state) => state)
-    const { popupsModel: popupsActions, safeModel: safeActions } =
-        useStoreActions((state) => state)
+    const { popupsModel: popupsActions, safeModel: safeActions } = useStoreActions((state) => state)
 
     const address: string = props.match.params.address ?? ''
 
@@ -38,7 +37,7 @@ const OnBoarding = ({ ...props }) => {
             await safeActions.fetchUserSafes({
                 address: address || (account as string),
                 geb,
-                tokensData: connectWalletState.tokensData
+                tokensData: connectWalletState.tokensData,
             })
         }
         fetchSafes()
@@ -48,7 +47,8 @@ const OnBoarding = ({ ...props }) => {
                 (!account && !address) ||
                 (address && !isAddress(address.toLowerCase())) ||
                 !library ||
-                connectWalletState.isWrongNetwork)
+                connectWalletState.isWrongNetwork
+            )
                 fetchSafes()
         }, ms)
 
@@ -64,15 +64,12 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {(account && !safeState.safeCreated) ||
-                    (!isOwner && !safeState.list.length) ? (
+                {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
                     <BtnContainer className="top-up">
                         <Button
                             data-test-id="topup-btn"
                             disabled={connectWalletState.isWrongNetwork}
-                            onClick={() =>
-                                popupsActions.setIsSafeManagerOpen(true)
-                            }
+                            onClick={() => popupsActions.setIsSafeManagerOpen(true)}
                         >
                             <BtnInner>{t('manage_other_safes')}</BtnInner>
                         </Button>

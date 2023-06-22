@@ -4,14 +4,7 @@ import { BytesLike } from '@ethersproject/bytes'
 import { BigNumberish } from '@ethersproject/bignumber'
 import { BigNumber } from '@ethersproject/bignumber'
 import { FunctionFragment, Result } from 'ethers/lib/utils'
-import {
-    BaseContract,
-    ethers,
-    Signer,
-    CallOverrides,
-    ContractTransaction,
-    Overrides,
-} from 'ethers'
+import { BaseContract, ethers, Signer, CallOverrides, ContractTransaction, Overrides } from 'ethers'
 import { TypedEvent, TypedEventFilter, TypedListener } from './common'
 
 export type CallStruct = { target: string; callData: BytesLike }
@@ -28,29 +21,15 @@ interface MulticallInterface extends ethers.utils.Interface {
         'multicall(tuple[])': FunctionFragment
     }
 
-    encodeFunctionData(
-        functionFragment: 'getCurrentBlockTimestamp',
-        values?: undefined
-    ): string
-    encodeFunctionData(
-        functionFragment: 'getEthBalance',
-        values: [string]
-    ): string
+    encodeFunctionData(functionFragment: 'getCurrentBlockTimestamp', values?: undefined): string
+    encodeFunctionData(functionFragment: 'getEthBalance', values: [string]): string
     encodeFunctionData(
         functionFragment: 'multicall',
-        values: [
-            { target: string; gasLimit: BigNumberish; callData: BytesLike }[]
-        ]
+        values: [{ target: string; gasLimit: BigNumberish; callData: BytesLike }[]]
     ): string
 
-    decodeFunctionResult(
-        functionFragment: 'getCurrentBlockTimestamp',
-        data: BytesLike
-    ): Result
-    decodeFunctionResult(
-        functionFragment: 'getEthBalance',
-        data: BytesLike
-    ): Result
+    decodeFunctionResult(functionFragment: 'getCurrentBlockTimestamp', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'getEthBalance', data: BytesLike): Result
     decodeFunctionResult(functionFragment: 'multicall', data: BytesLike): Result
 
     events: {}
@@ -126,10 +105,7 @@ export declare class Multicall extends BaseContract {
         returnData: string[]
     }>
     getBlockHash(blockNumber: BigNumberish): Promise<string>
-    getBlockHash(
-        blockNumber: BigNumberish,
-        multicall: true
-    ): MulticallRequest<string>
+    getBlockHash(blockNumber: BigNumberish, multicall: true): MulticallRequest<string>
     getCurrentBlockCoinbase(): Promise<string>
     getCurrentBlockCoinbase(multicall: true): MulticallRequest<string>
     getCurrentBlockDifficulty(): Promise<BigNumber>
@@ -147,13 +123,8 @@ export declare class Multicall extends BaseContract {
             calls: CallStruct[],
             overrides?: Overrides & { from?: string | Promise<string> }
         ): Promise<ContractTransaction>
-        getCurrentBlockTimestamp(
-            overrides?: CallOverrides
-        ): Promise<[BigNumber] & { timestamp: BigNumber }>
-        getEthBalance(
-            addr: string,
-            overrides?: CallOverrides
-        ): Promise<[BigNumber] & { balance: BigNumber }>
+        getCurrentBlockTimestamp(overrides?: CallOverrides): Promise<[BigNumber] & { timestamp: BigNumber }>
+        getEthBalance(addr: string, overrides?: CallOverrides): Promise<[BigNumber] & { balance: BigNumber }>
     }
     callStatic: {
         aggregate(

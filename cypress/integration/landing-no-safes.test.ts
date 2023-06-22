@@ -1,10 +1,6 @@
 /// <reference types="Cypress" />
 
-import {
-    ADDRESS_NO_SAFES_NEVER_USER,
-    returnWalletAddress,
-    TEST_ADDRESS_NEVER_USE,
-} from '../support/commands'
+import { ADDRESS_NO_SAFES_NEVER_USER, returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
 describe('App Page - No Safes', () => {
     beforeEach(() => {
@@ -29,9 +25,7 @@ describe('App Page - No Safes', () => {
     })
 
     it('is connected', () => {
-        const shortenedAddress = returnWalletAddress(
-            ADDRESS_NO_SAFES_NEVER_USER
-        )
+        const shortenedAddress = returnWalletAddress(ADDRESS_NO_SAFES_NEVER_USER)
         cy.get('#web3-status-connected').contains(shortenedAddress)
         cy.get('#web3-status-connected').click()
         cy.get('#web3-account-identifier-row').contains(shortenedAddress)

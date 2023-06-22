@@ -9,13 +9,7 @@ import { handleTransactionError } from '../hooks/TransactionHooks'
 import { useTokenBalanceInUSD } from '../hooks/useGeb'
 import { useSafeInfo } from '../hooks/useSafe'
 import { useStoreActions, useStoreState } from '../store'
-import {
-    formatNumber,
-    getRatePercentage,
-    ratioChecker,
-    returnState,
-    timeout,
-} from '../utils/helper'
+import { formatNumber, getRatePercentage, ratioChecker, returnState, timeout } from '../utils/helper'
 import Button from './Button'
 
 const SafeStats = ({
@@ -34,13 +28,7 @@ const SafeStats = ({
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
-    } = useSafeInfo(
-        isModifying
-            ? isDeposit
-                ? 'deposit_borrow'
-                : 'repay_withdraw'
-            : 'info'
-    )
+    } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
     const { library, account } = useActiveWeb3React()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -53,35 +41,29 @@ const SafeStats = ({
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
     const totalDebtInUSD = useTokenBalanceInUSD('HAI', totalDebt as string)
-    
+
     const collateralName = singleSafe!.collateralName
-    const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value,2)
+    const collateralUnitPriceUSD = formatNumber(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value,
+        2
+    )
     const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString(), 2)
-    const collateralRatio = Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
+    const collateralRatio =
+        Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
     const liquidationPenalty = '18-20'
 
-    const haiPrice = singleSafe
-        ? formatNumber(singleSafe.currentRedemptionPrice, 3)
-        : '0'
+    const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
 
     const ethPrice = liquidationData
         ? formatNumber(liquidationData.collateralLiquidationData.WETH.currentPrice.value, 2)
         : '0'
 
     const returnRedRate = () => {
-        const currentRedemptionRate = singleSafe
-            ? getRatePercentage(singleSafe.currentRedemptionRate, 10)
-            : '0'
-        if (
-            Number(currentRedemptionRate) > 0 &&
-            Number(currentRedemptionRate) < 0.001
-        ) {
+        const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
+        if (Number(currentRedemptionRate) > 0 && Number(currentRedemptionRate) < 0.001) {
             return '< 0.001'
-        } else if (
-            Number(currentRedemptionRate) < 0 &&
-            Number(currentRedemptionRate) > -0.001
-        ) {
+        } else if (Number(currentRedemptionRate) < 0 && Number(currentRedemptionRate) > -0.001) {
             return '> -0.001'
         } else if (Number(currentRedemptionRate) === 0) {
             return '0'
@@ -121,8 +103,9 @@ const SafeStats = ({
 
     return (
         <>
-            {// TODO: This allows the user to collect surplus ETH from their safe. This is disabled for now.
-            /* {isOwner &&
+            {
+                // TODO: This allows the user to collect surplus ETH from their safe. This is disabled for now.
+                /* {isOwner &&
                 singleSafe &&
                 Number(singleSafe.internalCollateralBalance) > 0 ? (
                 <SurplusBlock>
@@ -143,7 +126,8 @@ const SafeStats = ({
                         </Inline>
                     </StateInner>
                 </SurplusBlock>
-            ) : null} */}
+            ) : null} */
+            }
             <Flex>
                 <Left>
                     <Inner className="main">
@@ -156,11 +140,7 @@ const SafeStats = ({
                                 {modified ? (
                                     <>
                                         After:{' '}
-                                        <span
-                                            className={
-                                                isDeposit ? 'green' : 'yellow'
-                                            }
-                                        >
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
                                             {newCollateral} {singleSafe?.collateralName}
                                         </span>
                                     </>
@@ -179,14 +159,7 @@ const SafeStats = ({
                                 {' '}
                                 {modified ? (
                                     <>
-                                        After:{' '}
-                                        <span
-                                            className={
-                                                isDeposit ? 'green' : 'yellow'
-                                            }
-                                        >
-                                            {newDebt} HAI
-                                        </span>
+                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} HAI</span>
                                     </>
                                 ) : (
                                     `$${totalDebtInUSD}`
@@ -197,35 +170,28 @@ const SafeStats = ({
                         <Main>
                             <MainLabel>
                                 <Circle
-                                    data-tip={`${singleSafe &&
-                                        returnState(singleSafe.riskState)
-                                        ? returnState(singleSafe.riskState)
-                                        : 'No'
-                                        } Risk`}
+                                    data-tip={`${
+                                        singleSafe && returnState(singleSafe.riskState)
+                                            ? returnState(singleSafe.riskState)
+                                            : 'No'
+                                    } Risk`}
                                     className={
-                                        singleSafe &&
-                                            returnState(singleSafe.riskState)
-                                            ? returnState(
-                                                singleSafe.riskState
-                                            ).toLowerCase()
+                                        singleSafe && returnState(singleSafe.riskState)
+                                            ? returnState(singleSafe.riskState).toLowerCase()
                                             : 'dimmed'
                                     }
                                 />{' '}
                                 {/* TODO: check if this is needed */}
                                 Ratio (min {collateralRatio}%)
                             </MainLabel>
-                            <MainValue>
-                                {singleSafe?.collateralRatio}%
-                            </MainValue>
+                            <MainValue>{singleSafe?.collateralRatio}%</MainValue>
                             <MainChange>
                                 {modified ? (
                                     <>
                                         After:{' '}
                                         <span
                                             className={returnState(
-                                                ratioChecker(
-                                                    Number(newCollateralRatio)
-                                                )
+                                                ratioChecker(Number(newCollateralRatio))
                                             ).toLowerCase()}
                                         >
                                             {newCollateralRatio}%
@@ -266,10 +232,7 @@ const SafeStats = ({
                                 {modified ? (
                                     <div className="sideNote">
                                         After:{' '}
-                                        <span
-                                            className={`${isDeposit ? 'green' : 'yellow'
-                                                }`}
-                                        >
+                                        <span className={`${isDeposit ? 'green' : 'yellow'}`}>
                                             ${newLiquidationPrice}
                                         </span>
                                     </div>
@@ -291,13 +254,11 @@ const SafeStats = ({
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>Stability Fee</SideTitle>
-                            <SideValue>{`${singleSafe?.totalAnnualizedStabilityFee
-                                ? getRatePercentage(
-                                    singleSafe?.totalAnnualizedStabilityFee,
-                                    2
-                                )
-                                : 0
-                                }%`}</SideValue>
+                            <SideValue>{`${
+                                singleSafe?.totalAnnualizedStabilityFee
+                                    ? getRatePercentage(singleSafe?.totalAnnualizedStabilityFee, 2)
+                                    : 0
+                            }%`}</SideValue>
                         </Side>
 
                         <Side>
@@ -315,8 +276,6 @@ const SafeStats = ({
         </>
     )
 }
-
-
 
 export default SafeStats
 

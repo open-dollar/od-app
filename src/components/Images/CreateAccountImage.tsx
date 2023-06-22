@@ -11,22 +11,8 @@ const CreateAccountImage = () => {
             viewBox="0 0 1032 741.75278"
         >
             <title>profile</title>
-            <line
-                y1="741.25278"
-                x2="166"
-                y2="741.25278"
-                fill="none"
-                stroke="#3f3d56"
-                strokeMiterlimit="10"
-            />
-            <rect
-                x="243"
-                y="127.75278"
-                width="737"
-                height="499"
-                rx="19.39764"
-                fill="#f2f2f2"
-            />
+            <line y1="741.25278" x2="166" y2="741.25278" fill="none" stroke="#3f3d56" strokeMiterlimit="10" />
+            <rect x="243" y="127.75278" width="737" height="499" rx="19.39764" fill="#f2f2f2" />
             <rect
                 x="220.5"
                 y="96.25278"
@@ -46,42 +32,10 @@ const CreateAccountImage = () => {
                 stroke="#3f3d56"
                 strokeMiterlimit="10"
             />
-            <rect
-                x="661"
-                y="256.25278"
-                width="201"
-                height="31"
-                rx="7.09252"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <rect
-                x="622.5"
-                y="342.25278"
-                width="278"
-                height="25"
-                rx="7.09252"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <rect
-                x="622.5"
-                y="410.25278"
-                width="278"
-                height="25"
-                rx="7.09252"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <rect
-                x="622.5"
-                y="478.25278"
-                width="278"
-                height="25"
-                rx="7.09252"
-                fill="#4ce096"
-                opacity="0.3"
-            />
+            <rect x="661" y="256.25278" width="201" height="31" rx="7.09252" fill="#4ce096" opacity="0.3" />
+            <rect x="622.5" y="342.25278" width="278" height="25" rx="7.09252" fill="#4ce096" opacity="0.3" />
+            <rect x="622.5" y="410.25278" width="278" height="25" rx="7.09252" fill="#4ce096" opacity="0.3" />
+            <rect x="622.5" y="478.25278" width="278" height="25" rx="7.09252" fill="#4ce096" opacity="0.3" />
             <rect
                 x="671"
                 y="246.25278"
@@ -122,51 +76,12 @@ const CreateAccountImage = () => {
                 stroke="#3f3d56"
                 strokeMiterlimit="10"
             />
-            <circle
-                cx="276.5"
-                cy="126.25278"
-                r="15"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <circle
-                cx="318.5"
-                cy="126.25278"
-                r="15"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <circle
-                cx="360.5"
-                cy="126.25278"
-                r="15"
-                fill="#4ce096"
-                opacity="0.3"
-            />
-            <circle
-                cx="282.5"
-                cy="120.25278"
-                r="15"
-                fill="none"
-                stroke="#3f3d56"
-                strokeMiterlimit="10"
-            />
-            <circle
-                cx="324.5"
-                cy="120.25278"
-                r="15"
-                fill="none"
-                stroke="#3f3d56"
-                strokeMiterlimit="10"
-            />
-            <circle
-                cx="366.5"
-                cy="120.25278"
-                r="15"
-                fill="none"
-                stroke="#3f3d56"
-                strokeMiterlimit="10"
-            />
+            <circle cx="276.5" cy="126.25278" r="15" fill="#4ce096" opacity="0.3" />
+            <circle cx="318.5" cy="126.25278" r="15" fill="#4ce096" opacity="0.3" />
+            <circle cx="360.5" cy="126.25278" r="15" fill="#4ce096" opacity="0.3" />
+            <circle cx="282.5" cy="120.25278" r="15" fill="none" stroke="#3f3d56" strokeMiterlimit="10" />
+            <circle cx="324.5" cy="120.25278" r="15" fill="none" stroke="#3f3d56" strokeMiterlimit="10" />
+            <circle cx="366.5" cy="120.25278" r="15" fill="none" stroke="#3f3d56" strokeMiterlimit="10" />
             <path
                 d="M537.854,653.37916c-2.51135-11.56848-3.17724-27.36932-2.33252-38.36047,0,0-12.69836-55.78644-22.68994-60.99133l-.00305.003c-.153.19678-5.00195,6.55383-5.61706,26.22443-.62452,19.98284-7.69971,33.09655-7.69971,33.09655s2.28955,24.90766.98047,40.02777Z"
                 transform="translate(-84.5 -79.12639)"

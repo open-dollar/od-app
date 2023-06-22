@@ -273,12 +273,12 @@ export interface CollateralLiquidationData {
 export interface SystemSate {
     currentRedemptionPrice: {
         value: string
-    },
+    }
     currentRedemptionRate: {
         annualizedRate: string
-    },
-    globalDebt: string,
-    globalDebtCeiling: string,
+    }
+    globalDebt: string
+    globalDebtCeiling: string
     perSafeDebtCeiling: string
 }
 

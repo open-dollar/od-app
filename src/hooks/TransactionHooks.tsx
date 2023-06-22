@@ -1,8 +1,5 @@
 import { utils as gebUtils } from '@hai-on-op/sdk'
-import {
-    TransactionResponse,
-    TransactionRequest,
-} from '@ethersproject/providers'
+import { TransactionResponse, TransactionRequest } from '@ethersproject/providers'
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { useCallback, useMemo } from 'react'
 import { useActiveWeb3React } from '.'
@@ -19,11 +16,7 @@ export function useTransactionAdder(): (
 ) => void {
     const { chainId, account } = useActiveWeb3React()
     return useCallback(
-        (
-            response: TransactionResponse,
-            summary?: string,
-            approval?: { tokenAddress: string; spender: string }
-        ) => {
+        (response: TransactionResponse, summary?: string, approval?: { tokenAddress: string; spender: string }) => {
             if (!account) return
             if (!chainId) return
 
@@ -104,9 +97,7 @@ export async function handlePreTxGasEstimate(
 
     if (floorGasLimit) {
         const floorGasLimitBN = BigNumber.from(floorGasLimit)
-        tx.gasLimit = floorGasLimitBN.gt(gasPlus20Percent)
-            ? floorGasLimitBN
-            : gasPlus20Percent
+        tx.gasLimit = floorGasLimitBN.gt(gasPlus20Percent) ? floorGasLimitBN : gasPlus20Percent
     } else {
         tx.gasLimit = gasPlus20Percent
     }
@@ -115,10 +106,7 @@ export async function handlePreTxGasEstimate(
 }
 
 export function handleTransactionError(e: any) {
-    if (
-        typeof e === 'string' &&
-        (e.toLowerCase().includes('join') || e.toLowerCase().includes('exit'))
-    ) {
+    if (typeof e === 'string' && (e.toLowerCase().includes('join') || e.toLowerCase().includes('exit'))) {
         store.dispatch.popupsModel.setWaitingPayload({
             title: 'Cannot join/exit at this time.',
             status: 'error',
@@ -141,10 +129,7 @@ export function handleTransactionError(e: any) {
 }
 
 // returns whether a token has a pending approval transaction
-export function useHasPendingApproval(
-    tokenAddress: string | undefined,
-    spender: string | undefined
-): boolean {
+export function useHasPendingApproval(tokenAddress: string | undefined, spender: string | undefined): boolean {
     const allTransactions = store.getState().transactionsModel.transactions
     return useMemo(
         () =>
@@ -178,9 +163,7 @@ export function useHasPendingTransactions() {
     }, [allTransactions])
 
     return useMemo(() => {
-        const pending = sortedRecentTransactions
-            .filter((tx) => !tx.receipt)
-            .map((tx) => tx.hash)
+        const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
         return !!pending.length
     }, [sortedRecentTransactions])
 }

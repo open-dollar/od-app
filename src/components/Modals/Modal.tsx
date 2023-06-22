@@ -95,34 +95,18 @@ const Modal = ({
                             >
                                 {hideHeader ? null : (
                                     <HeaderContainer>
-                                        {
-                                            <Header>
-                                                {title ? t(title) : null}
-                                            </Header>
-                                        }
-                                        {showXButton ? (
-                                            <CloseBtn onClick={closeModal}>
-                                                &times;
-                                            </CloseBtn>
-                                        ) : null}
+                                        {<Header>{title ? t(title) : null}</Header>}
+                                        {showXButton ? <CloseBtn onClick={closeModal}>&times;</CloseBtn> : null}
                                     </HeaderContainer>
                                 )}
                                 <Body>{children}</Body>
 
                                 {showXButton && !submitBtnText ? null : (
                                     <Footer>
-                                        <Button
-                                            dimmed
-                                            onClick={closeModal}
-                                            text={t('cancel')}
-                                        />
+                                        <Button dimmed onClick={closeModal} text={t('cancel')} />
 
                                         {submitBtnText && handleSubmit ? (
-                                            <Button
-                                                withArrow
-                                                onClick={handleSubmit}
-                                                text={t(submitBtnText)}
-                                            />
+                                            <Button withArrow onClick={handleSubmit} text={t(submitBtnText)} />
                                         ) : null}
                                     </Footer>
                                 )}

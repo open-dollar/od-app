@@ -12,9 +12,7 @@ const ConnectedWalletModal = () => {
             maxWidth="400px"
             borderRadius={'20px'}
             isModalOpen={popupsState.isConnectedWalletModalOpen}
-            closeModal={() =>
-                popupsActions.setIsConnectedWalletModalOpen(false)
-            }
+            closeModal={() => popupsActions.setIsConnectedWalletModalOpen(false)}
             showXButton
             backDropClose
         >

@@ -1,9 +1,6 @@
 /// <reference types="Cypress" />
 
-import {
-    returnWalletAddress,
-    TEST_ADDRESS_NEVER_USE,
-} from '../support/commands'
+import { returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
 describe('App Page - Has Safes', () => {
     beforeEach(() => {

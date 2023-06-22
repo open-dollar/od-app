@@ -48,6 +48,5 @@ export const walletconnect = new WalletConnectConnector({
 export const walletlink = new WalletLinkConnector({
     url: NETWORK_URL,
     appName: 'Reflexer',
-    appLogoUrl:
-        'https://gblobscdn.gitbook.com/spaces%2F-M9jdHretGKCtWYz5jZR%2Favatar-1593281271873.png?alt=media',
+    appLogoUrl: 'https://gblobscdn.gitbook.com/spaces%2F-M9jdHretGKCtWYz5jZR%2Favatar-1593281271873.png?alt=media',
 })

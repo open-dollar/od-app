@@ -1,11 +1,6 @@
 import { BigNumber } from 'ethers'
 import { Geb, utils } from '@hai-on-op/sdk'
-import {
-    ILiquidationResponse,
-    ISafeQuery,
-    IUserSafeList,
-    SystemSate,
-} from '../interfaces'
+import { ILiquidationResponse, ISafeQuery, IUserSafeList, SystemSate } from '../interfaces'
 import { TokenLiquidationData, fetchLiquidationData } from '../virtual/virtualLiquidationData'
 import { fetchUserSafes } from '../virtual/virtualUserSafes'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
@@ -25,7 +20,7 @@ const getLiquidationDataRpc = async (
     geb: Geb,
     tokensData: { [key: string]: TokenData }
 ): Promise<ILiquidationResponse> => {
-    const liquidationData = await fetchLiquidationData(geb, tokensData);
+    const liquidationData = await fetchLiquidationData(geb, tokensData)
 
     const systemState = {
         currentRedemptionPrice: {
@@ -33,10 +28,7 @@ const getLiquidationDataRpc = async (
         },
         currentRedemptionRate: {
             // Calculate 8h exponentiation of the redemption rate in JS instead of solidity
-            annualizedRate: Math.pow(
-                Number(parseRay(liquidationData.redemptionRate)),
-                3600 * 24 * 365
-            ).toString(),
+            annualizedRate: Math.pow(Number(parseRay(liquidationData.redemptionRate)), 3600 * 24 * 365).toString(),
         },
         globalDebt: parseRad(liquidationData.globalDebt),
         globalDebtCeiling: parseRad(liquidationData.globalDebtCeiling),
@@ -44,15 +36,16 @@ const getLiquidationDataRpc = async (
     }
 
     const parsedLiquidationData = liquidationData.tokensLiquidationData.map((tokenLiquidationData) =>
-    parseTokenLiquidationData(liquidationData.redemptionPrice, tokenLiquidationData))
+        parseTokenLiquidationData(liquidationData.redemptionPrice, tokenLiquidationData)
+    )
 
     const collateralLiquidationData = Object.keys(tokensData).reduce((accumulator, key, index) => {
-        return {...accumulator, [key]: parsedLiquidationData[index]};
-    }, {});
+        return { ...accumulator, [key]: parsedLiquidationData[index] }
+    }, {})
 
     return {
         systemState,
-        collateralLiquidationData 
+        collateralLiquidationData,
     }
 }
 
@@ -83,27 +76,27 @@ function parseTokenLiquidationData(redemptionPrice: BigNumber, tokenLiquidationD
 }
 
 // Returns list of user safes
-const getUserSafesRpc = async (
-    config: UserListConfig
-): Promise<IUserSafeList> => {
-    const haiAddress = config.tokensData.HAI.address;
-    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address, haiAddress);
+const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> => {
+    const haiAddress = config.tokensData.HAI.address
+    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address, haiAddress)
 
-    const safes = safesData.map(safe => ({
+    const safes = safesData.map((safe) => ({
         collateral: parseWad(safe.lockedCollateral),
         debt: parseWad(safe.generatedDebt),
         createdAt: null,
         safeHandler: safe.addy,
         safeId: safe.id.toString(),
         collateralType: safe.collateralType,
-    }));
+    }))
 
     return {
         safes,
-        erc20Balances: [{
-            balance: parseWad(userCoinBalance),
-        }],
-        ...await getLiquidationDataRpc(config.geb, config.tokensData),
+        erc20Balances: [
+            {
+                balance: parseWad(userCoinBalance),
+            },
+        ],
+        ...(await getLiquidationDataRpc(config.geb, config.tokensData)),
     }
 }
 

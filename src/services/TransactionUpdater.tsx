@@ -28,19 +28,11 @@ export function shouldCheck(
 export default function TransactionUpdater(): null {
     const toastId = 'transactionId'
     const { chainId, library } = useActiveWeb3React()
-    const {
-        transactionsModel: state,
-        connectWalletModel: connectedWalletState,
-    } = useStoreState((state) => state)
+    const { transactionsModel: state, connectWalletModel: connectedWalletState } = useStoreState((state) => state)
 
-    const lastBlockNumber = chainId
-        ? connectedWalletState.blockNumber[chainId]
-        : null
+    const lastBlockNumber = chainId ? connectedWalletState.blockNumber[chainId] : null
 
-    const transactions = useMemo(
-        () => (chainId ? state.transactions ?? {} : {}),
-        [chainId, state]
-    )
+    const transactions = useMemo(() => (chainId ? state.transactions ?? {} : {}), [chainId, state])
 
     useEffect(() => {
         if (!chainId || !library || !lastBlockNumber) return
@@ -52,39 +44,27 @@ export default function TransactionUpdater(): null {
                     .getTransactionReceipt(hash)
                     .then((receipt) => {
                         if (receipt) {
-                            store.dispatch.transactionsModel.finalizeTransaction(
-                                {
-                                    ...transactions[hash],
-                                    receipt: {
-                                        blockHash: receipt.blockHash,
-                                        blockNumber: receipt.blockNumber,
-                                        contractAddress:
-                                            receipt.contractAddress,
-                                        from: receipt.from,
-                                        status: receipt.status,
-                                        to: receipt.to,
-                                        transactionHash:
-                                            receipt.transactionHash,
-                                        transactionIndex:
-                                            receipt.transactionIndex,
-                                    },
-                                    confirmedTime: new Date().getTime(),
-                                }
-                            )
+                            store.dispatch.transactionsModel.finalizeTransaction({
+                                ...transactions[hash],
+                                receipt: {
+                                    blockHash: receipt.blockHash,
+                                    blockNumber: receipt.blockNumber,
+                                    contractAddress: receipt.contractAddress,
+                                    from: receipt.from,
+                                    status: receipt.status,
+                                    to: receipt.to,
+                                    transactionHash: receipt.transactionHash,
+                                    transactionIndex: receipt.transactionIndex,
+                                },
+                                confirmedTime: new Date().getTime(),
+                            })
                             toast(
                                 <ToastPayload
-                                    icon={
-                                        receipt.status === 1
-                                            ? 'Check'
-                                            : 'AlertTriangle'
-                                    }
-                                    iconColor={
-                                        receipt.status === 1 ? 'green' : 'red'
-                                    }
+                                    icon={receipt.status === 1 ? 'Check' : 'AlertTriangle'}
+                                    iconColor={receipt.status === 1 ? 'green' : 'red'}
                                     text={
                                         receipt.status === 1
-                                            ? transactions[hash].summary ||
-                                              'Transaction Confirmed'
+                                            ? transactions[hash].summary || 'Transaction Confirmed'
                                             : 'Transaction Failed'
                                     }
                                     payload={{
@@ -103,10 +83,7 @@ export default function TransactionUpdater(): null {
                         }
                     })
                     .catch((error) => {
-                        console.error(
-                            `failed to check transaction hash: ${hash}`,
-                            error
-                        )
+                        console.error(`failed to check transaction hash: ${hash}`, error)
                     })
             })
     }, [chainId, library, transactions, lastBlockNumber])

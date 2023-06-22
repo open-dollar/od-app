@@ -48,16 +48,13 @@ export default function WalletModal() {
 
     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-    const [pendingWallet, setPendingWallet] = useState<
-        AbstractConnector | undefined
-    >()
+    const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
 
     const [pendingError, setPendingError] = useState<boolean>()
 
     const previousAccount = usePrevious(account)
 
-    const toggleWalletModal = () =>
-        popupsActions.setIsConnectorsWalletOpen(!isConnectorsWalletOpen)
+    const toggleWalletModal = () => popupsActions.setIsConnectorsWalletOpen(!isConnectorsWalletOpen)
 
     // close on connection, when logged out before
     useEffect(() => {
@@ -81,20 +78,11 @@ export default function WalletModal() {
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
-            ((active && !activePrevious) ||
-                (connector && connector !== connectorPrevious && !error))
+            ((active && !activePrevious) || (connector && connector !== connectorPrevious && !error))
         ) {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
-    }, [
-        setWalletView,
-        active,
-        error,
-        connector,
-        isConnectorsWalletOpen,
-        activePrevious,
-        connectorPrevious,
-    ])
+    }, [setWalletView, active, error, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
     const tryActivation = async (connector: AbstractConnector | undefined) => {
         let name = ''
@@ -110,10 +98,7 @@ export default function WalletModal() {
         setWalletView(WALLET_VIEWS.PENDING)
 
         // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-        if (
-            connector instanceof WalletConnectConnector &&
-            connector.walletConnectProvider?.wc?.uri
-        ) {
+        if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
             connector.walletConnectProvider = undefined
         }
 
@@ -138,23 +123,16 @@ export default function WalletModal() {
                     return (
                         <Option
                             onClick={() => {
-                                option.connector !== connector &&
-                                    !option.href &&
-                                    tryActivation(option.connector)
+                                option.connector !== connector && !option.href && tryActivation(option.connector)
                             }}
                             id={`connect-${key}`}
                             key={key}
-                            active={
-                                option.connector &&
-                                option.connector === connector
-                            }
+                            active={option.connector && option.connector === connector}
                             color={option.color}
                             link={option.href}
                             header={option.name}
                             subheader={null}
-                            icon={
-                                require(`../../assets/connectors/${option.iconName}`)
-                            }
+                            icon={require(`../../assets/connectors/${option.iconName}`)}
                         />
                     )
                 }
@@ -174,9 +152,7 @@ export default function WalletModal() {
                                 header={'Install Metamask'}
                                 subheader={null}
                                 link={'https://metamask.io/'}
-                                icon={
-                                    MetamaskLogo
-                                }
+                                icon={MetamaskLogo}
                             />
                         )
                     } else {
@@ -202,8 +178,7 @@ export default function WalletModal() {
                         onClick={() => {
                             option.connector === connector
                                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                                : !option.href &&
-                                tryActivation(option.connector)
+                                : !option.href && tryActivation(option.connector)
                         }}
                         key={key}
                         active={option.connector === connector}
@@ -211,9 +186,7 @@ export default function WalletModal() {
                         link={option.href}
                         header={option.name}
                         subheader={null} //use option.descriptio to bring back multi-line
-                        icon={
-                            require(`../../assets/connectors/${option.iconName}`)
-                        }
+                        icon={require(`../../assets/connectors/${option.iconName}`)}
                     />
                 )
             )
@@ -226,14 +199,17 @@ export default function WalletModal() {
                 <UpperSection>
                     <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
                     <HeaderRow>
-                        {error instanceof UnsupportedChainIdError
-                            ? 'Wrong Network'
-                            : 'Error connecting'}
+                        {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
                     </HeaderRow>
                     <ContentWrapper>
                         {error instanceof UnsupportedChainIdError ? (
-                            <h5>{t('not_supported')}{' '}
-                            <a target="_blank" href="//chainlist.org/chain/420">Optimism Goerli</a>.</h5>
+                            <h5>
+                                {t('not_supported')}{' '}
+                                <a target="_blank" href="//chainlist.org/chain/420">
+                                    Optimism Goerli
+                                </a>
+                                .
+                            </h5>
                         ) : (
                             t('error_try_refresh')
                         )}

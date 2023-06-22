@@ -24,9 +24,7 @@ const ConnectedWalletInfo = () => {
     const [copied, setCopied] = useState(false)
     const isMetaMask = !!(ethereum && ethereum.isMetaMask)
 
-    const { transactionsModel: transactionsState } = useStoreState(
-        (state) => state
-    )
+    const { transactionsModel: transactionsState } = useStoreState((state) => state)
     const {
         popupsModel: popupsActions,
         connectWalletModel: connectWalletActions,
@@ -49,8 +47,7 @@ const ConnectedWalletInfo = () => {
             .filter(
                 (k) =>
                     SUPPORTED_WALLETS[k].connector === connector &&
-                    (connector !== injected ||
-                        isMetaMask === (k === 'METAMASK'))
+                    (connector !== injected || isMetaMask === (k === 'METAMASK'))
             )
             .map((k) => SUPPORTED_WALLETS[k].name)[0]
         return name
@@ -61,12 +58,8 @@ const ConnectedWalletInfo = () => {
         return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
     }, [transactionsState.transactions])
 
-    const pendingTransactions = sortedRecentTransactions
-        .filter((tx) => !tx.receipt)
-        .map((tx) => tx.hash)
-    const confirmedTransactions = sortedRecentTransactions
-        .filter((tx) => tx.receipt)
-        .map((tx) => tx.hash)
+    const pendingTransactions = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+    const confirmedTransactions = sortedRecentTransactions.filter((tx) => tx.receipt).map((tx) => tx.hash)
 
     const renderTransactions = (transactions: string[]) => {
         return (
@@ -87,13 +80,9 @@ const ConnectedWalletInfo = () => {
         <>
             <DataContainer>
                 <Connection>
-                    {t('connected_with')}{' '}
-                    {connector ? formatConnectorName() : 'N/A'}
+                    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
                     {connector !== injected && connector !== walletlink ? (
-                        <Button
-                            text={'disconnect'}
-                            onClick={handleDisconnect}
-                        />
+                        <Button text={'disconnect'} onClick={handleDisconnect} />
                     ) : (
                         <Button text={'change'} onClick={handleChange} />
                     )}
@@ -106,9 +95,7 @@ const ConnectedWalletInfo = () => {
                 {account && active ? (
                     <WalletData>
                         {copied ? (
-                            <CopyBtn className="greenish">
-                                {t('copied')}
-                            </CopyBtn>
+                            <CopyBtn className="greenish">{t('copied')}</CopyBtn>
                         ) : (
                             <CopyToClipboard
                                 text={account}
@@ -123,14 +110,7 @@ const ConnectedWalletInfo = () => {
                             </CopyToClipboard>
                         )}
                         {chainId && account ? (
-                            <LinkBtn
-                                href={getEtherscanLink(
-                                    chainId,
-                                    account,
-                                    'address'
-                                )}
-                                target="_blank"
-                            >
+                            <LinkBtn href={getEtherscanLink(chainId, account, 'address')} target="_blank">
                                 <ExpandIcon /> {t('view_etherscan')}
                             </LinkBtn>
                         ) : null}
@@ -138,16 +118,11 @@ const ConnectedWalletInfo = () => {
                 ) : null}
             </DataContainer>
             <TransactionsContainer>
-                {!!pendingTransactions.length ||
-                !!confirmedTransactions.length ? (
+                {!!pendingTransactions.length || !!confirmedTransactions.length ? (
                     <>
                         <Heading>
                             {t('recent_transactions')}
-                            <Button
-                                text={'clear_all'}
-                                withArrow
-                                onClick={handleClearTransactions}
-                            />
+                            <Button text={'clear_all'} withArrow onClick={handleClearTransactions} />
                         </Heading>
                         {renderTransactions(pendingTransactions)}
                         {renderTransactions(confirmedTransactions)}

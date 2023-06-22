@@ -48,10 +48,8 @@ const Container = styled.div<{ isBlock?: boolean }>`
     &.alert {
         border: 1px solid ${(props) => props.theme.colors.alertBorder};
         border-width: ${({ theme, isBlock }) => (isBlock ? '0' : '1px')};
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.alertBackground};
-        color: ${({ theme, isBlock }) =>
-            isBlock ? theme.colors.customSecondary : theme.colors.alertColor};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.alertBackground)};
+        color: ${({ theme, isBlock }) => (isBlock ? theme.colors.customSecondary : theme.colors.alertColor)};
         ${Circle} {
             background: ${(props) => props.theme.colors.alertColor};
         }
@@ -59,10 +57,8 @@ const Container = styled.div<{ isBlock?: boolean }>`
     &.success {
         border: 1px solid ${(props) => props.theme.colors.successBorder};
         border-width: ${({ theme, isBlock }) => (isBlock ? '0' : '1px')};
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.successBackground};
-        color: ${({ theme, isBlock }) =>
-            isBlock ? theme.colors.customSecondary : theme.colors.successColor};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.successBackground)};
+        color: ${({ theme, isBlock }) => (isBlock ? theme.colors.customSecondary : theme.colors.successColor)};
         ${Circle} {
             background: ${(props) => props.theme.colors.successColor};
         }
@@ -70,10 +66,8 @@ const Container = styled.div<{ isBlock?: boolean }>`
     &.danger {
         border: 1px solid ${(props) => props.theme.colors.dangerColor};
         border-width: ${({ theme, isBlock }) => (isBlock ? '0' : '1px')};
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.dangerBackground};
-        color: ${({ theme, isBlock }) =>
-            isBlock ? theme.colors.customSecondary : theme.colors.dangerColor};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.dangerBackground)};
+        color: ${({ theme, isBlock }) => (isBlock ? theme.colors.customSecondary : theme.colors.dangerColor)};
         ${Circle} {
             background: ${(props) => props.theme.colors.dangerColor};
         }
@@ -81,10 +75,8 @@ const Container = styled.div<{ isBlock?: boolean }>`
     &.warning {
         border: 1px solid ${(props) => props.theme.colors.warningBorder};
         border-width: ${({ theme, isBlock }) => (isBlock ? '0' : '1px')};
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.warningBackground};
-        color: ${({ theme, isBlock }) =>
-            isBlock ? theme.colors.customSecondary : theme.colors.warningColor};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.warningBackground)};
+        color: ${({ theme, isBlock }) => (isBlock ? theme.colors.customSecondary : theme.colors.warningColor)};
         ${Circle} {
             background: ${(props) => props.theme.colors.warningColor};
         }
@@ -92,19 +84,15 @@ const Container = styled.div<{ isBlock?: boolean }>`
 
     &.dimmed {
         border: 1px solid #959595;
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.secondary};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.secondary)};
         color: #fff;
         ${Circle} {
         }
     }
 
     &.gradient {
-        border: 1px solid
-            ${({ theme, isBlock }) =>
-                isBlock ? 'transparent' : theme.colors.inputBorderColor};
-        background: ${({ theme, isBlock }) =>
-            isBlock ? 'transparent' : theme.colors.gradient};
+        border: 1px solid ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.inputBorderColor)};
+        background: ${({ theme, isBlock }) => (isBlock ? 'transparent' : theme.colors.gradient)};
         color: #fff;
         ${Circle} {
             background: ${(props) => props.theme.colors.inputBorderColor};

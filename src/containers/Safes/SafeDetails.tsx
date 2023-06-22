@@ -15,10 +15,11 @@ const SafeDetails = ({ ...props }) => {
     const { t } = useTranslation()
     const { account, library } = useActiveWeb3React()
 
-    const { safeModel: safeActions } =
-        useStoreActions((state) => state)
+    const { safeModel: safeActions } = useStoreActions((state) => state)
 
-    const { safeModel: { liquidationData, singleSafe } } = useStoreState((state) => state)
+    const {
+        safeModel: { liquidationData, singleSafe },
+    } = useStoreState((state) => state)
 
     const safeId = props.match.params.id as string
 
@@ -38,8 +39,7 @@ const SafeDetails = ({ ...props }) => {
 
     const isOwner = useIsOwner(safeId)
 
-    const { safeModel: safeState } =
-        useStoreState((state) => state)
+    const { safeModel: safeState } = useStoreState((state) => state)
 
     const safes = safeState.list
     const safe = safes.find((safe) => safe.id === safeId)
@@ -67,30 +67,14 @@ const SafeDetails = ({ ...props }) => {
         <Container>
             {!isOwner ? (
                 <LabelContainer>
-                    <AlertLabel
-                        isBlock={false}
-                        text={t('managed_safe_warning')}
-                        type="warning"
-                    />
+                    <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                 </LabelContainer>
             ) : null}
-            <SafeHeader
-                safeId={safeId}
-                isModifying={isDeposit || isWithdraw}
-                isDeposit={isDeposit}
-            />
+            <SafeHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
 
-            {!isLoading &&
-                < SafeStats
-                    isModifying={isDeposit || isWithdraw}
-                    isDeposit={isDeposit}
-                    isOwner={isOwner}
-                />
-            }
+            {!isLoading && <SafeStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? (
-                <ModifySafe isDeposit={isDeposit} isOwner={isOwner} />
-            ) : null}
+            {(isDeposit || isWithdraw) && !isLoading ? <ModifySafe isDeposit={isDeposit} isOwner={isOwner} /> : null}
         </Container>
     )
 }

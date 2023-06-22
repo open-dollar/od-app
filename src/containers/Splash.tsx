@@ -9,7 +9,7 @@ const Splash = () => {
     const [title, setTitle] = useState(options[0])
 
     useEffect(() => {
-        const options = ['OPTIMISM', 'ETHEREUM', 'LSDs', 'UNISWAPS', '???']
+        const options = ['OPTIMISM', 'ETHEREUM', 'LSDs', 'UNISWAP', '???']
         let currentIndex = 0
 
         const interval = setInterval(() => {

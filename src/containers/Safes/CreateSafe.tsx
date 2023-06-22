@@ -71,6 +71,9 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
 
     const collateralUnitPriceUSD = formatNumber(safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0', 2)
     const selectedTokenBalanceInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString(), 2)
+    const debtFloor = Math.ceil(
+        Number(formatNumber(safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.debtFloor || '0'))
+    );
 
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     const onMaxRightInput = () => onRightInput(availableHai.toString())
@@ -271,9 +274,7 @@ const CreateSafe = ({ selectedItem, setSelectedItem, collaterals }: { selectedIt
                     <Flex className="hasBtn">
                         <Note data-test-id="debt_floor_note">
                             <span>Note:</span>
-                            {` The minimum amount to mint per safe is ${Math.ceil(
-                                Number(formatNumber(liquidationData!.collateralLiquidationData.WETH.debtFloor))
-                            )} HAI`}
+                            {` The minimum amount to mint per safe is ${debtFloor} HAI`}
                         </Note>
                         {(approvalState === ApprovalState.APPROVED) ?
                             <Button onClick={handleSubmit} disabled={!isValid}>
@@ -308,6 +309,7 @@ const CreateSafeContainer = () => {
 
     useEffect(() => {
         safeActions.setSafeData({ ...DEFAULT_SAFE_STATE, collateral: selectedItem })
+        return () => safeActions.setSafeData(DEFAULT_SAFE_STATE)
     }, [selectedItem])
 
     useEffect(() => {

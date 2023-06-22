@@ -57,6 +57,7 @@ const SafeStats = ({
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value,2)
     const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString(), 2)
+    const collateralRatio = Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
     const liquidationPenalty = '18-20'
 
@@ -211,7 +212,7 @@ const SafeStats = ({
                                     }
                                 />{' '}
                                 {/* TODO: check if this is needed */}
-                                Ratio (min ?%)
+                                Ratio (min {collateralRatio}%)
                             </MainLabel>
                             <MainValue>
                                 {singleSafe?.collateralRatio}%

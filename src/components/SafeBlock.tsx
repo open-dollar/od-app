@@ -134,7 +134,7 @@ const Circle = styled.div`
 const SafeState = styled.div`
     display: flex;
     align-items: center;
-    width: 80px;
+    width: 100px;
     color: ${(props) => props.theme.colors.customSecondary};
     font-size: ${(props) => props.theme.font.small};
     span {

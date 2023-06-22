@@ -9,6 +9,7 @@ import { useStoreActions, useStoreState } from '../../store'
 import { isNumeric } from '../../utils/validations'
 import ModifySafe from './ModifySafe'
 import SafeHeader from './SafeHeader'
+import { DEFAULT_SAFE_STATE } from 'src/utils/constants'
 
 const SafeDetails = ({ ...props }) => {
     const { t } = useTranslation()
@@ -44,7 +45,13 @@ const SafeDetails = ({ ...props }) => {
     const safe = safes.find((safe) => safe.id === safeId)
 
     useEffect(() => {
-        if (safe) safeActions.setSingleSafe(safe)
+        if (safe) {
+            safeActions.setSingleSafe(safe)
+            safeActions.setSafeData(DEFAULT_SAFE_STATE)
+        }
+        return () => {
+            safeActions.setSingleSafe(null)
+        }
     }, [safe])
 
     useEffect(() => {

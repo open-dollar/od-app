@@ -99,17 +99,15 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const onMaxRightInput = () => {
         if (isDeposit) {
-            onRightInput(availableHai.toString())
+            onRightInput(availableHai)
         } else {
             const availableHaiBN = ethers.utils.parseEther(availableHai)
 
-            const haiBalanceBN = balances.hai ? ethers.utils.parseEther(balances.hai.toString()) : BigNumber.from('0')
+            const haiBalanceBN = tokenBalances.HAI.balanceE18 ? tokenBalances.HAI.balanceE18 : BigNumber.from('0')
 
-            const isMore = haiBalanceBN.gt(availableHaiBN)
+            const isMoreDebt = availableHaiBN.gt(haiBalanceBN)
 
-            onRightInput(
-                isMore ? availableHai.toString() : tokenBalances.HAI.balanceE18 ? tokenBalances.HAI.balanceE18 : '0'
-            )
+            onRightInput(isMoreDebt ? ethers.utils.formatEther(haiBalanceBN) : availableHai)
         }
     }
 

@@ -79,10 +79,7 @@ const Dropdown = (props: Props) => {
     }, [itemSelected])
 
     return (
-        <Container
-            className={isOpen ? 'isOpen' : ''}
-            style={{ width: width || '100%' }}
-        >
+        <Container className={isOpen ? 'isOpen' : ''} style={{ width: width || '100%' }}>
             {label ? <Label>{label}</Label> : null}
             <InnerContainer ref={wrapperRef}>
                 <DropdownBtn
@@ -106,16 +103,8 @@ const Dropdown = (props: Props) => {
                                     }}
                                 />{' '}
                                 {selectedItem.href ? (
-                                    <Link
-                                        href={selectedItem.href}
-                                        target={
-                                            selectedItem.isExternal
-                                                ? '_blank'
-                                                : ''
-                                        }
-                                    >
-                                        {selectedItem.name}{' '}
-                                        <ArrowUpRight width={17} height={17} />
+                                    <Link href={selectedItem.href} target={selectedItem.isExternal ? '_blank' : ''}>
+                                        {selectedItem.name} <ArrowUpRight width={17} height={17} />
                                     </Link>
                                 ) : (
                                     selectedItem.name
@@ -133,11 +122,7 @@ const Dropdown = (props: Props) => {
                             minWidth: minWidth || '100%',
                         }}
                     >
-                        <Scrollbars
-                            style={{ width: '100%' }}
-                            autoHeight
-                            autoHeightMax={185}
-                        >
+                        <Scrollbars style={{ width: '100%' }} autoHeight autoHeightMax={185}>
                             {items.map((item: Item, index: number) => (
                                 <DropDownItem
                                     key={index}

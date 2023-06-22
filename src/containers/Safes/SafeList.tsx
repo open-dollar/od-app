@@ -18,16 +18,11 @@ const SafeList = ({ address }: { address?: string }) => {
 
     const { t } = useTranslation()
 
-    const { connectWalletModel: connectWalletState, safeModel: safeState } =
-        useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
 
     const safes = useMemo(() => {
         if (safeState.list.length > 0) {
-            return showEmpty
-                ? safeState.list
-                : safeState.list.filter(
-                    (safe) => returnState(safe.riskState) !== ''
-                )
+            return showEmpty ? safeState.list : safeState.list.filter((safe) => returnState(safe.riskState) !== '')
         }
         return []
     }, [safeState.list, showEmpty])
@@ -35,10 +30,7 @@ const SafeList = ({ address }: { address?: string }) => {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const isOwner = useMemo(
-        () =>
-            address && account
-                ? account.toLowerCase() === address.toLowerCase()
-                : true,
+        () => (address && account ? account.toLowerCase() === address.toLowerCase() : true),
         [account, address]
     )
 
@@ -79,11 +71,7 @@ const SafeList = ({ address }: { address?: string }) => {
                             <Col>Risk</Col>
                         </Header>
                         {safes.map((safe: ISafe) => (
-                            <SafeBlock
-                                className="safeBlock"
-                                key={safe.id}
-                                {...safe}
-                            />
+                            <SafeBlock className="safeBlock" key={safe.id} {...safe} />
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>

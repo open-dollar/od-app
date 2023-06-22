@@ -30,9 +30,7 @@ describe('App Page - No Proxy', () => {
     })
 
     it('is connected', () => {
-        const shortenedAddress = returnWalletAddress(
-            ADDRESS_NO_PROXY_NEVER_USER
-        )
+        const shortenedAddress = returnWalletAddress(ADDRESS_NO_PROXY_NEVER_USER)
         cy.get('#web3-status-connected').contains(shortenedAddress)
         cy.get('#web3-status-connected').click()
         cy.get('#web3-account-identifier-row').contains(shortenedAddress)

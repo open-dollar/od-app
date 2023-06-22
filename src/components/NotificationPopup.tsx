@@ -25,10 +25,7 @@ const NotificationPopup = () => {
 
     return (
         <InnerContent ref={wrapperRef}>
-            <BellBtn
-                className={isOpen ? 'active' : ''}
-                onClick={() => setIsOpen(!isOpen)}
-            >
+            <BellBtn className={isOpen ? 'active' : ''} onClick={() => setIsOpen(!isOpen)}>
                 <BellIcon />
             </BellBtn>
             {isOpen ? (
@@ -36,12 +33,7 @@ const NotificationPopup = () => {
                     <CaretImg src={require('../assets/caret-up.svg').default} />
 
                     <Menu>
-                        <Scrollbars
-                            autoHide
-                            style={{ width: '100%' }}
-                            autoHeight
-                            autoHeightMax={'calc(100vh - 100px)'}
-                        >
+                        <Scrollbars autoHide style={{ width: '100%' }} autoHeight autoHeightMax={'calc(100vh - 100px)'}>
                             {[...new Array(4)].map((_) => (
                                 <NotificationItem key={Math.random()}>
                                     <Left>
@@ -51,14 +43,7 @@ const NotificationPopup = () => {
                                     <Right>
                                         <Value>0.000</Value>
                                         <ExternalLink href="">
-                                            Etherscan{' '}
-                                            <img
-                                                src={
-                                                    require('../assets/arrow-up.svg')
-                                                        .default
-                                                }
-                                                alt=""
-                                            />
+                                            Etherscan <img src={require('../assets/arrow-up.svg').default} alt="" />
                                         </ExternalLink>
                                     </Right>
                                 </NotificationItem>

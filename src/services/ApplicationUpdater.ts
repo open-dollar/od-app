@@ -32,8 +32,7 @@ export default function ApplicationUpdater(): null {
         (blockNumber: number) => {
             setState((state) => {
                 if (chainId === state.chainId) {
-                    if (typeof state.blockNumber !== 'number')
-                        return { chainId, blockNumber }
+                    if (typeof state.blockNumber !== 'number') return { chainId, blockNumber }
                     return {
                         chainId,
                         blockNumber: Math.max(blockNumber, state.blockNumber),
@@ -54,12 +53,7 @@ export default function ApplicationUpdater(): null {
         library
             .getBlockNumber()
             .then(blockNumberCallback)
-            .catch((error) =>
-                console.error(
-                    `Failed to get block number for chainId: ${chainId}`,
-                    error
-                )
-            )
+            .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
         library.on('block', blockNumberCallback)
         return () => {

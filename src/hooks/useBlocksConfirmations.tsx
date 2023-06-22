@@ -9,10 +9,9 @@ export function use10BlocksConfirmations() {
     const [blocksSinceCheck, setBlocksSinceCheck] = useState<number>()
     const { account, chainId } = useActiveWeb3React()
     const geb = useGeb()
-    const {
-        connectWalletModel: connectWalletState,
-        transactionsModel: transactionsState,
-    } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState, transactionsModel: transactionsState } = useStoreState(
+        (state) => state
+    )
     const {
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
@@ -24,15 +23,7 @@ export function use10BlocksConfirmations() {
     const { transactions } = transactionsState
 
     const returnConfirmations = async () => {
-        if (
-            !account ||
-            !chainId ||
-            !blockNumber[chainId] ||
-            !ctHash ||
-            !geb ||
-            !transactions[ctHash] ||
-            step !== 1
-        ) {
+        if (!account || !chainId || !blockNumber[chainId] || !ctHash || !geb || !transactions[ctHash] || step !== 1) {
             return null
         }
         connectWalletActions.setIsStepLoading(true)
@@ -43,7 +34,11 @@ export function use10BlocksConfirmations() {
         setBlocksSinceCheck(diff >= 10 ? 10 : diff)
         if (diff > 10) {
             await timeout(1000)
-            safeActions.fetchUserSafes({ address: account as string, geb, tokensData: connectWalletState.tokensData })
+            safeActions.fetchUserSafes({
+                address: account as string,
+                geb,
+                tokensData: connectWalletState.tokensData,
+            })
             await timeout(2000)
             popupsActions.setIsWaitingModalOpen(false)
             connectWalletActions.setIsStepLoading(false)
@@ -53,12 +48,7 @@ export function use10BlocksConfirmations() {
         }
     }
     // eslint-disable-next-line
-    const returnConfCallback = useCallback(returnConfirmations, [
-        chainId,
-        blockNumber,
-        ctHash,
-        step,
-    ])
+    const returnConfCallback = useCallback(returnConfirmations, [chainId, blockNumber, ctHash, step])
 
     useEffect(() => {
         returnConfCallback()

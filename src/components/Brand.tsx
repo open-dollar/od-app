@@ -7,7 +7,6 @@ interface Props {
 }
 
 const Brand = ({ height }: Props) => {
-
     return (
         <Container>
             <a href={'/'}>

@@ -22,16 +22,10 @@ const SafeBlock = ({ ...props }) => {
     return (
         <Container className={props.className}>
             <Link to={`/safes/${props.id}`}>
-                <BlockContainer
-                    className={!returnState(props.riskState) ? 'empty' : ''}
-                >
+                <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
-                            <img
-                                    src={TOKEN_LOGOS[props.collateralName]}
-                                    width={'24px'}
-                                    height={'24px'}
-                                />
+                            <img src={TOKEN_LOGOS[props.collateralName]} width={'24px'} height={'24px'} />
                             <SafeData>
                                 <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
                             </SafeData>
@@ -39,16 +33,11 @@ const SafeBlock = ({ ...props }) => {
 
                         <SafeState
                             className={
-                                returnState(props.riskState)
-                                    ? returnState(props.riskState).toLowerCase()
-                                    : 'dimmed'
+                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
                             }
                         >
                             <Circle />
-                            <span>
-                                {returnState(props.riskState) || 'No'}
-                            </span>{' '}
-                            {t('risk')}
+                            <span>{returnState(props.riskState) || 'No'}</span> {t('risk')}
                         </SafeState>
                     </BlockHeader>
                     <Block>

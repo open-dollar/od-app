@@ -1,9 +1,6 @@
 /// <reference types="Cypress" />
 
-import {
-    returnWalletAddress,
-    TEST_ADDRESS_NEVER_USE,
-} from '../support/commands'
+import { returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
 describe('Distributions', () => {
     beforeEach(() => {
@@ -61,9 +58,7 @@ describe('Distributions', () => {
             .invoke('text')
             .then((tx) => {
                 const total_balance = tx.split(' FLX')[0]
-                expect(Number(total_balance)).to.be.equal(
-                    Number(balance) + Number(calaimable)
-                )
+                expect(Number(total_balance)).to.be.equal(Number(balance) + Number(calaimable))
             })
     })
 })

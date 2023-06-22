@@ -12,9 +12,7 @@ import Identicon from './Icons/Identicon'
 
 const Navbar = () => {
     const { t } = useTranslation()
-    const {
-        transactionsModel: transactionsState,
-    } = useStoreState((state) => state)
+    const { transactionsModel: transactionsState } = useStoreState((state) => state)
 
     const { transactions } = transactionsState
 
@@ -33,9 +31,7 @@ const Navbar = () => {
         return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
     }, [transactions])
 
-    const pending = sortedRecentTransactions
-        .filter((tx) => !tx.receipt)
-        .map((tx) => tx.hash)
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
 
     const hasPendingTransactions = !!pending.length
     return (

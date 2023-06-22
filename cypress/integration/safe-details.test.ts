@@ -1,9 +1,6 @@
 /// <reference types="Cypress" />
 
-import {
-    returnWalletAddress,
-    TEST_ADDRESS_NEVER_USE,
-} from '../support/commands'
+import { returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
 describe('App Page - Safe Details', () => {
     const getValue = (val: string) => val.replace(/[^\d.]*/g, '')
@@ -51,16 +48,12 @@ describe('App Page - Safe Details', () => {
         cy.get('[data-test-id="deposit_borrow_left_label"]')
             .invoke('text')
             .then((tx) => {
-                cy.get('[data-test-id="deposit_borrow_left"]').type(
-                    getValue(tx)
-                )
+                cy.get('[data-test-id="deposit_borrow_left"]').type(getValue(tx))
             })
         cy.get('[data-test-id="deposit_borrow_right_label"]')
             .invoke('text')
             .then((tx) => {
-                cy.get('[data-test-id="deposit_borrow_right"]').type(
-                    getValue(tx)
-                )
+                cy.get('[data-test-id="deposit_borrow_right"]').type(getValue(tx))
                 cy.wait(5000)
                 cy.contains('140.00%')
             })
@@ -89,9 +82,7 @@ describe('App Page - Safe Details', () => {
         cy.get('#repay_withdraw').click()
         cy.get('[data-test-id="repay_withdraw_left"]').type('0')
         cy.get('[data-test-id="repay_withdraw_right"]').type('0')
-        cy.contains(
-            'Please enter the amount of ETH to free or the amount of HAI to repay'
-        )
+        cy.contains('Please enter the amount of ETH to free or the amount of HAI to repay')
     })
 
     it('should show error if amount to withdraw exeeds available amount', () => {
@@ -127,13 +118,10 @@ describe('App Page - Safe Details', () => {
         cy.get('[data-test-id="waiting-modal-title"]')
             .should('be.visible')
             .then((e) =>
-                cy.waitUntil(
-                    () => Cypress.$(e).text() === 'Transaction Submitted',
-                    {
-                        timeout: 100000,
-                        interval: 5000,
-                    }
-                )
+                cy.waitUntil(() => Cypress.$(e).text() === 'Transaction Submitted', {
+                    timeout: 100000,
+                    interval: 5000,
+                })
             )
 
         cy.contains('Close').click()
@@ -150,13 +138,10 @@ describe('App Page - Safe Details', () => {
         cy.get('[data-test-id="waiting-modal-title"]')
             .should('be.visible')
             .then((e) =>
-                cy.waitUntil(
-                    () => Cypress.$(e).text() === 'Transaction Submitted',
-                    {
-                        timeout: 100000,
-                        interval: 5000,
-                    }
-                )
+                cy.waitUntil(() => Cypress.$(e).text() === 'Transaction Submitted', {
+                    timeout: 100000,
+                    interval: 5000,
+                })
             )
 
         cy.contains('Close').click()

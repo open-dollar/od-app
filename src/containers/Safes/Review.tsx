@@ -20,9 +20,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                 title={t('confirm_transaction_details')}
                 description={
                     t('confirm_details_text') +
-                    (returnConnectorName(connector)
-                        ? 'on ' + returnConnectorName(connector)
-                        : '')
+                    (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
                 }
             />
             <Stats>
@@ -33,13 +31,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                             {stats[key as StatsType].map((item) => {
                                 return (
                                     <Flex key={item.label}>
-                                        <Label
-                                            color={
-                                                isPrimary
-                                                    ? 'primary'
-                                                    : 'secondary'
-                                            }
-                                        >
+                                        <Label color={isPrimary ? 'primary' : 'secondary'}>
                                             {item.tip ? (
                                                 <InfoIcon data-tip={item.tip}>
                                                     <Info size="13" />
@@ -98,8 +90,7 @@ const Flex = styled.div`
 `
 const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
     font-size: ${(props) => props.theme.font.small};
-    color: ${({ theme, color }) =>
-        color ? theme.colors[color] : theme.colors.primary};
+    color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.primary)};
     display: flex;
     align-items: center;
     svg {

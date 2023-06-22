@@ -10,11 +10,7 @@ import ApplicationUpdater from '../services/ApplicationUpdater'
 import BalanceUpdater from '../services/BalanceUpdater'
 import { capitalizeName, timeout } from '../utils/helper'
 import WalletModal from '../components/WalletModal'
-import {
-    EMPTY_ADDRESS,
-    ETHERSCAN_PREFIXES,
-    SYSTEM_STATUS,
-} from '../utils/constants'
+import { EMPTY_ADDRESS, ETHERSCAN_PREFIXES, SYSTEM_STATUS } from '../utils/constants'
 import { useActiveWeb3React } from '../hooks'
 import LoadingModal from '../components/Modals/LoadingModal'
 import styled from 'styled-components'
@@ -54,10 +50,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const isSplash = location.pathname === '/'
     const tokensData = geb?.tokenList
 
-    const {
-        settingsModel: settingsState,
-        connectWalletModel: connectWalletState,
-    } = useStoreState((state) => state)
+    const { settingsModel: settingsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -81,7 +74,7 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
     }
-    const forceUpdateTokens = connectWalletState.forceUpdateTokens;
+    const forceUpdateTokens = connectWalletState.forceUpdateTokens
     useEffect(() => {
         if (account && geb && forceUpdateTokens) {
             connectWalletActions.fetchTokenData({ geb, user: account })
@@ -89,7 +82,7 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [account, geb, forceUpdateTokens])
 
     useEffect(() => {
-        connectWalletActions.setTokensData(tokensData);
+        connectWalletActions.setTokensData(tokensData)
     }, [tokensData])
 
     useEffect(() => {
@@ -106,11 +99,7 @@ const Shared = ({ children, ...rest }: Props) => {
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)
-            if (
-                userProxy &&
-                userProxy.proxyAddress &&
-                userProxy.proxyAddress !== EMPTY_ADDRESS
-            ) {
+            if (userProxy && userProxy.proxyAddress && userProxy.proxyAddress !== EMPTY_ADDRESS) {
                 connectWalletActions.setProxyAddress(userProxy.proxyAddress)
             }
             const txs = localStorage.getItem(`${account}-${chainId}`)
@@ -132,7 +121,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 await safeActions.fetchUserSafes({
                     address: address ? address : (account as string),
                     geb,
-                    tokensData
+                    tokensData,
                 })
             }
         } catch (error) {
@@ -146,8 +135,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     function accountChange() {
         resetModals()
-        const isAccountSwitched =
-            account && previousAccount && account !== previousAccount
+        const isAccountSwitched = account && previousAccount && account !== previousAccount
         if (!account) {
             connectWalletActions.setStep(0)
             safeActions.setIsSafeCreated(false)
@@ -173,9 +161,7 @@ const Shared = ({ children, ...rest }: Props) => {
                     iconSize={40}
                     iconColor={'orange'}
                     textColor={'#272727'}
-                    text={`${t('wrong_network')} ${capitalizeName(
-                        chainName === '' ? 'Mainnet' : chainName
-                    )}`}
+                    text={`${t('wrong_network')} ${capitalizeName(chainName === '' ? 'Mainnet' : chainName)}`}
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
@@ -184,28 +170,17 @@ const Shared = ({ children, ...rest }: Props) => {
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
-                toast(
-                    <ToastPayload
-                        icon={'Check'}
-                        iconColor={'green'}
-                        text={t('wallet_connected')}
-                    />,
-                    {
-                        type: 'success',
-                        toastId: successAccountConnection,
-                    }
-                )
+                toast(<ToastPayload icon={'Check'} iconColor={'green'} text={t('wallet_connected')} />, {
+                    type: 'success',
+                    toastId: successAccountConnection,
+                })
                 connectWalletActions.setStep(1)
                 accountChecker()
             }
         }
     }
     /*eslint-disable-next-line*/
-    const networkCheckerCallBack = useCallback(networkChecker, [
-        account,
-        chainId,
-        geb,
-    ])
+    const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
 
     useEffect(() => {
         networkCheckerCallBack()
@@ -224,9 +199,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />
-            {!isSplash && (
-                <WaitingModal />
-            )}
+            {!isSplash && <WaitingModal />}
             <TopUpModal />
             {!isSplash && (
                 <EmptyDiv>

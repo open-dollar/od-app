@@ -115,8 +115,7 @@ const PaginationContainer = styled.div`
                     a {
                         background: ${(props) => props.theme.colors.gradient};
                         color: #fff;
-                        border-radius: ${(props) =>
-                            props.theme.global.borderRadius};
+                        border-radius: ${(props) => props.theme.global.borderRadius};
                     }
                 }
 

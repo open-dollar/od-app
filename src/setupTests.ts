@@ -21,9 +21,6 @@ const env = dotenv.config({
 
 jest.setTimeout(10000)
 
-export const provider = new ethers.providers.JsonRpcProvider(
-    env.parsed?.REACT_APP_NETWORK_URL
-)
-const network_name =
-    env.parsed?.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
+export const provider = new ethers.providers.JsonRpcProvider(env.parsed?.REACT_APP_NETWORK_URL)
+const network_name = env.parsed?.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
 export const geb = new Geb(network_name, provider)

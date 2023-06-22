@@ -32,7 +32,7 @@ const TokenInput = ({
     disabled,
     maxText = 'max',
     data_test_id,
-    decimals = 4
+    decimals = 4,
 }: Props) => {
     const { t } = useTranslation()
 
@@ -50,7 +50,7 @@ const TokenInput = ({
             if (val.startsWith('0') && val.charAt(1) !== '.' && canHaveDecimals) {
                 const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.')
                 onChange(returnedVal)
-            } else if (!canHaveDecimals && val.startsWith('0')) { 
+            } else if (!canHaveDecimals && val.startsWith('0')) {
                 onChange(val.slice(-1))
             } else if (val.startsWith('.')) {
                 onChange('0' + val)
@@ -69,16 +69,11 @@ const TokenInput = ({
             <Content className={disabled ? 'disabled' : ''}>
                 <Flex>
                     <TokenBox>
-                        {
-                            token?.icon ?
-                                <Icon
-                                    src={token?.icon}
-                                    width={iconSize || '24px'}
-                                    height={iconSize || '24px'}
-                                />
-                                :
-                                <Loader width={iconSize || '24px'} />
-                        }
+                        {token?.icon ? (
+                            <Icon src={token?.icon} width={iconSize || '24px'} height={iconSize || '24px'} />
+                        ) : (
+                            <Loader width={iconSize || '24px'} />
+                        )}
                         {token?.name}
                     </TokenBox>
                     <CustomInput
@@ -97,11 +92,7 @@ const TokenInput = ({
                 <Flex>
                     <Label data-test-id={data_test_id + '_label'}>
                         {label}{' '}
-                        {disableMax || disabled ? null : (
-                            <MaxBtn onClick={handleMaxClick}>
-                                ({t(maxText)})
-                            </MaxBtn>
-                        )}
+                        {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
                     </Label>
                     {rightLabel ? <Label>{rightLabel}</Label> : null}
                 </Flex>

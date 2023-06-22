@@ -14,16 +14,7 @@ interface Props {
     id: string
 }
 
-const StepsContent = ({
-    title,
-    text,
-    stepNumber,
-    btnText,
-    handleClick,
-    isDisabled,
-    isLoading,
-    id,
-}: Props) => {
+const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisabled, isLoading, id }: Props) => {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(true)
 

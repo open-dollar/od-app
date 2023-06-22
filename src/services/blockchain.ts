@@ -6,21 +6,13 @@ import { ETH_NETWORK } from '../utils/constants'
 import { IAuctionBid, ISafeData } from '../utils/interfaces'
 import { callAbi, callBytecode } from './abi'
 
-export const handleDepositAndBorrow = async (
-    signer: JsonRpcSigner,
-    safeData: ISafeData,
-    safeId = ''
-) => {
+export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: ISafeData, safeId = '') => {
     if (!signer || !safeData) {
         return false
     }
 
-    const collateralBN = safeData.leftInput
-        ? ethersUtils.parseEther(safeData.leftInput)
-        : ethersUtils.parseEther('0')
-    const debtBN = safeData.rightInput
-        ? ethersUtils.parseEther(safeData.rightInput)
-        : ethersUtils.parseEther('0')
+    const collateralBN = safeData.leftInput ? ethersUtils.parseEther(safeData.leftInput) : ethersUtils.parseEther('0')
+    const debtBN = safeData.rightInput ? ethersUtils.parseEther(safeData.rightInput) : ethersUtils.parseEther('0')
 
     const geb = new Geb(ETH_NETWORK, signer)
 
@@ -34,34 +26,27 @@ export const handleDepositAndBorrow = async (
         } else if (!collateralBN.isZero() && debtBN.isZero()) {
             txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN, true)
         } else {
-            txData = await proxy.lockTokenCollateralAndGenerateDebt(safeData.collateral, safeId, collateralBN, debtBN, true)
+            txData = await proxy.lockTokenCollateralAndGenerateDebt(
+                safeData.collateral,
+                safeId,
+                collateralBN,
+                debtBN,
+                true
+            )
         }
     } else {
-        txData = await proxy.openLockTokenCollateralAndGenerateDebt(
-            safeData.collateral,
-            collateralBN,
-            debtBN,
-            true
-        )
+        txData = await proxy.openLockTokenCollateralAndGenerateDebt(safeData.collateral, collateralBN, debtBN, true)
     }
 
     if (!txData) throw new Error('No transaction request!')
 
-    const tx = await handlePreTxGasEstimate(
-        signer,
-        txData,
-        safeId ? null : '865000'
-    )
+    const tx = await handlePreTxGasEstimate(signer, txData, safeId ? null : '865000')
 
     const txResponse = await signer.sendTransaction(tx)
     return txResponse
 }
 
-export const handleRepayAndWithdraw = async (
-    signer: JsonRpcSigner,
-    safeData: ISafeData,
-    safeId: string
-) => {
+export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: ISafeData, safeId: string) => {
     if (!signer || !safeData) {
         return false
     }
@@ -77,18 +62,9 @@ export const handleRepayAndWithdraw = async (
 
     let txData: TransactionRequest = {}
 
-    if (
-        !collateralToFree.isZero() &&
-        !haiToRepay.isZero() &&
-        totalCollateralBN.isZero() &&
-        totalDebtBN.isZero()
-    ) {
+    if (!collateralToFree.isZero() && !haiToRepay.isZero() && totalCollateralBN.isZero() && totalDebtBN.isZero()) {
         txData = await proxy.repayAllDebtAndFreeTokenCollateral(safeData.collateral, safeId, collateralToFree)
-    } else if (
-        collateralToFree.isZero() &&
-        totalDebtBN.isZero() &&
-        !haiToRepay.isZero()
-    ) {
+    } else if (collateralToFree.isZero() && totalDebtBN.isZero() && !haiToRepay.isZero()) {
         txData = await proxy.repayAllDebt(safeId)
     } else if (collateralToFree.isZero() && !haiToRepay.isZero()) {
         txData = await proxy.repayDebt(safeId, haiToRepay)
@@ -104,9 +80,7 @@ export const handleRepayAndWithdraw = async (
         txData.gasLimit = BigNumber.from('865000')
     }
     const tx =
-        safeData.isGnosisSafe && !collateralToFree.isZero()
-            ? txData
-            : await handlePreTxGasEstimate(signer, txData)
+        safeData.isGnosisSafe && !collateralToFree.isZero() ? txData : await handlePreTxGasEstimate(signer, txData)
 
     const txResponse = await signer.sendTransaction(tx)
     return txResponse
@@ -148,36 +122,27 @@ export const handleRepayAndWithdraw = async (
 //     return txResponse
 // }
 
-export const handleClaimInternalBalance = async ({
-    signer,
-    type,
-    amount,
-}: IAuctionBid) => {
+export const handleClaimInternalBalance = async ({ signer, type, amount }: IAuctionBid) => {
     if (!signer) {
         return false
     }
 
     const geb = new Geb(ETH_NETWORK, signer)
     const proxy = await geb.getProxyAction(signer._address)
-    let txData: ethers.PopulatedTransaction;
+    let txData: ethers.PopulatedTransaction
     if (type && amount) {
         const amountBN = ethersUtils.parseEther(amount)
-        const call = new ethers.Contract(
-            gebUtils.NULL_ADDRESS,
-            callAbi,
-            signer.provider
-        )
+        const call = new ethers.Contract(gebUtils.NULL_ADDRESS, callAbi, signer.provider)
         const data = (
             await call.populateTransaction.call(
                 geb.contracts.protocolToken.address,
-                (await geb.contracts.protocolToken.populateTransaction.transfer(signer._address, amountBN)).data
+                (
+                    await geb.contracts.protocolToken.populateTransaction.transfer(signer._address, amountBN)
+                ).data
             )
         ).data
 
-        txData = await proxy.proxy.populateTransaction['execute(bytes,bytes)'](
-            callBytecode,
-            data as ethers.BytesLike
-        )
+        txData = await proxy.proxy.populateTransaction['execute(bytes,bytes)'](callBytecode, data as ethers.BytesLike)
     } else {
         txData = await proxy.exitAllCoin()
     }

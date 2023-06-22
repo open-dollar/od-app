@@ -15,14 +15,8 @@ const TransactionOverview = ({ title, description, isChecked }: Props) => {
                 <ReflexerIcon />
                 {isChecked ? (
                     <>
-                        <img
-                            className="sep"
-                            src={require('../assets/arrow.svg').default}
-                            alt=""
-                        />
-                        <LogoIcon
-                            src={require('../assets/uniswap-icon.svg').default}
-                        />{' '}
+                        <img className="sep" src={require('../assets/arrow.svg').default} alt="" />
+                        <LogoIcon src={require('../assets/uniswap-icon.svg').default} />{' '}
                     </>
                 ) : null}
             </IconsHolder>

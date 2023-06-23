@@ -1,10 +1,11 @@
-import { BigNumber, ethers } from 'ethers'
-import numeral from 'numeral'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useActiveWeb3React } from '.'
-import { useStoreActions, useStoreState } from '../store'
-import { DEFAULT_SAFE_STATE } from '../utils/constants'
+import { BigNumber, ethers } from 'ethers'
+import numeral from 'numeral'
+
+import { useActiveWeb3React, useProxyAddress } from '~/hooks'
+import { useStoreActions, useStoreState } from '~/store'
+import { DEFAULT_SAFE_STATE } from '~/utils/constants'
 import {
     formatNumber,
     getCollateralRatio,
@@ -16,8 +17,7 @@ import {
     returnTotalValue,
     safeIsSafe,
     toFixedString,
-} from '../utils/helper'
-import { useProxyAddress } from './useGeb'
+} from '~/utils/helper'
 
 export const LIQUIDATION_RATIO = 135 // percent
 export const ONE_DAY_WORTH_SF = ethers.utils.parseEther('0.00001')

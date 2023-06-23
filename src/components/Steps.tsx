@@ -1,15 +1,13 @@
-import React from 'react'
 import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip'
-import { useStoreActions, useStoreState } from '../store'
-import StepsContent from './StepsContent'
-import { useActiveWeb3React } from '../hooks'
-import { useHistory } from 'react-router-dom'
-import { handleTransactionError, useTransactionAdder } from '../hooks/TransactionHooks'
 import { useTranslation } from 'react-i18next'
-import { COIN_TICKER } from '../utils/constants'
-import { use10BlocksConfirmations } from '../hooks/useBlocksConfirmations'
-import useGeb from '../hooks/useGeb'
+import { useHistory } from 'react-router-dom'
+import ReactTooltip from 'react-tooltip'
+
+import { useActiveWeb3React, handleTransactionError, useTransactionAdder, use10BlocksConfirmations } from '~/hooks'
+import { useStoreActions, useStoreState } from '~/store'
+import StepsContent from './StepsContent'
+import { COIN_TICKER } from '~/utils'
+import useGeb from '~/hooks/useGeb'
 
 const Steps = () => {
     const { t } = useTranslation()

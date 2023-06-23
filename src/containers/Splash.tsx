@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import kite from '~/assets/splash/kite.png'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 
@@ -130,11 +131,7 @@ const Splash = () => {
                     <div className="col-span-12 lg:col-span-6  flex flex-col items-center  order-first mt-16 lg:mt-0">
                         <div className="rounded-full bg-egg h-52 w-52 lg:h-80 lg:w-80 flex flex-col items-center justify-center">
                             <div className="rounded-full bg-white h-48 w-48 lg:h-72 lg:w-72 flex flex-col items-center justify-center">
-                                <img
-                                    className="h-40 lg:h-60 relative z-10"
-                                    src={require('../assets/splash/kite.svg').default}
-                                    alt={''}
-                                />
+                                <img className="h-40 lg:h-60 relative z-10" src={kite} alt={''} />
                             </div>
                         </div>
                     </div>{' '}
@@ -169,12 +166,12 @@ const Splash = () => {
 
             <div className="w-ful flex flex-col items-center mt-8 py-16">
                 <div className="flex flex-row space-x-4">
-                    <a href="https://twitter.com/letsgethai" target="_blank">
+                    <a href="https://twitter.com/letsgethai" rel="noreferrer" target="_blank">
                         <div className="h-14 w-14 bg-egg rounded-full flex flex-col items-center justify-center">
                             <img className="h-8 w-8" src={require('../assets/splash/twitter.svg').default} alt={''} />
                         </div>
                     </a>
-                    <a href="https://discord.gg/pX8m6zXNKu" target="_blank">
+                    <a href="https://discord.gg/pX8m6zXNKu" rel="noreferrer" target="_blank">
                         <div className="h-14 w-14 bg-egg rounded-full flex flex-col items-center justify-center">
                             <img className="h-8 w-8" src={require('../assets/splash/discord.svg').default} alt={''} />
                         </div>

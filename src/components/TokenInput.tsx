@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { Loader } from 'react-feather'
 import styled from 'styled-components'
 
 interface Props {
@@ -129,7 +129,7 @@ const Content = styled.div`
     }
 `
 
-const Icon = styled.img`
+export const Icon = styled.img`
     margin-right: 10px;
     max-width: 23px;
 `

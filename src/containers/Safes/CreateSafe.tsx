@@ -1,25 +1,29 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import ReactTooltip from 'react-tooltip'
-import { ApprovalState, useTokenApproval } from 'src/hooks/useTokenApproval'
 import styled from 'styled-components'
-import Button from '../../components/Button'
-import Dropdown from '../../components/Dropdown'
-import Modal from '../../components/Modals/Modal'
-import TokenInput from '../../components/TokenInput'
-import { useActiveWeb3React } from '../../hooks'
-import { handleTransactionError } from '../../hooks/TransactionHooks'
-import { useTokenBalanceInUSD } from '../../hooks/useGeb'
-import { StatsType, useInputsHandlers, useSafeInfo } from '../../hooks/useSafe'
-import { useStoreActions, useStoreState } from '../../store'
-import { DEFAULT_SAFE_STATE } from '../../utils/constants'
-import { formatNumber } from '../../utils/helper'
-import { TOKEN_LOGOS } from '../../utils/tokens'
-import Review from './Review'
 import { ethers } from 'ethers'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+
+import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber } from '~/utils'
+import { useStoreActions, useStoreState } from '~/store'
+import TokenInput from '~/components/TokenInput'
+import Modal from '~/components/Modals/Modal'
+import Dropdown from '~/components/Dropdown'
+import Button from '~/components/Button'
+import Review from './Review'
+import {
+    handleTransactionError,
+    useTokenBalanceInUSD,
+    useActiveWeb3React,
+    useInputsHandlers,
+    useTokenApproval,
+    ApprovalState,
+    useSafeInfo,
+    StatsType,
+} from '~/hooks'
 
 const CreateSafe = ({
     selectedItem,
@@ -30,17 +34,8 @@ const CreateSafe = ({
     setSelectedItem: (item: string) => void
     collaterals: TokenData[]
 }) => {
-    const {
-        liquidationData,
-        stats,
-        error,
-        availableHai,
-        parsedAmounts,
-        totalCollateral,
-        totalDebt,
-        collateralRatio,
-        liquidationPrice,
-    } = useSafeInfo('create')
+    const { stats, error, availableHai, parsedAmounts, totalCollateral, totalDebt, collateralRatio, liquidationPrice } =
+        useSafeInfo('create')
     const { library, account } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const {

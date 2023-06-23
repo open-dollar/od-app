@@ -1,15 +1,14 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import AlertLabel from '../../components/AlertLabel'
-import SafeStats from '../../components/SafeStats'
-import { useActiveWeb3React } from '../../hooks'
-import useGeb, { useIsOwner } from '../../hooks/useGeb'
-import { useStoreActions, useStoreState } from '../../store'
-import { isNumeric } from '../../utils/validations'
+
+import { useActiveWeb3React, useIsOwner } from '~/hooks'
+import { useStoreActions, useStoreState } from '~/store'
+import { isNumeric, DEFAULT_SAFE_STATE } from '~/utils'
+import AlertLabel from '~/components/AlertLabel'
+import SafeStats from '~/components/SafeStats'
 import ModifySafe from './ModifySafe'
 import SafeHeader from './SafeHeader'
-import { DEFAULT_SAFE_STATE } from 'src/utils/constants'
 
 const SafeDetails = ({ ...props }) => {
     const { t } = useTranslation()

@@ -1,14 +1,15 @@
-import { Contract } from '@ethersproject/contracts'
 import { useMemo } from 'react'
-import { useActiveWeb3React } from '.'
-import { Multicall } from '../abis/Multicall'
-import { Erc20 } from '../abis/Erc20'
-import ERC20_ABI from '../abis/erc20.json'
+import { Contract } from '@ethersproject/contracts'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+
+import { EMPTY_ADDRESS, MULTICALL2_ADDRESSES } from '../utils/constants'
 import ERC20_BYTES32_ABI from '../abis/erc20_bytes32.json'
 import MULTICALL_ABI from '../abis/multicall.json'
-import { EMPTY_ADDRESS, MULTICALL2_ADDRESSES } from '../utils/constants'
+import { Multicall } from '../abis/Multicall'
+import { useActiveWeb3React } from '~/hooks'
 import { isAddress } from '../utils/helper'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import ERC20_ABI from '../abis/erc20.json'
+import { Erc20 } from '../abis/Erc20'
 
 // account is not optional
 export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {

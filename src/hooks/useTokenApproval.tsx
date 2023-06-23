@@ -5,9 +5,9 @@ import { BigNumber, ethers } from 'ethers'
 
 import { calculateGasMargin, handleTransactionError, useHasPendingApproval } from './TransactionHooks'
 import { useTokenContract } from './useContract'
-import { useActiveWeb3React } from '../hooks'
+import { useActiveWeb3React } from '~/hooks'
 import useGeb from './useGeb'
-import store from '../store'
+import store from '~/store'
 
 const decimals18 = BigNumber.from(10).pow(18)
 

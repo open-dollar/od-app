@@ -1,15 +1,14 @@
-import React, { useMemo, useState } from 'react'
-import { BarChart2, Plus, Settings } from 'react-feather'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import CheckBox from '../../components/CheckBox'
-import LinkButton from '../../components/LinkButton'
-import SafeBlock from '../../components/SafeBlock'
-import { useActiveWeb3React } from '../../hooks'
-import { useStoreActions, useStoreState } from '../../store'
-import { returnState } from '../../utils/helper'
-import { ISafe } from '../../utils/interfaces'
+import { Plus } from 'react-feather'
+
+import { useStoreActions, useStoreState } from '~/store'
+import LinkButton from '~/components/LinkButton'
+import SafeBlock from '~/components/SafeBlock'
+import CheckBox from '~/components/CheckBox'
+import { returnState, ISafe } from '~/utils'
+import { useActiveWeb3React } from '~/hooks'
 
 const SafeList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)

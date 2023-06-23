@@ -1,9 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { ExternalLinkArrow } from '../GlobalStyle'
-import { getEtherscanLink } from '../utils/helper'
+
 import FeatherIconWrapper, { IconName } from './FeatherIconWrapper'
+import { ExternalLinkArrow } from '~/GlobalStyle'
+import { getEtherscanLink } from '~/utils'
 
 interface Props {
     icon: IconName

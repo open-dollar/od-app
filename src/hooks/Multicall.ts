@@ -1,12 +1,11 @@
+import { useEffect, useMemo } from 'react'
 import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { useEffect, useMemo } from 'react'
-import { useActiveWeb3React } from '.'
-import store from '../store'
-import { Call } from '../utils/interfaces'
 
-import { useBlockNumber } from './useGeb'
+import { useActiveWeb3React, useBlockNumber } from '~/hooks'
+import { Call } from '~/utils/interfaces'
+import store from '~/store'
 
 export interface Result extends ReadonlyArray<any> {
     readonly [key: string]: any

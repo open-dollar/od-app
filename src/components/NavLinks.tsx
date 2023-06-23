@@ -1,10 +1,11 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
 import { useStoreActions } from '../store'
 import SafeIcon from './Icons/SafeIcon'
-import { useHistory } from 'react-router-dom'
 
 const NavLinks = () => {
     const history = useHistory()

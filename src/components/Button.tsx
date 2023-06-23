@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React, { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import classNames from 'classnames'
+
 import Arrow from './Icons/Arrow'
 import Loader from './Loader'
 

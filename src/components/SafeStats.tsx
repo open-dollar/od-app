@@ -1,16 +1,13 @@
-import Numeral from 'numeral'
 import { useMemo, useState } from 'react'
-import { Info } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
-import { useActiveWeb3React } from '../hooks'
-import { handleTransactionError } from '../hooks/TransactionHooks'
-import { useTokenBalanceInUSD } from '../hooks/useGeb'
-import { useSafeInfo } from '../hooks/useSafe'
-import { useStoreActions, useStoreState } from '../store'
-import { formatNumber, getRatePercentage, ratioChecker, returnState, timeout } from '../utils/helper'
-import Button from './Button'
+import { Info } from 'react-feather'
+import Numeral from 'numeral'
+
+import { useActiveWeb3React, useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
+import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
+import { useStoreState } from '~/store'
 
 const SafeStats = ({
     isModifying,

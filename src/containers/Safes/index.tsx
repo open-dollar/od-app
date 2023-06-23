@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
-import { useStoreState, useStoreActions } from '../../store'
+import styled from 'styled-components'
+
+import { useStoreState, useStoreActions } from '~/store'
+import { useActiveWeb3React } from '~/hooks'
+import Button from '~/components/Button'
+import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
 import SafeList from './SafeList'
-import Button from '../../components/Button'
-import useGeb from '../../hooks/useGeb'
-import { useActiveWeb3React } from '../../hooks'
-import { isAddress } from '@ethersproject/address'
 
 const OnBoarding = ({ ...props }) => {
     const { t } = useTranslation()

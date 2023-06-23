@@ -1,15 +1,15 @@
+import { useState } from 'react'
 import { isAddress } from '@ethersproject/address'
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { useActiveWeb3React } from '../hooks'
-import useGeb from '../hooks/useGeb'
-import { fetchUserSafesRaw } from '../services/safes'
-import { useStoreActions, useStoreState } from '../store'
-import { timeout } from '../utils/helper'
+
+import { useStoreActions, useStoreState } from '~/store'
+import { fetchUserSafesRaw } from '~/services/safes'
+import { timeout, IUserSafeList } from '~/utils'
+import { useActiveWeb3React } from '~/hooks'
+import useGeb from '~/hooks/useGeb'
 import Button from './Button'
-import { IUserSafeList } from '../utils/interfaces'
 
 const SafeManager = () => {
     const { t } = useTranslation()

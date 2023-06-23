@@ -1,10 +1,10 @@
-import React from 'react'
 import { AlertTriangle, ArrowUpRight, CheckCircle } from 'react-feather'
 import styled from 'styled-components'
-import { ExternalLinkArrow } from '../GlobalStyle'
-import { useActiveWeb3React } from '../hooks'
-import { useStoreState } from '../store'
-import { getEtherscanLink } from '../utils/helper'
+
+import { ExternalLinkArrow } from '~/GlobalStyle'
+import { getEtherscanLink } from '~/utils/helper'
+import { useActiveWeb3React } from '~/hooks'
+import { useStoreState } from '~/store'
 import Loader from './Loader'
 
 const Transaction = ({ hash }: { hash: string }) => {

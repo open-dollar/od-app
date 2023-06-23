@@ -1,20 +1,25 @@
+import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { gnosisSafe } from 'src/connectors'
 import styled from 'styled-components'
+
+import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE } from '~/utils'
+import { useStoreActions, useStoreState } from '~/store'
+import TokenInput from '~/components/TokenInput'
+import Modal from '~/components/Modals/Modal'
+import { gnosisSafe } from '~/connectors'
 import Button from '~/components/Button'
-import Modal from '../../components/Modals/Modal'
-import TokenInput from '../../components/TokenInput'
-import { useActiveWeb3React } from '../../hooks'
-import { handleTransactionError } from '../../hooks/TransactionHooks'
-import useGeb, { useProxyAddress, useTokenBalanceInUSD } from '../../hooks/useGeb'
-import { useInputsHandlers, useSafeInfo } from '../../hooks/useSafe'
-import { ApprovalState, useTokenApproval } from '../../hooks/useTokenApproval'
-import { useStoreActions, useStoreState } from '../../store'
-import { DEFAULT_SAFE_STATE } from '../../utils/constants'
-import { formatNumber } from '../../utils/helper'
-import { TOKEN_LOGOS } from '../../utils/tokens'
+import useGeb from '~/hooks/useGeb'
 import Review from './Review'
+import {
+    handleTransactionError,
+    useTokenBalanceInUSD,
+    useActiveWeb3React,
+    useInputsHandlers,
+    useTokenApproval,
+    useProxyAddress,
+    ApprovalState,
+    useSafeInfo,
+} from '~/hooks'
 
 const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boolean }) => {
     const { library, account, connector } = useActiveWeb3React()
@@ -22,6 +27,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
     const proxyAddress = useProxyAddress()
     const [showPreview, setShowPreview] = useState(false)
     const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
+
     const { singleSafe } = safeState
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
     const {
@@ -32,7 +38,6 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const {
         error,
-        balances,
         availableCollateral,
         availableHai,
         parsedAmounts,

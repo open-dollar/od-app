@@ -1,10 +1,11 @@
-import { Geb } from '@hai-on-op/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useActiveWeb3React } from '.'
-import { NETWORK_ID } from '../connectors'
-import store, { useStoreActions, useStoreState } from '../store'
-import { EMPTY_ADDRESS, network_name } from '../utils/constants'
-import { formatNumber } from '../utils/helper'
+import { Geb } from '@hai-on-op/sdk'
+
+import store, { useStoreActions, useStoreState } from '~/store'
+import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
+import { formatNumber } from '~/utils/helper'
+import { useActiveWeb3React } from '~/hooks'
+import { NETWORK_ID } from '~/connectors'
 
 type TokenType = 'ETH' | 'HAI' | 'WETH'
 

@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
-import React from 'react'
 import styled from 'styled-components'
+
 import { injected, walletconnect, walletlink } from '../connectors'
 import Identicon from './Icons/Identicon'
 

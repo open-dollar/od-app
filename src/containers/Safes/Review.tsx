@@ -1,12 +1,10 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import TransactionOverview from '../../components/TransactionOverview'
-import { useActiveWeb3React } from '../../hooks'
-import { returnConnectorName } from '../../utils/helper'
-
 import { Info } from 'react-feather'
-import { SafeTypes, StatsType, useSafeInfo } from '../../hooks/useSafe'
+
+import { useActiveWeb3React, SafeTypes, StatsType, useSafeInfo } from '~/hooks'
+import TransactionOverview from '~/components/TransactionOverview'
+import { returnConnectorName } from '~/utils'
 
 const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
     const { stats } = useSafeInfo(type)

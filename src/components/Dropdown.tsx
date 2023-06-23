@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
-import Scrollbars from 'react-custom-scrollbars'
+import { useState, useRef, useEffect } from 'react'
 import { ArrowUpRight, ChevronDown } from 'react-feather'
+import Scrollbars from 'react-custom-scrollbars'
 import styled from 'styled-components'
 
 type Item =

@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { ArrowRightCircle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
 import { BtnStyle } from '../GlobalStyle'
+
 interface Props {
     url: string
     id?: string

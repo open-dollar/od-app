@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import styled from 'styled-components'
 import BellIcon from './Icons/BellIcon'

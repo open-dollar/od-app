@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useActiveWeb3React } from '.'
-import { useStoreActions, useStoreState } from '../store'
+
+import { useStoreActions, useStoreState } from '~/store'
+import { useActiveWeb3React } from '~/hooks'
 import { timeout } from '../utils/helper'
 import useGeb from './useGeb'
 

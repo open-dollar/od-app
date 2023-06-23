@@ -1,5 +1,3 @@
-import React from 'react'
-
 const INITIAL_STATE = [
     require('../assets/brand-white.svg').default,
     require('../assets/dark-arrow.svg').default,

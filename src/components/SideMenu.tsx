@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { useStoreActions, useStoreState } from '../store'
-import { amountToFiat, returnWalletAddress } from '../utils/helper'
-import Button from './Button'
-import NavLinks from './NavLinks'
-import { useTranslation } from 'react-i18next'
-import { useWeb3React } from '@web3-react/core'
-import ConnectedWalletIcon from './ConnectedWalletIcon'
 import { CSSTransition } from 'react-transition-group'
-import { COIN_TICKER } from '../utils/constants'
+import { useWeb3React } from '@web3-react/core'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+
+import { amountToFiat, returnWalletAddress, COIN_TICKER } from '~/utils'
+import { useStoreActions, useStoreState } from '~/store'
+import ConnectedWalletIcon from './ConnectedWalletIcon'
+import NavLinks from './NavLinks'
+import Button from './Button'
 
 const SideMenu = () => {
     const { t } = useTranslation()

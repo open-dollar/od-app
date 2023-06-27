@@ -99,7 +99,7 @@ export const formatUserSafe = (
     tokensData: { [key: string]: TokenData }
 ): Array<ISafe> => {
     const collateralBytes32: { [key: string]: string } = Object.values(tokensData)
-        .filter((token) => token.isCollateral)
+        .filter(token => token.isCollateral)
         .reduce((accum, token) => {
             return { ...accum, [token.bytes32String]: token.symbol }
         }, {})
@@ -107,6 +107,7 @@ export const formatUserSafe = (
     const { currentRedemptionPrice, currentRedemptionRate, collateralLiquidationData } = liquidationData
 
     return safes
+        .filter(s => s.collateralType in collateralBytes32)
         .map((s) => {
             const token = collateralBytes32[s.collateralType]
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate

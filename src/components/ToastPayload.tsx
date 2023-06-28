@@ -1,9 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { ExternalLinkArrow } from '../GlobalStyle'
-import { getEtherscanLink } from '../utils/helper'
+
 import FeatherIconWrapper, { IconName } from './FeatherIconWrapper'
+import { ExternalLinkArrow } from '~/GlobalStyle'
+import { getEtherscanLink } from '~/utils'
 
 interface Props {
     icon: IconName
@@ -17,31 +17,16 @@ interface Props {
         chainId: number
     }
 }
-const ToastPayload = ({
-    icon,
-    iconColor,
-    text,
-    textColor,
-    iconSize,
-    payload,
-}: Props) => {
+const ToastPayload = ({ icon, iconColor, text, textColor, iconSize, payload }: Props) => {
     const { t } = useTranslation()
     return (
         <Container>
-            <FeatherIconWrapper
-                name={icon}
-                color={iconColor}
-                size={iconSize || 20}
-            />
+            <FeatherIconWrapper name={icon} color={iconColor} size={iconSize || 20} />
             <div>
                 <Text color={textColor}>{text}</Text>
                 {payload ? (
                     <a
-                        href={getEtherscanLink(
-                            payload.chainId,
-                            payload.value,
-                            payload.type
-                        )}
+                        href={getEtherscanLink(payload.chainId, payload.value, payload.type)}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -69,6 +54,5 @@ const Container = styled.div`
 
 const Text = styled.div<{ color?: string }>`
     font-size: ${(props) => props.theme.font.small};
-    color: ${(props) =>
-        props.color ? props.color : props.theme.colors.neutral};
+    color: ${(props) => (props.color ? props.color : props.theme.colors.neutral)};
 `

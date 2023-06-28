@@ -1,11 +1,9 @@
-import React from 'react'
 import { toSvg } from 'jdenticon'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { formatNumber, returnState } from '../utils/helper'
-import { jdenticonConfig, COIN_TICKER } from '../utils/constants'
-import { TOKEN_LOGOS } from 'src/utils/tokens'
+
+import { formatNumber, returnState, jdenticonConfig, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const SafeBlock = ({ ...props }) => {
     const { t } = useTranslation()
@@ -22,16 +20,15 @@ const SafeBlock = ({ ...props }) => {
     return (
         <Container className={props.className}>
             <Link to={`/safes/${props.id}`}>
-                <BlockContainer
-                    className={!returnState(props.riskState) ? 'empty' : ''}
-                >
+                <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
                             <img
-                                    src={TOKEN_LOGOS[props.collateralName]}
-                                    width={'24px'}
-                                    height={'24px'}
-                                />
+                                src={TOKEN_LOGOS[props.collateralName]}
+                                alt={props.collateralName}
+                                width={'24px'}
+                                height={'24px'}
+                            />
                             <SafeData>
                                 <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
                             </SafeData>
@@ -39,16 +36,11 @@ const SafeBlock = ({ ...props }) => {
 
                         <SafeState
                             className={
-                                returnState(props.riskState)
-                                    ? returnState(props.riskState).toLowerCase()
-                                    : 'dimmed'
+                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
                             }
                         >
                             <Circle />
-                            <span>
-                                {returnState(props.riskState) || 'No'}
-                            </span>{' '}
-                            {t('risk')}
+                            <span>{returnState(props.riskState) || 'No'}</span> {t('risk')}
                         </SafeState>
                     </BlockHeader>
                     <Block>
@@ -134,7 +126,7 @@ const Circle = styled.div`
 const SafeState = styled.div`
     display: flex;
     align-items: center;
-    width: 80px;
+    width: 100px;
     color: ${(props) => props.theme.colors.customSecondary};
     font-size: ${(props) => props.theme.font.small};
     span {

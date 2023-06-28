@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
-import {
-    handlePreTxGasEstimate,
-    handleTransactionError,
-    useTransactionAdder,
-} from '../../hooks/TransactionHooks'
+import { handlePreTxGasEstimate, handleTransactionError, useTransactionAdder } from '../../hooks/TransactionHooks'
 import { use10BlocksConfirmations } from '../../hooks/useBlocksConfirmations'
 import useGeb from '../../hooks/useGeb'
 import { useStoreState, useStoreActions } from '../../store'
@@ -25,13 +21,9 @@ const ProxyModal = () => {
     const addTransaction = useTransactionAdder()
     const blocksSinceCheck = use10BlocksConfirmations()
 
-    const { popupsModel: popupsState, connectWalletModel: connectWalletState } =
-        useStoreState((state) => state)
+    const { popupsModel: popupsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
     const storeActions = useStoreActions((state) => state)
-    const {
-        popupsModel: popupsActions,
-        connectWalletModel: connectWalletActions,
-    } = storeActions
+    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = storeActions
 
     const { ctHash } = connectWalletState
 
@@ -47,15 +39,7 @@ const ProxyModal = () => {
             }
         }
         blocksChecker()
-    }, [
-        account,
-        blocksSinceCheck,
-        popupsActions,
-        ctHash,
-        popupsState,
-        connectWalletActions,
-        storeActions,
-    ])
+    }, [account, blocksSinceCheck, popupsActions, ctHash, popupsState, connectWalletActions, storeActions])
 
     const handleCreateAccount = async () => {
         const { blockNumber } = connectWalletState
@@ -70,10 +54,7 @@ const ProxyModal = () => {
             const tx = await handlePreTxGasEstimate(signer, txData)
             const txResponse = await signer.sendTransaction(tx)
             connectWalletActions.setCtHash(txResponse.hash)
-            addTransaction(
-                { ...txResponse, blockNumber: blockNumber[chainId] },
-                'Creating an account'
-            )
+            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
             setStatus('success')
             await txResponse.wait()
             popupsActions.setBlockBackdrop(false)
@@ -113,21 +94,11 @@ const ProxyModal = () => {
                             <>
                                 <Confirmations>
                                     {`WATITING FOR CONFIRMATIONS... ${
-                                        !blocksSinceCheck
-                                            ? 0
-                                            : blocksSinceCheck > 10
-                                            ? 10
-                                            : blocksSinceCheck
+                                        !blocksSinceCheck ? 0 : blocksSinceCheck > 10 ? 10 : blocksSinceCheck
                                     } of 10`}{' '}
-                                    <InfoBtn data-tip={t('confirmations_info')}>
-                                        ?
-                                    </InfoBtn>
+                                    <InfoBtn data-tip={t('confirmations_info')}>?</InfoBtn>
                                 </Confirmations>
-                                <ReactTooltip
-                                    multiline
-                                    type="light"
-                                    data-effect="solid"
-                                />
+                                <ReactTooltip multiline type="light" data-effect="solid" />
                             </>
                         ) : (
                             t('proxy_wallet_text')
@@ -136,10 +107,7 @@ const ProxyModal = () => {
 
                     {ctHash ? null : (
                         <BtnContainer>
-                            <Button
-                                text={'create_account'}
-                                onClick={handleCreateAccount}
-                            />
+                            <Button text={'create_account'} onClick={handleCreateAccount} />
                         </BtnContainer>
                     )}
                 </InnerContainer>

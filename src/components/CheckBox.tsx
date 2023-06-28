@@ -7,8 +7,7 @@ interface Props {
 }
 
 const CheckBox = ({ checked, onChange }: Props) => {
-    const getChecked = (e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(e.target.checked)
+    const getChecked = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.checked)
 
     return (
         <CheckboxContainer>

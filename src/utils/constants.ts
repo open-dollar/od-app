@@ -120,7 +120,7 @@ export const DEFAULT_SAFE_STATE = {
     rightInput: '',
     collateralRatio: 0,
     liquidationPrice: 0,
-    collateral: ''
+    collateral: '',
 }
 
 export const floatsTypes = {
@@ -189,8 +189,7 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     hai: INIT_VALUES,
     flx: INIT_VALUES,
 }
-export const network_name =
-    process.env.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
+export const network_name = process.env.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 export const geb = new Geb(network_name, provider)

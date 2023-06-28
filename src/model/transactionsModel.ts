@@ -5,10 +5,7 @@ import { ITransaction } from '../utils/interfaces'
 export interface TransactionsModel {
     transactions: { [hash: string]: ITransaction }
     addTransaction: Action<TransactionsModel, ITransaction>
-    checkTransaction: Action<
-        TransactionsModel,
-        { tx: ITransaction; blockNumber: number }
-    >
+    checkTransaction: Action<TransactionsModel, { tx: ITransaction; blockNumber: number }>
     finalizeTransaction: Action<TransactionsModel, ITransaction>
     clearTransactions: Action<TransactionsModel>
     setTransactions: Action<TransactionsModel, { [hash: string]: ITransaction }>
@@ -30,16 +27,10 @@ const transactionsModel: TransactionsModel = {
         if (!tx.lastCheckedBlockNumber) {
             tx.lastCheckedBlockNumber = blockNumber
         } else {
-            tx.lastCheckedBlockNumber = Math.max(
-                blockNumber,
-                tx.lastCheckedBlockNumber
-            )
+            tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
         }
         state.transactions[tx.hash] = tx
-        localStorage.setItem(
-            `${tx.from}-${tx.chainId ? tx.chainId : NETWORK_ID}`,
-            JSON.stringify(state.transactions)
-        )
+        localStorage.setItem(`${tx.from}-${tx.chainId ? tx.chainId : NETWORK_ID}`, JSON.stringify(state.transactions))
     }),
     finalizeTransaction: action((state, payload) => {
         state.transactions[payload.hash] = payload

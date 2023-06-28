@@ -8,7 +8,7 @@ export type Tokens = {
     }
 }
 
-export const TOKEN_LOGOS: {[key: string]: string} = {
+export const TOKEN_LOGOS: { [key: string]: string } = {
     OP: require('../assets/op-img.svg').default,
     WETH: require('../assets/eth-img.svg').default,
     HAI: require('../assets/hai-logo.svg').default,

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { Loader } from 'react-feather'
 import styled from 'styled-components'
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
     disabled?: boolean
     maxText?: 'max' | 'min'
     data_test_id?: string
+    decimals?: number
 }
 
 const TokenInput = ({
@@ -31,18 +32,26 @@ const TokenInput = ({
     disabled,
     maxText = 'max',
     data_test_id,
+    decimals = 4,
 }: Props) => {
     const { t } = useTranslation()
 
     const [length, setLength] = useState(16)
 
+    const maxDecimals = Math.min(decimals, 4)
+    const decimalGroups = Math.min(decimals, 1)
+    const canHaveDecimals = decimals > 0
+    const regex = new RegExp(`^\\d*(\\.\\d{0,${maxDecimals}}){0,${decimalGroups}}$`)
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
-        if (/^-?\d*[.,]?\d*$/.test(val) && /^\d*(\.\d{0,4})?$/.test(val)) {
+        if (/^-?\d*[.,]?\d*$/.test(val) && regex.test(val)) {
             val.includes('.') ? setLength(17) : setLength(16)
-            if (val.startsWith('0') && val.charAt(1) !== '.') {
+            if (val.startsWith('0') && val.charAt(1) !== '.' && canHaveDecimals) {
                 const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.')
                 onChange(returnedVal)
+            } else if (!canHaveDecimals && val.startsWith('0')) {
+                onChange(val.slice(-1))
             } else if (val.startsWith('.')) {
                 onChange('0' + val)
             } else if (val.replace(/[^.]/g, '').length > 1) {
@@ -60,16 +69,11 @@ const TokenInput = ({
             <Content className={disabled ? 'disabled' : ''}>
                 <Flex>
                     <TokenBox>
-                        {
-                            token?.icon ?
-                                <Icon
-                                    src={token?.icon}
-                                    width={iconSize || '24px'}
-                                    height={iconSize || '24px'}
-                                />
-                                :
-                                <Loader width={iconSize || '24px'} />
-                        }
+                        {token?.icon ? (
+                            <Icon src={token?.icon} width={iconSize || '24px'} height={iconSize || '24px'} />
+                        ) : (
+                            <Loader width={iconSize || '24px'} />
+                        )}
                         {token?.name}
                     </TokenBox>
                     <CustomInput
@@ -88,11 +92,7 @@ const TokenInput = ({
                 <Flex>
                     <Label data-test-id={data_test_id + '_label'}>
                         {label}{' '}
-                        {disableMax || disabled ? null : (
-                            <MaxBtn onClick={handleMaxClick}>
-                                ({t(maxText)})
-                            </MaxBtn>
-                        )}
+                        {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
                     </Label>
                     {rightLabel ? <Label>{rightLabel}</Label> : null}
                 </Flex>
@@ -129,7 +129,7 @@ const Content = styled.div`
     }
 `
 
-const Icon = styled.img`
+export const Icon = styled.img`
     margin-right: 10px;
     max-width: 23px;
 `

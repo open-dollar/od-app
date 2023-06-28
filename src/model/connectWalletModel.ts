@@ -28,22 +28,10 @@ export interface ConnectWalletModel {
     setFiatPrice: Action<ConnectWalletModel, number>
     setFlxPrice: Action<ConnectWalletModel, number>
     setIsWrongNetwork: Action<ConnectWalletModel, boolean>
-    updateBlockNumber: Action<
-        ConnectWalletModel,
-        { chainId: number; blockNumber: number }
-    >
-    updateEthBalance: Action<
-        ConnectWalletModel,
-        { chainId: number; balance: number }
-    >
-    updateHaiBalance: Action<
-        ConnectWalletModel,
-        { chainId: number; balance: string }
-    >
-    updateUniswapPoolBalance: Action<
-        ConnectWalletModel,
-        { chainId: number; balance: string }
-    >
+    updateBlockNumber: Action<ConnectWalletModel, { chainId: number; blockNumber: number }>
+    updateEthBalance: Action<ConnectWalletModel, { chainId: number; balance: number }>
+    updateHaiBalance: Action<ConnectWalletModel, { chainId: number; balance: string }>
+    updateUniswapPoolBalance: Action<ConnectWalletModel, { chainId: number; balance: string }>
     setStep: Action<ConnectWalletModel, number>
     setProxyAddress: Action<ConnectWalletModel, string>
     setCoinAllowance: Action<ConnectWalletModel, string>
@@ -90,16 +78,14 @@ const connectWalletModel: ConnectWalletModel = {
             actions.setEthPriceChange(res.usd_24h_change)
         }
     }),
-    fetchTokenData: thunk(
-        async (actions, payload) => {
-            const tokenList = payload.geb.tokenList;
-            const fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
-            if (fetched) {
-                actions.setTokensFetchedData(fetched)
-                actions.setForceUpdateTokens(false)
-            }
+    fetchTokenData: thunk(async (actions, payload) => {
+        const tokenList = payload.geb.tokenList
+        const fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
+        if (fetched) {
+            actions.setTokensFetchedData(fetched)
+            actions.setForceUpdateTokens(false)
         }
-    ),
+    }),
     setFiatPrice: action((state, payload) => {
         state.fiatPrice = payload
     }),
@@ -115,10 +101,7 @@ const connectWalletModel: ConnectWalletModel = {
         if (typeof state.blockNumber[chainId] !== 'number') {
             state.blockNumber[chainId] = blockNumber
         } else {
-            state.blockNumber[chainId] = Math.max(
-                blockNumber,
-                state.blockNumber[chainId]
-            )
+            state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId])
         }
         localStorage.setItem('blockNumber', JSON.stringify(state.blockNumber))
     }),

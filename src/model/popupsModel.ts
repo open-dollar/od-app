@@ -1,11 +1,5 @@
 import { action, Action } from 'easy-peasy'
-import {
-    IAlert,
-    IOperation,
-    LoadingPayload,
-    IWaitingPayload,
-    IAuctionOperation,
-} from '../utils/interfaces'
+import { IAlert, IOperation, LoadingPayload, IWaitingPayload, IAuctionOperation } from '../utils/interfaces'
 
 export interface PopupsModel {
     isSettingsModalOpen: boolean
@@ -35,10 +29,7 @@ export interface PopupsModel {
     setIsScreenModalOpen: Action<PopupsModel, boolean>
     setIsConnectorsWalletOpen: Action<PopupsModel, boolean>
     setIsLoadingModalOpen: Action<PopupsModel, LoadingPayload>
-    setSafeOperationPayload: Action<
-        PopupsModel,
-        IOperation & { isCreate: boolean }
-    >
+    setSafeOperationPayload: Action<PopupsModel, IOperation & { isCreate: boolean }>
     setAlertPayload: Action<PopupsModel, IAlert | null>
     setESMOperationPayload: Action<PopupsModel, IOperation>
     setIsVotingModalOpen: Action<PopupsModel, boolean>
@@ -50,10 +41,7 @@ export interface PopupsModel {
     setIsSafeManagerOpen: Action<PopupsModel, boolean>
     setIsClaimPopupOpen: Action<PopupsModel, boolean>
     setHasFLXClaim: Action<PopupsModel, boolean>
-    setReturnProxyFunction: Action<
-        PopupsModel,
-        (storeActions: any) => void | null
-    >
+    setReturnProxyFunction: Action<PopupsModel, (storeActions: any) => void | null>
 }
 
 const popupsModel: PopupsModel = {

@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import styled from 'styled-components'
+
 import { IPaging } from '../utils/interfaces'
 
 interface Props {
@@ -115,8 +116,7 @@ const PaginationContainer = styled.div`
                     a {
                         background: ${(props) => props.theme.colors.gradient};
                         color: #fff;
-                        border-radius: ${(props) =>
-                            props.theme.global.borderRadius};
+                        border-radius: ${(props) => props.theme.global.borderRadius};
                     }
                 }
 

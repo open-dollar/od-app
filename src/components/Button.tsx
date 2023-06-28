@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React, { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import classNames from 'classnames'
+
 import Arrow from './Icons/Arrow'
 import Loader from './Loader'
 
@@ -58,18 +59,11 @@ const Button = ({
             return (
                 <DimmedBtn {...rest} disabled={disabled} onClick={onClick}>
                     {arrowPlacement === 'left' ? (
-                        <img
-                            src={require('../assets/dark-arrow.svg').default}
-                            alt={''}
-                        />
+                        <img src={require('../assets/dark-arrow.svg').default} alt={''} />
                     ) : null}
                     {text && t(text)}
                     {arrowPlacement === 'right' ? (
-                        <img
-                            className="rotate"
-                            src={require('../assets/dark-arrow.svg').default}
-                            alt={''}
-                        />
+                        <img className="rotate" src={require('../assets/dark-arrow.svg').default} alt={''} />
                     ) : null}
                 </DimmedBtn>
             )
@@ -87,13 +81,7 @@ const Button = ({
             )
         } else {
             return (
-                <Container
-                    {...rest}
-                    className={classes}
-                    disabled={disabled}
-                    isLoading={isLoading}
-                    onClick={onClick}
-                >
+                <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
                     {text && t(text)}
                     {children || null}
                     {isLoading && <Loader inlineButton />}
@@ -134,10 +122,7 @@ const Container = styled.button<{ isLoading?: boolean }>`
     }
 
     &:disabled {
-        background: ${(props) =>
-            props.isLoading
-                ? props.theme.colors.placeholder
-                : props.theme.colors.secondary};
+        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
         cursor: not-allowed;
     }
 `

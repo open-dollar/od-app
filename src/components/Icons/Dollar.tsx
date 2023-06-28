@@ -11,10 +11,7 @@ const Dollar = ({ ...rest }) => {
             viewBox="0 0 512.000000 512.000000"
             preserveAspectRatio="xMidYMid meet"
         >
-            <g
-                transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                stroke="none"
-            >
+            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
                 <path
                     d="M214 4149 c-83 -24 -181 -125 -204 -209 -7 -26 -9 -490 -8 -1402 l3
         -1363 23 -43 c29 -55 89 -115 144 -144 l43 -23 2345 0 2345 0 43 23 c55 29

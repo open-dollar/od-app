@@ -6,9 +6,7 @@ import store, { useStoreState } from '../store'
 
 export default function ApplicationUpdater(): null {
     const { library, chainId, account } = useActiveWeb3React()
-    const { connectWalletModel: connectedWalletState } = useStoreState(
-        (state) => state
-    )
+    const { connectWalletModel: connectedWalletState } = useStoreState((state) => state)
     const { blockNumber } = connectedWalletState
 
     const [state, setState] = useState<{
@@ -41,12 +39,7 @@ export default function ApplicationUpdater(): null {
         library
             .getBalance(account)
             .then(fetchEthBalanceCallBack)
-            .catch((error) =>
-                console.error(
-                    `Failed to fetch balance for chainId: ${chainId}`,
-                    error
-                )
-            )
+            .catch((error) => console.error(`Failed to fetch balance for chainId: ${chainId}`, error))
     }, [chainId, library, fetchEthBalanceCallBack, account, blockNumber])
 
     const debouncedState = useDebounce(state, 100)

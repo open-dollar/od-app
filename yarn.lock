@@ -2122,10 +2122,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@hai-on-op/sdk@0.1.1-rc.1":
-  version "0.1.1-rc.1"
-  resolved "https://registry.yarnpkg.com/@hai-on-op/sdk/-/sdk-0.1.1-rc.1.tgz#c6b98cc01b7d0a6f56c0db79f4de731d515cb655"
-  integrity sha512-1DNA1czgwCEc10nUOGM0nJPDm5lX0UuwZ0LVY3EOYYRZgcvLhQYxflT9mnQn79xkID6otqPJmdCdAax5dbqNhg==
+"@hai-on-op/sdk@0.1.1-rc.2":
+  version "0.1.1-rc.2"
+  resolved "https://registry.yarnpkg.com/@hai-on-op/sdk/-/sdk-0.1.1-rc.2.tgz#8770053dd0f90e650ef7380996ca2516e537332a"
+  integrity sha512-MWoNqQk3B7Mu1zC47Iozby67C/MzxVdV2qCVrsj8cOPVz6OwwNaIQGlrXxEQ/PasVF1s4G1JqCM7QUO3mVYxBA==
   dependencies:
     ethers "5.4.7"
 

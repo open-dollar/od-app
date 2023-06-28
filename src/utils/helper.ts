@@ -50,8 +50,7 @@ export const amountToFiat = (balance: number, fiatPrice: number) => {
     return (balance * fiatPrice).toFixed(4)
 }
 
-export const formatNumber = (value: string, digits = 4, round = false) => {
-    const nOfDigits = Array.from(Array(digits), (_) => 0).join('')
+export const formatNumber = (value: string, digits = 6, round = false) => {
     if (!value) {
         return '0'
     }
@@ -60,6 +59,9 @@ export const formatNumber = (value: string, digits = 4, round = false) => {
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }
+
+    const nOfWholeDigits = value.split('.')[0].length
+    const nOfDigits = nOfWholeDigits > digits  - 1 ? '00' : Array.from(Array(digits - nOfWholeDigits), (_) => 0).join('')
     let val
     if (round) {
         val = numeral(n).format(`0.${nOfDigits}`)
@@ -80,17 +82,22 @@ export const getRatePercentage = (value: string, digits = 4, returnRate = false)
 }
 
 export const toFixedString = (value: string, type?: keyof typeof floatsTypes): string => {
-    const n = Number(value)
-    const nOfDecimals = Number.isInteger(n) ? value.length : value.split('.')[1].length
+    try {
+        const n = Number(value)
+        const nOfDecimals = Number.isInteger(n) ? value.length : value.split('.')[1].length
 
-    if (type === 'WAD' || nOfDecimals === floatsTypes.WAD) {
+        if (type === 'WAD' || nOfDecimals === floatsTypes.WAD) {
+            return FixedNumber.fromString(value, 'fixed256x18').toHexString()
+        } else if (type === 'RAY' || (nOfDecimals > floatsTypes.WAD && nOfDecimals <= floatsTypes.RAY)) {
+            return FixedNumber.fromString(value, 'fixed256x27').toHexString()
+        } else if (type === 'RAD' || (nOfDecimals > floatsTypes.RAY && nOfDecimals <= floatsTypes.RAD)) {
+            return FixedNumber.fromString(value, 'fixed256x45').toHexString()
+        }
         return FixedNumber.fromString(value, 'fixed256x18').toHexString()
-    } else if (type === 'RAY' || (nOfDecimals > floatsTypes.WAD && nOfDecimals <= floatsTypes.RAY)) {
-        return FixedNumber.fromString(value, 'fixed256x27').toHexString()
-    } else if (type === 'RAD' || (nOfDecimals > floatsTypes.RAY && nOfDecimals <= floatsTypes.RAD)) {
-        return FixedNumber.fromString(value, 'fixed256x45').toHexString()
+    } catch (error) {
+        console.error('toFixedString error:', error)
+        return '0'
     }
-    return FixedNumber.fromString(value, 'fixed256x18').toHexString()
 }
 
 export const formatUserSafe = (
@@ -197,7 +204,7 @@ export const getLiquidationPrice = (
         .multiply(currentRedemptionPrice)
         .divide(totalCollateral)
 
-    return formatNumber(numerator.value().toString(), 2)
+    return formatNumber(numerator.value().toString())
 }
 
 export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPrice: string): Boolean => {
@@ -260,7 +267,7 @@ export const returnAvaiableDebt = (
     const prevDebtBN = BigNumber.from(toFixedString(prevDebt, 'WAD'))
     const totalPrevDebt = prevDebtBN.mul(accumulatedRateRay).div(gebUtils.RAY)
     const availableDebt = totalDebtBN.sub(totalPrevDebt)
-    return formatNumber(gebUtils.wadToFixed(availableDebt).toString()).toString()
+    return formatNumber(gebUtils.wadToFixed(availableDebt.lt(0) ? BigNumber.from('0') : availableDebt).toString()).toString()
 }
 
 export const returnTotalDebt = (debt: string, accumulatedRate: string, beautify = true) => {

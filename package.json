@@ -4,8 +4,10 @@
     "homepage": ".",
     "private": true,
     "scripts": {
+        "preinstall": "yarn --cwd ./solidity install",
         "start": "craco start",
-        "build": "yarn --cwd solidity install && yarn --cwd solidity compile && craco build",
+        "prebuild": "yarn --cwd ./solidity compile",
+        "build": "craco build",
         "prettier": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\"",
         "test": "craco test",
         "eject": "craco eject"

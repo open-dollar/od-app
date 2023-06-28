@@ -43,7 +43,15 @@ export default LinkButton
 
 const ExtLink = styled.a`
     ${BtnStyle}
+    transition: opacity 0.3s ease;
+    &:hover {
+        opacity: 0.9;
+    }
 `
 const CustomLink = styled(Link)`
     ${BtnStyle}
+    transition: opacity 0.3s ease;
+    &:hover {
+        opacity: 0.9;
+    }
 `

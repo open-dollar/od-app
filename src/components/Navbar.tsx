@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { utils } from 'ethers'
 
-import { newTransactionsFirst, returnWalletAddress, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, newTransactionsFirst, returnWalletAddress, TOKEN_LOGOS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -60,7 +60,7 @@ const Navbar = () => {
 
     const haiBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return balances.HAI ? utils.formatEther(balances.HAI.balanceE18) : '0'
+        return formatNumber(balances.HAI ? utils.formatEther(balances.HAI.balanceE18) : '0', 2)
     }, [connectWalletModel.tokensFetchedData])
 
     return (

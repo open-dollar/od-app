@@ -180,7 +180,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             prices: [
                 {
                     label: `${collateralName} Price (OSM)`,
-                    value: '$' + formatNumber(collateralLiquidationData!.currentPrice.value.toString(), 2),
+                    value: '$' + formatNumber(collateralLiquidationData!.currentPrice.value.toString()),
                     tip: t('eth_osm_tip'),
                 },
                 {

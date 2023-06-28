@@ -73,13 +73,13 @@ const CreateSafe = ({
     }, [selectedItem])
 
     const collateralUnitPriceUSD = formatNumber(
-        safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0',
-        2
+        safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0'
     )
+    
     const selectedTokenBalanceInUSD = formatNumber(
-        (Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString(),
-        2
+        (Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString()
     )
+
     const debtFloor = Math.ceil(
         Number(
             formatNumber(
@@ -218,9 +218,9 @@ const CreateSafe = ({
                                         token={
                                             selectedCollateral?.symbol
                                                 ? {
-                                                      name: selectedCollateral?.symbol || '-',
-                                                      icon: TOKEN_LOGOS[selectedCollateral?.symbol],
-                                                  }
+                                                    name: selectedCollateral?.symbol || '-',
+                                                    icon: TOKEN_LOGOS[selectedCollateral?.symbol],
+                                                }
                                                 : undefined
                                         }
                                         label={`Balance: ${selectedTokenBalance} ${selectedCollateral?.symbol}`}

@@ -17,12 +17,8 @@ const SafeHeader = ({
     const history = useHistory()
 
     const handleBack = useCallback(() => {
-        if (isModifying && safeId) {
-            history.push(`/safes/${safeId}`)
-        } else {
-            history.push(`/safes`)
-        }
-    }, [history, isModifying, safeId])
+        history.push(`/safes`)
+    }, [history])
 
     return (
         <Container>
@@ -42,13 +38,13 @@ const SafeHeader = ({
                         id="deposit_borrow"
                         text={'Deposit & Borrow'}
                         url={`/safes/${safeId}/deposit`}
-                        color={'colorPrimary'}
+                        color={isDeposit ? 'blueish' : 'colorPrimary'}
                     />
                     <LinkButton
                         id="repay_withdraw"
                         text={'Repay & Withdraw'}
                         url={`/safes/${safeId}/withdraw`}
-                        color={'blueish'}
+                        color={!isDeposit ? 'blueish' : 'colorPrimary'}
                     />
                 </RightSide>
             </HeaderContainer>
@@ -69,6 +65,11 @@ const BackBtn = styled.div`
     max-width: fit-content;
     svg {
         margin-right: 5px;
+    }
+
+    transition: opacity 0.3s ease;
+    &:hover {
+        opacity: 0.8;
     }
 `
 

@@ -19,7 +19,7 @@ const SafeBlock = ({ ...props }) => {
 
     return (
         <Container className={props.className}>
-            <Link to={`/safes/${props.id}`}>
+            <Link to={`/safes/${props.id}/deposit`}>
                 <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
@@ -69,7 +69,12 @@ const SafeBlock = ({ ...props }) => {
 
 export default SafeBlock
 
-const Container = styled.div``
+const Container = styled.div`
+    transition: opacity 0.2s ease;
+    &:hover {
+        opacity: 0.9;
+    }
+`
 
 const BlockContainer = styled.div`
     padding: 20px;

@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { ArrowRightCircle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
 import { BtnStyle } from '../GlobalStyle'
+
 interface Props {
     url: string
     id?: string
@@ -11,12 +13,7 @@ interface Props {
     isExternal?: boolean
     withArrow?: boolean
     children?: ReactNode
-    color?:
-        | 'blueish'
-        | 'greenish'
-        | 'yellowish'
-        | 'colorPrimary'
-        | 'colorSecondary'
+    color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
 }
 const LinkButton = ({
     id,
@@ -30,30 +27,14 @@ const LinkButton = ({
     ...rest
 }: Props) => {
     return isExternal ? (
-        <ExtLink
-            id={id}
-            {...rest}
-            href={url}
-            target="_blank"
-            rel="norefferer"
-            disabled={disabled}
-            color={color}
-        >
+        <ExtLink id={id} {...rest} href={url} target="_blank" rel="norefferer" disabled={disabled} color={color}>
             {children}
-            <span>{text}</span>{' '}
-            {withArrow ? <ArrowRightCircle size={'18'} /> : null}
+            <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}
         </ExtLink>
     ) : (
-        <CustomLink
-            id={id}
-            {...rest}
-            to={url}
-            color={color}
-            disabled={disabled}
-        >
+        <CustomLink id={id} {...rest} to={url} color={color} disabled={disabled}>
             {children}
-            <span>{text}</span>{' '}
-            {withArrow ? <ArrowRightCircle size={'18'} /> : null}
+            <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}
         </CustomLink>
     )
 }

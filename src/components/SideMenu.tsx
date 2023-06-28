@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { useStoreActions, useStoreState } from '../store'
-import { amountToFiat, returnWalletAddress } from '../utils/helper'
-import Button from './Button'
-import NavLinks from './NavLinks'
-import { useTranslation } from 'react-i18next'
-import { useWeb3React } from '@web3-react/core'
-import ConnectedWalletIcon from './ConnectedWalletIcon'
 import { CSSTransition } from 'react-transition-group'
-import { COIN_TICKER } from '../utils/constants'
+import { useWeb3React } from '@web3-react/core'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+
+import { amountToFiat, returnWalletAddress, COIN_TICKER } from '~/utils'
+import { useStoreActions, useStoreState } from '~/store'
+import ConnectedWalletIcon from './ConnectedWalletIcon'
+import NavLinks from './NavLinks'
+import Button from './Button'
 
 const SideMenu = () => {
     const { t } = useTranslation()
@@ -16,11 +16,9 @@ const SideMenu = () => {
     const { active, account, chainId } = useWeb3React()
     const [isOpen, setIsOpen] = useState(false)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
-    const { connectWalletModel: connectWalletState, popupsModel: popupsState } =
-        useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState, popupsModel: popupsState } = useStoreState((state) => state)
 
-    const handleWalletConnect = () =>
-        popupsActions.setIsConnectorsWalletOpen(true)
+    const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     const renderBalance = () => {
         if (chainId) {
@@ -47,47 +45,33 @@ const SideMenu = () => {
         >
             <Container ref={nodeRef}>
                 <Inner>
-                    <Overlay
-                        onClick={() => popupsActions.setShowSideMenu(false)}
-                    />
+                    <Overlay onClick={() => popupsActions.setShowSideMenu(false)} />
 
                     <InnerContainer>
                         <AccountBalance>
                             {active && account ? (
                                 <Account
                                     onClick={() => {
-                                        popupsActions.setIsConnectedWalletModalOpen(
-                                            true
-                                        )
+                                        popupsActions.setIsConnectedWalletModalOpen(true)
                                         popupsActions.setShowSideMenu(false)
                                     }}
                                 >
                                     <ConnectedWalletIcon size={40} />
                                     <AccountData>
-                                        <Address>
-                                            {returnWalletAddress(account)}
-                                        </Address>
+                                        <Address>{returnWalletAddress(account)}</Address>
                                         <Balance>{`$ ${renderBalance()}`}</Balance>
                                     </AccountData>
                                 </Account>
                             ) : (
                                 <ConnectBtnContainer>
-                                    <Icon
-                                        src={
-                                            require('../assets/LogoIcon.png')
-                                                .default
-                                        }
-                                    />
+                                    <Icon src={require('../assets/LogoIcon.png').default} />
                                     <Title>{t('welcome_reflexer')}</Title>
                                     <Text>
                                         {t('connect_text', {
                                             coin_ticker: COIN_TICKER,
                                         })}
                                     </Text>
-                                    <Button
-                                        onClick={handleWalletConnect}
-                                        text={'connect_wallet'}
-                                    />
+                                    <Button onClick={handleWalletConnect} text={'connect_wallet'} />
                                 </ConnectBtnContainer>
                             )}
                         </AccountBalance>

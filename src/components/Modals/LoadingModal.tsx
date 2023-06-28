@@ -16,13 +16,8 @@ const LoadingModal = () => {
             backDropColor={'rgba(255,255,255)'}
         >
             <LoaderContainer>
-                <img
-                    src={require('../../assets/logo192.png').default}
-                    alt={''}
-                />
-                {popupsState.isLoadingModalOpen.text ? (
-                    <Text>{popupsState.isLoadingModalOpen.text}</Text>
-                ) : null}
+                <img src={require('../../assets/logo192.png').default} alt={''} />
+                {popupsState.isLoadingModalOpen.text ? <Text>{popupsState.isLoadingModalOpen.text}</Text> : null}
             </LoaderContainer>
         </Modal>
     )

@@ -1,12 +1,13 @@
-import { Geb } from '@hai-on-op/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useActiveWeb3React } from '.'
-import { NETWORK_ID } from '../connectors'
-import store, { useStoreActions, useStoreState } from '../store'
-import { EMPTY_ADDRESS, network_name } from '../utils/constants'
-import { formatNumber } from '../utils/helper'
+import { Geb } from '@hai-on-op/sdk'
 
-type TokenType = 'ETH' | 'HAI' | 'WETH'	
+import store, { useStoreActions, useStoreState } from '~/store'
+import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
+import { formatNumber } from '~/utils/helper'
+import { useActiveWeb3React } from '~/hooks'
+import { NETWORK_ID } from '~/connectors'
+
+type TokenType = 'ETH' | 'HAI' | 'WETH'
 
 // connect to @hai-on-op/sdk
 
@@ -46,9 +47,7 @@ export function useIsOwner(safeId: string): boolean {
             geb.contracts.safeManager.ownsSAFE(safeId),
         ])
             .then(getIsOwnerCallback)
-            .catch((error) =>
-                console.error(`Failed to get proxyAddress and SafeOwner`, error)
-            )
+            .catch((error) => console.error(`Failed to get proxyAddress and SafeOwner`, error))
     }, [account, geb, getIsOwnerCallback, safeId])
 
     return state
@@ -58,12 +57,8 @@ export function useIsOwner(safeId: string): boolean {
 export function useProxyAddress() {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
-    const { connectWalletModel: connectWalletState } = useStoreState(
-        (state) => state
-    )
-    const { connectWalletModel: connectWalletActions } = useStoreActions(
-        (state) => state
-    )
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
     const { proxyAddress } = connectWalletState
 
     useEffect(() => {
@@ -71,11 +66,7 @@ export function useProxyAddress() {
         async function getProxyAddress() {
             try {
                 const userProxy = await geb.getProxyAction(account as string)
-                if (
-                    userProxy &&
-                    userProxy.proxyAddress &&
-                    userProxy.proxyAddress !== EMPTY_ADDRESS
-                ) {
+                if (userProxy && userProxy.proxyAddress && userProxy.proxyAddress !== EMPTY_ADDRESS) {
                     connectWalletActions.setProxyAddress(userProxy.proxyAddress)
                 }
             } catch (error) {
@@ -112,8 +103,7 @@ export function useSafeHandler(safeId: string): string {
 // returns amount of currency in USD
 export function useTokenBalanceInUSD(token: TokenType, balance: string) {
     const ethPrice = store.getState().connectWalletModel.fiatPrice
-    const haiPrice =
-        store.getState().safeModel.liquidationData!.currentRedemptionPrice
+    const haiPrice = store.getState().safeModel.liquidationData!.currentRedemptionPrice
 
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice

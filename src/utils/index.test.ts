@@ -12,29 +12,19 @@ import {
 describe('utils', () => {
     describe('#getEtherscanLink', () => {
         it('correct for tx', () => {
-            expect(getEtherscanLink(1, 'abc', 'transaction')).toEqual(
-                'https://etherscan.io/tx/abc'
-            )
+            expect(getEtherscanLink(1, 'abc', 'transaction')).toEqual('https://etherscan.io/tx/abc')
         })
         it('correct for token', () => {
-            expect(getEtherscanLink(1, 'abc', 'token')).toEqual(
-                'https://etherscan.io/token/abc'
-            )
+            expect(getEtherscanLink(1, 'abc', 'token')).toEqual('https://etherscan.io/token/abc')
         })
         it('correct for address', () => {
-            expect(getEtherscanLink(1, 'abc', 'address')).toEqual(
-                'https://etherscan.io/address/abc'
-            )
+            expect(getEtherscanLink(1, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
         })
         it('unrecognized chain id defaults to mainnet', () => {
-            expect(getEtherscanLink(2, 'abc', 'address')).toEqual(
-                'https://etherscan.io/address/abc'
-            )
+            expect(getEtherscanLink(2, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
         })
         it('goerli optimism', () => {
-            expect(getEtherscanLink(420, 'abc', 'address')).toEqual(
-                'https://goerli-optimism.etherscan.io/address/abc'
-            )
+            expect(getEtherscanLink(420, 'abc', 'address')).toEqual('https://goerli-optimism.etherscan.io/address/abc')
         })
     })
 
@@ -48,12 +38,12 @@ describe('utils', () => {
         })
 
         it('returns the checksummed address', () => {
-            expect(
-                isAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')
-            ).toBe('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
-            expect(
-                isAddress('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
-            ).toBe('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')
+            expect(isAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe(
+                '0xf164fC0Ec4E93095b804a4795bBe1e041497b92a'
+            )
+            expect(isAddress('0xf164fC0Ec4E93095b804a4795bBe1e041497b92a')).toBe(
+                '0xf164fC0Ec4E93095b804a4795bBe1e041497b92a'
+            )
         })
 
         it('succeeds even without prefix', () => {
@@ -62,9 +52,7 @@ describe('utils', () => {
             )
         })
         it('fails if too long', () => {
-            expect(isAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a0')).toBe(
-                false
-            )
+            expect(isAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a0')).toBe(false)
         })
     })
 

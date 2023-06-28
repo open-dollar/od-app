@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from './Button'
@@ -29,13 +28,7 @@ const PageHeader = ({ text, breadcrumbs, btnText, btnFn }: Props) => {
                     {text}{' '}
                     {btnText && btnFn ? (
                         <>
-                            or{' '}
-                            <Button
-                                data-test-id="header-btn"
-                                withArrow
-                                text={btnText}
-                                onClick={btnFn}
-                            />
+                            or <Button data-test-id="header-btn" withArrow text={btnText} onClick={btnFn} />
                         </>
                     ) : null}
                 </Text>

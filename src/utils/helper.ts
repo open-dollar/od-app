@@ -2,18 +2,8 @@ import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
 import { utils as gebUtils } from '@hai-on-op/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import {
-    ETHERSCAN_PREFIXES,
-    floatsTypes,
-    SUPPORTED_WALLETS,
-    COIN_TICKER,
-} from './constants'
-import {
-    ChainId,
-    ILiquidationData,
-    ISafe,
-    ITransaction,
-} from './interfaces'
+import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS, COIN_TICKER } from './constants'
+import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
 import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
@@ -23,8 +13,7 @@ export const IS_IN_IFRAME = window.parent !== window
 export const returnWalletAddress = (walletAddress: string) =>
     `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
 
-export const capitalizeName = (name: string) =>
-    name.charAt(0).toUpperCase() + name.slice(1)
+export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
 
 export const isAddress = (value: any): string | false => {
     try {
@@ -38,8 +27,7 @@ export const getEtherscanLink = (
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block'
 ): string => {
-    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]
-        }etherscan.io`
+    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
 
     switch (type) {
         case 'transaction': {
@@ -82,42 +70,24 @@ export const formatNumber = (value: string, digits = 4, round = false) => {
     return isNaN(Number(val)) ? value : val
 }
 
-export const getRatePercentage = (
-    value: string,
-    digits = 4,
-    returnRate = false
-) => {
+export const getRatePercentage = (value: string, digits = 4, returnRate = false) => {
     const rate = Number(value)
-    let ratePercentage =
-        rate < 1
-            ? numeral(1).subtract(rate).value() * -1
-            : numeral(rate).subtract(1).value()
+    let ratePercentage = rate < 1 ? numeral(1).subtract(rate).value() * -1 : numeral(rate).subtract(1).value()
 
     if (returnRate) return ratePercentage
 
     return formatNumber(String(ratePercentage * 100), digits)
 }
 
-export const toFixedString = (
-    value: string,
-    type?: keyof typeof floatsTypes
-): string => {
+export const toFixedString = (value: string, type?: keyof typeof floatsTypes): string => {
     const n = Number(value)
-    const nOfDecimals = Number.isInteger(n)
-        ? value.length
-        : value.split('.')[1].length
+    const nOfDecimals = Number.isInteger(n) ? value.length : value.split('.')[1].length
 
     if (type === 'WAD' || nOfDecimals === floatsTypes.WAD) {
         return FixedNumber.fromString(value, 'fixed256x18').toHexString()
-    } else if (
-        type === 'RAY' ||
-        (nOfDecimals > floatsTypes.WAD && nOfDecimals <= floatsTypes.RAY)
-    ) {
+    } else if (type === 'RAY' || (nOfDecimals > floatsTypes.WAD && nOfDecimals <= floatsTypes.RAY)) {
         return FixedNumber.fromString(value, 'fixed256x27').toHexString()
-    } else if (
-        type === 'RAD' ||
-        (nOfDecimals > floatsTypes.RAY && nOfDecimals <= floatsTypes.RAD)
-    ) {
+    } else if (type === 'RAD' || (nOfDecimals > floatsTypes.RAY && nOfDecimals <= floatsTypes.RAD)) {
         return FixedNumber.fromString(value, 'fixed256x45').toHexString()
     }
     return FixedNumber.fromString(value, 'fixed256x18').toHexString()
@@ -126,20 +96,18 @@ export const toFixedString = (
 export const formatUserSafe = (
     safes: Array<any>,
     liquidationData: ILiquidationData,
-    tokensData: {[key: string]: TokenData}
+    tokensData: { [key: string]: TokenData }
 ): Array<ISafe> => {
+    const collateralBytes32: { [key: string]: string } = Object.values(tokensData)
+        .filter(token => token.isCollateral)
+        .reduce((accum, token) => {
+            return { ...accum, [token.bytes32String]: token.symbol }
+        }, {})
 
-    const collateralBytes32: {[key: string]: string}  = Object.values(tokensData).filter(token => token.isCollateral).reduce((accum, token) => {
-        return {...accum, [token.bytes32String]: token.symbol}
-    }, {});
-
-    const {
-        currentRedemptionPrice,
-        currentRedemptionRate,
-        collateralLiquidationData
-    } = liquidationData
+    const { currentRedemptionPrice, currentRedemptionRate, collateralLiquidationData } = liquidationData
 
     return safes
+        .filter(s => s.collateralType in collateralBytes32)
         .map((s) => {
             const token = collateralBytes32[s.collateralType]
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
@@ -148,17 +116,9 @@ export const formatUserSafe = (
             const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
             const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
 
-            const availableDebt = returnAvaiableDebt(
-                currentPrice?.safetyPrice,
-                '0',
-                s.collateral,
-                s.debt
-            )
+            const availableDebt = returnAvaiableDebt(currentPrice?.safetyPrice, '0', s.collateral, s.debt)
 
-            const totalDebt = returnTotalValue(
-                returnTotalDebt(s.debt, accumulatedRate) as string,
-                '0'
-            ).toString()
+            const totalDebt = returnTotalValue(returnTotalDebt(s.debt, accumulatedRate) as string, '0').toString()
 
             const liquidationPrice = getLiquidationPrice(
                 s.collateral,
@@ -188,8 +148,7 @@ export const formatUserSafe = (
                 accumulatedRate,
                 collateralRatio,
                 currentRedemptionPrice,
-                internalCollateralBalance:
-                    s.internalCollateralBalance?.balance || '0',
+                internalCollateralBalance: s.internalCollateralBalance?.balance || '0',
                 currentLiquidationPrice: currentPrice?.liquidationPrice,
                 liquidationCRatio: liquidationCRatio || '1',
                 liquidationPenalty: liquidationPenalty || '1',
@@ -198,11 +157,7 @@ export const formatUserSafe = (
                 currentRedemptionRate: currentRedemptionRate || '0',
             } as ISafe
         })
-        .sort(
-            (a, b) =>
-                Number(a.collateral) - Number(b.collateral) &&
-                Number(b.riskState) - Number(a.riskState)
-        )
+        .sort((a, b) => Number(a.collateral) - Number(b.collateral) && Number(b.riskState) - Number(a.riskState))
 }
 
 export const getCollateralRatio = (
@@ -218,9 +173,7 @@ export const getCollateralRatio = (
     }
     const denominator = numeral(totalDebt).value()
 
-    const numerator = numeral(totalCollateral)
-        .multiply(liquidationPrice)
-        .multiply(liquidationCRatio)
+    const numerator = numeral(totalCollateral).multiply(liquidationPrice).multiply(liquidationCRatio)
 
     const value = numerator.divide(denominator).multiply(100)
 
@@ -247,20 +200,12 @@ export const getLiquidationPrice = (
     return formatNumber(numerator.value().toString(), 2)
 }
 
-export const safeIsSafe = (
-    totalCollateral: string,
-    totalDebt: string,
-    safetyPrice: string
-): Boolean => {
+export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPrice: string): Boolean => {
     if (isNaN(Number(totalDebt))) return true
     const totalDebtBN = BigNumber.from(toFixedString(totalDebt, 'WAD'))
-    const totalCollateralBN = BigNumber.from(
-        toFixedString(totalCollateral, 'WAD')
-    )
+    const totalCollateralBN = BigNumber.from(toFixedString(totalCollateral, 'WAD'))
     const safetyPriceBN = BigNumber.from(toFixedString(safetyPrice, 'RAY'))
-    return totalDebtBN.lte(
-        totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY)
-    )
+    return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
 export const ratioChecker = (liquitdationRatio: number) => {
@@ -277,11 +222,7 @@ export const ratioChecker = (liquitdationRatio: number) => {
 
 export const getInterestOwed = (debt: string, accumulatedRate: string) => {
     const restAcc = numeral(accumulatedRate).subtract(1).value()
-    return formatNumber(
-        numeral(debt).multiply(restAcc).value().toString(),
-        4,
-        true
-    )
+    return formatNumber(numeral(debt).multiply(restAcc).value().toString(), 4, true)
 }
 
 export const returnTotalValue = (
@@ -291,12 +232,8 @@ export const returnTotalValue = (
     isRepay = false,
     type: keyof typeof floatsTypes = 'WAD'
 ) => {
-    const firstBN = first
-        ? BigNumber.from(toFixedString(Number(first).toString(), type))
-        : BigNumber.from('0')
-    const secondBN = second
-        ? BigNumber.from(toFixedString(second, type))
-        : BigNumber.from('0')
+    const firstBN = first ? BigNumber.from(toFixedString(Number(first).toString(), type)) : BigNumber.from('0')
+    const secondBN = second ? BigNumber.from(toFixedString(second, type)) : BigNumber.from('0')
 
     const totalBN = isRepay ? firstBN.sub(secondBN) : firstBN.add(secondBN)
 
@@ -315,36 +252,20 @@ export const returnAvaiableDebt = (
         return '0'
     }
 
-    const safetyPriceRay = BigNumber.from(
-        BigNumber.from(toFixedString(safetyPrice, 'RAY'))
-    )
-    const accumulatedRateRay = BigNumber.from(
-        BigNumber.from(toFixedString(accumulatedRate, 'RAY'))
-    )
-    const totalCollateralBN = returnTotalValue(
-        currentCollatral,
-        prevCollatral,
-        false
-    ) as BigNumber
+    const safetyPriceRay = BigNumber.from(BigNumber.from(toFixedString(safetyPrice, 'RAY')))
+    const accumulatedRateRay = BigNumber.from(BigNumber.from(toFixedString(accumulatedRate, 'RAY')))
+    const totalCollateralBN = returnTotalValue(currentCollatral, prevCollatral, false) as BigNumber
 
     const totalDebtBN = totalCollateralBN.mul(safetyPriceRay).div(gebUtils.RAY)
     const prevDebtBN = BigNumber.from(toFixedString(prevDebt, 'WAD'))
     const totalPrevDebt = prevDebtBN.mul(accumulatedRateRay).div(gebUtils.RAY)
     const availableDebt = totalDebtBN.sub(totalPrevDebt)
-    return formatNumber(
-        gebUtils.wadToFixed(availableDebt).toString()
-    ).toString()
+    return formatNumber(gebUtils.wadToFixed(availableDebt).toString()).toString()
 }
 
-export const returnTotalDebt = (
-    debt: string,
-    accumulatedRate: string,
-    beautify = true
-) => {
+export const returnTotalDebt = (debt: string, accumulatedRate: string, beautify = true) => {
     const debtBN = BigNumber.from(toFixedString(debt, 'WAD'))
-    const accumulatedRateBN = BigNumber.from(
-        toFixedString(accumulatedRate, 'RAY')
-    )
+    const accumulatedRateBN = BigNumber.from(toFixedString(accumulatedRate, 'RAY'))
 
     const totalDebtBN = debtBN.mul(accumulatedRateBN).div(gebUtils.RAY)
 
@@ -361,18 +282,10 @@ export const returnTotalDebtPlusInterest = (
     if (!safetyPrice || !collateral || !accumulatedRate) {
         return '0'
     }
-    const safetyPriceRay = BigNumber.from(
-        BigNumber.from(toFixedString(safetyPrice, 'RAY'))
-    )
+    const safetyPriceRay = BigNumber.from(BigNumber.from(toFixedString(safetyPrice, 'RAY')))
     const collateralBN = BigNumber.from(toFixedString(collateral, 'WAD'))
-    const accumulatedRateBN = BigNumber.from(
-        toFixedString(accumulatedRate, 'RAY')
-    )
-    const owedHAI = collateralBN
-        .mul(safetyPriceRay)
-        .mul(accumulatedRateBN)
-        .div(gebUtils.RAY)
-        .div(gebUtils.RAY)
+    const accumulatedRateBN = BigNumber.from(toFixedString(accumulatedRate, 'RAY'))
+    const owedHAI = collateralBN.mul(safetyPriceRay).mul(accumulatedRateBN).div(gebUtils.RAY).div(gebUtils.RAY)
 
     if (!beautify) return owedHAI
     return formatNumber(gebUtils.wadToFixed(owedHAI).toString()).toString()
@@ -386,16 +299,11 @@ export const timeout = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const returnPercentAmount = (
-    partialValue: string,
-    totalValue: string
-) => {
+export const returnPercentAmount = (partialValue: string, totalValue: string) => {
     return numeral(partialValue).divide(totalValue).multiply(100).value()
 }
 
-export const returnConnectorName = (
-    connector: AbstractConnector | undefined
-) => {
+export const returnConnectorName = (connector: AbstractConnector | undefined) => {
     if (!connector || typeof connector === undefined) return null
 
     const isMetamask = window?.ethereum?.isMetaMask
@@ -423,9 +331,7 @@ export const numberizeString = (obj: any) => {
     Object.keys(obj).forEach((key) => {
         res[key] = {}
         Object.keys(obj[key]).forEach((temp) => {
-            res[key][temp] = !isNaN(obj[key][temp])
-                ? numeral(obj[key][temp]).value()
-                : obj[key][temp]
+            res[key][temp] = !isNaN(obj[key][temp]) ? numeral(obj[key][temp]).value() : obj[key][temp]
         })
         return res
     })

@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
-import { ArrowLeft } from 'react-feather'
 import { useHistory } from 'react-router-dom'
+import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
-import LinkButton from '../../components/LinkButton'
+
+import LinkButton from '~/components/LinkButton'
 
 const SafeHeader = ({
     safeId,

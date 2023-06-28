@@ -1,7 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
 import CookieConsent from 'react-cookie-consent'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 const CookieBanner = () => {
     return (
@@ -17,8 +16,8 @@ const CookieBanner = () => {
             >
                 <CookiesText>
                     <img src={require('../assets/cookie.svg').default} alt="" />
-                    This website uses cookies to enhance the user experience. By
-                    continuing to browse the site you're agreeing to our
+                    This website uses cookies to enhance the user experience. By continuing to browse the site you're
+                    agreeing to our
                     <CustomLink
                         to={{
                             pathname: '/privacy',

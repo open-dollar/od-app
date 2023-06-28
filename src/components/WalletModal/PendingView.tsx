@@ -78,9 +78,7 @@ export default function PendingView({
                             color={option.color}
                             header={option.name}
                             subheader={option.description}
-                            icon={
-                                require(`../../assets/connectors/${option.iconName}`)
-                            }
+                            icon={require(`../../assets/connectors/${option.iconName}`)}
                         />
                     )
                 }
@@ -108,9 +106,7 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
     border-radius: 12px;
     margin-bottom: 20px;
     color: ${(props) => props.theme.colors.neutral};
-    border: 1px solid
-        ${({ theme, error }) =>
-            error ? theme.colors.dangerColor : theme.colors.border};
+    border: 1px solid ${({ theme, error }) => (error ? theme.colors.dangerColor : theme.colors.border)};
 
     & > * {
         padding: 1rem;

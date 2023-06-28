@@ -25,18 +25,10 @@ expect.extend({
         // The GQL endpoint will allow only up to 33-34 digits base 10 for the mantissa
         // So we truncate it
         const gqlMaxMantissaSize = 33
-        const mantissaReceived = BigNumber.from(
-            fixReceived.toHexString()
-        ).toString()
+        const mantissaReceived = BigNumber.from(fixReceived.toHexString()).toString()
         const mantissaOther = BigNumber.from(fixOther.toHexString()).toString()
-        const truncatedMantissaReceived = mantissaReceived.slice(
-            0,
-            gqlMaxMantissaSize
-        )
-        const truncatedMantissaOther = mantissaOther.slice(
-            0,
-            gqlMaxMantissaSize
-        )
+        const truncatedMantissaReceived = mantissaReceived.slice(0, gqlMaxMantissaSize)
+        const truncatedMantissaOther = mantissaOther.slice(0, gqlMaxMantissaSize)
 
         // Compare the mantissa and the decimal place
         if (
@@ -59,8 +51,7 @@ expect.extend({
         } else {
             return {
                 pass: false,
-                message: () =>
-                    `Got ${received} not matching ${other} \n Deviation of ${deviation} is too large`,
+                message: () => `Got ${received} not matching ${other} \n Deviation of ${deviation} is too large`,
             }
         }
     },
@@ -84,11 +75,7 @@ const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
         const typeB = typeof objA[keyB[i]]
 
         if (typeA !== typeB && typeA !== null && typeB !== null) {
-            fail(
-                `Type of object not matching for: \n ${JSON.stringify(
-                    objA
-                )} \n and: \n   ${JSON.stringify(objB)}`
-            )
+            fail(`Type of object not matching for: \n ${JSON.stringify(objA)} \n and: \n   ${JSON.stringify(objB)}`)
         }
 
         if (Array.isArray(objA[keyA[i]]) && matchArrays) {
@@ -102,11 +89,7 @@ const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
             for (let j = 0; j < arrayA.length; j++) {
                 verifyKeys(arrayA[j], arrayB[j], matchArrays)
             }
-        } else if (
-            typeof objA[keyA[i]] === 'object' &&
-            !Array.isArray(objA[keyA[i]]) &&
-            objA[keyA[i]]
-        ) {
+        } else if (typeof objA[keyA[i]] === 'object' && !Array.isArray(objA[keyA[i]]) && objA[keyA[i]]) {
             verifyKeys(objA[keyA[i]], objB[keyB[i]], matchArrays)
         }
     }
@@ -143,7 +126,7 @@ describe('empty', () => {
 
 //             expect(rpcResponse).toBeTruthy();
 
-//             // It can't be an exact match since the the RPC read function is in reality a state changing function applying the price change every second  
+//             // It can't be an exact match since the the RPC read function is in reality a state changing function applying the price change every second
 
 //             expect(rpcResponse.systemState.currentRedemptionPrice.value).not.toBeNull();
 //             // Since we're using JS instead of solidity for the exponentiation, an approximation is enough
@@ -161,7 +144,7 @@ describe('empty', () => {
 //             expect(rpcResponse.collateralType.liquidationCRatio).not.toBeNull()
 //             expect(rpcResponse.collateralType.liquidationPenalty).not.toBeNull()
 //             expect(rpcResponse.collateralType.safetyCRatio).not.toBeNull()
-//             // Here we're using JS exponentiation again, so get an approximate value 
+//             // Here we're using JS exponentiation again, so get an approximate value
 //             expect(rpcResponse.collateralType.totalAnnualizedStabilityFee).not.toBeNull()
 //         });
 //     })

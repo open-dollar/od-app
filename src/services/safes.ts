@@ -1,26 +1,17 @@
 import { formatUserSafe } from '../utils/helper'
-import {
-    IFetchSafeById,
-    IFetchSafesPayload,
-    ISafeQuery,
-    IUserSafeList,
-} from '../utils/interfaces'
+import { IFetchSafeById, IFetchSafesPayload, ISafeQuery, IUserSafeList } from '../utils/interfaces'
 import gebManager from '../utils/gebManager'
 
-export const fetchUserSafes = async (
-    config: IFetchSafesPayload
-) => {
-    let response = await fetchUserSafesRaw(config);
-    if(!response) return
+export const fetchUserSafes = async (config: IFetchSafesPayload) => {
+    let response = await fetchUserSafesRaw(config)
+    if (!response) return
 
     const safesResponse: IUserSafeList = response
 
     const liquidationData = {
         collateralLiquidationData: safesResponse.collateralLiquidationData,
-        currentRedemptionPrice:
-            safesResponse.systemState.currentRedemptionPrice.value,
-        currentRedemptionRate:
-            safesResponse.systemState.currentRedemptionRate.annualizedRate,
+        currentRedemptionPrice: safesResponse.systemState.currentRedemptionPrice.value,
+        currentRedemptionRate: safesResponse.systemState.currentRedemptionRate.annualizedRate,
         globalDebt: safesResponse.systemState.globalDebt,
         globalDebtCeiling: safesResponse.systemState.globalDebtCeiling,
         perSafeDebtCeiling: safesResponse.systemState.perSafeDebtCeiling,
@@ -30,17 +21,14 @@ export const fetchUserSafes = async (
     return {
         userSafes,
         availableHAI:
-            safesResponse.erc20Balances &&
-                safesResponse.erc20Balances.length > 0
+            safesResponse.erc20Balances && safesResponse.erc20Balances.length > 0
                 ? safesResponse.erc20Balances[0].balance
                 : '0',
         liquidationData,
     }
 }
 
-export const fetchUserSafesRaw = async (
-    config: IFetchSafesPayload,
-) => {
+export const fetchUserSafesRaw = async (config: IFetchSafesPayload) => {
     const { address, geb } = config
 
     if (!geb) return

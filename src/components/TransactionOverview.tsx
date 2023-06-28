@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import ReflexerIcon from './Icons/ReflexerIcon'
 
@@ -15,14 +14,8 @@ const TransactionOverview = ({ title, description, isChecked }: Props) => {
                 <ReflexerIcon />
                 {isChecked ? (
                     <>
-                        <img
-                            className="sep"
-                            src={require('../assets/arrow.svg').default}
-                            alt=""
-                        />
-                        <LogoIcon
-                            src={require('../assets/uniswap-icon.svg').default}
-                        />{' '}
+                        <img className="sep" src={require('../assets/arrow.svg').default} alt="" />
+                        <LogoIcon src={require('../assets/uniswap-icon.svg').default} />{' '}
                     </>
                 ) : null}
             </IconsHolder>

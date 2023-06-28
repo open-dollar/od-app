@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/hai-logo.png'
 
@@ -7,7 +6,6 @@ interface Props {
 }
 
 const Brand = ({ height }: Props) => {
-
     return (
         <Container>
             <a href={'/'}>

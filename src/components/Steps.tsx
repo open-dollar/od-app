@@ -1,18 +1,13 @@
-import React from 'react'
 import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip'
-import { useStoreActions, useStoreState } from '../store'
-import StepsContent from './StepsContent'
-import { useActiveWeb3React } from '../hooks'
-import { useHistory } from 'react-router-dom'
-import {
-    handleTransactionError,
-    useTransactionAdder,
-} from '../hooks/TransactionHooks'
 import { useTranslation } from 'react-i18next'
-import { COIN_TICKER } from '../utils/constants'
-import { use10BlocksConfirmations } from '../hooks/useBlocksConfirmations'
-import useGeb from '../hooks/useGeb'
+import { useHistory } from 'react-router-dom'
+import ReactTooltip from 'react-tooltip'
+
+import { useActiveWeb3React, handleTransactionError, useTransactionAdder, use10BlocksConfirmations } from '~/hooks'
+import { useStoreActions, useStoreState } from '~/store'
+import StepsContent from './StepsContent'
+import { COIN_TICKER } from '~/utils'
+import useGeb from '~/hooks/useGeb'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -20,22 +15,15 @@ const Steps = () => {
     const geb = useGeb()
     const blocksSinceCheck = use10BlocksConfirmations()
     const history = useHistory()
-    const { connectWalletModel: connectWalletState } = useStoreState(
-        (state) => state
-    )
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
-    const {
-        popupsModel: popupsActions,
-        connectWalletModel: connectWalletActions,
-    } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
 
-    const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } =
-        connectWalletState
+    const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
-    const handleConnectWallet = () =>
-        popupsActions.setIsConnectorsWalletOpen(true)
+    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     const handleCreateAccount = async () => {
         if (!account || !library || !chainId) return false
@@ -53,10 +41,7 @@ const Steps = () => {
             })
             const txResponse = await signer.sendTransaction(txData)
             connectWalletActions.setCtHash(txResponse.hash)
-            addTransaction(
-                { ...txResponse, blockNumber: blockNumber[chainId] },
-                'Creating an account'
-            )
+            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
             popupsActions.setWaitingPayload({
                 title: 'Transaction Submitted',
                 hash: txResponse.hash,
@@ -136,11 +121,7 @@ const Steps = () => {
                 <>
                     <Confirmations>
                         {`WATITING FOR CONFIRMATIONS... ${
-                            !blocksSinceCheck
-                                ? 0
-                                : blocksSinceCheck > 10
-                                ? 10
-                                : blocksSinceCheck
+                            !blocksSinceCheck ? 0 : blocksSinceCheck > 10 ? 10 : blocksSinceCheck
                         } of 10`}{' '}
                         <InfoBtn data-tip={t('confirmations_info')}>?</InfoBtn>
                     </Confirmations>

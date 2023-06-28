@@ -1,17 +1,15 @@
-import { ethers } from 'ethers'
-import { MaxUint256 } from '@ethersproject/constants'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useCallback, useMemo } from 'react'
-import store from '../store'
-import { useSingleCallResult } from './Multicall'
-import {
-    calculateGasMargin,
-    handleTransactionError,
-    useHasPendingApproval,
-} from './TransactionHooks'
+import { MaxUint256 } from '@ethersproject/constants'
+import { BigNumber, ethers } from 'ethers'
+
+import { calculateGasMargin, handleTransactionError, useHasPendingApproval } from './TransactionHooks'
 import { useTokenContract } from './useContract'
-import { useActiveWeb3React } from '.'
+import { useActiveWeb3React } from '~/hooks'
 import useGeb from './useGeb'
+import store from '~/store'
+
+const decimals18 = BigNumber.from(10).pow(18)
 
 export enum ApprovalState {
     UNKNOWN,
@@ -20,36 +18,42 @@ export enum ApprovalState {
     APPROVED,
 }
 // checks for token allowance
-export function useTokenAllowance(
-    tokenAddress?: string,
-    owner?: string,
-    spender?: string
-) {
+export function useTokenAllowance(tokenAddress?: string, owner?: string, spender?: string) {
+    const [allowance, setAllowance] = useState<BigNumber | undefined>()
+    const [loading, setLoading] = useState<boolean>(false)
     const contract = useTokenContract(tokenAddress, false)
-    const inputs = useMemo(
-        () => (owner && spender ? [owner, spender] : [undefined, undefined]),
-        [owner, spender]
-    )
-    const allowance = useSingleCallResult(contract, 'allowance', inputs).result
-    return useMemo(
-        () => (tokenAddress && allowance ? allowance[0] : undefined),
-        [tokenAddress, allowance]
-    )
+
+    const updateAllowance = useCallback(async () => {
+        if (owner && spender) {
+            setLoading(true)
+            setAllowance(await contract?.allowance(owner, spender))
+            setLoading(false)
+        }
+    }, [contract, owner, spender])
+
+    useEffect(() => {
+        updateAllowance()
+    }, [updateAllowance])
+
+    return { allowance, updateAllowance, loading }
 }
 
 export function useTokenApproval(
-    amount: string,
+    amount: string, // in 18 decimals
     tokenAddress?: string,
-    spender?: string
+    spender?: string,
+    decimals: string = '18',
+    exactApproval: boolean = false
 ): [ApprovalState, () => Promise<void>] {
     const { account } = useActiveWeb3React()
     const geb = useGeb()
-    const currentAllowance = useTokenAllowance(
-        tokenAddress,
-        account ?? undefined,
-        spender
-    )
+    const {
+        allowance: currentAllowance,
+        updateAllowance,
+        loading: pendingAllowance,
+    } = useTokenAllowance(tokenAddress, account ?? undefined, spender)
     const pendingApproval = useHasPendingApproval(tokenAddress, spender)
+    const tokenDecimals = BigNumber.from(10).pow(decimals)
 
     // check the current approval status
     const approvalState: ApprovalState = useMemo(() => {
@@ -57,17 +61,17 @@ export function useTokenApproval(
             return ApprovalState.UNKNOWN
         }
 
-        const amountBN = ethers.utils.parseEther(amount)
+        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
         // we might not have enough data to know whether or not we need to approve
         if (!currentAllowance) return ApprovalState.UNKNOWN
 
         // amountToApprove will be defined if currentAllowance is
-        return currentAllowance.lt(amountBN)
-            ? pendingApproval
+        return currentAllowance.lt(approvalAmount)
+            ? pendingApproval || pendingAllowance
                 ? ApprovalState.PENDING
                 : ApprovalState.NOT_APPROVED
             : ApprovalState.APPROVED
-    }, [amount, currentAllowance, geb, pendingApproval, spender, tokenAddress])
+    }, [amount, tokenAddress, spender, geb, tokenDecimals, currentAllowance, pendingApproval, pendingAllowance])
 
     const tokenContract = useTokenContract(tokenAddress)
 
@@ -104,17 +108,17 @@ export function useTokenApproval(
             status: 'loading',
         })
 
-        let useExact = false
-        const estimatedGas = await tokenContract.estimateGas
-            .approve(spender, MaxUint256)
-            .catch(() => {
-                // general fallback for tokens who restrict approval amounts
-                useExact = true
-                return tokenContract.estimateGas.approve(spender, amount)
-            })
+        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
+
+        let useExact = exactApproval
+        const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
+            // general fallback for tokens who restrict approval amounts
+            useExact = true
+            return tokenContract.estimateGas.approve(spender, approvalAmount.toString())
+        })
 
         return tokenContract
-            .approve(spender, useExact ? amount : MaxUint256, {
+            .approve(spender, useExact ? approvalAmount.toString() : MaxUint256, {
                 gasLimit: calculateGasMargin(estimatedGas),
             })
             .then((txResponse: TransactionResponse) => {
@@ -135,6 +139,10 @@ export function useTokenApproval(
                     title: 'Transaction Submitted',
                     hash: txResponse.hash,
                     status: 'success',
+                })
+                // we need to wait until the transaction is mined to fetch the new allowance
+                txResponse.wait().then(() => {
+                    updateAllowance()
                 })
             })
             .catch((error: Error) => {

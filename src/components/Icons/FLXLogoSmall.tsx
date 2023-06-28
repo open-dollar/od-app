@@ -4,26 +4,13 @@ const FLXLogoSmall = () => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
             <defs>
-                <linearGradient
-                    id="a"
-                    x1=".603"
-                    y1="-.118"
-                    x2=".422"
-                    y2="1.122"
-                    gradientUnits="objectBoundingBox"
-                >
+                <linearGradient id="a" x1=".603" y1="-.118" x2=".422" y2="1.122" gradientUnits="objectBoundingBox">
                     <stop offset="0" stopColor="#00affa" />
                     <stop offset=".271" stopColor="#4cc0e8" />
                     <stop offset=".596" stopColor="#41cda5" />
                     <stop offset="1" stopColor="#1cc273" />
                 </linearGradient>
-                <linearGradient
-                    id="b"
-                    x1="1"
-                    x2="0"
-                    y2="1"
-                    gradientUnits="objectBoundingBox"
-                >
+                <linearGradient id="b" x1="1" x2="0" y2="1" gradientUnits="objectBoundingBox">
                     <stop offset="0" stopColor="#78d8ff" />
                     <stop offset="0" stopColor="#77d8fd" />
                     <stop offset=".552" stopColor="#6adbdd" />

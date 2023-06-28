@@ -1,10 +1,11 @@
-import { BigNumber, ethers } from 'ethers'
-import numeral from 'numeral'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useActiveWeb3React } from '.'
-import { useStoreActions, useStoreState } from '../store'
-import { DEFAULT_SAFE_STATE } from '../utils/constants'
+import { BigNumber, ethers } from 'ethers'
+import numeral from 'numeral'
+
+import { useActiveWeb3React, useProxyAddress } from '~/hooks'
+import { useStoreActions, useStoreState } from '~/store'
+import { DEFAULT_SAFE_STATE } from '~/utils/constants'
 import {
     formatNumber,
     getCollateralRatio,
@@ -16,8 +17,7 @@ import {
     returnTotalValue,
     safeIsSafe,
     toFixedString,
-} from '../utils/helper'
-import { useProxyAddress } from './useGeb'
+} from '~/utils/helper'
 
 export const LIQUIDATION_RATIO = 135 // percent
 export const ONE_DAY_WORTH_SF = ethers.utils.parseEther('0.00001')
@@ -45,7 +45,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const { t } = useTranslation()
     const {
         safeModel: { safeData, singleSafe, liquidationData },
-        connectWalletModel: { tokensData, tokensFetchedData }
+        connectWalletModel: { tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
 
     // parsed amounts of deposit/repay withdraw/borrow as in left input and right input, they get switched based on if its Deposit & Borrow or Repay & Withdraw
@@ -58,8 +58,8 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const balances = useMemo(() => {
         return {
-            weth: tokensFetchedData.WETH?.balance,
-            hai: tokensFetchedData.HAI?.balance,
+            weth: tokensFetchedData.WETH?.balanceE18,
+            hai: tokensFetchedData.HAI?.balanceE18,
         }
     }, [tokensFetchedData])
 
@@ -72,7 +72,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const totalCollateral = useMemo(() => collateral, [collateral])
     const totalDebt = useMemo(() => debt, [debt])
-    const collateralName = (safeData.collateral) ? safeData.collateral : singleSafe!.collateralName
+    const collateralName = safeData.collateral ? safeData.collateral : singleSafe!.collateralName
 
     const collateralLiquidationData = liquidationData!.collateralLiquidationData[collateralName]
     const safetyPrice = collateralLiquidationData.currentPrice.safetyPrice
@@ -94,12 +94,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const availableCollateral = useMemo(() => {
         if (singleSafe) {
             if (type === 'deposit_borrow' && singleSafe.collateralName != '') {
-                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balance)
+                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balanceE18)
                 return formatNumber(value, 2)
             } else {
                 return singleSafe.collateral
             }
-        } 
+        }
         return '0.00'
     }, [tokensData, singleSafe, type])
 
@@ -125,10 +125,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             }
         } else {
             if (singleSafe) {
-                return returnTotalDebt(
-                    singleSafe.debt,
-                    collateralLiquidationData.accumulatedRate
-                ) as string
+                return returnTotalDebt(singleSafe.debt, collateralLiquidationData.accumulatedRate) as string
             }
         }
         return '0.00'
@@ -142,24 +139,14 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             : '-'
     }, [liquidationData])
 
-    const availableCollateralBN = BigNumber.from(
-        toFixedString(availableCollateral.toString(), 'WAD')
-    )
-    const availableHaiBN = BigNumber.from(
-        toFixedString(availableHai.toString(), 'WAD')
-    )
+    const availableCollateralBN = BigNumber.from(toFixedString(availableCollateral.toString(), 'WAD'))
+    const availableHaiBN = BigNumber.from(toFixedString(availableHai.toString(), 'WAD'))
     // account's HAI balance into BigNumber
-    const haiBalanceBN = haiBalance
-        ? BigNumber.from(toFixedString(haiBalance.toString(), 'WAD'))
-        : BigNumber.from('0')
+    const haiBalanceBN = haiBalance ? BigNumber.from(toFixedString(haiBalance.toString(), 'WAD')) : BigNumber.from('0')
 
-    const leftInputBN = leftInput
-        ? BigNumber.from(toFixedString(leftInput, 'WAD'))
-        : BigNumber.from('0')
+    const leftInputBN = leftInput ? BigNumber.from(toFixedString(leftInput, 'WAD')) : BigNumber.from('0')
 
-    const rightInputBN = rightInput
-        ? BigNumber.from(toFixedString(rightInput, 'WAD'))
-        : BigNumber.from('0')
+    const rightInputBN = rightInput ? BigNumber.from(toFixedString(rightInput, 'WAD')) : BigNumber.from('0')
     // returns debtFloor from liquidation data from store
     const debtFloorBN = BigNumber.from(
         toFixedString(collateralLiquidationData ? collateralLiquidationData.debtFloor : '0', 'WAD')
@@ -193,27 +180,19 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             prices: [
                 {
                     label: `${collateralName} Price (OSM)`,
-                    value:
-                        '$' +
-                        formatNumber(
-                            collateralLiquidationData!.currentPrice.value.toString(),
-                            2
-                        ),
+                    value: '$' + formatNumber(collateralLiquidationData!.currentPrice.value.toString(), 2),
                     tip: t('eth_osm_tip'),
                 },
                 {
                     label: 'HAI Redemption Price',
-                    value:
-                        '$' +
-                        formatNumber(liquidationData!.currentRedemptionPrice, 3),
+                    value: '$' + formatNumber(liquidationData!.currentRedemptionPrice, 3),
                     tip: t('redemption_price_tip'),
                 },
                 {
                     label: 'Liquidation Price',
                     value:
                         liquidationPrice > 0
-                            ? (liquidationPrice as number) >
-                                Number(collateralLiquidationData!.currentPrice.value)
+                            ? (liquidationPrice as number) > Number(collateralLiquidationData!.currentPrice.value)
                                 ? 'Invalid'
                                 : '$' + liquidationPrice
                             : '$' + 0,
@@ -266,16 +245,13 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         }
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
             error =
-                error ??
-                `Please enter the amount of ${collateralName} to be deposited or amount of HAI to be borrowed`
+                error ?? `Please enter the amount of ${collateralName} to be deposited or amount of HAI to be borrowed`
         }
     }
 
     if (type === 'repay_withdraw') {
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
-            error =
-                error ??
-                `Please enter the amount of ${collateralName} to free or the amount of HAI to repay`
+            error = error ?? `Please enter the amount of ${collateralName} to free or the amount of HAI to repay`
         }
         if (leftInputBN.gt(availableCollateralBN)) {
             error = error ?? `${collateralName} to unlock cannot exceed available amount`
@@ -286,20 +262,10 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         }
 
         if (!rightInputBN.isZero()) {
-            const repayPercent = returnPercentAmount(
-                rightInput,
-                availableHai as string
-            )
+            const repayPercent = returnPercentAmount(rightInput, availableHai as string)
 
-            if (
-                rightInputBN
-                    .add(ONE_DAY_WORTH_SF)
-                    .lt(BigNumber.from(availableHaiBN)) &&
-                repayPercent > 95
-            ) {
-                error =
-                    error ??
-                    `You can only repay a minimum of ${availableHai} HAI to avoid leaving residual values`
+            if (rightInputBN.add(ONE_DAY_WORTH_SF).lt(BigNumber.from(availableHaiBN)) && repayPercent > 95) {
+                error = error ?? `You can only repay a minimum of ${availableHai} HAI to avoid leaving residual values`
             }
         }
 
@@ -319,21 +285,14 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     if (!isSafe && (collateralRatio as number) >= 0) {
         error =
             error ??
-            `Too much debt, below ${Number(collateralLiquidationData.safetyCRatio) * 100
-            }% collateralization ratio`
+            `Too much debt, below ${Number(collateralLiquidationData.safetyCRatio) * 100}% collateralization ratio`
     }
 
-    if (
-        numeral(totalDebt).value() >
-        numeral(liquidationData!.globalDebtCeiling).value()
-    ) {
+    if (numeral(totalDebt).value() > numeral(liquidationData!.globalDebtCeiling).value()) {
         error = error ?? 'Cannot exceed global debt ceiling'
     }
 
-    if (
-        numeral(totalDebt).value() >
-        numeral(liquidationData!.perSafeDebtCeiling).value()
-    ) {
+    if (numeral(totalDebt).value() > numeral(liquidationData!.perSafeDebtCeiling).value()) {
         error = error ?? `Cannot exceed HAI debt ceiling`
     }
 
@@ -344,14 +303,10 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     }
 
     if (type !== 'create') {
-        const perSafeDebtCeilingBN = BigNumber.from(
-            toFixedString(liquidationData!.perSafeDebtCeiling, 'WAD')
-        )
+        const perSafeDebtCeilingBN = BigNumber.from(toFixedString(liquidationData!.perSafeDebtCeiling, 'WAD'))
 
         if (totalDebtBN.gte(perSafeDebtCeilingBN)) {
-            error =
-                error ??
-                `Individual safe can't have more than ${liquidationData!.perSafeDebtCeiling} HAI of debt`
+            error = error ?? `Individual safe can't have more than ${liquidationData!.perSafeDebtCeiling} HAI of debt`
         }
     }
 
@@ -376,12 +331,7 @@ export function useTotalCollateral(leftInput: string, type: SafeTypes) {
     const totalCollateral = useMemo(() => {
         if (singleSafe) {
             if (type === 'repay_withdraw') {
-                return returnTotalValue(
-                    singleSafe.collateral,
-                    leftInput,
-                    true,
-                    true
-                ).toString()
+                return returnTotalValue(singleSafe.collateral, leftInput, true, true).toString()
             }
             return returnTotalValue(singleSafe.collateral, leftInput).toString()
         }
@@ -392,13 +342,12 @@ export function useTotalCollateral(leftInput: string, type: SafeTypes) {
 }
 // returns total debt
 export function useTotalDebt(rightInput: string, type: SafeTypes) {
-    const {
-        singleSafe,
-        liquidationData,
-    } = useSafeState()
+    const { singleSafe, liquidationData } = useSafeState()
 
     const collateralLiquidationData = liquidationData!.collateralLiquidationData
-    const accumulatedRate = singleSafe?.collateralName ? collateralLiquidationData[singleSafe?.collateralName]?.accumulatedRate : '0'
+    const accumulatedRate = singleSafe?.collateralName
+        ? collateralLiquidationData[singleSafe?.collateralName]?.accumulatedRate
+        : '0'
     const totalDebt = useMemo(() => {
         if (singleSafe) {
             if (type === 'repay_withdraw') {
@@ -409,10 +358,7 @@ export function useTotalDebt(rightInput: string, type: SafeTypes) {
                     true
                 ).toString()
             }
-            return returnTotalValue(
-                returnTotalDebt(singleSafe.debt, accumulatedRate) as string,
-                rightInput
-            ).toString()
+            return returnTotalValue(returnTotalDebt(singleSafe.debt, accumulatedRate) as string, rightInput).toString()
         }
         return rightInput
     }, [singleSafe, rightInput, type, accumulatedRate])
@@ -420,20 +366,15 @@ export function useTotalDebt(rightInput: string, type: SafeTypes) {
     return totalDebt && Number(totalDebt) > 0.00001 ? totalDebt : '0'
 }
 // returns collateral Ratio
-export function useCollateralRatio(totalCollateral: string, totalDebt: string, liquidationPrice: string, liquidationCRatio: string) {
+export function useCollateralRatio(
+    totalCollateral: string,
+    totalDebt: string,
+    liquidationPrice: string,
+    liquidationCRatio: string
+) {
     return useMemo(() => {
-        return getCollateralRatio(
-            totalCollateral,
-            totalDebt,
-            liquidationPrice,
-            liquidationCRatio
-        )
-    }, [
-        liquidationPrice,
-        liquidationCRatio,
-        totalCollateral,
-        totalDebt,
-    ])
+        return getCollateralRatio(totalCollateral, totalDebt, liquidationPrice, liquidationCRatio)
+    }, [liquidationPrice, liquidationCRatio, totalCollateral, totalDebt])
 }
 // returns liquidation price
 export function useLiquidationPrice(
@@ -443,12 +384,7 @@ export function useLiquidationPrice(
     liquidationCRatio: string
 ) {
     return useMemo(() => {
-        return getLiquidationPrice(
-            totalCollateral,
-            totalDebt,
-            liquidationCRatio,
-            currentRedemptionPrice
-        )
+        return getLiquidationPrice(totalCollateral, totalDebt, liquidationCRatio, currentRedemptionPrice)
     }, [currentRedemptionPrice, liquidationCRatio, totalCollateral, totalDebt])
 }
 // handles input data validation and storing them into store
@@ -458,14 +394,16 @@ export function useInputsHandlers(): {
     onClearAll: () => void
 } {
     const { safeModel: safeActions } = useStoreActions((state) => state)
-    const { safeModel: { safeData } } = useStoreState((state) => state)
+    const {
+        safeModel: { safeData },
+    } = useStoreState((state) => state)
 
     const onClearAll = useCallback(() => {
         safeActions.setSafeData({
             ...DEFAULT_SAFE_STATE,
             collateral: safeData.collateral,
         })
-    }, [safeActions, safeData]);
+    }, [safeActions, safeData])
 
     const onLeftInput = useCallback(
         (typedValue: string) => {
@@ -488,6 +426,6 @@ export function useInputsHandlers(): {
     return {
         onLeftInput,
         onRightInput,
-        onClearAll
+        onClearAll,
     }
 }

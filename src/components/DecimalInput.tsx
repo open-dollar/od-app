@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -56,13 +56,7 @@ const DecimalInput = ({
         <Container>
             <Label data-test-id={data_test_id + '_label'}>{label}</Label>
             <Content className={disabled ? 'disabled' : ''}>
-                {icon ? (
-                    <Icon
-                        src={icon}
-                        width={iconSize || '24px'}
-                        height={iconSize || '24px'}
-                    />
-                ) : null}
+                {icon ? <Icon src={icon} width={iconSize || '24px'} height={iconSize || '24px'} /> : null}
                 <CustomInput
                     placeholder={placeholder || '0.00'}
                     type={'text'}
@@ -76,9 +70,7 @@ const DecimalInput = ({
                     data-test-id={data_test_id}
                 />
 
-                {disableMax || disabled ? null : (
-                    <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>
-                )}
+                {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
             </Content>
         </Container>
     )

@@ -1,10 +1,11 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
 import { useStoreActions } from '../store'
 import SafeIcon from './Icons/SafeIcon'
-import { useHistory } from 'react-router-dom'
 
 const NavLinks = () => {
     const history = useHistory()
@@ -12,11 +13,7 @@ const NavLinks = () => {
 
     const { t } = useTranslation()
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
-    const handleLinkClick = async (
-        e: React.MouseEvent<HTMLElement>,
-        disable = false,
-        externalLink = ''
-    ) => {
+    const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, disable = false, externalLink = '') => {
         if (disable) {
             e.preventDefault()
         }
@@ -33,11 +30,7 @@ const NavLinks = () => {
                 id="app-link"
                 to="/"
                 onClick={(e) => handleLinkClick(e, false)}
-                className={
-                    location.pathname.startsWith('/safes')
-                        ? 'activeLink'
-                        : ''
-                }
+                className={location.pathname.startsWith('/safes') ? 'activeLink' : ''}
             >
                 <SafeIcon className="opacity fill" /> {t('app')}
             </NavBarLink>

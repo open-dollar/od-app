@@ -13,13 +13,10 @@ import Modal from './Modal'
 const WaitingModal = () => {
     const { t } = useTranslation()
 
-    const { popupsModel: popupsState, safeModel: safeState } = useStoreState(
-        (state) => state
-    )
+    const { popupsModel: popupsState, safeModel: safeState } = useStoreState((state) => state)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { chainId } = useActiveWeb3React()
-    const { title, text, hint, status, hash, isCreate } =
-        popupsState.waitingPayload
+    const { title, text, hint, status, hash, isCreate } = popupsState.waitingPayload
 
     const { list } = safeState
 
@@ -41,18 +38,11 @@ const WaitingModal = () => {
         }
     }
     return (
-        <Modal
-            width={'350px'}
-            isModalOpen={popupsState.isWaitingModalOpen}
-            handleModalContent
-        >
+        <Modal width={'350px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
             <InnerContainer data-test-id="waiting-modal">
                 {returnStatusIcon(status)}
                 {
-                    <Title
-                        data-test-id="waiting-modal-title"
-                        className={status}
-                    >
+                    <Title data-test-id="waiting-modal-title" className={status}>
                         {title ? title : t('initializing')}
                     </Title>
                 }
@@ -61,11 +51,7 @@ const WaitingModal = () => {
                     <Text className={status}>
                         {status === 'success' && chainId && hash ? (
                             <a
-                                href={getEtherscanLink(
-                                    chainId,
-                                    hash,
-                                    'transaction'
-                                )}
+                                href={getEtherscanLink(chainId, hash, 'transaction')}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -86,9 +72,7 @@ const WaitingModal = () => {
                     <BtnContainer>
                         <Button
                             text={status === 'success' ? 'close' : 'dismiss'}
-                            onClick={() =>
-                                popupsActions.setIsWaitingModalOpen(false)
-                            }
+                            onClick={() => popupsActions.setIsWaitingModalOpen(false)}
                         />
                     </BtnContainer>
                 ) : null}

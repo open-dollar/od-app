@@ -22,7 +22,7 @@ import CreateSafe from './containers/Safes/CreateSafe'
 // Toast css
 
 declare module 'styled-components' {
-    export interface DefaultTheme extends Theme { }
+    export interface DefaultTheme extends Theme {}
 }
 
 const App = () => {
@@ -40,53 +40,14 @@ const App = () => {
                             <Route component={GoogleTagManager} />
                             <Web3ReactManager>
                                 <Switch>
-                                    <Route
-                                        exact
-                                        strict
-                                        component={Splash}
-                                        path={'/'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={Privacy}
-                                        path={'/privacy'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={CreateSafe}
-                                        path={'/safes/create'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={SafeDetails}
-                                        path={'/safes/:id/deposit'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={SafeDetails}
-                                        path={'/safes/:id/withdraw'}
-                                    />
-                                    <Route
-                                        exact
-                                        component={SafeDetails}
-                                        path={'/safes/:id'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={Safes}
-                                        path={'/safes'}
-                                    />
-                                    <Route
-                                        exact
-                                        strict
-                                        component={Safes}
-                                        path={'/:address'}
-                                    />
+                                    <Route exact strict component={Splash} path={'/'} />
+                                    <Route exact strict component={Privacy} path={'/privacy'} />
+                                    <Route exact strict component={CreateSafe} path={'/safes/create'} />
+                                    <Route exact strict component={SafeDetails} path={'/safes/:id/deposit'} />
+                                    <Route exact strict component={SafeDetails} path={'/safes/:id/withdraw'} />
+                                    <Route exact component={SafeDetails} path={'/safes/:id'} />
+                                    <Route exact strict component={Safes} path={'/safes'} />
+                                    <Route exact strict component={Safes} path={'/:address'} />
 
                                     <Redirect from="*" to="/" />
                                 </Switch>

@@ -9,9 +9,7 @@ import LottieRegister from '../../utils/Lotties/register.json'
 import LottieSafe from '../../utils/Lotties/vault.json'
 
 const Accounts = () => {
-    const { connectWalletModel: connectWalletState } = useStoreState(
-        (state) => state
-    )
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const { step } = connectWalletState
 
@@ -19,45 +17,21 @@ const Accounts = () => {
         switch (step) {
             case 1:
                 return isMobile ? (
-                    <img
-                        src={require('../../assets/account-img.png').default}
-                        alt=""
-                    />
+                    <img src={require('../../assets/account-img.png').default} alt="" />
                 ) : (
-                    <Lottie
-                        loop
-                        animationData={LottieRegister}
-                        play
-                        style={{ width: 400, height: 400 }}
-                    />
+                    <Lottie loop animationData={LottieRegister} play style={{ width: 400, height: 400 }} />
                 )
             case 2:
                 return isMobile ? (
-                    <img
-                        src={require('../../assets/safe-img.png').default}
-                        alt=""
-                    />
+                    <img src={require('../../assets/safe-img.png').default} alt="" />
                 ) : (
-                    <Lottie
-                        loop
-                        animationData={LottieSafe}
-                        play
-                        style={{ width: 400, height: 400 }}
-                    />
+                    <Lottie loop animationData={LottieSafe} play style={{ width: 400, height: 400 }} />
                 )
             default:
                 return isMobile ? (
-                    <img
-                        src={require('../../assets/wallet-img.png').default}
-                        alt=""
-                    />
+                    <img src={require('../../assets/wallet-img.png').default} alt="" />
                 ) : (
-                    <Lottie
-                        loop
-                        animationData={LottieWallet}
-                        play
-                        style={{ width: 350, height: 350 }}
-                    />
+                    <Lottie loop animationData={LottieWallet} play style={{ width: 350, height: 350 }} />
                 )
         }
     }

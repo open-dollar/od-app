@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import LoadingIcon from './Icons/LoadingIcon'
 
@@ -9,20 +8,10 @@ interface Props {
     hideSpinner?: boolean | null
     inlineButton?: boolean
 }
-const Loader = ({
-    text,
-    width,
-    fontSize,
-    hideSpinner,
-    inlineButton,
-}: Props) => {
+const Loader = ({ text, width, fontSize, hideSpinner, inlineButton }: Props) => {
     return (
         <Container inline={inlineButton}>
-            {hideSpinner ? null : (
-                <LoadingIcon
-                    style={{ width: width || '14px', height: width || '14px' }}
-                />
-            )}
+            {hideSpinner ? null : <LoadingIcon style={{ width: width || '14px', height: width || '14px' }} />}
             <span style={{ fontSize: fontSize }}>{text}</span>
         </Container>
     )

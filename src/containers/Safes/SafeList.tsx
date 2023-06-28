@@ -1,15 +1,14 @@
-import React, { useMemo, useState } from 'react'
-import { BarChart2, Plus, Settings } from 'react-feather'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import CheckBox from '../../components/CheckBox'
-import LinkButton from '../../components/LinkButton'
-import SafeBlock from '../../components/SafeBlock'
-import { useActiveWeb3React } from '../../hooks'
-import { useStoreActions, useStoreState } from '../../store'
-import { returnState } from '../../utils/helper'
-import { ISafe } from '../../utils/interfaces'
+import { Plus } from 'react-feather'
+
+import { useStoreActions, useStoreState } from '~/store'
+import LinkButton from '~/components/LinkButton'
+import SafeBlock from '~/components/SafeBlock'
+import CheckBox from '~/components/CheckBox'
+import { returnState, ISafe } from '~/utils'
+import { useActiveWeb3React } from '~/hooks'
 
 const SafeList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
@@ -18,16 +17,11 @@ const SafeList = ({ address }: { address?: string }) => {
 
     const { t } = useTranslation()
 
-    const { connectWalletModel: connectWalletState, safeModel: safeState } =
-        useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
 
     const safes = useMemo(() => {
         if (safeState.list.length > 0) {
-            return showEmpty
-                ? safeState.list
-                : safeState.list.filter(
-                    (safe) => returnState(safe.riskState) !== ''
-                )
+            return showEmpty ? safeState.list : safeState.list.filter((safe) => returnState(safe.riskState) !== '')
         }
         return []
     }, [safeState.list, showEmpty])
@@ -35,10 +29,7 @@ const SafeList = ({ address }: { address?: string }) => {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const isOwner = useMemo(
-        () =>
-            address && account
-                ? account.toLowerCase() === address.toLowerCase()
-                : true,
+        () => (address && account ? account.toLowerCase() === address.toLowerCase() : true),
         [account, address]
     )
 
@@ -79,11 +70,7 @@ const SafeList = ({ address }: { address?: string }) => {
                             <Col>Risk</Col>
                         </Header>
                         {safes.map((safe: ISafe) => (
-                            <SafeBlock
-                                className="safeBlock"
-                                key={safe.id}
-                                {...safe}
-                            />
+                            <SafeBlock className="safeBlock" key={safe.id} {...safe} />
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>

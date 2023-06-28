@@ -12,16 +12,8 @@ const WalletConnect = () => {
         >
             <rect width="24" height="15.0867" fill="url(#pattern0)" />
             <defs>
-                <pattern
-                    id="pattern0"
-                    patternContentUnits="objectBoundingBox"
-                    width="1"
-                    height="1"
-                >
-                    <use
-                        xlinkHref="#image0"
-                        transform="translate(-0.00968744) scale(0.00339792 0.00540541)"
-                    />
+                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                    <use xlinkHref="#image0" transform="translate(-0.00968744) scale(0.00339792 0.00540541)" />
                 </pattern>
                 <image
                     id="image0"

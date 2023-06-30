@@ -28,7 +28,7 @@ const NavLinks = () => {
         <Nav>
             <NavBarLink
                 id="app-link"
-                to="/"
+                to="/safes"
                 onClick={(e) => handleLinkClick(e, false)}
                 className={location.pathname.startsWith('/safes') ? 'activeLink' : ''}
             >
@@ -41,13 +41,11 @@ const NavLinks = () => {
 export default NavLinks
 
 const Nav = styled.div`
-    display: flex;
-    align-items: center;
-
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
     ${({ theme }) => theme.mediaWidth.upToSmall`
-  
     flex-direction: column;
-    
   `}
 `
 

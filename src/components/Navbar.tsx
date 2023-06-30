@@ -6,13 +6,14 @@ import { utils } from 'ethers'
 
 import { formatNumber, newTransactionsFirst, returnWalletAddress, TOKEN_LOGOS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import { isTransactionRecent } from '~/hooks'
+import { handleTransactionError, isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
 import addIcon from '~/assets/plus.svg'
 import { Icon } from './TokenInput'
 import NavLinks from './NavLinks'
 import Button from './Button'
 import Brand from './Brand'
+import { claimAirdrop } from '~/services/blockchain'
 
 const Navbar = () => {
     const { t } = useTranslation()
@@ -20,9 +21,10 @@ const Navbar = () => {
 
     const { transactions } = transactionsState
 
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions, transactionsModel, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
     const { active, account, library } = useWeb3React()
+    const signer = library ? library.getSigner(account) : undefined
 
     const handleWalletConnect = () => {
         if (active && account) {
@@ -63,61 +65,96 @@ const Navbar = () => {
         return formatNumber(balances.HAI ? utils.formatEther(balances.HAI.balanceE18) : '0', 2)
     }, [connectWalletModel.tokensFetchedData])
 
-    return (
-        <Container>
-            <Left isBigWidth={active && account ? true : false}>
-                <Brand />
-            </Left>
-            <HideMobile>
-                <NavLinks />
-            </HideMobile>
-            <RightSide>
-                <BtnContainer>
-                    {/* Button to add HAI to the wallet */}
-                    <HaiButton onClick={handleAddHAI}>
-                        <Icon src={TOKEN_LOGOS.HAI} width={'24px'} height={'24px'} />
-                        {haiBalance + ' '}
-                        HAI
-                        <AddIcon src={addIcon} width={'18px'} height={'18px'} />
-                    </HaiButton>
+    const claimAirdropButton = async (signer: any) => {
+        popupsActions.setIsWaitingModalOpen(true)
+        popupsActions.setWaitingPayload({
+                    text: 'Claiming test tokens...',
+                    title: 'Waiting For Confirmation',
+                    hint: 'Confirm this transaction in your wallet',
+                    status: 'loading',
+                })
+        claimAirdrop(signer).then(txResponse => {
+            if (txResponse) {
+                transactionsModel.addTransaction({
+                    chainId: txResponse.chainId,
+                    hash: txResponse.hash,
+                    from: txResponse.from,
+                    summary: 'Claiming test tokens',
+                    addedTime: new Date().getTime(),
+                    originalTx: txResponse,
+                })
+                popupsActions.setWaitingPayload({
+                    title: 'Transaction Submitted',
+                    hash: txResponse.hash,
+                    status: 'success',
+                })
+                txResponse.wait().then(() => {
+                    connectWalletActions.setForceUpdateTokens(true)
+                })
+            }
+        }).catch(error => {
+            handleTransactionError(error)
+        })
+    }
 
-                    {/* Button to connect wallet */}
-                    <Button
-                        primary={active && account ? true : false}
-                        id="web3-status-connected"
-                        isLoading={hasPendingTransactions}
-                        onClick={handleWalletConnect}
-                    >
-                        {active && account ? (
-                            hasPendingTransactions ? (
-                                `${pending.length} Pending`
+        return (
+            <Container>
+                <Left isBigWidth={active && account ? true : false}>
+                    <Brand />
+                </Left>
+                <HideMobile>
+                    <NavLinks />
+                </HideMobile>
+                <RightSide>
+                    <BtnContainer>
+                        {signer && <ClaimButton onClick={() => signer && claimAirdropButton(signer)}>
+                            Claim test tokens 🪂
+                        </ClaimButton>}
+                        {/* Button to add HAI to the wallet */}
+                        <HaiButton onClick={handleAddHAI}>
+                            <Icon src={TOKEN_LOGOS.HAI} width={'24px'} height={'24px'} />
+                            {haiBalance + ' '}
+                            HAI
+                            <AddIcon src={addIcon} width={'18px'} height={'18px'} />
+                        </HaiButton>
+
+                        {/* Button to connect wallet */}
+                        <Button
+                            primary={active && account ? true : false}
+                            id="web3-status-connected"
+                            isLoading={hasPendingTransactions}
+                            onClick={handleWalletConnect}
+                        >
+                            {active && account ? (
+                                hasPendingTransactions ? (
+                                    `${pending.length} Pending`
+                                ) : (
+                                    <InnerBtn>
+                                        {returnWalletAddress(account)}
+                                        <Identicon />
+                                    </InnerBtn>
+                                )
                             ) : (
-                                <InnerBtn>
-                                    {returnWalletAddress(account)}
-                                    <Identicon />
-                                </InnerBtn>
-                            )
-                        ) : (
-                            t('connect_wallet')
-                        )}
-                    </Button>
-                </BtnContainer>
+                                t('connect_wallet')
+                            )}
+                        </Button>
+                    </BtnContainer>
 
-                <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
-                    <RectContainer>
-                        <Rect />
-                        <Rect />
-                        <Rect />
-                    </RectContainer>
-                </MenuBtn>
-            </RightSide>
-        </Container>
-    )
-}
+                    <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
+                        <RectContainer>
+                            <Rect />
+                            <Rect />
+                            <Rect />
+                        </RectContainer>
+                    </MenuBtn>
+                </RightSide>
+            </Container>
+        )
+    }
 
-export default Navbar
+    export default Navbar
 
-const Container = styled.div`
+    const Container = styled.div`
     display: flex;
     height: 68px;
     align-items: center;
@@ -185,6 +222,7 @@ const RightSide = styled.div`
 `
 
 const HideMobile = styled.div`
+    height: -webkit-fill-available;
     ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `}
@@ -241,3 +279,5 @@ const HaiButton = styled.button`
         opacity: 0.8;
     }
 `
+
+const ClaimButton = styled(HaiButton)``

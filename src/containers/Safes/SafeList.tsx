@@ -39,7 +39,6 @@ const SafeList = ({ address }: { address?: string }) => {
         }
         return
     }
-
     const returnSafeList = () => {
         if (safeState.list.length > 0) {
             return (
@@ -70,7 +69,7 @@ const SafeList = ({ address }: { address?: string }) => {
                             <Col>Risk</Col>
                         </Header>
                         {safes.map((safe: ISafe) => (
-                            <SafeBlock className="safeBlock" key={safe.id} {...safe} />
+                            <>{safe.collateralName && <SafeBlock className="safeBlock" key={safe.id} {...safe} />}</>
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>

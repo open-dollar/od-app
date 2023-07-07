@@ -55,12 +55,10 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
     const collateralUnitPriceUSD = formatNumber(
-        safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value,
-        2
+        safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value
     )
     const selectedTokenBalanceInUSD = formatNumber(
-        (Number(collateralUnitPriceUSD) * Number(leftInputBalance)).toString(),
-        2
+        (Number(collateralUnitPriceUSD) * Number(leftInputBalance)).toString(), 2
     )
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 

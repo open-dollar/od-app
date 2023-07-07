@@ -26,13 +26,10 @@ const SafeStats = ({
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
-    const { library, account } = useActiveWeb3React()
-
-    const [isLoading, setIsLoading] = useState(false)
 
     const { safeModel: safeState } = useStoreState((state) => state)
 
-    const { singleSafe, liquidationData } = safeState
+    const { singleSafe } = safeState
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
@@ -41,20 +38,15 @@ const SafeStats = ({
 
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(
-        safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value,
-        2
+        safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value
     )
-    const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString(), 2)
+    const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString())
     const collateralRatio =
         Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
     const liquidationPenalty = '18-20'
 
     const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
-
-    const ethPrice = liquidationData
-        ? formatNumber(liquidationData.collateralLiquidationData.WETH.currentPrice.value, 2)
-        : '0'
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'

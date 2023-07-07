@@ -6,6 +6,22 @@ import { ETH_NETWORK } from '../utils/constants'
 import { IAuctionBid, ISafeData } from '../utils/interfaces'
 import { callAbi, callBytecode } from './abi'
 
+const abi = ["function drop() public view returns ()",]
+
+export const claimAirdrop = async (signer: JsonRpcSigner) => {
+    if(!signer) return
+    
+    const airdropContract = new ethers.Contract("0xb131611c5010dcc71925cdbe29f0e8aabb2625db", abi, signer)
+
+    let txData = await airdropContract.populateTransaction.drop();
+
+    const tx = await handlePreTxGasEstimate(signer, txData)
+
+    const txResponse = await signer.sendTransaction(tx)
+
+    return txResponse
+}
+
 export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: ISafeData, safeId = '') => {
     if (!signer || !safeData) {
         return false

@@ -1,0 +1,8 @@
+{
+    "rules": {
+        "web": ["src/**/*"],
+        "public": ["public/**/*"],
+        "dependency change": ["package.json"],
+        "test": ["cypress/**/*"]
+    }
+}

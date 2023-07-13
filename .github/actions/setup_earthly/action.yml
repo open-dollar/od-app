@@ -1,0 +1,31 @@
+#
+name: Setup Earthly
+
+inputs:
+  version:
+    description: The version of Earthly to download and setup.
+    default: v0.7.2
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Put back the git branch into git (Earthly uses it for tagging)
+      shell: bash
+      run: |
+        branch=""
+        if [ -n "$GITHUB_HEAD_REF" ]; then
+          branch="$GITHUB_HEAD_REF"
+        else
+          branch="${GITHUB_REF##*/}"
+        fi
+        git checkout -b "$branch" || true
+
+    - name: Download latest Earthly
+      run: "sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/download/${{ inputs.version }}/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly'"
+      shell: bash
+
+    - name: Earthly version
+      run: earthly --version
+      shell: bash
+

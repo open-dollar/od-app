@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+// @ts-ignore
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
@@ -54,13 +55,16 @@ export function useContract<T extends Contract = Contract>(
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
+    // @ts-ignore
     return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+    // @ts-ignore
     return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
 export function useMulticall2Contract() {
+    // @ts-ignore
     return useContract<Multicall>(MULTICALL2_ADDRESSES, MULTICALL_ABI, false) as Multicall
 }

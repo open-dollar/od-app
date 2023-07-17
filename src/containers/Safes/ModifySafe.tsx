@@ -83,7 +83,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     useEffect(() => {
         return onClearAll
-    }, [onClearAll])
+    }, [])
 
     const { leftInput, rightInput } = parsedAmounts
 

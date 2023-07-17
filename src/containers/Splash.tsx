@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import kite from '~/assets/splash/kite.png'
+import { TestComponent } from '~/devlink'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 
@@ -38,11 +39,12 @@ const Splash = () => {
                             <h1 className="text-black font-normal mt-10 text-6xl">{title}</h1>
                             <button
                                 type="button"
-                                className="rounded-2xl mt-8 bg-egg px-14 py-2.5 text-lg font-normal text-white "
+                                className="rounded-2xl mt-8 mb-20 bg-egg px-14 py-2.5 text-lg font-normal text-white "
                                 onClick={() => history.push('/safes')}
                             >
                                 LAUNCH APP
                             </button>
+                            <TestComponent/>
                         </div>
                     </div>
                 </div>

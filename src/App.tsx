@@ -17,6 +17,7 @@ import Splash from './containers/Splash'
 import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import Privacy from './containers/Privacy'
 import CreateSafe from './containers/Safes/CreateSafe'
+import Auctions from './containers/Auctions'
 import "./devlink/global.css";
 import { DevLinkProvider } from "./devlink";
 
@@ -29,34 +30,38 @@ declare module 'styled-components' {
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
 
-    const { lang, bodyOverflow } = settingsState
+    const { bodyOverflow } = settingsState
 
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={darkTheme}>
                 <DevLinkProvider>
-                    <GlobalStyle bodyOverflow={bodyOverflow} />
-                    <ErrorBoundary>
-                        <Shared>
-                            <Suspense fallback={null}>
-                                <Route component={GoogleTagManager} />
-                                <Web3ReactManager>
+                <GlobalStyle bodyOverflow={bodyOverflow} />
+                <ErrorBoundary>
+                    <Shared>
+                        <Suspense fallback={null}>
+                            <Route component={GoogleTagManager} />
+                            <Web3ReactManager>
+                                <>
                                     <Switch>
                                         <Route exact strict component={Splash} path={'/'} />
                                         <Route exact strict component={Privacy} path={'/privacy'} />
+                                        <Route exact strict component={Auctions} path={'/auctions'} />
                                         <Route exact strict component={CreateSafe} path={'/safes/create'} />
                                         <Route exact strict component={SafeDetails} path={'/safes/:id/deposit'} />
                                         <Route exact strict component={SafeDetails} path={'/safes/:id/withdraw'} />
                                         <Route exact component={SafeDetails} path={'/safes/:id'} />
                                         <Route exact strict component={Safes} path={'/safes'} />
                                         <Route exact strict component={Safes} path={'/:address'} />
+
                                         <Redirect from="*" to="/" />
                                     </Switch>
-                                </Web3ReactManager>
-                            </Suspense>
-                        </Shared>
-                    </ErrorBoundary>
-                </DevLinkProvider>
+                                </>
+                            </Web3ReactManager>
+                        </Suspense>
+                    </Shared>
+                </ErrorBoundary>
+            </DevLinkProvider>
             </ThemeProvider>
         </I18nextProvider>
     )

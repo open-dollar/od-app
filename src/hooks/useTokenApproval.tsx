@@ -149,7 +149,7 @@ export function useTokenApproval(
                 console.debug('Failed to approve token', error)
                 handleTransactionError(error)
             })
-    }, [approvalState, tokenAddress, tokenContract, amount, spender])
+    }, [approvalState, tokenAddress, tokenContract, amount, spender, tokenDecimals, exactApproval, updateAllowance])
 
     return [approvalState, approve]
 }

@@ -45,7 +45,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const { t } = useTranslation()
     const {
         safeModel: { safeData, singleSafe, liquidationData },
-        connectWalletModel: { tokensData, tokensFetchedData },
+        connectWalletModel: { tokensFetchedData },
     } = useStoreState((state) => state)
 
     // parsed amounts of deposit/repay withdraw/borrow as in left input and right input, they get switched based on if its Deposit & Borrow or Repay & Withdraw
@@ -93,7 +93,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     // singleSafe means already a deployed safe
     const availableCollateral = useMemo(() => {
         if (singleSafe) {
-            if (type === 'deposit_borrow' && singleSafe.collateralName != '') {
+            if (type === 'deposit_borrow' && singleSafe.collateralName !== '') {
                 const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balanceE18)
                 return formatNumber(value, 2)
             } else {
@@ -101,7 +101,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             }
         }
         return '0.00'
-    }, [tokensData, singleSafe, type])
+    }, [singleSafe, tokensFetchedData, type])
 
     // returns available OD (debt)
     // singleSafe means already a deployed safe
@@ -129,7 +129,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             }
         }
         return '0.00'
-    }, [leftInput, liquidationData, singleSafe, type])
+    }, [collateralLiquidationData, leftInput, singleSafe, type])
 
     const liquidationPenaltyPercentage = '18-20'
 
@@ -137,7 +137,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         return collateralLiquidationData
             ? getRatePercentage(collateralLiquidationData.totalAnnualizedStabilityFee, 2)
             : '-'
-    }, [liquidationData])
+    }, [collateralLiquidationData])
 
     const availableCollateralBN = BigNumber.from(toFixedString(availableCollateral.toString(), 'WAD'))
     const availableHaiBN = BigNumber.from(toFixedString(availableHai.toString(), 'WAD'))
@@ -169,7 +169,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                 },
                 {
                     label: 'Collateral Ratio',
-                    value: (collateralRatio > 0 ? collateralRatio : '∞') + '%',
+                    value: (Number(collateralRatio) > 0 ? collateralRatio : '∞') + '%',
                     plainValue: collateralRatio,
                 },
                 {
@@ -191,7 +191,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                 {
                     label: 'Liquidation Price',
                     value:
-                        liquidationPrice > 0
+                        Number(liquidationPrice) > 0
                             ? (liquidationPrice as number) > Number(collateralLiquidationData!.currentPrice.value)
                                 ? 'Invalid'
                                 : '$' + liquidationPrice
@@ -215,15 +215,15 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             ],
         }
     }, [
+        collateralLiquidationData,
+        collateralName,
         collateralRatio,
         liquidationData,
-        liquidationPenaltyPercentage,
-        stabilityFeePercentage,
         liquidationPrice,
+        stabilityFeePercentage,
         t,
         totalCollateral,
         totalDebt,
-        collateralName,
     ])
 
     let error: string | undefined

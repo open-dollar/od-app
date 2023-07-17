@@ -1,10 +1,12 @@
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { Geb, TransactionRequest, utils as gebUtils } from '@hai-on-op/sdk'
-import { BigNumber, ethers, utils as ethersUtils } from 'ethers'
-import { handlePreTxGasEstimate } from '../hooks/TransactionHooks'
-import { ETH_NETWORK } from '../utils/constants'
-import { IAuctionBid, ISafeData } from '../utils/interfaces'
+import { BigNumber, utils as ethersUtils, ethers } from 'ethers'
+
+import { handlePreTxGasEstimate } from '~/hooks'
+import { ETH_NETWORK } from '~/utils'
+import { IAuctionBid, ISafeData } from '~/utils'
 import { callAbi, callBytecode } from './abi'
+
 
 const abi = ['function drop() public view returns ()']
 

@@ -1,21 +1,14 @@
-import { toSvg } from 'jdenticon'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { formatNumber, returnState, jdenticonConfig, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const SafeBlock = ({ ...props }) => {
     const { t } = useTranslation()
 
     const collateral = formatNumber(props.collateral)
     const totalDebt = formatNumber(props.totalDebt)
-
-    function createImage() {
-        return {
-            __html: toSvg(props.safeHandler + props.id, 25, jdenticonConfig),
-        }
-    }
 
     return (
         <Container className={props.className}>

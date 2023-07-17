@@ -51,14 +51,14 @@ const SafeDetails = ({ ...props }) => {
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe])
+    }, [safe, safeActions])
 
     useEffect(() => {
         if (!account || !library) return
         if (!isNumeric(safeId)) {
             props.history.push('/safes')
         }
-    }, [account, library, safeId])
+    }, [account, library, props.history, safeId])
 
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 

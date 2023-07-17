@@ -3,16 +3,9 @@ import { StoreModel } from '.'
 import { NETWORK_ID } from '../connectors'
 import { handleDepositAndBorrow, handleRepayAndWithdraw } from '../services/blockchain'
 import { fetchUserSafes } from '../services/safes'
-import { DEFAULT_SAFE_STATE, EMPTY_ADDRESS } from '../utils/constants'
+import { DEFAULT_SAFE_STATE } from '../utils/constants'
 import { timeout } from '../utils/helper'
-import {
-    IFetchSafeById,
-    IFetchSafesPayload,
-    ILiquidationData,
-    ISafe,
-    ISafeData,
-    ISafePayload,
-} from '../utils/interfaces'
+import { IFetchSafesPayload, ILiquidationData, ISafe, ISafeData, ISafePayload } from '../utils/interfaces'
 
 export interface SafeModel {
     list: Array<ISafe>

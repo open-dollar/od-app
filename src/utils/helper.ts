@@ -2,16 +2,19 @@ import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
 import { utils as gebUtils } from '@hai-on-op/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS, COIN_TICKER } from './constants'
-import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
-import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
+import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
+import { injected } from '~/connectors'
+
 export const IS_IN_IFRAME = window.parent !== window
 
-export const returnWalletAddress = (walletAddress: string) =>
-    `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+export const returnWalletAddress = (walletAddress: string) => {
+    if (!walletAddress) return 'undefined'
+    return `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+}
 
 export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
 
@@ -55,7 +58,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
         return '0'
     }
     const n = Number(value)
-    if (n < 0) return value
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }
@@ -313,7 +315,7 @@ export const returnPercentAmount = (partialValue: string, totalValue: string) =>
 }
 
 export const returnConnectorName = (connector: AbstractConnector | undefined) => {
-    if (!connector || typeof connector === undefined) return null
+    if (!connector || typeof connector === 'undefined') return null
 
     const isMetamask = window?.ethereum?.isMetaMask
     return Object.keys(SUPPORTED_WALLETS)

@@ -9,7 +9,6 @@ type AddressMap = { [chainId: number]: string }
 
 const {
     REACT_APP_GRAPH_API_URLS,
-    REACT_APP_NETWORK_ID,
     REACT_APP_SYSTEM_STATUS,
     REACT_APP_MAILCHIMP_URL,
     REACT_APP_NETWORK_URL,

@@ -64,7 +64,7 @@ const connectWalletModel: ConnectWalletModel = {
     step: 0,
     proxyAddress: '',
     coinAllowance: '',
-    protAllowance: '0',
+    protAllowance: '',
     ctHash: ctHashState || '',
     isStepLoading: false,
     isWrongNetwork: false,

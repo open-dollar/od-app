@@ -1,6 +1,5 @@
-import { formatUserSafe } from '../utils/helper'
-import { IFetchSafeById, IFetchSafesPayload, ISafeQuery, IUserSafeList } from '../utils/interfaces'
-import gebManager from '../utils/gebManager'
+import { formatUserSafe, IFetchSafesPayload, IUserSafeList } from '~/utils'
+import gebManager from '~/utils/gebManager'
 
 export const fetchUserSafes = async (config: IFetchSafesPayload) => {
     let response = await fetchUserSafesRaw(config)

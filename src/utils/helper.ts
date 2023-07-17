@@ -2,16 +2,19 @@ import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
 import { utils as gebUtils } from '@hai-on-op/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS, COIN_TICKER } from './constants'
-import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
-import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
+import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
+import { injected } from '~/connectors'
+
 export const IS_IN_IFRAME = window.parent !== window
 
-export const returnWalletAddress = (walletAddress: string) =>
-    `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+export const returnWalletAddress = (walletAddress: string) => {
+    if (!walletAddress) return 'undefined'
+    return `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+}
 
 export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
 
@@ -55,13 +58,12 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
         return '0'
     }
     const n = Number(value)
-    if (n < 0) return value
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }
 
     const nOfWholeDigits = value.split('.')[0].length
-    const nOfDigits = nOfWholeDigits > digits  - 1 ? '00' : Array.from(Array(digits - nOfWholeDigits), (_) => 0).join('')
+    const nOfDigits = nOfWholeDigits > digits - 1 ? '00' : Array.from(Array(digits - nOfWholeDigits), (_) => 0).join('')
     let val
     if (round) {
         val = numeral(n).format(`0.${nOfDigits}`)
@@ -106,7 +108,7 @@ export const formatUserSafe = (
     tokensData: { [key: string]: TokenData }
 ): Array<ISafe> => {
     const collateralBytes32: { [key: string]: string } = Object.values(tokensData)
-        .filter(token => token.isCollateral)
+        .filter((token) => token.isCollateral)
         .reduce((accum, token) => {
             return { ...accum, [token.bytes32String]: token.symbol }
         }, {})
@@ -114,7 +116,7 @@ export const formatUserSafe = (
     const { currentRedemptionPrice, currentRedemptionRate, collateralLiquidationData } = liquidationData
 
     return safes
-        .filter(s => s.collateralType in collateralBytes32)
+        .filter((s) => s.collateralType in collateralBytes32)
         .map((s) => {
             const token = collateralBytes32[s.collateralType]
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
@@ -267,7 +269,9 @@ export const returnAvaiableDebt = (
     const prevDebtBN = BigNumber.from(toFixedString(prevDebt, 'WAD'))
     const totalPrevDebt = prevDebtBN.mul(accumulatedRateRay).div(gebUtils.RAY)
     const availableDebt = totalDebtBN.sub(totalPrevDebt)
-    return formatNumber(gebUtils.wadToFixed(availableDebt.lt(0) ? BigNumber.from('0') : availableDebt).toString()).toString()
+    return formatNumber(
+        gebUtils.wadToFixed(availableDebt.lt(0) ? BigNumber.from('0') : availableDebt).toString()
+    ).toString()
 }
 
 export const returnTotalDebt = (debt: string, accumulatedRate: string, beautify = true) => {
@@ -311,7 +315,7 @@ export const returnPercentAmount = (partialValue: string, totalValue: string) =>
 }
 
 export const returnConnectorName = (connector: AbstractConnector | undefined) => {
-    if (!connector || typeof connector === undefined) return null
+    if (!connector || typeof connector === 'undefined') return null
 
     const isMetamask = window?.ethereum?.isMetaMask
     return Object.keys(SUPPORTED_WALLETS)

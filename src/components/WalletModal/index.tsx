@@ -205,7 +205,7 @@ export default function WalletModal() {
                         {error instanceof UnsupportedChainIdError ? (
                             <h5>
                                 {t('not_supported')}{' '}
-                                <a target="_blank" href="//chainlist.org/chain/420">
+                                <a target="_blank" href="//chainlist.org/chain/420" rel="noreferrer">
                                     Optimism Goerli
                                 </a>
                                 .

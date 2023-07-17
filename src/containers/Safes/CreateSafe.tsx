@@ -64,12 +64,17 @@ const CreateSafe = ({
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
     const haiBalanceUSD = useTokenBalanceInUSD('HAI', rightInput ? rightInput : availableHai)
 
-    const selectedTokenBalance = formatNumber(selectedCollateralBalance || '0' , 2)
+    const selectedTokenBalance = useMemo(() => {
+        if (selectedCollateralBalance) {
+            return formatNumber(selectedCollateralBalance, 2)
+        }
+        return formatNumber('0', 2)
+    }, [selectedCollateralBalance])
 
     const collateralUnitPriceUSD = formatNumber(
         safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0'
     )
-    
+
     const selectedTokenBalanceInUSD = formatNumber(
         (Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString()
     )
@@ -87,7 +92,7 @@ const CreateSafe = ({
 
     const onClearAll = useCallback(() => {
         clearAll()
-    }, [onLeftInput, onRightInput])
+    }, [clearAll])
 
     const handleWaitingTitle = () => {
         return 'Modifying Safe'
@@ -212,9 +217,9 @@ const CreateSafe = ({
                                         token={
                                             selectedCollateral?.symbol
                                                 ? {
-                                                    name: selectedCollateral?.symbol || '-',
-                                                    icon: TOKEN_LOGOS[selectedCollateral?.symbol],
-                                                }
+                                                      name: selectedCollateral?.symbol || '-',
+                                                      icon: TOKEN_LOGOS[selectedCollateral?.symbol],
+                                                  }
                                                 : undefined
                                         }
                                         label={`Balance: ${selectedTokenBalance} ${selectedCollateral?.symbol}`}
@@ -317,15 +322,18 @@ const CreateSafeContainer = () => {
     useEffect(() => {
         safeActions.setSafeData({ ...DEFAULT_SAFE_STATE, collateral: selectedItem })
         return () => safeActions.setSafeData(DEFAULT_SAFE_STATE)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedItem])
 
     useEffect(() => {
-        if (collaterals.length > 0 && selectedItem == '') setSelectedItem(collaterals[0].symbol)
+        if (collaterals.length > 0 && selectedItem === '') setSelectedItem(collaterals[0].symbol)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
 
     return (
         <Container>
-            {liquidationData && tokensData && collateral && collateral != '' && tokensFetchedData[selectedItem] && (
+            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (
                 <CreateSafe selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
             )}
         </Container>
@@ -411,7 +419,7 @@ const Col = styled.div`
 
 const DropDownContainer = styled.div``
 
-const SideLabel = styled.div`
+export const SideLabel = styled.div`
     font-weight: 600;
     font-size: ${(props) => props.theme.font.default};
     margin-bottom: 10px;

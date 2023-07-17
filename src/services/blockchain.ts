@@ -1,19 +1,18 @@
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
-import { Geb, TransactionRequest, utils as gebUtils } from '@hai-on-op/sdk'
-import { BigNumber, ethers, utils as ethersUtils } from 'ethers'
-import { handlePreTxGasEstimate } from '../hooks/TransactionHooks'
-import { ETH_NETWORK } from '../utils/constants'
-import { IAuctionBid, ISafeData } from '../utils/interfaces'
-import { callAbi, callBytecode } from './abi'
+import { Geb, TransactionRequest } from '@hai-on-op/sdk'
+import { BigNumber, utils as ethersUtils, ethers } from 'ethers'
 
-const abi = ["function drop() public view returns ()",]
+import { handlePreTxGasEstimate } from '~/hooks'
+import { ETH_NETWORK, ISafeData } from '~/utils'
+
+const abi = ['function drop() public view returns ()']
 
 export const claimAirdrop = async (signer: JsonRpcSigner) => {
-    if(!signer) return
-    
-    const airdropContract = new ethers.Contract("0xb131611c5010dcc71925cdbe29f0e8aabb2625db", abi, signer)
+    if (!signer) return
 
-    let txData = await airdropContract.populateTransaction.drop();
+    const airdropContract = new ethers.Contract('0xb131611c5010dcc71925cdbe29f0e8aabb2625db', abi, signer)
+
+    let txData = await airdropContract.populateTransaction.drop()
 
     const tx = await handlePreTxGasEstimate(signer, txData)
 
@@ -137,35 +136,3 @@ export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: IS
 //     const txResponse = await signer.sendTransaction(tx)
 //     return txResponse
 // }
-
-export const handleClaimInternalBalance = async ({ signer, type, amount }: IAuctionBid) => {
-    if (!signer) {
-        return false
-    }
-
-    const geb = new Geb(ETH_NETWORK, signer)
-    const proxy = await geb.getProxyAction(signer._address)
-    let txData: ethers.PopulatedTransaction
-    if (type && amount) {
-        const amountBN = ethersUtils.parseEther(amount)
-        const call = new ethers.Contract(gebUtils.NULL_ADDRESS, callAbi, signer.provider)
-        const data = (
-            await call.populateTransaction.call(
-                geb.contracts.protocolToken.address,
-                (
-                    await geb.contracts.protocolToken.populateTransaction.transfer(signer._address, amountBN)
-                ).data
-            )
-        ).data
-
-        txData = await proxy.proxy.populateTransaction['execute(bytes,bytes)'](callBytecode, data as ethers.BytesLike)
-    } else {
-        txData = await proxy.exitAllCoin()
-    }
-
-    if (!txData) throw new Error('No transaction request!')
-    const gasLimit = type && amount ? '150000' : null
-    const tx = await handlePreTxGasEstimate(signer, txData, gasLimit)
-    const txResponse = await signer.sendTransaction(tx)
-    return txResponse
-}

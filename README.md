@@ -38,6 +38,25 @@ To have the app default to a different network when a wallet is not connected:
 2. Change `REACT_APP_NETWORK_ID` to `"420"`
 3. Change `REACT_APP_NETWORK_URL` to e.g. `"https://opt-goerli.g.alchemy.com/v2/{YOUR_INFURA_KEY}"`
 
+### Configuring the devlink
+
+1. Create `.webflowrc.js` file in a root directory
+```js
+module.exports = {
+    host: "https://api.webflow.com",
+    rootDir: "./src/devlink",
+    siteId: "64ac4f0e4fd899bd9c0009aa",
+    authToken: "{YOUR_WF_AUTH_TOKEN}", // An environment variable is recommended for this field.
+    cssModules: true,
+};
+```
+
+2. To sync your Webflow components into your project run
+
+```bash
+npx webflow devlink sync
+```
+
 ## Testing
 
 ### Cypress integration test

@@ -98,13 +98,19 @@ export function useInactiveListener(suppress = false) {
             })
         }
 
+        // @ts-ignore
         if (ethereum && ethereum.on && !active && !error && !suppress) {
+            // @ts-ignore
             ethereum.on('chainChanged', handleChainChanged)
+            // @ts-ignore
             ethereum.on('accountsChanged', handleAccountsChanged)
 
             return () => {
+                // @ts-ignore
                 if (ethereum.removeListener) {
+                    // @ts-ignore
                     ethereum.removeListener('chainChanged', handleChainChanged)
+                    // @ts-ignore
                     ethereum.removeListener('accountsChanged', handleAccountsChanged)
                 }
             }

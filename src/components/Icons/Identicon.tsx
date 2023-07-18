@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
+
+// @ts-ignore
 import Jazzicon from 'jazzicon'
 
 const StyledIdenticonContainer = styled.div`

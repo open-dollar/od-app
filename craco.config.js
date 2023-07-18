@@ -2,6 +2,9 @@ const cracoAlias = require('craco-alias')
 
 module.exports = {
     content: ['./src/**/*.{html,js}'],
+    eslint: {
+        enable: false,
+    },
     theme: {
         extend: {},
     },

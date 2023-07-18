@@ -6,7 +6,7 @@ import { BigNumber, ethers, constants } from 'ethers'
 import _ from '~/utils/lodash'
 
 import { useStoreActions, useStoreState } from '~/store'
-import { COIN_TICKER, sanitizeDecimals, toFixedString } from '~/utils'
+import { COIN_TICKER, formatNumber, sanitizeDecimals, toFixedString } from '~/utils'
 import DecimalInput from '~/components/DecimalInput'
 import Button from '~/components/Button'
 import Results from './Results'
@@ -334,7 +334,13 @@ const AuctionsPayment = () => {
             case 'SURPLUS':
                 return { value: sellInitialAmount, label: `${sellSymbol} to Receive` }
             case 'COLLATERAL':
-                return { value: collateralValue, label: `${tokenSymbol} to Receive` }
+                return {
+                    value: collateralValue,
+                    label: `${tokenSymbol} to Receive (Max: ${formatNumber(
+                        formattedRemainingCollateral,
+                        4
+                    )} ${tokenSymbol})`,
+                }
             default:
                 return { value: '', label: '' }
         }
@@ -347,7 +353,10 @@ const AuctionsPayment = () => {
             case 'SURPLUS':
                 return { value: value, label: `${buySymbol} to Bid` }
             case 'COLLATERAL':
-                return { value: value, label: `${buySymbol} to Bid` }
+                return {
+                    value: value,
+                    label: `${buySymbol} to Bid (Max: ${formatNumber(maxAmount, 4)} ${buySymbol})`,
+                }
             default:
                 return { value: '', label: '' }
         }

@@ -15,7 +15,8 @@
         "build": "craco build",
         "prettier": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\"",
         "test": "craco test",
-        "eject": "craco eject"
+        "eject": "craco eject",
+        "devlink": "npx webflow devlink sync"
     },
     "peerDependencies": {
         "@babel/runtime": "^7.17.0",

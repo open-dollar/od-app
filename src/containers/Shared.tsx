@@ -42,6 +42,7 @@ import {
     ChainId,
     ETH_NETWORK,
 } from '~/utils'
+import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 
 interface Props {
     children: ReactNode
@@ -256,6 +257,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />
+            <LiquidateSafeModal />
             {!isSplash && <WaitingModal />}
             <TopUpModal />
             {!isSplash && (

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Plus } from 'react-feather'
 
-import { useStoreActions, useStoreState } from '~/store'
+import { useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
 import SafeBlock from '~/components/SafeBlock'
 import CheckBox from '~/components/CheckBox'
@@ -26,19 +26,11 @@ const SafeList = ({ address }: { address?: string }) => {
         return []
     }, [safeState.list, showEmpty])
 
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
     const isOwner = useMemo(
         () => (address && account ? account.toLowerCase() === address.toLowerCase() : true),
         [account, address]
     )
 
-    const handleTopup = () => {
-        if (!connectWalletState.isWrongNetwork) {
-            popupsActions.setIsSafeManagerOpen(true)
-        }
-        return
-    }
     const returnSafeList = () => {
         if (safeState.list.length > 0) {
             return (
@@ -69,7 +61,9 @@ const SafeList = ({ address }: { address?: string }) => {
                             <Col>Risk</Col>
                         </Header>
                         {safes.map((safe: ISafe) => (
-                            <>{safe.collateralName && <SafeBlock className="safeBlock" key={safe.id} {...safe} />}</>
+                            <div key={safe.id}>
+                                {safe.collateralName && <SafeBlock className="safeBlock" {...safe} />}
+                            </div>
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>
@@ -141,54 +135,5 @@ const CheckboxContainer = styled.div`
         position: relative;
         font-size: 13px;
         top: -3px;
-    }
-`
-
-const InfoBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    @media (max-width: 767px) {
-        display: none;
-    }
-`
-
-const LeftSide = styled.div`
-    flex: 0 0 56%;
-    background: url(${require('../../assets/blueish-bg.png').default});
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 20px;
-    border-radius: 15px;
-`
-const RightSide = styled.div`
-    flex: 0 0 42%;
-    background: url(${require('../../assets/greenish-bg.png').default});
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 20px;
-    border-radius: 15px;
-    cursor: pointer;
-`
-
-const InfoTitle = styled.div`
-    display: flex;
-    align-items: center;
-    font-size: ${(props) => props.theme.font.default};
-    font-weight: 600;
-    svg {
-        margin-right: 5px;
-    }
-`
-
-const InfoText = styled.div`
-    font-size: ${(props) => props.theme.font.small};
-    margin-top: 10px;
-    a {
-        color: ${(props) => props.theme.colors.blueish};
-        text-decoration: underline;
-    }
-    &.bigFont {
-        font-size: ${(props) => props.theme.font.default};
     }
 `

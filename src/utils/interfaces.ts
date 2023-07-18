@@ -1,10 +1,10 @@
-import { AbstractConnector } from '@web3-react/abstract-connector'
-import { TransactionResponse } from '@ethersproject/providers'
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { DefaultTheme, ThemedCssFunction } from 'styled-components'
+import { AbstractConnector } from '@web3-react/abstract-connector'
+import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TransactionResponse } from '@ethersproject/providers'
 import { Geb } from '@hai-on-op/sdk'
 import { BigNumber } from 'ethers'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
 export declare enum ChainId {
     MAINNET = 1,
@@ -343,48 +343,6 @@ export interface IFetchSafeById extends IFetchSafesPayload {
     safeId: string
 }
 
-export interface IAuctionBidder {
-    bidder: string
-    buyAmount: string
-    createdAt: string
-    sellAmount: string
-    createdAtTransaction: string
-}
-
-export interface IAuction {
-    auctionDeadline: string
-    auctionId: string
-    buyAmount: string
-    buyInitialAmount: string
-    buyToken: string
-    startedBy: string
-    createdAt: string
-    createdAtTransaction: string
-    englishAuctionBids: Array<IAuctionBidder>
-    englishAuctionConfiguration: {
-        bidDuration: string
-        bidIncrease: string
-        totalAuctionLength: string
-        DEBT_amountSoldIncrease: string
-    }
-    biddersList: Array<IAuctionBidder>
-    englishAuctionType: string
-    isClaimed: boolean
-    sellAmount: string
-    sellInitialAmount: string
-    sellToken: string
-    winner: string
-}
-
-export interface IAuctionBid {
-    amount?: string
-    auctionId: string
-    title: string
-    signer: JsonRpcSigner
-    auctionType: 'DEBT' | 'SURPLUS' | 'STAKED_TOKEN'
-    type?: 'DEBT' | 'SURPLUS' | 'STAKED_TOKEN'
-}
-
 export interface IPaging {
     from: number
     to: number
@@ -469,10 +427,6 @@ export interface ILiquidityData {
     haiAmount: string
     ethAmount: string
     totalLiquidity: string
-}
-export interface IStakedLP {
-    eth: string
-    hai: string
 }
 
 export interface IStakingData {

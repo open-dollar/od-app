@@ -61,7 +61,7 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     }
 
     const nOfWholeDigits = value.split('.')[0].length
-    const nOfDigits = nOfWholeDigits > digits  - 1 ? '00' : Array.from(Array(digits - nOfWholeDigits), (_) => 0).join('')
+    const nOfDigits = nOfWholeDigits > digits - 1 ? '00' : Array.from(Array(digits - nOfWholeDigits), (_) => 0).join('')
     let val
     if (round) {
         val = numeral(n).format(`0.${nOfDigits}`)
@@ -106,7 +106,7 @@ export const formatUserSafe = (
     tokensData: { [key: string]: TokenData }
 ): Array<ISafe> => {
     const collateralBytes32: { [key: string]: string } = Object.values(tokensData)
-        .filter(token => token.isCollateral)
+        .filter((token) => token.isCollateral)
         .reduce((accum, token) => {
             return { ...accum, [token.bytes32String]: token.symbol }
         }, {})
@@ -114,7 +114,7 @@ export const formatUserSafe = (
     const { currentRedemptionPrice, currentRedemptionRate, collateralLiquidationData } = liquidationData
 
     return safes
-        .filter(s => s.collateralType in collateralBytes32)
+        .filter((s) => s.collateralType in collateralBytes32)
         .map((s) => {
             const token = collateralBytes32[s.collateralType]
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
@@ -267,7 +267,9 @@ export const returnAvaiableDebt = (
     const prevDebtBN = BigNumber.from(toFixedString(prevDebt, 'WAD'))
     const totalPrevDebt = prevDebtBN.mul(accumulatedRateRay).div(gebUtils.RAY)
     const availableDebt = totalDebtBN.sub(totalPrevDebt)
-    return formatNumber(gebUtils.wadToFixed(availableDebt.lt(0) ? BigNumber.from('0') : availableDebt).toString()).toString()
+    return formatNumber(
+        gebUtils.wadToFixed(availableDebt.lt(0) ? BigNumber.from('0') : availableDebt).toString()
+    ).toString()
 }
 
 export const returnTotalDebt = (debt: string, accumulatedRate: string, beautify = true) => {

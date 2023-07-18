@@ -10,6 +10,8 @@ deps:
     COPY .yarn .yarn
     COPY src src
     COPY solidity solidity
+    COPY craco.config.js craco.config.js
+    COPY tsconfig.json tsconfig.json
     COPY public public
     # needed for package's deps as well
     RUN yarn set version 3.2.3

@@ -3,64 +3,41 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { DepositCollateralInput } from "./DepositCollateralInput";
 import * as _utils from "./utils";
-import _styles from "./Vault.module.css";
+import _styles from "./Two.module.css";
 
 const _interactionsData = JSON.parse(
   '{"events":{"e":{"id":"e","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-2"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"0a40dfc2-38d8-f364-3969-0e893aa534ac","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"0a40dfc2-38d8-f364-3969-0e893aa534ac","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1689716621006},"e-2":{"id":"e-2","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-2","affectedElements":{},"playInReverse":false,"autoStopEventId":"e"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"0a40dfc2-38d8-f364-3969-0e893aa534ac","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"0a40dfc2-38d8-f364-3969-0e893aa534ac","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1689716621006}},"actionLists":{"a":{"id":"a","title":"Vault Details Open","actionItemGroups":[{"actionItems":[{"id":"a-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".vaultdetails","selectorGuids":["dc37fb23-4793-19de-816e-f6af71460fd5"]},"value":"none"}}]},{"actionItems":[{"id":"a-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".vaultdetails","selectorGuids":["dc37fb23-4793-19de-816e-f6af71460fd5"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1689716626943},"a-2":{"id":"a-2","title":"Vault Details Close","actionItemGroups":[{"actionItems":[{"id":"a-2-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".vaultdetails","selectorGuids":["dc37fb23-4793-19de-816e-f6af71460fd5"]},"value":"flex"}}]},{"actionItems":[{"id":"a-2-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".vaultdetails","selectorGuids":["dc37fb23-4793-19de-816e-f6af71460fd5"]},"value":"none"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1689716781194}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
-export function Vault({
-  as: _Component = _Builtin.Block,
-  collateralAmount = "0.00 WETH",
-  createVaultFormButton = {},
-  balanceToken = "0.00 WETH",
-  balanceTokenUsd = "~$0.00",
-  depositCollateralUsd = "~$0.00",
-  slotTest,
-  borrowed = "0.00 OPN",
-  collateralRatio = "0.00%",
-}) {
+export function Two({ as: _Component = _Builtin.Block }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component className={_utils.cx(_styles, "vault")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "vaultoverview")}
-        data-w-id="0a40dfc2-38d8-f364-3969-0e893aa534ac"
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "vaultoverview")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "col")} tag="div">
           <_Builtin.Block className={_utils.cx(_styles, "label-2")} tag="div">
             {"Name"}
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "vaultname")} tag="div">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "bold")}
-              tag="div"
-            >
+            <_Builtin.Block className={_utils.cx(_styles, "text-lg")} tag="div">
               {"Safe 01"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "table")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "col-2", "right")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "col-2")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "label-2")} tag="div">
               {"Collateral"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "text-lg", "bold")}
+              className={_utils.cx(_styles, "", "text-lg")}
               tag="div"
             >
-              {collateralAmount}
+              {"0.00 WETH"}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "col-2", "right")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "", "col-2")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "", "label-2")}
               tag="div"
@@ -80,18 +57,15 @@ export function Vault({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "", "text-lg", "bold")}
+                  className={_utils.cx(_styles, "", "text-lg")}
                   tag="span"
                 >
-                  {borrowed}
+                  {"250.00 OPN"}
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "col-2", "right")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "", "col-2")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "", "label-2")}
               tag="div"
@@ -99,16 +73,13 @@ export function Vault({
               {"Collateral Ratio"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "text-lg", "bold")}
+              className={_utils.cx(_styles, "", "text-lg")}
               tag="div"
             >
-              {collateralRatio}
+              {"200.00%"}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "col-2", "right")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "", "col-2")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "", "label-2")}
               tag="div"
@@ -116,16 +87,13 @@ export function Vault({
               {"Liquidation Price"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "text-lg", "bold")}
+              className={_utils.cx(_styles, "", "text-lg")}
               tag="div"
             >
               {"$1354.47"}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "col-2", "right")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "", "col-2")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "", "label-2")}
               tag="div"
@@ -133,7 +101,7 @@ export function Vault({
               {"Current Price"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "text-lg", "bold")}
+              className={_utils.cx(_styles, "", "text-lg")}
               tag="div"
             >
               {"$1229.22"}
@@ -156,7 +124,7 @@ export function Vault({
               src="https://uploads-ssl.webflow.com/64ac4f0e4fd899bd9c0009aa/64b6eb046060034055dad56c_Vectors-Wrapper.svg"
             />
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "red")}
+              className={_utils.cx(_styles, "heading-h3-lg")}
               tag="div"
             >
               {"High"}
@@ -175,7 +143,7 @@ export function Vault({
           >
             <_Builtin.Block className={_utils.cx(_styles, "deposit")} tag="div">
               <_Builtin.Block
-                className={_utils.cx(_styles, "", "text-lg", "bold")}
+                className={_utils.cx(_styles, "", "text-lg")}
                 tag="div"
               >
                 {"Deposit Collateral"}
@@ -188,7 +156,12 @@ export function Vault({
                   className={_utils.cx(_styles, "", "col-2")}
                   tag="div"
                 >
-                  <_Builtin.DropdownWrapper tag="div" delay={0} hover={false}>
+                  <_Builtin.DropdownWrapper
+                    className={_utils.cx(_styles, "dropdown-2")}
+                    tag="div"
+                    delay={0}
+                    hover={false}
+                  >
                     <_Builtin.DropdownToggle
                       className={_utils.cx(_styles, "dropdown")}
                       tag="div"
@@ -200,49 +173,54 @@ export function Vault({
                           icon: "dropdown-toggle",
                         }}
                       />
-                      <_Builtin.Image
-                        className={_utils.cx(_styles, "token-icon")}
-                        width={50}
-                        height={50}
-                        loading="lazy"
-                        src="https://uploads-ssl.webflow.com/64ac4f0e4fd899bd9c0009aa/64b70d282d26cbe14d17cea6_image-1.png"
-                      />
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "text", "full-width")}
+                        className={_utils.cx(_styles, "token-icon")}
                         tag="div"
                       >
-                        {"stETH"}
+                        <_Builtin.Image
+                          className={_utils.cx(_styles, "vectors-wrapper-2")}
+                          loading="lazy"
+                          width={16}
+                          height={16}
+                          src="https://uploads-ssl.webflow.com/64ac4f0e4fd899bd9c0009aa/64b6eb049cdd706cd8993c13_Vectors-Wrapper.svg"
+                        />
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text")}
+                        tag="div"
+                      >
+                        {"WETH"}
                       </_Builtin.Block>
                       <_Builtin.Image
                         className={_utils.cx(_styles, "vectors-wrapper-3")}
+                        loading="lazy"
                         width={14.000000953674316}
                         height={7.999998569488525}
-                        loading="lazy"
                         src="https://uploads-ssl.webflow.com/64ac4f0e4fd899bd9c0009aa/64b6eb05c85c8667fe73d434_Vectors-Wrapper.svg"
                       />
                     </_Builtin.DropdownToggle>
                     <_Builtin.DropdownList tag="nav">
-                      <_Builtin.Link
-                        className={_utils.cx(_styles, "dropdown")}
-                        button={false}
+                      <_Builtin.DropdownLink
                         options={{
                           href: "#",
                         }}
                       >
-                        <_Builtin.Image
-                          className={_utils.cx(_styles, "token-icon")}
-                          width={50}
-                          height={50}
-                          loading="lazy"
-                          src="https://uploads-ssl.webflow.com/64ac4f0e4fd899bd9c0009aa/64b70d7267bfd080023c33d6_image-2.png"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "text")}
-                          tag="div"
-                        >
-                          {"rETH"}
-                        </_Builtin.Block>
-                      </_Builtin.Link>
+                        {"Link 1"}
+                      </_Builtin.DropdownLink>
+                      <_Builtin.DropdownLink
+                        options={{
+                          href: "#",
+                        }}
+                      >
+                        {"Link 2"}
+                      </_Builtin.DropdownLink>
+                      <_Builtin.DropdownLink
+                        options={{
+                          href: "#",
+                        }}
+                      >
+                        {"Link 3"}
+                      </_Builtin.DropdownLink>
                     </_Builtin.DropdownList>
                   </_Builtin.DropdownWrapper>
                   <_Builtin.Block
@@ -259,13 +237,13 @@ export function Vault({
                       className={_utils.cx(_styles, "", "body-sm")}
                       tag="div"
                     >
-                      {balanceToken}
+                      {"0.00 WETH"}
                     </_Builtin.Block>
                     <_Builtin.Block
                       className={_utils.cx(_styles, "", "body-sm")}
                       tag="div"
                     >
-                      {balanceTokenUsd}
+                      {"~$0.00"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -282,19 +260,15 @@ export function Vault({
                       className={_utils.cx(_styles, "", "body-sm")}
                       tag="div"
                     >
-                      {depositCollateralUsd}
+                      {"~$0.00"}
                     </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "frame-3")}
-                    tag="div"
-                  />
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "borrow")} tag="div">
               <_Builtin.Block
-                className={_utils.cx(_styles, "", "text-lg", "bold")}
+                className={_utils.cx(_styles, "", "text-lg")}
                 tag="div"
               >
                 {"Borrow Stable Coin"}
@@ -347,30 +321,24 @@ export function Vault({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "", "col-2", "full-width")}
+                  className={_utils.cx(_styles, "", "input-wrapper")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "", "input-wrapper")}
+                    className={_utils.cx(_styles, "", "dropdown")}
                     tag="div"
                   >
-                    <_Builtin.FormTextInput
-                      className={_utils.cx(_styles, "formfield")}
-                      name="BorrowStableCoinInput"
-                      maxLength={256}
-                      data-name="BorrowStableCoinInput"
-                      placeholder="0.00 OPN"
-                      disabled={false}
-                      type="number"
-                      required={false}
-                      autoFocus={false}
-                      id="BorrowStableCoinInput"
-                    />
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "", "body-sm", "max")}
+                      className={_utils.cx(_styles, "", "text-2")}
                       tag="div"
                     >
                       {"Max"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "", "text-3")}
+                      tag="div"
+                    >
+                      {"250"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -392,7 +360,6 @@ export function Vault({
               type="submit"
               value="Create, Deposit & Borrow"
               data-wait="Please wait..."
-              {...createVaultFormButton}
             />
           </_Builtin.FormForm>
           <_Builtin.FormSuccessMessage>
@@ -540,16 +507,14 @@ export function Vault({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "slotdiv")} tag="div">
-            {slotTest ?? (
-              <_Builtin.Link
-                button={false}
-                options={{
-                  href: "#",
-                }}
-              >
-                {"SlotLink"}
-              </_Builtin.Link>
-            )}
+            <_Builtin.Link
+              button={false}
+              options={{
+                href: "#",
+              }}
+            >
+              {"SlotLink"}
+            </_Builtin.Link>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

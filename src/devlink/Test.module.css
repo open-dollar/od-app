@@ -1,0 +1,6 @@
+.text-block {
+  flex: 1;
+  font-family: Lato, sans-serif;
+  color: hsla(0, 80.00%, 36.67%, 1.00);
+  font-size: 16px;
+}

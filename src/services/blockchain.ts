@@ -1,6 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
 import { Geb, TransactionRequest } from '@hai-on-op/sdk'
-import { BigNumber, utils as ethersUtils, ethers } from 'ethers'
+import { BigNumber, ethers, utils as ethersUtils } from 'ethers'
 
 import { handlePreTxGasEstimate } from '~/hooks'
 import { ETH_NETWORK, ISafeData } from '~/utils'
@@ -13,6 +13,22 @@ export const claimAirdrop = async (signer: JsonRpcSigner) => {
     const airdropContract = new ethers.Contract('0xb131611c5010dcc71925cdbe29f0e8aabb2625db', abi, signer)
 
     let txData = await airdropContract.populateTransaction.drop()
+
+    const tx = await handlePreTxGasEstimate(signer, txData)
+
+    const txResponse = await signer.sendTransaction(tx)
+
+    return txResponse
+}
+
+export const liquidateSafe = async (geb: Geb, safeId: string) => {
+    // Only a signer will be able to execute the tx. Not a provider.
+    const signerIsValid = geb.signer && ethers.providers.JsonRpcSigner.isSigner(geb.signer)
+    if (!signerIsValid) return
+
+    const signer = geb.signer as JsonRpcSigner
+
+    const txData = await geb.liquidations.liquidateSAFE(safeId)
 
     const tx = await handlePreTxGasEstimate(signer, txData)
 

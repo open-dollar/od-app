@@ -244,12 +244,18 @@ const AuctionBlock = (auction: Props) => {
                                         </ListItem>
                                         <ListItem>
                                             <ListItemLabel>Bidder</ListItemLabel>
-                                            <Link
-                                                href={getEtherscanLink(chainId as ChainId, bidder.bidder, 'address')}
-                                                target="_blank"
-                                            >
-                                                {returnWalletAddress(bidder.bidder)}
-                                            </Link>
+                                            {bidder.bidder && (
+                                                <Link
+                                                    href={getEtherscanLink(
+                                                        chainId as ChainId,
+                                                        bidder.bidder,
+                                                        'address'
+                                                    )}
+                                                    target="_blank"
+                                                >
+                                                    {returnWalletAddress(bidder.bidder)}
+                                                </Link>
+                                            )}
                                         </ListItem>
                                         <ListItem>
                                             <ListItemLabel>Timestamp</ListItemLabel>

@@ -28,9 +28,11 @@ const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbo
         <>
             <ListItem>{eventType}</ListItem>
             <ListItem>
-                <Link href={getEtherscanLink(chainId as ChainId, bidder, 'address')} target="_blank">
-                    {returnWalletAddress(bidder)}
-                </Link>
+                {bidder && (
+                    <Link href={getEtherscanLink(chainId as ChainId, bidder, 'address')} target="_blank">
+                        {returnWalletAddress(bidder)}
+                    </Link>
+                )}
             </ListItem>
             <ListItem>
                 <ListItemLabel>Timestamp</ListItemLabel>

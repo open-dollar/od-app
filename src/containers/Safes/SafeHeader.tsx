@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
+import Button from '~/components/Button'
 import LinkButton from '~/components/LinkButton'
+import { useStoreActions, useStoreState } from '~/store'
 
 const SafeHeader = ({
     safeId,
@@ -15,10 +17,14 @@ const SafeHeader = ({
     isDeposit: boolean
 }) => {
     const history = useHistory()
+    const { openLiquidateSafeModal } = useStoreActions((state) => state.popupsModel)
+    const { singleSafe } = useStoreState((state) => state.safeModel)
 
     const handleBack = useCallback(() => {
         history.push(`/safes`)
     }, [history])
+
+    const canLiquidate = singleSafe && singleSafe.riskState == 4
 
     return (
         <Container>
@@ -34,6 +40,13 @@ const SafeHeader = ({
                     </SafeInfo>
                 </LeftSide>
                 <RightSide>
+                    {canLiquidate &&
+                        <Button
+                            id="liquidate-btn"
+                            text="Liquidate Vault"
+                            onClick={() => openLiquidateSafeModal({ safeId })}
+                        />
+                    }
                     <LinkButton
                         id="deposit_borrow"
                         text={'Deposit & Borrow'}
@@ -81,6 +94,19 @@ const HeaderContainer = styled.div`
     @media (max-width: 767px) {
         flex-direction: column;
     }
+    #liquidate-btn {
+        background-color: crimson;
+        min-width: 100px;
+        padding: 4px 12px;
+        font-size: 13px;
+        font-weight: normal;
+        margin-right: 10px;
+        @media (max-width: 767px) {
+            min-width: 100%;
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+    }
 `
 
 const LeftSide = styled.div`
@@ -99,18 +125,19 @@ const RightSide = styled.div`
         padding: 4px 12px;
         font-size: 13px;
         font-weight: normal;
-        &:first-child {
+        &:not(:last-child) {
             margin-right: 10px;
         }
     }
     @media (max-width: 767px) {
         min-width: 100%;
-        margin-top: 20px;
         justify-content: space-between;
-        &:first-child {
-            margin-right: 0;
-        }
+        display: block;
         a {
+            &:not(:last-child) {
+                margin-right: 0px;
+            }
+            margin-bottom: 20px;
             min-width: 49%;
             display: flex;
             justify-content: center;

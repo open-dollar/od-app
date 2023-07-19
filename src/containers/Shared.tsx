@@ -23,8 +23,9 @@ import { useStoreState, useStoreActions } from '~/store'
 import ImagePreloader from '~/components/ImagePreloader'
 import ProxyModal from '~/components/Modals/ProxyModal'
 import BalanceUpdater from '~/services/BalanceUpdater'
-import CookieBanner from '~/components/CookieBanner'
+import WethModal from '~/components/Modals/WETHModal'
 import ToastPayload from '~/components/ToastPayload'
+import CookieBanner from '~/components/CookieBanner'
 import WalletModal from '~/components/WalletModal'
 import AlertLabel from '~/components/AlertLabel'
 import usePrevious from '~/hooks/usePrevious'
@@ -42,6 +43,7 @@ import {
     ChainId,
     ETH_NETWORK,
 } from '~/utils'
+import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 
 interface Props {
     children: ReactNode
@@ -253,9 +255,11 @@ const Shared = ({ children, ...rest }: Props) => {
             <TransactionUpdater />
             <LoadingModal />
             <AuctionsModal />
+            <WethModal />
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />
+            <LiquidateSafeModal />
             {!isSplash && <WaitingModal />}
             <TopUpModal />
             {!isSplash && (

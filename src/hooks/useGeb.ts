@@ -32,9 +32,9 @@ export function useIsOwner(safeId: string): boolean {
 
     const getIsOwnerCallback = useCallback((res) => {
         if (res) {
-            const [proxyAddress, safeOwner] = res
-            if (proxyAddress && safeOwner) {
-                setState(proxyAddress === safeOwner)
+            const [proxyAddress, { owner }] = res
+            if (proxyAddress && owner) {
+                setState(proxyAddress === owner)
             }
         }
     }, [])
@@ -44,7 +44,7 @@ export function useIsOwner(safeId: string): boolean {
         setState(true)
         Promise.all([
             geb.contracts.proxyRegistry.proxies(account as string),
-            geb.contracts.safeManager.ownsSAFE(safeId),
+            geb.contracts.safeManager.safeData(safeId),
         ])
             .then(getIsOwnerCallback)
             .catch((error) => console.error(`Failed to get proxyAddress and SafeOwner`, error))
@@ -82,22 +82,6 @@ export function useProxyAddress() {
 // fetches latest blocknumber from store
 export function useBlockNumber() {
     return store.getState().connectWalletModel.blockNumber[NETWORK_ID]
-}
-
-// returns safe handler from @hai-on-op/sdk
-export function useSafeHandler(safeId: string): string {
-    const [state, setState] = useState('')
-    const geb = useGeb()
-    useEffect(() => {
-        if (!geb || !safeId) return
-        async function getSafeData() {
-            const safeHandler = await geb.contracts.safeManager.safes(safeId)
-            setState(safeHandler)
-        }
-        getSafeData()
-    }, [geb, safeId])
-
-    return state
 }
 
 // returns amount of currency in USD

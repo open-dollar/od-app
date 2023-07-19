@@ -1,8 +1,8 @@
+import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 import { useState } from 'react'
 import styled from 'styled-components'
 import _ from '~/utils/lodash'
-import dayjs from 'dayjs'
 
 import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'

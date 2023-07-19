@@ -74,7 +74,7 @@ export function useAuctions(type: AuctionEventType, tokenSymbol?: string) {
                 )
 
                 let sellInitialAmount = _.get(auc, 'amount', '0')
-                const startedBy = _.get(auc, 'startedBy', '0x0000000000000000000000000000000000000000')
+                const startedBy = _.get(auc, 'startedBy', '')
                 const isClaimed = _.get(auc, 'isClaimed', false)
                 const buyToken = _.get(auc, 'buyToken', 'PROTOCOL_TOKEN')
                 const sellToken = _.get(auc, 'sellToken', 'COIN')
@@ -184,9 +184,9 @@ export function useCollateralAuctions(tokenSymbol: string): ICollateralAuction[]
             }
 
             const filteredAuctions = auctionsList.map((auc: SDKCollateralAuction, index) => {
-                const { createdAt, createdAtTransaction, amountToSell, amountToRaise, isClaimed, biddersList } = auc
+                const { createdAt, createdAtTransaction, amountToSell, amountToRaise, biddersList } = auc
 
-                const startedBy = _.get(auc, 'startedBy', '0x0000000000000000000000000000000000000000')
+                const startedBy = _.get(auc, 'startedBy', '')
                 // Amount to sell = collateral
                 // Amout to raise = hai
                 const collateralBought = biddersList.reduce((acc, bid) => acc.add(bid.bid), BigNumber.from('0'))

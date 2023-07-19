@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import kite from '~/assets/splash/kite.png'
-import { TestComponent } from '~/devlink'
+import { Vault } from '~/devlink'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 
@@ -22,8 +22,30 @@ const Splash = () => {
         return () => clearInterval(interval)
     }, [])
 
+    const handleClick = () => {
+        console.log('click on form button')
+    }
+
+    const Element = () => {
+        return (
+            <div className="text-black">
+                <h2>SLOT ELEMENT</h2>
+                <p>Slot element text</p>
+            </div>
+        )
+    }
     return (
         <div className="bg-white">
+            <Vault
+                collateralAmount="0.66 WETH"
+                createVaultFormButton={handleClick} // not working
+                balanceToken="0.67 WETH"
+                balanceTokenUsd="~$0.06"
+                depositCollateralUsd="~$0.67"
+                slotTest={<Element />} // not working
+                borrowed="0.69 OPN"
+                collateralRatio="0.68%"
+            />
             <div className="lg:grid lg:grid-cols-12 ">
                 <div className="col-span-12 md:col-span-6  h-screen flex flex-col items-end">
                     <div className="lg:hidden bg-sky w-full flex flex-col items-center py-8">
@@ -44,7 +66,6 @@ const Splash = () => {
                             >
                                 LAUNCH APP
                             </button>
-                            <TestComponent/>
                         </div>
                     </div>
                 </div>

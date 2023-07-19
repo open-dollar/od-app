@@ -38,7 +38,10 @@ const Splash = () => {
         <div className="bg-white">
             <Vault
                 collateralAmount="0.66 WETH"
-                createVaultFormButton={{ onClick: () => console.log('Hello') }}
+                createVaultFormButton={{
+                    onClick: () => console.log('Hello'),
+                    style: { backgroundColor: '#7dd03c', color: '#3a8500', height: '56px' },
+                }}
                 balanceToken="0.67 WETH"
                 balanceTokenUsd="~$0.06"
                 depositCollateralUsd="~$0.67"

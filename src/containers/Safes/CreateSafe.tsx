@@ -74,6 +74,17 @@ const CreateSafe = ({
         (Number(collateralUnitPriceUSD) * Number(selectedCollateralBalance)).toString()
     )
 
+    const leftInputPriceUSD = useMemo(() => {
+        return formatNumber(
+            (
+                Number(
+                    safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice
+                        ?.value || '0'
+                ) * Number(leftInput)
+            ).toString()
+        )
+    }, [leftInput, selectedCollateral.symbol])
+
     const debtFloor = Math.ceil(
         Number(
             formatNumber(

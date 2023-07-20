@@ -21,7 +21,11 @@ const Navbar = () => {
 
     const { transactions } = transactionsState
 
-    const { popupsModel: popupsActions, transactionsModel, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
+    const {
+        popupsModel: popupsActions,
+        transactionsModel,
+        connectWalletModel: connectWalletActions,
+    } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
     const { active, account, library } = useWeb3React()
     const signer = library ? library.getSigner(account) : undefined
@@ -68,93 +72,97 @@ const Navbar = () => {
     const claimAirdropButton = async (signer: any) => {
         popupsActions.setIsWaitingModalOpen(true)
         popupsActions.setWaitingPayload({
-                    text: 'Claiming test tokens...',
-                    title: 'Waiting For Confirmation',
-                    hint: 'Confirm this transaction in your wallet',
-                    status: 'loading',
-                })
-        claimAirdrop(signer).then(txResponse => {
-            if (txResponse) {
-                transactionsModel.addTransaction({
-                    chainId: txResponse.chainId,
-                    hash: txResponse.hash,
-                    from: txResponse.from,
-                    summary: 'Claiming test tokens',
-                    addedTime: new Date().getTime(),
-                    originalTx: txResponse,
-                })
-                popupsActions.setWaitingPayload({
-                    title: 'Transaction Submitted',
-                    hash: txResponse.hash,
-                    status: 'success',
-                })
-                txResponse.wait().then(() => {
-                    connectWalletActions.setForceUpdateTokens(true)
-                })
-            }
-        }).catch(error => {
-            handleTransactionError(error)
+            text: 'Claiming test tokens...',
+            title: 'Waiting For Confirmation',
+            hint: 'Confirm this transaction in your wallet',
+            status: 'loading',
         })
+        claimAirdrop(signer)
+            .then((txResponse) => {
+                if (txResponse) {
+                    transactionsModel.addTransaction({
+                        chainId: txResponse.chainId,
+                        hash: txResponse.hash,
+                        from: txResponse.from,
+                        summary: 'Claiming test tokens',
+                        addedTime: new Date().getTime(),
+                        originalTx: txResponse,
+                    })
+                    popupsActions.setWaitingPayload({
+                        title: 'Transaction Submitted',
+                        hash: txResponse.hash,
+                        status: 'success',
+                    })
+                    txResponse.wait().then(() => {
+                        connectWalletActions.setForceUpdateTokens(true)
+                    })
+                }
+            })
+            .catch((error) => {
+                handleTransactionError(error)
+            })
     }
 
-        return (
-            <Container>
-                <Left isBigWidth={active && account ? true : false}>
-                    <Brand />
-                </Left>
-                <HideMobile>
-                    <NavLinks />
-                </HideMobile>
-                <RightSide>
-                    <BtnContainer>
-                        {signer && <ClaimButton onClick={() => signer && claimAirdropButton(signer)}>
+    return (
+        <Container>
+            <Left isBigWidth={active && account ? true : false}>
+                <Brand />
+            </Left>
+            <HideMobile>
+                <NavLinks />
+            </HideMobile>
+            <RightSide>
+                <BtnContainer>
+                    {signer && (
+                        <ClaimButton onClick={() => signer && claimAirdropButton(signer)}>
                             Claim test tokens 🪂
-                        </ClaimButton>}
-                        {/* Button to add HAI to the wallet */}
-                        <HaiButton onClick={handleAddHAI}>
-                            <Icon src={TOKEN_LOGOS.HAI} width={'24px'} height={'24px'} />
-                            {haiBalance + ' '}
-                            HAI
-                            <AddIcon src={addIcon} width={'18px'} height={'18px'} />
-                        </HaiButton>
+                        </ClaimButton>
+                    )}
+                    {/* Button to add HAI to the wallet */}
+                    <HaiButton onClick={handleAddHAI}>
+                        <Icon src={TOKEN_LOGOS.HAI} width={'24px'} height={'24px'} />
+                        {haiBalance + ' '}
+                        HAI
+                        <AddIcon src={addIcon} width={'18px'} height={'18px'} />
+                    </HaiButton>
 
-                        {/* Button to connect wallet */}
-                        <Button
-                            primary={active && account ? true : false}
-                            id="web3-status-connected"
-                            isLoading={hasPendingTransactions}
-                            onClick={handleWalletConnect}
-                        >
-                            {active && account ? (
-                                hasPendingTransactions ? (
-                                    `${pending.length} Pending`
-                                ) : (
-                                    <InnerBtn>
-                                        {returnWalletAddress(account)}
-                                        <Identicon />
-                                    </InnerBtn>
-                                )
+                    {/* Button to connect wallet */}
+                    <Button
+                        primary={active && account ? true : false}
+                        id="web3-status-connected"
+                        isLoading={hasPendingTransactions}
+                        onClick={handleWalletConnect}
+                    >
+                        {active && account ? (
+                            hasPendingTransactions ? (
+                                `${pending.length} Pending`
                             ) : (
-                                t('connect_wallet')
-                            )}
-                        </Button>
-                    </BtnContainer>
+                                <InnerBtn>
+                                    {returnWalletAddress(account)}
+                                    <Identicon />
+                                </InnerBtn>
+                            )
+                        ) : (
+                            t('connect_wallet')
+                        )}
+                    </Button>
+                </BtnContainer>
 
-                    <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
-                        <RectContainer>
-                            <Rect />
-                            <Rect />
-                            <Rect />
-                        </RectContainer>
-                    </MenuBtn>
-                </RightSide>
-            </Container>
-        )
-    }
+                <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
+                    <RectContainer>
+                        <Rect />
+                        <Rect />
+                        <Rect />
+                    </RectContainer>
+                </MenuBtn>
+            </RightSide>
+        </Container>
+    )
+}
 
-    export default Navbar
+export default Navbar
 
-    const Container = styled.div`
+const Container = styled.div`
     display: flex;
     height: 68px;
     align-items: center;

@@ -110,6 +110,31 @@ export default function WalletModal() {
                     setPendingError(true)
                 }
             })
+        if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
+            // Prompt user to switch network to Optimism Goerli
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0x1a4`,
+                            chainName: 'Optimism Goerli Testnet',
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            rpcUrls: ['https://goerli.optimism.io'],
+                            blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Failed to switch network', error)
+            }
+        } else {
+            console.log('MetaMask is not installed')
+        }
     }
 
     // get wallets user can switch too, depending on device/browser
@@ -205,7 +230,7 @@ export default function WalletModal() {
                         {error instanceof UnsupportedChainIdError ? (
                             <h5>
                                 {t('not_supported')}{' '}
-                                <a target="_blank" href="//chainlist.org/chain/420">
+                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
                                     Optimism Goerli
                                 </a>
                                 .

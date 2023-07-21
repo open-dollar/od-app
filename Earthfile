@@ -29,4 +29,4 @@ build-app:
     FROM +deps
     ARG ENVIRONMENT='local'
     ARG VERSION='latest'
-    RUN yarn build
+    RUN yarn prebuild && yarn build

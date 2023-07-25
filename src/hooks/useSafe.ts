@@ -245,27 +245,27 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         }
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
             error =
-                error ?? `Please enter the amount of ${collateralName} to be deposited or amount of HAI to be borrowed`
+                error ?? `Please enter the amount of ${collateralName} to be deposited or amount of OD to be borrowed`
         }
     }
 
     if (type === 'repay_withdraw') {
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
-            error = error ?? `Please enter the amount of ${collateralName} to free or the amount of HAI to repay`
+            error = error ?? `Please enter the amount of ${collateralName} to free or the amount of OD to repay`
         }
         if (leftInputBN.gt(availableCollateralBN)) {
             error = error ?? `${collateralName} to unlock cannot exceed available amount`
         }
 
         if (rightInputBN.gt(availableHaiBN)) {
-            error = error ?? `HAI to repay cannot exceed owed amount`
+            error = error ?? `OD to repay cannot exceed owed amount`
         }
 
         if (!rightInputBN.isZero()) {
             const repayPercent = returnPercentAmount(rightInput, availableHai as string)
 
             if (rightInputBN.add(ONE_DAY_WORTH_SF).lt(BigNumber.from(availableHaiBN)) && repayPercent > 95) {
-                error = error ?? `You can only repay a minimum of ${availableHai} HAI to avoid leaving residual values`
+                error = error ?? `You can only repay a minimum of ${availableHai} OD to avoid leaving residual values`
             }
         }
 
@@ -279,7 +279,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             error ??
             `The resulting debt should be at least ${Math.ceil(
                 Number(formatNumber(collateralLiquidationData.debtFloor))
-            )} HAI or zero`
+            )} OD or zero`
     }
 
     if (!isSafe && (collateralRatio as number) >= 0) {
@@ -293,7 +293,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     }
 
     if (numeral(totalDebt).value() > numeral(liquidationData!.perSafeDebtCeiling).value()) {
-        error = error ?? `Cannot exceed HAI debt ceiling`
+        error = error ?? `Cannot exceed OD debt ceiling`
     }
 
     if (type === 'create') {
@@ -306,7 +306,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         const perSafeDebtCeilingBN = BigNumber.from(toFixedString(liquidationData!.perSafeDebtCeiling, 'WAD'))
 
         if (totalDebtBN.gte(perSafeDebtCeilingBN)) {
-            error = error ?? `Individual safe can't have more than ${liquidationData!.perSafeDebtCeiling} HAI of debt`
+            error = error ?? `Individual safe can't have more than ${liquidationData!.perSafeDebtCeiling} OD of debt`
         }
     }
 

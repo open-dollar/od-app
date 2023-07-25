@@ -62,7 +62,7 @@ const CreateSafe = ({
     const selectedCollateral = tokensData && tokensData[selectedItem]
     const selectedCollateralBalance = ethers.utils.formatEther(tokensFetchedData[selectedItem].balanceE18)
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
-    const haiBalanceUSD = useTokenBalanceInUSD('HAI', rightInput ? rightInput : availableHai)
+    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const selectedTokenBalance = formatNumber(selectedCollateralBalance || '0', 2)
 

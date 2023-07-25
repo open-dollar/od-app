@@ -34,7 +34,7 @@ const SafeStats = ({
     const collateral = formatNumber(singleSafe?.collateral || '0')
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
-    const totalDebtInUSD = useTokenBalanceInUSD('HAI', totalDebt as string)
+    const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebt as string)
 
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(

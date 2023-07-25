@@ -91,7 +91,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const haiBalance = ethers.utils.formatEther(tokenBalances.HAI?.balanceE18 || '0')
 
-    const haiBalanceUSD = useTokenBalanceInUSD('HAI', rightInput ? rightInput : availableHai)
+    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const onMaxLeftInput = () => {
         if (isDeposit) {

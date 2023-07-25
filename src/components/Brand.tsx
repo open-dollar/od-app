@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Logo from '../assets/hai-logo.png'
+import Logo from '../assets/od-logo.svg'
 
 interface Props {
     height?: number

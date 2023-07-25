@@ -103,7 +103,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         return '0.00'
     }, [tokensData, singleSafe, type])
 
-    // returns available HAI (debt)
+    // returns available OD (debt)
     // singleSafe means already a deployed safe
     const availableHai = useMemo(() => {
         if (!collateralLiquidationData) return '0.00'
@@ -141,7 +141,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const availableCollateralBN = BigNumber.from(toFixedString(availableCollateral.toString(), 'WAD'))
     const availableHaiBN = BigNumber.from(toFixedString(availableHai.toString(), 'WAD'))
-    // account's HAI balance into BigNumber
+    // account's OD balance into BigNumber
     const haiBalanceBN = haiBalance ? BigNumber.from(toFixedString(haiBalance.toString(), 'WAD')) : BigNumber.from('0')
 
     const leftInputBN = leftInput ? BigNumber.from(toFixedString(leftInput, 'WAD')) : BigNumber.from('0')
@@ -163,7 +163,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                     plainValue: totalCollateral,
                 },
                 {
-                    label: 'Total HAI Debt',
+                    label: 'Total OD Debt',
                     value: totalDebt === '0' ? '-' : totalDebt,
                     plainValue: totalDebt,
                 },
@@ -184,7 +184,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                     tip: t('eth_osm_tip'),
                 },
                 {
-                    label: 'HAI Redemption Price',
+                    label: 'OD Redemption Price',
                     value: '$' + formatNumber(liquidationData!.currentRedemptionPrice, 3),
                     tip: t('redemption_price_tip'),
                 },
@@ -241,7 +241,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             error = error ?? 'Insufficient balance'
         }
         if (rightInputBN.gt(availableHaiBN)) {
-            error = error ?? `HAI borrowed cannot exceed available amount`
+            error = error ?? `OD borrowed cannot exceed available amount`
         }
         if (leftInputBN.isZero() && rightInputBN.isZero()) {
             error =

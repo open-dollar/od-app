@@ -240,7 +240,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                             />
                         </InputBlock>
                         <InputBlock>
-                            <SideLabel>{isDeposit ? `Borrow HAI` : 'Repay HAI'}</SideLabel>
+                            <SideLabel>{isDeposit ? `Borrow OD` : 'Repay OD'}</SideLabel>
                             <TokenInput
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_right`}
                                 token={
@@ -251,13 +251,13 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow HAI: ${formatNumber(availableHai, 2)} ${tokensData.HAI.symbol}`
+                                        ? `Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI.symbol}`
                                         : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
                                     isDeposit
                                         ? `~$${haiBalanceUSD}`
-                                        : `HAI Owed: ${formatNumber(availableHai, 4, true)}`
+                                        : `OD Owed: ${formatNumber(availableHai, 4, true)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}
@@ -275,7 +275,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                             unlockState === ApprovalState.PENDING || unlockState === ApprovalState.NOT_APPROVED ? (
                                 <Button
                                     disabled={!isValid || unlockState === ApprovalState.PENDING}
-                                    text={unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Unlock HAI'}
+                                    text={unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Unlock OD'}
                                     onClick={approveUnlock}
                                 />
                             ) : (

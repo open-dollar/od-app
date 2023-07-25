@@ -123,10 +123,6 @@ const auctionModel: AuctionModel = {
         } else if (type === 'COLLATERAL') {
             const collateralAuctionsFetched = await geb.auctions.getCollateralAuctions(0, tokenSymbol || 'WETH')
 
-            // temporary mocked values
-            console.log('searching for', tokenSymbol)
-            console.log('collateralAuctionsFetched', collateralAuctionsFetched)
-
             const collateralAuctions = collateralAuctionsFetched.auctions.map((auction) => {
                 return {
                     ...auction,

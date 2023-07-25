@@ -69,7 +69,7 @@ const Splash = () => {
             <div className="lg:grid lg:grid-cols-12 max-w-7xl mx-auto mt-16">
                 <div className="col-span-6  flex flex-col items-center justify-center">
                     <h1 className="text-black max-w-md md:max-w-xl mx-6 font-poppins  text-2xl md:text-3xl text-center">
-                        Borrow HAI against ETH, Liquid Staked ETH, and OP
+                        Borrow OD against ETH, Liquid Staked ETH, and OP
                     </h1>
                 </div>
                 <div className="col-span-6 flex flex-row items-center justify-center space-x-20 md:space-x-36 mt-16 lg:mt-0">
@@ -127,7 +127,7 @@ const Splash = () => {
                 <div className="lg:grid lg:grid-cols-12 ">
                     <div className="col-span-12 lg:col-span-6  flex flex-col items-center justify-center ">
                         <h1 className="text-black max-w-md md:max-w-xl mx-6 font-poppins  text-2xl md:text-3xl text-center">
-                            A community of KITE token holders govern what collateral can be used to mint HAI
+                            A community of KITE token holders govern what collateral can be used to mint OD
                         </h1>
                     </div>
                     <div className="col-span-12 lg:col-span-6  flex flex-col items-center  order-first mt-16 lg:mt-0">

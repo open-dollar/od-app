@@ -11,7 +11,7 @@ const darkTheme: Theme = {
         background: '#001828',
         overlay: 'rgba(0, 0, 0, 0.8)',
         greenish: '#2AC384',
-        blueish: '#41C1D0',
+        blueish: '#1499DA',
         border: '#08223E',
         yellowish: '#D9960A',
         foreground: '#05192e',

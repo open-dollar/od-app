@@ -8,7 +8,7 @@ const darkTheme: Theme = {
         customSecondary: '#DADADA',
         gradient: 'linear-gradient(225deg, #78D8FF 0%, #4CE096 100%)',
         neutral: '#ffffff',
-        background: '#040C20',
+        background: '#001828',
         overlay: 'rgba(0, 0, 0, 0.8)',
         greenish: '#2AC384',
         blueish: '#41C1D0',

@@ -98,7 +98,6 @@ const Container = styled.div`
 const SafeBlocks = styled.div`
     padding: 15px;
     border-radius: 15px;
-    background: ${(props) => props.theme.colors.colorSecondary};
 `
 
 const Title = styled.div`

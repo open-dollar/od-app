@@ -9,7 +9,7 @@ const Brand = ({ height }: Props) => {
     return (
         <Container>
             <a href={'/'}>
-                <img src={Logo} alt="HAI" height={'25px'} width={'25px'} />
+                <img src={Logo} alt="OD" height={'25px'} width={'25px'} />
             </a>
         </Container>
     )

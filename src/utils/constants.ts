@@ -26,7 +26,7 @@ export enum Network {
 
 export const ETH_NETWORK = Network.OPTIMISM_GOERLI
 
-export const COIN_TICKER = 'HAI'
+export const COIN_TICKER = 'OD'
 
 export const COLLATERAL_TYPE_ID = 'ETH-A'
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -159,7 +159,7 @@ export const INITIAL_INCENTIVE_STATE = [
         ethStake: '',
         haiStake: '',
         myRewardRate: '',
-        reserveHAI: '',
+        reserveOD: '',
         reserveETH: '',
         token0: '',
         token0Price: '',

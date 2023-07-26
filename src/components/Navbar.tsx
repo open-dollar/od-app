@@ -51,7 +51,7 @@ const Navbar = () => {
                 },
             })
         } catch (error) {
-            console.log('Error adding HAI to the wallet:', error)
+            console.log('Error adding OD to the wallet:', error)
         }
     }
 
@@ -118,11 +118,11 @@ const Navbar = () => {
                             Claim test tokens 🪂
                         </ClaimButton>
                     )}
-                    {/* Button to add HAI to the wallet */}
+                    {/* Button to add OD to the wallet */}
                     <HaiButton onClick={handleAddHAI}>
-                        <Icon src={TOKEN_LOGOS.HAI} width={'24px'} height={'24px'} />
+                        <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                         {haiBalance + ' '}
-                        HAI
+                        OD
                         <AddIcon src={addIcon} width={'18px'} height={'18px'} />
                     </HaiButton>
 

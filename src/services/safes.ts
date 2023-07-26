@@ -20,7 +20,7 @@ export const fetchUserSafes = async (config: IFetchSafesPayload) => {
     const userSafes = formatUserSafe(safesResponse.safes, liquidationData, config.tokensData)
     return {
         userSafes,
-        availableHAI:
+        availableOD:
             safesResponse.erc20Balances && safesResponse.erc20Balances.length > 0
                 ? safesResponse.erc20Balances[0].balance
                 : '0',

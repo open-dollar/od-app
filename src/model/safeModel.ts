@@ -22,7 +22,7 @@ export interface SafeModel {
     targetedCRatio: number
     totalEth: string
     isMaxWithdraw: boolean
-    totalHAI: string
+    totalOD: string
     amount: string
     isES: boolean
     isUniSwapPoolChecked: boolean
@@ -45,7 +45,7 @@ export interface SafeModel {
     setSingleSafe: Action<SafeModel, ISafe | null>
     setOperation: Action<SafeModel, number>
     setTotalEth: Action<SafeModel, string>
-    setTotalHAI: Action<SafeModel, string>
+    setTotalOD: Action<SafeModel, string>
     setIsES: Action<SafeModel, boolean>
     setLiquidationData: Action<SafeModel, ILiquidationData>
     setSafeData: Action<SafeModel, ISafeData>
@@ -67,7 +67,7 @@ const safeModel: SafeModel = {
     targetedCRatio: 0,
     singleSafe: null,
     totalEth: '0.00',
-    totalHAI: '0.00',
+    totalOD: '0.00',
     isSuccessfulTx: true,
     isES: true,
     isUniSwapPoolChecked: true,
@@ -181,10 +181,10 @@ const safeModel: SafeModel = {
             }
             actions.setLiquidationData(fetched.liquidationData)
             const chainId = NETWORK_ID
-            if (fetched.availableHAI && chainId) {
+            if (fetched.availableOD && chainId) {
                 storeActions.connectWalletModel.updateHaiBalance({
                     chainId,
-                    balance: fetched.availableHAI,
+                    balance: fetched.availableOD,
                 })
             }
             await timeout(200)
@@ -207,8 +207,8 @@ const safeModel: SafeModel = {
     setTotalEth: action((state, payload) => {
         state.totalEth = payload
     }),
-    setTotalHAI: action((state, payload) => {
-        state.totalHAI = payload
+    setTotalOD: action((state, payload) => {
+        state.totalOD = payload
     }),
     setIsES: action((state, payload) => {
         state.isES = payload

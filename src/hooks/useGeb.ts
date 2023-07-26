@@ -7,7 +7,7 @@ import { formatNumber } from '~/utils/helper'
 import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 
-type TokenType = 'ETH' | 'HAI' | 'WETH'
+type TokenType = 'ETH' | 'OD' | 'WETH'
 
 // connect to @hai-on-op/sdk
 

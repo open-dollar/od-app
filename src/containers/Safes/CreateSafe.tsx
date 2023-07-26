@@ -62,7 +62,7 @@ const CreateSafe = ({
     const selectedCollateral = tokensData && tokensData[selectedItem]
     const selectedCollateralBalance = ethers.utils.formatEther(tokensFetchedData[selectedItem].balanceE18)
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
-    const haiBalanceUSD = useTokenBalanceInUSD('HAI', rightInput ? rightInput : availableHai)
+    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const selectedTokenBalance = formatNumber(selectedCollateralBalance || '0', 2)
 
@@ -217,7 +217,7 @@ const CreateSafe = ({
                                 </DropDownContainer>
 
                                 <Inputs>
-                                    <SideLabel>{`Deposit ${selectedItem} and Borrow HAI`}</SideLabel>
+                                    <SideLabel>{`Deposit ${selectedItem} and Borrow OD`}</SideLabel>
 
                                     <TokenInput
                                         token={
@@ -245,7 +245,7 @@ const CreateSafe = ({
                                                 name: tokensData.HAI.symbol,
                                             }
                                         }
-                                        label={`Borrow HAI: ${formatNumber(availableHai, 2)} ${tokensData.HAI?.symbol}`}
+                                        label={`Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI?.symbol}`}
                                         rightLabel={`~$${haiBalanceUSD}`}
                                         onChange={onRightInput}
                                         value={rightInput}
@@ -291,7 +291,7 @@ const CreateSafe = ({
                     <Flex className="hasBtn">
                         <Note data-test-id="debt_floor_note">
                             <span>Note:</span>
-                            {` The minimum amount to mint per safe is ${debtFloor} HAI`}
+                            {` The minimum amount to mint per safe is ${debtFloor} OD`}
                         </Note>
                         {approvalState === ApprovalState.APPROVED ? (
                             <Button onClick={handleSubmit} disabled={!isValid}>

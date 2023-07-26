@@ -35,7 +35,7 @@ const Splash = () => {
                     </div>
                     <div className="lg:max-w-split  w-full h-full flex flex-col items-center justify-center">
                         <div>
-                            <h1 className="text-egg font-semibold font-poppins text-7xl">GET HAI ON</h1>
+                            <h1 className="text-egg font-semibold font-poppins text-7xl">GET OD ON</h1>
                             <h1 className="text-black font-normal mt-10 text-6xl">{title}</h1>
                             <button
                                 type="button"
@@ -62,14 +62,14 @@ const Splash = () => {
             <div className="bg-egg">
                 <div className="max-w-7xl mx-auto flex flex-col items-center ">
                     <h1 className="text-white max-w-3xl py-36 font-normal text-center  text-3xl md:text-4xl lg:text-5xl">
-                        HAI is a multi-collateral controlled-peg stable asset that puts decentralization first
+                        OD is a multi-collateral controlled-peg stable asset that puts decentralization first
                     </h1>
                 </div>
             </div>
             <div className="lg:grid lg:grid-cols-12 max-w-7xl mx-auto mt-16">
                 <div className="col-span-6  flex flex-col items-center justify-center">
                     <h1 className="text-black max-w-md md:max-w-xl mx-6 font-poppins  text-2xl md:text-3xl text-center">
-                        Borrow HAI against ETH, Liquid Staked ETH, and OP
+                        Borrow OD against ETH, Liquid Staked ETH, and OP
                     </h1>
                 </div>
                 <div className="col-span-6 flex flex-row items-center justify-center space-x-20 md:space-x-36 mt-16 lg:mt-0">
@@ -127,7 +127,7 @@ const Splash = () => {
                 <div className="lg:grid lg:grid-cols-12 ">
                     <div className="col-span-12 lg:col-span-6  flex flex-col items-center justify-center ">
                         <h1 className="text-black max-w-md md:max-w-xl mx-6 font-poppins  text-2xl md:text-3xl text-center">
-                            A community of KITE token holders govern what collateral can be used to mint HAI
+                            A community of KITE token holders govern what collateral can be used to mint OD
                         </h1>
                     </div>
                     <div className="col-span-12 lg:col-span-6  flex flex-col items-center  order-first mt-16 lg:mt-0">
@@ -145,14 +145,14 @@ const Splash = () => {
                         <div className="h-10 w-10 bg-egg rounded-full"></div>
                         <h3 className="text-black font-poppins font-medium text-xl mt-2">Pre-Agreed Upon Exit Rates</h3>
                         <p className="text-gray-500 font-poppins font-normal text-base mt-3">
-                            The Anti Bank-Run stable. HAI was designed to withstand the worst of market conditions.
+                            The Anti Bank-Run stable. OD was designed to withstand the worst of market conditions.
                         </p>
                     </div>
                     <div className="flex flex-col border border-sky rounded-2xl p-8 max-w-xl">
                         <div className="h-10 w-10 bg-egg rounded-full"></div>
                         <h3 className="text-black font-poppins font-medium text-xl mt-2">Controlled-Peg Stability</h3>
                         <p className="text-gray-500 font-poppins font-normal text-base mt-3">
-                            Let’s face it. People suck. The interest rate for HAI loans is set automagically by a PID
+                            Let’s face it. People suck. The interest rate for OD loans is set automagically by a PID
                             controller.
                         </p>
                     </div>
@@ -160,7 +160,7 @@ const Splash = () => {
                         <div className="h-10 w-10 bg-egg rounded-full"></div>
                         <h3 className="text-black font-poppins font-medium text-xl mt-2">Decentralization First</h3>
                         <p className="text-gray-500 font-poppins font-normal text-base mt-3">
-                            HAI is DAO run from day 1. Governance will determine what collateral is added.
+                            OD is DAO run from day 1. Governance will determine what collateral is added.
                         </p>
                     </div>
                 </div>

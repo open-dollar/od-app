@@ -34,7 +34,7 @@ const SafeStats = ({
     const collateral = formatNumber(singleSafe?.collateral || '0')
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
-    const totalDebtInUSD = useTokenBalanceInUSD('HAI', totalDebt as string)
+    const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebt as string)
 
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(
@@ -140,15 +140,15 @@ const SafeStats = ({
                         </Main>
 
                         <Main className="mid">
-                            <MainLabel>HAI Debt</MainLabel>
+                            <MainLabel>OD Debt</MainLabel>
                             <MainValue>
-                                {totalDebt} <span>HAI</span>
+                                {totalDebt} <span>OD</span>
                             </MainValue>
                             <MainChange>
                                 {' '}
                                 {modified ? (
                                     <>
-                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} HAI</span>
+                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
                                     </>
                                 ) : (
                                     `$${totalDebtInUSD}`
@@ -208,7 +208,7 @@ const SafeStats = ({
                             <InfoIcon data-tip={t('hai_red_price_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>HAI Redemption Price</SideTitle>
+                            <SideTitle>OD Redemption Price</SideTitle>
                             <SideValue>{haiPrice}</SideValue>
                         </Side>
 

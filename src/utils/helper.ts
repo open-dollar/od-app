@@ -294,10 +294,10 @@ export const returnTotalDebtPlusInterest = (
     const safetyPriceRay = BigNumber.from(BigNumber.from(toFixedString(safetyPrice, 'RAY')))
     const collateralBN = BigNumber.from(toFixedString(collateral, 'WAD'))
     const accumulatedRateBN = BigNumber.from(toFixedString(accumulatedRate, 'RAY'))
-    const owedHAI = collateralBN.mul(safetyPriceRay).mul(accumulatedRateBN).div(gebUtils.RAY).div(gebUtils.RAY)
+    const owedOD = collateralBN.mul(safetyPriceRay).mul(accumulatedRateBN).div(gebUtils.RAY).div(gebUtils.RAY)
 
-    if (!beautify) return owedHAI
-    return formatNumber(gebUtils.wadToFixed(owedHAI).toString()).toString()
+    if (!beautify) return owedOD
+    return formatNumber(gebUtils.wadToFixed(owedOD).toString()).toString()
 }
 
 export const newTransactionsFirst = (a: ITransaction, b: ITransaction) => {

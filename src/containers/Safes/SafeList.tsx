@@ -64,10 +64,6 @@ const SafeList = ({ address }: { address?: string }) => {
                     </Header>
 
                     <SafeBlocks>
-                        <Header className="safesList">
-                            <Col>Safes({safeState.list.length})</Col>
-                            <Col>Risk</Col>
-                        </Header>
                         {safes.map((safe: ISafe) => (
                             <>{safe.collateralName && <SafeBlock className="safeBlock" key={safe.id} {...safe} />}</>
                         ))}
@@ -96,8 +92,7 @@ const Container = styled.div`
     }
 `
 const SafeBlocks = styled.div`
-    padding: 15px;
-    border-radius: 15px;
+    border-radius: 8px;
 `
 
 const Title = styled.div`
@@ -133,7 +128,7 @@ const BtnInner = styled.div`
 const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 9px;
     justify-content: flex-end;
     span {
         margin-left: 10px;

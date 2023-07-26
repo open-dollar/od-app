@@ -33,7 +33,7 @@ const darkTheme: Theme = {
         dimmedColor: '#ffffff',
         dimmedBackground: '#A4ABB7',
         dimmedBorder: '#878787',
-        colorPrimary: '#05284C',
+        colorPrimary: '#002B40',
         colorSecondary: '#031A31',
     },
     font: {

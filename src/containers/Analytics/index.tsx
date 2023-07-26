@@ -6,16 +6,33 @@ import DataCard, { DataCardProps } from './DataCard'
 import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
 import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
+import { formatDataNumber, transformToAnualRate, transformToEightHourlyRate } from '~/utils'
 import useGeb from '~/hooks/useGeb'
-import { formatDataNumber } from '~/utils'
+
+interface AnalyticsStateProps {
+    marketPrice: string
+    redemptionPrice: string
+    anualRate: string
+    eightRate: string
+    pRate: string
+    iRate: string
+    colRows: string[][]
+}
 
 const Analytics = () => {
     const geb = useGeb()
-    const [marketPrice, setMarketPrice] = useState('')
-    const [redemptionPrice, setRedemptionPrice] = useState('')
-    const [colRows, setColRows] = useState<string[][]>([])
+    const [state, setState] = useState<AnalyticsStateProps>({
+        marketPrice: '',
+        redemptionPrice: '',
+        anualRate: '',
+        eightRate: '',
+        pRate: '',
+        iRate: '',
+        colRows: [],
+    })
 
-    // temporary collaterals data
+    const { marketPrice, redemptionPrice, anualRate, eightRate, pRate, iRate, colRows } = state
+
     const colData: TableProps = {
         title: 'Collaterals',
         colums: ['Collateral', 'OSM Price', 'Next OSM Price', 'Total Debt' /*  'Total Locked', 'Total Locked ($)' */],
@@ -39,32 +56,45 @@ const Analytics = () => {
         rows: contracts,
     }
 
-    // temporary
     const marketPriceData: DataCardProps = {
         image: 'HAI',
         title: 'Market Price',
         value: marketPrice,
-        priceInUsd: true,
         description:
-            `Time-weighted average HAI market price derived from UniV3 HAI/WETH pool and Chainlink WETH/USD feed.`,
+            'Time-weighted average HAI market price derived from UniV3 HAI/WETH pool and Chainlink WETH/USD feed.',
     }
     const redemptionPriceData: DataCardProps = {
         image: 'HAI',
         title: 'Redemption Price',
         value: redemptionPrice,
-        priceInUsd: true,
         description:
-            `HAI's "moving peg". It's the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price.`,
+            'HAI\'s "moving peg". It\'s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price.',
     }
-    const data = [marketPriceData, redemptionPriceData]
+    const anualRedemptionRate: DataCardProps = {
+        title: 'Anual Redemption Rate',
+        value: anualRate,
+        // description: 'lorem ipsum',
+        children: (
+            <RateContainer>
+                <p>
+                    <BoldText>pRate:</BoldText> {pRate}
+                </p>
+                <p>
+                    <BoldText>iRate:</BoldText> {iRate}
+                </p>
+            </RateContainer>
+        ),
+    }
+    const eightHourlyRedemptionRate: DataCardProps = {
+        title: '8-Hourly Redemption Rate',
+        value: eightRate,
+        // description: 'lorem ipsum',
+    }
+    const data = [marketPriceData, redemptionPriceData, anualRedemptionRate, eightHourlyRedemptionRate]
 
     useEffect(() => {
         if (geb) {
             fetchAnalyticsData(geb).then((result) => {
-                // TODO: check this
-                setMarketPrice(formatDataNumber(result.marketPrice, 18, 2, true))
-                setRedemptionPrice(formatDataNumber(result.redemptionPrice, 27, 2, true))
-
                 const colRows = Object.fromEntries(
                     Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [
                         key,
@@ -73,13 +103,22 @@ const Analytics = () => {
                             formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
                             formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
                             formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
-                            // (100 + index).toString(), // Amount locked
+                            // formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
                             // (100 + index).toString(), // Amount locked in USD
                         ],
                     ])
                 )
 
-                setColRows(Object.values(colRows) as string[][])
+                setState({
+                    ...state,
+                    marketPrice: formatDataNumber(result.marketPrice, 18, 2, true),
+                    redemptionPrice: formatDataNumber(result.redemptionPrice, 27, 2, true),
+                    anualRate: transformToAnualRate(result.redemptionRate, 27),
+                    eightRate: transformToEightHourlyRate(result.redemptionRate, 27),
+                    pRate: transformToAnualRate(result.redemptionRatePTerm, 27),
+                    iRate: transformToAnualRate(result.redemptionRateITerm, 27),
+                    colRows: Object.values(colRows) as string[][],
+                })
             })
         }
     }, [geb])
@@ -100,7 +139,7 @@ const Analytics = () => {
                         title={val.title}
                         value={val.value}
                         description={val.description}
-                        priceInUsd={val?.priceInUsd}
+                        children={val.children}
                     />
                 ))}
                 <ReactTooltip multiline type="light" data-effect="solid" />
@@ -146,4 +185,13 @@ const Content = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 60px;
+`
+
+// Rate styles
+const RateContainer = styled.div`
+    margin-top: 10px;
+`
+
+const BoldText = styled.span`
+    font-weight: 600;
 `

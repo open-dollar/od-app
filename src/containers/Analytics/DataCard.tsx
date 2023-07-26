@@ -7,25 +7,24 @@ export interface DataCardProps {
     image?: string
     title: string
     value: string
-    description: string
-    priceInUsd?: boolean
+    description?: string
+    children?: React.ReactChildren | React.ReactChild
 }
 
-const DataCard = ({ title, image, value, description, priceInUsd }: DataCardProps) => {
+const DataCard = ({ title, image, value, description, children }: DataCardProps) => {
     return (
         <Block>
-            <InfoIcon data-tip={description}>
-                <Info size="20" />
-            </InfoIcon>
-            {image && (
-                <>
-                    <img src={TOKEN_LOGOS[image]} alt={image} width="50px" height="50px" />
-                    <DataTitle>{title}</DataTitle>
-                </>
+            {description && (
+                <InfoIcon data-tip={description}>
+                    <Info size="20" />
+                </InfoIcon>
             )}
 
-            {!image && <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1>}
+            {image && <img src={TOKEN_LOGOS[image]} alt={image} width="50px" height="50px" />}
+
+            <DataTitle>{title}</DataTitle>
             <DataValue>{value}</DataValue>
+            {children}
         </Block>
     )
 }
@@ -42,11 +41,16 @@ const Block = styled.div`
     max-width: calc(100% / 2 - 50px);
     min-width: 280px;
     width: 100%;
-    height: 220px;
+    min-height: 220px;
+    height: 100%;
     margin: 10px;
     flex-wrap: wrap;
     position: relative;
     padding: 36px 0px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        max-width: 100%;
+    `}
 `
 
 const InfoIcon = styled.div`
@@ -72,6 +76,6 @@ const DataTitle = styled.h2`
 `
 
 const DataValue = styled.h2`
-    font-size: ${(props) => props.theme.font.extraLarge};
+    font-size: 25px;
     font-weight: 600;
 `

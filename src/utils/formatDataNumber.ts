@@ -21,7 +21,7 @@ export function formatDataNumber(
 
     if (decimals !== 0) res = Number.parseFloat(utils.formatUnits(input, decimals))
 
-    if (res < 0.01) return `${currency ? '$' : ''}${formatNumber(res.toString(), 6)}`
+    if (res < 0.01) return `${currency ? '$' : ''}${formatNumber(res.toString(), formatDecimal)}`
 
     return new Intl.NumberFormat('en-US', {
         maximumFractionDigits: formatDecimal,

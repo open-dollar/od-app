@@ -33,15 +33,6 @@ const SafeBlock = ({ ...props }) => {
                                 <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
                             </SafeData>
                         </SafeInfo>
-
-                        <SafeState
-                            className={
-                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
-                            }
-                        >
-                            <Circle />
-                            <span>{returnState(props.riskState) || 'No'}</span> {t('risk')}
-                        </SafeState>
                     </BlockHeader>
                     <Block>
                         <Item>
@@ -59,6 +50,19 @@ const SafeBlock = ({ ...props }) => {
                         <Item>
                             <Label>{'Liquidation Price'}</Label>
                             <Value>${props.liquidationPrice}</Value>
+                        </Item>
+                        <Item
+                            className={
+                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
+                            }
+                        >
+                            <Label>{'Risk'}</Label>
+                            <Wrapper>
+                                <Circle />
+                                <div>
+                                    {returnState(props.riskState) || 'No'} {t('risk')}
+                                </div>
+                            </Wrapper>
                         </Item>
                     </Block>
                 </BlockContainer>
@@ -90,6 +94,15 @@ const BlockContainer = styled.div`
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
+`
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #DADADA;
+    font-size: 14px;
+    font-weight: 400;
 `
 
 const SafeInfo = styled.div`
@@ -167,7 +180,7 @@ const SafeState = styled.div`
 const Block = styled.div`
     display: flex;
     position: absolute;
-    right: 130px;
+    right: 16px;
     top: 13px;
     @media (max-width: 767px) {
         position: static;
@@ -180,8 +193,8 @@ const Block = styled.div`
 `
 
 const Item = styled.div`
-    margin: 0 10px;
-    width: 105px;
+    margin: 0 12px;
+    text-align: end;
     @media (max-width: 767px) {
         display: flex;
         width: auto;

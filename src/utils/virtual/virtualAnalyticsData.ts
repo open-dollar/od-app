@@ -5,8 +5,10 @@ import VirtualAnalyticsData from '~/artifacts/contracts/VirtualAnalyticsData.sol
 interface TokenAnalyticsData {
     [key: string]: {
         debtAmount: BigNumber
+        lockedAmount: BigNumber
         currentPrice: BigNumber
         nextPrice: BigNumber
+        stabilityFee: BigNumber
     }
 }
 
@@ -14,6 +16,8 @@ export interface AnalyticsData {
     marketPrice: string
     redemptionPrice: string
     redemptionRate: string
+    redemptionRatePTerm: string
+    redemptionRateITerm: string
     tokenAnalyticsData: TokenAnalyticsData
 }
 
@@ -24,8 +28,14 @@ export async function fetchAnalyticsData(geb: Geb): Promise<AnalyticsData> {
         .filter((address) => address !== undefined && address !== '' && address)
 
     const inputData = ethers.utils.defaultAbiCoder.encode(
-        ['address', 'address', 'bytes32[]'],
-        [geb.contracts.safeEngine.address, geb.contracts.oracleRelayer.address, tokenList]
+        ['address', 'address', 'address', 'address', 'bytes32[]'],
+        [
+            geb.contracts.safeEngine.address,
+            geb.contracts.oracleRelayer.address,
+            geb.contracts.piCalculator.address,
+            geb.contracts.taxCollector.address,
+            tokenList,
+        ]
     )
 
     // Generate payload from input data
@@ -37,7 +47,19 @@ export async function fetchAnalyticsData(geb: Geb): Promise<AnalyticsData> {
     // Parse the returned value to the struct type in order
     const decoded = ethers.utils.defaultAbiCoder.decode(
         [
-            'tuple(uint256 marketPrice, uint256 redemptionPrice, uint256 redemptionRate, tuple(uint256 debtAmount, uint256 currentPrice, uint256 nextPrice)[] tokenAnalyticsData)',
+            `tuple(
+                uint256 marketPrice, 
+                uint256 redemptionPrice, 
+                uint256 redemptionRate, 
+                uint256 redemptionRatePTerm, 
+                uint256 redemptionRateITerm, 
+                tuple(
+                    uint256 debtAmount, 
+                    uint256 lockedAmount,
+                    uint256 currentPrice, 
+                    uint256 nextPrice,
+                    uint256 stabilityFee
+                    )[] tokenAnalyticsData)`,
         ],
         returnedData
     )[0] as AnalyticsData
@@ -49,8 +71,10 @@ export async function fetchAnalyticsData(geb: Geb): Promise<AnalyticsData> {
                 ...obj,
                 [key]: {
                     debtAmount: decoded?.tokenAnalyticsData[i]?.debtAmount.toString(),
+                    lockedAmount: decoded?.tokenAnalyticsData[i]?.lockedAmount.toString(),
                     currentPrice: decoded?.tokenAnalyticsData[i]?.currentPrice.toString(),
                     nextPrice: decoded?.tokenAnalyticsData[i]?.nextPrice.toString(),
+                    stabilityFee: decoded?.tokenAnalyticsData[i]?.stabilityFee.toString(),
                 },
             }),
             {}
@@ -60,6 +84,8 @@ export async function fetchAnalyticsData(geb: Geb): Promise<AnalyticsData> {
         marketPrice: decoded.marketPrice.toString(),
         redemptionPrice: decoded.redemptionPrice.toString(),
         redemptionRate: decoded.redemptionRate.toString(),
+        redemptionRatePTerm: decoded.redemptionRatePTerm.toString(),
+        redemptionRateITerm: decoded.redemptionRateITerm.toString(),
         tokenAnalyticsData: result,
     }
 

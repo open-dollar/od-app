@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+// TODO: read from sdk before merging
+address constant PID_CONTROLLER = 0xae63F27D618E1C494412775812F07C6052A88426;
+
 interface ISAFEEngine {
   struct SAFEEngineCollateralData {
     uint256 /* WAD */ debtAmount;
@@ -34,27 +37,52 @@ interface IOracleRelayer {
     function cParams(bytes32 _cType) external view returns (OracleRelayerCollateralParams memory _cParams);
 }
 
+interface IPIDController {
+    struct DeviationObservation {
+        uint256 timestamp;
+        int256 proportional;
+        int256 integral;
+    }
+    function deviationObservation() external view returns (DeviationObservation memory __deviationObservation);
+    function getGainAdjustedPIOutput(int256 _proportionalTerm,int256 _integralTerm) external view returns (int256 _piOutput);
+    function getBoundedRedemptionRate(int256 _piOutput) external view returns (uint256 _redemptionRate);
+}
+
+interface ITaxCollector {
+    struct TaxCollectorCollateralData {
+        uint256 nextStabilityFee;
+        uint256 updateTime;
+        uint256 secondaryReceiverAllotedTax; // [wad%]
+    }
+    function cData(bytes32 _cType) external view returns (TaxCollectorCollateralData memory _cData);
+}
+
 contract VirtualAnalyticsData {
     struct AnalyticsData {
         uint256 marketPrice;
         uint256 redemptionPrice;
         uint256 redemptionRate;
+        uint256 redemptionRatePTerm;
+        uint256 redemptionRateITerm;
         TokenAnalyticsData[] tokenData;
     }
 
     struct TokenAnalyticsData {
         uint256 debtAmount;
-        // TODO: add lockedAmount from SAFEEngine when available
-        // uint256 lockedAmount;
+        uint256 lockedAmount;
         uint256 currentPrice;
         uint256 nextPrice;
+        uint256 stabilityFee;
     }
 
     constructor(
         ISAFEEngine _safeEngine,
         IOracleRelayer _oracleRelayer,
+        IPIDController _pidController,
+        ITaxCollector _taxCollector,
         bytes32[] memory cTypes
     ) {
+        _pidController = IPIDController(PID_CONTROLLER); // TODO: rm when sdk is updated
         TokenAnalyticsData[] memory tokenAnalyticsData = new TokenAnalyticsData[](cTypes.length);
         for (uint256 i = 0; i < cTypes.length; i++) {
             bytes32 cType = cTypes[i];
@@ -65,15 +93,23 @@ contract VirtualAnalyticsData {
 
             tokenAnalyticsData[i] = TokenAnalyticsData({
                 debtAmount: _debtAmount,
+                lockedAmount: 0, // TODO: _safeEngine.cData(cType).lockedAmount
                 currentPrice: _currentPrice,
-                nextPrice: _nextPrice
+                nextPrice: _nextPrice,
+                stabilityFee: _taxCollector.cData(cType).nextStabilityFee
             });
         }
+
+        IPIDController.DeviationObservation memory deviationObservation = _pidController.deviationObservation();
+        int256 _pOutput = _pidController.getGainAdjustedPIOutput(deviationObservation.proportional, 0);
+        int256 _iOutput = _pidController.getGainAdjustedPIOutput(0, deviationObservation.integral);
 
         AnalyticsData memory analyticsData = AnalyticsData({
             marketPrice: _oracleRelayer.marketPrice(),
             redemptionPrice: _oracleRelayer.redemptionPrice(),
             redemptionRate: _oracleRelayer.redemptionRate(),
+            redemptionRatePTerm: _pidController.getBoundedRedemptionRate(_pOutput),
+            redemptionRateITerm: _pidController.getBoundedRedemptionRate(_iOutput),
             tokenData: tokenAnalyticsData
         });
 

@@ -30,7 +30,7 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
     return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
 }
 
-// // returns null on errors
+// returns null on errors
 export function useContract<T extends Contract = Contract>(
     addressOrAddressMap: string | { [chainId: number]: string } | undefined,
     ABI: any,

@@ -18,6 +18,7 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import Privacy from './containers/Privacy'
 import CreateSafe from './containers/Safes/CreateSafe'
 import Auctions from './containers/Auctions'
+import Analytics from './containers/Analytics'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -42,6 +43,7 @@ const App = () => {
                                         <Route exact strict component={Splash} path={'/'} />
                                         <Route exact strict component={Privacy} path={'/privacy'} />
                                         <Route exact strict component={Auctions} path={'/auctions'} />
+                                        <Route exact strict component={Analytics} path={'/analytics'} />
                                         <Route exact strict component={CreateSafe} path={'/safes/create'} />
                                         <Route exact strict component={SafeDetails} path={'/safes/:id/deposit'} />
                                         <Route exact strict component={SafeDetails} path={'/safes/:id/withdraw'} />

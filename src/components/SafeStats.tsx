@@ -322,7 +322,6 @@ const MainLabel = styled.div`
 const MainValue = styled.div`
     font-size: 25px;
     color: ${(props) => props.theme.colors.primary};
-    font-family: 'Montserrat', sans-serif;
     margin: 2px 0;
     span {
         font-size: ${(props) => props.theme.font.small};
@@ -395,7 +394,6 @@ const SideTitle = styled.div`
 const SideValue = styled.div`
     margin-left: auto;
     color: ${(props) => props.theme.colors.customSecondary};
-    font-family: 'Montserrat', sans-serif;
 `
 
 const SurplusBlock = styled.div``

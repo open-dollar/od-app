@@ -73,7 +73,7 @@ const SafeDetails = ({ ...props }) => {
 
             {!isLoading && <SafeStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? <ModifySafe isDeposit={isDeposit} isOwner={isOwner} /> : null}
+            {(isDeposit || isWithdraw) && !isLoading ? <ModifySafe vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
         </Container>
     )
 }

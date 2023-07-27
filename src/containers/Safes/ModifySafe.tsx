@@ -10,6 +10,8 @@ import { gnosisSafe } from '~/connectors'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Review from './Review'
+import LinkButton from '~/components/LinkButton'
+
 import {
     handleTransactionError,
     useTokenBalanceInUSD,
@@ -21,7 +23,7 @@ import {
     useSafeInfo,
 } from '~/hooks'
 
-const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boolean }) => {
+const ModifySafe = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
     const { library, account, connector } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
@@ -194,6 +196,22 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
         <>
             {singleSafe && (
                 <Container>
+                    <ButtonsRow>
+                        <LinkButton
+                            id="deposit_borrow"
+                            text={'Deposit & Borrow'}
+                            url={`/safes/${vaultId}/deposit`}
+                            color={isDeposit ? 'blueish' : 'colorPrimary'}
+                            border={isDeposit ? false : true}
+                        />
+                        <LinkButton
+                            id="repay_withdraw"
+                            text={'Repay & Withdraw'}
+                            url={`/safes/${vaultId}/withdraw`}
+                            color={!isDeposit ? 'blueish' : 'colorPrimary'}
+                            border={!isDeposit ? false : true}
+                        />
+                    </ButtonsRow>
                     <Modal
                         isModalOpen={showPreview}
                         closeModal={() => setShowPreview(false)}
@@ -255,9 +273,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                                         : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
-                                    isDeposit
-                                        ? `~$${haiBalanceUSD}`
-                                        : `OD Owed: ${formatNumber(availableHai, 4, true)}`
+                                    isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}
@@ -307,6 +323,34 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 }
 
 export default ModifySafe
+
+const ButtonsRow = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    margin-left: -4px;
+
+    a {
+        min-width: 100px;
+        padding: 4px 12px;
+        &:first-child {
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 767px) {
+        min-width: 100%;
+        margin-top: 20px;
+        justify-content: space-between;
+        &:first-child {
+            margin-right: 0;
+        }
+        a {
+            min-width: 49%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+`
 
 const ButtonContainer = styled.div`
     text-align: right;

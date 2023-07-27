@@ -29,24 +29,10 @@ const SafeHeader = ({
                 <LeftSide>
                     <SafeInfo>
                         <UpperInfo>
-                            Safe <span>#{safeId}</span>
+                            Vault <span>#{safeId}</span>
                         </UpperInfo>
                     </SafeInfo>
                 </LeftSide>
-                <RightSide>
-                    <LinkButton
-                        id="deposit_borrow"
-                        text={'Deposit & Borrow'}
-                        url={`/safes/${safeId}/deposit`}
-                        color={isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
-                    <LinkButton
-                        id="repay_withdraw"
-                        text={'Repay & Withdraw'}
-                        url={`/safes/${safeId}/withdraw`}
-                        color={!isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
-                </RightSide>
             </HeaderContainer>
         </Container>
     )
@@ -87,34 +73,6 @@ const LeftSide = styled.div`
     display: flex;
     @media (max-width: 767px) {
         min-width: 100%;
-    }
-`
-
-const RightSide = styled.div`
-    display: flex;
-    align-items: center;
-
-    a {
-        min-width: 100px;
-        padding: 4px 12px;
-        font-size: 13px;
-        font-weight: normal;
-        &:first-child {
-            margin-right: 10px;
-        }
-    }
-    @media (max-width: 767px) {
-        min-width: 100%;
-        margin-top: 20px;
-        justify-content: space-between;
-        &:first-child {
-            margin-right: 0;
-        }
-        a {
-            min-width: 49%;
-            display: flex;
-            justify-content: center;
-        }
     }
 `
 

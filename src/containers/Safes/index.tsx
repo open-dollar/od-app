@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
+import Stats from './Stats'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
@@ -71,11 +72,12 @@ const OnBoarding = ({ ...props }) => {
                             data-test-id="topup-btn"
                             disabled={connectWalletState.isWrongNetwork}
                             onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                        >
+                            >
                             <BtnInner>{t('manage_other_safes')}</BtnInner>
                         </Button>
                     </BtnContainer>
                 ) : null}
+                <Stats/>
                 {safeState.safeCreated ? (
                     <SafeList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (

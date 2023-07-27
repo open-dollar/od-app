@@ -16,6 +16,12 @@ Deposit your crypto assets, generate HAI and lever up your position.
 - Discord: [Reflexer](https://discord.com/invite/83t3xKT)
 - Whitepaper: [Link](https://github.com/reflexer-labs/whitepapers/blob/master/English/hai-english.pdf) -->
 
+## Deployments
+
+http://app.opendollar.com/
+dev branch http://app.optimism-goerli.opendollar.com/
+https://open-dollar-app.vercel.app/
+
 ## Development
 
 ### Install Dependencies

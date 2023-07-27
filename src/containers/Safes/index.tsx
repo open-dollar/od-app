@@ -65,7 +65,6 @@ const OnBoarding = ({ ...props }) => {
 
     return (
         <Container id="app-page">
-            <Stats/>
             <Content>
                 {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
                     <BtnContainer className="top-up">
@@ -73,11 +72,12 @@ const OnBoarding = ({ ...props }) => {
                             data-test-id="topup-btn"
                             disabled={connectWalletState.isWrongNetwork}
                             onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                        >
+                            >
                             <BtnInner>{t('manage_other_safes')}</BtnInner>
                         </Button>
                     </BtnContainer>
                 ) : null}
+                <Stats/>
                 {safeState.safeCreated ? (
                     <SafeList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (

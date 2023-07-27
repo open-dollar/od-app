@@ -275,7 +275,7 @@ const Flex = styled.div`
     }
 `
 const Inner = styled.div`
-    background: ${(props) => props.theme.colors.colorSecondary};
+    background: ${(props) => props.theme.colors.colorPrimary};
     padding: 20px;
     border-radius: 20px;
     height: 100%;

@@ -321,7 +321,7 @@ const Container = styled.div`
     border-radius: 15px;
     padding: 20px;
     margin-top: 20px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    background: ${(props) => props.theme.colors.colorPrimary};
 `
 
 const Inner = styled.div`

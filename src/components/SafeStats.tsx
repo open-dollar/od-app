@@ -44,8 +44,10 @@ const SafeStats = ({
     const collateralRatio =
         Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
-    const liquidationPenalty = '18-20'
-
+    const liquidationPenalty = getRatePercentage(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty,
+        10
+    )
     const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
 
     const returnRedRate = () => {
@@ -179,7 +181,7 @@ const SafeStats = ({
                                         After:{' '}
                                         <span
                                             className={returnState(
-                                                ratioChecker(Number(newCollateralRatio))
+                                                ratioChecker(Number(newCollateralRatio), Number(collateralRatio))
                                             ).toLowerCase()}
                                         >
                                             {newCollateralRatio}%
@@ -364,6 +366,9 @@ const Circle = styled.div`
         background: ${(props) => props.theme.colors.yellowish};
     }
     &.high {
+        background: ${(props) => props.theme.colors.dangerColor};
+    }
+    &.liquidation {
         background: ${(props) => props.theme.colors.dangerColor};
     }
 `

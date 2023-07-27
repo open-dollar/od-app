@@ -11,6 +11,7 @@ export * from './removeDecimals'
 export * from './retry'
 export * from './tokens'
 export * from './validations'
+export * from './wrapEther'
 
 // export gebManager
 export * from './gebManager/index'

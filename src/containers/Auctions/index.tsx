@@ -158,16 +158,16 @@ const Auctions = ({
                         <div>
                             <Box>
                                 <SurplusTitle>System Surplus: </SurplusTitle>
-                                <span>{formatNumber(systemSurplus as string, 2)} HAI</span>
+                                <span>{formatNumber(systemSurplus as string, 2)} OD</span>
                             </Box>
                             <Box>
                                 <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(surplusAmountToSell as string, 2)} HAI</span>
+                                <span>{formatNumber(surplusAmountToSell as string, 2)} OD</span>
                             </Box>
 
                             {!coolDownDone || allowStartSurplusAuction ? null : (
                                 <Box>
-                                    ({formatNumber(String(deltaToStartSurplusAuction), 2)} HAI) to start an auction
+                                    ({formatNumber(String(deltaToStartSurplusAuction), 2)} OD) to start an auction
                                 </Box>
                             )}
 

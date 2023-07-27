@@ -74,7 +74,7 @@ export function useAuctions(type: AuctionEventType, tokenSymbol?: string) {
                 )
 
                 let sellInitialAmount = _.get(auc, 'amount', '0')
-                const startedBy = _.get(auc, 'startedBy', '0x0000000000000000000000000000000000000000')
+                const startedBy = _.get(auc, 'startedBy', '')
                 const isClaimed = _.get(auc, 'isClaimed', false)
                 const buyToken = _.get(auc, 'buyToken', 'PROTOCOL_TOKEN')
                 const sellToken = _.get(auc, 'sellToken', 'COIN')

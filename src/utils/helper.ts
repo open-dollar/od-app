@@ -122,6 +122,7 @@ export const formatUserSafe = (
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
             const currentPrice = collateralLiquidationData[token]?.currentPrice
             const liquidationCRatio = collateralLiquidationData[token]?.liquidationCRatio
+            const safetyCRatio = collateralLiquidationData[token]?.safetyCRatio
             const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
             const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
 
@@ -147,7 +148,7 @@ export const formatUserSafe = (
                 id: s.safeId,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
-                riskState: ratioChecker(Number(collateralRatio)),
+                riskState: ratioChecker(Number(collateralRatio), Number(safetyCRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
                 collateralName: collateralBytes32[s.collateralType],
@@ -166,7 +167,7 @@ export const formatUserSafe = (
                 currentRedemptionRate: currentRedemptionRate || '0',
             } as ISafe
         })
-        .sort((a, b) => Number(a.collateral) - Number(b.collateral) && Number(b.riskState) - Number(a.riskState))
+        .sort((a, b) => Number(b.riskState) - Number(a.riskState) || Number(b.debt) - Number(a.debt))
 }
 
 export const getCollateralRatio = (
@@ -217,12 +218,18 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
-export const ratioChecker = (liquitdationRatio: number) => {
-    if (liquitdationRatio >= 300) {
+export const ratioChecker = (currentLiquitdationRatio: number, minLiquidationRatio: number) => {
+    const minLiquidationRatioPercent = minLiquidationRatio * 100
+    const safestRatio = minLiquidationRatioPercent * 2.2
+    const midSafeRatio = minLiquidationRatioPercent * 1.5
+
+    if (currentLiquitdationRatio < minLiquidationRatioPercent && currentLiquitdationRatio > 0) {
+        return 4
+    } else if (currentLiquitdationRatio >= safestRatio) {
         return 1
-    } else if (liquitdationRatio < 300 && liquitdationRatio >= 200) {
+    } else if (currentLiquitdationRatio < safestRatio && currentLiquitdationRatio >= midSafeRatio) {
         return 2
-    } else if (liquitdationRatio < 200 && liquitdationRatio > 0) {
+    } else if (currentLiquitdationRatio < midSafeRatio && currentLiquitdationRatio > 0) {
         return 3
     } else {
         return 0
@@ -364,6 +371,8 @@ export const returnState = (state: number) => {
             return 'Medium'
         case 3:
             return 'High'
+        case 4:
+            return 'Liquidation'
         default:
             return ''
     }

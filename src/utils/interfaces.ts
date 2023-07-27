@@ -343,48 +343,6 @@ export interface IFetchSafeById extends IFetchSafesPayload {
     safeId: string
 }
 
-export interface IAuctionBidder {
-    bidder: string
-    buyAmount: string
-    createdAt: string
-    sellAmount: string
-    createdAtTransaction: string
-}
-
-export interface IAuction {
-    auctionDeadline: string
-    auctionId: string
-    buyAmount: string
-    buyInitialAmount: string
-    buyToken: string
-    startedBy: string
-    createdAt: string
-    createdAtTransaction: string
-    englishAuctionBids: Array<IAuctionBidder>
-    englishAuctionConfiguration: {
-        bidDuration: string
-        bidIncrease: string
-        totalAuctionLength: string
-        DEBT_amountSoldIncrease: string
-    }
-    biddersList: Array<IAuctionBidder>
-    englishAuctionType: string
-    isClaimed: boolean
-    sellAmount: string
-    sellInitialAmount: string
-    sellToken: string
-    winner: string
-}
-
-export interface IAuctionBid {
-    amount?: string
-    auctionId: string
-    title: string
-    signer: JsonRpcSigner
-    auctionType: 'DEBT' | 'SURPLUS' | 'STAKED_TOKEN'
-    type?: 'DEBT' | 'SURPLUS' | 'STAKED_TOKEN'
-}
-
 export interface IPaging {
     from: number
     to: number

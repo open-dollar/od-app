@@ -103,7 +103,7 @@ const CreateSafe = ({
 
     const onClearAll = useCallback(() => {
         clearAll()
-    }, [onLeftInput, onRightInput])
+    }, [clearAll])
 
     const handleWaitingTitle = () => {
         return 'Modifying Safe'
@@ -131,6 +131,14 @@ const CreateSafe = ({
         })
         connectWalletActions.setIsStepLoading(true)
         safeActions.setIsSafeCreated(true)
+    }
+
+    const wrapEth = () => {
+        popupsActions.setSafeOperationPayload({
+            isOpen: true,
+            type: '',
+            isCreate: false,
+        })
     }
 
     const handleConfirm = async () => {
@@ -219,6 +227,14 @@ const CreateSafe = ({
                                         itemSelected={dropdownSelected}
                                         getSelectedItem={setSelectedItem}
                                     />
+                                    {dropdownSelected.name === 'WETH' && (
+                                        <WrapBox>
+                                            Don't have WETH?{' '}
+                                            <WrapBtn onClick={wrapEth} color="secondary">
+                                                Wrap ETH
+                                            </WrapBtn>
+                                        </WrapBox>
+                                    )}
                                 </DropDownContainer>
 
                                 <Inputs>
@@ -412,6 +428,15 @@ const Btn = styled.button`
         color: ${(props) => props.theme.colors.customSecondary};
         cursor: pointer;
     }
+`
+
+const WrapBtn = styled(Btn)`
+    color: ${(props) => props.theme.colors.blueish};
+`
+
+const WrapBox = styled.div`
+    margin-top: 12px;
+    font-size: 14px;
 `
 
 const Box = styled.div`

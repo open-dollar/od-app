@@ -5,6 +5,8 @@ import { SYSTEMSTATE_QUERY } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
 import { formatNumber, getCollateralRatio } from '../../utils/helpers';
 import { useStats } from '../../hooks/useStats';
+import styled from 'styled-components'
+import GridContainer from '~/components/GridContainer'
 
 // import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
@@ -29,38 +31,39 @@ const Stats = () => {
     }
   }, [data]);
 
-  const Flex = ({ children }) => <div>{children}</div>
   const Text = ({ children }) => <p>{children}</p>
   const SimpleGrid = ({ children }) => <div>{children}</div>
-  const Skeleton = ({ children }) => <div>{children}</div>
+  const Loading = ({ children }) => <div>Loading...</div>
   const ChakraLink = ({ children }) => <div>{children}</div>
 
-  if (!stats) return (<>    Loading stats...
-  </>)
+  const Container = styled.div`
+    max-width: 880px;
+    margin: 80px auto;
+    padding: 0 15px;
+    @media (max-width: 767px) {
+        margin: 50px auto;
+    }
+`
+
+const Inner = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const LabelContainer = styled.div`
+    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    margin: 0 auto 20px auto;
+`
 
   return (
-    <Flex direction='column'>
-      <Flex direction='column' justifyContent='space-between' mb='4rem'>
-        <Flex direction='column' mb='2rem'>
-          <Text fontSize={{ lg: '28px', sm: '18px' }} mb='1rem'>
-            Explore Reflexer Safes
-          </Text>
-          <Text
-            fontSize={{ lg: '16px', sm: '14px' }}
-            maxW='800px'
-            opacity='0.7'
-          >
-            Find current and historical information on collateralised debt
-            positions in the Reflexer protocol.
-          </Text>
-        </Flex>
-
+    <Container >
         <Text fontSize={{ lg: '28px', sm: '18px' }} mb='1rem'>
           Global Stats
         </Text>
         {!loading ? (
-          <SimpleGrid columns='3' gap='5'>
-            <Flex
+          <div className="lg:grid lg:grid-cols-12 ">
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -81,8 +84,8 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 Total Safes
               </Text>
-            </Flex>
-            <Flex direction='column' alignItems='left' justifyContent='center'>
+            </Container>
+            <Container direction='column' alignItems='left' justifyContent='center'>
               <Text
                 fontSize={{ lg: '28px', sm: '18px' }}
                 mb='.5rem'
@@ -95,8 +98,8 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 Active Safes
               </Text>
-            </Flex>
-            <Flex
+            </Container>
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -120,8 +123,8 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 ETH Price
               </Text>
-            </Flex>
-            <Flex
+            </Container>
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -143,8 +146,8 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 ETH Collateral
               </Text>
-            </Flex>
-            <Flex
+            </Container>
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -165,9 +168,9 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 Minted RAI Debt
               </Text>
-            </Flex>
+            </Container>
 
-            <Flex
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -191,9 +194,9 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 Collateral Ratio
               </Text>
-            </Flex>
+            </Container>
 
-            <Flex
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -215,8 +218,8 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 RAI Redemption Price
               </Text>
-            </Flex>
-            <Flex
+            </Container>
+            <Container
               direction='column'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='left'
@@ -238,15 +241,15 @@ const Stats = () => {
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
                 RAI Redemption Rate APY
               </Text>
-            </Flex>
-            <Flex
+            </Container>
+            <Container
               direction='row'
               mr={{ lg: '2rem', sm: 0 }}
               alignItems='center'
               justifyContent='flex-start'
             >
               {/* <FaExternalLinkSquareAlt /> */}
-              <ChakraLink
+              <a
                 textDecoration='underline'
                 wordBreak='break-word'
                 mr='1rem'
@@ -258,15 +261,13 @@ const Stats = () => {
                 ml='10px'
               >
                 Click for more stats..
-              </ChakraLink>
-            </Flex>
-          </SimpleGrid>
+              </a>
+            </Container>
+          </div>
         ) : (
-          <Skeleton w='30%' h='100px' />
+          <Loading w='30%' h='100px' />
         )}
-      </Flex>
-
-    </Flex>
+    </Container>
   );
 }
 export default Stats

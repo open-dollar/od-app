@@ -13,7 +13,6 @@ import { useStoreState } from './store'
 import { Theme } from './utils/interfaces'
 import { darkTheme } from './utils/themes/dark'
 
-import Splash from './containers/Splash'
 import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import Privacy from './containers/Privacy'
 import CreateSafe from './containers/Safes/CreateSafe'
@@ -42,7 +41,7 @@ const App = () => {
                                 <Route component={GoogleTagManager} />
                                 <Web3ReactManager>
                                     <Switch>
-                                        <Route exact strict component={Splash} path={'/'} />
+                                        <Route exact strict component={Safes} path={'/'} />
                                         <Route exact strict component={Privacy} path={'/privacy'} />
                                         <Route exact strict component={CreateSafe} path={'/safes/create'} />
                                         <Route exact strict component={SafeDetails} path={'/safes/:id/deposit'} />

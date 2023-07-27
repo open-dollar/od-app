@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
+import Stats from './Stats'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
@@ -64,6 +65,7 @@ const OnBoarding = ({ ...props }) => {
 
     return (
         <Container id="app-page">
+            <Stats/>
             <Content>
                 {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
                     <BtnContainer className="top-up">

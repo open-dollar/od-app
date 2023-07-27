@@ -101,7 +101,7 @@ const CreateSafe = ({
     }, [onLeftInput, onRightInput])
 
     const handleWaitingTitle = () => {
-        return 'Modifying Safe'
+        return 'Modifying Vault'
     }
 
     const handleSubmit = () => {

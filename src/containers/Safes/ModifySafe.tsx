@@ -118,7 +118,7 @@ const ModifySafe = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwn
     }
 
     const handleWaitingTitle = () => {
-        return 'Modifying Safe'
+        return 'Modifying Vault'
     }
 
     const handleSubmit = () => {

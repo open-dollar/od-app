@@ -36,12 +36,12 @@ describe('App Page - Has Safes', () => {
 
     it('has safes', () => {
         cy.contains('Accounts')
-        cy.contains('New Safe')
+        cy.contains('New Vault')
     })
 
     it('is a safeBlock', () => {
         cy.get('.safeBlock').each(($el: any) => {
-            cy.get($el).contains('Safe #')
+            cy.get($el).contains('Vault #')
             cy.get($el).contains('ETH Deposited')
             cy.get($el).contains('HAI Borrowed')
             cy.get($el).contains('Collateralization Ratio')

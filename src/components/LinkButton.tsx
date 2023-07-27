@@ -28,7 +28,6 @@ const LinkButton = ({
     border,
     ...rest
 }: Props) => {
-    console.log({border})
     return isExternal ? (
         <ExtLink id={id} {...rest} href={url} target="_blank" rel="norefferer" disabled={disabled} color={color}>
             {children}

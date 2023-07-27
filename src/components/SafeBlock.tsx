@@ -30,7 +30,7 @@ const SafeBlock = ({ ...props }) => {
                                 height={'24px'}
                             />
                             <SafeData>
-                                <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
+                                <SafeTitle>{`Vault #${props.id}`}</SafeTitle>
                             </SafeData>
                         </SafeInfo>
                     </BlockHeader>

@@ -171,7 +171,7 @@ const SafeStats = ({
                                     }
                                 />{' '}
                                 {/* TODO: check if this is needed */}
-                                Ratio (min {collateralRatio}%)
+                                Collateral Ratio (min {collateralRatio}%)
                             </MainLabel>
                             <MainValue>{singleSafe?.collateralRatio}%</MainValue>
                             <MainChange>

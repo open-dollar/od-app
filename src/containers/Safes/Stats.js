@@ -55,7 +55,6 @@ const LabelContainer = styled.div`
     max-width: ${(props) => props.theme.global.gridMaxWidth};
     margin: 0 auto 20px auto;
 `
-
   return (
     <Container >
         <Text fontSize={{ lg: '28px', sm: '18px' }} mb='1rem'>
@@ -166,7 +165,7 @@ const LabelContainer = styled.div`
                 }).format(Number(formatNumber(stats.globalDebt, 0, true)))}
               </Text>
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
-                Minted RAI Debt
+                Minted OD Debt
               </Text>
             </Container>
 
@@ -216,7 +215,7 @@ const LabelContainer = styled.div`
                 USD
               </Text>
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
-                RAI Redemption Price
+                OD Redemption Price
               </Text>
             </Container>
             <Container
@@ -239,7 +238,7 @@ const LabelContainer = styled.div`
                 %
               </Text>
               <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight='bold'>
-                RAI Redemption Rate APY
+                OD Redemption Rate APY
               </Text>
             </Container>
             <Container

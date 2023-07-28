@@ -2,16 +2,19 @@ import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
 import { utils as gebUtils } from '@hai-on-op/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS, COIN_TICKER } from './constants'
-import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
-import { injected, NETWORK_ID } from '../connectors'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 
+import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
+import { injected } from '~/connectors'
+
 export const IS_IN_IFRAME = window.parent !== window
 
-export const returnWalletAddress = (walletAddress: string) =>
-    `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+export const returnWalletAddress = (walletAddress: string) => {
+    if (!walletAddress) return 'undefined'
+    return `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+}
 
 export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
 
@@ -55,7 +58,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
         return '0'
     }
     const n = Number(value)
-    if (n < 0) return value
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }
@@ -120,6 +122,7 @@ export const formatUserSafe = (
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
             const currentPrice = collateralLiquidationData[token]?.currentPrice
             const liquidationCRatio = collateralLiquidationData[token]?.liquidationCRatio
+            const safetyCRatio = collateralLiquidationData[token]?.safetyCRatio
             const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
             const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
 
@@ -145,7 +148,7 @@ export const formatUserSafe = (
                 id: s.safeId,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
-                riskState: ratioChecker(Number(collateralRatio)),
+                riskState: ratioChecker(Number(collateralRatio), Number(safetyCRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
                 collateralName: collateralBytes32[s.collateralType],
@@ -164,7 +167,7 @@ export const formatUserSafe = (
                 currentRedemptionRate: currentRedemptionRate || '0',
             } as ISafe
         })
-        .sort((a, b) => Number(a.collateral) - Number(b.collateral) && Number(b.riskState) - Number(a.riskState))
+        .sort((a, b) => Number(b.riskState) - Number(a.riskState) || Number(b.debt) - Number(a.debt))
 }
 
 export const getCollateralRatio = (
@@ -215,12 +218,18 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
-export const ratioChecker = (liquitdationRatio: number) => {
-    if (liquitdationRatio >= 300) {
+export const ratioChecker = (currentLiquitdationRatio: number, minLiquidationRatio: number) => {
+    const minLiquidationRatioPercent = minLiquidationRatio * 100
+    const safestRatio = minLiquidationRatioPercent * 2.2
+    const midSafeRatio = minLiquidationRatioPercent * 1.5
+
+    if (currentLiquitdationRatio < minLiquidationRatioPercent && currentLiquitdationRatio > 0) {
+        return 4
+    } else if (currentLiquitdationRatio >= safestRatio) {
         return 1
-    } else if (liquitdationRatio < 300 && liquitdationRatio >= 200) {
+    } else if (currentLiquitdationRatio < safestRatio && currentLiquitdationRatio >= midSafeRatio) {
         return 2
-    } else if (liquitdationRatio < 200 && liquitdationRatio > 0) {
+    } else if (currentLiquitdationRatio < midSafeRatio && currentLiquitdationRatio > 0) {
         return 3
     } else {
         return 0
@@ -313,7 +322,7 @@ export const returnPercentAmount = (partialValue: string, totalValue: string) =>
 }
 
 export const returnConnectorName = (connector: AbstractConnector | undefined) => {
-    if (!connector || typeof connector === undefined) return null
+    if (!connector || typeof connector === 'undefined') return null
 
     const isMetamask = window?.ethereum?.isMetaMask
     return Object.keys(SUPPORTED_WALLETS)
@@ -362,6 +371,8 @@ export const returnState = (state: number) => {
             return 'Medium'
         case 3:
             return 'High'
+        case 4:
+            return 'Liquidation'
         default:
             return ''
     }

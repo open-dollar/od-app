@@ -1,21 +1,14 @@
-import { toSvg } from 'jdenticon'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { formatNumber, returnState, jdenticonConfig, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const SafeBlock = ({ ...props }) => {
     const { t } = useTranslation()
 
     const collateral = formatNumber(props.collateral)
     const totalDebt = formatNumber(props.totalDebt)
-
-    function createImage() {
-        return {
-            __html: toSvg(props.safeHandler + props.id, 25, jdenticonConfig),
-        }
-    }
 
     return (
         <Container className={props.className}>
@@ -131,7 +124,7 @@ const Circle = styled.div`
 const SafeState = styled.div`
     display: flex;
     align-items: center;
-    width: 100px;
+    width: 120px;
     color: ${(props) => props.theme.colors.customSecondary};
     font-size: ${(props) => props.theme.font.small};
     span {
@@ -154,6 +147,11 @@ const SafeState = styled.div`
             background: ${(props) => props.theme.colors.dangerColor};
         }
     }
+    &.liquidation {
+        ${Circle} {
+            background: ${(props) => props.theme.colors.dangerColor};
+        }
+    }
     ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: ${(props) => props.theme.font.extraSmall};
     text-align:center;
@@ -167,7 +165,7 @@ const SafeState = styled.div`
 const Block = styled.div`
     display: flex;
     position: absolute;
-    right: 130px;
+    right: 160px;
     top: 13px;
     @media (max-width: 767px) {
         position: static;

@@ -44,7 +44,7 @@ const Splash = () => {
                             >
                                 LAUNCH APP
                             </button>
-                            <TestComponent/>
+                            <TestComponent />
                         </div>
                     </div>
                 </div>

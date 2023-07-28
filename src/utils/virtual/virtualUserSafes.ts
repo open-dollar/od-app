@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
-import { Geb, utils } from '@hai-on-op/sdk'
+import { Geb } from '@hai-on-op/sdk'
 import VirtualUserSafes from '~/artifacts/contracts/VirtualUserSafes.sol/VirtualUserSafes.json'
 
 interface SafeData {

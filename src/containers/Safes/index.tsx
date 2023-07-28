@@ -55,7 +55,7 @@ const OnBoarding = ({ ...props }) => {
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, library, safeActions, geb, address])
+    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, library, safeActions])
 
     useEffect(() => {
         if (account && address) {

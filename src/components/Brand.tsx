@@ -9,7 +9,7 @@ const Brand = ({ height }: Props) => {
     return (
         <Container>
             <a href={'/'}>
-                <img src={Logo} alt="OD" height={'25px'} width={'25px'} />
+                <img src={Logo} alt="OD" />
             </a>
         </Container>
     )
@@ -22,7 +22,6 @@ const Container = styled.div`
         color: inherit;
         text-decoration: none;
         img {
-            width: 75px;
             &.small {
                 width: 50px;
                 height: 50px;

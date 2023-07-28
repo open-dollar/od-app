@@ -12,8 +12,7 @@ import Loader from '~/components/Loader'
 // import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
 const Stats = () => {
-    const { data } = useQuery(SYSTEMSTATE_QUERY)
-    const loading = true
+    const { loading, data } = useQuery(SYSTEMSTATE_QUERY)
     const stats = useStats()
 
     useEffect(() => {
@@ -63,147 +62,184 @@ const Stats = () => {
                 Global Stats
             </Text>
             {!loading ? (
-                <div className="lg:grid lg:grid-cols-12 ">
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                <>
+                    <Wrapper>
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'decimal',
-                                minimumFractionDigits: 0,
-                            }).format(Number(stats.safeCount))}
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            Total Safes
-                        </Text>
-                    </Container>
-                    <Container direction="column" alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {new Intl.NumberFormat('en-US', {
+                                    style: 'decimal',
+                                    minimumFractionDigits: 0,
+                                }).format(Number(stats.safeCount))}
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                Total Safes
+                            </Text>
+                        </Container>
+                        <Container direction="column" alignItems="left" justifyContent="center">
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {stats.activeSafesCount}
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                Active Safes
+                            </Text>
+                        </Container>
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            {stats.activeSafesCount}
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            Active Safes
-                        </Text>
-                    </Container>
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                ${' '}
+                                {new Intl.NumberFormat('en-US', {
+                                    style: 'decimal',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                }).format(Number(formatNumber(stats.collateralPrice)))}{' '}
+                                USD
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                ETH Price
+                            </Text>
+                        </Container>
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            ${' '}
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'decimal',
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            }).format(Number(formatNumber(stats.collateralPrice)))}{' '}
-                            USD
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            ETH Price
-                        </Text>
-                    </Container>
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {new Intl.NumberFormat('en-US', {
+                                    style: 'decimal',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                }).format(Number(formatNumber(stats.globalCollateral)))}
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                ETH Collateral
+                            </Text>
+                        </Container>
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'decimal',
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            }).format(Number(formatNumber(stats.globalCollateral)))}
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            ETH Collateral
-                        </Text>
-                    </Container>
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
-                        >
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'decimal',
-                                minimumFractionDigits: 0,
-                            }).format(Number(formatNumber(stats.globalDebt, 0, true)))}
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            Minted OD Debt
-                        </Text>
-                    </Container>
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {new Intl.NumberFormat('en-US', {
+                                    style: 'decimal',
+                                    minimumFractionDigits: 0,
+                                }).format(Number(formatNumber(stats.globalDebt, 0, true)))}
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                Minted OD Debt
+                            </Text>
+                        </Container>
 
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            {getCollateralRatio(
-                                stats.globalCollateral,
-                                stats.globalDebt,
-                                stats.liquidationPrice,
-                                stats.liquidationCRatio
-                            )}
-                            %
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            Collateral Ratio
-                        </Text>
-                    </Container>
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {getCollateralRatio(
+                                    stats.globalCollateral,
+                                    stats.globalDebt,
+                                    stats.liquidationPrice,
+                                    stats.liquidationCRatio
+                                )}
+                                %
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                Collateral Ratio
+                            </Text>
+                        </Container>
 
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            $ {Number(formatNumber(stats.raiRedemptionPrice)).toLocaleString('en-US')} USD
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            OD Redemption Price
-                        </Text>
-                    </Container>
-                    <Container direction="column" mr={{ lg: '2rem', sm: 0 }} alignItems="left" justifyContent="center">
-                        <Text
-                            fontSize={{ lg: '28px', sm: '18px' }}
-                            mb=".5rem"
-                            background="linear-gradient(to right, #41c1d0, #1a6c51)"
-                            backgroundClip="text"
-                            fontWeight="extrabold"
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                $ {Number(formatNumber(stats.raiRedemptionPrice)).toLocaleString('en-US')} USD
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                OD Redemption Price
+                            </Text>
+                        </Container>
+                        <Container
+                            direction="column"
+                            mr={{ lg: '2rem', sm: 0 }}
+                            alignItems="left"
+                            justifyContent="center"
                         >
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'decimal',
-                                minimumFractionDigits: 3,
-                            }).format(Number((stats.raiRedemptionRate - 1) * 100))}{' '}
-                            %
-                        </Text>
-                        <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                            OD Redemption Rate APY
-                        </Text>
-                    </Container>
+                            <Text
+                                fontSize={{ lg: '28px', sm: '18px' }}
+                                mb=".5rem"
+                                background="linear-gradient(to right, #41c1d0, #1a6c51)"
+                                backgroundClip="text"
+                                fontWeight="extrabold"
+                            >
+                                {new Intl.NumberFormat('en-US', {
+                                    style: 'decimal',
+                                    minimumFractionDigits: 3,
+                                }).format(Number((stats.raiRedemptionRate - 1) * 100))}{' '}
+                                %
+                            </Text>
+                            <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
+                                OD Redemption Rate APY
+                            </Text>
+                        </Container>
+                    </Wrapper>
                     <Container
                         direction="row"
                         mr={{ lg: '2rem', sm: 0 }}
@@ -225,7 +261,7 @@ const Stats = () => {
                             Click for more stats..
                         </a>
                     </Container>
-                </div>
+                </>
             ) : (
                 <Loader />
             )}
@@ -233,3 +269,8 @@ const Stats = () => {
     )
 }
 export default Stats
+
+const Wrapper = styled.div`
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+`

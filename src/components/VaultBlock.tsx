@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { formatNumber, returnState, jdenticonConfig, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
-const SafeBlock = ({ ...props }) => {
+const VaultBlock = ({ ...props }) => {
     const { t } = useTranslation()
 
     const collateral = formatNumber(props.collateral)
@@ -19,7 +19,7 @@ const SafeBlock = ({ ...props }) => {
 
     return (
         <Container className={props.className}>
-            <Link to={`/safes/${props.id}/deposit`}>
+            <Link to={`/vaults/${props.id}/deposit`}>
                 <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
@@ -71,7 +71,7 @@ const SafeBlock = ({ ...props }) => {
     )
 }
 
-export default SafeBlock
+export default VaultBlock
 
 const Container = styled.div`
     transition: opacity 0.2s ease;

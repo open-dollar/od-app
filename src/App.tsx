@@ -44,11 +44,11 @@ const App = () => {
                                     <Switch>
                                         <Route exact strict component={Splash} path={'/'} />
                                         <Route exact strict component={Privacy} path={'/privacy'} />
-                                        <Route exact strict component={CreateVault} path={'/safes/create'} />
-                                        <Route exact strict component={VaultDetails} path={'/safes/:id/deposit'} />
-                                        <Route exact strict component={VaultDetails} path={'/safes/:id/withdraw'} />
-                                        <Route exact component={VaultDetails} path={'/safes/:id'} />
-                                        <Route exact strict component={Safes} path={'/safes'} />
+                                        <Route exact strict component={CreateVault} path={'/vaults/create'} />
+                                        <Route exact strict component={VaultDetails} path={'/vaults/:id/deposit'} />
+                                        <Route exact strict component={VaultDetails} path={'/vaults/:id/withdraw'} />
+                                        <Route exact component={VaultDetails} path={'/vaults/:id'} />
+                                        <Route exact strict component={Safes} path={'/vaults'} />
                                         <Route exact strict component={Safes} path={'/:address'} />
                                         <Redirect from="*" to="/" />
                                     </Switch>

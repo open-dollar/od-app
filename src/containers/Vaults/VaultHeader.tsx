@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import LinkButton from '~/components/LinkButton'
 
-const SafeHeader = ({
+const VaultHeader = ({
     safeId,
     isModifying,
     isDeposit,
@@ -17,7 +17,7 @@ const SafeHeader = ({
     const history = useHistory()
 
     const handleBack = useCallback(() => {
-        history.push(`/safes`)
+        history.push(`/vaults`)
     }, [history])
 
     return (
@@ -38,7 +38,7 @@ const SafeHeader = ({
     )
 }
 
-export default SafeHeader
+export default VaultHeader
 
 const Container = styled.div``
 

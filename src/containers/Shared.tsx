@@ -117,7 +117,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 const { pathname } = location
 
                 let address = ''
-                if (pathname && pathname !== '/' && pathname !== '/safes') {
+                if (pathname && pathname !== '/' && pathname !== '/vaults') {
                     const route = pathname.split('/')[1]
                     if (isAddress(route)) {
                         address = route.toLowerCase()

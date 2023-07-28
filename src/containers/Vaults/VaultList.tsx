@@ -5,7 +5,7 @@ import { Plus } from 'react-feather'
 
 import { useStoreActions, useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
-import SafeBlock from '~/components/SafeBlock'
+import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
@@ -52,7 +52,7 @@ const VaultList = ({ address }: { address?: string }) => {
                                 <LinkButton
                                     id="create-safe"
                                     disabled={connectWalletState.isWrongNetwork}
-                                    url={'/safes/create'}
+                                    url={'/vaults/create'}
                                 >
                                     <BtnInner>
                                         <Plus size={18} />
@@ -65,7 +65,7 @@ const VaultList = ({ address }: { address?: string }) => {
 
                     <SafeBlocks>
                         {safes.map((safe: ISafe) => (
-                            <>{safe.collateralName && <SafeBlock className="safeBlock" key={safe.id} {...safe} />}</>
+                            <>{safe.collateralName && <VaultBlock className="safeBlock" key={safe.id} {...safe} />}</>
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>

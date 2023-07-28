@@ -9,7 +9,7 @@ import { useActiveWeb3React, useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
-const SafeStats = ({
+const VaultStats = ({
     isModifying,
     isDeposit,
     isOwner,
@@ -266,7 +266,7 @@ const SafeStats = ({
     )
 }
 
-export default SafeStats
+export default VaultStats
 
 const Flex = styled.div`
     display: flex;

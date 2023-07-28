@@ -28,9 +28,9 @@ const NavLinks = () => {
         <Nav>
             <NavBarLink
                 id="app-link"
-                to="/safes"
+                to="/vaults"
                 onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/safes') ? 'activeLink' : ''}
+                className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
             >
                 <SafeIcon className="opacity fill" /> {t('app')}
             </NavBarLink>

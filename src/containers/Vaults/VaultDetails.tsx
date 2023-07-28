@@ -6,9 +6,9 @@ import { useActiveWeb3React, useIsOwner } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { isNumeric, DEFAULT_SAFE_STATE } from '~/utils'
 import AlertLabel from '~/components/AlertLabel'
-import SafeStats from '~/components/SafeStats'
+import VaultStats from '~/components/VaultStats'
 import ModifyVault from './ModifyVault'
-import SafeHeader from './SafeHeader'
+import VaultHeader from './VaultHeader'
 
 const VaultDetails = ({ ...props }) => {
     const { t } = useTranslation()
@@ -56,7 +56,7 @@ const VaultDetails = ({ ...props }) => {
     useEffect(() => {
         if (!account || !library) return
         if (!isNumeric(safeId)) {
-            props.history.push('/safes')
+            props.history.push('/vaults')
         }
     }, [account, library, safeId])
 
@@ -69,9 +69,9 @@ const VaultDetails = ({ ...props }) => {
                     <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                 </LabelContainer>
             ) : null}
-            <SafeHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+            <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
 
-            {!isLoading && <SafeStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
+            {!isLoading && <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
             {(isDeposit || isWithdraw) && !isLoading ? <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
         </Container>

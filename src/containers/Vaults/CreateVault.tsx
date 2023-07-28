@@ -153,7 +153,7 @@ const CreateVault = ({
                     safeData: safeState.safeData,
                     signer,
                 })
-                history.push('/safes')
+                history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)
             } catch (e) {

@@ -200,14 +200,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         <LinkButton
                             id="deposit_borrow"
                             text={'Deposit & Borrow'}
-                            url={`/safes/${vaultId}/deposit`}
+                            url={`/vaults/${vaultId}/deposit`}
                             color={isDeposit ? 'blueish' : 'colorPrimary'}
                             border={isDeposit ? false : true}
                         />
                         <LinkButton
                             id="repay_withdraw"
                             text={'Repay & Withdraw'}
-                            url={`/safes/${vaultId}/withdraw`}
+                            url={`/vaults/${vaultId}/withdraw`}
                             color={!isDeposit ? 'blueish' : 'colorPrimary'}
                             border={!isDeposit ? false : true}
                         />

@@ -8,6 +8,7 @@ import { useStats } from '../../hooks/useStats'
 import styled from 'styled-components'
 import GridContainer from '~/components/GridContainer'
 import Loader from '~/components/Loader'
+import LinkButton from '~/components/LinkButton'
 
 // import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
@@ -34,28 +35,8 @@ const Stats = () => {
 
     const Text = ({ children }) => <p>{children}</p>
     const SimpleGrid = ({ children }) => <div>{children}</div>
-    const Loading = ({ children }) => <div>Loading...</div>
     const ChakraLink = ({ children }) => <div>{children}</div>
 
-    const Container = styled.div`
-        max-width: 880px;
-        margin: 80px auto;
-        padding: 0 15px;
-        @media (max-width: 767px) {
-            margin: 50px auto;
-        }
-    `
-
-    const Inner = styled.div`
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `
-
-    const LabelContainer = styled.div`
-        max-width: ${(props) => props.theme.global.gridMaxWidth};
-        margin: 0 auto 20px auto;
-    `
     return (
         <Container>
             <Text fontSize={{ lg: '28px', sm: '18px' }} mb="1rem">
@@ -240,27 +221,14 @@ const Stats = () => {
                             </Text>
                         </Container>
                     </Wrapper>
-                    <Container
-                        direction="row"
-                        mr={{ lg: '2rem', sm: 0 }}
-                        alignItems="center"
-                        justifyContent="flex-start"
-                    >
-                        {/* <FaExternalLinkSquareAlt /> */}
-                        <a
-                            textDecoration="underline"
-                            wordBreak="break-word"
-                            mr="1rem"
-                            cursor="pointer"
-                            _hover={{ opacity: 0.7 }}
-                            fontSize={{ lg: '18px', sm: '14px' }}
-                            href="https://stats.reflexer.finance/"
-                            isExternal
-                            ml="10px"
-                        >
-                            Click for more stats..
-                        </a>
-                    </Container>
+                    <LinkWrapper>
+                        <LinkButton
+                            id="stats"
+                            text={'Click for more stats..'}
+                            url={`https://stats.reflexer.finance/`}
+                            color={'blueish'}
+                        />
+                    </LinkWrapper>
                 </>
             ) : (
                 <Loader />
@@ -273,4 +241,29 @@ export default Stats
 const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(8, 1fr);
+`
+
+const LinkWrapper = styled.div`
+  max-width: 200px;
+  margin-left: auto;
+`
+
+const Container = styled.div`
+    max-width: 880px;
+    margin: 80px auto;
+    padding: 0 15px;
+    @media (max-width: 767px) {
+        margin: 50px auto;
+    }
+`
+
+const Inner = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const LabelContainer = styled.div`
+    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    margin: 0 auto 20px auto;
 `

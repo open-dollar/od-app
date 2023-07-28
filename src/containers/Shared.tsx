@@ -262,9 +262,9 @@ const Shared = ({ children, ...rest }: Props) => {
             <LiquidateSafeModal />
             {!isSplash && <WaitingModal />}
             <TopUpModal />
-                <EmptyDiv>
-                    <Navbar />
-                </EmptyDiv>
+            <EmptyDiv>
+                <Navbar />
+            </EmptyDiv>
 
             {SYSTEM_STATUS && SYSTEM_STATUS.toLowerCase() === 'shutdown' ? (
                 <AlertContainer>

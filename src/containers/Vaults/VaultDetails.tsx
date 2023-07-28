@@ -7,10 +7,10 @@ import { useStoreActions, useStoreState } from '~/store'
 import { isNumeric, DEFAULT_SAFE_STATE } from '~/utils'
 import AlertLabel from '~/components/AlertLabel'
 import SafeStats from '~/components/SafeStats'
-import ModifySafe from './ModifySafe'
+import ModifyVault from './ModifyVault'
 import SafeHeader from './SafeHeader'
 
-const SafeDetails = ({ ...props }) => {
+const VaultDetails = ({ ...props }) => {
     const { t } = useTranslation()
     const { account, library } = useActiveWeb3React()
 
@@ -73,12 +73,12 @@ const SafeDetails = ({ ...props }) => {
 
             {!isLoading && <SafeStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? <ModifySafe vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
+            {(isDeposit || isWithdraw) && !isLoading ? <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
         </Container>
     )
 }
 
-export default SafeDetails
+export default VaultDetails
 
 const Container = styled.div`
     max-width: 880px;

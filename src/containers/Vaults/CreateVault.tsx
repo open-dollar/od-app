@@ -25,7 +25,7 @@ import {
     StatsType,
 } from '~/hooks'
 
-const CreateSafe = ({
+const CreateVault = ({
     selectedItem,
     setSelectedItem,
     collaterals,
@@ -291,7 +291,7 @@ const CreateSafe = ({
                     <Flex className="hasBtn">
                         <Note data-test-id="debt_floor_note">
                             <span>Note:</span>
-                            {` The minimum amount to mint per safe is ${debtFloor} OD`}
+                            {` The minimum amount to mint per vault is ${debtFloor} OD`}
                         </Note>
                         {approvalState === ApprovalState.APPROVED ? (
                             <Button onClick={handleSubmit} disabled={!isValid}>
@@ -312,7 +312,7 @@ const CreateSafe = ({
     )
 }
 
-const CreateSafeContainer = () => {
+const CreateVaultContainer = () => {
     const {
         safeModel: {
             liquidationData,
@@ -337,13 +337,13 @@ const CreateSafeContainer = () => {
     return (
         <Container>
             {liquidationData && tokensData && collateral && collateral != '' && tokensFetchedData[selectedItem] && (
-                <CreateSafe selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
+                <CreateVault selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
             )}
         </Container>
     )
 }
 
-export default CreateSafeContainer
+export default CreateVaultContainer
 
 const ReviewContainer = styled.div`
     padding: 20px;

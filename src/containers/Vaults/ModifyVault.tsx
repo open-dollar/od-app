@@ -23,7 +23,7 @@ import {
     useSafeInfo,
 } from '~/hooks'
 
-const ModifySafe = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
+const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
     const { library, account, connector } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
@@ -322,7 +322,7 @@ const ModifySafe = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwn
     )
 }
 
-export default ModifySafe
+export default ModifyVault
 
 const ButtonsRow = styled.div`
     display: flex;

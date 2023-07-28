@@ -227,6 +227,7 @@ const Stats = () => {
                             text={'Click for more stats..'}
                             url={`https://stats.reflexer.finance/`}
                             color={'blueish'}
+                            isExternal
                         />
                     </LinkWrapper>
                 </>

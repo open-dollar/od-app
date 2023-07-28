@@ -70,7 +70,7 @@ const SafeList = ({ address }: { address?: string }) => {
                     </SafeBlocks>
                     <CheckboxContainer>
                         <CheckBox checked={showEmpty} onChange={setShowEmpty} />
-                        <span>Show empty safes</span>
+                        <span>Show empty vaults</span>
                     </CheckboxContainer>
                 </Container>
             )

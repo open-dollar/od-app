@@ -42,7 +42,7 @@ const SafeManager = () => {
             const userSafes: IUserSafeList | undefined = await fetchUserSafesRaw({ address: value, geb, tokensData })
 
             if (!userSafes || (userSafes && !userSafes.safes.length)) {
-                setError('Address has no Safes')
+                setError('Address has no Vaults')
                 return
             }
             popupsActions.setIsWaitingModalOpen(true)

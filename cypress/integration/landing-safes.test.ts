@@ -2,7 +2,7 @@
 
 import { returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
-describe('App Page - Has Safes', () => {
+describe('App Page - Has Vaults', () => {
     beforeEach(() => {
         cy.visit('/')
         cy.wait(5000)
@@ -34,7 +34,7 @@ describe('App Page - Has Safes', () => {
         cy.contains('✓ Accept').click()
     })
 
-    it('has safes', () => {
+    it('has Vaults', () => {
         cy.contains('Accounts')
         cy.contains('New Vault')
     })

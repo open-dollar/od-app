@@ -2,7 +2,7 @@
 
 import { ADDRESS_NO_SAFES_NEVER_USER, returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
-describe('App Page - No Safes', () => {
+describe('App Page - No Vaults', () => {
     beforeEach(() => {
         cy.visit('/', {
             qs: { type: 'no_safes' },

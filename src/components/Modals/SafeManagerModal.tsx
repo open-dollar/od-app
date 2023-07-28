@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useStoreActions, useStoreState } from '../../store'
-import SafeManager from '../SafeManager'
+import VaultManager from '../VaultManager'
 import Modal from './Modal'
 
 const SafeManagerModal = () => {
@@ -24,7 +24,7 @@ const SafeManagerModal = () => {
                 }}
             >
                 <Header>{t('manage_other_safes')}</Header>
-                <SafeManager />
+                <VaultManager />
             </ModalContent>
         </Modal>
     )

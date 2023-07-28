@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import Button from './Button'
 
-const SafeManager = () => {
+const VaultManager = () => {
     const { t } = useTranslation()
     const { account } = useActiveWeb3React()
     const geb = useGeb()
@@ -75,7 +75,7 @@ const SafeManager = () => {
     )
 }
 
-export default SafeManager
+export default VaultManager
 
 const Body = styled.div`
     padding: 20px;

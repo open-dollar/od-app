@@ -10,7 +10,7 @@ import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
 
-const SafeList = ({ address }: { address?: string }) => {
+const VaultList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
 
     const { account } = useActiveWeb3React()
@@ -81,7 +81,7 @@ const SafeList = ({ address }: { address?: string }) => {
     return <>{returnSafeList()}</>
 }
 
-export default SafeList
+export default VaultList
 
 const Container = styled.div`
     max-width: 880px;

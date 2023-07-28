@@ -8,7 +8,7 @@ import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
-import SafeList from './SafeList'
+import VaultList from './VaultList'
 
 const OnBoarding = ({ ...props }) => {
     const { t } = useTranslation()
@@ -77,7 +77,7 @@ const OnBoarding = ({ ...props }) => {
                     </BtnContainer>
                 ) : null}
                 {safeState.safeCreated ? (
-                    <SafeList address={address} />
+                    <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}

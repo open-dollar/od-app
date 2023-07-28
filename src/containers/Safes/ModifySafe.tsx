@@ -255,9 +255,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                                         : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
-                                    isDeposit
-                                        ? `~$${haiBalanceUSD}`
-                                        : `OD Owed: ${formatNumber(availableHai, 4, true)}`
+                                    isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}

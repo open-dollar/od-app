@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import { Geb, utils } from '@hai-on-op/sdk'
-import { ILiquidationResponse, ISafeQuery, IUserSafeList, SystemSate } from '../interfaces'
+import { ILiquidationResponse, IUserSafeList } from '../interfaces'
 import { TokenLiquidationData, fetchLiquidationData } from '../virtual/virtualLiquidationData'
 import { fetchUserSafes } from '../virtual/virtualUserSafes'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
@@ -12,8 +12,6 @@ interface UserListConfig {
     proxy_not?: null
     safeId_not?: null
 }
-
-type SingleSafeConfig = UserListConfig & { safeId: string }
 
 // returns LiquidationData
 const getLiquidationDataRpc = async (

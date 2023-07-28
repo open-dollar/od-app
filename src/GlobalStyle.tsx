@@ -5,43 +5,63 @@ interface Props {
 }
 
 const GlobalStyle = createGlobalStyle`
-        body {
-          color: ${(props) => props.theme.colors.primary};
-          background-color:${(props) => props.theme.colors.background};
-          background-image: url(${require('./assets/boxes.svg').default});
-          background-size: contain;
-          background-position: center 100px;
-          background-repeat: no-repeat;
-          overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 
-.web3modal-modal-lightbox {
-  z-index: 999;
+  body::-webkit-scrollbar {
+      width: 10px;
+      background: transparent;
+  }
 
-  .web3modal-modal-card {
+  body::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+
+  body::-webkit-scrollbar-thumb:active {
+      background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  body {
+    color: ${(props) => props.theme.colors.primary};
+    background-color:${(props) => props.theme.colors.background};
+    background-image: url(${require('./assets/boxes.svg').default});
+    background-size: contain;
+    background-position: center 100px;
+    background-repeat: no-repeat;
+    overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
+
+    .web3modal-modal-lightbox {
+    z-index: 999;
+
+    .web3modal-modal-card {
     display:block;
     max-width:400px;
     .web3modal-provider-container {
-      display:flex;
-      flex-direction:row;
-     justify-content:space-between;
-     align-items:center;
-     padding:16px;
-      
-     .web3modal-provider-name{
-       font-size: 16px;
-       width:auto;
-     }
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px;
 
-     .web3modal-provider-icon{
-       order:2;
-       width:30px;
-       height:30px;
+    .web3modal-provider-name{
+    font-size: 16px;
+    width:auto;
+    }
 
-     }
-      .web3modal-provider-description {
-      display:none;
+    .web3modal-provider-icon{
+    order:2;
+    width:30px;
+    height:30px;
+
     }
+    .web3modal-provider-description {
+    display:none;
     }
+  }
    
   }
 }
@@ -78,7 +98,7 @@ const GlobalStyle = createGlobalStyle`
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
    
   }
-        }
+  }
 `
 
 export const ExternalLinkArrow = css`

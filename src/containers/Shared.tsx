@@ -1,14 +1,18 @@
 import { ReactNode, useEffect, useCallback } from 'react'
+import { getTokenList } from '@hai-on-op/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
+import { ethers, utils } from 'ethers'
 
 import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
 import BlockBodyContainer from '~/components/BlockBodyContainer'
 import ApplicationUpdater from '~/services/ApplicationUpdater'
+import { useActiveWeb3React, useTokenContract } from '~/hooks'
 import TransactionUpdater from '~/services/TransactionUpdater'
+import AuctionsModal from '~/components/Modals/AuctionsModal'
 import TopUpModal from '~/components/Modals/SafeManagerModal'
 import ScreenLoader from '~/components/Modals/ScreenLoader'
 import WaitingModal from '~/components/Modals/WaitingModal'
@@ -19,13 +23,13 @@ import { useStoreState, useStoreActions } from '~/store'
 import ImagePreloader from '~/components/ImagePreloader'
 import ProxyModal from '~/components/Modals/ProxyModal'
 import BalanceUpdater from '~/services/BalanceUpdater'
-import CookieBanner from '~/components/CookieBanner'
+import WethModal from '~/components/Modals/WETHModal'
 import ToastPayload from '~/components/ToastPayload'
+import CookieBanner from '~/components/CookieBanner'
 import WalletModal from '~/components/WalletModal'
 import AlertLabel from '~/components/AlertLabel'
 import usePrevious from '~/hooks/usePrevious'
 import SideMenu from '~/components/SideMenu'
-import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 import Navbar from '~/components/Navbar'
 import useGeb from '~/hooks/useGeb'
@@ -37,7 +41,9 @@ import {
     SYSTEM_STATUS,
     timeout,
     ChainId,
+    ETH_NETWORK,
 } from '~/utils'
+import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 
 interface Props {
     children: ReactNode
@@ -54,8 +60,14 @@ const Shared = ({ children, ...rest }: Props) => {
     const location = useLocation()
     const isSplash = location.pathname === '/'
     const tokensData = geb?.tokenList
+    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).HAI.address)
+    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).KITE.address)
 
-    const { settingsModel: settingsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const {
+        settingsModel: settingsState,
+        connectWalletModel: connectWalletState,
+        auctionModel: { auctionsData },
+    } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -63,6 +75,7 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsModel: popupsActions,
         transactionsModel: transactionsActions,
         safeModel: safeActions,
+        auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
     const toastId = 'networdToastHash'
     const successAccountConnection = 'successAccountConnection'
@@ -80,15 +93,55 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setShowSideMenu(false)
     }
     const forceUpdateTokens = connectWalletState.forceUpdateTokens
+
     useEffect(() => {
         if (account && geb && forceUpdateTokens) {
             connectWalletActions.fetchTokenData({ geb, user: account })
         }
-    }, [account, geb, forceUpdateTokens])
+    }, [account, geb, forceUpdateTokens, connectWalletActions])
+
+    useEffect(() => {
+        const haiBalance = connectWalletState?.tokensFetchedData.HAI?.balanceE18
+        const kiteBalance = connectWalletState?.tokensFetchedData.KITE?.balanceE18
+
+        if (haiBalance && kiteBalance) {
+            setCoinBalances({
+                hai: utils.formatEther(haiBalance),
+                kite: utils.formatEther(kiteBalance),
+            })
+        }
+    }, [connectWalletState, setCoinBalances])
+
+    useEffect(() => {
+        if (account && coinTokenContract && protTokenContract && connectWalletState.proxyAddress) {
+            protTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
+                const formattedAllowance = utils.formatEther(allowance)
+                connectWalletActions.setProtAllowance(formattedAllowance)
+            })
+
+            coinTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
+                const formattedAllowance = utils.formatEther(allowance)
+                connectWalletActions.setCoinAllowance(formattedAllowance)
+            })
+        }
+    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract])
+
+    useEffect(() => {
+        if (auctionsData) {
+            const protInternalBalance = auctionsData.protocolTokenProxyBalance
+            setProtInternalBalance(ethers.utils.formatEther(protInternalBalance))
+
+            // coinTokenSafeBalance has 45 decimals
+            const coinSafeBalance = auctionsData.coinTokenSafeBalance
+
+            // const coinInternalBalance = coinBalance.add(coinSafeBalance)
+            setInternalBalance(ethers.utils.formatUnits(coinSafeBalance, 45))
+        }
+    }, [auctionsData, setInternalBalance, setProtInternalBalance])
 
     useEffect(() => {
         connectWalletActions.setTokensData(tokensData)
-    }, [tokensData])
+    }, [connectWalletActions, tokensData])
 
     useEffect(() => {
         connectWalletActions.fetchFiatPrice()
@@ -201,9 +254,12 @@ const Shared = ({ children, ...rest }: Props) => {
             <BalanceUpdater />
             <TransactionUpdater />
             <LoadingModal />
+            <AuctionsModal />
+            <WethModal />
             <ProxyModal />
             <ConnectedWalletModal />
             <ScreenLoader />
+            <LiquidateSafeModal />
             {!isSplash && <WaitingModal />}
             <TopUpModal />
             {!isSplash && (

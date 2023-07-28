@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
-import { useActiveWeb3React, useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
+import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
@@ -44,8 +44,10 @@ const SafeStats = ({
     const collateralRatio =
         Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
-    const liquidationPenalty = '18-20'
-
+    const liquidationPenalty = getRatePercentage(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty,
+        10
+    )
     const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
 
     const returnRedRate = () => {
@@ -170,7 +172,6 @@ const SafeStats = ({
                                             : 'dimmed'
                                     }
                                 />{' '}
-                                {/* TODO: check if this is needed */}
                                 Ratio (min {collateralRatio}%)
                             </MainLabel>
                             <MainValue>{singleSafe?.collateralRatio}%</MainValue>
@@ -180,7 +181,7 @@ const SafeStats = ({
                                         After:{' '}
                                         <span
                                             className={returnState(
-                                                ratioChecker(Number(newCollateralRatio))
+                                                ratioChecker(Number(newCollateralRatio), Number(collateralRatio))
                                             ).toLowerCase()}
                                         >
                                             {newCollateralRatio}%
@@ -367,6 +368,9 @@ const Circle = styled.div`
     &.high {
         background: ${(props) => props.theme.colors.dangerColor};
     }
+    &.liquidation {
+        background: ${(props) => props.theme.colors.dangerColor};
+    }
 `
 
 const Side = styled.div`
@@ -398,31 +402,31 @@ const SideValue = styled.div`
     font-family: 'Montserrat', sans-serif;
 `
 
-const SurplusBlock = styled.div``
+// const SurplusBlock = styled.div``
 
-const StateInner = styled.div`
-    border: 1px solid ${(props) => props.theme.colors.border};
-    border-radius: 15px;
-    background: #1e3b58;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    margin-top: 20px;
-    button {
-        background: ${(props) => props.theme.colors.greenish};
-        color: ${(props) => props.theme.colors.primary};
-    }
-`
+// const StateInner = styled.div`
+//     border: 1px solid ${(props) => props.theme.colors.border};
+//     border-radius: 15px;
+//     background: #1e3b58;
+//     text-align: center;
+//     padding: 20px;
+//     position: relative;
+//     margin-top: 20px;
+//     button {
+//         background: ${(props) => props.theme.colors.greenish};
+//         color: ${(props) => props.theme.colors.primary};
+//     }
+// `
 
-const Text = styled.div`
-    font-size: ${(props) => props.theme.font.small};
-`
+// const Text = styled.div`
+//     font-size: ${(props) => props.theme.font.small};
+// `
 
-const Inline = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+// const Inline = styled.div`
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+// `
 
 const InfoIcon = styled.div`
     cursor: pointer;

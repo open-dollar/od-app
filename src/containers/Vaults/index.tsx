@@ -72,12 +72,12 @@ const OnBoarding = ({ ...props }) => {
                             data-test-id="topup-btn"
                             disabled={connectWalletState.isWrongNetwork}
                             onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                            >
+                        >
                             <BtnInner>{t('manage_other_safes')}</BtnInner>
                         </Button>
                     </BtnContainer>
                 ) : null}
-                <Stats/>
+                <Stats />
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (

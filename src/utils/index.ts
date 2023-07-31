@@ -1,3 +1,4 @@
+export * from './auctions'
 export * from './blockedAddresses'
 export * from './chains'
 export * from './chunkArray'
@@ -6,9 +7,11 @@ export * from './getLibrary'
 export * from './helper'
 export * from './interfaces'
 export * from './lodash'
+export * from './removeDecimals'
 export * from './retry'
 export * from './tokens'
 export * from './validations'
+export * from './wrapEther'
 
 // export gebManager
 export * from './gebManager/index'

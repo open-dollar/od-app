@@ -1,11 +1,12 @@
 import { action, Action } from 'easy-peasy'
-import { IAlert, IOperation, LoadingPayload, IWaitingPayload, IAuctionOperation } from '../utils/interfaces'
+import { IAlert, IAuctionOperation, IOperation, IWaitingPayload, LoadingPayload } from '../utils/interfaces'
 
 export interface PopupsModel {
     isSettingsModalOpen: boolean
     isConnectModalOpen: boolean
     isConnectedWalletModalOpen: boolean
     isConnectorsWalletOpen: boolean
+    isLiquidateSafeModalOpen: boolean
     showSideMenu: boolean
     isSafeManagerOpen: boolean
     isClaimPopupOpen: boolean
@@ -16,6 +17,7 @@ export interface PopupsModel {
     isScreenModalOpen: boolean
     isVotingModalOpen: boolean
     auctionOperationPayload: IAuctionOperation
+    liquidateSafePayload: { safeId: string } | null
     alertPayload: IAlert | null
     ESMOperationPayload: IOperation
     safeOperationPayload: IOperation & { isCreate: boolean }
@@ -33,6 +35,8 @@ export interface PopupsModel {
     setAlertPayload: Action<PopupsModel, IAlert | null>
     setESMOperationPayload: Action<PopupsModel, IOperation>
     setIsVotingModalOpen: Action<PopupsModel, boolean>
+    openLiquidateSafeModal: Action<PopupsModel, { safeId: string }>
+    closeLiquidateSafeModal: Action<PopupsModel>
     setAuctionOperationPayload: Action<PopupsModel, IAuctionOperation>
     setIsWaitingModalOpen: Action<PopupsModel, boolean>
     setWaitingPayload: Action<PopupsModel, IWaitingPayload>
@@ -48,6 +52,7 @@ const popupsModel: PopupsModel = {
     blockBackdrop: false,
     isSettingsModalOpen: false,
     isConnectModalOpen: false,
+    isLiquidateSafeModalOpen: false,
     isProxyModalOpen: false,
     hasFLXClaim: false,
     isConnectedWalletModalOpen: false,
@@ -55,6 +60,7 @@ const popupsModel: PopupsModel = {
     isWaitingModalOpen: false,
     isSafeManagerOpen: false,
     isClaimPopupOpen: false,
+    liquidateSafePayload: null,
     returnProxyFunction: () => {},
     waitingPayload: {
         title: '',
@@ -97,6 +103,14 @@ const popupsModel: PopupsModel = {
     }),
     setIsConnectedWalletModalOpen: action((state, payload) => {
         state.isConnectedWalletModalOpen = payload
+    }),
+    openLiquidateSafeModal: action((state, payload) => {
+        state.isLiquidateSafeModalOpen = true
+        state.liquidateSafePayload = payload
+    }),
+    closeLiquidateSafeModal: action((state) => {
+        state.isLiquidateSafeModalOpen = false
+        state.liquidateSafePayload = null
     }),
     setShowSideMenu: action((state, payload) => {
         state.showSideMenu = payload

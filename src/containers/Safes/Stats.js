@@ -15,6 +15,8 @@ import LinkButton from '~/components/LinkButton'
 const Stats = () => {
     const { loading, data } = useQuery(SYSTEMSTATE_QUERY)
     const stats = useStats()
+    const { loading, data } = useQuery(SYSTEMSTATE_QUERY)
+    const stats = useStats()
 
     useEffect(() => {
         if (data && stats) {
@@ -273,13 +275,13 @@ const Container = styled.div`
     }
 `
 
-const Inner = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+    const Inner = styled.div`
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    `
 
-const LabelContainer = styled.div`
-    max-width: ${(props) => props.theme.global.gridMaxWidth};
-    margin: 0 auto 20px auto;
-`
+    const LabelContainer = styled.div`
+        max-width: ${(props) => props.theme.global.gridMaxWidth};
+        margin: 0 auto 20px auto;
+    `

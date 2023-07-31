@@ -115,29 +115,29 @@ describe('utils', () => {
 
     describe('#ratioChecker', () => {
         it('returns 0', () => {
-            expect(ratioChecker(0)).toEqual(0)
+            expect(ratioChecker(0, 1)).toEqual(0)
         })
 
         it('returns 1', () => {
-            expect(ratioChecker(300)).toEqual(1)
+            expect(ratioChecker(300, 1)).toEqual(1)
         })
         it('returns 1', () => {
-            expect(ratioChecker(301)).toEqual(1)
+            expect(ratioChecker(301, 1)).toEqual(1)
         })
 
         it('returns 2', () => {
-            expect(ratioChecker(200)).toEqual(2)
+            expect(ratioChecker(200, 1)).toEqual(2)
         })
 
         it('returns 2', () => {
-            expect(ratioChecker(201)).toEqual(2)
+            expect(ratioChecker(201, 1)).toEqual(2)
         })
         it('returns 3', () => {
-            expect(ratioChecker(199)).toEqual(3)
+            expect(ratioChecker(199, 1)).toEqual(3)
         })
 
         it('returns 3', () => {
-            expect(ratioChecker(50)).toEqual(3)
+            expect(ratioChecker(50, 1)).toEqual(3)
         })
     })
 

@@ -55,7 +55,7 @@ const OnBoarding = ({ ...props }) => {
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, library, safeActions, geb, address])
+    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, library, safeActions])
 
     useEffect(() => {
         if (account && address) {
@@ -72,12 +72,12 @@ const OnBoarding = ({ ...props }) => {
                             data-test-id="topup-btn"
                             disabled={connectWalletState.isWrongNetwork}
                             onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                            >
+                        >
                             <BtnInner>{t('manage_other_safes')}</BtnInner>
                         </Button>
                     </BtnContainer>
                 ) : null}
-                <Stats/>
+                <Stats />
                 {safeState.safeCreated ? (
                     <SafeList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (

@@ -1,18 +1,19 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
-import { StoreModel } from '.'
-import { NETWORK_ID } from '../connectors'
-import { handleDepositAndBorrow, handleRepayAndWithdraw } from '../services/blockchain'
-import { fetchUserSafes } from '../services/safes'
-import { DEFAULT_SAFE_STATE, EMPTY_ADDRESS } from '../utils/constants'
-import { timeout } from '../utils/helper'
+import { StoreModel } from '~/model'
+import { NETWORK_ID } from '~/connectors'
+import { handleDepositAndBorrow, handleRepayAndWithdraw } from '~/services/blockchain'
+import { fetchUserSafes } from '~/services/safes'
 import {
-    IFetchSafeById,
+    DEFAULT_SAFE_STATE,
+    timeout,
+    handleWrapEther,
+    WrapEtherProps,
     IFetchSafesPayload,
     ILiquidationData,
     ISafe,
     ISafeData,
     ISafePayload,
-} from '../utils/interfaces'
+} from '~/utils'
 
 export interface SafeModel {
     list: Array<ISafe>
@@ -56,6 +57,7 @@ export interface SafeModel {
     setAmount: Action<SafeModel, string>
     setTargetedCRatio: Action<SafeModel, number>
     setIsMaxWithdraw: Action<SafeModel, boolean>
+    wrapEther: Thunk<SafeModel, WrapEtherProps, any, StoreModel>
 }
 
 const safeModel: SafeModel = {
@@ -189,6 +191,29 @@ const safeModel: SafeModel = {
             }
             await timeout(200)
             return fetched
+        }
+    }),
+
+    wrapEther: thunk(async (actions, payload, { getStoreActions }) => {
+        const storeActions = getStoreActions()
+        const txResponse = await handleWrapEther(payload)
+        if (txResponse) {
+            const { hash, chainId } = txResponse
+            storeActions.transactionsModel.addTransaction({
+                chainId,
+                hash,
+                from: txResponse.from,
+                summary: payload.title,
+                addedTime: new Date().getTime(),
+                originalTx: txResponse,
+            })
+            storeActions.popupsModel.setIsWaitingModalOpen(true)
+            storeActions.popupsModel.setWaitingPayload({
+                title: 'Transaction Submitted',
+                hash: txResponse.hash,
+                status: 'success',
+            })
+            await txResponse.wait()
         }
     }),
 

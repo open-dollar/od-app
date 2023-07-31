@@ -124,43 +124,47 @@ const VaultStats = ({
                     <Inner className="main">
                         <Main>
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
-                            <MainValue>
-                                {collateral} <span>{singleSafe?.collateralName}</span>
-                            </MainValue>
-                            <MainChange>
-                                {modified ? (
-                                    <>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {newCollateral} {singleSafe?.collateralName}
-                                        </span>
-                                    </>
-                                ) : (
-                                    `$${collateralInUSD}`
-                                )}
-                            </MainChange>
+                            <RowWrapper>
+                                <MainValue>
+                                    {collateral} {singleSafe?.collateralName}
+                                </MainValue>
+                                <MainChange>
+                                    {modified ? (
+                                        <>
+                                            After:{' '}
+                                            <span className={isDeposit ? 'green' : 'yellow'}>
+                                                {newCollateral} {singleSafe?.collateralName}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        `$${collateralInUSD}`
+                                    )}
+                                </MainChange>
+                            </RowWrapper>
                         </Main>
 
                         <Main className="mid">
                             <MainLabel>OD Debt</MainLabel>
-                            <MainValue>
-                                {totalDebt} <span>OD</span>
-                            </MainValue>
-                            <MainChange>
-                                {' '}
-                                {modified ? (
-                                    <>
-                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
-                                    </>
-                                ) : (
-                                    `$${totalDebtInUSD}`
-                                )}
-                            </MainChange>
+                            <RowWrapper>
+                                <MainValue>
+                                    {totalDebt} <span>OD</span>
+                                </MainValue>
+                                <MainChange>
+                                    {' '}
+                                    {modified ? (
+                                        <>
+                                            After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
+                                        </>
+                                    ) : (
+                                        `$${totalDebtInUSD}`
+                                    )}
+                                </MainChange>
+                            </RowWrapper>
                         </Main>
 
                         <Main>
                             <MainLabel>
-                                <Circle
+                                {/* <Circle
                                     data-tip={`${
                                         singleSafe && returnState(singleSafe.riskState)
                                             ? returnState(singleSafe.riskState)
@@ -171,8 +175,8 @@ const VaultStats = ({
                                             ? returnState(singleSafe.riskState).toLowerCase()
                                             : 'dimmed'
                                     }
-                                />{' '}
-                                Ratio (min {collateralRatio}%)
+                                />{' '} */}
+                                Collateral Ratio (min {collateralRatio}%)
                             </MainLabel>
                             <MainValue>{singleSafe?.collateralRatio}%</MainValue>
                             <MainChange>
@@ -275,6 +279,13 @@ const Flex = styled.div`
         flex-direction: column;
     }
 `
+
+const RowWrapper = styled.div`
+    display: flex;
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
+`
 const Inner = styled.div`
     background: ${(props) => props.theme.colors.colorPrimary};
     padding: 20px;
@@ -318,15 +329,14 @@ const MainLabel = styled.div`
     color: ${(props) => props.theme.colors.secondary};
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
 `
 
 const MainValue = styled.div`
-    font-size: 25px;
-    color: ${(props) => props.theme.colors.primary};
-    margin: 2px 0;
-    span {
-        font-size: ${(props) => props.theme.font.small};
-    }
+    font-weight: 700;
+    font-size: 20px;
+    color: white;
+    margin-right: 8px;
 `
 
 const MainChange = styled.div`

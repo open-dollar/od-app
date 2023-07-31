@@ -4,10 +4,10 @@
   </a>
 </p>
 <h1 align="center">
-  HAI App
+  OD App
 </h1>
 
-Deposit your crypto assets, generate HAI and lever up your position.
+Deposit your crypto assets, generate OD and lever up your position.
 
 <!-- - Website: [reflexer.finance](https://reflexer.finance/)
 - App: [app.reflexer.finance](https://app.reflexer.finance)
@@ -31,6 +31,14 @@ yarn
 ```
 
 ### Run
+
+```bash
+yarn prebuild
+```
+
+```bash
+yarn build
+```
 
 ```bash
 yarn start

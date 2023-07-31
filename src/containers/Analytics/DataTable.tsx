@@ -4,7 +4,7 @@ import { ExternalLinkArrow } from '~/GlobalStyle'
 export interface TableProps {
     title: string
     colums: string[]
-    rows: string[][]
+    rows: (string | JSX.Element)[][]
 }
 
 export const DataTable = ({ title, colums, rows }: TableProps) => {

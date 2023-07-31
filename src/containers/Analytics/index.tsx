@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
+import { useWeb3React } from '@web3-react/core'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 
 import DataCard, { DataCardProps } from './DataCard'
 import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
+import { AddressLink } from '~/components/AddressLink'
 import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
 import { formatDataNumber, transformToAnualRate, transformToEightHourlyRate } from '~/utils'
-import { BigNumber } from '@ethersproject/bignumber'
 import useGeb from '~/hooks/useGeb'
 
 interface AnalyticsStateProps {
@@ -17,11 +19,12 @@ interface AnalyticsStateProps {
     eightRate: string
     pRate: string
     iRate: string
-    colRows: string[][]
+    colRows: (string | JSX.Element)[][]
 }
 
 const Analytics = () => {
     const geb = useGeb()
+    const { chainId } = useWeb3React()
     const [state, setState] = useState<AnalyticsStateProps>({
         marketPrice: '',
         redemptionPrice: '',
@@ -36,7 +39,15 @@ const Analytics = () => {
 
     const colData: TableProps = {
         title: 'Collaterals',
-        colums: ['Collateral', /* 'ERC-20', 'Oracle', */ 'Delayed Price', 'Next Price', 'Total Debt', /* 'Total Locked', 'Total Locked ($)', */ 'Stability Fee', 'Borrow Rate'],
+        colums: [
+            'Collateral',
+            'ERC-20',
+            /* 'Oracle', */ 'Delayed Price',
+            'Next Price',
+            'Total Debt',
+            /* 'Total Locked', 'Total Locked ($)', */ 'Stability Fee',
+            'Borrow Rate',
+        ],
         rows: colRows,
     }
 
@@ -51,7 +62,7 @@ const Analytics = () => {
         return []
     }, [geb])
 
-    const contractsData: TableProps = {
+    const contractsData = {
         title: 'Contracts',
         colums: ['Contract', 'Address'],
         rows: contracts,
@@ -101,15 +112,20 @@ const Analytics = () => {
                         key,
                         [
                             key, // Symbol
-                            // TODO: format address + link to etherscan
-                            // geb.tokenList[key]?.address || '', // Address
+                            <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />, // ERC20 address + link to etherscan
                             formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
                             formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
                             formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
                             // formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
                             transformToAnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
                             // TODO: improve calculation
-                            transformToAnualRate((BigNumber.from(value?.stabilityFee).mul(BigNumber.from(result.redemptionRate)).div(BigNumber.from('1000000000000000000000000000')))?.toString() || '0', 27), // Borrow rate
+                            transformToAnualRate(
+                                BigNumber.from(value?.stabilityFee)
+                                    .mul(BigNumber.from(result.redemptionRate))
+                                    .div(BigNumber.from('1000000000000000000000000000'))
+                                    ?.toString() || '0',
+                                27
+                            ), // Borrow rate
                             // (100 + index).toString(), // Amount locked in USD
                         ],
                     ])
@@ -123,7 +139,7 @@ const Analytics = () => {
                     eightRate: transformToEightHourlyRate(result.redemptionRate, 27),
                     pRate: transformToAnualRate(result.redemptionRatePTerm, 27),
                     iRate: transformToAnualRate(result.redemptionRateITerm, 27),
-                    colRows: Object.values(colRows) as string[][],
+                    colRows: Object.values(colRows),
                 })
             })
         }

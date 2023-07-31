@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
 
-import { getEtherscanLink, returnWalletAddress } from '~/utils'
 import {
     Container,
     Content,
@@ -9,15 +8,20 @@ import {
     Heads,
     HeadsContainer,
     LeftAucInfo,
-    Link,
     List,
     ListItem,
     ListItemLabel,
     SectionContent,
-    TableProps,
 } from './DataTable'
+import { AddressLink } from '~/components/AddressLink'
 
-export const ContractsTable = ({ title, colums, rows }: TableProps) => {
+interface ContractsTableProps {
+    title: string
+    colums: string[]
+    rows: string[][]
+}
+
+export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
     const { chainId } = useWeb3React()
     return (
         <Container>
@@ -44,14 +48,7 @@ export const ContractsTable = ({ title, colums, rows }: TableProps) => {
                                 <HeadsContainer key={'row-item-' + valueIndex}>
                                     <ListItem>
                                         <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
-                                        {valueIndex !== 0 && (
-                                            <Link
-                                                href={getEtherscanLink(chainId || 420, value, 'address')}
-                                                target="_blank"
-                                            >
-                                                {returnWalletAddress(value)}
-                                            </Link>
-                                        )}
+                                        {valueIndex !== 0 && <AddressLink address={value} chainId={chainId || 420} />}
                                         {valueIndex === 0 && <>{value}</>}
                                     </ListItem>
                                 </HeadsContainer>

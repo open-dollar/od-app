@@ -39,9 +39,18 @@ const Stats = () => {
 
     return (
         <Container>
-            <Text fontSize={{ lg: '28px', sm: '18px' }} mb="1rem">
-                Global Stats
-            </Text>
+            <Header>
+                <Title>Global Stats</Title>
+                <LinkWrapper>
+                    <LinkButton
+                        id="stats"
+                        text={'Click for more stats..'}
+                        url={`https://stats.reflexer.finance/`}
+                        color={'blueish'}
+                        isExternal
+                    />
+                </LinkWrapper>
+            </Header>
             {!loading ? (
                 <>
                     <Wrapper>
@@ -220,16 +229,7 @@ const Stats = () => {
                                 OD Redemption Rate APY
                             </Text>
                         </Container>
-                    </Wrapper>
-                    <LinkWrapper>
-                        <LinkButton
-                            id="stats"
-                            text={'Click for more stats..'}
-                            url={`https://stats.reflexer.finance/`}
-                            color={'blueish'}
-                            isExternal
-                        />
-                    </LinkWrapper>
+                    </Wrapper>      
                 </>
             ) : (
                 <Loader />
@@ -239,14 +239,29 @@ const Stats = () => {
 }
 export default Stats
 
+const Header = styled.div`
+    margin-bottom: 56px;
+    display: flex;
+`
+
+const Title = styled.div`
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 41px;
+`
+
 const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(8, 1fr);
+    padding: 15px;
+    margin-bottom: 24px;
+    border-radius: 15px;
+    background: ${(props) => props.theme.colors.colorSecondary};
 `
 
 const LinkWrapper = styled.div`
-  max-width: 200px;
-  margin-left: auto;
+    max-width: 200px;
+    margin-left: auto;
 `
 
 const Container = styled.div`

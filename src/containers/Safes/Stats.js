@@ -15,8 +15,6 @@ import LinkButton from '~/components/LinkButton'
 const Stats = () => {
     const { loading, data } = useQuery(SYSTEMSTATE_QUERY)
     const stats = useStats()
-    const { loading, data } = useQuery(SYSTEMSTATE_QUERY)
-    const stats = useStats()
 
     useEffect(() => {
         if (data && stats) {

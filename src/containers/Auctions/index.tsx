@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { useActiveWeb3React, handleTransactionError, useStartSurplusAuction, useQuery, useGetAuctions } from '~/hooks'
+import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
 import AuctionsFAQ from '~/components/AuctionsFAQ'
 import AlertLabel from '~/components/AlertLabel'
 import Modal from '~/components/Modals/Modal'
@@ -34,12 +34,18 @@ const Auctions = ({
 
     const {
         startSurplusAcution,
+        startDebtAcution,
         surplusAmountToSell,
+        debtAmountToSell,
+        protocolTokensOffered,
         systemSurplus,
+        systemDebt,
         allowStartSurplusAuction,
+        allowStartDebtAuction,
         deltaToStartSurplusAuction,
-        coolDownDone,
-    } = useStartSurplusAuction()
+        deltaToStartDebtAuction,
+        surplusCooldownDone,
+    } = useStartAuction()
 
     const { proxyAddress } = connectWalletState
 
@@ -53,6 +59,23 @@ const Auctions = ({
                 status: 'loading',
             })
             await startSurplusAcution()
+        } catch (e) {
+            handleTransactionError(e)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleStartDebtAuction = async () => {
+        setIsLoading(true)
+        try {
+            popupsActions.setIsWaitingModalOpen(true)
+            popupsActions.setWaitingPayload({
+                title: 'Waiting For Confirmation',
+                hint: 'Confirm this transaction in your wallet',
+                status: 'loading',
+            })
+            await startDebtAcution()
         } catch (e) {
             handleTransactionError(e)
         } finally {
@@ -158,26 +181,55 @@ const Auctions = ({
                         <div>
                             <Box>
                                 <SurplusTitle>System Surplus: </SurplusTitle>
-                                <span>{formatNumber(systemSurplus as string, 2)} HAI</span>
+                                <span>{formatNumber(systemSurplus, 2)} HAI</span>
                             </Box>
                             <Box>
                                 <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(surplusAmountToSell as string, 2)} HAI</span>
+                                <span>{formatNumber(surplusAmountToSell, 2)} HAI</span>
                             </Box>
 
-                            {!coolDownDone || allowStartSurplusAuction ? null : (
-                                <Box>
-                                    ({formatNumber(String(deltaToStartSurplusAuction), 2)} HAI) to start an auction
-                                </Box>
+                            {!surplusCooldownDone || allowStartSurplusAuction ? null : (
+                                <Box>({formatNumber(deltaToStartSurplusAuction, 2)} HAI) to start an auction</Box>
                             )}
 
-                            {!coolDownDone && <Box>Cooldown period is active</Box>}
+                            {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
                         </div>
                         <Button
                             text={'Start Surplus Auction'}
                             onClick={handleStartSurplusAuction}
                             isLoading={isLoading}
                             disabled={isLoading || !allowStartSurplusAuction}
+                        />
+                    </Box>
+                </StartAuctionContainer>
+            ) : null}
+
+            {type === 'DEBT' && account ? (
+                <StartAuctionContainer>
+                    <Box style={{ justifyContent: 'space-between' }}>
+                        <div>
+                            <Box>
+                                <SurplusTitle>System Debt: </SurplusTitle>
+                                <span>{formatNumber(systemDebt, 2)} HAI</span>
+                            </Box>
+                            <Box>
+                                <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
+                                <span>{formatNumber(debtAmountToSell, 2)} HAI</span>
+                            </Box>
+                            <Box>
+                                <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
+                                <span>{formatNumber(protocolTokensOffered, 2)} KITE</span>
+                            </Box>
+
+                            {allowStartDebtAuction ? null : (
+                                <Box>({formatNumber(deltaToStartDebtAuction, 2)} HAI) to start an auction</Box>
+                            )}
+                        </div>
+                        <Button
+                            text={'Start Debt Auction'}
+                            onClick={handleStartDebtAuction}
+                            isLoading={isLoading}
+                            disabled={isLoading || !allowStartDebtAuction}
                         />
                     </Box>
                 </StartAuctionContainer>

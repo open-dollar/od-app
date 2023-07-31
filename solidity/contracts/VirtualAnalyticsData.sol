@@ -68,6 +68,8 @@ contract VirtualAnalyticsData {
     }
 
     struct TokenAnalyticsData {
+        // TODO: read oracle from oracleRelayer
+        // address delayedOracle;
         uint256 debtAmount;
         uint256 lockedAmount;
         uint256 currentPrice;
@@ -82,7 +84,6 @@ contract VirtualAnalyticsData {
         ITaxCollector _taxCollector,
         bytes32[] memory cTypes
     ) {
-        _pidController = IPIDController(PID_CONTROLLER); // TODO: rm when sdk is updated
         TokenAnalyticsData[] memory tokenAnalyticsData = new TokenAnalyticsData[](cTypes.length);
         for (uint256 i = 0; i < cTypes.length; i++) {
             bytes32 cType = cTypes[i];

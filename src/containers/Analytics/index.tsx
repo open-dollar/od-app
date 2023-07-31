@@ -7,6 +7,7 @@ import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
 import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
 import { formatDataNumber, transformToAnualRate, transformToEightHourlyRate } from '~/utils'
+import { BigNumber } from '@ethersproject/bignumber'
 import useGeb from '~/hooks/useGeb'
 
 interface AnalyticsStateProps {
@@ -35,7 +36,7 @@ const Analytics = () => {
 
     const colData: TableProps = {
         title: 'Collaterals',
-        colums: ['Collateral', 'OSM Price', 'Next OSM Price', 'Total Debt' /*  'Total Locked', 'Total Locked ($)' */],
+        colums: ['Collateral', /* 'ERC-20', 'Oracle', */ 'Delayed Price', 'Next Price', 'Total Debt', /* 'Total Locked', 'Total Locked ($)', */ 'Stability Fee', 'Borrow Rate'],
         rows: colRows,
     }
 
@@ -100,10 +101,15 @@ const Analytics = () => {
                         key,
                         [
                             key, // Symbol
+                            // TODO: format address + link to etherscan
+                            // geb.tokenList[key]?.address || '', // Address
                             formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
                             formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
                             formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
                             // formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
+                            transformToAnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
+                            // TODO: improve calculation
+                            transformToAnualRate((BigNumber.from(value?.stabilityFee).mul(BigNumber.from(result.redemptionRate)).div(BigNumber.from('1000000000000000000000000000')))?.toString() || '0', 27), // Borrow rate
                             // (100 + index).toString(), // Amount locked in USD
                         ],
                     ])
@@ -111,8 +117,8 @@ const Analytics = () => {
 
                 setState({
                     ...state,
-                    marketPrice: formatDataNumber(result.marketPrice, 18, 2, true),
-                    redemptionPrice: formatDataNumber(result.redemptionPrice, 27, 2, true),
+                    marketPrice: formatDataNumber(result.marketPrice, 18, 3, true),
+                    redemptionPrice: formatDataNumber(result.redemptionPrice, 27, 3, true),
                     anualRate: transformToAnualRate(result.redemptionRate, 27),
                     eightRate: transformToEightHourlyRate(result.redemptionRate, 27),
                     pRate: transformToAnualRate(result.redemptionRatePTerm, 27),

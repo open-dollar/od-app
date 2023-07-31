@@ -64,7 +64,12 @@ const CreateVault = ({
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
-    const selectedTokenBalance = formatNumber(selectedCollateralBalance || '0', 2)
+    const selectedTokenBalance = useMemo(() => {
+        if (selectedCollateralBalance) {
+            return formatNumber(selectedCollateralBalance, 2)
+        }
+        return formatNumber('0', 2)
+    }, [selectedCollateralBalance])
 
     const collateralUnitPriceUSD = formatNumber(
         safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0'
@@ -98,7 +103,7 @@ const CreateVault = ({
 
     const onClearAll = useCallback(() => {
         clearAll()
-    }, [onLeftInput, onRightInput])
+    }, [clearAll])
 
     const handleWaitingTitle = () => {
         return 'Modifying Vault'
@@ -126,6 +131,14 @@ const CreateVault = ({
         })
         connectWalletActions.setIsStepLoading(true)
         safeActions.setIsSafeCreated(true)
+    }
+
+    const wrapEth = () => {
+        popupsActions.setSafeOperationPayload({
+            isOpen: true,
+            type: '',
+            isCreate: false,
+        })
     }
 
     const handleConfirm = async () => {
@@ -214,6 +227,14 @@ const CreateVault = ({
                                         itemSelected={dropdownSelected}
                                         getSelectedItem={setSelectedItem}
                                     />
+                                    {dropdownSelected.name === 'WETH' && (
+                                        <WrapBox>
+                                            Don't have WETH?{' '}
+                                            <WrapBtn onClick={wrapEth} color="secondary">
+                                                Wrap ETH
+                                            </WrapBtn>
+                                        </WrapBox>
+                                    )}
                                 </DropDownContainer>
 
                                 <Inputs>
@@ -328,15 +349,18 @@ const CreateVaultContainer = () => {
     useEffect(() => {
         safeActions.setSafeData({ ...DEFAULT_SAFE_STATE, collateral: selectedItem })
         return () => safeActions.setSafeData(DEFAULT_SAFE_STATE)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedItem])
 
     useEffect(() => {
-        if (collaterals.length > 0 && selectedItem == '') setSelectedItem(collaterals[0].symbol)
+        if (collaterals.length > 0 && selectedItem === '') setSelectedItem(collaterals[0].symbol)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
 
     return (
         <Container>
-            {liquidationData && tokensData && collateral && collateral != '' && tokensFetchedData[selectedItem] && (
+            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (
                 <CreateVault selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
             )}
         </Container>
@@ -406,6 +430,15 @@ const Btn = styled.button`
     }
 `
 
+const WrapBtn = styled(Btn)`
+    color: ${(props) => props.theme.colors.blueish};
+`
+
+const WrapBox = styled.div`
+    margin-top: 12px;
+    font-size: 14px;
+`
+
 const Box = styled.div`
     display: flex;
     justify-content: space-between;
@@ -422,7 +455,7 @@ const Col = styled.div`
 
 const DropDownContainer = styled.div``
 
-const SideLabel = styled.div`
+export const SideLabel = styled.div`
     font-weight: 600;
     font-size: ${(props) => props.theme.font.default};
     margin-bottom: 10px;

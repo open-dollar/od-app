@@ -66,7 +66,7 @@ const Navbar = () => {
 
     const haiBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatNumber(balances.HAI ? utils.formatEther(balances.HAI.balanceE18) : '0', 2)
+        return formatNumber(balances.OD ? utils.formatEther(balances.OD.balanceE18) : '0', 2)
     }, [connectWalletModel.tokensFetchedData])
 
     const claimAirdropButton = async (signer: any) => {
@@ -118,7 +118,7 @@ const Navbar = () => {
                             Claim test tokens 🪂
                         </ClaimButton>
                     )}
-                    {/* Button to add OD to the wallet */}
+                    {/* Button to add HAI to the wallet */}
                     <HaiButton onClick={handleAddHAI}>
                         <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                         {haiBalance + ' '}

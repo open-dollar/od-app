@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
+import Button from '~/components/Button'
 import LinkButton from '~/components/LinkButton'
+import { useStoreActions, useStoreState } from '~/store'
 
 const VaultHeader = ({
     safeId,
@@ -15,10 +17,14 @@ const VaultHeader = ({
     isDeposit: boolean
 }) => {
     const history = useHistory()
+    const { openLiquidateSafeModal } = useStoreActions((state) => state.popupsModel)
+    const { singleSafe } = useStoreState((state) => state.safeModel)
 
     const handleBack = useCallback(() => {
         history.push(`/vaults`)
     }, [history])
+
+    const canLiquidate = singleSafe && singleSafe.riskState == 4
 
     return (
         <Container>
@@ -33,6 +39,27 @@ const VaultHeader = ({
                         </UpperInfo>
                     </SafeInfo>
                 </LeftSide>
+                <RightSide>
+                    {canLiquidate && (
+                        <Button
+                            id="liquidate-btn"
+                            text="Liquidate Vault"
+                            onClick={() => openLiquidateSafeModal({ safeId })}
+                        />
+                    )}
+                    <LinkButton
+                        id="deposit_borrow"
+                        text={'Deposit & Borrow'}
+                        url={`/safes/${safeId}/deposit`}
+                        color={isDeposit ? 'blueish' : 'colorPrimary'}
+                    />
+                    <LinkButton
+                        id="repay_withdraw"
+                        text={'Repay & Withdraw'}
+                        url={`/safes/${safeId}/withdraw`}
+                        color={!isDeposit ? 'blueish' : 'colorPrimary'}
+                    />
+                </RightSide>
             </HeaderContainer>
         </Container>
     )
@@ -67,12 +94,54 @@ const HeaderContainer = styled.div`
     @media (max-width: 767px) {
         flex-direction: column;
     }
+    #liquidate-btn {
+        background-color: crimson;
+        min-width: 100px;
+        padding: 4px 12px;
+        font-size: 13px;
+        font-weight: normal;
+        margin-right: 10px;
+        @media (max-width: 767px) {
+            min-width: 100%;
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+    }
 `
 
 const LeftSide = styled.div`
     display: flex;
     @media (max-width: 767px) {
         min-width: 100%;
+    }
+`
+
+const RightSide = styled.div`
+    display: flex;
+    align-items: center;
+
+    a {
+        min-width: 100px;
+        padding: 4px 12px;
+        font-size: 13px;
+        font-weight: normal;
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 767px) {
+        min-width: 100%;
+        justify-content: space-between;
+        display: block;
+        a {
+            &:not(:last-child) {
+                margin-right: 0px;
+            }
+            margin-bottom: 20px;
+            min-width: 49%;
+            display: flex;
+            justify-content: center;
+        }
     }
 `
 

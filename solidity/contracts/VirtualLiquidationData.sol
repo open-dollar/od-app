@@ -71,6 +71,7 @@ interface ITaxCollector {
 
     function params() external view returns (TaxCollectorParams memory);
     function cParams(bytes32) external view returns (TaxCollectorCollateralParams memory);
+    function taxSingle(bytes32) external;
 }
 
 contract VirtualLiquidationData {
@@ -106,6 +107,7 @@ contract VirtualLiquidationData {
         TokenLiquidationData[] memory tokenLiquidationData = new TokenLiquidationData[](cTypes.length);
         for (uint256 i = 0; i < cTypes.length; i++) {
             bytes32 cType = cTypes[i];
+            taxCollector.taxSingle(cType);
             ISAFEEngine.SAFEEngineCollateralParams memory _safeEngineCParams = safeEngine.cParams(cType);
             ISAFEEngine.SAFEEngineCollateralData memory _safeEngineCData = safeEngine.cData(cType);
             IOracleRelayer.OracleRelayerCollateralParams memory _oracleRelayerCParams = oracleRelayer.cParams(cType);

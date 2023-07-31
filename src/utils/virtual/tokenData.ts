@@ -1,5 +1,5 @@
-import { BigNumber, ethers } from 'ethers'
-import { Geb, utils } from '@hai-on-op/sdk'
+import { ethers } from 'ethers'
+import { Geb } from '@hai-on-op/sdk'
 import TokensData from '~/artifacts/contracts/TokensData.sol/TokensData.json'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 

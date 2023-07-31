@@ -129,6 +129,8 @@
     "debt_auction_how_to_bid_desc": " During a debt auction, you will bid a fixed amount of OD for a decreasing amount of FLX. A practical example: if the current FLX bid is 100 for 20K OD (resulting in a price of 200 OD/FLX), the next bid must accept less FLX for the same amount of OD. The auction also makes sure that each bid must be at least a certain percentage smaller than the previous one (e.g the next bid must be at least 3% smaller).",
     "debt_auction_claim_tokens": "What does the Claim Tokens button do?",
     "debt_auction_claim_tokens_desc": "In case someone outbids you in a debt auction, your OD bid will be reimbursed to your Reflexer Account.Claim Tokens can be used to get back OD (and FLX) that is kept in your Account.",
+    "collateral_auction_minting_flx_header": "Buying Collaterals",
+    "collateral_auction_minting_flx_desc": "Collateral auctions are meant to sell collateral that was seized from a Safe in exchange for OD. The OD that is received by an auction will be burned.",
     "surplus_auction_minting_flx_header": "Selling Surplus OD",
     "surplus_auction_minting_flx_desc": "Surplus auctions are meant to sell OD that accrued inside the protocol in exchange for FLX. The FLX that is received by an auction will be burned.",
     "surplus_auction_how_to_bid": "How do I bid?",
@@ -138,6 +140,9 @@
     "migrate": "Migrate",
     "manage_other_safes": "View / Top-up Other Vaults",
     "managed_safe_warning": "CAUTION: You are not the owner of this Vault. You can only deposit collateral or repay debt. Note that these operations are irreversible.",
+    "liquidate_safe_warning": "CAUTION: You are about to start the liquidation of this Vault. Note that this operation is irreversible.",
+    "liquidate_confirmation": "I understand that I am about to liquidate this Vault.",
+    "liquidate_button": "Liquidate Vault #",
     "flx_breakdown": "Your FLX breakdown",
     "your_balance": "Your Balance",
     "unclaimed": "Unclaimed",
@@ -182,5 +187,6 @@
     "stability_fee_tip": " It is the annual interest rate paid by Vault owners on their debt. Proceeds from the borrow rate go to the protocol’s balance sheet",
     "hai_red_price_tip": "OD’s “moving peg”. It’s the price at which OD is minted or repaid inside the protocol. The OD market price is expected to fluctuate around the redemption price",
     "curve_saviour_desc": "The current saviour for this Vault will try to withdraw your Curve OD Metapool liquidity and repay as much of your debt as possible. Any leftover OD that wasn't used to save your Vault as well as withdrawn 3Pool LP tokens will be available for you to withdraw from the Saviour. <b>NOTE: if the saviour doesn't have enough LP tokens to save your Vault (withdraw enough OD and repay your debt), the Vault will get liquidated.</b> <a href='https://docs.reflexer.finance/liquidation-protection/liquidation-protection-guide' target='_blank'>Read More</a>",
-    "moneygod_desc": "The Money God League is an initiative to help other teams launch their own OD like assets and share a stake in each of their protocols with the Reflexer community. You can stake FLX or FLX/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants."
+    "moneygod_desc": "The Money God League is an initiative to help other teams launch their own OD like assets and share a stake in each of their protocols with the Reflexer community. You can stake FLX or FLX/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants.",
+    "buy": "Buy Collateral"
 }

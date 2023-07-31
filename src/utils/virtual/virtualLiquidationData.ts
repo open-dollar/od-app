@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
-import { Geb, utils } from '@hai-on-op/sdk'
+import { Geb } from '@hai-on-op/sdk'
 import VirtualLiquidationData from '~/artifacts/contracts/VirtualLiquidationData.sol/VirtualLiquidationData.json'
 import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
 

@@ -34,6 +34,14 @@ const NavLinks = () => {
             >
                 <SafeIcon className="opacity fill" /> {t('app')}
             </NavBarLink>
+            <NavBarLink
+                id="auction-link"
+                to="/auctions"
+                onClick={(e) => handleLinkClick(e, false)}
+                className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
+            >
+                <SafeIcon className="opacity fill" /> {t('auctions')}
+            </NavBarLink>
         </Nav>
     )
 }

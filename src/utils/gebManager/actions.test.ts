@@ -1,17 +1,17 @@
 // tests
-import gebManager from '.'
+// import gebManager from '.'
 import '../../setupTests'
 import { BigNumber, FixedNumber } from 'ethers'
 
 // Add custom match type
-declare global {
-    namespace jest {
-        interface Matchers<R> {
-            fixedNumberMatch: (other: string) => void
-            almostEqual: (other: string, maxAbsoluteDeviation: number) => void
-        }
-    }
-}
+// declare global {
+//     namespace jest {
+//         interface Matchers<R> {
+//             fixedNumberMatch: (other: string) => void
+//             almostEqual: (other: string, maxAbsoluteDeviation: number) => void
+//         }
+//     }
+// }
 
 // Add some custom matchers
 expect.extend({
@@ -58,42 +58,42 @@ expect.extend({
 })
 
 // Recursively checks that 2 objects have the same keys and number of array element
-const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
-    const keyA = Object.keys(objA).sort()
-    const keyB = Object.keys(objB).sort()
+// const verifyKeys = (objA: any, objB: any, matchArrays = true) => {
+//     const keyA = Object.keys(objA).sort()
+//     const keyB = Object.keys(objB).sort()
 
-    if (keyA.length !== keyB.length) {
-        fail("Objects don't have the same number of key")
-    }
+//     if (keyA.length !== keyB.length) {
+//         fail("Objects don't have the same number of key")
+//     }
 
-    for (let i = 0; i < keyA.length; i++) {
-        if (keyA[i] !== keyB[i]) {
-            fail(`Key names not matching: ${keyA[i]} ${keyB[i]}`)
-        }
+//     for (let i = 0; i < keyA.length; i++) {
+//         if (keyA[i] !== keyB[i]) {
+//             fail(`Key names not matching: ${keyA[i]} ${keyB[i]}`)
+//         }
 
-        const typeA = typeof objA[keyA[i]]
-        const typeB = typeof objA[keyB[i]]
+//         const typeA = typeof objA[keyA[i]]
+//         const typeB = typeof objA[keyB[i]]
 
-        if (typeA !== typeB && typeA !== null && typeB !== null) {
-            fail(`Type of object not matching for: \n ${JSON.stringify(objA)} \n and: \n   ${JSON.stringify(objB)}`)
-        }
+//         if (typeA !== typeB && typeA !== null && typeB !== null) {
+//             fail(`Type of object not matching for: \n ${JSON.stringify(objA)} \n and: \n   ${JSON.stringify(objB)}`)
+//         }
 
-        if (Array.isArray(objA[keyA[i]]) && matchArrays) {
-            // Process arrays
-            const arrayA = objA[keyA[i]]
-            const arrayB = objB[keyB[i]]
-            // Make sure that the arrays are of the same length
-            expect(arrayA.length).toEqual(arrayB.length)
+//         if (Array.isArray(objA[keyA[i]]) && matchArrays) {
+//             // Process arrays
+//             const arrayA = objA[keyA[i]]
+//             const arrayB = objB[keyB[i]]
+//             // Make sure that the arrays are of the same length
+//             expect(arrayA.length).toEqual(arrayB.length)
 
-            // Check each individual objec within the aeeay
-            for (let j = 0; j < arrayA.length; j++) {
-                verifyKeys(arrayA[j], arrayB[j], matchArrays)
-            }
-        } else if (typeof objA[keyA[i]] === 'object' && !Array.isArray(objA[keyA[i]]) && objA[keyA[i]]) {
-            verifyKeys(objA[keyA[i]], objB[keyB[i]], matchArrays)
-        }
-    }
-}
+//             // Check each individual objec within the aeeay
+//             for (let j = 0; j < arrayA.length; j++) {
+//                 verifyKeys(arrayA[j], arrayB[j], matchArrays)
+//             }
+//         } else if (typeof objA[keyA[i]] === 'object' && !Array.isArray(objA[keyA[i]]) && objA[keyA[i]]) {
+//             verifyKeys(objA[keyA[i]], objB[keyB[i]], matchArrays)
+//         }
+//     }
+// }
 
 describe('empty', () => {
     it('empty', () => {

@@ -91,31 +91,6 @@ const SafeStats = ({
 
     return (
         <>
-            {
-                // TODO: This allows the user to collect surplus ETH from their safe. This is disabled for now.
-                /* {isOwner &&
-                singleSafe &&
-                Number(singleSafe.internalCollateralBalance) > 0 ? (
-                <SurplusBlock>
-                    <StateInner>
-                        <Inline>
-                            <Text>
-                                {t('liquidation_text', {
-                                    balance: formatNumber(
-                                        singleSafe.internalCollateralBalance
-                                    ),
-                                })}
-                            </Text>
-                            <Button
-                                text={'collect_surplus'}
-                                onClick={handleCollectSurplus}
-                                isLoading={isLoading}
-                            />
-                        </Inline>
-                    </StateInner>
-                </SurplusBlock>
-            ) : null} */
-            }
             <Flex>
                 <Left>
                     <Inner className="main">
@@ -198,7 +173,7 @@ const SafeStats = ({
                             <InfoIcon data-tip={t('eth_osm_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>{singleSafe?.collateralName} Price (OSM)</SideTitle>
+                            <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
                             <SideValue>${collateralUnitPriceUSD}</SideValue>
                         </Side>
 
@@ -232,7 +207,7 @@ const SafeStats = ({
                             <InfoIcon data-tip={t('liquidation_penalty_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>Total Liquidation Penalty</SideTitle>
+                            <SideTitle>Liquidation Penalty</SideTitle>
                             <SideValue>{`${liquidationPenalty}%`}</SideValue>
                         </Side>
 

@@ -17,7 +17,7 @@ export interface PopupsModel {
     isScreenModalOpen: boolean
     isVotingModalOpen: boolean
     auctionOperationPayload: IAuctionOperation
-    liquidateSafePayload: {safeId: string} | null
+    liquidateSafePayload: { safeId: string } | null
     alertPayload: IAlert | null
     ESMOperationPayload: IOperation
     safeOperationPayload: IOperation & { isCreate: boolean }
@@ -35,7 +35,7 @@ export interface PopupsModel {
     setAlertPayload: Action<PopupsModel, IAlert | null>
     setESMOperationPayload: Action<PopupsModel, IOperation>
     setIsVotingModalOpen: Action<PopupsModel, boolean>
-    openLiquidateSafeModal: Action<PopupsModel, {safeId: string}>
+    openLiquidateSafeModal: Action<PopupsModel, { safeId: string }>
     closeLiquidateSafeModal: Action<PopupsModel>
     setAuctionOperationPayload: Action<PopupsModel, IAuctionOperation>
     setIsWaitingModalOpen: Action<PopupsModel, boolean>

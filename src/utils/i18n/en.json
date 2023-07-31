@@ -92,7 +92,7 @@
     "collateral_auction_minting_flx_header": "Buying Collaterals",
     "collateral_auction_minting_flx_desc": "Collateral auctions are meant to sell collateral that was seized from a Safe in exchange for HAI. The HAI that is received by an auction will be burned.",
     "surplus_auction_minting_flx_header": "Selling Surplus HAI",
-    "surplus_auction_minting_flx_desc": "Surplus auctions are meant to sell HAI that accrued inside the protocol in exchange for KITE. The KITE that is received by an auction will be burned.",
+    "surplus_auction_minting_flx_desc": "Surplus auctions are meant to sell HAI that has accrued inside the protocol in exchange for KITE. The KITE that is received by an auction will be burned.",
     "surplus_auction_how_to_bid": "How do I bid?",
     "surplus_auction_how_to_bid_desc": "During a surplus auction, you will bid an increasing amount of KITE for a fixed amount of HAI. A practical example: if the current KITE bid is 100 for 20K HAI (resulting in a price of 200 HAI/KITE), the next bidder must bid more KITE for the same amount of HAI. The auction also makes sure that each bid must be at least a certain percentage higher than the previous one (e.g the next bid must be at least 3% higher).",
     "surplus_auction_claim_tokens": "What does the Claim Tokens button do?",

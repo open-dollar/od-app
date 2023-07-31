@@ -158,7 +158,7 @@ const AuctionsPayment = () => {
     const maxAmount = (function () {
         if (auctionType === 'COLLATERAL') {
             const haiToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
-            const haiToBid = ethers.utils.formatUnits(haiToBidPlusOne.toString(), 18)            
+            const haiToBid = ethers.utils.formatUnits(haiToBidPlusOne.toString(), 18)
             const haiBalanceNumber = Number(haiBalance)
             return haiBalanceNumber < Number(haiToBid) ? haiBalance : haiToBid.toString()
         } else {
@@ -166,7 +166,9 @@ const AuctionsPayment = () => {
         }
     })()
 
-    const maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount)).mul(collateralPrice).div(constants.WeiPerEther)
+    const maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount))
+        .mul(collateralPrice)
+        .div(constants.WeiPerEther)
     const maxCollateralParsed = ethers.utils.formatEther(maxCollateral)
 
     const passedChecks = () => {
@@ -344,10 +346,7 @@ const AuctionsPayment = () => {
             case 'COLLATERAL':
                 return {
                     value: collateralValue,
-                    label: `${tokenSymbol} to Receive (Max: ${formatNumber(
-                        maxCollateralParsed,
-                        4
-                    )} ${tokenSymbol})`,
+                    label: `${tokenSymbol} to Receive (Max: ${formatNumber(maxCollateralParsed, 4)} ${tokenSymbol})`,
                 }
             default:
                 return { value: '', label: '' }

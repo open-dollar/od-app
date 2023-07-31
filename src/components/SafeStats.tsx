@@ -44,7 +44,10 @@ const SafeStats = ({
     const collateralRatio =
         Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
-    const liquidationPenalty = getRatePercentage(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty, 10)
+    const liquidationPenalty = getRatePercentage(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty,
+        10
+    )
     const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
 
     const returnRedRate = () => {

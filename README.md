@@ -25,6 +25,13 @@ https://open-dollar-app.vercel.app/
 ## Development
 
 ### Install Dependencies
+
+```bash
+yarn
+```
+
+### Run
+
 ```bash
 yarn prebuild
 ```
@@ -32,12 +39,6 @@ yarn prebuild
 ```bash
 yarn build
 ```
-
-```bash
-yarn
-```
-
-### Run
 
 ```bash
 yarn start

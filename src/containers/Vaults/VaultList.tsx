@@ -90,8 +90,9 @@ const SafeBlocks = styled.div`
 `
 
 const Title = styled.div`
-    font-weight: 600;
-    font-size: ${(props) => props.theme.font.large};
+    font-weight: 700;
+    font-size: 34px;
+    
 `
 
 const Header = styled.div`

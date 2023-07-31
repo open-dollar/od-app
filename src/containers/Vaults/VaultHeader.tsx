@@ -148,8 +148,8 @@ const RightSide = styled.div`
 const SafeInfo = styled.div``
 
 const UpperInfo = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
+    font-size: 34px;
+    font-weight: 700;
     min-width: 180px;
     span {
         color: ${(props) => props.theme.colors.blueish};

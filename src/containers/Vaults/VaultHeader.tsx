@@ -142,5 +142,5 @@ const UpperInfo = styled.div`
     span {
         color: ${(props) => props.theme.colors.blueish};
     }
-    margin-top: 5px;
+    margin-bottom: 40px;
 `

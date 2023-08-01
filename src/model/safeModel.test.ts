@@ -76,7 +76,7 @@ describe('safe model', () => {
     })
 
     describe('setSafeList', () => {
-        it('sets Safe List', () => {
+        it('sets Vault List', () => {
             store.getActions().setList(listMock)
             store.getActions().setLiquidationData(liquidationDataMock)
             const list = store.getState().list

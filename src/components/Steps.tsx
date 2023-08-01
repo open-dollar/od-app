@@ -55,7 +55,7 @@ const Steps = () => {
     }
 
     const handleCreateSafe = () => {
-        history.push('/safes/create')
+        history.push('/vaults/create')
     }
 
     const returnSteps = (stepNumber: number) => {

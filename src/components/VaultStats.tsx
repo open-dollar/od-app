@@ -163,38 +163,53 @@ const VaultStats = ({
                         </Main>
 
                         <Main>
-                            <MainLabel>
-                                {/* <Circle
-                                    data-tip={`${
-                                        singleSafe && returnState(singleSafe.riskState)
-                                            ? returnState(singleSafe.riskState)
-                                            : 'No'
-                                    } Risk`}
-                                    className={
-                                        singleSafe && returnState(singleSafe.riskState)
-                                            ? returnState(singleSafe.riskState).toLowerCase()
-                                            : 'dimmed'
-                                    }
-                                />{' '} */}
-                                Collateral Ratio (min {collateralRatio}%)
-                            </MainLabel>
-                            <MainValue>{singleSafe?.collateralRatio}%</MainValue>
-                            <MainChange>
-                                {modified ? (
-                                    <>
-                                        After:{' '}
-                                        <span
-                                            className={returnState(
-                                                ratioChecker(Number(newCollateralRatio), Number(collateralRatio))
-                                            ).toLowerCase()}
-                                        >
-                                            {newCollateralRatio}%
-                                        </span>
-                                    </>
-                                ) : (
-                                    ''
-                                )}
-                            </MainChange>
+                            <ColumnWrapper>
+                                <Column>
+                                    <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
+                                    <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                    <MainChange>
+                                        {modified ? (
+                                            <>
+                                                After:{' '}
+                                                <span
+                                                    className={returnState(
+                                                        ratioChecker(
+                                                            Number(newCollateralRatio),
+                                                            Number(collateralRatio)
+                                                        )
+                                                    ).toLowerCase()}
+                                                >
+                                                    {newCollateralRatio}%
+                                                </span>
+                                            </>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </MainChange>
+                                </Column>
+                                <Column>
+                                    <MainLabel>Risk</MainLabel>
+                                    <Wrapper>
+                                        <Circle
+                                            data-tip={`${
+                                                singleSafe && returnState(singleSafe.riskState)
+                                                    ? returnState(singleSafe.riskState)
+                                                    : 'No'
+                                            } Risk`}
+                                            className={
+                                                singleSafe && returnState(singleSafe.riskState)
+                                                    ? returnState(singleSafe.riskState).toLowerCase()
+                                                    : 'dimmed'
+                                            }
+                                        />{' '}
+                                        <MainValue>
+                                            {singleSafe && returnState(singleSafe.riskState)
+                                                ? returnState(singleSafe.riskState)
+                                                : 'No'}
+                                        </MainValue>
+                                    </Wrapper>
+                                </Column>
+                            </ColumnWrapper>
                         </Main>
                     </Inner>
                 </Left>
@@ -282,6 +297,32 @@ const Flex = styled.div`
 
 const RowWrapper = styled.div`
     display: flex;
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
+`
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #dadada;
+    font-size: 14px;
+    font-weight: 400;
+
+    & div {
+        margin-right: 8px;
+    }
+`
+
+const ColumnWrapper = styled.div`
+    display: flex;
+    gap: 24px;
+`
+
+const Column = styled.div`
+    display: flex;
+    flex-direction: column;
     @media (max-width: 767px) {
         flex-direction: column;
     }

@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
+import ReactTooltip from 'react-tooltip'
 
 import {
     Container,
@@ -17,7 +18,7 @@ import { AddressLink } from '~/components/AddressLink'
 
 interface ContractsTableProps {
     title: string
-    colums: string[]
+    colums: { name: string; description?: string }[]
     rows: string[][]
 }
 
@@ -35,11 +36,12 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
             <Content>
                 <SectionContent>
                     <Heads>
-                        {colums?.map((colName, index) => (
+                        {colums?.map(({ name }, index) => (
                             <HeadsContainer key={title + '-column-' + index}>
-                                <Head>{colName}</Head>
+                                <Head>{name}</Head>
                             </HeadsContainer>
                         ))}
+                        <ReactTooltip multiline type="light" data-effect="solid" />
                     </Heads>
 
                     {rows?.map((item, index) => (
@@ -47,7 +49,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                             {item?.map((value, valueIndex) => (
                                 <HeadsContainer key={'row-item-' + valueIndex}>
                                     <ListItem>
-                                        <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
+                                        <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
                                         {valueIndex !== 0 && <AddressLink address={value} chainId={chainId || 420} />}
                                         {valueIndex === 0 && <>{value}</>}
                                     </ListItem>

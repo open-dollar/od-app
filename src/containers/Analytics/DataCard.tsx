@@ -38,7 +38,7 @@ const Block = styled.div`
     justify-content: space-around;
     border-radius: 20px;
     background: ${(props) => props.theme.colors.colorSecondary};
-    max-width: calc(100% / 2 - 50px);
+    max-width: calc(100% / 3 - 50px);
     min-width: 280px;
     width: 100%;
     min-height: 220px;
@@ -53,14 +53,14 @@ const Block = styled.div`
     `}
 `
 
-const InfoIcon = styled.div`
+export const InfoIcon = styled.div`
     cursor: pointer;
     position: absolute;
     right: 12px;
     top: 12px;
     svg {
-        fill: ${(props) => props.theme.colors.secondary};
-        color: ${(props) => props.theme.colors.foreground};
+        fill: ${(props) => props.theme.colors.foreground};
+        color: ${(props) => props.theme.colors.secondary};
         position: relative;
         top: 2px;
         margin-right: 5px;

@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-// TODO: read from sdk before merging
-address constant PID_CONTROLLER = 0xae63F27D618E1C494412775812F07C6052A88426;
+uint256 constant RAY = 1e27;
+
+interface IERC20 {
+    function totalSupply() external view returns (uint256 _totalSupply);
+}
 
 interface ISAFEEngine {
   struct SAFEEngineCollateralData {
@@ -11,7 +14,21 @@ interface ISAFEEngine {
     uint256 /* RAY */ safetyPrice;
     uint256 /* RAY */ liquidationPrice;
   }
+  struct SAFEEngineParams {
+    uint256 /* WAD */ safeDebtCeiling;
+    uint256 /* RAD */ globalDebtCeiling;
+  }
+  struct SAFEEngineCollateralParams {
+    uint256 /* RAD */ debtCeiling;
+    uint256 /* RAD */ debtFloor;
+  }
+  function coinBalance(address _user) external view returns (uint256 _coinBalance);
+  function debtBalance(address _user) external view returns (uint256 _debtBalance);
+  function globalDebt() external view returns (uint256 _globalDebt);
+  function globalUnbackedDebt() external view returns (uint256 _globalUnbackedDebt);
   function cData(bytes32 _cType) external view returns (SAFEEngineCollateralData memory _cData);
+  function params() external view returns (SAFEEngineParams memory _params);
+  function cParams(bytes32 _cType) external view returns (SAFEEngineCollateralParams memory _cParams);
 }
 
 interface IBaseOracle {
@@ -59,18 +76,23 @@ interface ITaxCollector {
 
 contract VirtualAnalyticsData {
     struct AnalyticsData {
+        uint256 erc20Supply;
+        uint256 globalDebt;
+        uint256 globalDebtCeiling;
+        uint256 globalUnbackedDebt;
         uint256 marketPrice;
         uint256 redemptionPrice;
         uint256 redemptionRate;
         uint256 redemptionRatePTerm;
         uint256 redemptionRateITerm;
+        uint256 surplusInTreasury;
         TokenAnalyticsData[] tokenData;
     }
 
     struct TokenAnalyticsData {
-        // TODO: read oracle from oracleRelayer
-        // address delayedOracle;
+        address delayedOracle;
         uint256 debtAmount;
+        uint256 debtCeiling;
         uint256 lockedAmount;
         uint256 currentPrice;
         uint256 nextPrice;
@@ -78,10 +100,12 @@ contract VirtualAnalyticsData {
     }
 
     constructor(
+        IERC20 _haiToken,
         ISAFEEngine _safeEngine,
         IOracleRelayer _oracleRelayer,
         IPIDController _pidController,
         ITaxCollector _taxCollector,
+        address _stabilityFeeTreasury,
         bytes32[] memory cTypes
     ) {
         TokenAnalyticsData[] memory tokenAnalyticsData = new TokenAnalyticsData[](cTypes.length);
@@ -93,8 +117,10 @@ contract VirtualAnalyticsData {
             (uint256 _nextPrice,) = _oracle.getNextResultWithValidity();
 
             tokenAnalyticsData[i] = TokenAnalyticsData({
+                delayedOracle: address(_oracle),
                 debtAmount: _debtAmount,
-                lockedAmount: 0, // TODO: _safeEngine.cData(cType).lockedAmount
+                debtCeiling: _safeEngine.cParams(cType).debtCeiling / RAY,
+                lockedAmount: 420e18, // TODO: _safeEngine.cData(cType).lockedAmount
                 currentPrice: _currentPrice,
                 nextPrice: _nextPrice,
                 stabilityFee: _taxCollector.cData(cType).nextStabilityFee
@@ -105,12 +131,19 @@ contract VirtualAnalyticsData {
         int256 _pOutput = _pidController.getGainAdjustedPIOutput(deviationObservation.proportional, 0);
         int256 _iOutput = _pidController.getGainAdjustedPIOutput(0, deviationObservation.integral);
 
+        uint256 _surplusInTreasury = _safeEngine.coinBalance(address(_stabilityFeeTreasury)) - _safeEngine.debtBalance(address(_stabilityFeeTreasury));
+
         AnalyticsData memory analyticsData = AnalyticsData({
+            erc20Supply: _haiToken.totalSupply(),
+            globalDebt: _safeEngine.globalDebt() / RAY,
+            globalDebtCeiling: _safeEngine.params().globalDebtCeiling / RAY,
+            globalUnbackedDebt: _safeEngine.globalUnbackedDebt() / RAY,
             marketPrice: _oracleRelayer.marketPrice(),
-            redemptionPrice: _oracleRelayer.redemptionPrice(),
+            redemptionPrice: _oracleRelayer.redemptionPrice() / 1e9,
             redemptionRate: _oracleRelayer.redemptionRate(),
             redemptionRatePTerm: _pidController.getBoundedRedemptionRate(_pOutput),
             redemptionRateITerm: _pidController.getBoundedRedemptionRate(_iOutput),
+            surplusInTreasury: _surplusInTreasury / RAY,
             tokenData: tokenAnalyticsData
         });
 

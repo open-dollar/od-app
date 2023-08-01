@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
@@ -9,13 +8,25 @@ import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
 import { AddressLink } from '~/components/AddressLink'
 import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
-import { formatDataNumber, transformToAnualRate, transformToEightHourlyRate } from '~/utils'
+import {
+    formatDataNumber,
+    multiplyRates,
+    multiplyWad,
+    transformToWadPercentage,
+    transformToAnnualRate,
+    transformToEightHourlyRate,
+} from '~/utils'
 import useGeb from '~/hooks/useGeb'
 
 interface AnalyticsStateProps {
+    erc20Supply: string
+    globalDebt: string
+    globalDebtUtilization: string
+    globalDebtCeiling: string
+    surplusInTreasury: string
     marketPrice: string
     redemptionPrice: string
-    anualRate: string
+    annualRate: string
     eightRate: string
     pRate: string
     iRate: string
@@ -26,27 +37,77 @@ const Analytics = () => {
     const geb = useGeb()
     const { chainId } = useWeb3React()
     const [state, setState] = useState<AnalyticsStateProps>({
+        erc20Supply: '',
+        globalDebt: '',
+        globalDebtUtilization: '',
+        globalDebtCeiling: '',
+        surplusInTreasury: '',
         marketPrice: '',
         redemptionPrice: '',
-        anualRate: '',
+        annualRate: '',
         eightRate: '',
         pRate: '',
         iRate: '',
         colRows: [],
     })
 
-    const { marketPrice, redemptionPrice, anualRate, eightRate, pRate, iRate, colRows } = state
+    const {
+        erc20Supply,
+        globalDebt,
+        globalDebtCeiling,
+        globalDebtUtilization,
+        surplusInTreasury,
+        marketPrice,
+        redemptionPrice,
+        annualRate,
+        eightRate,
+        pRate,
+        iRate,
+        colRows,
+    } = state
 
     const colData: TableProps = {
         title: 'Collaterals',
         colums: [
-            'Collateral',
-            'ERC-20',
-            /* 'Oracle', */ 'Delayed Price',
-            'Next Price',
-            'Total Debt',
-            /* 'Total Locked', 'Total Locked ($)', */ 'Stability Fee',
-            'Borrow Rate',
+            { name: 'Collateral' },
+            { name: 'ERC-20', description: 'Address of the ERC20 collateral token.' },
+            { name: 'Oracle', description: 'Delayed oracle address for the collateral.' },
+            {
+                name: 'Delayed Price',
+                description:
+                    'System price of the collateral, it is delayed from spot price, and updates every period to "Next Price".',
+            },
+            {
+                name: 'Next Price',
+                description:
+                    'Next system price of the collateral, this value is already quoted, and will impact the system on the next price update.',
+            },
+            { name: 'Stability Fee', description: 'Annual interest rate paid by Safe owners on their debt.' },
+            {
+                name: 'Borrow Rate',
+                description:
+                    'Total annual interest paid by Safe owners on their debt, includes "Stability Fee" and "Annual Redemption Rate".',
+            },
+            { name: 'Total Debt', description: 'Total amount of HAI minted per collateral.' },
+            {
+                name: 'Debt Utilization',
+                description: 'Percentage of the minted HAI over the total amount of mintable HAI per collateral.',
+            },
+            {
+                name: 'Total Locked',
+                description:
+                    'Total amount of collateral tokens deposited in Safes backing HAI debt. TODO: replace mocked values',
+            },
+            {
+                name: 'Total Locked ($)',
+                description:
+                    'Total value amount (in USD) for the deposited collateral tokens at system "Delayed Price".',
+            },
+            {
+                name: 'Collateral Ratio',
+                description:
+                    'Comparison between the value of the minted HAI (in USD) vs the value of the locked collateral (in USD).',
+            },
         ],
         rows: colRows,
     }
@@ -64,10 +125,9 @@ const Analytics = () => {
 
     const contractsData = {
         title: 'Contracts',
-        colums: ['Contract', 'Address'],
+        colums: [{ name: 'Contract' }, { name: 'Address' }],
         rows: contracts,
     }
-
     const marketPriceData: DataCardProps = {
         image: 'HAI',
         title: 'Market Price',
@@ -82,10 +142,41 @@ const Analytics = () => {
         description:
             'HAI\'s "moving peg". It\'s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price.',
     }
-    const anualRedemptionRate: DataCardProps = {
-        title: 'Anual Redemption Rate',
-        value: anualRate,
-        // description: 'lorem ipsum',
+    const globalDebtData: DataCardProps = {
+        title: 'Global Debt',
+        value: globalDebt,
+        description: 'Total HAI minted in the system.',
+        children: (
+            <RateContainer>
+                <p>
+                    <BoldText>ERC20 Supply:</BoldText> {erc20Supply}
+                </p>
+            </RateContainer>
+        ),
+    }
+    const globalDebtUtilizationData: DataCardProps = {
+        title: 'Global Debt Utilization',
+        value: globalDebtUtilization,
+        description: 'Total HAI minted in the system.',
+        children: (
+            <RateContainer>
+                <p>
+                    <BoldText>Debt Ceiling:</BoldText> {globalDebtCeiling}
+                </p>
+            </RateContainer>
+        ),
+    }
+    const surplusInTreasuryData: DataCardProps = {
+        title: 'Surplus in Treasury',
+        value: surplusInTreasury,
+        description:
+            "Total HAI accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
+    }
+    const annualRedemptionRate: DataCardProps = {
+        title: 'Annual Redemption Rate',
+        value: annualRate,
+        description:
+            'Annualized rate of change of the redemption price. The rate is set by the PI controller and depends on the deviation between the redemption price and the HAI TWAP price. If the rate is positive, the redemption price will increase. If the rate is negative, the redemption price will decrease. The rate is generated by the combinated effect of two terms: pRate and iRate.',
         children: (
             <RateContainer>
                 <p>
@@ -98,11 +189,19 @@ const Analytics = () => {
         ),
     }
     const eightHourlyRedemptionRate: DataCardProps = {
-        title: '8-Hourly Redemption Rate',
+        title: '8-Hour Redemption Rate',
         value: eightRate,
-        // description: 'lorem ipsum',
+        description: 'Redemption rate over an 8h period.',
     }
-    const data = [marketPriceData, redemptionPriceData, anualRedemptionRate, eightHourlyRedemptionRate]
+    const data = [
+        marketPriceData,
+        redemptionPriceData,
+        globalDebtData,
+        globalDebtUtilizationData,
+        surplusInTreasuryData,
+        annualRedemptionRate,
+        eightHourlyRedemptionRate,
+    ]
 
     useEffect(() => {
         if (geb) {
@@ -113,32 +212,46 @@ const Analytics = () => {
                         [
                             key, // Symbol
                             <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />, // ERC20 address + link to etherscan
+                            <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />, // ERC20 address + link to etherscan
                             formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
                             formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
-                            formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
-                            // formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
-                            transformToAnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
-                            // TODO: improve calculation
-                            transformToAnualRate(
-                                BigNumber.from(value?.stabilityFee)
-                                    .mul(BigNumber.from(result.redemptionRate))
-                                    .div(BigNumber.from('1000000000000000000000000000'))
-                                    ?.toString() || '0',
+                            transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
+                            transformToAnnualRate(
+                                multiplyRates(value?.stabilityFee?.toString(), result.redemptionRate?.toString()) ||
+                                    '0',
                                 27
                             ), // Borrow rate
-                            // (100 + index).toString(), // Amount locked in USD
+                            formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
+                            transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()), // Debt Utilization
+                            formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
+                            formatDataNumber(
+                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) || '0',
+                                18,
+                                2,
+                                true,
+                                true
+                            ), // Amount locked in USD
+                            transformToWadPercentage(
+                                multiplyWad(value?.debtAmount?.toString(), result?.redemptionPrice?.toString()),
+                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
+                            ), // Debt amount / locked amount in USD
                         ],
                     ])
                 )
 
                 setState({
                     ...state,
+                    erc20Supply: formatDataNumber(result.erc20Supply, 18, 0, true),
+                    globalDebt: formatDataNumber(result.globalDebt, 18, 0, true),
+                    globalDebtCeiling: formatDataNumber(result.globalDebtCeiling, 18, 0, true),
+                    globalDebtUtilization: transformToWadPercentage(result.globalDebt, result.globalDebtCeiling),
+                    surplusInTreasury: formatDataNumber(result.surplusInTreasury, 18, 0, true),
                     marketPrice: formatDataNumber(result.marketPrice, 18, 3, true),
-                    redemptionPrice: formatDataNumber(result.redemptionPrice, 27, 3, true),
-                    anualRate: transformToAnualRate(result.redemptionRate, 27),
+                    redemptionPrice: formatDataNumber(result.redemptionPrice, 18, 3, true),
+                    annualRate: transformToAnnualRate(result.redemptionRate, 27),
                     eightRate: transformToEightHourlyRate(result.redemptionRate, 27),
-                    pRate: transformToAnualRate(result.redemptionRatePTerm, 27),
-                    iRate: transformToAnualRate(result.redemptionRateITerm, 27),
+                    pRate: transformToAnnualRate(result.redemptionRatePTerm, 27),
+                    iRate: transformToAnnualRate(result.redemptionRateITerm, 27),
                     colRows: Object.values(colRows),
                 })
             })

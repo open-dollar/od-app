@@ -47,18 +47,6 @@ const VaultHeader = ({
                             onClick={() => openLiquidateSafeModal({ safeId })}
                         />
                     )}
-                    <LinkButton
-                        id="deposit_borrow"
-                        text={'Deposit & Borrow'}
-                        url={`/safes/${safeId}/deposit`}
-                        color={isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
-                    <LinkButton
-                        id="repay_withdraw"
-                        text={'Repay & Withdraw'}
-                        url={`/safes/${safeId}/withdraw`}
-                        color={!isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
                 </RightSide>
             </HeaderContainer>
         </Container>

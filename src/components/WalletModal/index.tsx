@@ -111,9 +111,9 @@ export default function WalletModal() {
                 }
             })
         if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
-            const networkId = await window.ethereum.request({ method: 'net_version' })
-            // Check if network ID is Optimism Goerli (420) and prompt user to switch network to Optimism Goerli if not already
-            if (networkId !== '420') {
+            const chainId = await window.ethereum.request({ method: 'net_version' })
+            // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
+            if (chainId !== '420') {
                 try {
                     await window.ethereum.request({
                         method: 'wallet_addEthereumChain',

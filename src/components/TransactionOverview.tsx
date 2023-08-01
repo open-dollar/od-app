@@ -10,7 +10,7 @@ const TransactionOverview = ({ title, description, isChecked }: Props) => {
     return (
         <>
             <IconsHolder>
-                <img width="50" height="50" src={require('../assets/od-circle.svg').default} alt="" />
+                <img width="50" height="50" src={require('../assets/od-logo.svg').default} alt="" />
                 {isChecked ? (
                     <>
                         <img className="sep" src={require('../assets/arrow.svg').default} alt="" />

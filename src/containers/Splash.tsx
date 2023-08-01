@@ -40,7 +40,7 @@ const Splash = () => {
                             <button
                                 type="button"
                                 className="rounded-2xl mt-8 mb-20 bg-egg px-14 py-2.5 text-lg font-normal text-white "
-                                onClick={() => history.push('/safes')}
+                                onClick={() => history.push('/vaults')}
                             >
                                 LAUNCH APP
                             </button>

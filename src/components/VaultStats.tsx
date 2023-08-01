@@ -9,7 +9,7 @@ import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
-const SafeStats = ({
+const VaultStats = ({
     isModifying,
     isDeposit,
     isOwner,
@@ -124,73 +124,92 @@ const SafeStats = ({
                     <Inner className="main">
                         <Main>
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
-                            <MainValue>
-                                {collateral} <span>{singleSafe?.collateralName}</span>
-                            </MainValue>
-                            <MainChange>
-                                {modified ? (
-                                    <>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {newCollateral} {singleSafe?.collateralName}
-                                        </span>
-                                    </>
-                                ) : (
-                                    `$${collateralInUSD}`
-                                )}
-                            </MainChange>
+                            <RowWrapper>
+                                <MainValue>
+                                    {collateral} {singleSafe?.collateralName}
+                                </MainValue>
+                                <MainChange>
+                                    {modified ? (
+                                        <>
+                                            After:{' '}
+                                            <span className={isDeposit ? 'green' : 'yellow'}>
+                                                {newCollateral} {singleSafe?.collateralName}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        `$${collateralInUSD}`
+                                    )}
+                                </MainChange>
+                            </RowWrapper>
                         </Main>
 
                         <Main className="mid">
                             <MainLabel>OD Debt</MainLabel>
-                            <MainValue>
-                                {totalDebt} <span>OD</span>
-                            </MainValue>
-                            <MainChange>
-                                {' '}
-                                {modified ? (
-                                    <>
-                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
-                                    </>
-                                ) : (
-                                    `$${totalDebtInUSD}`
-                                )}
-                            </MainChange>
+                            <RowWrapper>
+                                <MainValue>
+                                    {totalDebt} <span>OD</span>
+                                </MainValue>
+                                <MainChange>
+                                    {' '}
+                                    {modified ? (
+                                        <>
+                                            After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
+                                        </>
+                                    ) : (
+                                        `$${totalDebtInUSD}`
+                                    )}
+                                </MainChange>
+                            </RowWrapper>
                         </Main>
 
                         <Main>
-                            <MainLabel>
-                                <Circle
-                                    data-tip={`${
-                                        singleSafe && returnState(singleSafe.riskState)
-                                            ? returnState(singleSafe.riskState)
-                                            : 'No'
-                                    } Risk`}
-                                    className={
-                                        singleSafe && returnState(singleSafe.riskState)
-                                            ? returnState(singleSafe.riskState).toLowerCase()
-                                            : 'dimmed'
-                                    }
-                                />{' '}
-                                Ratio (min {collateralRatio}%)
-                            </MainLabel>
-                            <MainValue>{singleSafe?.collateralRatio}%</MainValue>
-                            <MainChange>
-                                {modified ? (
-                                    <>
-                                        After:{' '}
-                                        <span
-                                            className={returnState(
-                                                ratioChecker(Number(newCollateralRatio), Number(collateralRatio))
-                                            ).toLowerCase()}
-                                        >
-                                            {newCollateralRatio}%
-                                        </span>
-                                    </>
-                                ) : (
-                                    ''
-                                )}
-                            </MainChange>
+                            <ColumnWrapper>
+                                <Column>
+                                    <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
+                                    <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                    <MainChange>
+                                        {modified ? (
+                                            <>
+                                                After:{' '}
+                                                <span
+                                                    className={returnState(
+                                                        ratioChecker(
+                                                            Number(newCollateralRatio),
+                                                            Number(collateralRatio)
+                                                        )
+                                                    ).toLowerCase()}
+                                                >
+                                                    {newCollateralRatio}%
+                                                </span>
+                                            </>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </MainChange>
+                                </Column>
+                                <Column>
+                                    <MainLabel>Risk</MainLabel>
+                                    <Wrapper>
+                                        <Circle
+                                            data-tip={`${
+                                                singleSafe && returnState(singleSafe.riskState)
+                                                    ? returnState(singleSafe.riskState)
+                                                    : 'No'
+                                            } Risk`}
+                                            className={
+                                                singleSafe && returnState(singleSafe.riskState)
+                                                    ? returnState(singleSafe.riskState).toLowerCase()
+                                                    : 'dimmed'
+                                            }
+                                        />{' '}
+                                        <MainValue>
+                                            {singleSafe && returnState(singleSafe.riskState)
+                                                ? returnState(singleSafe.riskState)
+                                                : 'No'}
+                                        </MainValue>
+                                    </Wrapper>
+                                </Column>
+                            </ColumnWrapper>
                         </Main>
                     </Inner>
                 </Left>
@@ -267,7 +286,7 @@ const SafeStats = ({
     )
 }
 
-export default SafeStats
+export default VaultStats
 
 const Flex = styled.div`
     display: flex;
@@ -275,8 +294,41 @@ const Flex = styled.div`
         flex-direction: column;
     }
 `
+
+const RowWrapper = styled.div`
+    display: flex;
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
+`
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #dadada;
+    font-size: 14px;
+    font-weight: 400;
+
+    & div {
+        margin-right: 8px;
+    }
+`
+
+const ColumnWrapper = styled.div`
+    display: flex;
+    gap: 24px;
+`
+
+const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
+`
 const Inner = styled.div`
-    background: ${(props) => props.theme.colors.colorSecondary};
+    background: ${(props) => props.theme.colors.colorPrimary};
     padding: 20px;
     border-radius: 20px;
     height: 100%;
@@ -318,16 +370,14 @@ const MainLabel = styled.div`
     color: ${(props) => props.theme.colors.secondary};
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
 `
 
 const MainValue = styled.div`
-    font-size: 25px;
-    color: ${(props) => props.theme.colors.primary};
-    font-family: 'Montserrat', sans-serif;
-    margin: 2px 0;
-    span {
-        font-size: ${(props) => props.theme.font.small};
-    }
+    font-weight: 700;
+    font-size: 20px;
+    color: white;
+    margin-right: 8px;
 `
 
 const MainChange = styled.div`
@@ -384,6 +434,7 @@ const Side = styled.div`
 
 const SideTitle = styled.div`
     color: ${(props) => props.theme.colors.secondary};
+    font-size: 16px;
     .sideNote {
         font-size: 12px;
         span {
@@ -399,7 +450,7 @@ const SideTitle = styled.div`
 const SideValue = styled.div`
     margin-left: auto;
     color: ${(props) => props.theme.colors.customSecondary};
-    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
 `
 
 // const SurplusBlock = styled.div``

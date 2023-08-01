@@ -86,7 +86,7 @@ const safeModel: SafeModel = {
                 chainId,
                 hash,
                 from: txResponse.from,
-                summary: payload.safeId ? 'Modifying Safe' : 'Creating a new Safe',
+                summary: payload.safeId ? 'Modifying Vault' : 'Creating a new Vault',
                 addedTime: new Date().getTime(),
                 originalTx: txResponse,
             })
@@ -125,7 +125,7 @@ const safeModel: SafeModel = {
                 chainId,
                 hash,
                 from: txResponse.from,
-                summary: 'Modifying Safe',
+                summary: 'Modifying Vault',
                 addedTime: new Date().getTime(),
                 originalTx: txResponse,
             })

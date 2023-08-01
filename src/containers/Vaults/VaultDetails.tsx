@@ -6,11 +6,11 @@ import { useActiveWeb3React, useIsOwner } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { isNumeric, DEFAULT_SAFE_STATE } from '~/utils'
 import AlertLabel from '~/components/AlertLabel'
-import SafeStats from '~/components/SafeStats'
-import ModifySafe from './ModifySafe'
-import SafeHeader from './SafeHeader'
+import VaultStats from '~/components/VaultStats'
+import ModifyVault from './ModifyVault'
+import VaultHeader from './VaultHeader'
 
-const SafeDetails = ({ ...props }) => {
+const VaultDetails = ({ ...props }) => {
     const { t } = useTranslation()
     const { account, library } = useActiveWeb3React()
 
@@ -56,7 +56,7 @@ const SafeDetails = ({ ...props }) => {
     useEffect(() => {
         if (!account || !library) return
         if (!isNumeric(safeId)) {
-            props.history.push('/safes')
+            props.history.push('/vaults')
         }
     }, [account, library, props.history, safeId])
 
@@ -69,16 +69,16 @@ const SafeDetails = ({ ...props }) => {
                     <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                 </LabelContainer>
             ) : null}
-            <SafeHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+            <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
 
-            {!isLoading && <SafeStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
+            {!isLoading && <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? <ModifySafe isDeposit={isDeposit} isOwner={isOwner} /> : null}
+            {(isDeposit || isWithdraw) && !isLoading ? <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
         </Container>
     )
 }
 
-export default SafeDetails
+export default VaultDetails
 
 const Container = styled.div`
     max-width: 880px;

@@ -2,7 +2,7 @@
 
 import { returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
-describe('App Page - Safe Details', () => {
+describe('App Page - Vault Details', () => {
     const getValue = (val: string) => val.replace(/[^\d.]*/g, '')
 
     beforeEach(() => {

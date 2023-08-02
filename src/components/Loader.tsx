@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import OdLoadingIcon from './Icons/OdLoadingIcon'
+import TransactionSpinner from './Icons/TransactionSpinner'
 
 interface Props {
     text?: string
@@ -11,7 +11,7 @@ interface Props {
 const Loader = ({ text, width, fontSize, hideSpinner, inlineButton }: Props) => {
     return (
         <Container inline={inlineButton}>
-            {hideSpinner ? null : <OdLoadingIcon style={{ width: width || '14px', height: width || '14px' }} />}
+            {hideSpinner ? null : <TransactionSpinner style={{ width: width || '14px', height: width || '14px' }} />}
             <span style={{ fontSize: fontSize }}>{text}</span>
         </Container>
     )

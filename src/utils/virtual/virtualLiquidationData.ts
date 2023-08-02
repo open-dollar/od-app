@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import VirtualLiquidationData from '~/artifacts/contracts/VirtualLiquidationData.sol/VirtualLiquidationData.json'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 interface LiquidationData {
     redemptionPrice: BigNumber

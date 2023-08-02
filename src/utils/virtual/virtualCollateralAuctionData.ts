@@ -1,4 +1,4 @@
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { BigNumber, ethers } from 'ethers'
 import VirtualCollateralAuctionsData from '~/artifacts/contracts/VirtualCollateralAuctionData.sol/VirtualCollateralAuctionsData.json'
 

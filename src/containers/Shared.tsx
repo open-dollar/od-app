@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useCallback } from 'react'
-import { getTokenList } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { getTokenList } from '@usekeyp/od-sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
@@ -60,8 +60,8 @@ const Shared = ({ children, ...rest }: Props) => {
     const location = useLocation()
     const isSplash = location.pathname === '/'
     const tokensData = geb?.tokenList
-    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).HAI.address)
-    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).KITE.address)
+    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
+    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
 
     const {
         settingsModel: settingsState,
@@ -101,8 +101,8 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [account, geb, forceUpdateTokens, connectWalletActions])
 
     useEffect(() => {
-        const haiBalance = connectWalletState?.tokensFetchedData.HAI?.balanceE18
-        const kiteBalance = connectWalletState?.tokensFetchedData.KITE?.balanceE18
+        const haiBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18
+        const kiteBalance = connectWalletState?.tokensFetchedData.ODG?.balanceE18
 
         if (haiBalance && kiteBalance) {
             setCoinBalances({

@@ -6,15 +6,15 @@ import _ from '~/utils/lodash'
 import { useActiveWeb3React } from '~/hooks'
 import { AuctionEventType, IAuction, IAuctionBidder, ICollateralAuction } from '~/types'
 import { AuctionData } from '~/utils/virtual/virtualAuctionData'
-import { radToFixed } from '@hai-on-op/sdk/lib/utils'
+import { radToFixed } from '@usekeyp/od-sdk/lib/utils'
 import useGeb from './useGeb'
-import { utils as gebUtils } from '@hai-on-op/sdk'
+import { utils as gebUtils } from '@usekeyp/od-sdk'
 
 // temporary cast
 import {
     ICollateralAuction as SDKCollateralAuction,
     ISurplusAuction as SDKAuction,
-} from '@hai-on-op/sdk/lib/schema/auction'
+} from '@usekeyp/od-sdk/lib/schema/auction'
 import { floatsTypes, parseWad } from '~/utils'
 
 export function useGetAuctions(type: AuctionEventType, tokenSymbol?: string) {

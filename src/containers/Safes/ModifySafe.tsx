@@ -65,7 +65,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const [unlockState, approveUnlock] = useTokenApproval(
         parsedAmounts.rightInput,
-        tokensData?.HAI.address,
+        tokensData?.OD.address,
         proxyAddress,
         '18',
         true
@@ -89,7 +89,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
 
     const isValid = !error
 
-    const haiBalance = ethers.utils.formatEther(tokenBalances.HAI?.balanceE18 || '0')
+    const haiBalance = ethers.utils.formatEther(tokenBalances.OD?.balanceE18 || '0')
 
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
@@ -107,7 +107,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
         } else {
             const availableHaiBN = ethers.utils.parseEther(availableHai)
 
-            const haiBalanceBN = tokenBalances.HAI.balanceE18 ? tokenBalances.HAI.balanceE18 : BigNumber.from('0')
+            const haiBalanceBN = tokenBalances.OD.balanceE18 ? tokenBalances.OD.balanceE18 : BigNumber.from('0')
 
             const isMoreDebt = availableHaiBN.gt(haiBalanceBN)
 
@@ -244,15 +244,15 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
                             <TokenInput
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_right`}
                                 token={
-                                    tokensData.HAI && {
-                                        icon: TOKEN_LOGOS[tokensData.HAI.symbol],
-                                        name: tokensData.HAI.symbol,
+                                    tokensData.OD && {
+                                        icon: TOKEN_LOGOS[tokensData.OD.symbol],
+                                        name: tokensData.OD.symbol,
                                     }
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI.symbol}`
-                                        : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
+                                        ? `Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.OD.symbol}`
+                                        : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.OD.symbol}`
                                 }
                                 rightLabel={
                                     isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`

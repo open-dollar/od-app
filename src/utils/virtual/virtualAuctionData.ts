@@ -1,4 +1,4 @@
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { BigNumber, ethers } from 'ethers'
 import VirtualAuctionsData from '~/artifacts/contracts/VirtualAuctionsData.sol/VirtualAuctionsData.json'
 
@@ -73,8 +73,8 @@ export async function fetchAuctionData(geb: Geb, proxyAddress: string): Promise<
             geb.contracts.accountingEngine.address,
             geb.contracts.safeEngine.address,
             proxyAddress,
-            geb.tokenList.KITE.address,
-            geb.tokenList.HAI.address,
+            geb.tokenList.ODG.address,
+            geb.tokenList.OD.address,
         ]
     )
     // Generate payload from input data

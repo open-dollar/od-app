@@ -59,7 +59,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const balances = useMemo(() => {
         return {
             weth: tokensFetchedData.WETH?.balanceE18,
-            hai: tokensFetchedData.HAI?.balanceE18,
+            hai: tokensFetchedData.OD?.balanceE18,
         }
     }, [tokensFetchedData])
 

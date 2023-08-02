@@ -1,8 +1,8 @@
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 
 // temporary cast
-import { ISurplusAuction as SDKAuction, ICollateralAuction } from '@hai-on-op/sdk/lib/schema/auction'
+import { ISurplusAuction as SDKAuction, ICollateralAuction } from '@usekeyp/od-sdk/lib/schema/auction'
 import {
     handleAuctionBid,
     handleAuctionBuy,

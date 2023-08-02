@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { JsonRpcSigner } from '@ethersproject/providers'
 
 import { IAuctionBid } from '~/types'

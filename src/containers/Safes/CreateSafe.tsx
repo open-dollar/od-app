@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -261,12 +261,12 @@ const CreateSafe = ({
                                     <br />
                                     <TokenInput
                                         token={
-                                            tokensData.HAI && {
-                                                icon: TOKEN_LOGOS[tokensData.HAI.symbol],
-                                                name: tokensData.HAI.symbol,
+                                            tokensData.OD && {
+                                                icon: TOKEN_LOGOS[tokensData.OD.symbol],
+                                                name: tokensData.OD.symbol,
                                             }
                                         }
-                                        label={`Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI?.symbol}`}
+                                        label={`Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.OD?.symbol}`}
                                         rightLabel={`~$${haiBalanceUSD}`}
                                         onChange={onRightInput}
                                         value={rightInput}

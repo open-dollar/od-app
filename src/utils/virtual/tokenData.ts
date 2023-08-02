@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import TokensData from '~/artifacts/contracts/TokensData.sol/TokensData.json'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 export interface TokenFetchData {
     balanceE18: string

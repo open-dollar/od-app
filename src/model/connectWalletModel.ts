@@ -2,7 +2,7 @@ import { action, Action, Thunk, thunk } from 'easy-peasy'
 import { fetchTokenData, TokenFetchData } from 'src/utils/virtual/tokenData'
 import api from '../services/api'
 import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 export interface ConnectWalletModel {
     forceUpdateTokens: boolean
@@ -18,7 +18,7 @@ export interface ConnectWalletModel {
     protAllowance: string
     ctHash: string
     ethBalance: ITokenBalance
-    haiBalance: ITokenBalance
+    odBalance: ITokenBalance
     uniswapPoolBalance: ITokenBalance
     claimableFLX: string
     isWrongNetwork: boolean
@@ -53,7 +53,7 @@ const connectWalletModel: ConnectWalletModel = {
     forceUpdateTokens: true,
     blockNumber: blockNumberState ? JSON.parse(blockNumberState) : {},
     ethBalance: { 1: 0, 42: 0, 420: 0 },
-    haiBalance: { 1: '0', 42: '0', 420: '0' },
+    odBalance: { 1: '0', 42: '0', 420: '0' },
     uniswapPoolBalance: { 1: '0', 42: '0', 420: '0' },
     tokensData: {},
     tokensFetchedData: {},
@@ -112,7 +112,7 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     updateHaiBalance: action((state, payload) => {
         const { chainId, balance } = payload
-        state.haiBalance[chainId] = balance
+        state.odBalance[chainId] = balance
     }),
     updateUniswapPoolBalance: action((state, payload) => {
         const { chainId, balance } = payload

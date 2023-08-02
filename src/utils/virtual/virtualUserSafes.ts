@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import VirtualUserSafes from '~/artifacts/contracts/VirtualUserSafes.sol/VirtualUserSafes.json'
 
 interface SafeData {
@@ -13,13 +13,13 @@ interface SafeData {
 export async function fetchUserSafes(
     geb: Geb,
     userAddress: string,
-    haiAddress: string
+    odAddress: string
 ): Promise<[BigNumber, SafeData[]]> {
     // Encoded input data to be sent to the batch contract constructor
     const inputData = ethers.utils.defaultAbiCoder.encode(
         ['address', 'address', 'address', 'address', 'address', 'address'],
         [
-            haiAddress,
+            odAddress,
             geb.contracts.proxyRegistry.address,
             geb.contracts.getSafes.address,
             geb.contracts.safeEngine.address,
@@ -29,7 +29,16 @@ export async function fetchUserSafes(
     )
     // Generate payload from input data
     const payload = VirtualUserSafes.bytecode.concat(inputData.slice(2))
-
+    console.debug(odAddress,
+        geb.contracts.proxyRegistry.address,
+        geb.contracts.getSafes.address,
+        geb.contracts.safeEngine.address,
+        geb.contracts.safeManager.address,
+        userAddress)
+    console.debug(inputData)
+    console.debug(inputData.slice(2))
+    console.debug(VirtualUserSafes.bytecode)
+    console.debug(payload)
     // Call the deployment transaction with the payload
     const returnedData = await geb.provider.call({ data: payload })
 
@@ -41,6 +50,5 @@ export async function fetchUserSafes(
         ],
         returnedData
     ) as [BigNumber, SafeData[]]
-
     return decoded
 }

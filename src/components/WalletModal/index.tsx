@@ -111,26 +111,29 @@ export default function WalletModal() {
                 }
             })
         if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
-            // Prompt user to switch network to Optimism Goerli
-            try {
-                await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [
-                        {
-                            chainId: `0x1a4`,
-                            chainName: 'Optimism Goerli Testnet',
-                            nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
-                                decimals: 18,
+            const chainId = await window.ethereum.request({ method: 'net_version' })
+            // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
+            if (chainId !== '420') {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [
+                            {
+                                chainId: `0x1a4`,
+                                chainName: 'Optimism Goerli Testnet',
+                                nativeCurrency: {
+                                    name: 'ETH',
+                                    symbol: 'ETH',
+                                    decimals: 18,
+                                },
+                                rpcUrls: ['https://goerli.optimism.io'],
+                                blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
                             },
-                            rpcUrls: ['https://goerli.optimism.io'],
-                            blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
-                        },
-                    ],
-                })
-            } catch (error) {
-                console.error('Failed to switch network', error)
+                        ],
+                    })
+                } catch (error) {
+                    console.error('Failed to switch network', error)
+                }
             }
         } else {
             console.log('MetaMask is not installed')

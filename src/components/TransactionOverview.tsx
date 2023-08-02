@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import ReflexerIcon from './Icons/ReflexerIcon'
 
 interface Props {
     title: string
@@ -11,7 +10,7 @@ const TransactionOverview = ({ title, description, isChecked }: Props) => {
     return (
         <>
             <IconsHolder>
-                <ReflexerIcon />
+                <img width="50" height="50" src={require('../assets/od-logo.svg').default} alt="" />
                 {isChecked ? (
                     <>
                         <img className="sep" src={require('../assets/arrow.svg').default} alt="" />

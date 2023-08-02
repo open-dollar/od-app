@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
+import styled from 'styled-components'
 import ReactTooltip from 'react-tooltip'
 
 import {
@@ -18,7 +19,7 @@ import { AddressLink } from '~/components/AddressLink'
 
 interface ContractsTableProps {
     title: string
-    colums: { name: string; description?: string }[]
+    colums: string[]
     rows: string[][]
 }
 
@@ -35,30 +36,51 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
             </Header>
             <Content>
                 <SectionContent>
-                    <Heads>
-                        {colums?.map(({ name }, index) => (
-                            <HeadsContainer key={title + '-column-' + index}>
-                                <Head>{name}</Head>
-                            </HeadsContainer>
+                    <SHeads>
+                        {colums?.map((colName, index) => (
+                            <SHeadsContainer key={title + '-column-' + index}>
+                                <Head>{colName}</Head>
+                            </SHeadsContainer>
                         ))}
-                        <ReactTooltip multiline type="light" data-effect="solid" />
-                    </Heads>
+                    </SHeads>
 
                     {rows?.map((item, index) => (
-                        <List key={'row-' + index}>
+                        <SList key={'row-' + index}>
                             {item?.map((value, valueIndex) => (
                                 <HeadsContainer key={'row-item-' + valueIndex}>
-                                    <ListItem>
-                                        <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
-                                        {valueIndex !== 0 && <AddressLink address={value} chainId={chainId || 420} />}
-                                        {valueIndex === 0 && <>{value}</>}
-                                    </ListItem>
+                                    <SListItem>
+                                        <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
+                                        {valueIndex === 1 && <AddressLink address={value} chainId={chainId || 420} />}
+                                        {valueIndex !== 1 && <>{value}</>}
+                                    </SListItem>
                                 </HeadsContainer>
                             ))}
-                        </List>
+                        </SList>
                     ))}
                 </SectionContent>
             </Content>
         </Container>
     )
 }
+
+// Description column width variable
+const descriptionColumnWidth = '500px'
+
+const SHeads = styled(Heads)`
+    div:last-child {
+        width: ${descriptionColumnWidth};
+    }
+`
+const SList = styled(List)`
+    div:last-child div {
+        width: ${descriptionColumnWidth};
+    }
+`
+
+const SHeadsContainer = styled(HeadsContainer)`
+    text-align: start;
+`
+const SListItem = styled(ListItem)`
+    text-align: start;
+    text-overflow: ellipsis;
+`

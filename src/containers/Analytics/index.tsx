@@ -8,6 +8,7 @@ import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
 import { AddressLink } from '~/components/AddressLink'
 import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
+import { contractsDescriptions } from '~/utils/contractsDescription'
 import {
     formatDataNumber,
     multiplyRates,
@@ -115,17 +116,30 @@ const Analytics = () => {
     const contracts = useMemo(() => {
         if (geb) {
             const contracts: { [k: string]: string } = Object.fromEntries(
-                Object.entries(geb?.contracts).map(([key, value]) => [key, value.address])
+                Object.entries(geb?.contracts).map(([key, value], index) => [key, value.address])
             )
 
-            return Object.entries(contracts).filter(([, value]) => !!value)
+            return (
+                Object.entries(contracts)
+                    // add description to contracts.
+                    /* 
+                        If you want to use contract addresses instead of contract names change the next line to:
+                        ```
+                        .map((contract: string[]) => [...contract, contractsDescriptions[contract[1]]])
+                        ```
+                        and update `contractsDescriptions.ts` accordingly
+                    */
+                    .map((contract: string[]) => [...contract, contractsDescriptions[contract[0]]])
+                    // filter contracts without address
+                    .filter(([, value]) => !!value)
+            )
         }
         return []
     }, [geb])
 
     const contractsData = {
         title: 'Contracts',
-        colums: [{ name: 'Contract' }, { name: 'Address' }],
+        colums: ['Contract', 'Address', 'Description'],
         rows: contracts,
     }
     const marketPriceData: DataCardProps = {

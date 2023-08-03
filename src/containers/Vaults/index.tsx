@@ -77,12 +77,12 @@ const OnBoarding = ({ ...props }) => {
                         </Button>
                     </BtnContainer>
                 ) : null}
-                <Stats />
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
+                <Stats />
             </Content>
         </Container>
     )

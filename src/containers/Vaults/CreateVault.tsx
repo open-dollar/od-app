@@ -64,6 +64,11 @@ const CreateVault = ({
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
+    const redirectToWrapEth = () => {
+        const url = "https://wrapeth.com/";
+        window.open(url, "_blank");
+    };
+
     const selectedTokenBalance = useMemo(() => {
         if (selectedCollateralBalance) {
             return formatNumber(selectedCollateralBalance, 2)
@@ -134,12 +139,8 @@ const CreateVault = ({
     }
 
     const wrapEth = () => {
-        popupsActions.setSafeOperationPayload({
-            isOpen: true,
-            type: '',
-            isCreate: false,
-        })
-    }
+        redirectToWrapEth();
+    };
 
     const handleConfirm = async () => {
         if (account && library) {

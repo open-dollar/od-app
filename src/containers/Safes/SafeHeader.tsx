@@ -40,13 +40,13 @@ const SafeHeader = ({
                     </SafeInfo>
                 </LeftSide>
                 <RightSide>
-                    {canLiquidate &&
+                    {canLiquidate && (
                         <Button
                             id="liquidate-btn"
                             text="Liquidate Vault"
                             onClick={() => openLiquidateSafeModal({ safeId })}
                         />
-                    }
+                    )}
                     <LinkButton
                         id="deposit_borrow"
                         text={'Deposit & Borrow'}

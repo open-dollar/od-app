@@ -36,8 +36,14 @@ export async function fetchUserSafes(
     // Parse the returned value to the struct type in order
     const decoded = ethers.utils.defaultAbiCoder.decode(
         [
-            'uint256 coinBalance',
-            'tuple(address addy, uint256 id, uint256 lockedCollateral, uint256 generatedDebt, bytes32 collateralType)[]',
+            `uint256 coinBalance`,
+            `tuple(
+                address addy, 
+                uint256 id, 
+                uint256 lockedCollateral, 
+                uint256 generatedDebt, 
+                bytes32 collateralType
+                )[]`,
         ],
         returnedData
     ) as [BigNumber, SafeData[]]

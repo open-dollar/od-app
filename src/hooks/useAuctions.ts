@@ -6,7 +6,7 @@ import _ from '~/utils/lodash'
 import { useActiveWeb3React } from '~/hooks'
 import { AuctionEventType, IAuction, IAuctionBidder, ICollateralAuction } from '~/types'
 import { AuctionData } from '~/utils/virtual/virtualAuctionData'
-import { radToFixed } from '@hai-on-op/sdk/lib/utils'
+import { radToFixed, wadToFixed } from '@hai-on-op/sdk/lib/utils'
 import useGeb from './useGeb'
 import { utils as gebUtils } from '@hai-on-op/sdk'
 
@@ -245,7 +245,7 @@ export function useCollateralAuctions(tokenSymbol: string): ICollateralAuction[]
 }
 
 // start surplus auction
-export function useStartSurplusAuction() {
+export function useStartAuction() {
     const geb = useGeb()
     const { transactionsModel: transactionsActions, popupsModel: popupsActions } = useStoreActions((store) => store)
 
@@ -253,9 +253,14 @@ export function useStartSurplusAuction() {
     const auctionsData = auctionsState.auctionsData as AuctionData
 
     const { account, library } = useActiveWeb3React()
-    const [surplusAmountToSell, setSurplusAmountToSell] = useState<string>()
-    const [systemSurplus, setSystemSurplus] = useState<string>()
-    const [amountToStartAuction, setAmountToStartAuction] = useState<string>()
+    const [surplusAmountToSell, setSurplusAmountToSell] = useState<string>('')
+    const [debtAmountToSell, setDebtAmountToSell] = useState<string>('')
+    const [protocolTokensOffered, setProtocolTokensToOffer] = useState<string>('')
+    const [systemSurplus, setSystemSurplus] = useState<string>('')
+    const [systemDebt, setSystemDebt] = useState<string>('')
+
+    const [surplusRequiredToAuction, setAmountToStartSurplusAuction] = useState<string>('')
+    const [debtRequiredToAuction, setAmountToStartDebtAuction] = useState<string>('')
     const lastSurplusTime = auctionsData?.accountingEngineData?.lastSurplusTime
     const surplusDelay = auctionsData?.accountingEngineData?.accountingEngineParams?.surplusDelay
 
@@ -264,21 +269,34 @@ export function useStartSurplusAuction() {
             const coinBalance = auctionsData.accountingEngineData.coinBalance
             const unqueuedUnauctionedDebt = auctionsData.accountingEngineData.unqueuedUnauctionedDebt
 
-            const systemSurplus = coinBalance.sub(unqueuedUnauctionedDebt)
+            let systemSurplus = coinBalance.sub(unqueuedUnauctionedDebt)
+            let systemDebt = unqueuedUnauctionedDebt.sub(coinBalance)
 
             const surplusAmount = auctionsData.accountingEngineData?.accountingEngineParams.surplusAmount
-
             const surplusBuffer = auctionsData?.accountingEngineData?.accountingEngineParams.surplusBuffer
-            const surplusAmountToSell = surplusAmount.add(surplusBuffer).sub(systemSurplus)
+            const surplusRequiredToAuction = surplusAmount.add(surplusBuffer).sub(systemSurplus)
 
+            const debtAmountToSell = auctionsData.accountingEngineData?.accountingEngineParams.debtAuctionBidSize
+            const protocolTokensOffered =
+                auctionsData.accountingEngineData?.accountingEngineParams.debtAuctionMintedTokens
+            const debtRequiredToAuction = debtAmountToSell.sub(systemDebt)
+
+            systemSurplus = systemSurplus < BigNumber.from(0) ? BigNumber.from(0) : systemSurplus
+            systemDebt = systemDebt < BigNumber.from(0) ? BigNumber.from(0) : systemDebt
             setSystemSurplus(radToFixed(systemSurplus).toString())
-            setAmountToStartAuction(radToFixed(surplusAmountToSell).toString())
+            setSystemDebt(radToFixed(systemDebt).toString())
+
+            setAmountToStartSurplusAuction(radToFixed(surplusRequiredToAuction).toString())
+            setAmountToStartDebtAuction(radToFixed(debtRequiredToAuction).toString())
+
             setSurplusAmountToSell(radToFixed(surplusAmount).toString())
+            setDebtAmountToSell(radToFixed(debtAmountToSell).toString())
+            setProtocolTokensToOffer(wadToFixed(protocolTokensOffered).toString())
         }
     }, [auctionsData])
 
-    // Check cooldown. Time now > lastSurplusTime + surplusDelay
-    const coolDownDone = useMemo(
+    // Check surplus cooldown. Time now > lastSurplusTime + surplusDelay
+    const surplusCooldownDone = useMemo(
         () =>
             lastSurplusTime && surplusDelay
                 ? new Date() > new Date(lastSurplusTime.add(surplusDelay).mul(1000).toNumber())
@@ -286,13 +304,17 @@ export function useStartSurplusAuction() {
         [lastSurplusTime, surplusDelay]
     )
 
-    // if surplus amount to sell is greater than delta to start surplus auction
-    // we can allow to start surplus auction
+    // if delta to start surplus auction is negative and cooldown is over we can allow to start surplus auction
     const allowStartSurplusAuction = useMemo(() => {
-        if (!surplusAmountToSell || !amountToStartAuction) return false
+        if (!surplusAmountToSell || !surplusRequiredToAuction) return false
+        return surplusRequiredToAuction <= '0' && surplusCooldownDone
+    }, [surplusAmountToSell, surplusRequiredToAuction, surplusCooldownDone])
 
-        return surplusAmountToSell >= amountToStartAuction && coolDownDone
-    }, [surplusAmountToSell, amountToStartAuction, coolDownDone])
+    // if delta to start debt auction is negative we can allow to start surplus auction
+    const allowStartDebtAuction = useMemo(() => {
+        if (!debtAmountToSell || !debtRequiredToAuction) return false
+        return debtRequiredToAuction <= '0'
+    }, [debtAmountToSell, debtRequiredToAuction])
 
     const startSurplusAcution = async function () {
         if (!library || !account) throw new Error('No library or account')
@@ -321,12 +343,45 @@ export function useStartSurplusAuction() {
         }
     }
 
+    const startDebtAcution = async function () {
+        if (!library || !account) throw new Error('No library or account')
+
+        const txResponse = await geb.contracts.accountingEngine.auctionDebt()
+
+        if (!txResponse) throw new Error('No transaction request!')
+
+        if (txResponse) {
+            const { hash, chainId } = txResponse
+            transactionsActions.addTransaction({
+                chainId,
+                hash,
+                from: txResponse.from,
+                summary: 'Starting debt auction',
+                addedTime: new Date().getTime(),
+                originalTx: txResponse,
+            })
+            popupsActions.setIsWaitingModalOpen(true)
+            popupsActions.setWaitingPayload({
+                title: 'Transaction Submitted',
+                hash: txResponse.hash,
+                status: 'success',
+            })
+            await txResponse.wait()
+        }
+    }
+
     return {
         startSurplusAcution,
+        startDebtAcution,
         surplusAmountToSell,
+        debtAmountToSell,
+        protocolTokensOffered,
         systemSurplus,
+        systemDebt,
         allowStartSurplusAuction,
-        deltaToStartSurplusAuction: amountToStartAuction,
-        coolDownDone,
+        allowStartDebtAuction,
+        deltaToStartDebtAuction: debtRequiredToAuction,
+        deltaToStartSurplusAuction: surplusRequiredToAuction,
+        surplusCooldownDone,
     }
 }

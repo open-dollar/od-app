@@ -125,7 +125,7 @@ contract VirtualAuctionsData {
             coinTokenSafeBalance: _safeEngine.coinBalance(_proxy)
         });
 
-        // // encode return data
+        // encode return data
         bytes memory data = abi.encode(auctionsData);
 
         // force constructor return via assembly

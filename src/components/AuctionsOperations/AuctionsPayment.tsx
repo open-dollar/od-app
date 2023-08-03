@@ -47,7 +47,7 @@ const AuctionsPayment = () => {
     const bids = _.get(selectedAuction, 'englishAuctionBids', '[]')
     const biddersList = _.get(selectedAuction, 'biddersList', '[]')
     const remainingCollateral = _.get(selectedAuction, 'remainingCollateral', '0')
-    const formattedRemainingCollateral = ethers.utils.formatUnits(remainingCollateral, 18)
+    const remainingToRaise = _.get(selectedAuction, 'remainingToRaiseE18', '0')
 
     const sellAmount = _.get(selectedAuction, 'sellAmount', '0')
     const buyAmount = _.get(selectedAuction, 'buyAmount', '0')
@@ -89,18 +89,22 @@ const AuctionsPayment = () => {
 
             // we divide by 1e18 because we multiplied by 1e18 in the line above
             // this was required to handle decimal prices (<0)
-            return ethers.utils.formatUnits(price || constants.WeiPerEther, 18)
+            return price
         }
-        return '0'
+        return BigNumber.from('0')
     }, [auctionId, auctionsState.collateralData])
+
+    const collateralPriceFormatted = ethers.utils.formatUnits(collateralPrice || constants.WeiPerEther, 18)
 
     const handleAmountChange = (val: string) => {
         setError('')
         setValue(val)
         auctionsActions.setAmount(val)
-        const colValue = (Number(val) * Number(collateralPrice)).toString()
-        setCollateralValue(sanitizeDecimals(colValue, 18))
-        auctionsActions.setCollateralAmount(sanitizeDecimals(colValue, 18))
+        const valBN = BigNumber.from(ethers.utils.parseEther(val || '0'))
+        const colValueBN = valBN.mul(collateralPrice).div(constants.WeiPerEther)
+        const colValueBNDecimalsRemoved = gebUtils.decimalShift(gebUtils.decimalShift(colValueBN, -8), 8)
+        setCollateralValue(ethers.utils.formatEther(colValueBNDecimalsRemoved.toString()))
+        auctionsActions.setCollateralAmount(ethers.utils.formatEther(colValueBNDecimalsRemoved.toString()))
     }
 
     const handleCollateralAmountChange = useCallback(
@@ -109,11 +113,11 @@ const AuctionsPayment = () => {
             setCollateralValue(amount)
             auctionsActions.setCollateralAmount(amount)
 
-            const value = (Number(amount) / Number(collateralPrice)).toString() || ''
+            const value = (Number(amount) / Number(collateralPriceFormatted)).toString() || ''
             setValue(sanitizeDecimals(value, 18))
             auctionsActions.setAmount(sanitizeDecimals(value, 18))
         },
-        [auctionsActions, collateralPrice]
+        [auctionsActions, collateralPriceFormatted]
     )
 
     const maxBid = (): string => {
@@ -153,13 +157,19 @@ const AuctionsPayment = () => {
 
     const maxAmount = (function () {
         if (auctionType === 'COLLATERAL') {
-            const haiToBid = Number(formattedRemainingCollateral) / Number(collateralPrice)
+            const haiToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
+            const haiToBid = ethers.utils.formatUnits(haiToBidPlusOne.toString(), 18)
             const haiBalanceNumber = Number(haiBalance)
-            return haiBalanceNumber < haiToBid ? haiBalance : haiToBid.toString()
+            return haiBalanceNumber < Number(haiToBid) ? haiBalance : haiToBid.toString()
         } else {
             return maxBid()
         }
     })()
+
+    const maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount))
+        .mul(collateralPrice)
+        .div(constants.WeiPerEther)
+    const maxCollateralParsed = ethers.utils.formatEther(maxCollateral)
 
     const passedChecks = () => {
         const maxBidAmountBN = BigNumber.from(toFixedString(maxBid(), 'WAD'))
@@ -336,10 +346,7 @@ const AuctionsPayment = () => {
             case 'COLLATERAL':
                 return {
                     value: collateralValue,
-                    label: `${tokenSymbol} to Receive (Max: ${formatNumber(
-                        formattedRemainingCollateral,
-                        4
-                    )} ${tokenSymbol})`,
+                    label: `${tokenSymbol} to Receive (Max: ${formatNumber(maxCollateralParsed, 4)} ${tokenSymbol})`,
                 }
             default:
                 return { value: '', label: '' }

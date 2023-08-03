@@ -219,9 +219,7 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
 }
 
 export const ratioChecker = (currentLiquitdationRatio: number, minLiquidationRatio: number) => {
-    console.log('currentLiquitdationRatio', currentLiquitdationRatio)
     const minLiquidationRatioPercent = minLiquidationRatio * 100
-    console.log('minLiquidationRatioPercent', minLiquidationRatioPercent)
     const safestRatio = minLiquidationRatioPercent * 2.2
     const midSafeRatio = minLiquidationRatioPercent * 1.5
 

@@ -66,17 +66,6 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
-                    <BtnContainer className="top-up">
-                        <Button
-                            data-test-id="topup-btn"
-                            disabled={connectWalletState.isWrongNetwork}
-                            onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                        >
-                            <BtnInner>{t('manage_other_safes')}</BtnInner>
-                        </Button>
-                    </BtnContainer>
-                ) : null}
                 <Stats />
                 {safeState.safeCreated ? (
                     <VaultList address={address} />

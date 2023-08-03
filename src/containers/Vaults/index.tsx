@@ -85,30 +85,6 @@ const Content = styled.div`
     position: relative;
 `
 
-const BtnContainer = styled.div`
-    position: absolute;
-    top: 25px;
-    right: 50px;
-    button {
-        min-width: 100px;
-        padding: 4px 12px;
-    }
-    &.top-up {
-        right: auto;
-        left: 50px;
-        top: 50px;
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      position: static;
-      margin-bottom:20px;
-      &.top-up {
-         display:none;
-        }
-    `}
-`
 
-const BtnInner = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 5px;
-`
+
+

@@ -116,6 +116,11 @@ const ConnectedWalletInfo = () => {
                     </WalletData>
                 ) : null}
             </DataContainer>
+            <BtnContainer className="top-up">
+                <Button data-test-id="topup-btn" onClick={() => popupsActions.setIsSafeManagerOpen(true)}>
+                    <BtnInner>{t('manage_other_safes')}</BtnInner>
+                </Button>
+            </BtnContainer>
             <TransactionsContainer>
                 {!!pendingTransactions.length || !!confirmedTransactions.length ? (
                     <>
@@ -135,6 +140,34 @@ const ConnectedWalletInfo = () => {
 }
 
 export default ConnectedWalletInfo
+
+const BtnContainer = styled.div`
+    displat: flex;
+    justify-content: center;
+    margin-top: 24px;
+    button {
+        min-width: 100px;
+        padding: 4px 12px;
+    }
+    &.top-up {
+        right: auto;
+        left: 50px;
+        top: 50px;
+    }
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+      position: static;
+      margin-bottom:20px;
+      &.top-up {
+         display:none;
+        }
+    `}
+`
+
+const BtnInner = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+`
 
 const Connection = styled.div`
     display: flex;

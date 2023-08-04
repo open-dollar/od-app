@@ -43,6 +43,7 @@ const CreateVault = ({
         connectWalletModel: { proxyAddress, tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
     const history = useHistory()
+    console.log({history})
     const {
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
@@ -106,7 +107,7 @@ const CreateVault = ({
     }, [clearAll])
 
     const handleWaitingTitle = () => {
-        return 'Modifying Vault'
+        return 'Creating Vault'
     }
 
     const handleSubmit = () => {

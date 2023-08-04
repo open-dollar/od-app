@@ -12,7 +12,6 @@ import { useStoreState } from '~/store'
 const VaultStats = ({
     isModifying,
     isDeposit,
-    isOwner,
 }: {
     isModifying: boolean
     isDeposit: boolean
@@ -125,40 +124,26 @@ const VaultStats = ({
                         <Main>
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
                             <RowWrapper>
-                                <MainValue>
-                                    {collateral} {singleSafe?.collateralName}
-                                </MainValue>
-                                <MainChange>
-                                    {modified ? (
-                                        <>
-                                            After:{' '}
-                                            <span className={isDeposit ? 'green' : 'yellow'}>
-                                                {newCollateral} {singleSafe?.collateralName}
-                                            </span>
-                                        </>
-                                    ) : (
-                                        `$${collateralInUSD}`
-                                    )}
-                                </MainChange>
+                                <div>
+                                    <MainValue>{collateral}</MainValue>
+                                    <MainChange>${collateralInUSD}</MainChange>
+                                </div>
+                                <AfterTextWrapper>
+                                    After: <span className={isDeposit ? 'green' : 'yellow'}>{newCollateral}</span>
+                                </AfterTextWrapper>
                             </RowWrapper>
                         </Main>
 
                         <Main className="mid">
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
-                                <MainValue>
-                                    {totalDebt} <span>OD</span>
-                                </MainValue>
-                                <MainChange>
-                                    {' '}
-                                    {modified ? (
-                                        <>
-                                            After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
-                                        </>
-                                    ) : (
-                                        `$${totalDebtInUSD}`
-                                    )}
-                                </MainChange>
+                                <div>
+                                    <MainValue>{totalDebt}</MainValue>
+                                    <MainChange>${totalDebtInUSD}</MainChange>
+                                </div>
+                                <AfterTextWrapper>
+                                    After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt}</span>
+                                </AfterTextWrapper>
                             </RowWrapper>
                         </Main>
 
@@ -166,26 +151,26 @@ const VaultStats = ({
                             <ColumnWrapper>
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
-                                    <MainValue>{singleSafe?.collateralRatio}%</MainValue>
-                                    <MainChange>
-                                        {modified ? (
-                                            <>
-                                                After:{' '}
-                                                <span
-                                                    className={returnState(
-                                                        ratioChecker(
-                                                            Number(newCollateralRatio),
-                                                            Number(collateralRatio)
-                                                        )
-                                                    ).toLowerCase()}
-                                                >
-                                                    {newCollateralRatio}%
-                                                </span>
-                                            </>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </MainChange>
+                                    <RowTextWrapper>
+                                        <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                        <MainChange>
+                                            <AfterTextWrapper>
+                                                <>
+                                                    After:{' '}
+                                                    <span
+                                                        className={returnState(
+                                                            ratioChecker(
+                                                                Number(newCollateralRatio),
+                                                                Number(collateralRatio)
+                                                            )
+                                                        ).toLowerCase()}
+                                                    >
+                                                        {newCollateralRatio}%
+                                                    </span>
+                                                </>
+                                            </AfterTextWrapper>
+                                        </MainChange>
+                                    </RowTextWrapper>
                                 </Column>
                                 <Column>
                                     <MainLabel>Risk</MainLabel>
@@ -295,10 +280,59 @@ const Flex = styled.div`
     }
 `
 
+const RowTextWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    color: ${(props) => props.theme.colors.customSecondary};
+    span {
+        margin-left: 0.5rem;
+        &.green,
+        &.low {
+            color: ${(props) => props.theme.colors.blueish};
+        }
+        &.yellow {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.dimmed {
+            color: ${(props) => props.theme.colors.secondary};
+        }
+        &.medium {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.high {
+            color: ${(props) => props.theme.colors.dangerColor};
+        }
+    }
+`
+
 const RowWrapper = styled.div`
     display: flex;
-    @media (max-width: 767px) {
-        flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+const AfterTextWrapper = styled.span`
+    display: flex;
+    color: ${(props) => props.theme.colors.customSecondary};
+    span {
+        margin-left: 0.5rem;
+        color: ${(props) => props.theme.colors.blueish};
+        &.green,
+        &.low {
+            color: ${(props) => props.theme.colors.blueish};
+        }
+        &.yellow {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.dimmed {
+            color: ${(props) => props.theme.colors.secondary};
+        }
+        &.medium {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.high {
+            color: ${(props) => props.theme.colors.dangerColor};
+        }
     }
 `
 
@@ -317,6 +351,7 @@ const Wrapper = styled.div`
 
 const ColumnWrapper = styled.div`
     display: flex;
+    justify-content: space-between;
     gap: 24px;
 `
 

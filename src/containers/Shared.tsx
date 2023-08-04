@@ -58,7 +58,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    const isSplash = location.pathname === '/'
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).HAI.address)
     const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).KITE.address)
@@ -260,7 +259,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ConnectedWalletModal />
             <ScreenLoader />
             <LiquidateSafeModal />
-            {!isSplash && <WaitingModal />}
+            <WaitingModal />
             <TopUpModal />
             <EmptyDiv>
                 <Navbar />

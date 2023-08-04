@@ -5,8 +5,15 @@ import styled from 'styled-components'
 import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
-    const collateral = formatNumber(props.collateral)
-    const totalDebt = formatNumber(props.totalDebt)
+    const collateral = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 6,
+    }).format(Number(formatNumber(props.collateral)))
+
+    const totalDebt = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 6,
+    }).format(Number(formatNumber(props.totalDebt)))
 
     return (
         <Container className={props.className}>

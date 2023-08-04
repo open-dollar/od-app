@@ -66,6 +66,9 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
+                {safeState.safeCreated && safeState.list.length ? (
+                    <Stats />
+                ) : <></> }
                 {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
                     <BtnContainer className="top-up">
                         <Button
@@ -82,7 +85,9 @@ const OnBoarding = ({ ...props }) => {
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
-                <Stats />
+                {safeState.safeCreated && safeState.list.length ? (
+                    <></>
+                ) :  <Stats /> }
             </Content>
         </Container>
     )

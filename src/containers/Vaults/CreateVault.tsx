@@ -43,7 +43,6 @@ const CreateVault = ({
         connectWalletModel: { proxyAddress, tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
     const history = useHistory()
-    console.log({history})
     const {
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
@@ -250,8 +249,14 @@ const CreateVault = ({
                                                   }
                                                 : undefined
                                         }
-                                        label={`Balance: ${selectedTokenBalance} ${selectedCollateral?.symbol}`}
-                                        rightLabel={`~$${selectedTokenBalanceInUSD}`}
+                                        label={`Balance: ${new Intl.NumberFormat('en-US', {
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 10,
+                                        }).format(Number(selectedTokenBalance))} ${selectedCollateral?.symbol}`}
+                                        rightLabel={`~$${new Intl.NumberFormat('en-US', {
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 10,
+                                        }).format(Number(selectedTokenBalanceInUSD))}`}
                                         onChange={onLeftInput}
                                         value={leftInput}
                                         handleMaxClick={onMaxLeftInput}
@@ -299,7 +304,15 @@ const CreateVault = ({
                                                             ) : null}
                                                             {item.label}
                                                         </Label>
-                                                        <Value>{item.value}</Value>
+                                                        <Value>
+                                                            {item.value !== "-" && item.label.toLowerCase().includes('collateral') &&
+                                                            item.label.toLowerCase().includes('total')
+                                                                ? new Intl.NumberFormat('en-US', {
+                                                                      minimumFractionDigits: 0,
+                                                                      maximumFractionDigits: 10,
+                                                                  }).format(Number(item.value))
+                                                                : item.value}
+                                                        </Value>
                                                     </Flex>
                                                 )
                                             })}

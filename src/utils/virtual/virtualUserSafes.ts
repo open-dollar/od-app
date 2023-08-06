@@ -10,18 +10,13 @@ interface SafeData {
     collateralType: string
 }
 
-export async function fetchUserSafes(
-    geb: Geb,
-    userAddress: string,
-    haiAddress: string
-): Promise<[BigNumber, SafeData[]]> {
+export async function fetchUserSafes(geb: Geb, userAddress: string): Promise<[BigNumber, SafeData[]]> {
     // Encoded input data to be sent to the batch contract constructor
     const inputData = ethers.utils.defaultAbiCoder.encode(
-        ['address', 'address', 'address', 'address', 'address', 'address'],
+        ['address', 'address', 'address', 'address', 'address'],
         [
-            haiAddress,
+            geb.contracts.systemCoin.address,
             geb.contracts.proxyRegistry.address,
-            geb.contracts.getSafes.address,
             geb.contracts.safeEngine.address,
             geb.contracts.safeManager.address,
             userAddress,

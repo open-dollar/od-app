@@ -4,12 +4,14 @@ pragma solidity ^0.8.13;
 uint256 constant RAY = 1e27;
 
 interface IERC20 {
+    function balanceOf(address _user) external view returns (uint256 _balance);
     function totalSupply() external view returns (uint256 _totalSupply);
 }
 
 interface ISAFEEngine {
   struct SAFEEngineCollateralData {
     uint256 /* WAD */ debtAmount;
+    uint256 /* WAD */ lockedAmount;
     uint256 /* RAY */ accumulatedRate;
     uint256 /* RAY */ safetyPrice;
     uint256 /* RAY */ liquidationPrice;
@@ -46,7 +48,7 @@ interface IOracleRelayer {
     struct OracleRelayerCollateralParams {
         IDelayedOracle oracle;
         uint256 safetyCRatio;
-        uint256 PriceCRatio;
+        uint256 liquidationCRatio;
     }
     function marketPrice() external view returns (uint256 _marketPrice);
     function redemptionPrice() external returns (uint256 _redemptionPrice);
@@ -120,7 +122,7 @@ contract VirtualAnalyticsData {
                 delayedOracle: address(_oracle),
                 debtAmount: _debtAmount,
                 debtCeiling: _safeEngine.cParams(cType).debtCeiling / RAY,
-                lockedAmount: 420e18, // TODO: _safeEngine.cData(cType).lockedAmount
+                lockedAmount: _safeEngine.cData(cType).lockedAmount,
                 currentPrice: _currentPrice,
                 nextPrice: _nextPrice,
                 stabilityFee: _taxCollector.cData(cType).nextStabilityFee
@@ -131,7 +133,10 @@ contract VirtualAnalyticsData {
         int256 _pOutput = _pidController.getGainAdjustedPIOutput(deviationObservation.proportional, 0);
         int256 _iOutput = _pidController.getGainAdjustedPIOutput(0, deviationObservation.integral);
 
-        uint256 _surplusInTreasury = _safeEngine.coinBalance(address(_stabilityFeeTreasury)) - _safeEngine.debtBalance(address(_stabilityFeeTreasury));
+        uint256 _surplusInTreasury = 
+        _haiToken.balanceOf(address(_stabilityFeeTreasury)) * RAY
+         + _safeEngine.coinBalance(address(_stabilityFeeTreasury)) 
+         - _safeEngine.debtBalance(address(_stabilityFeeTreasury));
 
         AnalyticsData memory analyticsData = AnalyticsData({
             erc20Supply: _haiToken.totalSupply(),

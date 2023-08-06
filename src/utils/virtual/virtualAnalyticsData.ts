@@ -37,7 +37,7 @@ export async function fetchAnalyticsData(geb: Geb): Promise<AnalyticsData> {
     const inputData = ethers.utils.defaultAbiCoder.encode(
         ['address', 'address', 'address', 'address', 'address', 'address', 'bytes32[]'],
         [
-            geb.contracts.coin.address,
+            geb.contracts.systemCoin.address,
             geb.contracts.safeEngine.address,
             geb.contracts.oracleRelayer.address,
             geb.contracts.piCalculator.address,

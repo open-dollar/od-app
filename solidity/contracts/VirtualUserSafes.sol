@@ -9,8 +9,8 @@ interface IProxyRegistry {
     function proxies(address guy) external view returns (address);
 }
 
-interface IGetSafes {
-    function getSafesAsc(address safeManager, address guy)
+interface ISafeManager {
+    function getSafesData(address guy)
         external
         view
         returns (uint256[] memory ids, address[] memory safes, bytes32[] memory collateralTypes);
@@ -22,7 +22,7 @@ interface ISAFEEngine {
         uint256 generatedDebt;
     }
 
-    function safes(bytes32 collateralType, address safe) external view returns (SafeDeposit memory _safeDeposit);
+    function safes(bytes32 collateralType, address safe) external view returns (SafeDeposit memory _safe);
 }
 
 contract VirtualUserSafes {
@@ -37,9 +37,8 @@ contract VirtualUserSafes {
     constructor(
         IERC20 coin,
         IProxyRegistry proxyRegistry,
-        IGetSafes getSafes,
         ISAFEEngine safeEngine,
-        address safeManager,
+        ISafeManager safeManager,
         address user
     ) {
         uint256 coinBalance = coin.balanceOf(user);
@@ -51,7 +50,7 @@ contract VirtualUserSafes {
             safesData = new SafeData[](0);
         } else {
             (uint256[] memory ids, address[] memory safes, bytes32[] memory _cTypes) =
-                getSafes.getSafesAsc(safeManager, userProxy);
+                safeManager.getSafesData(userProxy);
 
             safesData = new SafeData[](safes.length);
             for (uint256 i = 0; i < safes.length; i++) {

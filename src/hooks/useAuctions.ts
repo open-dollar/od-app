@@ -197,7 +197,9 @@ export function useCollateralAuctions(tokenSymbol: string): ICollateralAuction[]
                     BigNumber.from(amountToRaise),
                     floatsTypes.WAD - floatsTypes.RAD
                 )
-                const remainingToRaiseE18 = amountToRaiseE18.sub(raised).toString()
+                let remainingToRaiseE18Raw = amountToRaiseE18.sub(raised).toString()
+
+                const remainingToRaiseE18 = remainingToRaiseE18Raw > '0' ? remainingToRaiseE18Raw : '0'
 
                 const discPerSecondE18 = gebUtils.decimalShift(BigNumber.from(auc.perSecondDiscountUpdateRate), -9)
                 const disountsDiffE18 = BigNumber.from(auc.maxDiscount)

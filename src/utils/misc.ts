@@ -23,6 +23,8 @@ export const multiplyWad = (wad1: string, wad2: string) => {
 }
 
 export const transformToWadPercentage = (rate: string, denominator: string) => {
+    if (denominator === '0') return 'NaN'
+
     const result = BigNumber.from(rate).mul(10000).div(BigNumber.from(denominator)).toString()
 
     return toPercentage(Number(result) / 10000, 2)

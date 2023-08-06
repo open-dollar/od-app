@@ -10,7 +10,7 @@ const abi = ['function drop() public view returns ()']
 export const claimAirdrop = async (signer: JsonRpcSigner) => {
     if (!signer) return
 
-    const airdropContract = new ethers.Contract('0xb131611c5010dcc71925cdbe29f0e8aabb2625db', abi, signer)
+    const airdropContract = new ethers.Contract('0x18Ab671611404981cecd7AacD3ac9E053F132785', abi, signer)
 
     let txData = await airdropContract.populateTransaction.drop()
 
@@ -55,18 +55,12 @@ export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: IS
         if (collateralBN.isZero() && !debtBN.isZero()) {
             txData = await proxy.generateDebt(safeId, debtBN)
         } else if (!collateralBN.isZero() && debtBN.isZero()) {
-            txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN, true)
+            txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN)
         } else {
-            txData = await proxy.lockTokenCollateralAndGenerateDebt(
-                safeData.collateral,
-                safeId,
-                collateralBN,
-                debtBN,
-                true
-            )
+            txData = await proxy.lockTokenCollateralAndGenerateDebt(safeData.collateral, safeId, collateralBN, debtBN)
         }
     } else {
-        txData = await proxy.openLockTokenCollateralAndGenerateDebt(safeData.collateral, collateralBN, debtBN, true)
+        txData = await proxy.openLockTokenCollateralAndGenerateDebt(safeData.collateral, collateralBN, debtBN)
     }
 
     if (!txData) throw new Error('No transaction request!')

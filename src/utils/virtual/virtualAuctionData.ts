@@ -43,22 +43,15 @@ interface IAccountingEngineData {
 }
 
 interface DebtAuctionHouseParams {
-    // Minimum bid increase compared to the last bid in order to take the new one in consideration
     bidDecrease: BigNumber // [wad]
-    // Increase in protocol tokens sold in case an auction is restarted
     amountSoldIncrease: BigNumber // [wad]
-    // How long the auction lasts after a new bid is submitted
     bidDuration: BigNumber // [seconds]
-    // Total length of the auction
     totalAuctionLength: BigNumber // [seconds]
 }
 
 interface SurplusAuctionHouseParams {
-    // Minimum bid increase compared to the last bid in order to take the new one in consideration
     bidIncrease: BigNumber // [wad]
-    // How long the auction lasts after a new bid is submitted
     bidDuration: BigNumber // [seconds]
-    // Total length of the auction
     totalAuctionLength: BigNumber // [seconds]
     recyclingPercentage: BigNumber
 }
@@ -86,10 +79,30 @@ export async function fetchAuctionData(geb: Geb, proxyAddress: string): Promise<
     const decoded = ethers.utils.defaultAbiCoder.decode(
         [
             `tuple(
-                tuple(uint256 bidIncrease,uint256 bidDuration,uint256 totalAuctionLength,uint256 recyclingPercentage) surplusAuctionHouseParams, 
-                tuple(uint256 bidDecrease,uint256 amountSoldIncrease,uint256 bidDuration,uint256 totalAuctionLength) debtAuctionHouseParams,
                 tuple(
-                    tuple(uint256 surplusIsTransferred,uint256 surplusDelay,uint256 popDebtDelay,uint256 disableCooldown,uint256 surplusAmount,uint256 surplusBuffer,uint256 debtAuctionMintedTokens,uint256 debtAuctionBidSize) accountingEngineParams,
+                    uint256 bidIncrease,
+                    uint256 bidDuration,
+                    uint256 totalAuctionLength,
+                    address bidReceiver,
+                    uint256 recyclingPercentage
+                    ) surplusAuctionHouseParams, 
+                tuple(
+                    uint256 bidDecrease,
+                    uint256 amountSoldIncrease,
+                    uint256 bidDuration,
+                    uint256 totalAuctionLength
+                    ) debtAuctionHouseParams,
+                tuple(
+                    tuple(
+                        uint256 surplusIsTransferred,
+                        uint256 surplusDelay,
+                        uint256 popDebtDelay,
+                        uint256 disableCooldown,
+                        uint256 surplusAmount,
+                        uint256 surplusBuffer,
+                        uint256 debtAuctionMintedTokens,
+                        uint256 debtAuctionBidSize
+                        ) accountingEngineParams,
                     uint256 totalOnAuctionDebt,
                     uint256 totalQueuedDebt,
                     uint256 debtQueue,

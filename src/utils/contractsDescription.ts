@@ -18,7 +18,8 @@ export const contractsDescriptions: { [k: string]: string } = {
         'The StabilityFeeTreasury contract is responsible for the collection of the Stability Fee from the TaxCollector and the distribution of the Stability Fee to the Protocol Token Holders.',
     safeManager: 'The SafeManager contract is responsible for the creation and execution of SAFEs.',
     joinCoin: 'The JoinCoin allows users to join and exit the system with the Coin',
-    coin: 'The System Coin contract is the ERC20 token (HAI) that is used to mint or burn debts within the system.',
+    systemCoin:
+        'The System Coin contract is the ERC20 token (HAI) that is used to mint or burn debts within the system.',
     proxyRegistry: 'The ProxyRegistry contract hosts proxy ownership and facilitates deployment.',
     medianizerCoin: 'The Oracle responsible for quoting the price of the system Coin.',
     rateSetter: 'The RateSetter contract is responsible for the triggering the update of the PI Controller.',

@@ -16,8 +16,6 @@ const VaultBlock = ({ ...props }) => {
         maximumFractionDigits: 6,
     }).format(Number(formatNumber(props.totalDebt)))
 
-    console.log("props: ", props)
-    console.log('liquidationPrice', props.liquidationPrice, ', ', typeof props.liquidationPrice)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>

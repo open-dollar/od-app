@@ -246,10 +246,19 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }}
                                 label={
                                     isDeposit
-                                        ? `Balance: ${leftInputBalance} ${singleSafe.collateralName}`
-                                        : `Available: ${leftInputBalance} ${singleSafe.collateralName}`
+                                        ? `Balance: ${new Intl.NumberFormat('en-US', {
+                                              minimumFractionDigits: 0,
+                                              maximumFractionDigits: 10,
+                                          }).format(Number(leftInputBalance))} ${singleSafe.collateralName}`
+                                        : `Available: ${new Intl.NumberFormat('en-US', {
+                                              minimumFractionDigits: 0,
+                                              maximumFractionDigits: 10,
+                                          }).format(Number(leftInputBalance))} ${singleSafe.collateralName}`
                                 }
-                                rightLabel={`~$${selectedTokenBalanceInUSD}`}
+                                rightLabel={`~$${new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 10,
+                                }).format(Number(selectedTokenBalanceInUSD))}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}

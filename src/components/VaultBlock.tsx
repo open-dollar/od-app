@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { liquidateSafe } from '~/services/blockchain'
 
 import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
@@ -15,6 +16,8 @@ const VaultBlock = ({ ...props }) => {
         maximumFractionDigits: 6,
     }).format(Number(formatNumber(props.totalDebt)))
 
+    console.log("props: ", props)
+    console.log('liquidationPrice', props.liquidationPrice, ', ', typeof props.liquidationPrice)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>

@@ -36,9 +36,7 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const buySymbol = COIN_TICKER
 
-    // const endsOn = auctionDeadline ? dayjs.unix(Number(auctionDeadline)).format('MMM D, h:mm A') : ''
-
-    const isOngoingAuction = BigNumber.from(remainingCollateral).gt('0')
+    const isOngoingAuction = BigNumber.from(remainingCollateral).gt('0') && BigNumber.from(remainingToRaiseE18).gt('0')
 
     const remainingCollateralParsed = formatNumber(parseWad(BigNumber.from(remainingCollateral)), 4)
 

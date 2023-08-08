@@ -59,7 +59,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const balances = useMemo(() => {
         return {
             weth: tokensFetchedData.WETH?.balanceE18,
-            hai: tokensFetchedData.HAI?.balanceE18,
+            hai: tokensFetchedData.OD?.balanceE18,
         }
     }, [tokensFetchedData])
 
@@ -179,7 +179,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             ],
             prices: [
                 {
-                    label: `${collateralName} Price (OSM)`,
+                    label: `${collateralName} Price (Delayed)`,
                     value: '$' + formatNumber(collateralLiquidationData!.currentPrice.value.toString()),
                     tip: t('eth_osm_tip'),
                 },
@@ -196,9 +196,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                                 ? 'Invalid'
                                 : '$' + liquidationPrice
                             : '$' + 0,
-                    tip: t('liquidation_price_tip', {
-                        lr: LIQUIDATION_RATIO + '%',
-                    }),
+                    tip: t('liquidation_price_tip'),
                 },
             ],
             info: [

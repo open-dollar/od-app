@@ -21,7 +21,7 @@ contract TokensData {
             tokensData[i] = TokenData(_balanceE18, _decimals);
         }
 
-        // // encode return data
+        // encode return data
         bytes memory data = abi.encode(tokensData);
 
         // force constructor return via assembly

@@ -132,8 +132,7 @@
     "resolutions": {
         "@types/react": "17.0.2",
         "@types/react-dom": "17.0.2",
-        "react-error-overlay": "6.0.9",
-        "@usekeyp/od-sdk": "portal:/home/dev/repos/open-dollar/od-sdk"
+        "react-error-overlay": "6.0.9"
     },
     "husky": {
         "hooks": {

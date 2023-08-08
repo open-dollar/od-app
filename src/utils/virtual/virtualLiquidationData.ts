@@ -52,7 +52,21 @@ export async function fetchLiquidationData(
     // Parse the returned value to the struct type in order
     const [decoded] = ethers.utils.defaultAbiCoder.decode(
         [
-            'tuple(uint256 redemptionPrice, uint256 redemptionRate, uint256 globalDebt, uint256 globalDebtCeiling, uint256 safeDebtCeiling, tuple(uint256 accumulatedRate, uint256 debtFloor, uint256 liquidationPrice, uint256 safetyPrice, uint256 safetyCRatio, uint256 liquidationCRatio, uint256 liquidationPenalty, uint256 stabilityFee)[] tokensLiquidationData)',
+            `tuple(uint256 redemptionPrice, 
+                uint256 redemptionRate, 
+                uint256 globalDebt, 
+                uint256 globalDebtCeiling, 
+                uint256 safeDebtCeiling, 
+                tuple(
+                    uint256 accumulatedRate, 
+                    uint256 debtFloor, 
+                    uint256 liquidationPrice, 
+                    uint256 safetyPrice, 
+                    uint256 safetyCRatio, 
+                    uint256 liquidationCRatio, 
+                    uint256 liquidationPenalty, 
+                    uint256 stabilityFee
+                    )[] tokensLiquidationData)`,
         ],
         returnedData
     )

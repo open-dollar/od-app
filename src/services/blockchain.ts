@@ -55,18 +55,12 @@ export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: IS
         if (collateralBN.isZero() && !debtBN.isZero()) {
             txData = await proxy.generateDebt(safeId, debtBN)
         } else if (!collateralBN.isZero() && debtBN.isZero()) {
-            txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN, true)
+            txData = await proxy.lockTokenCollateral(safeData.collateral, safeId, collateralBN)
         } else {
-            txData = await proxy.lockTokenCollateralAndGenerateDebt(
-                safeData.collateral,
-                safeId,
-                collateralBN,
-                debtBN,
-                true
-            )
+            txData = await proxy.lockTokenCollateralAndGenerateDebt(safeData.collateral, safeId, collateralBN, debtBN)
         }
     } else {
-        txData = await proxy.openLockTokenCollateralAndGenerateDebt(safeData.collateral, collateralBN, debtBN, true)
+        txData = await proxy.openLockTokenCollateralAndGenerateDebt(safeData.collateral, collateralBN, debtBN)
     }
 
     if (!txData) throw new Error('No transaction request!')

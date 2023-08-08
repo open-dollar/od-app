@@ -9,6 +9,10 @@ import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
 import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
 import { injected } from '~/connectors'
 
+import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
+import { injected } from '~/connectors'
+
 export const IS_IN_IFRAME = window.parent !== window
 
 export const returnWalletAddress = (walletAddress: string) => {

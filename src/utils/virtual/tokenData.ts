@@ -32,7 +32,12 @@ export async function fetchTokenData(
 
     // Parse the returned value to the struct type in order
     const decoded = ethers.utils.defaultAbiCoder.decode(
-        ['tuple(uint256 balanceE18, uint256 decimals)[]'],
+        [
+            `tuple(
+            uint256 balanceE18, 
+            uint256 decimals
+            )[]`,
+        ],
         returnedData
     )[0] as TokenFetchData[]
 

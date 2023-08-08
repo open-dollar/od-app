@@ -37,14 +37,14 @@ export interface AuctionModel {
     setInternalBalance: Action<AuctionModel, string>
 
     coinBalances: {
-        hai: string
-        kite: string
+        od: string
+        odg: string
     }
     setCoinBalances: Action<
         AuctionModel,
         {
-            hai: string
-            kite: string
+            od: string
+            odg: string
         }
     >
 
@@ -123,10 +123,6 @@ const auctionModel: AuctionModel = {
         } else if (type === 'COLLATERAL') {
             const collateralAuctionsFetched = await geb.auctions.getCollateralAuctions(0, tokenSymbol || 'WETH')
 
-            // temporary mocked values
-            console.log('searching for', tokenSymbol)
-            console.log('collateralAuctionsFetched', collateralAuctionsFetched)
-
             const collateralAuctions = collateralAuctionsFetched.auctions.map((auction) => {
                 return {
                     ...auction,
@@ -178,8 +174,8 @@ const auctionModel: AuctionModel = {
     }),
 
     coinBalances: {
-        hai: '',
-        kite: '',
+        od: '',
+        odg: '',
     },
     setCoinBalances: action((state, payload) => {
         state.coinBalances = payload

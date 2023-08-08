@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
-const SafeBlock = ({ ...props }) => {
+const VaultBlock = ({ ...props }) => {
     const { t } = useTranslation()
 
     const collateral = formatNumber(props.collateral)
@@ -12,7 +12,7 @@ const SafeBlock = ({ ...props }) => {
 
     return (
         <Container className={props.className}>
-            <Link to={`/safes/${props.id}/deposit`}>
+            <Link to={`/vaults/${props.id}/deposit`}>
                 <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
@@ -23,18 +23,9 @@ const SafeBlock = ({ ...props }) => {
                                 height={'24px'}
                             />
                             <SafeData>
-                                <SafeTitle>{`Safe #${props.id}`}</SafeTitle>
+                                <SafeTitle>{`Vault #${props.id}`}</SafeTitle>
                             </SafeData>
                         </SafeInfo>
-
-                        <SafeState
-                            className={
-                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
-                            }
-                        >
-                            <Circle />
-                            <span>{returnState(props.riskState) || 'No'}</span> {t('risk')}
-                        </SafeState>
                     </BlockHeader>
                     <Block>
                         <Item>
@@ -53,6 +44,19 @@ const SafeBlock = ({ ...props }) => {
                             <Label>{'Liquidation Price'}</Label>
                             <Value>${props.liquidationPrice}</Value>
                         </Item>
+                        <Item
+                            className={
+                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
+                            }
+                        >
+                            <Label>{'Risk'}</Label>
+                            <Wrapper>
+                                <Circle />
+                                <div>
+                                    {returnState(props.riskState) || 'No'} {t('risk')}
+                                </div>
+                            </Wrapper>
+                        </Item>
                     </Block>
                 </BlockContainer>
             </Link>
@@ -60,7 +64,7 @@ const SafeBlock = ({ ...props }) => {
     )
 }
 
-export default SafeBlock
+export default VaultBlock
 
 const Container = styled.div`
     transition: opacity 0.2s ease;
@@ -83,6 +87,15 @@ const BlockContainer = styled.div`
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
+`
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #DADADA;
+    font-size: 14px;
+    font-weight: 400;
 `
 
 const SafeInfo = styled.div`
@@ -165,7 +178,7 @@ const SafeState = styled.div`
 const Block = styled.div`
     display: flex;
     position: absolute;
-    right: 160px;
+    right: 7px;
     top: 13px;
     @media (max-width: 767px) {
         position: static;
@@ -178,8 +191,8 @@ const Block = styled.div`
 `
 
 const Item = styled.div`
-    margin: 0 10px;
-    width: 105px;
+    margin: 0 12px;
+    text-align: end;
     @media (max-width: 767px) {
         display: flex;
         width: auto;

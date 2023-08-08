@@ -5,12 +5,12 @@ import { Plus } from 'react-feather'
 
 import { useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
-import SafeBlock from '~/components/SafeBlock'
+import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
 
-const SafeList = ({ address }: { address?: string }) => {
+const VaultList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
 
     const { account } = useActiveWeb3React()
@@ -44,7 +44,7 @@ const SafeList = ({ address }: { address?: string }) => {
                                 <LinkButton
                                     id="create-safe"
                                     disabled={connectWalletState.isWrongNetwork}
-                                    url={'/safes/create'}
+                                    url={'/vaults/create'}
                                 >
                                     <BtnInner>
                                         <Plus size={18} />
@@ -56,19 +56,15 @@ const SafeList = ({ address }: { address?: string }) => {
                     </Header>
 
                     <SafeBlocks>
-                        <Header className="safesList">
-                            <Col>Safes({safeState.list.length})</Col>
-                            <Col>Risk</Col>
-                        </Header>
                         {safes.map((safe: ISafe) => (
                             <div key={safe.id}>
-                                {safe.collateralName && <SafeBlock className="safeBlock" {...safe} />}
+                                {safe.collateralName && <VaultBlock className="safeBlock" {...safe} />}
                             </div>
                         ))}
                     </SafeBlocks>
                     <CheckboxContainer>
                         <CheckBox checked={showEmpty} onChange={setShowEmpty} />
-                        <span>Show empty safes</span>
+                        <span>Show empty vaults</span>
                     </CheckboxContainer>
                 </Container>
             )
@@ -79,7 +75,7 @@ const SafeList = ({ address }: { address?: string }) => {
     return <>{returnSafeList()}</>
 }
 
-export default SafeList
+export default VaultList
 
 const Container = styled.div`
     max-width: 880px;
@@ -90,14 +86,13 @@ const Container = styled.div`
     }
 `
 const SafeBlocks = styled.div`
-    padding: 15px;
-    border-radius: 15px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    border-radius: 8px;
 `
 
 const Title = styled.div`
-    font-weight: 600;
-    font-size: ${(props) => props.theme.font.large};
+    font-weight: 700;
+    font-size: 34px;
+    
 `
 
 const Header = styled.div`
@@ -128,7 +123,7 @@ const BtnInner = styled.div`
 const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 9px;
     justify-content: flex-end;
     span {
         margin-left: 10px;

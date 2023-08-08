@@ -7,7 +7,7 @@ import Button from '~/components/Button'
 import LinkButton from '~/components/LinkButton'
 import { useStoreActions, useStoreState } from '~/store'
 
-const SafeHeader = ({
+const VaultHeader = ({
     safeId,
     isModifying,
     isDeposit,
@@ -21,7 +21,7 @@ const SafeHeader = ({
     const { singleSafe } = useStoreState((state) => state.safeModel)
 
     const handleBack = useCallback(() => {
-        history.push(`/safes`)
+        history.push(`/vaults`)
     }, [history])
 
     const canLiquidate = singleSafe && singleSafe.riskState == 4
@@ -35,7 +35,7 @@ const SafeHeader = ({
                 <LeftSide>
                     <SafeInfo>
                         <UpperInfo>
-                            Safe <span>#{safeId}</span>
+                            Vault <span>#{safeId}</span>
                         </UpperInfo>
                     </SafeInfo>
                 </LeftSide>
@@ -47,25 +47,13 @@ const SafeHeader = ({
                             onClick={() => openLiquidateSafeModal({ safeId })}
                         />
                     )}
-                    <LinkButton
-                        id="deposit_borrow"
-                        text={'Deposit & Borrow'}
-                        url={`/safes/${safeId}/deposit`}
-                        color={isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
-                    <LinkButton
-                        id="repay_withdraw"
-                        text={'Repay & Withdraw'}
-                        url={`/safes/${safeId}/withdraw`}
-                        color={!isDeposit ? 'blueish' : 'colorPrimary'}
-                    />
                 </RightSide>
             </HeaderContainer>
         </Container>
     )
 }
 
-export default SafeHeader
+export default VaultHeader
 
 const Container = styled.div``
 
@@ -148,11 +136,11 @@ const RightSide = styled.div`
 const SafeInfo = styled.div``
 
 const UpperInfo = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
+    font-size: 34px;
+    font-weight: 700;
     min-width: 180px;
     span {
         color: ${(props) => props.theme.colors.blueish};
     }
-    margin-top: 5px;
+    margin-bottom: 40px;
 `

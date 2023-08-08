@@ -11,7 +11,7 @@ const lightTheme: Theme = {
         background: '#040C20',
         overlay: 'rgba(0, 0, 0, 0.8)',
         greenish: '#2AC384',
-        blueish: '#41C1D0',
+        blueish: '#1499DA',
         border: '#08223E',
         yellowish: '#D9960A',
         foreground: '#05192e',
@@ -33,7 +33,7 @@ const lightTheme: Theme = {
         dimmedColor: '#ffffff',
         dimmedBackground: '#A4ABB7',
         dimmedBorder: '#878787',
-        colorPrimary: '#05284C',
+        colorPrimary: '#002B40',
         colorSecondary: '031A31',
     },
     font: {

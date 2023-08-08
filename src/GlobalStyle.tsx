@@ -28,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props) => props.theme.colors.primary};
     background-color:${(props) => props.theme.colors.background};
-    background-image: url(${require('./assets/boxes.svg').default});
     background-size: contain;
     background-position: center 100px;
     background-repeat: no-repeat;
@@ -133,18 +132,19 @@ export const ExternalLinkArrow = css`
 export const BtnStyle = css<{
     disabled?: boolean
     color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
+    border?: boolean
 }>`
     pointer-events: ${({ theme, disabled }) => (disabled ? 'none' : 'inherit')};
     outline: none;
     cursor: ${({ theme, disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     min-width: 134px;
-    border: none;
+    border: ${({ theme, border }) => border ? `1px solid ${theme.colors.blueish}` : 'none'};
     box-shadow: none;
     line-height: 24px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     padding: 8px 30px;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${({ theme, border }) => border ? theme.colors.blueish : theme.colors.neutral};
     background: ${({ theme, disabled, color }) =>
         disabled ? theme.colors.dimmedBackground : theme.colors[color ?? 'blueish']};
     border-radius: ${(props) => props.theme.global.borderRadius};

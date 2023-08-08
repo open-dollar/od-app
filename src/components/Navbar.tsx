@@ -120,7 +120,7 @@ const Navbar = () => {
                     )}
                     {/* Button to add HAI to the wallet */}
                     <HaiButton onClick={handleAddHAI}>
-                        <Icon src={TOKEN_LOGOS.OD} width={'24px'} height={'24px'} />
+                        <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                         {haiBalance + ' '}
                         OD
                         <AddIcon src={addIcon} width={'18px'} height={'18px'} />

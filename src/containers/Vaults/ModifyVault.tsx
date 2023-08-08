@@ -10,6 +10,8 @@ import { gnosisSafe } from '~/connectors'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Review from './Review'
+import LinkButton from '~/components/LinkButton'
+
 import {
     handleTransactionError,
     useTokenBalanceInUSD,
@@ -21,7 +23,7 @@ import {
     useSafeInfo,
 } from '~/hooks'
 
-const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boolean }) => {
+const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
     const { library, account, connector } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
@@ -116,7 +118,7 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
     }
 
     const handleWaitingTitle = () => {
-        return 'Modifying Safe'
+        return 'Modifying Vault'
     }
 
     const handleSubmit = () => {
@@ -194,6 +196,22 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
         <>
             {singleSafe && (
                 <Container>
+                    <ButtonsRow>
+                        <LinkButton
+                            id="deposit_borrow"
+                            text={'Deposit & Borrow'}
+                            url={`/vaults/${vaultId}/deposit`}
+                            color={isDeposit ? 'blueish' : 'colorPrimary'}
+                            border={isDeposit ? false : true}
+                        />
+                        <LinkButton
+                            id="repay_withdraw"
+                            text={'Repay & Withdraw'}
+                            url={`/vaults/${vaultId}/withdraw`}
+                            color={!isDeposit ? 'blueish' : 'colorPrimary'}
+                            border={!isDeposit ? false : true}
+                        />
+                    </ButtonsRow>
                     <Modal
                         isModalOpen={showPreview}
                         closeModal={() => setShowPreview(false)}
@@ -304,7 +322,35 @@ const ModifySafe = ({ isDeposit, isOwner }: { isDeposit: boolean; isOwner: boole
     )
 }
 
-export default ModifySafe
+export default ModifyVault
+
+const ButtonsRow = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    margin-left: -4px;
+
+    a {
+        min-width: 100px;
+        padding: 4px 12px;
+        &:first-child {
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 767px) {
+        min-width: 100%;
+        margin-top: 20px;
+        justify-content: space-between;
+        &:first-child {
+            margin-right: 0;
+        }
+        a {
+            min-width: 49%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+`
 
 const ButtonContainer = styled.div`
     text-align: right;
@@ -319,7 +365,7 @@ const Container = styled.div`
     border-radius: 15px;
     padding: 20px;
     margin-top: 20px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    background: ${(props) => props.theme.colors.colorPrimary};
 `
 
 const Inner = styled.div`

@@ -26,8 +26,7 @@ const CheckBox = ({ checked, onChange }: Props) => {
 export default CheckBox
 
 const CheckboxContainer = styled.label`
-    display: inline-block;
-    vertical-align: middle;
+    display: flex;
     cursor: pointer;
 `
 

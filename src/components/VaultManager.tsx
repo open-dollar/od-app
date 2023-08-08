@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import Button from './Button'
 
-const SafeManager = () => {
+const VaultManager = () => {
     const { t } = useTranslation()
     const { account } = useActiveWeb3React()
     const geb = useGeb()
@@ -42,7 +42,7 @@ const SafeManager = () => {
             const userSafes: IUserSafeList | undefined = await fetchUserSafesRaw({ address: value, geb, tokensData })
 
             if (!userSafes || (userSafes && !userSafes.safes.length)) {
-                setError('Address has no Safes')
+                setError('Address has no Vaults')
                 return
             }
             popupsActions.setIsWaitingModalOpen(true)
@@ -75,7 +75,7 @@ const SafeManager = () => {
     )
 }
 
-export default SafeManager
+export default VaultManager
 
 const Body = styled.div`
     padding: 20px;

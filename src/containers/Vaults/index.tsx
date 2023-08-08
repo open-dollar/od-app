@@ -9,7 +9,7 @@ import Stats from './Stats'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
-import SafeList from './SafeList'
+import VaultList from './VaultList'
 
 const OnBoarding = ({ ...props }) => {
     const { t } = useTranslation()
@@ -79,7 +79,7 @@ const OnBoarding = ({ ...props }) => {
                 ) : null}
                 <Stats />
                 {safeState.safeCreated ? (
-                    <SafeList address={address} />
+                    <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}

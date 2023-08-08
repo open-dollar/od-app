@@ -2,7 +2,7 @@
 
 import { ADDRESS_NO_SAFES_NEVER_USER, returnWalletAddress, TEST_ADDRESS_NEVER_USE } from '../support/commands'
 
-describe('App Page - No Safes', () => {
+describe('App Page - No Vaults', () => {
     beforeEach(() => {
         cy.visit('/', {
             qs: { type: 'no_safes' },
@@ -33,15 +33,15 @@ describe('App Page - No Safes', () => {
 
     it('is has a create safe', () => {
         cy.contains('✓ Accept').click()
-        cy.get('#step2 > div').contains('Create a Safe')
-        cy.get('[data-test-id="steps-btn"]').contains('Create a Safe').click()
+        cy.get('#step2 > div').contains('Create a Vault')
+        cy.get('[data-test-id="steps-btn"]').contains('Create a Vault').click()
         cy.wait(5000)
         cy.url().should('include', 'create')
     })
 
     it('creates a new safe', () => {
         cy.contains('✓ Accept').click()
-        cy.get('[data-test-id="steps-btn"]').contains('Create a Safe').click()
+        cy.get('[data-test-id="steps-btn"]').contains('Create a Vault').click()
         cy.wait(5000)
         cy.url().should('include', 'create')
         cy.get('[data-test-id="deposit_borrow"]').type('4')

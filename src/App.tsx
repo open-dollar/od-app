@@ -25,6 +25,7 @@ import './devlink/global.css'
 import { DevLinkProvider } from './devlink'
 
 // Toast css
+import Analytics from './containers/Analytics'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -50,6 +51,7 @@ const App = () => {
                                             <>
                                                 <Switch>
                                                     <Route exact strict component={Safes} path={'/'} />
+                                                    <Route exact strict component={Analytics} path={'/analytics'} />
                                                     <Route exact strict component={Privacy} path={'/privacy'} />
                                                     <Route exact strict component={Auctions} path={'/auctions'} />
                                                     <Route exact strict component={CreateVault} path={'/vaults/create'} />

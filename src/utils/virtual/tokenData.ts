@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import TokensData from '~/artifacts/contracts/TokensData.sol/TokensData.json'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 export interface TokenFetchData {
     balanceE18: string
@@ -32,7 +32,12 @@ export async function fetchTokenData(
 
     // Parse the returned value to the struct type in order
     const decoded = ethers.utils.defaultAbiCoder.decode(
-        ['tuple(uint256 balanceE18, uint256 decimals)[]'],
+        [
+            `tuple(
+            uint256 balanceE18, 
+            uint256 decimals
+            )[]`,
+        ],
         returnedData
     )[0] as TokenFetchData[]
 

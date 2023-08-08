@@ -26,7 +26,7 @@ contract VirtualCollateralAuctionsData {
             });
         }
 
-        // // encode return data
+        // encode return data
         bytes memory data = abi.encode(collateralAuctionsData);
 
         // force constructor return via assembly

@@ -44,9 +44,9 @@ const Navbar = () => {
                 params: {
                     type: 'ERC20',
                     options: {
-                        address: connectWalletModel.tokensData.HAI.address,
-                        symbol: connectWalletModel.tokensData.HAI.symbol,
-                        decimals: connectWalletModel.tokensData.HAI.decimals,
+                        address: connectWalletModel.tokensData.OD.address,
+                        symbol: connectWalletModel.tokensData.OD.symbol,
+                        decimals: connectWalletModel.tokensData.OD.decimals,
                     },
                 },
             })

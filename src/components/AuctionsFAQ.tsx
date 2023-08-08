@@ -64,6 +64,16 @@ const AuctionsFAQ = ({ type }: Props) => {
                 desc: t('collateral_auction_minting_flx_desc'),
                 image: require('../assets/sell-hai.svg').default,
             },
+            {
+                title: t('collateral_auction_increasing_discount_header'),
+                desc: t('collateral_auction_increasing_discount_desc'),
+                image: require('../assets/bid.svg').default,
+            },
+            {
+                title: t('collateral_auction_settlement_header'),
+                desc: t('collateral_auction_settlement_desc'),
+                image: require('../assets/claim.svg').default,
+            },
         ],
     }
 

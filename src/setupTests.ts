@@ -5,7 +5,7 @@
 import path from 'path'
 import '@testing-library/jest-dom/extend-expect'
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 
 import dotenv from 'dotenv'
 

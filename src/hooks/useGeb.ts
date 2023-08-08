@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
@@ -9,7 +9,7 @@ import { NETWORK_ID } from '~/connectors'
 
 type TokenType = 'ETH' | 'OD' | 'WETH'
 
-// connect to @hai-on-op/sdk
+// connect to @usekeyp/od-sdk
 
 export default function useGeb(): Geb {
     const { library } = useActiveWeb3React()
@@ -53,7 +53,7 @@ export function useIsOwner(safeId: string): boolean {
     return state
 }
 
-// Returns proxy address from @hai-on-op/sdk
+// Returns proxy address from @usekeyp/od-sdk
 export function useProxyAddress() {
     const geb = useGeb()
     const { account } = useActiveWeb3React()

@@ -9,14 +9,7 @@ import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
-const VaultStats = ({
-    isModifying,
-    isDeposit,
-}: {
-    isModifying: boolean
-    isDeposit: boolean
-    isOwner: boolean
-}) => {
+const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
     const {
         totalDebt: newDebt,
@@ -128,9 +121,13 @@ const VaultStats = ({
                                     <MainValue>{collateral}</MainValue>
                                     <MainChange>${collateralInUSD}</MainChange>
                                 </div>
-                                <AfterTextWrapper>
-                                    After: <span className={isDeposit ? 'green' : 'yellow'}>{newCollateral}</span>
-                                </AfterTextWrapper>
+                                {modified ? (
+                                    <AfterTextWrapper>
+                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newCollateral}</span>
+                                    </AfterTextWrapper>
+                                ) : (
+                                    <></>
+                                )}
                             </RowWrapper>
                         </Main>
 
@@ -141,9 +138,11 @@ const VaultStats = ({
                                     <MainValue>{totalDebt}</MainValue>
                                     <MainChange>${totalDebtInUSD}</MainChange>
                                 </div>
-                                <AfterTextWrapper>
-                                    After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt}</span>
-                                </AfterTextWrapper>
+                                {modified ? (
+                                    <AfterTextWrapper>
+                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt}</span>
+                                    </AfterTextWrapper>
+                                ) : null}
                             </RowWrapper>
                         </Main>
 
@@ -154,21 +153,23 @@ const VaultStats = ({
                                     <RowTextWrapper>
                                         <MainValue>{singleSafe?.collateralRatio}%</MainValue>
                                         <MainChange>
-                                            <AfterTextWrapper>
-                                                <>
-                                                    After:{' '}
-                                                    <span
-                                                        className={returnState(
-                                                            ratioChecker(
-                                                                Number(newCollateralRatio),
-                                                                Number(collateralRatio)
-                                                            )
-                                                        ).toLowerCase()}
-                                                    >
-                                                        {newCollateralRatio}%
-                                                    </span>
-                                                </>
-                                            </AfterTextWrapper>
+                                            {modified ? (
+                                                <AfterTextWrapper>
+                                                    <>
+                                                        After:{' '}
+                                                        <span
+                                                            className={returnState(
+                                                                ratioChecker(
+                                                                    Number(newCollateralRatio),
+                                                                    Number(collateralRatio)
+                                                                )
+                                                            ).toLowerCase()}
+                                                        >
+                                                            {newCollateralRatio}%
+                                                        </span>
+                                                    </>
+                                                </AfterTextWrapper>
+                                            ) : null}
                                         </MainChange>
                                     </RowTextWrapper>
                                 </Column>

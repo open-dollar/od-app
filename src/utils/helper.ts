@@ -74,6 +74,35 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     return isNaN(Number(val)) ? value : val
 }
 
+export const formatWithCommas = (value: string) => {
+    if (!value) {
+        return '0'
+    }
+
+    const n = Number(value)
+
+    // If number in scientific notation
+    if (/e-/.test(value)) {
+        let nonScientificValue = n.toFixed(50)
+        const decimalPart = nonScientificValue.split('.')[1] || ''
+        nonScientificValue = `${nonScientificValue.split('.')[0]}.${decimalPart.substring(0, 8)}`
+        if (/\.0{8}$/.test(nonScientificValue)) {
+            return value // return the original value if after converting, we get all zeros after the decimal point
+        }
+        if (Math.abs(Number(nonScientificValue)) < 1) {
+            return nonScientificValue
+        }
+        return numeral(Number(nonScientificValue)).format('0,0.[00000000]')
+    }
+
+    // For non-scientific numbers
+    if (Number.isInteger(n)) {
+        return numeral(n).format('0,0')
+    }
+
+    return numeral(n).format('0,0.[00]')
+}
+
 export const getRatePercentage = (value: string, digits = 4, returnRate = false) => {
     const rate = Number(value)
     let ratePercentage = rate < 1 ? numeral(1).subtract(rate).value() * -1 : numeral(rate).subtract(1).value()

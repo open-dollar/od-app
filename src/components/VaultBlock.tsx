@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { liquidateSafe } from '~/services/blockchain'
 
-import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, formatWithCommas, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
     const collateral = new Intl.NumberFormat('en-US', {
@@ -21,6 +21,8 @@ const VaultBlock = ({ ...props }) => {
         maximumFractionDigits: 8,
     }).format(Number(formatNumber(props.collateralRatio)))
 
+    const liquidationPrice = formatWithCommas(props.liquidationPrice)
+    console.log(props)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>
@@ -53,7 +55,7 @@ const VaultBlock = ({ ...props }) => {
                         </Item>
                         <Item>
                             <Label>{'Liquidation Price'}</Label>
-                            <Value>${props.liquidationPrice}</Value>
+                            <Value>${liquidationPrice}</Value>
                         </Item>
                         <Item
                             className={

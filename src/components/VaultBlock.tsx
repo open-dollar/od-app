@@ -8,13 +8,18 @@ import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 const VaultBlock = ({ ...props }) => {
     const collateral = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 6,
+        maximumFractionDigits: 8,
     }).format(Number(formatNumber(props.collateral)))
 
     const totalDebt = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 6,
+        maximumFractionDigits: 8,
     }).format(Number(formatNumber(props.totalDebt)))
+
+    const collateralRatio = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 8,
+    }).format(Number(formatNumber(props.collateralRatio)))
 
     return (
         <Container className={props.className}>
@@ -44,7 +49,7 @@ const VaultBlock = ({ ...props }) => {
                         </Item>
                         <Item>
                             <Label>{'Collateral Ratio'}</Label>
-                            <Value>{`${props.collateralRatio}%`}</Value>
+                            <Value>{`${collateralRatio}%`}</Value>
                         </Item>
                         <Item>
                             <Label>{'Liquidation Price'}</Label>

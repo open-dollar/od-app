@@ -37,7 +37,7 @@ const VaultList = ({ address }: { address?: string }) => {
                 <Container>
                     <Header>
                         <Col>
-                            <Title>{'Accounts'}</Title>
+                            <Title>{'Vaults'}</Title>
                         </Col>
                         <Col>
                             {safeState.safeCreated && isOwner ? (

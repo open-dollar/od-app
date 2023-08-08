@@ -37,7 +37,7 @@
     "not_supported": "Please connect to network",
     "error_try_refresh": "Error connecting. Try refreshing the page.",
     "show_portis": "Show Portis",
-    "accounts": "Accounts",
+    "accounts": "Vaults",
     "accounts_header_text": "Manage your Vault accounts",
     "created": "Created",
     "risk": "Risk",

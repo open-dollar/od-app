@@ -3,26 +3,17 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { liquidateSafe } from '~/services/blockchain'
 
-import { formatNumber, formatWithCommas, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
-    const collateral = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 8,
-    }).format(Number(formatNumber(props.collateral)))
 
-    const totalDebt = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 8,
-    }).format(Number(formatNumber(props.totalDebt)))
+    const formatWithCommas = (value: string) => {
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+        }).format(Number(formatNumber(value)))
+    }
 
-    const collateralRatio = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 8,
-    }).format(Number(formatNumber(props.collateralRatio)))
-
-    const liquidationPrice = formatWithCommas(props.liquidationPrice)
-    console.log(props)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>
@@ -43,19 +34,19 @@ const VaultBlock = ({ ...props }) => {
                     <Block>
                         <Item>
                             <Label>{`${props.collateralName} Deposited`}</Label>
-                            <Value>{collateral}</Value>
+                            <Value>{formatWithCommas(props.collateral)}</Value>
                         </Item>
                         <Item>
                             <Label>{`${COIN_TICKER} Borrowed`}</Label>
-                            <Value>{totalDebt}</Value>
+                            <Value>{formatWithCommas(props.totalDebt)}</Value>
                         </Item>
                         <Item>
                             <Label>{'Collateral Ratio'}</Label>
-                            <Value>{`${collateralRatio}%`}</Value>
+                            <Value>{`${formatWithCommas(props.collateralRatio)}%`}</Value>
                         </Item>
                         <Item>
                             <Label>{'Liquidation Price'}</Label>
-                            <Value>${liquidationPrice}</Value>
+                            <Value>${formatWithCommas(props.liquidationPrice)}</Value>
                         </Item>
                         <Item
                             className={

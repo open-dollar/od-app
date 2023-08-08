@@ -101,13 +101,13 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [account, geb, forceUpdateTokens, connectWalletActions])
 
     useEffect(() => {
-        const haiBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18
-        const kiteBalance = connectWalletState?.tokensFetchedData.ODG?.balanceE18
+        const odBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18
+        const odgBalance = connectWalletState?.tokensFetchedData.ODG?.balanceE18
 
-        if (haiBalance && kiteBalance) {
+        if (odBalance && odgBalance) {
             setCoinBalances({
-                hai: utils.formatEther(haiBalance),
-                kite: utils.formatEther(kiteBalance),
+                od: utils.formatEther(odBalance),
+                odg: utils.formatEther(odgBalance),
             })
         }
     }, [connectWalletState, setCoinBalances])

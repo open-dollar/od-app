@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import VirtualAnalyticsData from '~/artifacts/contracts/VirtualAnalyticsData.sol/VirtualAnalyticsData.json'
 
 interface TokenAnalyticsData {

@@ -278,8 +278,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI.symbol}`
-                                        : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.HAI.symbol}`
+                                        ? `Borrow OD: ${new Intl.NumberFormat('en-US', {
+                                              minimumFractionDigits: 0,
+                                              maximumFractionDigits: 10,
+                                          }).format(Number(availableHai))} ${tokensData.HAI.symbol}`
+                                        : `Balance: ${new Intl.NumberFormat('en-US', {
+                                              minimumFractionDigits: 0,
+                                              maximumFractionDigits: 10,
+                                          }).format(Number(haiBalance))} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
                                     isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`

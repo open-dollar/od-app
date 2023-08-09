@@ -76,6 +76,18 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     return isNaN(Number(val)) ? value : val
 }
 
+export const formatWithCommas = (value: string | number, digits = 8) => {
+    let val = Number(value)
+    if (val < 0.00000001) {
+        return value
+    }
+
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: digits,
+    }).format(Number(value))
+}
+
 export const getRatePercentage = (value: string, digits = 4, returnRate = false) => {
     const rate = Number(value)
     let ratePercentage = rate < 1 ? numeral(1).subtract(rate).value() * -1 : numeral(rate).subtract(1).value()

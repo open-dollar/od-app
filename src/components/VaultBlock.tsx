@@ -1,16 +1,9 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { returnState, COIN_TICKER, TOKEN_LOGOS, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
-    const formatWithCommas = (value: string) => {
-        return new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 8,
-        }).format(Number.parseFloat(value))
-    }
-
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>

@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 
-import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber } from '~/utils'
+import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -65,9 +65,9 @@ const CreateVault = ({
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const redirectToWrapEth = () => {
-        const url = "https://wrapeth.com/";
-        window.open(url, "_blank");
-    };
+        const url = 'https://wrapeth.com/'
+        window.open(url, '_blank')
+    }
 
     const selectedTokenBalance = useMemo(() => {
         if (selectedCollateralBalance) {
@@ -139,8 +139,8 @@ const CreateVault = ({
     }
 
     const wrapEth = () => {
-        redirectToWrapEth();
-    };
+        redirectToWrapEth()
+    }
 
     const handleConfirm = async () => {
         if (account && library) {
@@ -186,17 +186,6 @@ const CreateVault = ({
         selectedCollateralDecimals,
         true
     )
-
-    const formatWithCommas = (value: string) => {
-        if (/e-/.test(value)) {
-            return value
-        }
-
-        return new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 8,
-        }).format(Number(formatNumber(value)))
-    }
 
     return (
         <>
@@ -261,14 +250,10 @@ const CreateVault = ({
                                                   }
                                                 : undefined
                                         }
-                                        label={`Balance: ${new Intl.NumberFormat('en-US', {
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 10,
-                                        }).format(Number(selectedTokenBalance))} ${selectedCollateral?.symbol}`}
-                                        rightLabel={`~$${new Intl.NumberFormat('en-US', {
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 10,
-                                        }).format(Number(selectedTokenBalanceInUSD))}`}
+                                        label={`Balance: ${formatWithCommas(selectedTokenBalance)} ${
+                                            selectedCollateral?.symbol
+                                        }`}
+                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
                                         onChange={onLeftInput}
                                         value={leftInput}
                                         handleMaxClick={onMaxLeftInput}
@@ -284,8 +269,8 @@ const CreateVault = ({
                                                 name: tokensData.HAI.symbol,
                                             }
                                         }
-                                        label={`Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.HAI?.symbol}`}
-                                        rightLabel={`~$${haiBalanceUSD}`}
+                                        label={`Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.HAI?.symbol}`}
+                                        rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
                                         onChange={onRightInput}
                                         value={rightInput}
                                         handleMaxClick={onMaxRightInput}
@@ -317,12 +302,10 @@ const CreateVault = ({
                                                             {item.label}
                                                         </Label>
                                                         <Value>
-                                                            {item.value !== "-" && item.label.toLowerCase().includes('collateral') &&
+                                                            {item.value !== '-' &&
+                                                            item.label.toLowerCase().includes('collateral') &&
                                                             item.label.toLowerCase().includes('total')
-                                                                ? new Intl.NumberFormat('en-US', {
-                                                                      minimumFractionDigits: 0,
-                                                                      maximumFractionDigits: 10,
-                                                                  }).format(Number(item.value))
+                                                                ? formatWithCommas(item.value)
                                                                 : item.value}
                                                         </Value>
                                                     </Flex>

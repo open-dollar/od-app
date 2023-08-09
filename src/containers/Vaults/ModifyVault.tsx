@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE } from '~/utils'
+import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -246,19 +246,12 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }}
                                 label={
                                     isDeposit
-                                        ? `Balance: ${new Intl.NumberFormat('en-US', {
-                                              minimumFractionDigits: 0,
-                                              maximumFractionDigits: 10,
-                                          }).format(Number(leftInputBalance))} ${singleSafe.collateralName}`
-                                        : `Available: ${new Intl.NumberFormat('en-US', {
-                                              minimumFractionDigits: 0,
-                                              maximumFractionDigits: 10,
-                                          }).format(Number(leftInputBalance))} ${singleSafe.collateralName}`
+                                        ? `Balance: ${formatWithCommas(leftInputBalance)} ${singleSafe.collateralName}`
+                                        : `Available: ${formatWithCommas(leftInputBalance)} ${
+                                              singleSafe.collateralName
+                                          }`
                                 }
-                                rightLabel={`~$${new Intl.NumberFormat('en-US', {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 10,
-                                }).format(Number(selectedTokenBalanceInUSD))}`}
+                                rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}
@@ -278,17 +271,13 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow OD: ${new Intl.NumberFormat('en-US', {
-                                              minimumFractionDigits: 0,
-                                              maximumFractionDigits: 10,
-                                          }).format(Number(availableHai))} ${tokensData.HAI.symbol}`
-                                        : `Balance: ${new Intl.NumberFormat('en-US', {
-                                              minimumFractionDigits: 0,
-                                              maximumFractionDigits: 10,
-                                          }).format(Number(haiBalance))} ${tokensData.HAI.symbol}`
+                                        ? `Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.HAI.symbol}`
+                                        : `Balance: ${formatWithCommas(haiBalance)} ${tokensData.HAI.symbol}`
                                 }
                                 rightLabel={
-                                    isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`
+                                    isDeposit
+                                        ? `~$${formatWithCommas(haiBalanceUSD)}`
+                                        : `OD Owed: ${formatWithCommas(availableHai)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}

@@ -6,7 +6,7 @@ import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
+import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
 const VaultStats = ({
@@ -31,20 +31,6 @@ const VaultStats = ({
 
     const { singleSafe } = safeState
 
-    const digits = 8
-    const formatWithCommas = (value: string | number) => {
-        let val = Number(value);
-        if (val < 0.00000001) {
-            return value;
-        }
-
-        return new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: digits,
-        }).format(Number(value))
-    }
-
-    // const collateral = formatWithCommas(singleSafe?.collateral || '0')
     const collateral = formatNumber(singleSafe?.collateral || '0')
 
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
@@ -239,7 +225,7 @@ const VaultStats = ({
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>{singleSafe?.collateralName} Price (OSM)</SideTitle>
-                            <SideValue>${collateralUnitPriceUSD}</SideValue>
+                            <SideValue>${formatWithCommas(collateralUnitPriceUSD)}</SideValue>
                         </Side>
 
                         <Side>
@@ -258,22 +244,14 @@ const VaultStats = ({
                                 Liquidation Price
                                 {modified ? (
                                     <div className="sideNote">
-                                        After:{' '} 
+                                        After:{' '}
                                         <span className={`${isDeposit ? 'green' : 'yellow'}`}>
-                                            ${
-                                                formatWithCommas(newLiquidationPrice)
-                                            }
+                                            ${formatWithCommas(newLiquidationPrice)}
                                         </span>
                                     </div>
                                 ) : null}
                             </SideTitle>
-                            <SideValue>${
-                            singleSafe ? 
-                            new Intl.NumberFormat('en-US', {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 8,
-                            }).format(Number(singleSafe.liquidationPrice))
-                            : '-'}</SideValue>
+                            <SideValue>${singleSafe ? formatWithCommas(singleSafe.liquidationPrice) : '-'}</SideValue>
                         </Side>
 
                         <Side>

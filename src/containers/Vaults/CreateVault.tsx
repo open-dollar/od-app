@@ -302,6 +302,7 @@ const CreateVault = ({
                                                             {item.label}
                                                         </Label>
                                                         <Value>
+                                                            {console.log("item value", item.value)}
                                                             {item.value !== '-' &&
                                                             item.label.toLowerCase().includes('collateral') &&
                                                             item.label.toLowerCase().includes('total')

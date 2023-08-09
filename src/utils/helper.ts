@@ -78,8 +78,9 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
 
 export const formatWithCommas = (value: string | number, digits = 8) => {
     let val = Number(value)
-    if (val < 0.00000001) {
-        return value
+
+    if (isNaN(val) || val < 0.00000001) {
+        return String(value)
     }
 
     return new Intl.NumberFormat('en-US', {

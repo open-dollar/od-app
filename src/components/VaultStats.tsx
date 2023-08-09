@@ -31,7 +31,19 @@ const VaultStats = ({
 
     const { singleSafe } = safeState
 
+    const formatWithCommas = (value: string) => {
+        if (/e-/.test(value)) {
+            return value
+        }
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+        }).format(Number(formatNumber(value)))
+    }
+
+    // const collateral = formatWithCommas(singleSafe?.collateral || '0')
     const collateral = formatNumber(singleSafe?.collateral || '0')
+
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
     const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebt as string)
@@ -126,14 +138,14 @@ const VaultStats = ({
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
                             <RowWrapper>
                                 <MainValue>
-                                    {collateral} {singleSafe?.collateralName}
+                                    {formatWithCommas(singleSafe?.collateral || '0')} {singleSafe?.collateralName}
                                 </MainValue>
                                 <MainChange>
                                     {modified ? (
                                         <>
                                             After:{' '}
                                             <span className={isDeposit ? 'green' : 'yellow'}>
-                                                {newCollateral} {singleSafe?.collateralName}
+                                                {formatWithCommas(newCollateral)} {singleSafe?.collateralName}
                                             </span>
                                         </>
                                     ) : (
@@ -147,13 +159,16 @@ const VaultStats = ({
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
                                 <MainValue>
-                                    {totalDebt} <span>OD</span>
+                                    {formatWithCommas(singleSafe?.totalDebt || '0')} <span>OD</span>
                                 </MainValue>
                                 <MainChange>
                                     {' '}
                                     {modified ? (
                                         <>
-                                            After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt} OD</span>
+                                            After:{' '}
+                                            <span className={isDeposit ? 'green' : 'yellow'}>
+                                                {formatWithCommas(newDebt)} OD
+                                            </span>
                                         </>
                                     ) : (
                                         `$${totalDebtInUSD}`
@@ -166,7 +181,7 @@ const VaultStats = ({
                             <ColumnWrapper>
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
-                                    <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                    <MainValue>{formatWithCommas(singleSafe?.collateralRatio || '0')}%</MainValue>
                                     <MainChange>
                                         {modified ? (
                                             <>
@@ -179,7 +194,7 @@ const VaultStats = ({
                                                         )
                                                     ).toLowerCase()}
                                                 >
-                                                    {newCollateralRatio}%
+                                                    {formatWithCommas(newCollateralRatio?.toString())}%
                                                 </span>
                                             </>
                                         ) : (
@@ -242,7 +257,7 @@ const VaultStats = ({
                                     <div className="sideNote">
                                         After:{' '}
                                         <span className={`${isDeposit ? 'green' : 'yellow'}`}>
-                                            ${newLiquidationPrice}
+                                            ${formatWithCommas(newLiquidationPrice?.toString())}
                                         </span>
                                     </div>
                                 ) : null}

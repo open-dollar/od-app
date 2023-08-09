@@ -72,7 +72,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
             console.log({nonScientificValue})
             return nonScientificValue
         }
-        console.log(numeral(Number(nonScientificValue)).format('0,0.[00000000]'))
         return numeral(Number(nonScientificValue)).format('0,0.[00000000]')
     }
 

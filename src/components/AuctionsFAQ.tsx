@@ -45,7 +45,7 @@ const AuctionsFAQ = ({ type }: Props) => {
             {
                 title: t('surplus_auction_minting_flx_header'),
                 desc: t('surplus_auction_minting_flx_desc'),
-                image: require('../assets/sell-hai.svg').default,
+                image: require('../assets/sell-od.svg').default,
             },
             {
                 title: t('surplus_auction_how_to_bid'),
@@ -62,7 +62,7 @@ const AuctionsFAQ = ({ type }: Props) => {
             {
                 title: t('collateral_auction_minting_flx_header'),
                 desc: t('collateral_auction_minting_flx_desc'),
-                image: require('../assets/sell-hai.svg').default,
+                image: require('../assets/sell-od.svg').default,
             },
             {
                 title: t('collateral_auction_increasing_discount_header'),

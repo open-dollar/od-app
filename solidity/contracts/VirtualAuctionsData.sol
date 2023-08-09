@@ -7,21 +7,13 @@ interface IERC20 {
 
 interface IAccountingEngine {
     struct AccountingEngineParams {
-        // Whether the system transfers surplus instead of auctioning it
         uint256 surplusIsTransferred;
-        // Delay between surplus actions
         uint256 surplusDelay;
-        // Delay after which debt can be popped from debtQueue
         uint256 popDebtDelay;
-        // Time to wait (post settlement) until any remaining surplus can be transferred to the settlement auctioneer
         uint256 disableCooldown;
-        // Amount of surplus stability fees transferred or sold in one surplus auction
         uint256 surplusAmount;
-        // Amount of stability fees that need to accrue in this contract before any surplus auction can start
         uint256 surplusBuffer;
-        // Amount of protocol tokens to be minted post-auction
         uint256 debtAuctionMintedTokens;
-        // Amount of debt sold in one debt auction (initial coin bid for debtAuctionMintedTokens protocol tokens)
         uint256 debtAuctionBidSize;
     }
 
@@ -42,13 +34,11 @@ interface IAccountingEngine {
 
 interface ISurplusAuctionHouse {
     struct SurplusAuctionHouseParams {
-        // Minimum bid increase compared to the last bid in order to take the new one in consideration
-        uint256 bidIncrease; // [wad]
-        // How long the auction lasts after a new bid is submitted
-        uint256 bidDuration; // [seconds]
-        // Total length of the auction
-        uint256 totalAuctionLength; // [seconds]
-        uint256 recyclingPercentage;
+        uint256 /* WAD % */ bidIncrease;
+        uint256 /* seconds */ bidDuration;
+        uint256 /* seconds */ totalAuctionLength;
+        address bidReceiver;
+        uint256 /* WAD % */ recyclingPercentage;
     }
 
     function params() external view returns (SurplusAuctionHouseParams memory _params);
@@ -56,14 +46,10 @@ interface ISurplusAuctionHouse {
 
 interface IDebtAuctionHouse {
     struct DebtAuctionHouseParams {
-        // Minimum bid increase compared to the last bid in order to take the new one in consideration
-        uint256 bidDecrease; // [wad]
-        // Increase in protocol tokens sold in case an auction is restarted
-        uint256 amountSoldIncrease; // [wad]
-        // How long the auction lasts after a new bid is submitted
-        uint256 bidDuration; // [seconds]
-        // Total length of the auction
-        uint256 totalAuctionLength; // [seconds]
+        uint256 /* WAD */ bidDecrease;
+        uint256 /* WAD % */ amountSoldIncrease;
+        uint256 /* seconds */  bidDuration;
+        uint256 /* seconds */ totalAuctionLength;
     }
 
     function params() external view returns (DebtAuctionHouseParams memory _params);
@@ -125,7 +111,7 @@ contract VirtualAuctionsData {
             coinTokenSafeBalance: _safeEngine.coinBalance(_proxy)
         });
 
-        // // encode return data
+        // encode return data
         bytes memory data = abi.encode(auctionsData);
 
         // force constructor return via assembly

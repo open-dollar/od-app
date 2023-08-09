@@ -1,9 +1,9 @@
 import numeral from 'numeral'
 import { BigNumber, FixedNumber } from 'ethers'
-import { utils as gebUtils } from '@hai-on-op/sdk'
+import { utils as gebUtils } from '@usekeyp/od-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { getAddress } from '@ethersproject/address'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
 import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'

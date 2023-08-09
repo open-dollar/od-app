@@ -9,20 +9,20 @@ interface IProxyRegistry {
     function proxies(address guy) external view returns (address);
 }
 
-interface IGetSafes {
-    function getSafesAsc(address safeManager, address guy)
+interface ISafeManager {
+    function getSafesData(address guy)
         external
         view
         returns (uint256[] memory ids, address[] memory safes, bytes32[] memory collateralTypes);
 }
 
-interface ISafeEngine {
+interface ISAFEEngine {
     struct SafeDeposit {
         uint256 lockedCollateral;
         uint256 generatedDebt;
     }
 
-    function safes(bytes32 collateralType, address safe) external view returns (SafeDeposit memory _safeDeposit);
+    function safes(bytes32 collateralType, address safe) external view returns (SafeDeposit memory _safe);
 }
 
 contract VirtualUserSafes {
@@ -37,9 +37,8 @@ contract VirtualUserSafes {
     constructor(
         IERC20 coin,
         IProxyRegistry proxyRegistry,
-        IGetSafes getSafes,
-        ISafeEngine safeEngine,
-        address safeManager,
+        ISAFEEngine safeEngine,
+        ISafeManager safeManager,
         address user
     ) {
         uint256 coinBalance = coin.balanceOf(user);
@@ -51,16 +50,16 @@ contract VirtualUserSafes {
             safesData = new SafeData[](0);
         } else {
             (uint256[] memory ids, address[] memory safes, bytes32[] memory _cTypes) =
-                getSafes.getSafesAsc(safeManager, userProxy);
+                safeManager.getSafesData(userProxy);
 
             safesData = new SafeData[](safes.length);
             for (uint256 i = 0; i < safes.length; i++) {
-                ISafeEngine.SafeDeposit memory _safeData = safeEngine.safes(_cTypes[i], safes[i]);
+                ISAFEEngine.SafeDeposit memory _safeData = safeEngine.safes(_cTypes[i], safes[i]);
                 safesData[i] = SafeData(safes[i], ids[i], _safeData.lockedCollateral, _safeData.generatedDebt, _cTypes[i]);
             }
         }
 
-        // // encode return data
+        // encode return data
         bytes memory data = abi.encode(coinBalance, safesData);
 
         // force constructor return via assembly

@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { ETH_NETWORK } from './constants'
 
 export interface WrapEtherProps {

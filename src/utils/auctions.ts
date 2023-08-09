@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { JsonRpcSigner } from '@ethersproject/providers'
 
 import { IAuctionBid } from '~/types'
@@ -28,7 +28,9 @@ export const handleAuctionBuy = async ({ signer, haiAmount, auctionId, collatera
     let tx = await proxy.buyCollateral(collateral, auctionId, collateralAmountBN, haiAmountBN)
 
     if (!tx) throw new Error('No transaction request!')
-    const txData = await signer.sendTransaction({ ...tx, gasLimit: 800000 })
+    const txWithGas = await handlePreTxGasEstimate(signer, tx)
+
+    const txData = await signer.sendTransaction(txWithGas)
     return txData
 }
 

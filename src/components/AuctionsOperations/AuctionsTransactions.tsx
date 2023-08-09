@@ -68,6 +68,9 @@ const AuctionsTransactions = () => {
             case 'SURPLUS':
                 return isSettle ? 'Claiming HAI' : isClaim ? 'Claiming Tokens' : `Bid KITE and Receive ${COIN_TICKER}`
 
+            case 'COLLATERAL':
+                return 'Buying Collateral'
+
             default:
                 return ''
         }

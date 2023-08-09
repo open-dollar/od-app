@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@hai-on-op/sdk'
+import { Geb } from '@usekeyp/od-sdk'
 import { css } from 'styled-components'
 import { injected, walletconnect, walletlink } from '../connectors'
 import { SupportedChainId } from './chains'

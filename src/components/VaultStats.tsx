@@ -9,15 +9,7 @@ import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
-const VaultStats = ({
-    isModifying,
-    isDeposit,
-    isOwner,
-}: {
-    isModifying: boolean
-    isDeposit: boolean
-    isOwner: boolean
-}) => {
+const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
     const {
         totalDebt: newDebt,
@@ -95,74 +87,44 @@ const VaultStats = ({
 
     return (
         <>
-            {
-                // TODO: This allows the user to collect surplus ETH from their safe. This is disabled for now.
-                /* {isOwner &&
-                singleSafe &&
-                Number(singleSafe.internalCollateralBalance) > 0 ? (
-                <SurplusBlock>
-                    <StateInner>
-                        <Inline>
-                            <Text>
-                                {t('liquidation_text', {
-                                    balance: formatNumber(
-                                        singleSafe.internalCollateralBalance
-                                    ),
-                                })}
-                            </Text>
-                            <Button
-                                text={'collect_surplus'}
-                                onClick={handleCollectSurplus}
-                                isLoading={isLoading}
-                            />
-                        </Inline>
-                    </StateInner>
-                </SurplusBlock>
-            ) : null} */
-            }
             <Flex>
                 <Left>
                     <Inner className="main">
                         <Main>
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
                             <RowWrapper>
-                                <MainValue>
-                                    {formatWithCommas(singleSafe?.collateral || '0')} {singleSafe?.collateralName}
-                                </MainValue>
-                                <MainChange>
-                                    {modified ? (
-                                        <>
-                                            After:{' '}
-                                            <span className={isDeposit ? 'green' : 'yellow'}>
-                                                {formatWithCommas(newCollateral)} {singleSafe?.collateralName}
-                                            </span>
-                                        </>
-                                    ) : (
-                                        `$${collateralInUSD}`
-                                    )}
-                                </MainChange>
+                                <div>
+                                    <MainValue>{formatWithCommas(collateral)}</MainValue>
+                                    <MainChange>${formatWithCommas(collateralInUSD)}</MainChange>
+                                </div>
+                                {modified ? (
+                                    <AfterTextWrapper>
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newCollateral)}
+                                        </span>
+                                    </AfterTextWrapper>
+                                ) : (
+                                    <></>
+                                )}
                             </RowWrapper>
                         </Main>
 
                         <Main className="mid">
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
-                                <MainValue>
-                                    {formatWithCommas(singleSafe?.totalDebt || '0')} <span>OD</span>
-                                </MainValue>
-                                <MainChange>
-                                    {' '}
-                                    {modified ? (
-                                        <>
-                                            After:{' '}
-                                            <span className={isDeposit ? 'green' : 'yellow'}>
-                                                {formatWithCommas(newDebt)} OD
-                                            </span>
-                                        </>
-                                    ) : (
-                                        `$${totalDebtInUSD}`
-                                    )}
-                                </MainChange>
+                                <div>
+                                    <MainValue>{formatWithCommas(totalDebt)}</MainValue>
+                                    <MainChange>${formatWithCommas(totalDebtInUSD)}</MainChange>
+                                </div>
+                                {modified ? (
+                                    <AfterTextWrapper>
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newDebt)}
+                                        </span>
+                                    </AfterTextWrapper>
+                                ) : null}
                             </RowWrapper>
                         </Main>
 
@@ -170,26 +132,28 @@ const VaultStats = ({
                             <ColumnWrapper>
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
-                                    <MainValue>{formatWithCommas(singleSafe?.collateralRatio || '0')}%</MainValue>
-                                    <MainChange>
-                                        {modified ? (
-                                            <>
-                                                After:{' '}
-                                                <span
-                                                    className={returnState(
-                                                        ratioChecker(
-                                                            Number(newCollateralRatio),
-                                                            Number(collateralRatio)
-                                                        )
-                                                    ).toLowerCase()}
-                                                >
-                                                    {formatWithCommas(newCollateralRatio)}%
-                                                </span>
-                                            </>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </MainChange>
+                                    <RowTextWrapper>
+                                        <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                        <MainChange>
+                                            {modified ? (
+                                                <AfterTextWrapper>
+                                                    <>
+                                                        After:{' '}
+                                                        <span
+                                                            className={returnState(
+                                                                ratioChecker(
+                                                                    Number(newCollateralRatio),
+                                                                    Number(collateralRatio)
+                                                                )
+                                                            ).toLowerCase()}
+                                                        >
+                                                            {formatWithCommas(newCollateralRatio)}%
+                                                        </span>
+                                                    </>
+                                                </AfterTextWrapper>
+                                            ) : null}
+                                        </MainChange>
+                                    </RowTextWrapper>
                                 </Column>
                                 <Column>
                                     <MainLabel>Risk</MainLabel>
@@ -224,7 +188,7 @@ const VaultStats = ({
                             <InfoIcon data-tip={t('eth_osm_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>{singleSafe?.collateralName} Price (OSM)</SideTitle>
+                            <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
                             <SideValue>${formatWithCommas(collateralUnitPriceUSD)}</SideValue>
                         </Side>
 
@@ -258,7 +222,7 @@ const VaultStats = ({
                             <InfoIcon data-tip={t('liquidation_penalty_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>Total Liquidation Penalty</SideTitle>
+                            <SideTitle>Liquidation Penalty</SideTitle>
                             <SideValue>{`${liquidationPenalty}%`}</SideValue>
                         </Side>
 
@@ -299,10 +263,59 @@ const Flex = styled.div`
     }
 `
 
+const RowTextWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    color: ${(props) => props.theme.colors.customSecondary};
+    span {
+        margin-left: 0.5rem;
+        &.green,
+        &.low {
+            color: ${(props) => props.theme.colors.blueish};
+        }
+        &.yellow {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.dimmed {
+            color: ${(props) => props.theme.colors.secondary};
+        }
+        &.medium {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.high {
+            color: ${(props) => props.theme.colors.dangerColor};
+        }
+    }
+`
+
 const RowWrapper = styled.div`
     display: flex;
-    @media (max-width: 767px) {
-        flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+const AfterTextWrapper = styled.span`
+    display: flex;
+    color: ${(props) => props.theme.colors.customSecondary};
+    span {
+        margin-left: 0.5rem;
+        color: ${(props) => props.theme.colors.blueish};
+        &.green,
+        &.low {
+            color: ${(props) => props.theme.colors.blueish};
+        }
+        &.yellow {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.dimmed {
+            color: ${(props) => props.theme.colors.secondary};
+        }
+        &.medium {
+            color: ${(props) => props.theme.colors.yellowish};
+        }
+        &.high {
+            color: ${(props) => props.theme.colors.dangerColor};
+        }
     }
 `
 
@@ -321,6 +334,7 @@ const Wrapper = styled.div`
 
 const ColumnWrapper = styled.div`
     display: flex;
+    justify-content: space-between;
     gap: 24px;
 `
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
-import { utils as gebUtils } from '@hai-on-op/sdk'
+import { utils as gebUtils } from '@usekeyp/od-sdk'
 import { utils as ethersUtils } from 'ethers'
 import styled from 'styled-components'
 
@@ -12,7 +12,7 @@ import { timeout } from '~/utils'
 import Button from './Button'
 import Loader from './Loader'
 
-export type ApproveMethod = 'coin' | 'protocolToken'
+export type ApproveMethod = 'systemCoin' | 'protocolToken'
 
 interface Props {
     handleBackBtn: () => void

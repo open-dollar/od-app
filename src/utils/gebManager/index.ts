@@ -1,9 +1,9 @@
 import { BigNumber } from 'ethers'
-import { Geb, utils } from '@hai-on-op/sdk'
+import { Geb, utils } from '@usekeyp/od-sdk'
 import { ILiquidationResponse, IUserSafeList } from '../interfaces'
 import { TokenLiquidationData, fetchLiquidationData } from '../virtual/virtualLiquidationData'
 import { fetchUserSafes } from '../virtual/virtualUserSafes'
-import { TokenData } from '@hai-on-op/sdk/lib/contracts/addreses'
+import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 interface UserListConfig {
     geb: Geb
@@ -75,8 +75,7 @@ function parseTokenLiquidationData(redemptionPrice: BigNumber, tokenLiquidationD
 
 // Returns list of user safes
 const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> => {
-    const haiAddress = config.tokensData.HAI.address
-    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address, haiAddress)
+    const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address)
 
     const safes = safesData.map((safe) => ({
         collateral: parseWad(safe.lockedCollateral),

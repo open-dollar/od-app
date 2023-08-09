@@ -187,6 +187,17 @@ const CreateVault = ({
         true
     )
 
+    const formatWithCommas = (value: string) => {
+        if (/e-/.test(value)) {
+            return value
+        }
+
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+        }).format(Number(formatNumber(value)))
+    }
+
     return (
         <>
             <Modal

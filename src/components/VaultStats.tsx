@@ -31,14 +31,17 @@ const VaultStats = ({
 
     const { singleSafe } = safeState
 
-    const formatWithCommas = (value: string) => {
-        if (/e-/.test(value)) {
-            return value
+    const digits = 8
+    const formatWithCommas = (value: string | number) => {
+        let val = Number(value);
+        if (val < 0.00000001) {
+            return value;
         }
+
         return new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
-            maximumFractionDigits: 8,
-        }).format(Number(formatNumber(value)))
+            maximumFractionDigits: digits,
+        }).format(Number(value))
     }
 
     // const collateral = formatWithCommas(singleSafe?.collateral || '0')
@@ -194,7 +197,7 @@ const VaultStats = ({
                                                         )
                                                     ).toLowerCase()}
                                                 >
-                                                    {formatWithCommas(newCollateralRatio?.toString())}%
+                                                    {formatWithCommas(newCollateralRatio)}%
                                                 </span>
                                             </>
                                         ) : (
@@ -255,14 +258,22 @@ const VaultStats = ({
                                 Liquidation Price
                                 {modified ? (
                                     <div className="sideNote">
-                                        After:{' '}
+                                        After:{' '} 
                                         <span className={`${isDeposit ? 'green' : 'yellow'}`}>
-                                            ${formatWithCommas(newLiquidationPrice?.toString())}
+                                            ${
+                                                formatWithCommas(newLiquidationPrice)
+                                            }
                                         </span>
                                     </div>
                                 ) : null}
                             </SideTitle>
-                            <SideValue>{`$${singleSafe?.liquidationPrice || '-'}`}</SideValue>
+                            <SideValue>${
+                            singleSafe ? 
+                            new Intl.NumberFormat('en-US', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 8,
+                            }).format(Number(singleSafe.liquidationPrice))
+                            : '-'}</SideValue>
                         </Side>
 
                         <Side>

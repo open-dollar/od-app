@@ -1,20 +1,14 @@
-import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { liquidateSafe } from '~/services/blockchain'
 
-import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
     const formatWithCommas = (value: string) => {
-        if (/e-/.test(value)) {
-            return value
-        }
-
         return new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 8,
-        }).format(Number(formatNumber(value)))
+        }).format(Number.parseFloat(value))
     }
 
     return (

@@ -60,21 +60,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
 
     const n = Number(value)
 
-    // check for very big or small numbers
-    if (/e-/.test(value)) {
-        let nonScientificValue = n.toFixed(50)
-        const decimalPart = nonScientificValue.split('.')[1] || ''
-        nonScientificValue = `${nonScientificValue.split('.')[0]}.${decimalPart.substring(0, 8)}`
-        if (/\.0{8}$/.test(nonScientificValue)) {
-            return value // return the original value if after converting, we get all zeros after the decimal point
-        }
-        if (Math.abs(Number(nonScientificValue)) < 1) {
-            console.log({nonScientificValue})
-            return nonScientificValue
-        }
-        return numeral(Number(nonScientificValue)).format('0,0.[00000000]')
-    }
-
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }

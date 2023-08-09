@@ -42,9 +42,10 @@ const TokenInput = ({
     const decimalGroups = Math.min(decimals, 1)
     const canHaveDecimals = decimals > 0
     const regex = new RegExp(`^\\d*(\\.\\d{0,${maxDecimals}}){0,${decimalGroups}}$`)
-
+    
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value
+        let val = e.target.value
+        console.log(val)
         if (/^-?\d*[.,]?\d*$/.test(val) && regex.test(val)) {
             val.includes('.') ? setLength(17) : setLength(16)
             if (val.startsWith('0') && val.charAt(1) !== '.' && canHaveDecimals) {
@@ -61,7 +62,7 @@ const TokenInput = ({
             } else {
                 onChange(val)
             }
-        }
+        } 
     }
 
     return (

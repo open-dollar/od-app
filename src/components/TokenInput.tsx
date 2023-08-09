@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Loader } from 'react-feather'
 import styled from 'styled-components'
+import { NumericFormat } from 'react-number-format'
 
 interface Props {
     label: string
@@ -38,31 +39,9 @@ const TokenInput = ({
 
     const [length, setLength] = useState(16)
 
-    const maxDecimals = Math.min(decimals, 4)
-    const decimalGroups = Math.min(decimals, 1)
-    const canHaveDecimals = decimals > 0
-    const regex = new RegExp(`^\\d*(\\.\\d{0,${maxDecimals}}){0,${decimalGroups}}$`)
-    
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let val = e.target.value
-        console.log(val)
-        if (/^-?\d*[.,]?\d*$/.test(val) && regex.test(val)) {
-            val.includes('.') ? setLength(17) : setLength(16)
-            if (val.startsWith('0') && val.charAt(1) !== '.' && canHaveDecimals) {
-                const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.')
-                onChange(returnedVal)
-            } else if (!canHaveDecimals && val.startsWith('0')) {
-                onChange(val.slice(-1))
-            } else if (val.startsWith('.')) {
-                onChange('0' + val)
-            } else if (val.replace(/[^.]/g, '').length > 1) {
-                onChange(value)
-            } else if (val.length === 6 && Number(val) === 0) {
-                onChange('')
-            } else {
-                onChange(val)
-            }
-        } 
+    const handleValueChange = (values: any) => {
+        const { value } = values
+        onChange(value)
     }
 
     return (
@@ -77,16 +56,19 @@ const TokenInput = ({
                         )}
                         {token?.name}
                     </TokenBox>
-                    <CustomInput
+                    <NumericFormat
+                        value={value}
+                        onValueChange={handleValueChange}
+                        thousandSeparator={true}
+                        decimalScale={decimals}
+                        allowNegative={false}
                         placeholder={placeholder || '0.00'}
                         type={'text'}
                         inputMode="decimal"
-                        value={value || ''}
-                        pattern="^[0-9]*[.,]?[0-9]*$"
                         maxLength={length}
                         minLength={1}
-                        onChange={handleChange}
                         disabled={disabled}
+                        customInput={CustomInput} // You use your styled component as the actual input
                         data-test-id={data_test_id}
                     />
                 </Flex>

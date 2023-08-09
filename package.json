@@ -77,6 +77,7 @@
         "react-helmet-async": "^1.0.7",
         "react-i18next": "^11.7.2",
         "react-lottie-player": "^1.4.1",
+        "react-number-format": "^5.2.2",
         "react-paginate": "^6.5.0",
         "react-router-dom": "^5.3.0",
         "react-scripts": "5.0.1",

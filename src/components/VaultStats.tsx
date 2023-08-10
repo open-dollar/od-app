@@ -133,7 +133,9 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
                                     <RowTextWrapper>
-                                        <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                        <MainValue>
+                                            {singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%
+                                        </MainValue>
                                         <MainChange>
                                             {modified ? (
                                                 <AfterTextWrapper>

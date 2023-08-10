@@ -64,7 +64,7 @@ const SideMenu = () => {
                                 </Account>
                             ) : (
                                 <ConnectBtnContainer>
-                                    <Icon src={require('../assets/LogoIcon.png').default} />
+                                    <Icon src={require('../assets/od-logo.svg').default} />
                                     <Title>{t('welcome_reflexer')}</Title>
                                     <Text>
                                         {t('connect_text', {

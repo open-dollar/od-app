@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE } from '~/utils'
+import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -246,10 +246,12 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }}
                                 label={
                                     isDeposit
-                                        ? `Balance: ${leftInputBalance} ${singleSafe.collateralName}`
-                                        : `Available: ${leftInputBalance} ${singleSafe.collateralName}`
+                                        ? `Balance: ${formatWithCommas(leftInputBalance)} ${singleSafe.collateralName}`
+                                        : `Available: ${formatWithCommas(leftInputBalance)} ${
+                                              singleSafe.collateralName
+                                          }`
                                 }
-                                rightLabel={`~$${selectedTokenBalanceInUSD}`}
+                                rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}
@@ -269,11 +271,13 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.OD.symbol}`
-                                        : `Balance: ${formatNumber(haiBalance, 2)} ${tokensData.OD.symbol}`
+                                        ? `Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.OD.symbol}`
+                                        : `Balance: ${formatWithCommas(haiBalance)} ${tokensData.OD.symbol}`
                                 }
                                 rightLabel={
-                                    isDeposit ? `~$${haiBalanceUSD}` : `OD Owed: ${formatNumber(availableHai, 4, true)}`
+                                    isDeposit
+                                        ? `~$${formatWithCommas(haiBalanceUSD)}`
+                                        : `OD Owed: ${formatWithCommas(availableHai)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}

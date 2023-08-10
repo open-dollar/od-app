@@ -6,7 +6,7 @@ import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import { formatNumber, getRatePercentage, ratioChecker, returnState } from '~/utils'
+import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
@@ -24,6 +24,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     const { singleSafe } = safeState
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
+
     const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
 
     const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebt as string)
@@ -93,12 +94,15 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
                             <RowWrapper>
                                 <div>
-                                    <MainValue>{collateral}</MainValue>
-                                    <MainChange>${collateralInUSD}</MainChange>
+                                    <MainValue>{formatWithCommas(collateral)}</MainValue>
+                                    <MainChange>${formatWithCommas(collateralInUSD)}</MainChange>
                                 </div>
                                 {modified ? (
                                     <AfterTextWrapper>
-                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newCollateral}</span>
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newCollateral)}
+                                        </span>
                                     </AfterTextWrapper>
                                 ) : (
                                     <></>
@@ -110,12 +114,15 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
                                 <div>
-                                    <MainValue>{totalDebt}</MainValue>
-                                    <MainChange>${totalDebtInUSD}</MainChange>
+                                    <MainValue>{formatWithCommas(totalDebt)}</MainValue>
+                                    <MainChange>${formatWithCommas(totalDebtInUSD)}</MainChange>
                                 </div>
                                 {modified ? (
                                     <AfterTextWrapper>
-                                        After: <span className={isDeposit ? 'green' : 'yellow'}>{newDebt}</span>
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newDebt)}
+                                        </span>
                                     </AfterTextWrapper>
                                 ) : null}
                             </RowWrapper>
@@ -126,7 +133,9 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
                                     <RowTextWrapper>
-                                        <MainValue>{singleSafe?.collateralRatio}%</MainValue>
+                                        <MainValue>
+                                            {singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%
+                                        </MainValue>
                                         <MainChange>
                                             {modified ? (
                                                 <AfterTextWrapper>
@@ -140,7 +149,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                                                 )
                                                             ).toLowerCase()}
                                                         >
-                                                            {newCollateralRatio}%
+                                                            {formatWithCommas(newCollateralRatio)}%
                                                         </span>
                                                     </>
                                                 </AfterTextWrapper>
@@ -182,7 +191,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
-                            <SideValue>${collateralUnitPriceUSD}</SideValue>
+                            <SideValue>${formatWithCommas(collateralUnitPriceUSD)}</SideValue>
                         </Side>
 
                         <Side>
@@ -203,12 +212,12 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     <div className="sideNote">
                                         After:{' '}
                                         <span className={`${isDeposit ? 'green' : 'yellow'}`}>
-                                            ${newLiquidationPrice}
+                                            ${formatWithCommas(newLiquidationPrice)}
                                         </span>
                                     </div>
                                 ) : null}
                             </SideTitle>
-                            <SideValue>{`$${singleSafe?.liquidationPrice || '-'}`}</SideValue>
+                            <SideValue>${singleSafe ? formatWithCommas(singleSafe.liquidationPrice) : '-'}</SideValue>
                         </Side>
 
                         <Side>

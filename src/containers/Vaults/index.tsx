@@ -69,17 +69,6 @@ const OnBoarding = ({ ...props }) => {
                 {safeState.safeCreated && safeState.list.length ? (
                     <Stats />
                 ) : <></> }
-                {(account && !safeState.safeCreated) || (!isOwner && !safeState.list.length) ? (
-                    <BtnContainer className="top-up">
-                        <Button
-                            data-test-id="topup-btn"
-                            disabled={connectWalletState.isWrongNetwork}
-                            onClick={() => popupsActions.setIsSafeManagerOpen(true)}
-                        >
-                            <BtnInner>{t('manage_other_safes')}</BtnInner>
-                        </Button>
-                    </BtnContainer>
-                ) : null}
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
@@ -101,30 +90,6 @@ const Content = styled.div`
     position: relative;
 `
 
-const BtnContainer = styled.div`
-    position: absolute;
-    top: 25px;
-    right: 50px;
-    button {
-        min-width: 100px;
-        padding: 4px 12px;
-    }
-    &.top-up {
-        right: auto;
-        left: 50px;
-        top: 50px;
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      position: static;
-      margin-bottom:20px;
-      &.top-up {
-         display:none;
-        }
-    `}
-`
 
-const BtnInner = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 5px;
-`
+
+

@@ -94,7 +94,7 @@ const safeModel: SafeModel = {
             if (!payload.safeId) {
                 storeActions.popupsModel.setWaitingPayload({
                     title: 'Transaction Submitted',
-                    text: 'Adding a new safe...',
+                    text: 'Adding a new vault...',
                     status: 'success',
                     isCreate: true,
                 })

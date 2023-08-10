@@ -2977,6 +2977,7 @@ __metadata:
     react-helmet-async: ^1.0.7
     react-i18next: ^11.7.2
     react-lottie-player: ^1.4.1
+    react-number-format: ^5.2.2
     react-paginate: ^6.5.0
     react-router-dom: ^5.3.0
     react-scripts: 5.0.1
@@ -16276,6 +16277,18 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 2154d71b007320d199312e46d73ad298cce71c8870413874e00438eb5b7df878bb7444b6b1be58053f1354abf4666463b991a9e70bb78dc98c370dd2188287e6
+  languageName: node
+  linkType: hard
+
+"react-number-format@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "react-number-format@npm:5.2.2"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 186442ee43db7553353fcf138f63d175a2335d7d1d123361315ed5bdf9f16df9308bf530932d1cf77b1dbfeae514e8921a416279aafddd567ab74fa8deb9dcf7
   languageName: node
   linkType: hard
 

@@ -1,14 +1,10 @@
-import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { formatNumber, returnState, COIN_TICKER, TOKEN_LOGOS } from '~/utils'
+import { returnState, COIN_TICKER, TOKEN_LOGOS, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
-    const { t } = useTranslation()
-
-    const collateral = formatNumber(props.collateral)
-    const totalDebt = formatNumber(props.totalDebt)
+    console.log({ props })
 
     return (
         <Container className={props.className}>
@@ -30,19 +26,19 @@ const VaultBlock = ({ ...props }) => {
                     <Block>
                         <Item>
                             <Label>{`${props.collateralName} Deposited`}</Label>
-                            <Value>{collateral}</Value>
+                            <Value>{formatWithCommas(props.collateral)}</Value>
                         </Item>
                         <Item>
                             <Label>{`${COIN_TICKER} Borrowed`}</Label>
-                            <Value>{totalDebt}</Value>
+                            <Value>{formatWithCommas(props.totalDebt)}</Value>
                         </Item>
                         <Item>
                             <Label>{'Collateral Ratio'}</Label>
-                            <Value>{`${props.collateralRatio}%`}</Value>
+                            <Value>{`${formatWithCommas(props.collateralRatio)}%`}</Value>
                         </Item>
                         <Item>
                             <Label>{'Liquidation Price'}</Label>
-                            <Value>${props.liquidationPrice}</Value>
+                            <Value>${formatWithCommas(props.liquidationPrice)}</Value>
                         </Item>
                         <Item
                             className={
@@ -51,10 +47,17 @@ const VaultBlock = ({ ...props }) => {
                         >
                             <Label>{'Risk'}</Label>
                             <Wrapper>
-                                <Circle />
-                                <div>
-                                    {returnState(props.riskState) || 'No'} {t('risk')}
-                                </div>
+                                <Circle
+                                    data-tip={`${
+                                        returnState(props.riskState) ? returnState(props.riskState) : 'No'
+                                    } Risk`}
+                                    className={
+                                        returnState(props.riskState)
+                                            ? returnState(props.riskState).toLowerCase()
+                                            : 'dimmed'
+                                    }
+                                />{' '}
+                                <div>{returnState(props.riskState) ? returnState(props.riskState) : 'No'}</div>
                             </Wrapper>
                         </Item>
                     </Block>
@@ -93,7 +96,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    color: #DADADA;
+    color: #dadada;
     font-size: 14px;
     font-weight: 400;
 `
@@ -127,51 +130,23 @@ const SafeTitle = styled.div`
 `
 
 const Circle = styled.div`
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
-    margin-right: 5px;
     background: ${(props) => props.theme.colors.successColor};
-`
-
-const SafeState = styled.div`
-    display: flex;
-    align-items: center;
-    width: 120px;
-    color: ${(props) => props.theme.colors.customSecondary};
-    font-size: ${(props) => props.theme.font.small};
-    span {
-        text-transform: capitalize;
-        margin-right: 5px;
-    }
+    margin-right: 5px;
+    cursor: pointer;
     &.dimmed {
-        color: ${(props) => props.theme.colors.secondary};
-        ${Circle} {
-            background: ${(props) => props.theme.colors.secondary};
-        }
+        background: ${(props) => props.theme.colors.secondary};
     }
     &.medium {
-        ${Circle} {
-            background: ${(props) => props.theme.colors.warningColor};
-        }
+        background: ${(props) => props.theme.colors.yellowish};
     }
     &.high {
-        ${Circle} {
-            background: ${(props) => props.theme.colors.dangerColor};
-        }
+        background: ${(props) => props.theme.colors.dangerColor};
     }
     &.liquidation {
-        ${Circle} {
-            background: ${(props) => props.theme.colors.dangerColor};
-        }
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    font-size: ${(props) => props.theme.font.extraSmall};
-    text-align:center;
-  `}
-    @media (max-width: 414px) {
-        margin-top: 5px;
-        width: auto;
+        background: ${(props) => props.theme.colors.dangerColor};
     }
 `
 

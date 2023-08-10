@@ -45,7 +45,7 @@ const Stats = () => {
                     <LinkButton
                         id="stats"
                         text={'Click for more stats..'}
-                        url={`https://stats.reflexer.finance/`}
+                        url={`https://stats.opendollar.com/`}
                         color={'blueish'}
                         isExternal
                     />

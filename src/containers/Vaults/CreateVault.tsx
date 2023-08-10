@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 
-import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber } from '~/utils'
+import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -65,9 +65,9 @@ const CreateVault = ({
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const redirectToWrapEth = () => {
-        const url = "https://wrapeth.com/";
-        window.open(url, "_blank");
-    };
+        const url = 'https://wrapeth.com/'
+        window.open(url, '_blank')
+    }
 
     const selectedTokenBalance = useMemo(() => {
         if (selectedCollateralBalance) {
@@ -111,7 +111,7 @@ const CreateVault = ({
     }, [clearAll])
 
     const handleWaitingTitle = () => {
-        return 'Modifying Vault'
+        return 'Creating Vault'
     }
 
     const handleSubmit = () => {
@@ -139,8 +139,8 @@ const CreateVault = ({
     }
 
     const wrapEth = () => {
-        redirectToWrapEth();
-    };
+        redirectToWrapEth()
+    }
 
     const handleConfirm = async () => {
         if (account && library) {
@@ -250,8 +250,10 @@ const CreateVault = ({
                                                   }
                                                 : undefined
                                         }
-                                        label={`Balance: ${selectedTokenBalance} ${selectedCollateral?.symbol}`}
-                                        rightLabel={`~$${selectedTokenBalanceInUSD}`}
+                                        label={`Balance: ${formatWithCommas(selectedTokenBalance)} ${
+                                            selectedCollateral?.symbol
+                                        }`}
+                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
                                         onChange={onLeftInput}
                                         value={leftInput}
                                         handleMaxClick={onMaxLeftInput}
@@ -267,8 +269,8 @@ const CreateVault = ({
                                                 name: tokensData.OD.symbol,
                                             }
                                         }
-                                        label={`Borrow OD: ${formatNumber(availableHai, 2)} ${tokensData.OD?.symbol}`}
-                                        rightLabel={`~$${haiBalanceUSD}`}
+                                        label={`Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.OD?.symbol}`}
+                                        rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
                                         onChange={onRightInput}
                                         value={rightInput}
                                         handleMaxClick={onMaxRightInput}
@@ -299,7 +301,14 @@ const CreateVault = ({
                                                             ) : null}
                                                             {item.label}
                                                         </Label>
-                                                        <Value>{item.value}</Value>
+                                                        <Value>
+                                                            {console.log("item value", item.value)}
+                                                            {item.value !== '-' &&
+                                                            item.label.toLowerCase().includes('collateral') &&
+                                                            item.label.toLowerCase().includes('total')
+                                                                ? formatWithCommas(item.value)
+                                                                : item.value}
+                                                        </Value>
                                                     </Flex>
                                                 )
                                             })}

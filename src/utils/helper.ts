@@ -57,7 +57,9 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     if (!value) {
         return '0'
     }
+
     const n = Number(value)
+
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }
@@ -72,6 +74,19 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     }
 
     return isNaN(Number(val)) ? value : val
+}
+
+export const formatWithCommas = (value: string | number, digits = 8) => {
+    let val = Number(value)
+
+    if (isNaN(val) || val < 0.00000001) {
+        return String(value)
+    }
+
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: digits,
+    }).format(Number(value))
 }
 
 export const getRatePercentage = (value: string, digits = 4, returnRate = false) => {

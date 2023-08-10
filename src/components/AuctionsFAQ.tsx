@@ -80,7 +80,7 @@ const AuctionsFAQ = ({ type }: Props) => {
     return (
         <HeroSection>
             <Header>
-                How do {type === 'COLLATERAL' ? '' : 'HAI'} {type.toLowerCase()} auctions work?
+                How do {type === 'COLLATERAL' ? '' : 'OD'} {type.toLowerCase()} auctions work?
             </Header>
             <Content>
                 {faqs[type.toLowerCase() as 'debt' | 'surplus' | 'collateral'].map((faq: FAQ, index) => (

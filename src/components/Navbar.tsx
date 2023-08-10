@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -17,6 +17,8 @@ import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
 
 const Navbar = () => {
+    const [isPopupVisible, setPopupVisibility] = useState(false)
+    const dollarRef = useRef<HTMLButtonElement | null>(null)
     const { t } = useTranslation()
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
 
@@ -30,6 +32,16 @@ const Navbar = () => {
     const { connectWalletModel } = useStoreState((state) => state)
     const { active, account, library } = useWeb3React()
     const signer = library ? library.getSigner(account) : undefined
+
+    const handleDollarClick = () => {
+        setPopupVisibility(!isPopupVisible)
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (dollarRef.current && !dollarRef.current.contains(event.target as Node)) {
+            setPopupVisibility(false)
+        }
+    }
 
     const handleWalletConnect = () => {
         if (active && account) {
@@ -104,16 +116,28 @@ const Navbar = () => {
             })
     }
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            // Cleanup the event listener on component unmount
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
     return (
         <Container>
             <Left isBigWidth={active && account ? true : false}>
                 <Brand />
             </Left>
-            <DollarValue>
-                <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
-                <span>1.001</span>
-                <ArrowDown />
-            </DollarValue>
+            <Price>
+                <DollarValue ref={dollarRef} onClick={handleDollarClick}>
+                    <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
+                    <span>1.001</span>
+                    <ArrowDown />
+                </DollarValue>
+                {isPopupVisible && <PriceInfoPopup>Hey</PriceInfoPopup>}
+            </Price>
             <HideMobile>
                 <NavLinks />
             </HideMobile>
@@ -292,6 +316,18 @@ const OdButton = styled.button`
     &:hover {
         opacity: 0.8;
     }
+`
+
+const Price = styled.div`
+    position: relative;
+`
+
+const PriceInfoPopup = styled.div`
+    position: absolute;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 56px;
 `
 
 const ClaimButton = styled(OdButton)``

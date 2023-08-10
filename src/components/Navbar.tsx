@@ -14,6 +14,7 @@ import NavLinks from './NavLinks'
 import Button from './Button'
 import Brand from './Brand'
 import { claimAirdrop } from '~/services/blockchain'
+import ArrowDown from './Icons/ArrowDown'
 
 const Navbar = () => {
     const { t } = useTranslation()
@@ -108,6 +109,11 @@ const Navbar = () => {
             <Left isBigWidth={active && account ? true : false}>
                 <Brand />
             </Left>
+            <DollarValue>
+                <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
+                <span>1.001</span>
+                <ArrowDown />
+            </DollarValue>
             <HideMobile>
                 <NavLinks />
             </HideMobile>
@@ -119,12 +125,12 @@ const Navbar = () => {
                         </ClaimButton>
                     )}
                     {/* Button to add HAI to the wallet */}
-                    <HaiButton onClick={handleAddHAI}>
+                    <OdButton onClick={handleAddHAI}>
                         <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                         {haiBalance + ' '}
                         OD
                         <AddIcon src={addIcon} width={'18px'} height={'18px'} />
-                    </HaiButton>
+                    </OdButton>
 
                     {/* Button to connect wallet */}
                     <Button
@@ -264,7 +270,7 @@ const AddIcon = styled(Icon)`
     margin: 0 5px 0 10px;
 `
 
-const HaiButton = styled.button`
+const OdButton = styled.button`
     outline: none;
     cursor: pointer;
     border: none;
@@ -288,4 +294,6 @@ const HaiButton = styled.button`
     }
 `
 
-const ClaimButton = styled(HaiButton)``
+const ClaimButton = styled(OdButton)``
+
+const DollarValue = styled(OdButton)``

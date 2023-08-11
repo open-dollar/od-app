@@ -20,6 +20,7 @@ import Uniswap from './Icons/Uniswap'
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const dollarRef = useRef<HTMLButtonElement | null>(null)
+    const popupRef = useRef<HTMLDivElement | null>(null)
     const { t } = useTranslation()
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
 
@@ -39,7 +40,12 @@ const Navbar = () => {
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-        if (dollarRef.current && !dollarRef.current.contains(event.target as Node)) {
+        if (
+            dollarRef.current &&
+            !dollarRef.current.contains(event.target as Node) &&
+            popupRef.current &&
+            !popupRef.current.contains(event.target as Node)
+        ) {
             setPopupVisibility(false)
         }
     }
@@ -139,16 +145,16 @@ const Navbar = () => {
                         </ArrowWrapper>
                     </DollarValue>
                     {isPopupVisible && (
-                        <PriceInfoPopup>
-                            <PopupWrapper>
-                                <IconWrapper className="group">
+                        <PriceInfoPopup ref={popupRef} className="group">
+                            <PopupWrapperLink className="group">
+                                <IconWrapper>
                                     <Uniswap />
                                 </IconWrapper>
                                 <PoupColumn>
                                     <div>Liquidity: $3.53M</div>
                                     <div>Delta B: +735.14</div>
                                 </PoupColumn>
-                            </PopupWrapper>
+                            </PopupWrapperLink>
                         </PriceInfoPopup>
                     )}
                 </Price>
@@ -352,7 +358,7 @@ const PriceInfoPopup = styled.div`
     top: 56px;
 `
 
-const PopupWrapper = styled.div`
+const PopupWrapperLink = styled.a`
     display: flex;
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};

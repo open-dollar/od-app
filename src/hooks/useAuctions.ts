@@ -269,9 +269,10 @@ export function useStartAuction() {
     useEffect(() => {
         if (auctionsData) {
             const coinBalance = auctionsData.accountingEngineData.coinBalance
+            const debtBalance = auctionsData.accountingEngineData.debtBalance
             const unqueuedUnauctionedDebt = auctionsData.accountingEngineData.unqueuedUnauctionedDebt
 
-            let systemSurplus = coinBalance.sub(unqueuedUnauctionedDebt)
+            let systemSurplus = coinBalance.sub(debtBalance)
             let systemDebt = unqueuedUnauctionedDebt.sub(coinBalance)
 
             const surplusAmount = auctionsData.accountingEngineData?.accountingEngineParams.surplusAmount

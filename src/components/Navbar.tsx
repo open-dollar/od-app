@@ -15,6 +15,7 @@ import Button from './Button'
 import Brand from './Brand'
 import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
+import Uniswap from './Icons/Uniswap'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
@@ -136,7 +137,13 @@ const Navbar = () => {
                     <span>1.001</span>
                     <ArrowDown />
                 </DollarValue>
-                {isPopupVisible && <PriceInfoPopup>Hey</PriceInfoPopup>}
+                {isPopupVisible && (
+                    <PriceInfoPopup>
+                        <div className="group">
+                            <Uniswap />
+                        </div>
+                    </PriceInfoPopup>
+                )}
             </Price>
             <HideMobile>
                 <NavLinks />

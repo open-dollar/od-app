@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 import { newTransactionsFirst, returnWalletAddress, getEtherscanLink, SUPPORTED_WALLETS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import ConnectedWalletIcon from './ConnectedWalletIcon'
 import { injected, walletlink } from '~/connectors'
 import { isTransactionRecent } from '~/hooks'
 import ExpandIcon from './Icons/ExpandIcon'
@@ -18,7 +17,7 @@ const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
     const { ethereum } = window
 
-    const { active, account, connector, chainId } = useWeb3React()
+    const { account, connector, chainId } = useWeb3React()
 
     const [copied, setCopied] = useState(false)
     const isMetaMask = !!(ethereum && ethereum.isMetaMask)
@@ -42,14 +41,14 @@ const ConnectedWalletInfo = () => {
     }
 
     const formatConnectorName = () => {
-        const name = Object.keys(SUPPORTED_WALLETS)
-            .filter(
-                (k) =>
-                    SUPPORTED_WALLETS[k].connector === connector &&
-                    (connector !== injected || isMetaMask === (k === 'METAMASK'))
-            )
-            .map((k) => SUPPORTED_WALLETS[k].name)[0]
-        return name
+        // const name = Object.keys(SUPPORTED_WALLETS)
+        //     .filter(
+        //         (k) =>
+        //             SUPPORTED_WALLETS[k].connector === connector &&
+        //             (connector !== injected || isMetaMask === (k === 'METAMASK'))
+        //     )
+        //     .map((k) => SUPPORTED_WALLETS[k].name)[0]
+        return null
     }
 
     const sortedRecentTransactions = useMemo(() => {
@@ -78,20 +77,20 @@ const ConnectedWalletInfo = () => {
     return (
         <>
             <DataContainer>
-                <Connection>
-                    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    {connector !== injected && connector !== walletlink ? (
-                        <Button text={'disconnect'} onClick={handleDisconnect} />
-                    ) : (
-                        <Button text={'change'} onClick={handleChange} />
-                    )}
-                </Connection>
+                {/*<Connection>*/}
+                {/*    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}*/}
+                {/*    {connector !== injected && connector !== walletlink ? (*/}
+                {/*        <Button text={'disconnect'} onClick={handleDisconnect} />*/}
+                {/*    ) : (*/}
+                {/*        <Button text={'change'} onClick={handleChange} />*/}
+                {/*    )}*/}
+                {/*</Connection>*/}
 
                 <Address id="web3-account-identifier-row">
-                    <ConnectedWalletIcon size={20} />
-                    {account && active ? returnWalletAddress(account) : 'N/A'}
+                    {/*<ConnectedWalletIcon size={20} />*/}
+                    {/*{account && active ? returnWalletAddress(account) : 'N/A'}*/}
                 </Address>
-                {account && active ? (
+                {account ? (
                     <WalletData>
                         {copied ? (
                             <CopyBtn className="greenish">{t('copied')}</CopyBtn>

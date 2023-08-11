@@ -2,6 +2,7 @@ import React from 'react'
 import { useStoreActions, useStoreState } from '../../store'
 import ConnectedWalletInfo from '../ConnectedWalletInfo'
 import Modal from './Modal'
+import AccountCardsWeb3ReactV2 from "~/components/AccountCardsWeb3ReactV2";
 
 const ConnectedWalletModal = () => {
     const { popupsModel: popupsState } = useStoreState((state) => state)

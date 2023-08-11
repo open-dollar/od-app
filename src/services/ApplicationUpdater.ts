@@ -19,7 +19,7 @@ import useDebounce from '../hooks/useDebounce'
 import store from '../store'
 
 export default function ApplicationUpdater(): null {
-    const { library, chainId } = useActiveWeb3React()
+    const { chainId } = useActiveWeb3React()
     const [state, setState] = useState<{
         chainId: number | undefined
         blockNumber: number | null
@@ -46,20 +46,20 @@ export default function ApplicationUpdater(): null {
 
     // attach/detach listeners
     useEffect(() => {
-        if (!library || !chainId) return undefined
+        // if (!library || !chainId) return undefined
 
         setState({ chainId, blockNumber: null })
-
-        library
-            .getBlockNumber()
-            .then(blockNumberCallback)
-            .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
-
-        library.on('block', blockNumberCallback)
-        return () => {
-            library.removeListener('block', blockNumberCallback)
-        }
-    }, [chainId, library, blockNumberCallback])
+        //
+        // library
+        //     .getBlockNumber()
+        //     .then(blockNumberCallback)
+        //     .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
+        //
+        // library.on('block', blockNumberCallback)
+        // return () => {
+        //     library.removeListener('block', blockNumberCallback)
+        // }
+    }, [chainId, blockNumberCallback])
 
     const debouncedState = useDebounce(state, 100)
 

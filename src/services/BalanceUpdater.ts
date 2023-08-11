@@ -5,7 +5,7 @@ import useDebounce from '../hooks/useDebounce'
 import store, { useStoreState } from '../store'
 
 export default function ApplicationUpdater(): null {
-    const { library, chainId, account } = useActiveWeb3React()
+    const { chainId, account } = useActiveWeb3React()
     const { connectWalletModel: connectedWalletState } = useStoreState((state) => state)
     const { blockNumber } = connectedWalletState
 
@@ -34,13 +34,13 @@ export default function ApplicationUpdater(): null {
 
     // attach/detach listeners
     useEffect(() => {
-        if (!library || !chainId || !account) return undefined
+        if (!chainId || !account) return undefined
         setState({ chainId, balance: 0 })
-        library
-            .getBalance(account)
-            .then(fetchEthBalanceCallBack)
-            .catch((error) => console.error(`Failed to fetch balance for chainId: ${chainId}`, error))
-    }, [chainId, library, fetchEthBalanceCallBack, account, blockNumber])
+        // library
+        //     .getBalance(account)
+        //     .then(fetchEthBalanceCallBack)
+        //     .catch((error) => console.error(`Failed to fetch balance for chainId: ${chainId}`, error))
+    }, [chainId, fetchEthBalanceCallBack, account, blockNumber])
 
     const debouncedState = useDebounce(state, 100)
 

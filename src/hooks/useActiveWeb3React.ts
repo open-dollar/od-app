@@ -1,24 +1,37 @@
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
+import {BaseProvider, Web3Provider} from '@ethersproject/providers'
+import {getPriorityConnector, useWeb3React, Web3ReactPriorityHooks} from '@web3-react/core'
+
+import type { Connector } from '@web3-react/types'
 
 import { gnosisSafe, injected } from '~/connectors'
 import { NetworkContextName } from '~/utils/constants'
 import { IS_IN_IFRAME } from '~/utils/helper'
 import { ChainId } from '~/utils/interfaces'
 
-export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
-    chainId?: ChainId
-} {
-    const context = useWeb3ReactCore<Web3Provider>()
-    const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName)
-    return context.active ? context : contextNetwork
+export type Web3ContextType<T extends BaseProvider = Web3Provider> = {
+    connector: Connector
+    chainId?: ReturnType<Web3ReactPriorityHooks['useSelectedChainId']>
+    accounts: ReturnType<Web3ReactPriorityHooks['useSelectedAccounts']>
+    isActivating: ReturnType<Web3ReactPriorityHooks['useSelectedIsActivating']>
+    account: ReturnType<Web3ReactPriorityHooks['useSelectedAccount']>
+    isActive: ReturnType<Web3ReactPriorityHooks['useSelectedIsActive']>
+    provider: T | undefined
+    ENSNames: ReturnType<Web3ReactPriorityHooks['useSelectedENSNames']>
+    ENSName: ReturnType<Web3ReactPriorityHooks['useSelectedENSName']>
+    hooks: ReturnType<typeof getPriorityConnector>
+}
+
+export function useActiveWeb3React(): Web3ContextType {
+    const context = useWeb3React()
+    const contextNetwork = useWeb3React()
+    // @ts-ignore
+    return context.isActive ? context : contextNetwork
 }
 
 export function useEagerConnect() {
-    const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
+    const { isActive } = useWeb3React() // specifically using useWeb3ReactCore because of what this hook does
     const [tried, setTried] = useState(false)
 
     // gnosisSafe.isSafeApp() races a timeout against postMessage, so it delays pageload if we are not in a safe app;
@@ -30,44 +43,44 @@ export function useEagerConnect() {
         if (!triedSafe) {
             gnosisSafe.isSafeApp().then((loadedInSafe) => {
                 if (loadedInSafe) {
-                    activate(gnosisSafe, undefined, true).catch((e) => {
-                        console.log(e, 'e')
-
-                        setTriedSafe(true)
-                    })
+                    // activate(gnosisSafe, undefined, true).catch((e) => {
+                    //     console.log(e, 'e')
+                    //
+                    //     setTriedSafe(true)
+                    // })
                 } else {
                     setTriedSafe(true)
                 }
             })
         }
-    }, [activate, setTriedSafe, triedSafe])
+    }, [setTriedSafe, triedSafe])
 
     useEffect(() => {
-        if (!active && triedSafe) {
+        if (!isActive && triedSafe) {
             injected.isAuthorized().then((isAuthorized) => {
                 if (isAuthorized) {
-                    activate(injected, undefined, true).catch(() => {
-                        setTried(true)
-                    })
+                    // activate(injected, undefined, true).catch(() => {
+                    //     setTried(true)
+                    // })
                 } else {
                     if (isMobile && window.ethereum) {
-                        activate(injected, undefined, true).catch(() => {
-                            setTried(true)
-                        })
+                        // activate(injected, undefined, true).catch(() => {
+                        //     setTried(true)
+                        // })
                     } else {
                         setTried(true)
                     }
                 }
             })
         }
-    }, [activate, active, triedSafe])
+    }, [triedSafe])
 
     // if the connection worked, wait until we get confirmation of that to flip the flag
-    useEffect(() => {
-        if (active) {
-            setTried(true)
-        }
-    }, [active])
+    // useEffect(() => {
+    //     // if (active) {
+    //     //     setTried(true)
+    //     // }
+    // }, [])
 
     return tried
 }
@@ -77,7 +90,7 @@ export function useEagerConnect() {
  * and out after checking what network they're on
  */
 export function useInactiveListener(suppress = false) {
-    const { active, error, activate } = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
+    const { isActive} = useWeb3React() // specifically using useWeb3React because of what this hook does
 
     useEffect(() => {
         const { ethereum } = window
@@ -85,32 +98,32 @@ export function useInactiveListener(suppress = false) {
         const handleAccountsChanged = (accounts: string[]) => {
             if (accounts.length > 0) {
                 // eat errors
-                activate(injected, undefined, true).catch((error) => {
-                    console.error('Failed to activate after accounts changed', error)
-                })
+                // activate(injected, undefined, true).catch((error) => {
+                //     console.error('Failed to activate after accounts changed', error)
+                // })
             }
         }
 
         const handleChainChanged = () => {
             // eat errors
-            activate(injected, undefined, true).catch((error) => {
-                console.error('Failed to activate after chain changed', error)
-            })
+            // activate(injected, undefined, true).catch((error) => {
+            //     console.error('Failed to activate after chain changed', error)
+            // })
         }
 
-        if (ethereum && ethereum.on && !active && !error && !suppress) {
-            ethereum.on('chainChanged', handleChainChanged)
-            ethereum.on('accountsChanged', handleAccountsChanged)
-
-            return () => {
-                if (ethereum.removeListener) {
-                    ethereum.removeListener('chainChanged', handleChainChanged)
-                    ethereum.removeListener('accountsChanged', handleAccountsChanged)
-                }
-            }
-        }
+        // if (ethereum && ethereum.on && !isActive && !suppress) {
+        //     ethereum.on('chainChanged', handleChainChanged)
+        //     ethereum.on('accountsChanged', handleAccountsChanged)
+        //
+        //     return () => {
+        //         if (ethereum.removeListener) {
+        //             ethereum.removeListener('chainChanged', handleChainChanged)
+        //             ethereum.removeListener('accountsChanged', handleAccountsChanged)
+        //         }
+        //     }
+        // }
 
         return undefined
         // eslint-disable-next-line
-    }, [active, error, suppress, activate])
+    }, [isActive, suppress])
 }

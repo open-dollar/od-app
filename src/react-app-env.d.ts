@@ -2,6 +2,13 @@
 
 import { ExternalProvider } from '@ethersproject/providers'
 
+declare global {
+    interface Window {
+        Buffer: typeof Buffer;
+        util: any;
+    }
+}
+
 declare module 'jazzicon' {
     export default function (diameter: number, seed: number): HTMLElement
 }

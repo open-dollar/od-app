@@ -12,32 +12,7 @@ const ConnectedWalletIcon = ({ size }: Props) => {
     const { connector } = useWeb3React()
 
     function getStatusIcon() {
-        if (connector === injected) {
-            return (
-                <IconWrapper size={size || 16} className="sizeMenu">
-                    <Identicon />
-                </IconWrapper>
-            )
-        } else if (connector === walletconnect) {
-            return (
-                <IconWrapper size={size || 16}>
-                    <img
-                        src={require('../assets/connectors/walletConnectIcon.svg').default}
-                        alt={'wallet connect logo'}
-                    />
-                </IconWrapper>
-            )
-        } else if (connector === walletlink) {
-            return (
-                <IconWrapper size={size || 16}>
-                    <img
-                        src={require('../assets/connectors/coinbaseWalletIcon.svg').default}
-                        alt={'coinbase wallet logo'}
-                    />
-                </IconWrapper>
-            )
-        }
-        return null
+       return null
     }
     return getStatusIcon()
 }

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -30,6 +30,7 @@ import PendingView from './PendingView'
 import { useStoreActions, useStoreState } from '../../store'
 import { useTranslation } from 'react-i18next'
 import MetamaskLogo from '../../assets/connectors/metamask.png'
+import AccountCardsWeb3ReactV2 from "~/components/AccountCardsWeb3ReactV2";
 
 const WALLET_VIEWS = {
     OPTIONS: 'options',
@@ -44,7 +45,7 @@ export default function WalletModal() {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { isConnectorsWalletOpen } = popupsState
 
-    const { active, account, connector, activate, error } = useWeb3React()
+    const { isActive, account, connector } = useWeb3React()
 
     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
@@ -73,72 +74,72 @@ export default function WalletModal() {
     }, [isConnectorsWalletOpen])
 
     // close modal when a connection is successful
-    const activePrevious = usePrevious(active)
+    const activePrevious = usePrevious(isActive)
     const connectorPrevious = usePrevious(connector)
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
-            ((active && !activePrevious) || (connector && connector !== connectorPrevious && !error))
+            ((isActive && !activePrevious) || (connector && connector !== connectorPrevious))
         ) {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
-    }, [setWalletView, active, error, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
+    }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
-    const tryActivation = async (connector: AbstractConnector | undefined) => {
-        let name = ''
-        Object.keys(SUPPORTED_WALLETS).map((key) => {
-            if (connector === SUPPORTED_WALLETS[key].connector) {
-                return (name = SUPPORTED_WALLETS[key].name)
-            }
-            return true
-        })
-        // log selected wallet
-        console.log(`Change wallet, ${name}`)
-        setPendingWallet(connector) // set wallet for pending view
-        setWalletView(WALLET_VIEWS.PENDING)
-
-        // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-        if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
-            connector.walletConnectProvider = undefined
-        }
-
-        connector &&
-            activate(connector, undefined, true).catch((error) => {
-                if (error instanceof UnsupportedChainIdError) {
-                    activate(connector) // a little janky...can't use setError because the connector isn't set
-                } else {
-                    setPendingError(true)
-                }
-            })
-        if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
-            const chainId = await window.ethereum.request({ method: 'net_version' })
-            // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
-            if (chainId !== '420') {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: `0x1a4`,
-                                chainName: 'Optimism Goerli Testnet',
-                                nativeCurrency: {
-                                    name: 'ETH',
-                                    symbol: 'ETH',
-                                    decimals: 18,
-                                },
-                                rpcUrls: ['https://goerli.optimism.io'],
-                                blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
-                            },
-                        ],
-                    })
-                } catch (error) {
-                    console.error('Failed to switch network', error)
-                }
-            }
-        } else {
-            console.log('MetaMask is not installed')
-        }
-    }
+    // const tryActivation = async (connector: AbstractConnector | undefined) => {
+    //     let name = ''
+    //     Object.keys(SUPPORTED_WALLETS).map((key) => {
+    //         if (connector === SUPPORTED_WALLETS[key].connector) {
+    //             return (name = SUPPORTED_WALLETS[key].name)
+    //         }
+    //         return true
+    //     })
+    //     // log selected wallet
+    //     console.log(`Change wallet, ${name}`)
+    //     setPendingWallet(connector) // set wallet for pending view
+    //     setWalletView(WALLET_VIEWS.PENDING)
+    //
+    //     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
+    //     if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
+    //         connector.walletConnectProvider = undefined
+    //     }
+    //
+    //     // connector &&
+    //     //     activate(connector, undefined, true).catch((error) => {
+    //     //         if (error instanceof UnsupportedChainIdError) {
+    //     //             activate(connector) // a little janky...can't use setError because the connector isn't set
+    //     //         } else {
+    //     //             setPendingError(true)
+    //     //         }
+    //     //     })
+    //     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
+    //         const chainId = await window.ethereum.request({ method: 'net_version' })
+    //         // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
+    //         if (chainId !== '420') {
+    //             try {
+    //                 await window.ethereum.request({
+    //                     method: 'wallet_addEthereumChain',
+    //                     params: [
+    //                         {
+    //                             chainId: `0x1a4`,
+    //                             chainName: 'Optimism Goerli Testnet',
+    //                             nativeCurrency: {
+    //                                 name: 'ETH',
+    //                                 symbol: 'ETH',
+    //                                 decimals: 18,
+    //                             },
+    //                             rpcUrls: ['https://goerli.optimism.io'],
+    //                             blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
+    //                         },
+    //                     ],
+    //                 })
+    //             } catch (error) {
+    //                 console.error('Failed to switch network', error)
+    //             }
+    //         }
+    //     } else {
+    //         console.log('MetaMask is not installed')
+    //     }
+    // }
 
     // get wallets user can switch too, depending on device/browser
     function getOptions() {
@@ -149,19 +150,20 @@ export default function WalletModal() {
             if (isMobile) {
                 if (!window.web3 && !window.ethereum && option.mobile) {
                     return (
-                        <Option
-                            onClick={() => {
-                                option.connector !== connector && !option.href && tryActivation(option.connector)
-                            }}
-                            id={`connect-${key}`}
-                            key={key}
-                            active={option.connector && option.connector === connector}
-                            color={option.color}
-                            link={option.href}
-                            header={option.name}
-                            subheader={null}
-                            icon={require(`../../assets/connectors/${option.iconName}`)}
-                        />
+                        <></>
+                        // <Option
+                        //     onClick={() => {
+                        //         option.connector !== connector && !option.href && tryActivation(option.connector)
+                        //     }}
+                        //     id={`connect-${key}`}
+                        //     key={key}
+                        //     active={option.connector && option.connector === connector}
+                        //     color={option.color}
+                        //     link={option.href}
+                        //     header={option.name}
+                        //     subheader={null}
+                        //     icon={require(`../../assets/connectors/${option.iconName}`)}
+                        // />
                     )
                 }
                 return null
@@ -201,50 +203,51 @@ export default function WalletModal() {
             return (
                 !isMobile &&
                 !option.mobileOnly && (
-                    <Option
-                        id={`connect-${key}`}
-                        onClick={() => {
-                            option.connector === connector
-                                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                                : !option.href && tryActivation(option.connector)
-                        }}
-                        key={key}
-                        active={option.connector === connector}
-                        color={option.color}
-                        link={option.href}
-                        header={option.name}
-                        subheader={null} //use option.descriptio to bring back multi-line
-                        icon={require(`../../assets/connectors/${option.iconName}`)}
-                    />
+                    // <Option
+                    //     id={`connect-${key}`}
+                    //     onClick={() => {
+                    //         option.connector === connector
+                    //             ? setWalletView(WALLET_VIEWS.ACCOUNT)
+                    //             : !option.href && tryActivation(option.connector)
+                    //     }}
+                    //     key={key}
+                    //     active={option.connector === connector}
+                    //     color={option.color}
+                    //     link={option.href}
+                    //     header={option.name}
+                    //     subheader={null} //use option.descriptio to bring back multi-line
+                    //     icon={require(`../../assets/connectors/${option.iconName}`)}
+                    // />
+                    <></>
                 )
             )
         })
     }
 
     function getModalContent() {
-        if (error) {
-            return (
-                <UpperSection>
-                    <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-                    <HeaderRow>
-                        {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
-                    </HeaderRow>
-                    <ContentWrapper>
-                        {error instanceof UnsupportedChainIdError ? (
-                            <h5>
-                                {t('not_supported')}{' '}
-                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
-                                    Optimism Goerli
-                                </a>
-                                .
-                            </h5>
-                        ) : (
-                            t('error_try_refresh')
-                        )}
-                    </ContentWrapper>
-                </UpperSection>
-            )
-        }
+        // if (error) {
+        //     return (
+        //         <UpperSection>
+        //             <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
+        //             <HeaderRow>
+        //                 {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
+        //             </HeaderRow>
+        //             <ContentWrapper>
+        //                 {error instanceof UnsupportedChainIdError ? (
+        //                     <h5>
+        //                         {t('not_supported')}{' '}
+        //                         <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
+        //                             Optimism Goerli
+        //                         </a>
+        //                         .
+        //                     </h5>
+        //                 ) : (
+        //                     t('error_try_refresh')
+        //                 )}
+        //             </ContentWrapper>
+        //         </UpperSection>
+        //     )
+        // }
 
         return (
             <UpperSection>
@@ -262,17 +265,19 @@ export default function WalletModal() {
                     </HeaderRow>
                 ) : (
                     <HeaderRow>
-                        <HoverText>{t('connect_wallet_title')}</HoverText>
+                        {/*<HoverText>{t('connect_wallet_title')}</HoverText>*/}
+                        <AccountCardsWeb3ReactV2 />
                     </HeaderRow>
                 )}
                 <ContentWrapper>
                     {walletView === WALLET_VIEWS.PENDING ? (
-                        <PendingView
-                            connector={pendingWallet}
-                            error={pendingError}
-                            setPendingError={setPendingError}
-                            tryActivation={tryActivation}
-                        />
+                        // <PendingView
+                        //     connector={pendingWallet}
+                        //     error={pendingError}
+                        //     setPendingError={setPendingError}
+                        //     // tryActivation={tryActivation}
+                        // />
+                        <></>
                     ) : (
                         <OptionGrid>{getOptions()}</OptionGrid>
                     )}

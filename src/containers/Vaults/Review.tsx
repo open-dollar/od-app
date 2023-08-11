@@ -13,14 +13,14 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
 
     return (
         <Box>
-            <TransactionOverview
-                isChecked={false}
-                title={t('confirm_transaction_details')}
-                description={
-                    t('confirm_details_text') +
-                    (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
-                }
-            />
+            {/*<TransactionOverview*/}
+            {/*    isChecked={false}*/}
+            {/*    title={t('confirm_transaction_details')}*/}
+            {/*    description={*/}
+            {/*        t('confirm_details_text') +*/}
+            {/*        (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')*/}
+            {/*    }*/}
+            {/*/>*/}
             <Stats>
                 {Object.keys(stats).map((key) => {
                     const isPrimary = key === 'data'

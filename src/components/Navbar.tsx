@@ -27,11 +27,11 @@ const Navbar = () => {
         connectWalletModel: connectWalletActions,
     } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
-    const { active, account, library } = useWeb3React()
-    const signer = library ? library.getSigner(account) : undefined
+    const { isActive, account } = useWeb3React()
+    const signer = undefined
 
     const handleWalletConnect = () => {
-        if (active && account) {
+        if (account) {
             return popupsActions.setIsConnectedWalletModalOpen(true)
         }
         return popupsActions.setIsConnectorsWalletOpen(true)
@@ -39,17 +39,17 @@ const Navbar = () => {
 
     const handleAddHAI = async () => {
         try {
-            await library?.provider.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC20',
-                    options: {
-                        address: connectWalletModel.tokensData.OD.address,
-                        symbol: connectWalletModel.tokensData.OD.symbol,
-                        decimals: connectWalletModel.tokensData.OD.decimals,
-                    },
-                },
-            })
+            // await library?.provider.request({
+            //     method: 'wallet_watchAsset',
+            //     params: {
+            //         type: 'ERC20',
+            //         options: {
+            //             address: connectWalletModel.tokensData.OD.address,
+            //             symbol: connectWalletModel.tokensData.OD.symbol,
+            //             decimals: connectWalletModel.tokensData.OD.decimals,
+            //         },
+            //     },
+            // })
         } catch (error) {
             console.log('Error adding OD to the wallet:', error)
         }
@@ -105,7 +105,7 @@ const Navbar = () => {
 
     return (
         <Container>
-            <Left isBigWidth={active && account ? true : false}>
+            <Left isBigWidth={isActive && account ? true : false}>
                 <Brand />
             </Left>
             <HideMobile>
@@ -128,12 +128,12 @@ const Navbar = () => {
 
                     {/* Button to connect wallet */}
                     <Button
-                        primary={active && account ? true : false}
+                        primary={account ? true : false}
                         id="web3-status-connected"
                         isLoading={hasPendingTransactions}
                         onClick={handleWalletConnect}
                     >
-                        {active && account ? (
+                        {account ? (
                             hasPendingTransactions ? (
                                 `${pending.length} Pending`
                             ) : (

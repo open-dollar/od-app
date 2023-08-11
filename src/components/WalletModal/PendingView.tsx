@@ -26,7 +26,6 @@ export default function PendingView({
     connector,
     error = false,
     setPendingError,
-    tryActivation,
 }: {
     connector?: AbstractConnector
     error?: boolean
@@ -42,14 +41,14 @@ export default function PendingView({
                     {error ? (
                         <ErrorGroup>
                             <div>{t('error_connecting')}</div>
-                            <ErrorButton
-                                onClick={() => {
-                                    setPendingError(false)
-                                    connector && tryActivation(connector)
-                                }}
-                            >
-                                {t('try_again')}
-                            </ErrorButton>
+                            {/*<ErrorButton*/}
+                            {/*    onClick={() => {*/}
+                            {/*        setPendingError(false)*/}
+                            {/*        connector && tryActivation(connector)*/}
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    {t('try_again')}*/}
+                            {/*</ErrorButton>*/}
                         </ErrorGroup>
                     ) : (
                         <>

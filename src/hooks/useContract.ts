@@ -37,21 +37,21 @@ export function useContract<T extends Contract = Contract>(
     ABI: any,
     withSignerIfPossible = true
 ): T | null {
-    const { library, account, chainId } = useActiveWeb3React()
+    const { account, chainId } = useActiveWeb3React()
 
     return useMemo(() => {
-        if (!addressOrAddressMap || !ABI || !library || !chainId) return null
+        if (!addressOrAddressMap || !ABI || !chainId) return null
         let address: string | undefined
         if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
         else address = addressOrAddressMap[chainId]
         if (!address) return null
         try {
-            return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+            return null
         } catch (error) {
             console.error('Failed to get contract', error)
             return null
         }
-    }, [addressOrAddressMap, ABI, library, chainId, withSignerIfPossible, account]) as T
+    }, [addressOrAddressMap, ABI, chainId, withSignerIfPossible, account]) as unknown as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {

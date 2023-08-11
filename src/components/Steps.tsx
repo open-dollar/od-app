@@ -8,10 +8,11 @@ import { useStoreActions, useStoreState } from '~/store'
 import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
+import AccountCardsWeb3ReactV2 from "~/components/AccountCardsWeb3ReactV2";
 
 const Steps = () => {
     const { t } = useTranslation()
-    const { account, library, chainId } = useActiveWeb3React()
+    const { account, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const blocksSinceCheck = use10BlocksConfirmations()
     const history = useHistory()
@@ -26,9 +27,9 @@ const Steps = () => {
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     const handleCreateAccount = async () => {
-        if (!account || !library || !chainId) return false
+        if (!account || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
-        const signer = library.getSigner(account)
+        // const signer = library.getSigner(account)
 
         try {
             connectWalletActions.setIsStepLoading(true)
@@ -39,15 +40,15 @@ const Steps = () => {
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
             })
-            const txResponse = await signer.sendTransaction(txData)
-            connectWalletActions.setCtHash(txResponse.hash)
-            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
-            popupsActions.setWaitingPayload({
-                title: 'Transaction Submitted',
-                hash: txResponse.hash,
-                status: 'success',
-            })
-            await txResponse.wait()
+            // const txResponse = await signer.sendTransaction(txData)
+            // connectWalletActions.setCtHash(txResponse.hash)
+            // addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
+            // popupsActions.setWaitingPayload({
+            //     title: 'Transaction Submitted',
+            //     hash: txResponse.hash,
+            //     status: 'success',
+            // })
+            // await txResponse.wait()
         } catch (e) {
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)

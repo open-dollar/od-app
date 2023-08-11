@@ -47,7 +47,7 @@ const App = () => {
                                 <StatsProvider>
                                     <Suspense fallback={null}>
                                         <Route component={GoogleTagManager} />
-                                        <Web3ReactManager>
+                                        {/*<Web3ReactManager>*/}
                                             <>
                                                 <Switch>
                                                     <Route exact strict component={Safes} path={'/'} />
@@ -74,7 +74,7 @@ const App = () => {
                                                     <Redirect from="*" to="/" />
                                                 </Switch>
                                             </>
-                                        </Web3ReactManager>
+                                        {/*</Web3ReactManager>*/}
                                     </Suspense>
                                 </StatsProvider>
                             </ApolloProvider>

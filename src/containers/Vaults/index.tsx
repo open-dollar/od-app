@@ -14,7 +14,7 @@ import VaultList from './VaultList'
 const OnBoarding = ({ ...props }) => {
     const { t } = useTranslation()
     const [isOwner, setIsOwner] = useState(true)
-    const { account, library } = useActiveWeb3React()
+    const { account } = useActiveWeb3React()
     const geb = useGeb()
 
     const {
@@ -30,7 +30,6 @@ const OnBoarding = ({ ...props }) => {
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
-            !library ||
             connectWalletState.isWrongNetwork
         )
             return
@@ -48,14 +47,13 @@ const OnBoarding = ({ ...props }) => {
             if (
                 (!account && !address) ||
                 (address && !isAddress(address.toLowerCase())) ||
-                !library ||
                 connectWalletState.isWrongNetwork
             )
                 fetchSafes()
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, library, safeActions])
+    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, safeActions])
 
     useEffect(() => {
         if (account && address) {

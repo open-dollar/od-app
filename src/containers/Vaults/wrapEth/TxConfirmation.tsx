@@ -11,7 +11,7 @@ import useGeb from '~/hooks/useGeb'
 
 const TxConfirmation = () => {
     const { t } = useTranslation()
-    const { connector, account, library } = useActiveWeb3React()
+    const { connector, account } = useActiveWeb3React()
     const { safeModel: safeState } = useStoreState((state) => state)
     const {
         popupsModel: popupsActions,
@@ -38,7 +38,7 @@ const TxConfirmation = () => {
 
     const handleConfirm = async () => {
         try {
-            if (account && library) {
+            if (account) {
                 popupsActions.setAuctionOperationPayload({
                     isOpen: false,
                     type: '',
@@ -51,13 +51,13 @@ const TxConfirmation = () => {
                     hint: 'Confirm this transaction in your wallet',
                     status: 'loading',
                 })
-                const signer = library.getSigner(account)
+                // const signer = library.getSigner(account)
 
-                await safeActions.wrapEther({
-                    signer,
-                    title: 'Wrapping ETH',
-                    amount: safeState.amount,
-                })
+                // await safeActions.wrapEther({
+                //     signer,
+                //     title: 'Wrapping ETH',
+                //     amount: safeState.amount,
+                // })
             }
             reset()
         } catch (e) {
@@ -71,13 +71,13 @@ const TxConfirmation = () => {
         <Container>
             <>
                 <Body>
-                    <TransactionOverview
-                        title={t('confirm_transaction_details')}
-                        description={
-                            t('confirm_details_text') +
-                            (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
-                        }
-                    />
+                    {/*<TransactionOverview*/}
+                    {/*    title={t('confirm_transaction_details')}*/}
+                    {/*    description={*/}
+                    {/*        t('confirm_details_text') +*/}
+                    {/*        (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')*/}
+                    {/*    }*/}
+                    {/*/>*/}
                     <Results amount={safeState.amount} />
                 </Body>
 

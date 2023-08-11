@@ -51,7 +51,7 @@ interface Props {
 
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
-    const { chainId, account, library } = useActiveWeb3React()
+    const { chainId, account } = useActiveWeb3React()
     const geb = useGeb()
     const history = useHistory()
 
@@ -147,7 +147,7 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [connectWalletActions])
 
     async function accountChecker() {
-        if (!account || !chainId || !library || !geb) return
+        if (!account || !chainId || !geb) return
         popupsActions.setWaitingPayload({
             title: '',
             status: 'loading',

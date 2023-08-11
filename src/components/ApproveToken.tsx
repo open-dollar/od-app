@@ -36,7 +36,7 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
     const tokenContract = useTokenContract(geb?.contracts[methodName].address)
     const [textPayload, setTextPayload] = useState(TEXT_PAYLOAD_DEFAULT_STATE)
 
-    const { library, account } = useActiveWeb3React()
+    const { account } = useActiveWeb3React()
 
     const addTransaction = useTransactionAdder()
     const { connectWalletModel: connectWalletState, popupsModel: popupsState } = useStoreState((state) => state)
@@ -78,7 +78,7 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
 
     const unlockRAI = async () => {
         try {
-            if (!account || !library || !tokenContract) return false
+            if (!account || !tokenContract) return false
             if (!proxyAddress) {
                 throw new Error('No proxy address, disconnect your wallet and reconnect it again')
             }

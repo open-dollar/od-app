@@ -36,7 +36,7 @@ const CreateVault = ({
 }) => {
     const { stats, error, availableHai, parsedAmounts, totalCollateral, totalDebt, collateralRatio, liquidationPrice } =
         useSafeInfo('create')
-    const { library, account } = useActiveWeb3React()
+    const { account } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const {
         safeModel: safeState,
@@ -143,7 +143,7 @@ const CreateVault = ({
     }
 
     const handleConfirm = async () => {
-        if (account && library) {
+        if (account) {
             safeActions.setIsSuccessfulTx(false)
             setShowPreview(false)
             popupsActions.setIsWaitingModalOpen(true)
@@ -160,13 +160,13 @@ const CreateVault = ({
                 totalCollateral,
                 totalDebt,
             })
-            const signer = library.getSigner(account)
+            // const signer = library.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
-                await safeActions.depositAndBorrow({
-                    safeData: safeState.safeData,
-                    signer,
-                })
+                // await safeActions.depositAndBorrow({
+                //     safeData: safeState.safeData,
+                //     signer,
+                // })
                 history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)

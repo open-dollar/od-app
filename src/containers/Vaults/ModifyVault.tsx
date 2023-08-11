@@ -24,7 +24,7 @@ import {
 } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
-    const { library, account, connector } = useActiveWeb3React()
+    const { account, connector } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
     const [showPreview, setShowPreview] = useState(false)
@@ -148,7 +148,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     }
 
     const handleConfirm = async () => {
-        if (account && library) {
+        if (account) {
             safeActions.setIsSuccessfulTx(false)
             setShowPreview(false)
             popupsActions.setIsWaitingModalOpen(true)
@@ -159,27 +159,27 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                 status: 'loading',
             })
 
-            const signer = library.getSigner(account)
+            // const signer = library.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
                 if (safeState.singleSafe && isDeposit) {
-                    await safeActions.depositAndBorrow({
-                        safeData: safeState.safeData,
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
+                    // await safeActions.depositAndBorrow({
+                    //     safeData: safeState.safeData,
+                    //     signer,
+                    //     safeId: safeState.singleSafe.id,
+                    // })
                 }
 
-                if (safeState.singleSafe && !isDeposit) {
-                    await safeActions.repayAndWithdraw({
-                        safeData: {
-                            ...safeState.safeData,
-                            isGnosisSafe: connector === gnosisSafe,
-                        },
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
-                }
+                // if (safeState.singleSafe && !isDeposit) {
+                //     await safeActions.repayAndWithdraw({
+                //         safeData: {
+                //             ...safeState.safeData,
+                //             isGnosisSafe: connector === gnosisSafe,
+                //         },
+                //         signer,
+                //         safeId: safeState.singleSafe.id,
+                //     })
+                // }
 
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)

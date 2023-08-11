@@ -27,66 +27,66 @@ export function shouldCheck(
 
 export default function TransactionUpdater(): null {
     const toastId = 'transactionId'
-    const { chainId, library } = useActiveWeb3React()
+    const { chainId } = useActiveWeb3React()
     const { transactionsModel: state, connectWalletModel: connectedWalletState } = useStoreState((state) => state)
 
     const lastBlockNumber = chainId ? connectedWalletState.blockNumber[chainId] : null
 
     const transactions = useMemo(() => (chainId ? state.transactions ?? {} : {}), [chainId, state])
 
-    useEffect(() => {
-        if (!chainId || !library || !lastBlockNumber) return
+    // useEffect(() => {
+    //     if (!chainId || !lastBlockNumber) return
 
-        Object.keys(transactions)
-            .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
-            .forEach((hash) => {
-                library
-                    .getTransactionReceipt(hash)
-                    .then((receipt) => {
-                        if (receipt) {
-                            store.dispatch.transactionsModel.finalizeTransaction({
-                                ...transactions[hash],
-                                receipt: {
-                                    blockHash: receipt.blockHash,
-                                    blockNumber: receipt.blockNumber,
-                                    contractAddress: receipt.contractAddress,
-                                    from: receipt.from,
-                                    status: receipt.status,
-                                    to: receipt.to,
-                                    transactionHash: receipt.transactionHash,
-                                    transactionIndex: receipt.transactionIndex,
-                                },
-                                confirmedTime: new Date().getTime(),
-                            })
-                            toast(
-                                <ToastPayload
-                                    icon={receipt.status === 1 ? 'Check' : 'AlertTriangle'}
-                                    iconColor={receipt.status === 1 ? 'green' : 'red'}
-                                    text={
-                                        receipt.status === 1
-                                            ? transactions[hash].summary || 'Transaction Confirmed'
-                                            : 'Transaction Failed'
-                                    }
-                                    payload={{
-                                        type: 'transaction',
-                                        value: hash,
-                                        chainId,
-                                    }}
-                                />,
-                                { toastId }
-                            )
-                        } else {
-                            store.dispatch.transactionsModel.checkTransaction({
-                                tx: transactions[hash],
-                                blockNumber: lastBlockNumber,
-                            })
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(`failed to check transaction hash: ${hash}`, error)
-                    })
-            })
-    }, [chainId, library, transactions, lastBlockNumber])
+    //     Object.keys(transactions)
+    //         .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
+    //         .forEach((hash) => {
+    //             library
+    //                 .getTransactionReceipt(hash)
+    //                 .then((receipt) => {
+    //                     if (receipt) {
+    //                         store.dispatch.transactionsModel.finalizeTransaction({
+    //                             ...transactions[hash],
+    //                             receipt: {
+    //                                 blockHash: receipt.blockHash,
+    //                                 blockNumber: receipt.blockNumber,
+    //                                 contractAddress: receipt.contractAddress,
+    //                                 from: receipt.from,
+    //                                 status: receipt.status,
+    //                                 to: receipt.to,
+    //                                 transactionHash: receipt.transactionHash,
+    //                                 transactionIndex: receipt.transactionIndex,
+    //                             },
+    //                             confirmedTime: new Date().getTime(),
+    //                         })
+    //                         toast(
+    //                             <ToastPayload
+    //                                 icon={receipt.status === 1 ? 'Check' : 'AlertTriangle'}
+    //                                 iconColor={receipt.status === 1 ? 'green' : 'red'}
+    //                                 text={
+    //                                     receipt.status === 1
+    //                                         ? transactions[hash].summary || 'Transaction Confirmed'
+    //                                         : 'Transaction Failed'
+    //                                 }
+    //                                 payload={{
+    //                                     type: 'transaction',
+    //                                     value: hash,
+    //                                     chainId,
+    //                                 }}
+    //                             />,
+    //                             { toastId }
+    //                         )
+    //                     } else {
+    //                         store.dispatch.transactionsModel.checkTransaction({
+    //                             tx: transactions[hash],
+    //                             blockNumber: lastBlockNumber,
+    //                         })
+    //                     }
+    //                 })
+    //                 .catch((error) => {
+    //                     console.error(`failed to check transaction hash: ${hash}`, error)
+    //                 })
+    //         })
+    // }, [chainId, library, transactions, lastBlockNumber])
 
     return null
 }

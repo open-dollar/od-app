@@ -1,31 +1,43 @@
 import React from 'react'
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { StoreProvider } from 'easy-peasy'
 import './index.css'
 import App from './App'
 import store from './store'
-import { NetworkContextName } from './utils/constants'
-import getLibrary from './utils/getLibrary'
 import { HelmetProvider } from 'react-helmet-async'
-
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+import { coinbaseWallet, hooks as coinbaseWalletHooks } from './connectors/coinbaseWallet'
+import { hooks as metaMaskHooks, metaMask } from './connectors/metaMask'
+import { hooks as networkHooks, network } from './connectors/network'
+import { hooks as walletConnectHooks, walletConnect } from './connectors/walletConnect'
+import { hooks as walletConnectV2Hooks, walletConnectV2 } from './connectors/walletConnectV2'
+import { Web3ReactHooks, Web3ReactProvider } from '@web3-react/core'
+import type { CoinbaseWallet } from '@web3-react/coinbase-wallet'
+import type { MetaMask } from '@web3-react/metamask'
+import type { Network } from '@web3-react/network'
+import type { WalletConnect } from '@web3-react/walletconnect'
+import type { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 
 if ('ethereum' in window) {
     ;(window.ethereum as any).autoRefreshOnNetworkChange = false
 }
 
+const connectors: [MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet | Network, Web3ReactHooks][] = [
+    [metaMask, metaMaskHooks],
+    [walletConnect, walletConnectHooks],
+    [walletConnectV2, walletConnectV2Hooks],
+    [coinbaseWallet, coinbaseWalletHooks],
+    [network, networkHooks],
+]
+
 ReactDOM.render(
     <React.StrictMode>
         <HelmetProvider>
             <HashRouter>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                    <Web3ProviderNetwork getLibrary={getLibrary}>
+                <Web3ReactProvider connectors={connectors}>
                         <StoreProvider store={store}>
                             <App />
                         </StoreProvider>
-                    </Web3ProviderNetwork>
                 </Web3ReactProvider>
             </HashRouter>
         </HelmetProvider>

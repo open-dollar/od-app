@@ -130,29 +130,30 @@ const Navbar = () => {
         <Container>
             <Left isBigWidth={active && account ? true : false}>
                 <Brand />
+                <Price>
+                    <DollarValue ref={dollarRef} onClick={handleDollarClick}>
+                        <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
+                        <span>$1.001</span>
+                        <ArrowWrapper>
+                            <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
+                        </ArrowWrapper>
+                    </DollarValue>
+                    {isPopupVisible && (
+                        <PriceInfoPopup>
+                            <PopupWrapper>
+                                <IconWrapper className="group">
+                                    <Uniswap />
+                                </IconWrapper>
+                                <PoupColumn>
+                                    <div>Liquidity: $3.53M</div>
+                                    <div>Delta B: +735.14</div>
+                                </PoupColumn>
+                            </PopupWrapper>
+                        </PriceInfoPopup>
+                    )}
+                </Price>
             </Left>
-            <Price>
-                <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                    <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
-                    <span>1.001</span>
-                    <ArrowWrapper>
-                        <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
-                    </ArrowWrapper>
-                </DollarValue>
-                {isPopupVisible && (
-                    <PriceInfoPopup>
-                        <PopupWrapper>
-                            <IconWrapper className="group">
-                                <Uniswap />
-                            </IconWrapper>
-                            <PoupColumn>
-                                <div>Liquidity: $3.53M</div>
-                                <div>Delta B: +735.14</div>
-                            </PoupColumn>
-                        </PopupWrapper>
-                    </PriceInfoPopup>
-                )}
-            </Price>
+
             <HideMobile>
                 <NavLinks />
             </HideMobile>
@@ -335,6 +336,11 @@ const OdButton = styled.button`
 
 const Price = styled.div`
     position: relative;
+    margin-right: auto;
+    margin-left: 32px;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    display: none;
+  `}
 `
 
 const PriceInfoPopup = styled.div`

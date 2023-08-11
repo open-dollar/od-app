@@ -17,10 +17,6 @@ import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
 import Uniswap from './Icons/Uniswap'
 
-type ArrowWrapperProps = {
-    rotated: boolean
-}
-
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const dollarRef = useRef<HTMLButtonElement | null>(null)
@@ -139,8 +135,8 @@ const Navbar = () => {
                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                     <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                     <span>1.001</span>
-                    <ArrowWrapper rotated={isPopupVisible}>
-                        <ArrowDown fill={isPopupVisible ? "#1499DA" : "#00587E"}/>
+                    <ArrowWrapper>
+                        <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                     </ArrowWrapper>
                 </DollarValue>
                 {isPopupVisible && (
@@ -367,9 +363,8 @@ const PoupColumn = styled.div`
     text-align: end;
 `
 
-const ArrowWrapper = styled.div<ArrowWrapperProps>`
-    transition: transform 0.3s ease;
-    transform: ${(props) => (props.rotated ? 'rotate(180deg)' : 'none')};
+const ArrowWrapper = styled.div`
+    margin-left: 8px;
 `
 
 const ClaimButton = styled(OdButton)``

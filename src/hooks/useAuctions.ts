@@ -5,7 +5,7 @@ import _ from '~/utils/lodash'
 
 import { useActiveWeb3React } from '~/hooks'
 import { AuctionEventType, IAuction, IAuctionBidder, ICollateralAuction } from '~/types'
-import { AuctionData } from '~/utils/virtual/virtualAuctionData'
+import { AuctionData } from '@hai-on-op/sdk/lib/virtual/virtualAuctionData'
 import { radToFixed, wadToFixed } from '@hai-on-op/sdk/lib/utils'
 import useGeb from './useGeb'
 import { utils as gebUtils } from '@hai-on-op/sdk'

@@ -11,8 +11,8 @@ import {
     IAuctionBuy,
     IClaimInternalBalance,
 } from '~/utils'
-import { CollateralAuctionsData, fetchCollateralAuctionData } from '~/utils/virtual/virtualCollateralAuctionData'
-import { AuctionData, fetchAuctionData } from '~/utils/virtual/virtualAuctionData'
+import { CollateralAuctionsData, fetchCollateralAuctionData } from '@hai-on-op/sdk/lib/virtual/virtualCollateralAuctionData'
+import { AuctionData, fetchAuctionData } from '@hai-on-op/sdk/lib/virtual/virtualAuctionData'
 import { IAuctionBid, IAuction, AuctionEventType } from '~/types'
 import { StoreModel } from '~/model'
 

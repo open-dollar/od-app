@@ -4,9 +4,7 @@
     "homepage": ".",
     "private": true,
     "scripts": {
-        "preinstall": "yarn --cwd ./solidity install",
         "start": "craco start",
-        "prebuild": "yarn --cwd ./solidity compile",
         "build": "craco build",
         "test": "craco test",
         "eject": "craco eject",
@@ -28,7 +26,7 @@
         "@ethersproject/experimental": "5.4.0",
         "@ethersproject/providers": "5.4.5",
         "@gnosis.pm/safe-apps-web3-react": "^0.6.0",
-        "@hai-on-op/sdk": "1.1.0-rc.1",
+        "@hai-on-op/sdk": "1.1.0-rc.4",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",

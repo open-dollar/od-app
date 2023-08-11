@@ -139,9 +139,15 @@ const Navbar = () => {
                 </DollarValue>
                 {isPopupVisible && (
                     <PriceInfoPopup>
-                        <div className="group">
-                            <Uniswap />
-                        </div>
+                        <PopupWrapper>
+                            <IconWrapper className="group">
+                                <Uniswap />
+                            </IconWrapper>
+                            <PoupColumn>
+                                <div>Liquidity: $3.53M</div>
+                                <div>Delta B: +735.14</div>
+                            </PoupColumn>
+                        </PopupWrapper>
                     </PriceInfoPopup>
                 )}
             </Price>
@@ -331,10 +337,28 @@ const Price = styled.div`
 
 const PriceInfoPopup = styled.div`
     position: absolute;
+    min-width: 180px;
     padding: 8px;
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
     top: 56px;
+`
+
+const PopupWrapper = styled.div`
+    display: flex;
+    gap: 8px;
+    font-size: ${(props) => props.theme.font.small};
+    font-weight: 600;
+    color: ${(props) => props.theme.colors.neutral};
+`
+
+const IconWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const PoupColumn = styled.div`
+    text-align: end;
 `
 
 const ClaimButton = styled(OdButton)``

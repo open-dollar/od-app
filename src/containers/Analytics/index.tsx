@@ -137,21 +137,48 @@ const Analytics = () => {
         return []
     }, [geb])
 
+    const totalCollateralLocked = {
+        image: '',
+        title: 'Total Collateral Locked',
+        value: '26500004',
+        description: 'Mock dada',
+    }
+
+    const outstandingOd = {
+        image: '',
+        title: 'Outstanding OD',
+        value: '3,205,400 / 10,000,000',
+        description: 'Mock dada',
+    }
+
+    const vaultNFTs = { title: 'Vault NFTs', value: '137', description: 'Mock dada' }
+
+    const annualStabilityFee = { title: 'Annual Stability fee', value: '2.0%', description: 'Mock dada' }
+
+    const circulation = { title: 'circulation', value: '2,566,553 OD', description: 'Mock dada' }
+
+    const feesPendingAuction = { title: 'Fees pending auction', value: '16,066 OD', description: 'Mock dada' }
+
+    const totalFeesEarned = { title: 'total Fees earned', value: '501,677 OD', description: 'Mock dada' }
+
+    const liquidityUniswap = { title: 'OD/ETH Liquidity in uniswap', value: '$240,714', description: 'Mock dada' }
+
+    const marketPriceODG = { title: 'Market Price ODG', value: '$10,833 ', description: 'Mock dada' }
+
     const contractsData = {
         title: 'Contracts',
         colums: ['Contract', 'Address', 'Description'],
         rows: contracts,
     }
     const marketPriceData: DataCardProps = {
-        image: 'HAI',
-        title: 'Market Price',
+        title: 'Market Price OD',
         value: marketPrice,
         description:
             'Time-weighted average HAI market price derived from UniV3 HAI/WETH pool and Chainlink WETH/USD feed.',
     }
     const redemptionPriceData: DataCardProps = {
         image: 'HAI',
-        title: 'Redemption Price',
+        title: 'redemption Price OD',
         value: redemptionPrice,
         description:
             'HAI\'s "moving peg". It\'s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price.',
@@ -203,7 +230,7 @@ const Analytics = () => {
         ),
     }
     const eightHourlyRedemptionRate: DataCardProps = {
-        title: '8-Hour Redemption Rate',
+        title: '8-Hourly Redemption Rate',
         value: eightRate,
         description: 'Redemption rate over an 8h period.',
     }
@@ -218,30 +245,30 @@ const Analytics = () => {
     ]
 
     const analiticsData = [
-        // totalCollateralLocked, 
-        // outstandingOd,
-        // vaultNFTs 
+        totalCollateralLocked,
+        outstandingOd,
+        vaultNFTs
     ]
 
     const systemRatesData = [
-        // annualStabilityFee,
+        annualStabilityFee,
         annualRedemptionRate,
-        eightHourlyRedemptionRate
+        eightHourlyRedemptionRate,
     ]
 
     const systemInfoData = [
-        // circulation,
-        // feesPendingAuction,
-        // totalFeesEarned,
+        circulation,
+        feesPendingAuction,
+        totalFeesEarned,
         globalDebtUtilizationData,
-        globalDebt
+        globalDebt,
     ]
 
     const Prices = [
         marketPrice, // check for market price OD not HAI
         redemptionPriceData,
-        // liquidityUniswap,
-        // marketPriceODG,
+        liquidityUniswap,
+        marketPriceODG,
     ]
 
     useEffect(() => {
@@ -306,7 +333,7 @@ const Analytics = () => {
                 <Title>Protocol Analytics</Title>
             </Content>
 
-            {/* First Section ==> */}
+            {/* First Section ==> Change to devided blockes*/}
             <DataContainer>
                 {data.map((val, index) => (
                     <DataCard

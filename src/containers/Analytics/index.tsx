@@ -217,6 +217,33 @@ const Analytics = () => {
         eightHourlyRedemptionRate,
     ]
 
+    const analiticsData = [
+        // totalCollateralLocked, 
+        // outstandingOd,
+        // vaultNFTs 
+    ]
+
+    const systemRatesData = [
+        // annualStabilityFee,
+        annualRedemptionRate,
+        eightHourlyRedemptionRate
+    ]
+
+    const systemInfoData = [
+        // circulation,
+        // feesPendingAuction,
+        // totalFeesEarned,
+        globalDebtUtilizationData,
+        globalDebt
+    ]
+
+    const Prices = [
+        marketPrice, // check for market price OD not HAI
+        redemptionPriceData,
+        // liquidityUniswap,
+        // marketPriceODG,
+    ]
+
     useEffect(() => {
         if (geb) {
             fetchAnalyticsData(geb).then((result) => {
@@ -279,7 +306,7 @@ const Analytics = () => {
                 <Title>Protocol Analytics</Title>
             </Content>
 
-            {/* First Section */}
+            {/* First Section ==> */}
             <DataContainer>
                 {data.map((val, index) => (
                     <DataCard

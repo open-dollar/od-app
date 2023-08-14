@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
+import { TOKEN_LOGOS } from '~/utils'
 
 import DataCard, { DataCardProps } from './DataCard'
 import { DataTable, TableProps } from './DataTable'
@@ -138,20 +139,20 @@ const Analytics = () => {
     }, [geb])
 
     const totalCollateralLocked = {
-        image: '',
+        image: 'ETH',
         title: 'Total Collateral Locked',
         value: '26500004',
         description: 'Mock dada',
     }
 
     const outstandingOd = {
-        image: '',
+        image: 'OD',
         title: 'Outstanding OD',
         value: '3,205,400 / 10,000,000',
         description: 'Mock dada',
     }
 
-    const vaultNFTs = { title: 'Vault NFTs', value: '137', description: 'Mock dada' }
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Mock dada' }
 
     const annualStabilityFee = { title: 'Annual Stability fee', value: '2.0%', description: 'Mock dada' }
 
@@ -177,7 +178,7 @@ const Analytics = () => {
             'Time-weighted average HAI market price derived from UniV3 HAI/WETH pool and Chainlink WETH/USD feed.',
     }
     const redemptionPriceData: DataCardProps = {
-        image: 'HAI',
+        image: 'OD',
         title: 'redemption Price OD',
         value: redemptionPrice,
         description:
@@ -244,27 +245,13 @@ const Analytics = () => {
         eightHourlyRedemptionRate,
     ]
 
-    const analiticsData = [
-        totalCollateralLocked,
-        outstandingOd,
-        vaultNFTs
-    ]
+    const analiticsData = [totalCollateralLocked, outstandingOd, vaultNFTs]
 
-    const systemRatesData = [
-        annualStabilityFee,
-        annualRedemptionRate,
-        eightHourlyRedemptionRate,
-    ]
+    const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
 
-    const systemInfoData = [
-        circulation,
-        feesPendingAuction,
-        totalFeesEarned,
-        globalDebtUtilizationData,
-        globalDebt,
-    ]
+    const systemInfoData = [circulation, feesPendingAuction, totalFeesEarned, globalDebtUtilizationData, globalDebt]
 
-    const Prices = [
+    const PricesData = [
         marketPrice, // check for market price OD not HAI
         redemptionPriceData,
         liquidityUniswap,
@@ -329,32 +316,51 @@ const Analytics = () => {
     return (
         <Container>
             {/* Page title */}
-            <Content>
+            {/* <Content>
                 <Title>Protocol Analytics</Title>
-            </Content>
+            </Content> */}
 
             {/* First Section ==> Change to devided blockes*/}
-            <DataContainer>
-                {data.map((val, index) => (
-                    <DataCard
-                        key={val.title + index}
-                        image={val.image}
-                        title={val.title}
-                        value={val.value}
-                        description={val.description}
-                        children={val.children}
-                    />
-                ))}
-                <ReactTooltip multiline type="light" data-effect="solid" />
-            </DataContainer>
+            <Section>
+                <Title>Analytics</Title>
+                <AnaliticsSection>
+                    {analiticsData.map((val, index) => (
+                        <DataContainer key={val.title + index}>
+                            <DataCard
+                                image={val.image}
+                                title={val.title}
+                                value={val.value}
+                                description={val.description}
+                            />
+                            <ReactTooltip multiline type="light" data-effect="solid" />
+                        </DataContainer>
+                    ))}
+                </AnaliticsSection>
+                {/* <DataContainer>
+                    {data.map((val, index) => (
+                        <DataCard
+                            key={val.title + index}
+                            image={val.image}
+                            title={val.title}
+                            value={val.value}
+                            description={val.description}
+                            children={val.children}
+                        />
+                    ))}
+                    <ReactTooltip multiline type="light" data-effect="solid" />
+                </DataContainer> */}
+            </Section>
 
-            <DataContainer>
-                {/* Collateral Table */}
+            <Section>
+                <Title>Collaterals</Title>
                 <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
+            </Section>
 
+            <Section>
+                <Title>Contracts</Title>
                 {/* Contracts Table */}
                 <ContractsTable title={contractsData.title} colums={contractsData.colums} rows={contractsData.rows} />
-            </DataContainer>
+            </Section>
         </Container>
     )
 }
@@ -362,7 +368,7 @@ const Analytics = () => {
 export default Analytics
 
 const Container = styled.div`
-    max-width: 1200px;
+    max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
@@ -370,18 +376,33 @@ const Container = styled.div`
     }
 `
 
-const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
-    min-width: 180px;
+const Section = styled.div``
+
+const AnaliticsSection = styled.div`
+    display: flex;
+    gap: 24px;
+
+    & div {
+        height: 231px;
+    }
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        flex-wrap: wrap;
+    `}
+`
+
+const Title = styled.h2`
+    font-size: 34px;
+    font-weight: 700;
+    margin-button: 16px;
 `
 
 const DataContainer = styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: wrap;
+    // justify-content: center;
 `
 const Content = styled.div`
     display: flex;

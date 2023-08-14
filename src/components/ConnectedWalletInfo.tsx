@@ -17,7 +17,7 @@ const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
     const { ethereum } = window
 
-    const { account, connector, chainId } = useWeb3React()
+    const { isActive, account, connector, chainId } = useWeb3React()
 
     const [copied, setCopied] = useState(false)
     const isMetaMask = !!(ethereum && ethereum.isMetaMask)
@@ -90,7 +90,7 @@ const ConnectedWalletInfo = () => {
                     {/*<ConnectedWalletIcon size={20} />*/}
                     {/*{account && active ? returnWalletAddress(account) : 'N/A'}*/}
                 </Address>
-                {account ? (
+                {account && isActive ? (
                     <WalletData>
                         {copied ? (
                             <CopyBtn className="greenish">{t('copied')}</CopyBtn>

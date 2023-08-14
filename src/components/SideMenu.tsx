@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import { amountToFiat, returnWalletAddress, COIN_TICKER } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
+import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
 import Button from './Button'
 
@@ -55,7 +56,7 @@ const SideMenu = () => {
                                         popupsActions.setShowSideMenu(false)
                                     }}
                                 >
-                                    {/*<ConnectedWalletIcon size={40} />*/}
+                                    <ConnectedWalletIcon size={40} />
                                     <AccountData>
                                         <Address>{returnWalletAddress(account)}</Address>
                                         <Balance>{`$ ${renderBalance()}`}</Balance>

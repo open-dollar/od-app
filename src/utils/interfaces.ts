@@ -8,7 +8,9 @@ import { BigNumber } from 'ethers'
 
 export declare enum ChainId {
     MAINNET = 1,
-    GOERLI = 5,
+    ARBITRUM = 42161,
+    ARBITRUM_GOERLI = 421613,
+    OPTIMISM_MAINNET = 10,
     OPTIMISM_GOERLI = 420,
 }
 

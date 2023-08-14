@@ -13,7 +13,7 @@ import useGeb from '~/hooks/useGeb'
 
 const AuctionsTransactions = () => {
     const { t } = useTranslation()
-    const { connector, account } = useActiveWeb3React()
+    const { connector, account, provider } = useActiveWeb3React()
     const geb = useGeb()
 
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -78,7 +78,7 @@ const AuctionsTransactions = () => {
 
     const handleConfirm = async () => {
         try {
-            if (account) {
+            if (account && provider) {
                 popupsActions.setAuctionOperationPayload({
                     isOpen: false,
                     type: '',
@@ -91,41 +91,41 @@ const AuctionsTransactions = () => {
                     hint: 'Confirm this transaction in your wallet',
                     status: 'loading',
                 })
-                // const signer = library.getSigner(account)
+                const signer = provider.getSigner(account)
 
                 if (isBuy) {
-                    // await auctionsActions.auctionBuy({
-                    //     signer,
-                    //     auctionId,
-                    //     title: handleWaitingTitle,
-                    //     haiAmount: amount,
-                    //     collateral: tokenSymbol,
-                    //     collateralAmount: collateralAmount,
-                    // })
+                    await auctionsActions.auctionBuy({
+                        signer,
+                        auctionId,
+                        title: handleWaitingTitle,
+                        haiAmount: amount,
+                        collateral: tokenSymbol,
+                        collateralAmount: collateralAmount,
+                    })
                 } else if (isSettle) {
-                    // await auctionsActions.auctionClaim({
-                    //     signer,
-                    //     auctionId,
-                    //     title: handleWaitingTitle,
-                    //     auctionType,
-                    // })
+                    await auctionsActions.auctionClaim({
+                        signer,
+                        auctionId,
+                        title: handleWaitingTitle,
+                        auctionType,
+                    })
                 } else if (isClaim) {
-                    // await auctionsActions.auctionClaimInternalBalance({
-                    //     signer,
-                    //     auctionId,
-                    //     title: handleWaitingTitle,
-                    //     auctionType,
-                    //     bid: Number(internalBalance) > 0 ? internalBalance : protInternalBalance,
-                    //     token: Number(internalBalance) > 0 ? 'COIN' : 'PROTOCOL_TOKEN',
-                    // })
+                    await auctionsActions.auctionClaimInternalBalance({
+                        signer,
+                        auctionId,
+                        title: handleWaitingTitle,
+                        auctionType,
+                        bid: Number(internalBalance) > 0 ? internalBalance : protInternalBalance,
+                        token: Number(internalBalance) > 0 ? 'COIN' : 'PROTOCOL_TOKEN',
+                    })
                 } else {
-                    // await auctionsActions.auctionBid({
-                    //     signer,
-                    //     auctionId,
-                    //     title: handleWaitingTitle,
-                    //     auctionType,
-                    //     bid: amount,
-                    // })
+                    await auctionsActions.auctionBid({
+                        signer,
+                        auctionId,
+                        title: handleWaitingTitle,
+                        auctionType,
+                        bid: amount,
+                    })
                 }
             }
             reset()
@@ -140,13 +140,14 @@ const AuctionsTransactions = () => {
         <Container>
             <>
                 <Body>
-                    {/*<TransactionOverview*/}
-                    {/*    title={t('confirm_transaction_details')}*/}
-                    {/*    description={*/}
-                    {/*        t('confirm_details_text') +*/}
-                    {/*        (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')*/}
-                    {/*    }*/}
-                    {/*/>*/}
+                    <TransactionOverview
+                        title={t('confirm_transaction_details')}
+                        description={
+                            t('confirm_details_text') +
+                            // @ts-ignore
+                            (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
+                        }
+                    />
                     <Results />
                 </Body>
 

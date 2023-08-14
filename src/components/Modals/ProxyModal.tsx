@@ -16,7 +16,7 @@ import Modal from './Modal'
 const ProxyModal = () => {
     const [status, setStatus] = useState('stateless')
     const { t } = useTranslation()
-    const { account, chainId } = useActiveWeb3React()
+    const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const addTransaction = useTransactionAdder()
     const blocksSinceCheck = use10BlocksConfirmations()
@@ -46,17 +46,18 @@ const ProxyModal = () => {
 
         if (!account || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
-        // const signer = library.getSigner(account)
+        // @ts-ignore
+        const signer = provider.getSigner(account)
 
         try {
             setStatus('loading')
             popupsActions.setBlockBackdrop(true)
-            // const tx = await handlePreTxGasEstimate(signer, txData)
-            // const txResponse = await signer.sendTransaction(tx)
-            // connectWalletActions.setCtHash(txResponse.hash)
-            // addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
-            // setStatus('success')
-            // await txResponse.wait()
+            const tx = await handlePreTxGasEstimate(signer, txData)
+            const txResponse = await signer.sendTransaction(tx)
+            connectWalletActions.setCtHash(txResponse.hash)
+            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
+            setStatus('success')
+            await txResponse.wait()
             popupsActions.setBlockBackdrop(false)
         } catch (e) {
             popupsActions.setBlockBackdrop(false)

@@ -254,7 +254,7 @@ export function useStartAuction() {
     const { auctionModel: auctionsState } = useStoreState((state) => state)
     const auctionsData = auctionsState.auctionsData as AuctionData
 
-    const { account } = useActiveWeb3React()
+    const { account, provider } = useActiveWeb3React()
     const [surplusAmountToSell, setSurplusAmountToSell] = useState<string>('')
     const [debtAmountToSell, setDebtAmountToSell] = useState<string>('')
     const [protocolTokensOffered, setProtocolTokensToOffer] = useState<string>('')
@@ -319,7 +319,7 @@ export function useStartAuction() {
     }, [debtAmountToSell, debtRequiredToAuction])
 
     const startSurplusAcution = async function () {
-        if (!account) throw new Error('No library or account')
+        if (!provider || !account) throw new Error('No library or account')
 
         const txResponse = await geb.contracts.accountingEngine.auctionSurplus()
 
@@ -346,7 +346,7 @@ export function useStartAuction() {
     }
 
     const startDebtAcution = async function () {
-        if (!account) throw new Error('No library or account')
+        if (!provider || !account) throw new Error('No library or account')
 
         const txResponse = await geb.contracts.accountingEngine.auctionDebt()
 

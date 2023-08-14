@@ -12,13 +12,14 @@ type TokenType = 'ETH' | 'OD' | 'WETH'
 // connect to @usekeyp/od-sdk
 
 export default function useGeb(): Geb {
+    const { provider } = useActiveWeb3React()
     const [state, setState] = useState<Geb>()
 
-    // useEffect(() => {
-    //     if (!library) return
-    //     const geb = new Geb(network_name, library.getSigner())
-    //     setState(geb)
-    // }, [library])
+    useEffect(() => {
+        if (!provider) return
+        const geb = new Geb(network_name, provider.getSigner())
+        setState(geb)
+    }, [provider])
 
     return state as Geb
 }

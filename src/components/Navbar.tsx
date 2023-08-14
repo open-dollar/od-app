@@ -27,11 +27,11 @@ const Navbar = () => {
         connectWalletModel: connectWalletActions,
     } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
-    const { isActive, account } = useWeb3React()
-    const signer = undefined
+    const { isActive, account, provider } = useWeb3React()
+    const signer = provider ? provider.getSigner(account) : undefined
 
     const handleWalletConnect = () => {
-        if (account) {
+        if (isActive && account) {
             return popupsActions.setIsConnectedWalletModalOpen(true)
         }
         return popupsActions.setIsConnectorsWalletOpen(true)
@@ -39,17 +39,19 @@ const Navbar = () => {
 
     const handleAddHAI = async () => {
         try {
-            // await library?.provider.request({
-            //     method: 'wallet_watchAsset',
-            //     params: {
-            //         type: 'ERC20',
-            //         options: {
-            //             address: connectWalletModel.tokensData.OD.address,
-            //             symbol: connectWalletModel.tokensData.OD.symbol,
-            //             decimals: connectWalletModel.tokensData.OD.decimals,
-            //         },
-            //     },
-            // })
+            // @ts-ignore
+            await provider?.provider.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    // @ts-ignore
+                    type: 'ERC20',
+                    options: {
+                        address: connectWalletModel.tokensData.OD.address,
+                        symbol: connectWalletModel.tokensData.OD.symbol,
+                        decimals: connectWalletModel.tokensData.OD.decimals,
+                    },
+                },
+            })
         } catch (error) {
             console.log('Error adding OD to the wallet:', error)
         }
@@ -133,7 +135,7 @@ const Navbar = () => {
                         isLoading={hasPendingTransactions}
                         onClick={handleWalletConnect}
                     >
-                        {account ? (
+                        {isActive && account ? (
                             hasPendingTransactions ? (
                                 `${pending.length} Pending`
                             ) : (

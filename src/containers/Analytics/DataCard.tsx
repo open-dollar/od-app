@@ -6,8 +6,7 @@ import { TOKEN_LOGOS } from '~/utils'
 const images: { [key: string]: string } = {
     ETH: require('../../assets/eth-icon.svg').default,
     OD: TOKEN_LOGOS['OD'],
-    NFTS: require('../../assets/nfts-icon.svg').default
-
+    NFTS: require('../../assets/nfts-icon.svg').default,
 }
 
 export interface DataCardProps {
@@ -82,8 +81,7 @@ export const InfoIcon = styled.div`
     right: 12px;
     top: 12px;
     svg {
-        fill: ${(props) => props.theme.colors.foreground};
-        color: ${(props) => props.theme.colors.secondary};
+        color: ${(props) => props.theme.colors.blueish};
         position: relative;
         top: 2px;
         margin-right: 5px;

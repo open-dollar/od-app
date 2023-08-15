@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
-import { TOKEN_LOGOS } from '~/utils'
 
 import DataCard, { DataCardProps } from './DataCard'
 import { DataTable, TableProps } from './DataTable'
@@ -249,10 +248,16 @@ const Analytics = () => {
 
     const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
 
-    const systemInfoData = [circulation, feesPendingAuction, totalFeesEarned, globalDebtUtilizationData, globalDebt]
+    const systemInfoData: DataCardProps[] = [
+        circulation,
+        feesPendingAuction,
+        totalFeesEarned,
+        globalDebtUtilizationData,
+        globalDebtData,
+    ]
 
-    const PricesData = [
-        marketPrice, // check for market price OD not HAI
+    const pricesData: DataCardProps[] = [
+        marketPriceData, // check for market price OD not HAI
         redemptionPriceData,
         liquidityUniswap,
         marketPriceODG,
@@ -315,15 +320,9 @@ const Analytics = () => {
 
     return (
         <Container>
-            {/* Page title */}
-            {/* <Content>
-                <Title>Protocol Analytics</Title>
-            </Content> */}
-
-            {/* First Section ==> Change to devided blockes*/}
             <Section>
                 <Title>Analytics</Title>
-                <AnaliticsSection>
+                <AnaliticsTop>
                     {analiticsData.map((val, index) => (
                         <DataContainer key={val.title + index}>
                             <DataCard
@@ -332,23 +331,70 @@ const Analytics = () => {
                                 value={val.value}
                                 description={val.description}
                             />
-                            <ReactTooltip multiline type="light" data-effect="solid" />
+                            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
                         </DataContainer>
                     ))}
-                </AnaliticsSection>
-                {/* <DataContainer>
-                    {data.map((val, index) => (
-                        <DataCard
-                            key={val.title + index}
-                            image={val.image}
-                            title={val.title}
-                            value={val.value}
-                            description={val.description}
-                            children={val.children}
-                        />
+                </AnaliticsTop>
+                <AnaliticsMiddle>
+                    <LeftColumn>
+                        <SubTitle>System Rates</SubTitle>
+                        <LeftTopRow>
+                            <DataCard
+                                title={systemRatesData[0].title}
+                                value={systemRatesData[0].value}
+                                description={systemRatesData[0].description}
+                            />
+                        </LeftTopRow>
+                        <FlexMultipleRow>
+                            <DataCard
+                                title={systemRatesData[1].title}
+                                value={systemRatesData[1].value}
+                                description={systemRatesData[1].description}
+                            />
+                            <DataCard
+                                title={systemRatesData[2].title}
+                                value={systemRatesData[2].value}
+                                description={systemRatesData[2].description}
+                            />
+                        </FlexMultipleRow>
+                    </LeftColumn>
+                    <RightColumn>
+                        <SubTitle>System Info</SubTitle>
+                        <FlexMultipleRow>
+                            {systemInfoData.slice(0, 3).map((val, index) => {
+                                return (
+                                    <DataCard
+                                        key={val.title + index}
+                                        title={val.title}
+                                        value={val.value}
+                                        description={val.description}
+                                    />
+                                )
+                            })}
+                        </FlexMultipleRow>
+                        <FlexMultipleRow>
+                            {systemInfoData.slice(3).map((val, index) => {
+                                return (
+                                    <DataCard
+                                        key={val.title + index}
+                                        title={val.title}
+                                        value={val.value}
+                                        description={val.description}
+                                    />
+                                )
+                            })}
+                        </FlexMultipleRow>
+                    </RightColumn>
+                </AnaliticsMiddle>
+                <SubTitle>Prices</SubTitle>
+                <AnaliticsBottom>
+                    {pricesData.map((val, index) => (
+                        <DataContainer key={val.title + index}>
+                            <DataCard title={val.title} value={val.value} description={val.description} />
+                            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
+                        </DataContainer>
                     ))}
-                    <ReactTooltip multiline type="light" data-effect="solid" />
-                </DataContainer> */}
+                </AnaliticsBottom>
             </Section>
 
             <Section>
@@ -378,9 +424,10 @@ const Container = styled.div`
 
 const Section = styled.div``
 
-const AnaliticsSection = styled.div`
+const AnaliticsTop = styled.div`
     display: flex;
     gap: 24px;
+    margin-bottom: 64px;
 
     & div {
         height: 231px;
@@ -391,10 +438,47 @@ const AnaliticsSection = styled.div`
     `}
 `
 
+const AnaliticsMiddle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 64px;
+
+    & div {
+        flex: 1;
+    }
+`
+
+const AnaliticsBottom = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+`
+
+const LeftColumn = styled.div``
+
+const RightColumn = styled.div``
+
+const LeftTopRow = styled.div`
+    margin-bottom: 24px;
+`
+
+const FlexMultipleRow = styled.div`
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+`
+
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
-    margin-button: 16px;
+    margin-bottom: 40px;
+`
+
+const SubTitle = styled.h3`
+    font-size: 34px;
+    font-weight: 700;
+    color: #0079ad;
+    margin-bottom: 16px;
 `
 
 const DataContainer = styled.div`

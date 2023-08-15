@@ -20,6 +20,7 @@ import LoadingDots from './Icons/LoadingDots'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
+    const [loadingOdValue, setLoadingOdValue] = useState(false)
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const popupRef = useRef<HTMLDivElement | null>(null)
     const { t } = useTranslation()
@@ -140,8 +141,7 @@ const Navbar = () => {
                 <Price>
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                         <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
-                        <span>$1.001</span>
-                        {/* <LoadingDots/> */}
+                        {loadingOdValue ? <LoadingDots /> : <span>$1.001</span>}
                         <ArrowWrapper>
                             <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                         </ArrowWrapper>
@@ -383,4 +383,7 @@ const ArrowWrapper = styled.div`
 
 const ClaimButton = styled(OdButton)``
 
-const DollarValue = styled(OdButton)``
+const DollarValue = styled(OdButton)`
+    width: 133px;
+    justify-content: space-between;
+`

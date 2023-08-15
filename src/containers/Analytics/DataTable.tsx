@@ -8,6 +8,14 @@ export interface TableProps {
     rows: (string | JSX.Element)[][]
 }
 
+interface HeadsContainerProps {
+    index?: number
+}
+
+interface ListItemProps {
+    index?: number
+}
+
 export const DataTable = ({ title, colums, rows }: TableProps) => {
     return (
         <Container>
@@ -21,8 +29,7 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                 <SectionContent>
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
-                            <HeadsContainer key={title + '-column-' + index}>
-                                {console.log({description})}
+                            <HeadsContainer key={title + '-column-' + index} index={index}>
                                 <Head data-tip={description}>{name}</Head>
                                 {/* {description && (
                                     <InfoIcon data-tip={description}>
@@ -37,7 +44,7 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                             <List key={'row-' + index}>
                                 {item?.map((value, valueIndex) => (
                                     <HeadsContainer key={'row-item-' + valueIndex}>
-                                        <ListItem>
+                                        <ListItem index={valueIndex}>
                                             <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
                                             {value}
                                         </ListItem>
@@ -53,18 +60,14 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
 }
 
 export const Container = styled.div`
-    // border-radius: 15px;
     margin-bottom: 15px;
-    // background: #031f3a;
 
     width: 100%;
     height: fit-content;
-    // margin: 10px;
 `
 
 export const Header = styled.div`
     width: 100%;
-    // background: #05284c;
     border-radius: 15px 15px 0 0;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
@@ -97,9 +100,6 @@ export const InfoIcon = styled.div`
 
 export const Content = styled.div`
     position: relative;
-    // margin: 20px;
-    // border-top: 1px solid ${(props) => props.theme.colors.border};
-    // background: #031f3a;
 
     border-radius: 0 0 15px 15px;
     width: 100%;
@@ -145,7 +145,7 @@ export const LeftAucInfo = styled.div<{ type?: string }>`
     }
 `
 
-export const HeadsContainer = styled.div`
+export const HeadsContainer = styled.div<HeadsContainerProps>`
     position: relative;
     width: 100%;
     display: flex;
@@ -153,7 +153,8 @@ export const HeadsContainer = styled.div`
     align-items: center;
     justify-content: start;
     width: max-content;
-    text-align: end;
+
+    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 `
 
 export const Heads = styled.div`
@@ -168,7 +169,6 @@ export const Heads = styled.div`
         position: sticky;
         left: 0;
         line-height: 2;
-        // background-color: #031f3a;
         z-index: 10;
     }
 
@@ -195,7 +195,7 @@ export const Head = styled.p`
     width: 174px;
     font-weight: 600;
     text-transform: uppercase;
-    color: #4A4D53;
+    color: #4a4d53;
     padding-left: 10px;
     &:first-child {
         padding: 0 25px;
@@ -220,7 +220,7 @@ export const List = styled.div`
 
     align-items: start;
     justify-content: space-between;
-    background: #002B40;
+    background: #002b40;
     margin-bottom: 24px;
     // background-color: ${(props) => props.theme.colors.colorPrimary}
     // &:nth-child(even) {
@@ -247,7 +247,7 @@ export const List = styled.div`
   `}
 `
 
-export const ListItem = styled.div`
+export const ListItem = styled.div<ListItemProps>`
     /* flex: 0 0 16.6%; */
     width: 174px;
     color: ${(props) => props.theme.colors.customSecondary};
@@ -257,7 +257,7 @@ export const ListItem = styled.div`
         padding: 15px 25px;
     }
 
-    text-align: end;
+    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       &:first-child {

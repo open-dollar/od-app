@@ -433,7 +433,9 @@ const Container = styled.div`
     }
 `
 
-const Section = styled.div``
+const Section = styled.div`
+    margin-bottom: 64px;
+`
 
 const AnaliticsTop = styled.div`
     display: flex;

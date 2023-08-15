@@ -20,7 +20,15 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
 }
 
 export enum Network {
+    //TODO: rename once SDK contracts updated
+    ARBITRUM = 'arbitrum-mainnet',
+    //TODO: rename once SDK contracts updated
+    ARBITRUM_GOERLI = 'arbitrum-goerli',
+    //TODO: remove once SDK contracts updated
+    OPTIMISM = 'optimism-mainnet',
+    //TODO: remove once SDK contracts updated
     OPTIMISM_GOERLI = 'optimism-goerli',
+
 }
 
 export const ETH_NETWORK = Network.OPTIMISM_GOERLI
@@ -93,8 +101,8 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     1: '',
     421613: 'arbitrum-goerli',
     42161: 'arbitrum-mainnet',
-    10: 'optimism-mainnet.',
-    420: 'optimism-goerli.',
+    //TODO: remove once contracts updated
+    420: 'goerli-optimism',
 }
 
 const MEDIA_WIDTHS = {

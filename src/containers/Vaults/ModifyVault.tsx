@@ -174,8 +174,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                     await safeActions.repayAndWithdraw({
                         safeData: {
                             ...safeState.safeData,
-                            // @ts-ignore
-                            isGnosisSafe: connector === gnosisSafe,
+                            isGnosisSafe: false,
                         },
                         signer,
                         safeId: safeState.singleSafe.id,

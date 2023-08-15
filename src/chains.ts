@@ -85,9 +85,20 @@ export const TESTNET_CHAINS: ChainConfig = {
 
 }
 
+const supportedChainId = parseInt(process.env.REACT_APP_NETWORK_ID || '', 10);
+
+if (isNaN(supportedChainId)) {
+  throw new Error('REACT_APP_NETWORK_ID must be a valid number');
+}
+
 export const CHAINS: ChainConfig = {
-  ...MAINNET_CHAINS,
-  ...TESTNET_CHAINS,
+  [supportedChainId]: {
+    ...(MAINNET_CHAINS[supportedChainId] || TESTNET_CHAINS[supportedChainId]),
+  },
+};
+
+if (!CHAINS[supportedChainId]) {
+  throw new Error(`Unsupported chain ID ${supportedChainId}`);
 }
 
 export const URLS: { [chainId: number]: string[] } = Object.keys(CHAINS).reduce<{ [chainId: number]: string[] }>(

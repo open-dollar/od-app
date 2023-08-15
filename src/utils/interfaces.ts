@@ -10,7 +10,7 @@ export declare enum ChainId {
     MAINNET = 1,
     ARBITRUM = 42161,
     ARBITRUM_GOERLI = 421613,
-    OPTIMISM_MAINNET = 10,
+    //TODO: remove once SDK contracts updated
     OPTIMISM_GOERLI = 420,
 }
 

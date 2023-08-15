@@ -14,7 +14,6 @@ export default function MetaMaskCard() {
   const isActive = useIsActive()
 
   const provider = useProvider()
-  const ENSNames = useENSNames(provider)
 
   const [error, setError] = useState(undefined)
 
@@ -27,16 +26,16 @@ export default function MetaMaskCard() {
 
   return (
     <Card
+        activate={false}
       connector={metaMask}
       activeChainId={chainId}
       isActivating={isActivating}
       isActive={isActive}
       error={error}
-      // @ts-ignore
+        //@ts-ignore
       setError={setError}
       accounts={accounts}
       provider={provider}
-      ENSNames={ENSNames}
     />
   )
 }

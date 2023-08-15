@@ -76,11 +76,11 @@ export function useEagerConnect() {
     }, [triedSafe])
 
     // if the connection worked, wait until we get confirmation of that to flip the flag
-    // useEffect(() => {
-    //     // if (active) {
-    //     //     setTried(true)
-    //     // }
-    // }, [])
+    useEffect(() => {
+        if (isActive) {
+            setTried(true)
+        }
+    }, [isActive])
 
     return tried
 }
@@ -111,17 +111,23 @@ export function useInactiveListener(suppress = false) {
             // })
         }
 
-        // if (ethereum && ethereum.on && !isActive && !suppress) {
-        //     ethereum.on('chainChanged', handleChainChanged)
-        //     ethereum.on('accountsChanged', handleAccountsChanged)
-        //
-        //     return () => {
-        //         if (ethereum.removeListener) {
-        //             ethereum.removeListener('chainChanged', handleChainChanged)
-        //             ethereum.removeListener('accountsChanged', handleAccountsChanged)
-        //         }
-        //     }
-        // }
+        // @ts-ignore
+        if (ethereum && ethereum.on && !isActive && !suppress) {
+            // @ts-ignore
+            ethereum.on('chainChanged', handleChainChanged)
+            // @ts-ignore
+            ethereum.on('accountsChanged', handleAccountsChanged)
+
+            return () => {
+                // @ts-ignore
+                if (ethereum.removeListener) {
+                    // @ts-ignore
+                    ethereum.removeListener('chainChanged', handleChainChanged)
+                    // @ts-ignore
+                    ethereum.removeListener('accountsChanged', handleAccountsChanged)
+                }
+            }
+        }
 
         return undefined
         // eslint-disable-next-line

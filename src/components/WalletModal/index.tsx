@@ -104,9 +104,9 @@ export default function WalletModal() {
         }
 
         // connector &&
-        //     activate(connector, undefined, true).catch((error) => {
-        //         if (error instanceof UnsupportedChainIdError) {
-        //             activate(connector) // a little janky...can't use setError because the connector isn't set
+        //     connector.activate().catch((error) => {
+        //         if (error) {
+        //             connector.activate() // a little janky...can't use setError because the connector isn't set
         //         } else {
         //             setPendingError(true)
         //         }
@@ -268,7 +268,7 @@ export default function WalletModal() {
                     </HeaderRow>
                 ) : (
                     <HeaderRow>
-                        {/*<HoverText>{t('connect_wallet_title')}</HoverText>*/}
+                        <HoverText>{t('connect_wallet_title')}</HoverText>
                         <AccountCardsWeb3ReactV2 />
                     </HeaderRow>
                 )}

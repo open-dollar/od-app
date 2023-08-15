@@ -6,12 +6,14 @@ import styled from 'styled-components'
 
 import { newTransactionsFirst, returnWalletAddress, getEtherscanLink, SUPPORTED_WALLETS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import { injected, walletlink } from '~/connectors'
 import { isTransactionRecent } from '~/hooks'
 import ExpandIcon from './Icons/ExpandIcon'
 import Transaction from './Transaction'
 import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
+import ConnectedWalletIcon from "~/components/ConnectedWalletIcon";
+import {MetaMask} from "@web3-react/metamask";
+import {CoinbaseWallet} from "@web3-react/coinbase-wallet";
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
@@ -41,14 +43,16 @@ const ConnectedWalletInfo = () => {
     }
 
     const formatConnectorName = () => {
-        // const name = Object.keys(SUPPORTED_WALLETS)
-        //     .filter(
-        //         (k) =>
-        //             SUPPORTED_WALLETS[k].connector === connector &&
-        //             (connector !== injected || isMetaMask === (k === 'METAMASK'))
-        //     )
-        //     .map((k) => SUPPORTED_WALLETS[k].name)[0]
-        return null
+        const name = Object.keys(SUPPORTED_WALLETS)
+            .filter(
+                (k) =>
+                    // @ts-ignore
+                    SUPPORTED_WALLETS[k].connector === connector &&
+                    // @ts-ignore
+                    (!(connector instanceof MetaMask))
+            )
+            .map((k) => SUPPORTED_WALLETS[k].name)[0]
+        return name
     }
 
     const sortedRecentTransactions = useMemo(() => {
@@ -77,18 +81,18 @@ const ConnectedWalletInfo = () => {
     return (
         <>
             <DataContainer>
-                {/*<Connection>*/}
-                {/*    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}*/}
-                {/*    {connector !== injected && connector !== walletlink ? (*/}
-                {/*        <Button text={'disconnect'} onClick={handleDisconnect} />*/}
-                {/*    ) : (*/}
-                {/*        <Button text={'change'} onClick={handleChange} />*/}
-                {/*    )}*/}
-                {/*</Connection>*/}
+                <Connection>
+                    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
+                    {!(connector instanceof MetaMask) && !(connector instanceof CoinbaseWallet) ? (
+                        <Button text={'disconnect'} onClick={handleDisconnect} />
+                    ) : (
+                        <Button text={'change'} onClick={handleChange} />
+                    )}
+                </Connection>
 
                 <Address id="web3-account-identifier-row">
-                    {/*<ConnectedWalletIcon size={20} />*/}
-                    {/*{account && active ? returnWalletAddress(account) : 'N/A'}*/}
+                    <ConnectedWalletIcon size={20} />
+                    {account && isActive ? returnWalletAddress(account) : 'N/A'}
                 </Address>
                 {account && isActive ? (
                     <WalletData>

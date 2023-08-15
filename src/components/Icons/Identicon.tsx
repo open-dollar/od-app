@@ -2,10 +2,9 @@ import React, { useEffect, useRef } from 'react'
 
 import styled from 'styled-components'
 
-import { useActiveWeb3React } from '../../hooks'
-
 // @ts-ignore
 import Jazzicon from 'jazzicon'
+import {useWeb3React} from "@web3-react/core";
 
 const StyledIdenticonContainer = styled.div`
     border-radius: 1.125rem;
@@ -15,7 +14,7 @@ const StyledIdenticonContainer = styled.div`
 export default function Identicon() {
     const ref = useRef<HTMLDivElement>()
 
-    const { account } = useActiveWeb3React()
+    const { account } = useWeb3React()
 
     useEffect(() => {
         if (account && ref.current) {

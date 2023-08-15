@@ -17,7 +17,6 @@ export default function WalletConnectV2Card() {
   const isActive = useIsActive()
 
   const provider = useProvider()
-  const ENSNames = useENSNames(provider)
 
   const [error, setError] = useState(undefined)
 
@@ -47,7 +46,6 @@ export default function WalletConnectV2Card() {
       setError={setError}
       accounts={accounts}
       provider={provider}
-      ENSNames={ENSNames}
     />
   )
 }

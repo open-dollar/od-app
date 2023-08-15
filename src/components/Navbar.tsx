@@ -20,7 +20,7 @@ import LoadingDots from './Icons/LoadingDots'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
-    const [loadingOdValue, setLoadingOdValue] = useState(true)
+    const [loadingOdValue, setLoadingOdValue] = useState(false)
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const popupRef = useRef<HTMLDivElement | null>(null)
     const { t } = useTranslation()

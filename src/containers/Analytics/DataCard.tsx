@@ -38,22 +38,6 @@ const DataCard = ({ title, image, value, description, children }: DataCardProps)
 export default DataCard
 
 const Block = styled.div`
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: space-around;
-    //
-    // background: ${(props) => props.theme.colors.colorPrimary};
-    // max-width: calc(100% / 3 - 50px);
-    // min-width: 280px;
-    // width: 100%;
-    // min-height: 220px;
-    // height: 100%;
-    // margin: 10px;
-    // flex-wrap: wrap;
-    //
-    // padding: 36px 0px;
-
     position: relative;
     display: flex;
     flex-direction: column;

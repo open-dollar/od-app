@@ -141,29 +141,49 @@ const Analytics = () => {
         image: 'ETH',
         title: 'Total Collateral Locked',
         value: '26500004',
-        description: 'Mock dada',
+        description: 'Mock dada for Total Collateral Locked',
     }
 
     const outstandingOd = {
         image: 'OD',
         title: 'Outstanding OD',
         value: '3,205,400 / 10,000,000',
-        description: 'Mock dada',
+        description: 'Mock dada  for Outstanding OD',
     }
 
-    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Mock dada' }
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Mock dada for Vault NFTs' }
 
-    const annualStabilityFee = { title: 'Annual Stability fee', value: '2.0%', description: 'Mock dada' }
+    const annualStabilityFee = {
+        title: 'Annual Stability fee',
+        value: '2.0%',
+        description: 'Mock dada for Annual Stability fee',
+    }
 
-    const circulation = { title: 'circulation', value: '2,566,553 OD', description: 'Mock dada' }
+    const circulation = { title: 'circulation', value: '2,566,553 OD', description: 'Mock dada for circulation' }
 
-    const feesPendingAuction = { title: 'Fees pending auction', value: '16,066 OD', description: 'Mock dada' }
+    const feesPendingAuction = {
+        title: 'Fees pending auction',
+        value: '16,066 OD',
+        description: 'Mock dada for Fees pending auction',
+    }
 
-    const totalFeesEarned = { title: 'total Fees earned', value: '501,677 OD', description: 'Mock dada' }
+    const totalFeesEarned = {
+        title: 'total Fees earned',
+        value: '501,677 OD',
+        description: 'Mock dada total for Fees earned',
+    }
 
-    const liquidityUniswap = { title: 'OD/ETH Liquidity in uniswap', value: '$240,714', description: 'Mock dada' }
+    const liquidityUniswap = {
+        title: 'OD/ETH Liquidity in uniswap',
+        value: '$240,714',
+        description: 'Mock dada for OD/ETH Liquidity in uniswap',
+    }
 
-    const marketPriceODG = { title: 'Market Price ODG', value: '$10,833 ', description: 'Mock dada' }
+    const marketPriceODG = {
+        title: 'Market Price ODG',
+        value: '$10,833 ',
+        description: 'Mock dada for Market Price ODG',
+    }
 
     const contractsData = {
         title: 'Contracts',
@@ -234,15 +254,6 @@ const Analytics = () => {
         value: eightRate,
         description: 'Redemption rate over an 8h period.',
     }
-    const data = [
-        marketPriceData,
-        redemptionPriceData,
-        globalDebtData,
-        globalDebtUtilizationData,
-        surplusInTreasuryData,
-        annualRedemptionRate,
-        eightHourlyRedemptionRate,
-    ]
 
     const analiticsData = [totalCollateralLocked, outstandingOd, vaultNFTs]
 
@@ -321,18 +332,17 @@ const Analytics = () => {
     return (
         <Container>
             <Section>
+                <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
                 <Title>Analytics</Title>
                 <AnaliticsTop>
                     {analiticsData.map((val, index) => (
-                        <DataContainer key={val.title + index}>
-                            <DataCard
-                                image={val.image}
-                                title={val.title}
-                                value={val.value}
-                                description={val.description}
-                            />
-                            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
-                        </DataContainer>
+                        <DataCard
+                            key={val.title + index}
+                            image={val.image}
+                            title={val.title}
+                            value={val.value}
+                            description={val.description}
+                        />
                     ))}
                 </AnaliticsTop>
                 <AnaliticsMiddle>
@@ -389,14 +399,15 @@ const Analytics = () => {
                 <SubTitle>Prices</SubTitle>
                 <AnaliticsBottom>
                     {pricesData.map((val, index) => (
-                        <DataContainer key={val.title + index}>
-                            <DataCard title={val.title} value={val.value} description={val.description} />
-                            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
-                        </DataContainer>
+                        <DataCard
+                            key={val.title + index}
+                            title={val.title}
+                            value={val.value}
+                            description={val.description}
+                        />
                     ))}
                 </AnaliticsBottom>
             </Section>
-
             <Section>
                 <Title>Collaterals</Title>
                 <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
@@ -446,12 +457,20 @@ const AnaliticsMiddle = styled.div`
     & div {
         flex: 1;
     }
+
+    @media (max-width: 1390px) {
+        display: block;
+    }
 `
 
 const AnaliticsBottom = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        flex-wrap: wrap;
+    `}
 `
 
 const LeftColumn = styled.div``
@@ -466,6 +485,14 @@ const FlexMultipleRow = styled.div`
     display: flex;
     gap: 24px;
     margin-bottom: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+
+        & div {
+            margin-bottom: 24px;
+        }
+    `}
 `
 
 const Title = styled.h2`
@@ -483,16 +510,6 @@ const SubTitle = styled.h3`
 
 const DataContainer = styled.div`
     width: 100%;
-    // display: flex;
-    // flex-direction: row;
-    // flex-wrap: wrap;
-    // justify-content: center;
-`
-const Content = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 60px;
 `
 
 // Rate styles

@@ -24,11 +24,11 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                             <HeadsContainer key={title + '-column-' + index}>
                                 {console.log({description})}
                                 <Head data-tip={description}>{name}</Head>
-                                {description && (
+                                {/* {description && (
                                     <InfoIcon data-tip={description}>
                                         <HelpCircle size="18" />
                                     </InfoIcon>
-                                )}
+                                )} */}
                             </HeadsContainer>
                         ))}
                     </Heads>
@@ -98,7 +98,7 @@ export const InfoIcon = styled.div`
 export const Content = styled.div`
     position: relative;
     // margin: 20px;
-    border-top: 1px solid ${(props) => props.theme.colors.border};
+    // border-top: 1px solid ${(props) => props.theme.colors.border};
     // background: #031f3a;
 
     border-radius: 0 0 15px 15px;

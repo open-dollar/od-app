@@ -16,6 +16,7 @@ import Brand from './Brand'
 import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
 import Uniswap from './Icons/Uniswap'
+import LoadingDots from './Icons/LoadingDots'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
@@ -140,6 +141,7 @@ const Navbar = () => {
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                         <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
                         <span>$1.001</span>
+                        {/* <LoadingDots/> */}
                         <ArrowWrapper>
                             <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                         </ArrowWrapper>

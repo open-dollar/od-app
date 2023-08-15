@@ -25,35 +25,57 @@ interface ContractsTableProps {
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
     const { chainId } = useWeb3React()
+
+    const reorderedColumns = colums && [...colums]
+    if (reorderedColumns && reorderedColumns.length > 2) {
+        ;[reorderedColumns[1], reorderedColumns[2]] = [reorderedColumns[2], reorderedColumns[1]]
+    }
+
+    let reorderedRows =
+        rows &&
+        rows.map((row) => {
+            if (row && row.length > 2) {
+                const newRow = [...row]
+                ;[newRow[1], newRow[2]] = [newRow[2], newRow[1]]
+                return newRow
+            }
+            return row
+        })
+
+    if (reorderedRows && reorderedRows.length > 2) {
+        const lastTwoItems = reorderedRows.slice(-2)
+        reorderedRows = lastTwoItems.concat(reorderedRows.slice(0, -2))
+    }
+    console.log({ rows }, { colums })
     return (
         <Container>
-            <Header>
+            {/* <Header>
                 <LeftAucInfo>
                     {/* Temporary title style */}
-                    {/* <img src={Icon} alt="auction" /> */}
-                    <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1>
-                </LeftAucInfo>
-            </Header>
+            {/* <img src={Icon} alt="auction" /> */}
+            {/* <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1> */}
+            {/* </LeftAucInfo> */}
+            {/* </Header> */}
             <Content>
                 <SectionContent>
                     <SHeads>
-                        {colums?.map((colName, index) => (
+                        {reorderedColumns?.map((colName, index) => (
                             <SHeadsContainer key={title + '-column-' + index}>
                                 <Head>{colName}</Head>
                             </SHeadsContainer>
                         ))}
                     </SHeads>
 
-                    {rows?.map((item, index) => (
+                    {reorderedRows?.map((item, index) => (
                         <SList key={'row-' + index}>
                             {item?.map((value, valueIndex) => (
-                                <HeadsContainer key={'row-item-' + valueIndex}>
+                                <SHeadsContainer key={'row-item-' + valueIndex}>
                                     <SListItem>
                                         <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
-                                        {valueIndex === 1 && <AddressLink address={value} chainId={chainId || 420} />}
-                                        {valueIndex !== 1 && <>{value}</>}
+                                        {valueIndex === 2 && <AddressLink address={value} chainId={chainId || 420} />}
+                                        {valueIndex !== 2 && <>{value}</>}
                                     </SListItem>
-                                </HeadsContainer>
+                                </SHeadsContainer>
                             ))}
                         </SList>
                     ))}
@@ -63,22 +85,32 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
     )
 }
 
-// Description column width variable
-const descriptionColumnWidth = '500px'
-
 const SHeads = styled(Heads)`
-    div:last-child {
-        width: ${descriptionColumnWidth};
+    div:nth-child(2) {
+        width: 100%;
     }
+
+    div:nth-child(1) {
+        width: 174px;
+    }
+
+    width: 100%;
 `
 const SList = styled(List)`
-    div:last-child div {
-        width: ${descriptionColumnWidth};
+    div:nth-child(2) div {
+        max-width: 884px;
+        width: 100%;
     }
+    div:nth-child(1) {
+        width: 174px;
+    }
+    justify-content: flex-start;
+    width: 100%;
 `
 
 const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
+    width: 100%;
 `
 const SListItem = styled(ListItem)`
     text-align: start;

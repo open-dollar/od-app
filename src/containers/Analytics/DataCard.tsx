@@ -77,10 +77,13 @@ const DataTitle = styled.div`
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 8px;
+    text-align: center;
     color: ${(props) => props.theme.colors.customSecondary};
 `
 
 const DataValue = styled.div`
     font-size: 24px;
     font-weight: 700;
+    text-align: center;
+    line-height: 28.8px;
 `

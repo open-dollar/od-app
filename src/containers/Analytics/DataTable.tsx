@@ -172,6 +172,10 @@ export const Heads = styled.div`
         z-index: 10;
     }
 
+    & div:first-child {
+        background-color: #001828;
+    }
+
     ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;
   `}
@@ -183,9 +187,9 @@ export const ListContainer = styled.div`
     & :nth-child(1) {
         position: -webkit-sticky;
         position: sticky;
-        left: 0;
+        left: 0px;
+        border-radius: 10px;
         z-index: 100;
-        // background-color: inherit;
     }
 `
 
@@ -222,13 +226,6 @@ export const List = styled.div`
     justify-content: space-between;
     background: #002b40;
     margin-bottom: 24px;
-    // background-color: ${(props) => props.theme.colors.colorPrimary}
-    // &:nth-child(even) {
-    //     background: #12385e;
-    // }
-    // &:nth-child(odd) {
-    //     background: #031f3a;
-    // }
 
     & div:nth-child(1) div {
         text-align: start;
@@ -255,6 +252,10 @@ export const ListItem = styled.div<ListItemProps>`
     padding: 15px 10px;
     &:first-child {
         padding: 15px 25px;
+    }
+
+    &:nth-child(1) {
+        background-color: #002b40;
     }
 
     text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};

@@ -76,7 +76,9 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <CopyIconBlue />
+                                                <div data-tip="Copy">
+                                                    <CopyIconBlue  />
+                                                </div>
                                             </AddressColumm>
                                         )}
                                         {valueIndex !== 2 && <>{value}</>}
@@ -95,7 +97,7 @@ const AddressColumm = styled.div`
     display: flex;
     align-items: center;
 
-    svg {
+    div {
         cursor: pointer;
     }
 `

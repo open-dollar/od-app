@@ -16,6 +16,7 @@ import {
     SectionContent,
 } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
+import CopyIconBlue from '~/components/Icons/CopyIconBlue'
 
 interface ContractsTableProps {
     title: string
@@ -72,7 +73,12 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                 <SHeadsContainer key={'row-item-' + valueIndex}>
                                     <SListItem>
                                         <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
-                                        {valueIndex === 2 && <AddressLink address={value} chainId={chainId || 420} />}
+                                        {valueIndex === 2 && (
+                                            <AddressColumm>
+                                                <AddressLink address={value} chainId={chainId || 420} />
+                                                <CopyIconBlue />
+                                            </AddressColumm>
+                                        )}
                                         {valueIndex !== 2 && <>{value}</>}
                                     </SListItem>
                                 </SHeadsContainer>
@@ -84,6 +90,15 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         </Container>
     )
 }
+
+const AddressColumm = styled.div`
+    display: flex;
+    align-items: center;
+
+    svg {
+        cursor: pointer;
+    }
+`
 
 const SHeads = styled(Heads)`
     div:nth-child(2) {
@@ -100,6 +115,7 @@ const SList = styled(List)`
     div:nth-child(2) div {
         max-width: 884px;
         width: 100%;
+        opacity: 50%;
     }
     div:nth-child(1) {
         width: 174px;
@@ -115,4 +131,11 @@ const SHeadsContainer = styled(HeadsContainer)`
 const SListItem = styled(ListItem)`
     text-align: start;
     text-overflow: ellipsis;
+    font-size: 16px;
+    font-weight: 400;
+    & a {
+        color: white;
+        font-size: 16px;
+        font-weight: 400;
+    }
 `

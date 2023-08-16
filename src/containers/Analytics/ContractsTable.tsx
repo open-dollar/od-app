@@ -47,16 +47,13 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         const lastTwoItems = reorderedRows.slice(-2)
         reorderedRows = lastTwoItems.concat(reorderedRows.slice(0, -2))
     }
-    console.log({ rows }, { colums })
+
+    const handleCopyAddress = (address: string) => {
+        navigator.clipboard.writeText(address || '')
+    }
+
     return (
         <Container>
-            {/* <Header>
-                <LeftAucInfo>
-                    {/* Temporary title style */}
-            {/* <img src={Icon} alt="auction" /> */}
-            {/* <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1> */}
-            {/* </LeftAucInfo> */}
-            {/* </Header> */}
             <Content>
                 <SectionContent>
                     <SHeads>
@@ -76,9 +73,9 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <div data-tip="Copy">
-                                                    <CopyIconBlue  />
-                                                </div>
+                                                <WrapperIcon data-tip="Copy" onClick={() => handleCopyAddress(value)}>
+                                                    <CopyIconBlue />
+                                                </WrapperIcon>
                                             </AddressColumm>
                                         )}
                                         {valueIndex !== 2 && <>{value}</>}
@@ -96,10 +93,15 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 const AddressColumm = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     div {
         cursor: pointer;
     }
+
+    // a {
+    //     margin-right: 16px;
+    // }
 `
 
 const SHeads = styled(Heads)`
@@ -140,4 +142,12 @@ const SListItem = styled(ListItem)`
         font-size: 16px;
         font-weight: 400;
     }
+`
+
+const WrapperIcon = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-left: 16px;
+    width: 20px;
+    height: 20px;
 `

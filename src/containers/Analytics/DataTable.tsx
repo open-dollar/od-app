@@ -19,23 +19,12 @@ interface ListItemProps {
 export const DataTable = ({ title, colums, rows }: TableProps) => {
     return (
         <Container>
-            {/* <Header>
-                <LeftAucInfo>
-                    {/* <img src={Icon} alt="auction" /> */}
-            {/* <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1> */}
-            {/* </LeftAucInfo> */}
-            {/* </Header> */}
             <Content>
                 <SectionContent>
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
                             <HeadsContainer key={title + '-column-' + index} index={index}>
                                 <Head data-tip={description}>{name}</Head>
-                                {/* {description && (
-                                    <InfoIcon data-tip={description}>
-                                        <HelpCircle size="18" />
-                                    </InfoIcon>
-                                )} */}
                             </HeadsContainer>
                         ))}
                     </Heads>
@@ -169,7 +158,7 @@ export const Heads = styled.div`
         position: sticky;
         left: 0;
         line-height: 2;
-        z-index: 10;
+        // z-index: 10;
     }
 
     & div:first-child {
@@ -188,8 +177,8 @@ export const ListContainer = styled.div`
         position: -webkit-sticky;
         position: sticky;
         left: 0px;
-        border-radius: 10px;
-        z-index: 100;
+        border-radius: 4px;
+        // z-index: 100;
     }
 `
 
@@ -219,7 +208,7 @@ export const ListItemLabel = styled.span`
 
 export const List = styled.div`
     display: flex;
-    border-radius: 10px;
+    border-radius: 4px;
     width: max-content;
 
     align-items: start;

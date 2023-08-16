@@ -331,8 +331,8 @@ const Analytics = () => {
 
     return (
         <Container>
+            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
             <Section>
-                <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
                 <Title>Analytics</Title>
                 <AnaliticsTop>
                     {analiticsData.map((val, index) => (

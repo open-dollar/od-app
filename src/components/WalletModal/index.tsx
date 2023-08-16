@@ -103,20 +103,20 @@ export default function WalletModal() {
             connector.walletConnectProvider = undefined
         }
 
-        // connector &&
-        //     connector.activate().catch((error) => {
-        //         if (error) {
-        //             connector.activate() // a little janky...can't use setError because the connector isn't set
-        //         } else {
-        //             setPendingError(true)
-        //         }
-        //     })
+        connector &&
+            connector.activate().catch((error) => {
+                if (error) {
+                    connector.activate() // a little janky...can't use setError because the connector isn't set
+                } else {
+                    setPendingError(true)
+                }
+            })
         // @ts-ignore
         if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore
             const chainId = await window.ethereum.request({ method: 'net_version' })
-            // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
-            if (chainId !== '420') {
+            // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
+            if (chainId !== process.env.REACT_APP_NETWORK_ID) {
                 try {
                     // @ts-ignore
                     await window.ethereum.request({
@@ -143,89 +143,6 @@ export default function WalletModal() {
             console.log('MetaMask is not installed')
         }
     }
-
-    // get wallets user can switch too, depending on device/browser
-    // function getOptions() {
-    //     const isMetamask = window.ethereum && window.ethereum.isMetaMask
-    //     return Object.keys(SUPPORTED_WALLETS).map((key) => {
-    //         const option = SUPPORTED_WALLETS[key]
-    //         // check for mobile options
-    //         if (isMobile) {
-    //             if (!window.web3 && !window.ethereum && option.mobile) {
-    //                 return (
-    //                     <></>
-    //                     // <Option
-    //                     //     onClick={() => {
-    //                     //         option.connector !== connector && !option.href && tryActivation(option.connector)
-    //                     //     }}
-    //                     //     id={`connect-${key}`}
-    //                     //     key={key}
-    //                     //     active={option.connector && option.connector === connector}
-    //                     //     color={option.color}
-    //                     //     link={option.href}
-    //                     //     header={option.name}
-    //                     //     subheader={null}
-    //                     //     icon={require(`../../assets/connectors/${option.iconName}`)}
-    //                     // />
-    //                 )
-    //             }
-    //             return null
-    //         }
-    //
-    //         // overwrite injected when needed
-    //         if (option.connector === injected) {
-    //             // don't show injected if there's no injected provider
-    //             if (!(window.web3 || window.ethereum)) {
-    //                 if (option.name === 'MetaMask') {
-    //                     return (
-    //                         <Option
-    //                             id={`connect-${key}`}
-    //                             key={key}
-    //                             color={'#E8831D'}
-    //                             header={'Install Metamask'}
-    //                             subheader={null}
-    //                             link={'https://metamask.io/'}
-    //                             icon={MetamaskLogo}
-    //                         />
-    //                     )
-    //                 } else {
-    //                     return null //dont want to return install twice
-    //                 }
-    //             }
-    //             // don't return metamask if injected provider isn't metamask
-    //             else if (option.name === 'MetaMask' && !isMetamask) {
-    //                 return null
-    //             }
-    //             // likewise for generic
-    //             else if (option.name === 'Injected' && isMetamask) {
-    //                 return null
-    //             }
-    //         }
-    //
-    //         // return rest of options
-    //         return (
-    //             !isMobile &&
-    //             !option.mobileOnly && (
-    //                 // <Option
-    //                 //     id={`connect-${key}`}
-    //                 //     onClick={() => {
-    //                 //         option.connector === connector
-    //                 //             ? setWalletView(WALLET_VIEWS.ACCOUNT)
-    //                 //             : !option.href && tryActivation(option.connector)
-    //                 //     }}
-    //                 //     key={key}
-    //                 //     active={option.connector === connector}
-    //                 //     color={option.color}
-    //                 //     link={option.href}
-    //                 //     header={option.name}
-    //                 //     subheader={null} //use option.descriptio to bring back multi-line
-    //                 //     icon={require(`../../assets/connectors/${option.iconName}`)}
-    //                 // />
-    //                 <></>
-    //             )
-    //         )
-    //     })
-    // }
 
     function getModalContent() {
         // if (error) {

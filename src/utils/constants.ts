@@ -102,7 +102,7 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     421613: 'arbitrum-goerli',
     42161: 'arbitrum-mainnet',
     //TODO: remove once contracts updated
-    420: 'goerli-optimism',
+    420: 'optimism-goerli',
 }
 
 const MEDIA_WIDTHS = {

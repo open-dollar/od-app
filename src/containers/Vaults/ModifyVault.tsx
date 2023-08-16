@@ -24,7 +24,7 @@ import {
 } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
-    const { provider, account, connector } = useActiveWeb3React()
+    const { provider, account } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
     const [showPreview, setShowPreview] = useState(false)

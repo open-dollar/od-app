@@ -6,13 +6,6 @@ const ETH: AddEthereumChainParameter['nativeCurrency'] = {
   decimals: 18,
 }
 
-const MATIC: AddEthereumChainParameter['nativeCurrency'] = {
-  name: 'Matic',
-  symbol: 'MATIC',
-  decimals: 18,
-}
-
-
 interface BasicChainInformation {
   urls: string[]
   name: string
@@ -51,15 +44,13 @@ type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInf
 
 export const MAINNET_CHAINS: ChainConfig = {
   42161: {
-    // @ts-ignore
-    urls: [getInfuraUrlFor('arbitrum-mainnet'), 'https://arb1.arbitrum.io/rpc'].filter(Boolean),
+    urls: ['https://arb1.arbitrum.io/rpc'],
     name: 'Arbitrum One',
     nativeCurrency: ETH,
     blockExplorerUrls: ['https://arbiscan.io'],
   },
   10: {
-    // @ts-ignore
-    urls: [getInfuraUrlFor('optimism-mainnet'), 'https://goerli.optimism.io/'].filter(Boolean),
+    urls: ['https://mainnet.optimism.io'],
     name: 'Optimism Mainnet',
     nativeCurrency: ETH,
     blockExplorerUrls: ['https://optimistic.etherscan.io'],
@@ -69,15 +60,13 @@ export const MAINNET_CHAINS: ChainConfig = {
 
 export const TESTNET_CHAINS: ChainConfig = {
   421613: {
-    // @ts-ignore
-    urls: [getInfuraUrlFor('arbitrum-goerli'), 'https://goerli-rollup.arbitrum.io/rpc'].filter(Boolean),
+    urls: ['https://goerli-rollup.arbitrum.io/rpc'],
     name: 'Arbitrum Goerli',
     nativeCurrency: ETH,
     blockExplorerUrls: ['https://testnet.arbiscan.io'],
   },
   420: {
-    // @ts-ignore
-    urls: [getInfuraUrlFor('optimism-goerli'), 'https://goerli.optimism.io/'].filter(Boolean),
+    urls: ['https://goerli.optimism.io'],
     name: 'Optimism Goerli',
     nativeCurrency: ETH,
     blockExplorerUrls: ['https://goerli-optimism.etherscan.io/'],

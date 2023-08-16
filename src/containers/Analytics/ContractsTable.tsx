@@ -54,6 +54,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 
     return (
         <Container>
+            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
             <Content>
                 <SectionContent>
                     <SHeads className="s-heads">
@@ -68,7 +69,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                         <SList key={'row-' + index} className="s-list">
                             {item?.map((value, valueIndex) => (
                                 <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
-                                    <SListItem className="s-list-container">
+                                    <SListItem className="s-list-item">
                                         <ListItemLabel className="list-item-label">{colums[valueIndex]}</ListItemLabel>
                                         {valueIndex === 2 && (
                                             <AddressColumm>
@@ -138,7 +139,6 @@ const SList = styled(List)`
     div:nth-child(3) {
         flex: 1;
     }
-    justify-content: flex-start;
     width: 100%;
 `
 
@@ -146,11 +146,13 @@ const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
     width: 100%;
 `
+
 const SListItem = styled(ListItem)`
     text-align: start;
     text-overflow: ellipsis;
     font-size: 16px;
     font-weight: 400;
+    border-radius: 4px;
     & a {
         color: white;
         font-size: 16px;

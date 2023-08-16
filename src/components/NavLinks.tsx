@@ -43,12 +43,12 @@ const NavLinks = () => {
                 <SafeIcon className="opacity fill" /> {t('auctions')}
             </NavBarLink>
             <NavBarLink
-                id="analytics-link"
-                to="/analytics"
+                id="stats-link"
+                to="/stats"
                 onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/analytics') ? 'activeLink' : ''}
+                className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
             >
-                <SafeIcon className="opacity fill" /> {t('analytics')}
+                <SafeIcon className="opacity fill" /> {t('stats')}
             </NavBarLink>
         </Nav>
     )

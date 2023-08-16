@@ -2916,6 +2916,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@gnosis.pm/safe-apps-web3-react": ^0.6.0
+    "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2
     "@testing-library/user-event": ^7.1.2
@@ -3796,6 +3797,64 @@ __metadata:
     webpack-plugin-serve:
       optional: true
   checksum: e470b543c5e8d73eeaa73636e1976e6719db6ae29c93fa62818f5796c1883051f379a3cb1ff85d909ef2c6bb9ef13ca46c36f1878c48d143b1355fea6660e547
+  languageName: node
+  linkType: hard
+
+"@react-spring/animated@npm:~9.7.3":
+  version: 9.7.3
+  resolution: "@react-spring/animated@npm:9.7.3"
+  dependencies:
+    "@react-spring/shared": ~9.7.3
+    "@react-spring/types": ~9.7.3
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5151da4fa7da010bb2edbee05871aa7a4aea8763fe617389d17605810aa0dd817374205e5fb3930b650f4a7f25fcdf23205fdfb7365686ff75888bdfd0b39839
+  languageName: node
+  linkType: hard
+
+"@react-spring/core@npm:~9.7.3":
+  version: 9.7.3
+  resolution: "@react-spring/core@npm:9.7.3"
+  dependencies:
+    "@react-spring/animated": ~9.7.3
+    "@react-spring/shared": ~9.7.3
+    "@react-spring/types": ~9.7.3
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: e28c05de8435bf2eaf8481f8acdf093909d4be9881a9a854c51dfac7c2d5562088d0fb2ce04e2f07e1b3bf621d8da3ab57bf6fedb4fdc954e3aa263bc1e393af
+  languageName: node
+  linkType: hard
+
+"@react-spring/shared@npm:~9.7.3":
+  version: 9.7.3
+  resolution: "@react-spring/shared@npm:9.7.3"
+  dependencies:
+    "@react-spring/types": ~9.7.3
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: afb03ed28ccf62efa4012e531c3659999bb364d1e0eb0fb729b962f9bd21a0b772a2d98e862062c9c32c06edf72327afcc45984d9eb22fdd961706b6ddf6950d
+  languageName: node
+  linkType: hard
+
+"@react-spring/types@npm:~9.7.3":
+  version: 9.7.3
+  resolution: "@react-spring/types@npm:9.7.3"
+  checksum: d645044f3cc9ceb7c4f6c4d061aaf6660018568a1553d05638f56b3328c5f91597ee4118334abe22fc8f07f5ee02f054340170c1d52e11b3faea22888b5170d4
+  languageName: node
+  linkType: hard
+
+"@react-spring/web@npm:^9.7.3":
+  version: 9.7.3
+  resolution: "@react-spring/web@npm:9.7.3"
+  dependencies:
+    "@react-spring/animated": ~9.7.3
+    "@react-spring/core": ~9.7.3
+    "@react-spring/shared": ~9.7.3
+    "@react-spring/types": ~9.7.3
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: a5b4847a2921a29a3e8ce569f4951abeb268b6e8eb230f8c49d98709216b2b3a23ba1e58628c51c9eaa0bd20d83f9d7b8f8f03df98215e933de4c66c39e17fe1
   languageName: node
   linkType: hard
 

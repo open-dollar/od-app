@@ -51,7 +51,7 @@ const App = () => {
                                             <>
                                                 <Switch>
                                                     <Route exact strict component={Safes} path={'/'} />
-                                                    <Route exact strict component={Analytics} path={'/analytics'} />
+                                                    <Route exact strict component={Analytics} path={'/stats'} />
                                                     <Route exact strict component={Privacy} path={'/privacy'} />
                                                     <Route exact strict component={Auctions} path={'/auctions'} />
                                                     <Route exact strict component={CreateVault} path={'/vaults/create'} />

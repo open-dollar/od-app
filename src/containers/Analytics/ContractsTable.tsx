@@ -102,24 +102,26 @@ const AddressColumm = styled.div`
 `
 
 const SHeads = styled(Heads)`
-    div:nth-child(2) {
-        width: 100%;
-    }
-
     // first column
     div:nth-child(1) {
         width: 174px;
     }
 
     div:nth-child(2) {
+        width: 100%;
         flex: 2;
+        display: flex;
+        justify-content: flex-start;
     }
 
     div:nth-child(3) {
         flex: 1;
+        text-align: center;
     }
 
     width: 100%;
+
+    display: flex;
 `
 const SList = styled(List)`
     div:nth-child(2) div {
@@ -145,6 +147,7 @@ const SList = styled(List)`
 const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
     width: 100%;
+    justify-content: flex-end;
 `
 
 const SListItem = styled(ListItem)`

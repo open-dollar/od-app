@@ -159,7 +159,7 @@ const Analytics = () => {
         description: 'Mock dada for Annual Stability fee',
     }
 
-    const circulation = { title: 'circulation', value: '2,566,553 OD', description: 'Mock dada for circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Mock dada for circulation' }
 
     const feesPendingAuction = {
         title: 'Fees pending auction',

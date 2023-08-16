@@ -158,7 +158,7 @@ export const Heads = styled.div`
         position: sticky;
         left: 0;
         line-height: 2;
-        // z-index: 10;
+        z-index: 10;
     }
 
     & div:first-child {
@@ -178,7 +178,7 @@ export const ListContainer = styled.div`
         position: sticky;
         left: 0px;
         border-radius: 4px;
-        // z-index: 100;
+        z-index: 100;
     }
 `
 

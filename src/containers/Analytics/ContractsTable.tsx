@@ -56,20 +56,20 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         <Container>
             <Content>
                 <SectionContent>
-                    <SHeads>
+                    <SHeads className="s-heads">
                         {reorderedColumns?.map((colName, index) => (
-                            <SHeadsContainer key={title + '-column-' + index}>
+                            <SHeadsContainer key={title + '-column-' + index} className="s-heads__s-heads-container">
                                 <Head>{colName}</Head>
                             </SHeadsContainer>
                         ))}
                     </SHeads>
 
                     {reorderedRows?.map((item, index) => (
-                        <SList key={'row-' + index}>
+                        <SList key={'row-' + index} className="s-list">
                             {item?.map((value, valueIndex) => (
-                                <SHeadsContainer key={'row-item-' + valueIndex}>
-                                    <SListItem>
-                                        <ListItemLabel>{colums[valueIndex]}</ListItemLabel>
+                                <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
+                                    <SListItem className="s-list-container">
+                                        <ListItemLabel className="list-item-label">{colums[valueIndex]}</ListItemLabel>
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
@@ -98,10 +98,6 @@ const AddressColumm = styled.div`
     div {
         cursor: pointer;
     }
-
-    // a {
-    //     margin-right: 16px;
-    // }
 `
 
 const SHeads = styled(Heads)`
@@ -109,8 +105,17 @@ const SHeads = styled(Heads)`
         width: 100%;
     }
 
+    // first column
     div:nth-child(1) {
         width: 174px;
+    }
+
+    div:nth-child(2) {
+        flex: 2;
+    }
+
+    div:nth-child(3) {
+        flex: 1;
     }
 
     width: 100%;
@@ -121,8 +126,17 @@ const SList = styled(List)`
         width: 100%;
         opacity: 50%;
     }
+    // first column
     div:nth-child(1) {
         width: 174px;
+    }
+
+    div:nth-child(2) {
+        flex: 2;
+    }
+
+    div:nth-child(3) {
+        flex: 1;
     }
     justify-content: flex-start;
     width: 100%;

@@ -160,7 +160,6 @@ const SList = styled(List)`
     // first column
     @media (min-width: 783px) {
         div:nth-child(2) div {
-            max-width: 884px;
             width: 100%;
             opacity: 50%;
         }

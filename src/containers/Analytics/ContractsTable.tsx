@@ -51,13 +51,16 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
     }
 
     const handleCopyAddress = (address: string) => {
+        console.log('clicked')
         navigator.clipboard.writeText(address || '')
-        setTooltipText("Copied!");
+        setTooltipText('Copied!')
+        setTimeout(() => {
+            setTooltipText('Copy')
+        }, 1000)
     }
 
     return (
         <Container>
-            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
             <Content>
                 <SectionContent>
                     <SHeads className="s-heads">
@@ -78,8 +81,19 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         </ListItemLabel>
                                         {valueIndex === 2 && (
                                             <AddressColumm>
+                                                <ReactTooltip
+                                                    multiline
+                                                    type="dark"
+                                                    data-effect="solid"
+                                                    arrowColor="#001828"
+                                                    id="tooltip"
+                                                />
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <WrapperIcon data-tip={tooltipText} onClick={() => handleCopyAddress(value)}>
+                                                <WrapperIcon
+                                                    data-tip={tooltipText}
+                                                    data-for="tooltip"
+                                                    onClick={() => handleCopyAddress(value)}
+                                                >
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
                                             </AddressColumm>

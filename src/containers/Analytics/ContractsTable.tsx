@@ -17,7 +17,7 @@ import {
 } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
 import CopyIconBlue from '~/components/Icons/CopyIconBlue'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ContractsTableProps {
     title: string
@@ -26,8 +26,9 @@ interface ContractsTableProps {
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltipText, setTooltipText] = useState('Copy')
+    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
     const { chainId } = useWeb3React()
+    const iconRef = useRef<HTMLDivElement | null>(null)
 
     const reorderedColumns = colums && [...colums]
     if (reorderedColumns && reorderedColumns.length > 2) {
@@ -53,12 +54,23 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
     const handleCopyAddress = (address: string) => {
         console.log('clicked')
         navigator.clipboard.writeText(address || '')
-        setTooltipText('Copied!')
+
+        setTooltips((prevTooltips) => ({
+            ...prevTooltips,
+            [address]: 'Copied!',
+        }))
+        ReactTooltip.rebuild()
+
         setTimeout(() => {
-            setTooltipText('Copy')
-        }, 1000)
+            setTooltips((prevTooltips) => ({
+                ...prevTooltips,
+                [address]: 'Copy',
+            }))
+            ReactTooltip.rebuild()
+        }, 10000)
     }
 
+    console.log({ rows })
     return (
         <Container>
             <Content>
@@ -81,17 +93,17 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         </ListItemLabel>
                                         {valueIndex === 2 && (
                                             <AddressColumm>
+                                                <AddressLink address={value} chainId={chainId || 420} />
                                                 <ReactTooltip
-                                                    multiline
                                                     type="dark"
                                                     data-effect="solid"
                                                     arrowColor="#001828"
-                                                    id="tooltip"
+                                                    id={`tooltip-${index}-${valueIndex}`}
                                                 />
-                                                <AddressLink address={value} chainId={chainId || 420} />
                                                 <WrapperIcon
-                                                    data-tip={tooltipText}
-                                                    data-for="tooltip"
+                                                    ref={iconRef}
+                                                    data-tip={tooltips[value] || 'Copy'}
+                                                    data-for={`tooltip-${index}-${valueIndex}`}
                                                     onClick={() => handleCopyAddress(value)}
                                                 >
                                                     <CopyIconBlue />

@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
 import Numeral from 'numeral'
@@ -251,7 +250,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 </Right>
             </Flex>
 
-            <ReactTooltip  variant="light" data-effect="solid" />
+            {/* <ReactTooltip  variant="light" data-effect="solid" /> */}
         </>
     )
 }

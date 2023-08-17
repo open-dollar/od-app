@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Tooltip as ReactTooltip } from 'react-tooltip'
+// import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import DataCard, { DataCardProps } from './DataCard'
@@ -335,7 +335,7 @@ const Analytics = () => {
 
     return (
         <Container>
-            <ReactTooltip  variant="dark" data-effect="solid" arrowColor="#001828" />
+            {/* <ReactTooltip  variant="dark" data-effect="solid" arrowColor="#001828" /> */}
             <Section>
                 <Title>Analytics</Title>
                 <AnaliticsTop>

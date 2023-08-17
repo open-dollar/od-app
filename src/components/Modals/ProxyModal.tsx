@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { handlePreTxGasEstimate, handleTransactionError, useTransactionAdder } from '../../hooks/TransactionHooks'
@@ -98,7 +97,7 @@ const ProxyModal = () => {
                                     } of 10`}{' '}
                                     <InfoBtn data-tip={t('confirmations_info')}>?</InfoBtn>
                                 </Confirmations>
-                                <ReactTooltip  variant="light" data-effect="solid" />
+                                {/* <ReactTooltip  variant="light" data-effect="solid" /> */}
                             </>
                         ) : (
                             t('proxy_wallet_text')

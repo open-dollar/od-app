@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import {Tooltip as ReactTooltip} from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import {
     Container,
@@ -27,8 +27,9 @@ interface ContractsTableProps {
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
     const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
+    const [open, setOpen] = useState(false)
     const { chainId } = useWeb3React()
-    const iconRef = useRef<HTMLDivElement | null>(null)
+    // const iconRef = useRef<HTMLDivElement | null>(null)
 
     const reorderedColumns = colums && [...colums]
     if (reorderedColumns && reorderedColumns.length > 2) {
@@ -66,6 +67,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
             }))
         }, 10000)
     }
+
     return (
         <Container>
             <Content>
@@ -86,29 +88,24 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         <ListItemLabel className="list-item-label">
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
+                                        {valueIndex === 0 && <>{value}</>}
+                                        {valueIndex === 1 && <>{value}</>}
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <ReactTooltip
-                                                    variant="dark"
-                                                    data-effect="solid"
-                                                    arrowColor="#001828"
-                                                    id={`tooltip-${index}-${valueIndex}`}
-                                                />
                                                 <WrapperIcon
-                                                    ref={iconRef}
                                                     data-tooltip-content={tooltips[value] || 'Copy'}
-                                                    data-tooltip-id={`tooltip-${index}-${valueIndex}`}
+                                                    data-tooltip-id={value}
                                                     onClick={() => handleCopyAddress(value)}
                                                 >
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
                                             </AddressColumm>
                                         )}
-                                        {valueIndex !== 2 && <>{value}</>}
                                     </SListItem>
                                 </SHeadsContainer>
                             ))}
+                            <ReactTooltip id={`${item[2]}`} openOnClick place="top" delayHide={20000} />
                         </SList>
                     ))}
                 </SectionContent>
@@ -157,10 +154,6 @@ const SList = styled(List)`
             width: 100%;
         }
 
-        div:nth-child(1) {
-            width: 174px;
-        }
-
         div:nth-child(2) {
             flex: 2;
         }
@@ -175,9 +168,8 @@ const SList = styled(List)`
 
 const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
-    width: 100%;
-    @media (min-width: 783px) {
-        justify-content: flex-end;
+    @media (max-width: 783px) {
+        width: 100%;
     }
 `
 
@@ -200,5 +192,4 @@ const WrapperIcon = styled.div`
     margin-left: 16px;
     width: 20px;
     height: 20px;
-    opacity: 1 !important;
 `

@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip'
+import {Tooltip as ReactTooltip} from 'react-tooltip'
 
 import {
     Container,
@@ -90,15 +90,15 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
                                                 <ReactTooltip
-                                                    type="dark"
+                                                    variant="dark"
                                                     data-effect="solid"
                                                     arrowColor="#001828"
                                                     id={`tooltip-${index}-${valueIndex}`}
                                                 />
                                                 <WrapperIcon
                                                     ref={iconRef}
-                                                    data-tip={tooltips[value] || 'Copy'}
-                                                    data-for={`tooltip-${index}-${valueIndex}`}
+                                                    data-tooltip-content={tooltips[value] || 'Copy'}
+                                                    data-tooltip-id={`tooltip-${index}-${valueIndex}`}
                                                     onClick={() => handleCopyAddress(value)}
                                                 >
                                                     <CopyIconBlue />

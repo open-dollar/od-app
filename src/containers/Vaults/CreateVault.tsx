@@ -3,7 +3,7 @@ import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 
@@ -336,7 +336,7 @@ const CreateVault = ({
                             </Button>
                         )}
                     </Flex>
-                    <ReactTooltip multiline type="light" data-effect="solid" />
+                    <ReactTooltip  variant="light" data-effect="solid" />
                 </Content>
             </InnerContent>
         </>

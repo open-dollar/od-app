@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { useActiveWeb3React, handleTransactionError, useTransactionAdder, use10BlocksConfirmations } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
@@ -125,7 +125,7 @@ const Steps = () => {
                         } of 10`}{' '}
                         <InfoBtn data-tip={t('confirmations_info')}>?</InfoBtn>
                     </Confirmations>
-                    <ReactTooltip multiline type="light" data-effect="solid" />
+                    <ReactTooltip  variant="light" data-effect="solid" />
                 </>
             ) : (
                 ''

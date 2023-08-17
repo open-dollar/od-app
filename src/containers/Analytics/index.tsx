@@ -137,21 +137,68 @@ const Analytics = () => {
         return []
     }, [geb])
 
+    const totalCollateralLocked = {
+        image: 'ETH',
+        title: 'Total Collateral Locked',
+        value: '26500004',
+        description: 'Mock dada for Total Collateral Locked',
+    }
+
+    const outstandingOd = {
+        image: 'OD',
+        title: 'Outstanding OD',
+        value: '3,205,400 / 10,000,000',
+        description: 'Mock dada  for Outstanding OD',
+    }
+
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Mock dada for Vault NFTs' }
+
+    const annualStabilityFee = {
+        title: 'Annual Stability fee',
+        value: '2.0%',
+        description: 'Mock dada for Annual Stability fee',
+    }
+
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Mock dada for circulation' }
+
+    const feesPendingAuction = {
+        title: 'Fees pending auction',
+        value: '16,066 OD',
+        description: 'Mock dada for Fees pending auction',
+    }
+
+    const totalFeesEarned = {
+        title: 'total Fees earned',
+        value: '501,677 OD',
+        description: 'Mock dada total for Fees earned',
+    }
+
+    const liquidityUniswap = {
+        title: 'OD/ETH Liquidity in uniswap',
+        value: '$240,714',
+        description: 'Mock dada for OD/ETH Liquidity in uniswap',
+    }
+
+    const marketPriceODG = {
+        title: 'Market Price ODG',
+        value: '$10,833 ',
+        description: 'Mock dada for Market Price ODG',
+    }
+
     const contractsData = {
         title: 'Contracts',
         colums: ['Contract', 'Address', 'Description'],
         rows: contracts,
     }
     const marketPriceData: DataCardProps = {
-        image: 'HAI',
-        title: 'Market Price',
+        title: 'Market Price OD',
         value: marketPrice,
         description:
             'Time-weighted average HAI market price derived from UniV3 HAI/WETH pool and Chainlink WETH/USD feed.',
     }
     const redemptionPriceData: DataCardProps = {
-        image: 'HAI',
-        title: 'Redemption Price',
+        image: 'OD',
+        title: 'redemption Price OD',
         value: redemptionPrice,
         description:
             'HAI\'s "moving peg". It\'s the price at which HAI is minted or repaid inside the protocol. The HAI market price is expected to fluctuate around the redemption price.',
@@ -203,18 +250,32 @@ const Analytics = () => {
         ),
     }
     const eightHourlyRedemptionRate: DataCardProps = {
-        title: '8-Hour Redemption Rate',
+        title: '8-Hourly Redemption Rate',
         value: eightRate,
         description: 'Redemption rate over an 8h period.',
     }
-    const data = [
-        marketPriceData,
-        redemptionPriceData,
-        globalDebtData,
+
+    const analiticsData: DataCardProps[] = [
+        // totalCollateralLocked,
+        // outstandingOd,
+        // vaultNFTs
+    ]
+
+    const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
+
+    const systemInfoData: DataCardProps[] = [
+        circulation,
+        // feesPendingAuction,
+        // totalFeesEarned,
         globalDebtUtilizationData,
-        surplusInTreasuryData,
-        annualRedemptionRate,
-        eightHourlyRedemptionRate,
+        globalDebtData,
+    ]
+
+    const pricesData: DataCardProps[] = [
+        marketPriceData, // check for market price OD not HAI
+        redemptionPriceData,
+        // liquidityUniswap,
+        // marketPriceODG,
     ]
 
     useEffect(() => {
@@ -274,33 +335,98 @@ const Analytics = () => {
 
     return (
         <Container>
-            {/* Page title */}
-            <Content>
-                <Title>Protocol Analytics</Title>
-            </Content>
-
-            {/* First Section */}
-            <DataContainer>
-                {data.map((val, index) => (
-                    <DataCard
-                        key={val.title + index}
-                        image={val.image}
-                        title={val.title}
-                        value={val.value}
-                        description={val.description}
-                        children={val.children}
-                    />
-                ))}
-                <ReactTooltip multiline type="light" data-effect="solid" />
-            </DataContainer>
-
-            <DataContainer>
-                {/* Collateral Table */}
+            <Section>
+                <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
+                <Title>Analytics</Title>
+                <AnaliticsTop>
+                    {analiticsData &&
+                        analiticsData?.map((val, index) => (
+                            <DataCard
+                                key={val.title + index}
+                                image={val.image}
+                                title={val.title}
+                                value={val.value}
+                                description={val.description}
+                            />
+                        ))}
+                </AnaliticsTop>
+                <AnaliticsMiddle>
+                    {systemRatesData && (
+                        <LeftColumn>
+                            <SubTitle>System Rates</SubTitle>
+                            <LeftTopRow>
+                                <DataCard
+                                    title={systemRatesData[0].title}
+                                    value={systemRatesData[0].value}
+                                    description={systemRatesData[0].description}
+                                />
+                            </LeftTopRow>
+                            <FlexMultipleRow>
+                                <DataCard
+                                    title={systemRatesData[1].title}
+                                    value={systemRatesData[1].value}
+                                    description={systemRatesData[1].description}
+                                />
+                                <DataCard
+                                    title={systemRatesData[2].title}
+                                    value={systemRatesData[2].value}
+                                    description={systemRatesData[2].description}
+                                />
+                            </FlexMultipleRow>
+                        </LeftColumn>
+                    )}
+                    {systemInfoData && (
+                        <RightColumn>
+                            <SubTitle>System Info</SubTitle>
+                            <FlexMultipleRow>
+                                {systemInfoData.slice(0, 2).map((val, index) => {
+                                    return (
+                                        <DataCard
+                                            key={val.title + index}
+                                            title={val.title}
+                                            value={val.value}
+                                            description={val.description}
+                                        />
+                                    )
+                                })}
+                            </FlexMultipleRow>
+                            <FlexMultipleRow>
+                                {systemInfoData.slice(2).map((val, index) => {
+                                    return (
+                                        <DataCard
+                                            key={val.title + index}
+                                            title={val.title}
+                                            value={val.value}
+                                            description={val.description}
+                                        />
+                                    )
+                                })}
+                            </FlexMultipleRow>
+                        </RightColumn>
+                    )}
+                </AnaliticsMiddle>
+                <SubTitle>Prices</SubTitle>
+                <AnaliticsBottom>
+                    {pricesData.map((val, index) => (
+                        <DataCard
+                            key={val.title + index}
+                            title={val.title}
+                            value={val.value}
+                            description={val.description}
+                        />
+                    ))}
+                </AnaliticsBottom>
+            </Section>
+            <Section>
+                <Title>Collaterals</Title>
                 <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
+            </Section>
 
+            <Section>
+                <Title>Contracts</Title>
                 {/* Contracts Table */}
                 <ContractsTable title={contractsData.title} colums={contractsData.colums} rows={contractsData.rows} />
-            </DataContainer>
+            </Section>
         </Container>
     )
 }
@@ -308,7 +434,7 @@ const Analytics = () => {
 export default Analytics
 
 const Container = styled.div`
-    max-width: 1200px;
+    max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
@@ -316,24 +442,83 @@ const Container = styled.div`
     }
 `
 
-const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
-    min-width: 180px;
+const Section = styled.div``
+
+const AnaliticsTop = styled.div`
+    display: flex;
+    gap: 24px;
+    margin-bottom: 64px;
+
+    & div {
+        height: 231px;
+    }
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        flex-wrap: wrap;
+    `}
+`
+
+const AnaliticsMiddle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 64px;
+
+    & div {
+        flex: 1;
+    }
+
+    @media (max-width: 1390px) {
+        display: block;
+    }
+`
+
+const AnaliticsBottom = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        flex-wrap: wrap;
+    `}
+`
+
+const LeftColumn = styled.div``
+
+const RightColumn = styled.div``
+
+const LeftTopRow = styled.div`
+    margin-bottom: 24px;
+`
+
+const FlexMultipleRow = styled.div`
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+
+        & div {
+            margin-bottom: 24px;
+        }
+    `}
+`
+
+const Title = styled.h2`
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 40px;
+`
+
+const SubTitle = styled.h3`
+    font-size: 34px;
+    font-weight: 700;
+    color: #0079ad;
+    margin-bottom: 16px;
 `
 
 const DataContainer = styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-`
-const Content = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 60px;
 `
 
 // Rate styles

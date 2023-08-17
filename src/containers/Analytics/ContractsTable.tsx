@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import ReactTooltip from 'react-tooltip'
 
-
 import {
     Container,
     Content,
@@ -18,6 +17,7 @@ import {
 } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
 import CopyIconBlue from '~/components/Icons/CopyIconBlue'
+import { useState } from 'react'
 
 interface ContractsTableProps {
     title: string
@@ -26,6 +26,7 @@ interface ContractsTableProps {
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
+    const [tooltipText, setTooltipText] = useState('Copy')
     const { chainId } = useWeb3React()
 
     const reorderedColumns = colums && [...colums]
@@ -51,6 +52,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 
     const handleCopyAddress = (address: string) => {
         navigator.clipboard.writeText(address || '')
+        setTooltipText("Copied!");
     }
 
     return (
@@ -77,7 +79,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <WrapperIcon data-tip="Copy" onClick={() => handleCopyAddress(value)}>
+                                                <WrapperIcon data-tip={tooltipText} onClick={() => handleCopyAddress(value)}>
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
                                             </AddressColumm>

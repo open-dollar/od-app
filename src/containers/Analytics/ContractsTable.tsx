@@ -52,25 +52,20 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
     }
 
     const handleCopyAddress = (address: string) => {
-        console.log('clicked')
         navigator.clipboard.writeText(address || '')
 
         setTooltips((prevTooltips) => ({
             ...prevTooltips,
             [address]: 'Copied!',
         }))
-        ReactTooltip.rebuild()
 
         setTimeout(() => {
             setTooltips((prevTooltips) => ({
                 ...prevTooltips,
                 [address]: 'Copy',
             }))
-            ReactTooltip.rebuild()
         }, 10000)
     }
-
-    console.log({ rows })
     return (
         <Container>
             <Content>
@@ -154,14 +149,12 @@ const SHeads = styled(Heads)`
     width: 100%;
 `
 const SList = styled(List)`
-    div:nth-child(2) div {
+    & div:nth-child(2) div {
         opacity: 50%;
     }
-    // first column
     @media (min-width: 783px) {
         div:nth-child(2) div {
             width: 100%;
-            opacity: 50%;
         }
 
         div:nth-child(1) {
@@ -207,4 +200,5 @@ const WrapperIcon = styled.div`
     margin-left: 16px;
     width: 20px;
     height: 20px;
+    opacity: 1 !important;
 `

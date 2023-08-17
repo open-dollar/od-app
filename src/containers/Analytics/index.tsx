@@ -159,7 +159,7 @@ const Analytics = () => {
         description: 'Mock dada for Annual Stability fee',
     }
 
-    const circulation = { title: 'circulation', value: '2,566,553 OD', description: 'Mock dada for circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Mock dada for circulation' }
 
     const feesPendingAuction = {
         title: 'Fees pending auction',
@@ -255,14 +255,18 @@ const Analytics = () => {
         description: 'Redemption rate over an 8h period.',
     }
 
-    const analiticsData = [totalCollateralLocked, outstandingOd, vaultNFTs]
+    const analiticsData: DataCardProps[] = [
+        // totalCollateralLocked,
+        // outstandingOd,
+        // vaultNFTs
+    ]
 
     const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
 
     const systemInfoData: DataCardProps[] = [
         circulation,
-        feesPendingAuction,
-        totalFeesEarned,
+        // feesPendingAuction,
+        // totalFeesEarned,
         globalDebtUtilizationData,
         globalDebtData,
     ]
@@ -270,8 +274,8 @@ const Analytics = () => {
     const pricesData: DataCardProps[] = [
         marketPriceData, // check for market price OD not HAI
         redemptionPriceData,
-        liquidityUniswap,
-        marketPriceODG,
+        // liquidityUniswap,
+        // marketPriceODG,
     ]
 
     useEffect(() => {
@@ -335,66 +339,71 @@ const Analytics = () => {
             <Section>
                 <Title>Analytics</Title>
                 <AnaliticsTop>
-                    {analiticsData.map((val, index) => (
-                        <DataCard
-                            key={val.title + index}
-                            image={val.image}
-                            title={val.title}
-                            value={val.value}
-                            description={val.description}
-                        />
-                    ))}
+                    {analiticsData &&
+                        analiticsData?.map((val, index) => (
+                            <DataCard
+                                key={val.title + index}
+                                image={val.image}
+                                title={val.title}
+                                value={val.value}
+                                description={val.description}
+                            />
+                        ))}
                 </AnaliticsTop>
                 <AnaliticsMiddle>
-                    <LeftColumn>
-                        <SubTitle>System Rates</SubTitle>
-                        <LeftTopRow>
-                            <DataCard
-                                title={systemRatesData[0].title}
-                                value={systemRatesData[0].value}
-                                description={systemRatesData[0].description}
-                            />
-                        </LeftTopRow>
-                        <FlexMultipleRow>
-                            <DataCard
-                                title={systemRatesData[1].title}
-                                value={systemRatesData[1].value}
-                                description={systemRatesData[1].description}
-                            />
-                            <DataCard
-                                title={systemRatesData[2].title}
-                                value={systemRatesData[2].value}
-                                description={systemRatesData[2].description}
-                            />
-                        </FlexMultipleRow>
-                    </LeftColumn>
-                    <RightColumn>
-                        <SubTitle>System Info</SubTitle>
-                        <FlexMultipleRow>
-                            {systemInfoData.slice(0, 3).map((val, index) => {
-                                return (
-                                    <DataCard
-                                        key={val.title + index}
-                                        title={val.title}
-                                        value={val.value}
-                                        description={val.description}
-                                    />
-                                )
-                            })}
-                        </FlexMultipleRow>
-                        <FlexMultipleRow>
-                            {systemInfoData.slice(3).map((val, index) => {
-                                return (
-                                    <DataCard
-                                        key={val.title + index}
-                                        title={val.title}
-                                        value={val.value}
-                                        description={val.description}
-                                    />
-                                )
-                            })}
-                        </FlexMultipleRow>
-                    </RightColumn>
+                    {systemRatesData && (
+                        <LeftColumn>
+                            <SubTitle>System Rates</SubTitle>
+                            <LeftTopRow>
+                                <DataCard
+                                    title={systemRatesData[0].title}
+                                    value={systemRatesData[0].value}
+                                    description={systemRatesData[0].description}
+                                />
+                            </LeftTopRow>
+                            <FlexMultipleRow>
+                                <DataCard
+                                    title={systemRatesData[1].title}
+                                    value={systemRatesData[1].value}
+                                    description={systemRatesData[1].description}
+                                />
+                                <DataCard
+                                    title={systemRatesData[2].title}
+                                    value={systemRatesData[2].value}
+                                    description={systemRatesData[2].description}
+                                />
+                            </FlexMultipleRow>
+                        </LeftColumn>
+                    )}
+                    {systemInfoData && (
+                        <RightColumn>
+                            <SubTitle>System Info</SubTitle>
+                            <FlexMultipleRow>
+                                {systemInfoData.slice(0, 2).map((val, index) => {
+                                    return (
+                                        <DataCard
+                                            key={val.title + index}
+                                            title={val.title}
+                                            value={val.value}
+                                            description={val.description}
+                                        />
+                                    )
+                                })}
+                            </FlexMultipleRow>
+                            <FlexMultipleRow>
+                                {systemInfoData.slice(2).map((val, index) => {
+                                    return (
+                                        <DataCard
+                                            key={val.title + index}
+                                            title={val.title}
+                                            value={val.value}
+                                            description={val.description}
+                                        />
+                                    )
+                                })}
+                            </FlexMultipleRow>
+                        </RightColumn>
+                    )}
                 </AnaliticsMiddle>
                 <SubTitle>Prices</SubTitle>
                 <AnaliticsBottom>

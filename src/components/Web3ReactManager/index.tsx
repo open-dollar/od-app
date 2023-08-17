@@ -69,15 +69,6 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
         return null
     }
 
-    // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
-    if (!isActive) {
-        return (
-            <MessageWrapper>
-                <Message>{t('unknownError')}</Message>
-            </MessageWrapper>
-        )
-    }
-
     // if neither context is active, spin
     if (!isActive && !networkActive) {
         return showLoader ? (

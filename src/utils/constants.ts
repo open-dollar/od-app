@@ -99,10 +99,11 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     1: '',
-    421613: 'arbitrum-goerli',
-    42161: 'arbitrum-mainnet',
+    //TODO: update logic to use additional block explorers for arbitrum and arbitrum goerli
+    421613: 'arbitrum-goerli.',
+    42161: 'arbitrum-mainnet.',
     //TODO: remove once contracts updated
-    420: 'optimism-goerli',
+    420: 'goerli-optimism.',
 }
 
 const MEDIA_WIDTHS = {

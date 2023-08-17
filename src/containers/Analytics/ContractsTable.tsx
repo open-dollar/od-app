@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import ReactTooltip from 'react-tooltip'
 
+
 import {
     Container,
     Content,
@@ -70,7 +71,9 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                             {item?.map((value, valueIndex) => (
                                 <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
                                     <SListItem className="s-list-item">
-                                        <ListItemLabel className="list-item-label">{colums[valueIndex]}</ListItemLabel>
+                                        <ListItemLabel className="list-item-label">
+                                            {reorderedColumns[valueIndex]}
+                                        </ListItemLabel>
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
@@ -103,6 +106,7 @@ const AddressColumm = styled.div`
 
 const SHeads = styled(Heads)`
     // first column
+
     div:nth-child(1) {
         width: 174px;
     }
@@ -120,34 +124,41 @@ const SHeads = styled(Heads)`
     }
 
     width: 100%;
-
-    display: flex;
 `
 const SList = styled(List)`
     div:nth-child(2) div {
-        max-width: 884px;
-        width: 100%;
         opacity: 50%;
     }
     // first column
-    div:nth-child(1) {
-        width: 174px;
+    @media (min-width: 783px) {
+        div:nth-child(2) div {
+            max-width: 884px;
+            width: 100%;
+            opacity: 50%;
+        }
+
+        div:nth-child(1) {
+            width: 174px;
+        }
+
+        div:nth-child(2) {
+            flex: 2;
+        }
+
+        div:nth-child(3) {
+            flex: 1;
+        }
     }
 
-    div:nth-child(2) {
-        flex: 2;
-    }
-
-    div:nth-child(3) {
-        flex: 1;
-    }
     width: 100%;
 `
 
 const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
     width: 100%;
-    justify-content: flex-end;
+    @media (min-width: 783px) {
+        justify-content: flex-end;
+    }
 `
 
 const SListItem = styled(ListItem)`

@@ -59,7 +59,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 
         setTooltips((prevTooltips) => ({
             ...prevTooltips,
-            [address]: 'Clicked',
+            [address]: 'Copied',
         }))
 
         setTimeout(() => {
@@ -97,7 +97,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                                 <WrapperIcon onClick={() => handleCopyAddress(value)}>
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
-                                                {tooltips[value] === 'Clicked' && (
+                                                {tooltips[value] === 'Copied' && (
                                                     <Tooltip
                                                         onClick={() => {
                                                             setTooltips((prev) => ({
@@ -106,7 +106,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                                             }))
                                                         }}
                                                     >
-                                                        Clicked
+                                                        Copied
                                                     </Tooltip>
                                                 )}
                                             </AddressColumm>
@@ -138,97 +138,10 @@ const SecondColumnValue = styled.div`
     opacity: 0.5;
 `
 
-// const AddressColumm = styled.div`
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-
-//     div {
-//         cursor: pointer;
-//     }
-// `
-
-// const SHeads = styled(Heads)`
-//     // first column
-
-//     div:nth-child(1) {
-//         width: 174px;
-//     }
-
-//     div:nth-child(2) {
-//         width: 100%;
-//         flex: 2;
-//         display: flex;
-//         justify-content: flex-start;
-//     }
-
-//     div:nth-child(3) {
-//         flex: 1;
-//         text-align: center;
-//     }
-
-//     width: 100%;
-// `
-// const SList = styled(List)`
-//     & div:nth-child(2) div {
-//         opacity: 50%;
-//     }
-//     @media (min-width: 783px) {
-//         div:nth-child(2) div {
-//             width: 100%;
-//         }
-
-//         div:nth-child(1) {
-//             width: 174px;
-//         }
-
-//         div:nth-child(2) {
-//             flex: 2;
-//         }
-
-//         div:nth-child(3) {
-//             flex: 1;
-//         }
-//     }
-
-//     width: 100%;
-// `
-
-// const SHeadsContainer = styled(HeadsContainer)`
-//     text-align: start;
-//     width: 100%;
-//     @media (min-width: 783px) {
-//         justify-content: flex-end;
-//     }
-// `
-
-// const SListItem = styled(ListItem)`
-//     text-align: start;
-//     text-overflow: ellipsis;
-//     font-size: 16px;
-//     font-weight: 400;
-//     border-radius: 4px;
-//     & a {
-//         color: white;
-//         font-size: 16px;
-//         font-weight: 400;
-//     }
-// `
-
-// const WrapperIcon = styled.div`
-//     position: relative;
-//     display: flex;
-//     justify-content: center;
-//     margin-left: 16px;
-//     width: 20px;
-//     height: 20px;
-//     opacity: 1 !important;
-// `
-
 const AddressColumm = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    // justify-content: space-between;
 
     div {
         cursor: pointer;
@@ -251,14 +164,12 @@ const SHeads = styled(Heads)`
     div:nth-child(3) {
         flex: 1;
         text-align: center;
+        justify-content: flex-end;
     }
 
     width: 100%;
 `
 const SList = styled(List)`
-    // & div:nth-child(2) div {
-    //     opacity: 50%;
-    // }
     @media (min-width: 783px) {
         div:nth-child(2) div {
             width: 100%;
@@ -270,6 +181,7 @@ const SList = styled(List)`
 
         div:nth-child(3) {
             flex: 1;
+            justify-content: flex-end;
         }
     }
 

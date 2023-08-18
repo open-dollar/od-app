@@ -95,7 +95,7 @@ const ProxyModal = () => {
                                     {`WATITING FOR CONFIRMATIONS... ${
                                         !blocksSinceCheck ? 0 : blocksSinceCheck > 10 ? 10 : blocksSinceCheck
                                     } of 10`}{' '}
-                                    <InfoBtn data-tip={t('confirmations_info')}>?</InfoBtn>
+                                    <InfoBtn data-tooltip-content={t('confirmations_info')}>?</InfoBtn>
                                 </Confirmations>
                                 {/* <ReactTooltip  variant="light" data-effect="solid" /> */}
                             </>

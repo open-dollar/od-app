@@ -31,7 +31,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                                     <Flex key={item.label}>
                                         <Label color={isPrimary ? 'primary' : 'secondary'}>
                                             {item.tip ? (
-                                                <InfoIcon data-tip={item.tip}>
+                                                <InfoIcon data-tooltip-content={item.tip}>
                                                     <Info size="13" />
                                                 </InfoIcon>
                                             ) : null}

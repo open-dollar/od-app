@@ -48,7 +48,7 @@ const VaultBlock = ({ ...props }) => {
                             <Label>{'Risk'}</Label>
                             <Wrapper>
                                 <Circle
-                                    data-tip={`${
+                                    data-tooltip-content={`${
                                         returnState(props.riskState) ? returnState(props.riskState) : 'No'
                                     } Risk`}
                                     className={

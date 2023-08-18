@@ -160,7 +160,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     <MainLabel>Risk</MainLabel>
                                     <Wrapper>
                                         <Circle
-                                            data-tip={`${
+                                            data-tooltip-content={`${
                                                 singleSafe && returnState(singleSafe.riskState)
                                                     ? returnState(singleSafe.riskState)
                                                     : 'No'
@@ -186,7 +186,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 <Right>
                     <Inner>
                         <Side>
-                            <InfoIcon data-tip={t('eth_osm_tip')}>
+                            <InfoIcon data-tooltip-content={t('eth_osm_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
@@ -194,7 +194,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('hai_red_price_tip')}>
+                            <InfoIcon data-tooltip-content={t('hai_red_price_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>OD Redemption Price</SideTitle>
@@ -202,7 +202,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('liquidation_price_tip')}>
+                            <InfoIcon data-tooltip-content={t('liquidation_price_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>
@@ -220,7 +220,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('liquidation_penalty_tip')}>
+                            <InfoIcon data-tooltip-content={t('liquidation_penalty_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>Liquidation Penalty</SideTitle>
@@ -228,7 +228,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('stability_fee_tip')}>
+                            <InfoIcon data-tooltip-content={t('stability_fee_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>Stability Fee</SideTitle>
@@ -240,7 +240,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tip={t('annual_redemption_tip')}>
+                            <InfoIcon data-tooltip-content={t('annual_redemption_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>Annual Redemption Rate</SideTitle>

@@ -29,7 +29,6 @@ interface Tooltips {
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    // const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
     const [tooltips, setTooltips] = useState<Tooltips>({})
     const { chainId } = useWeb3React()
 
@@ -141,7 +140,6 @@ const SecondColumnValue = styled.div`
 const AddressColumm = styled.div`
     display: flex;
     align-items: center;
-    // justify-content: space-between;
 
     div {
         cursor: pointer;
@@ -149,7 +147,6 @@ const AddressColumm = styled.div`
 `
 
 const SHeads = styled(Heads)`
-    // first column
     div:nth-child(1) {
         width: 174px;
     }

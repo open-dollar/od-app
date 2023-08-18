@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip'
 
 import {
     Container,
@@ -98,16 +97,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
                                                 {tooltips[value] === 'Clicked' && (
-                                                    <div
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: '20px',
-                                                            left: '0',
-                                                            padding: '5px',
-                                                            border: '1px solid black',
-                                                            backgroundColor: 'white',
-                                                            borderRadius: '5px',
-                                                        }}
+                                                    <Tooltip
                                                         onClick={() => {
                                                             setTooltips((prev) => ({
                                                                 ...prev,
@@ -116,7 +106,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                                         }}
                                                     >
                                                         Clicked
-                                                    </div>
+                                                    </Tooltip>
                                                 )}
                                             </AddressColumm>
                                         )}
@@ -131,6 +121,16 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         </Container>
     )
 }
+
+const Tooltip = styled.div`
+    position: absolute;
+    top: -20px;
+    left: 0;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+`
 
 const AddressColumm = styled.div`
     display: flex;

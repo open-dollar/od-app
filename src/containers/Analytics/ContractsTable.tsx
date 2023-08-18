@@ -25,10 +25,14 @@ interface ContractsTableProps {
     rows: string[][]
 }
 
+interface Tooltips {
+    [address: string]: string | undefined
+}
+
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
+    // const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
+    const [tooltips, setTooltips] = useState<Tooltips>({})
     const { chainId } = useWeb3React()
-    const iconRef = useRef<HTMLDivElement | null>(null)
 
     const reorderedColumns = colums && [...colums]
     if (reorderedColumns && reorderedColumns.length > 2) {
@@ -56,16 +60,17 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 
         setTooltips((prevTooltips) => ({
             ...prevTooltips,
-            [address]: 'Copied!',
+            [address]: 'Clicked',
         }))
 
         setTimeout(() => {
             setTooltips((prevTooltips) => ({
                 ...prevTooltips,
-                [address]: 'Copy',
+                [address]: undefined,
             }))
-        }, 10000)
+        }, 2000)
     }
+
     return (
         <Container>
             <Content>
@@ -89,20 +94,30 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <ReactTooltip
-                                                    type="dark"
-                                                    data-effect="solid"
-                                                    arrowColor="#001828"
-                                                    id={`tooltip-${index}-${valueIndex}`}
-                                                />
-                                                <WrapperIcon
-                                                    ref={iconRef}
-                                                    data-tip={tooltips[value] || 'Copy'}
-                                                    data-for={`tooltip-${index}-${valueIndex}`}
-                                                    onClick={() => handleCopyAddress(value)}
-                                                >
+                                                <WrapperIcon onClick={() => handleCopyAddress(value)}>
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
+                                                {tooltips[value] === 'Clicked' && (
+                                                    <div
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '20px',
+                                                            left: '0',
+                                                            padding: '5px',
+                                                            border: '1px solid black',
+                                                            backgroundColor: 'white',
+                                                            borderRadius: '5px',
+                                                        }}
+                                                        onClick={() => {
+                                                            setTooltips((prev) => ({
+                                                                ...prev,
+                                                                [value]: undefined,
+                                                            }))
+                                                        }}
+                                                    >
+                                                        Clicked
+                                                    </div>
+                                                )}
                                             </AddressColumm>
                                         )}
                                         {valueIndex !== 2 && <>{value}</>}
@@ -195,6 +210,7 @@ const SListItem = styled(ListItem)`
 `
 
 const WrapperIcon = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     margin-left: 16px;

@@ -5,10 +5,8 @@ import {
     Container,
     Content,
     Head,
-    Header,
     Heads,
     HeadsContainer,
-    LeftAucInfo,
     List,
     ListItem,
     ListItemLabel,
@@ -16,7 +14,7 @@ import {
 } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
 import CopyIconBlue from '~/components/Icons/CopyIconBlue'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 interface ContractsTableProps {
     title: string

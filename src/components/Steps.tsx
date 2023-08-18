@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from '~/store'
 import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -106,6 +107,7 @@ const Steps = () => {
 
     return (
         <StepsContainer>
+
             <StepsBars>
                 {step !== 0 ? (
                     <>
@@ -121,9 +123,11 @@ const Steps = () => {
                         {`WATITING FOR CONFIRMATIONS... ${
                             !blocksSinceCheck ? 0 : blocksSinceCheck > 10 ? 10 : blocksSinceCheck
                         } of 10`}{' '}
-                        <InfoBtn data-tooltip-content={t('confirmations_info')}>?</InfoBtn>
+                        <InfoBtn data-tooltip-id="tooltip-steps" data-tooltip-content={t('confirmations_info')}>
+                            ?
+                        </InfoBtn>
                     </Confirmations>
-                    {/* <ReactTooltip  variant="light" data-effect="solid" /> */}
+                    <ReactTooltip id="tooltip-steps" variant="light" data-effect="solid" />
                 </>
             ) : (
                 ''

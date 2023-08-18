@@ -11,6 +11,7 @@ import { timeout } from '../../utils/helper'
 import Button from '../Button'
 import Loader from '../Loader'
 import Modal from './Modal'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const ProxyModal = () => {
     const [status, setStatus] = useState('stateless')
@@ -95,9 +96,14 @@ const ProxyModal = () => {
                                     {`WATITING FOR CONFIRMATIONS... ${
                                         !blocksSinceCheck ? 0 : blocksSinceCheck > 10 ? 10 : blocksSinceCheck
                                     } of 10`}{' '}
-                                    <InfoBtn data-tooltip-content={t('confirmations_info')}>?</InfoBtn>
+                                    <InfoBtn
+                                        data-tooltip-id='"tooltip-proxy-modal"'
+                                        data-tooltip-content={t('confirmations_info')}
+                                    >
+                                        ?
+                                    </InfoBtn>
                                 </Confirmations>
-                                {/* <ReactTooltip  variant="light" data-effect="solid" /> */}
+                                <ReactTooltip id="tooltip-proxy-modal" variant="light" data-effect="solid" />
                             </>
                         ) : (
                             t('proxy_wallet_text')

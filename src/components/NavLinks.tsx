@@ -60,6 +60,10 @@ const Nav = styled.div`
     left: 50%;
     transform: translateX(-50%);
     position: absolute;
+    @media (max-width: 1243px) {
+        position: unset;
+        transform: initial;
+    }
     ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-direction: column;
   `}

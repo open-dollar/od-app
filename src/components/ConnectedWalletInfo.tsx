@@ -22,7 +22,6 @@ const ConnectedWalletInfo = () => {
     const { isActive, account, connector, chainId } = useWeb3React()
 
     const [copied, setCopied] = useState(false)
-    const isMetaMask = !!(ethereum && ethereum.isMetaMask)
 
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
     const {

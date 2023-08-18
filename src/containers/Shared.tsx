@@ -82,7 +82,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
         popupsActions.setIsConnectModalOpen(false)
-        popupsActions.setIsConnectorsWalletOpen(false)
         popupsActions.setIsLoadingModalOpen({ text: '', isOpen: false })
         popupsActions.setIsScreenModalOpen(false)
         popupsActions.setIsSettingModalOpen(false)

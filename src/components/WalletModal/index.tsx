@@ -57,14 +57,6 @@ export default function WalletModal() {
 
     const toggleWalletModal = () => popupsActions.setIsConnectorsWalletOpen(!isConnectorsWalletOpen)
 
-    // close on connection, when logged out before
-    useEffect(() => {
-        if (account && !previousAccount && isConnectorsWalletOpen) {
-            toggleWalletModal()
-        }
-        // eslint-disable-next-line
-    }, [account, previousAccount, isConnectorsWalletOpen])
-
     // always reset to account view
     useEffect(() => {
         if (isConnectorsWalletOpen) {
@@ -145,30 +137,6 @@ export default function WalletModal() {
     }
 
     function getModalContent() {
-        // if (error) {
-        //     return (
-        //         <UpperSection>
-        //             <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-        //             <HeaderRow>
-        //                 {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
-        //             </HeaderRow>
-        //             <ContentWrapper>
-        //                 {error instanceof UnsupportedChainIdError ? (
-        //                     <h5>
-        //                         {t('not_supported')}{' '}
-        //                         <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
-        //                             Optimism Goerli
-        //                         </a>
-        //                         .
-        //                     </h5>
-        //                 ) : (
-        //                     t('error_try_refresh')
-        //                 )}
-        //             </ContentWrapper>
-        //         </UpperSection>
-        //     )
-        // }
-
         return (
             <UpperSection>
                 <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
@@ -189,20 +157,6 @@ export default function WalletModal() {
                         <AccountCardsWeb3ReactV2 />
                     </HeaderRow>
                 )}
-                <ContentWrapper>
-                    {walletView === WALLET_VIEWS.PENDING ? (
-                        // <PendingView
-                        //     connector={pendingWallet}
-                        //     error={pendingError}
-                        //     setPendingError={setPendingError}
-                        //     // tryActivation={tryActivation}
-                        // />
-                        <></>
-                    ) : (
-                        // <OptionGrid>{getOptions()}</OptionGrid>
-                        <></>
-                    )}
-                </ContentWrapper>
             </UpperSection>
         )
     }

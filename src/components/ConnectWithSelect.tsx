@@ -75,7 +75,7 @@ export function ConnectWithSelect({
                       setDesiredChainId(-1);
                     }}
                 >
-                  Disconnect
+                    { connector instanceof MetaMask ? '' : <>{'Disconnect'}</> }
                 </div>
             )
         ) : (

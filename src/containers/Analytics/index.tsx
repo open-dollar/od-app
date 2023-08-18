@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-// import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 
 import DataCard, { DataCardProps } from './DataCard'
@@ -335,7 +335,6 @@ const Analytics = () => {
 
     return (
         <Container>
-            {/* <ReactTooltip  variant="dark" data-effect="solid" arrowColor="#001828" /> */}
             <Section>
                 <Title>Analytics</Title>
                 <AnaliticsTop>
@@ -416,6 +415,17 @@ const Analytics = () => {
                         />
                     ))}
                 </AnaliticsBottom>
+                <TooltopWrapper>
+                    <ReactTooltip
+                        variant="dark"
+                        data-effect="solid"
+                        arrowColor="#001828"
+                        id="analitics"
+                        // delayHide={100000}
+                        style={{maxWidth: "300px"}}
+                        classNameArrow="tooltip-arrow"
+                    />
+                </TooltopWrapper>
             </Section>
             <Section>
                 <Title>Collaterals</Title>
@@ -432,6 +442,12 @@ const Analytics = () => {
 }
 
 export default Analytics
+
+const TooltopWrapper = styled.div`
+    & .tooltip-arrow {
+        background: inherit!important;
+    }
+`
 
 const Container = styled.div`
     max-width: 1380px;

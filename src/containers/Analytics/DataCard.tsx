@@ -17,11 +17,15 @@ export interface DataCardProps {
     children?: React.ReactChildren | React.ReactChild
 }
 
+const el = () => {
+    return <>Hey hey</>
+}
+
 const DataCard = ({ title, image, value, description, children }: DataCardProps) => {
     return (
         <Block>
             {description && (
-                <InfoIcon data-tip={description}>
+                <InfoIcon data-tooltip-id="analitics" data-tooltip-content={description}>
                     <Info size="20" />
                 </InfoIcon>
             )}

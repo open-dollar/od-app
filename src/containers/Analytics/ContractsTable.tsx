@@ -90,6 +90,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         <ListItemLabel className="list-item-label">
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
+                                        {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
@@ -110,7 +111,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                                 )}
                                             </AddressColumm>
                                         )}
-                                        {valueIndex !== 2 && <>{value}</>}
+                                        {valueIndex !== 2 && valueIndex !== 1 && <>{value}</>}
                                     </SListItem>
                                 </SHeadsContainer>
                             ))}
@@ -130,7 +131,99 @@ const Tooltip = styled.div`
     border: 1px solid black;
     background-color: white;
     border-radius: 5px;
+    color: black;
 `
+
+const SecondColumnValue = styled.div`
+    opacity: 0.5;
+`
+
+// const AddressColumm = styled.div`
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+
+//     div {
+//         cursor: pointer;
+//     }
+// `
+
+// const SHeads = styled(Heads)`
+//     // first column
+
+//     div:nth-child(1) {
+//         width: 174px;
+//     }
+
+//     div:nth-child(2) {
+//         width: 100%;
+//         flex: 2;
+//         display: flex;
+//         justify-content: flex-start;
+//     }
+
+//     div:nth-child(3) {
+//         flex: 1;
+//         text-align: center;
+//     }
+
+//     width: 100%;
+// `
+// const SList = styled(List)`
+//     & div:nth-child(2) div {
+//         opacity: 50%;
+//     }
+//     @media (min-width: 783px) {
+//         div:nth-child(2) div {
+//             width: 100%;
+//         }
+
+//         div:nth-child(1) {
+//             width: 174px;
+//         }
+
+//         div:nth-child(2) {
+//             flex: 2;
+//         }
+
+//         div:nth-child(3) {
+//             flex: 1;
+//         }
+//     }
+
+//     width: 100%;
+// `
+
+// const SHeadsContainer = styled(HeadsContainer)`
+//     text-align: start;
+//     width: 100%;
+//     @media (min-width: 783px) {
+//         justify-content: flex-end;
+//     }
+// `
+
+// const SListItem = styled(ListItem)`
+//     text-align: start;
+//     text-overflow: ellipsis;
+//     font-size: 16px;
+//     font-weight: 400;
+//     border-radius: 4px;
+//     & a {
+//         color: white;
+//         font-size: 16px;
+//         font-weight: 400;
+//     }
+// `
+
+// const WrapperIcon = styled.div`
+//     position: relative;
+//     display: flex;
+//     justify-content: center;
+//     margin-left: 16px;
+//     width: 20px;
+//     height: 20px;
+//     opacity: 1 !important;
+// `
 
 const AddressColumm = styled.div`
     display: flex;
@@ -144,7 +237,6 @@ const AddressColumm = styled.div`
 
 const SHeads = styled(Heads)`
     // first column
-
     div:nth-child(1) {
         width: 174px;
     }
@@ -164,16 +256,12 @@ const SHeads = styled(Heads)`
     width: 100%;
 `
 const SList = styled(List)`
-    & div:nth-child(2) div {
-        opacity: 50%;
-    }
+    // & div:nth-child(2) div {
+    //     opacity: 50%;
+    // }
     @media (min-width: 783px) {
         div:nth-child(2) div {
             width: 100%;
-        }
-
-        div:nth-child(1) {
-            width: 174px;
         }
 
         div:nth-child(2) {
@@ -190,9 +278,8 @@ const SList = styled(List)`
 
 const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
-    width: 100%;
-    @media (min-width: 783px) {
-        justify-content: flex-end;
+    @media (max-width: 783px) {
+        width: 100%;
     }
 `
 
@@ -210,11 +297,9 @@ const SListItem = styled(ListItem)`
 `
 
 const WrapperIcon = styled.div`
-    position: relative;
     display: flex;
     justify-content: center;
     margin-left: 16px;
     width: 20px;
     height: 20px;
-    opacity: 1 !important;
 `

@@ -105,7 +105,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                     </SListItem>
                                 </SHeadsContainer>
                             ))}
-                            <ReactTooltip id={`${item[2]}`} openOnClick place="top" delayHide={20000} />
+                            <ReactTooltip id={`${item[2]}`} openOnClick place="top" />
                         </SList>
                     ))}
                 </SectionContent>

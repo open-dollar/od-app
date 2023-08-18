@@ -24,7 +24,7 @@ export async function fetchUserSafes(geb: Geb, userAddress: string): Promise<[Bi
     )
     // Generate payload from input data
     const payload = VirtualUserSafes.bytecode.concat(inputData.slice(2))
-   
+
     // Call the deployment transaction with the payload
     const returnedData = await geb.provider.call({ data: payload })
 

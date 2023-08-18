@@ -4,8 +4,8 @@ import { ExternalProvider } from '@ethersproject/providers'
 
 declare global {
     interface Window {
-        Buffer: typeof Buffer;
-        util: any;
+        Buffer: typeof Buffer
+        util: any
     }
 }
 

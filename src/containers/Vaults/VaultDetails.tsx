@@ -73,7 +73,9 @@ const VaultDetails = ({ ...props }) => {
 
             {!isLoading && <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
+            {(isDeposit || isWithdraw) && !isLoading ? (
+                <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
+            ) : null}
         </Container>
     )
 }

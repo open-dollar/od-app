@@ -2,9 +2,9 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
 import Identicon from './Icons/Identicon'
-import {MetaMask} from "@web3-react/metamask";
-import {WalletConnect as WalletConnectV2} from "@web3-react/walletconnect-v2";
-import {CoinbaseWallet} from "@web3-react/coinbase-wallet";
+import { MetaMask } from '@web3-react/metamask'
+import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 
 interface Props {
     size?: number

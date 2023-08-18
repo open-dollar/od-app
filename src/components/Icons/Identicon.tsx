@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 // @ts-ignore
 import Jazzicon from 'jazzicon'
-import {useWeb3React} from "@web3-react/core";
+import { useWeb3React } from '@web3-react/core'
 
 const StyledIdenticonContainer = styled.div`
     border-radius: 1.125rem;

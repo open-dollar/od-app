@@ -35,9 +35,9 @@ ReactDOM.render(
         <HelmetProvider>
             <HashRouter>
                 <Web3ReactProvider connectors={connectors}>
-                        <StoreProvider store={store}>
-                            <App />
-                        </StoreProvider>
+                    <StoreProvider store={store}>
+                        <App />
+                    </StoreProvider>
                 </Web3ReactProvider>
             </HashRouter>
         </HelmetProvider>

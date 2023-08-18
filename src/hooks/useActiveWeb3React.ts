@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import {BaseProvider, Web3Provider} from '@ethersproject/providers'
-import {getPriorityConnector, useWeb3React, Web3ReactPriorityHooks} from '@web3-react/core'
+import { BaseProvider, Web3Provider } from '@ethersproject/providers'
+import { getPriorityConnector, useWeb3React, Web3ReactPriorityHooks } from '@web3-react/core'
 
 import type { Connector } from '@web3-react/types'
 
 import { injected } from '~/connectors'
-
 
 export type Web3ContextType<T extends BaseProvider = Web3Provider> = {
     connector: Connector
@@ -53,7 +52,7 @@ export function useEagerConnect() {
  * and out after checking what network they're on
  */
 export function useInactiveListener(suppress = false) {
-    const { isActive, connector} = useWeb3React() // specifically using useWeb3React because of what this hook does
+    const { isActive, connector } = useWeb3React() // specifically using useWeb3React because of what this hook does
 
     useEffect(() => {
         const { ethereum } = window

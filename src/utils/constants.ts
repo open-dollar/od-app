@@ -28,7 +28,6 @@ export enum Network {
     OPTIMISM = 'optimism-mainnet',
     //TODO: remove once SDK contracts updated
     OPTIMISM_GOERLI = 'optimism-goerli',
-
 }
 
 export const ETH_NETWORK = Network.OPTIMISM_GOERLI

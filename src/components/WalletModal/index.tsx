@@ -18,19 +18,14 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import React, { useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import { injected } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../utils/constants'
 import usePrevious from '../../hooks/usePrevious'
 
 import Modal from '../Modals/Modal'
-import Option from './Option'
-import PendingView from './PendingView'
 import { useStoreActions, useStoreState } from '../../store'
 import { useTranslation } from 'react-i18next'
-import MetamaskLogo from '../../assets/connectors/metamask.png'
-import AccountCardsWeb3ReactV2 from "~/components/AccountCardsWeb3ReactV2";
+import AccountCardsWeb3ReactV2 from '~/components/AccountCardsWeb3ReactV2'
 
 const WALLET_VIEWS = {
     OPTIONS: 'options',
@@ -105,7 +100,7 @@ export default function WalletModal() {
             })
         // @ts-ignore
         if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
-        // @ts-ignore
+            // @ts-ignore
             const chainId = await window.ethereum.request({ method: 'net_version' })
             // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
             if (chainId !== process.env.REACT_APP_NETWORK_ID) {

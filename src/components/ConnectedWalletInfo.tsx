@@ -11,13 +11,12 @@ import ExpandIcon from './Icons/ExpandIcon'
 import Transaction from './Transaction'
 import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
-import ConnectedWalletIcon from "~/components/ConnectedWalletIcon";
-import {MetaMask} from "@web3-react/metamask";
-import {CoinbaseWallet} from "@web3-react/coinbase-wallet";
+import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
+import { MetaMask } from '@web3-react/metamask'
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
-    const { ethereum } = window
 
     const { isActive, account, connector, chainId } = useWeb3React()
 
@@ -48,7 +47,7 @@ const ConnectedWalletInfo = () => {
                     // @ts-ignore
                     SUPPORTED_WALLETS[k].connector === connector &&
                     // @ts-ignore
-                    (!(connector instanceof MetaMask))
+                    !(connector instanceof MetaMask)
             )
             .map((k) => SUPPORTED_WALLETS[k].name)[0]
         return name

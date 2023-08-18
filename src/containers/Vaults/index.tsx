@@ -65,17 +65,13 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {safeState.safeCreated && safeState.list.length ? (
-                    <Stats />
-                ) : <></> }
+                {safeState.safeCreated && safeState.list.length ? <Stats /> : <></>}
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
-                {safeState.safeCreated && safeState.list.length ? (
-                    <></>
-                ) :  <Stats /> }
+                {safeState.safeCreated && safeState.list.length ? <></> : <Stats />}
             </Content>
         </Container>
     )
@@ -88,7 +84,3 @@ const Container = styled.div``
 const Content = styled.div`
     position: relative;
 `
-
-
-
-

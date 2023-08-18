@@ -421,8 +421,7 @@ const Analytics = () => {
                         data-effect="solid"
                         arrowColor="#001828"
                         id="analitics"
-                        // delayHide={100000}
-                        style={{maxWidth: "300px"}}
+                        style={{ maxWidth: '300px' }}
                         classNameArrow="tooltip-arrow"
                     />
                 </TooltopWrapper>
@@ -430,6 +429,16 @@ const Analytics = () => {
             <Section>
                 <Title>Collaterals</Title>
                 <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
+                <TooltopWrapper>
+                    <ReactTooltip
+                        variant="dark"
+                        data-effect="solid"
+                        arrowColor="#001828"
+                        id="collaterals-table"
+                        style={{ maxWidth: '300px' }}
+                        classNameArrow="tooltip-arrow"
+                    />
+                </TooltopWrapper>
             </Section>
 
             <Section>
@@ -445,7 +454,7 @@ export default Analytics
 
 const TooltopWrapper = styled.div`
     & .tooltip-arrow {
-        background: inherit!important;
+        background: inherit !important;
     }
 `
 

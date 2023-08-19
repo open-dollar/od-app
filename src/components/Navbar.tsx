@@ -216,6 +216,8 @@ const Navbar = () => {
 
 export default Navbar
 
+const screenWidth = "1073px"
+
 const Container = styled.div`
     display: flex;
     height: 68px;
@@ -224,10 +226,11 @@ const Container = styled.div`
     padding: 40px 40px 0 40px;
     position: relative;
     z-index: 5;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-     padding: 0 20px;
-     top:0 !important;
-  `}
+
+    @media (max-width: ${screenWidth}) {
+        padding: 0 20px;
+        top: 0 !important;
+    }
 `
 
 const MenuBtn = styled.div`
@@ -245,17 +248,19 @@ const MenuBtn = styled.div`
             }
         }
     }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: flex;
-  `}
+
+    @media (max-width: ${screenWidth}) {
+        display: flex;
+    }
 `
 
 const BtnContainer = styled.div`
     display: flex;
     align-items: center;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;
-  `}
+
+    @media (max-width: ${screenWidth}) {
+        display: none;
+    }
 
     svg {
         stroke: white;
@@ -285,17 +290,18 @@ const RightSide = styled.div`
 
 const HideMobile = styled.div`
     height: -webkit-fill-available;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;
-  `}
+    @media (max-width: ${screenWidth}) {
+        display: none;
+    }
 `
 
 const Left = styled.div<{ isBigWidth?: boolean }>`
     display: flex;
     align-items: center;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    min-width:auto;
-  `}
+
+    @media (max-width: ${screenWidth}) {
+        min-width: auto;
+    }
 `
 
 const Flex = styled.div`
@@ -346,9 +352,10 @@ const Price = styled.div`
     position: relative;
     margin-right: auto;
     margin-left: 32px;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;
-  `}
+
+    @media (max-width: ${screenWidth}) {
+        display: none;
+    }
 `
 
 const PriceInfoPopup = styled.div`

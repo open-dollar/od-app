@@ -8,26 +8,23 @@ export interface TableProps {
     rows: (string | JSX.Element)[][]
 }
 
+interface HeadsContainerProps {
+    index?: number
+}
+
+interface ListItemProps {
+    index?: number
+}
+
 export const DataTable = ({ title, colums, rows }: TableProps) => {
     return (
         <Container>
-            <Header>
-                <LeftAucInfo>
-                    {/* <img src={Icon} alt="auction" /> */}
-                    <h1 className="text-egg font-semibold font-poppins text-3xl"> {title}</h1>
-                </LeftAucInfo>
-            </Header>
             <Content>
                 <SectionContent>
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
-                            <HeadsContainer key={title + '-column-' + index}>
-                                <Head>{name}</Head>
-                                {description && (
-                                    <InfoIcon data-tip={description}>
-                                        <HelpCircle size="18" />
-                                    </InfoIcon>
-                                )}
+                            <HeadsContainer key={title + '-column-' + index} index={index}>
+                                <Head data-tip={description}>{name}</Head>
                             </HeadsContainer>
                         ))}
                     </Heads>
@@ -36,7 +33,7 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                             <List key={'row-' + index}>
                                 {item?.map((value, valueIndex) => (
                                     <HeadsContainer key={'row-item-' + valueIndex}>
-                                        <ListItem>
+                                        <ListItem index={valueIndex}>
                                             <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
                                             {value}
                                         </ListItem>
@@ -52,18 +49,14 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
 }
 
 export const Container = styled.div`
-    border-radius: 15px;
     margin-bottom: 15px;
-    background: #031f3a;
 
-    width: fit-content;
+    width: 100%;
     height: fit-content;
-    margin: 10px;
 `
 
 export const Header = styled.div`
     width: 100%;
-    background: #05284c;
     border-radius: 15px 15px 0 0;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
@@ -96,14 +89,11 @@ export const InfoIcon = styled.div`
 
 export const Content = styled.div`
     position: relative;
-    margin: 20px;
-    border-top: 1px solid ${(props) => props.theme.colors.border};
-    background: #031f3a;
 
     border-radius: 0 0 15px 15px;
-    width: fit-content;
+    width: 100%;
 
-    max-width: 1180px;
+    max-width: 1350px;
     overflow-x: auto;
 
     &::-webkit-scrollbar {
@@ -144,7 +134,7 @@ export const LeftAucInfo = styled.div<{ type?: string }>`
     }
 `
 
-export const HeadsContainer = styled.div`
+export const HeadsContainer = styled.div<HeadsContainerProps>`
     position: relative;
     width: 100%;
     display: flex;
@@ -152,7 +142,8 @@ export const HeadsContainer = styled.div`
     align-items: center;
     justify-content: start;
     width: max-content;
-    text-align: end;
+
+    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 `
 
 export const Heads = styled.div`
@@ -167,8 +158,11 @@ export const Heads = styled.div`
         position: sticky;
         left: 0;
         line-height: 2;
-        background-color: #031f3a;
         z-index: 10;
+    }
+
+    & div:first-child {
+        background-color: #001828;
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -182,9 +176,9 @@ export const ListContainer = styled.div`
     & :nth-child(1) {
         position: -webkit-sticky;
         position: sticky;
-        left: 0;
+        left: 0px;
+        border-radius: 4px;
         z-index: 100;
-        background-color: inherit;
     }
 `
 
@@ -192,9 +186,9 @@ export const Head = styled.p`
     /* flex: 0 0 16.6%; */
     font-size: 12px;
     width: 174px;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
-    color: ${(props) => props.theme.colors.secondary};
+    color: #4a4d53;
     padding-left: 10px;
     &:first-child {
         padding: 0 25px;
@@ -214,17 +208,13 @@ export const ListItemLabel = styled.span`
 
 export const List = styled.div`
     display: flex;
-    border-radius: 10px;
+    border-radius: 4px;
     width: max-content;
 
     align-items: start;
     justify-content: space-between;
-    &:nth-child(even) {
-        background: #12385e;
-    }
-    &:nth-child(odd) {
-        background: #031f3a;
-    }
+    background: #002b40;
+    margin-bottom: 24px;
 
     & div:nth-child(1) div {
         text-align: start;
@@ -243,7 +233,7 @@ export const List = styled.div`
   `}
 `
 
-export const ListItem = styled.div`
+export const ListItem = styled.div<ListItemProps>`
     /* flex: 0 0 16.6%; */
     width: 174px;
     color: ${(props) => props.theme.colors.customSecondary};
@@ -253,7 +243,11 @@ export const ListItem = styled.div`
         padding: 15px 25px;
     }
 
-    text-align: end;
+    &:nth-child(1) {
+        background-color: #002b40;
+    }
+
+    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       &:first-child {

@@ -151,7 +151,7 @@ const Analytics = () => {
         description: 'Mock dada  for Outstanding OD',
     }
 
-    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Mock dada for Vault NFTs' }
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Vault NFTs' }
 
     const annualStabilityFee = {
         title: 'Annual Stability fee',
@@ -159,7 +159,7 @@ const Analytics = () => {
         description: 'Mock dada for Annual Stability fee',
     }
 
-    const circulation = { title: 'circulation', value: erc20Supply, description: 'Mock dada for circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
 
     const feesPendingAuction = {
         title: 'Fees pending auction',
@@ -335,8 +335,8 @@ const Analytics = () => {
 
     return (
         <Container>
+            <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
             <Section>
-                <ReactTooltip multiline type="dark" data-effect="solid" arrowColor="#001828" />
                 <Title>Analytics</Title>
                 <AnaliticsTop>
                     {analiticsData &&
@@ -442,7 +442,9 @@ const Container = styled.div`
     }
 `
 
-const Section = styled.div``
+const Section = styled.div`
+    margin-bottom: 64px;
+`
 
 const AnaliticsTop = styled.div`
     display: flex;

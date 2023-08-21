@@ -15,7 +15,7 @@ import {
 } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
 import CopyIconBlue from '~/components/Icons/CopyIconBlue'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 interface ContractsTableProps {
     title: string
@@ -23,15 +23,9 @@ interface ContractsTableProps {
     rows: string[][]
 }
 
-interface Tooltips {
-    [address: string]: string | undefined
-}
-
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
     const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
-    const [open, setOpen] = useState(false)
     const { chainId } = useWeb3React()
-    // const iconRef = useRef<HTMLDivElement | null>(null)
 
     const reorderedColumns = colums && [...colums]
     if (reorderedColumns && reorderedColumns.length > 2) {
@@ -67,7 +61,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                 ...prevTooltips,
                 [address]: 'Copy',
             }))
-        }, 10000)
+        }, 2000)
     }
 
     return (

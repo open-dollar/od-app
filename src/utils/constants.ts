@@ -62,6 +62,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
         color: '#E8831D',
     },
     WALLET_CONNECT: {
+        // @ts-ignore
         connector: walletconnect,
         name: 'WalletConnect',
         iconName: 'walletConnectIcon.svg',

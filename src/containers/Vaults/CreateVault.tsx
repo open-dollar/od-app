@@ -36,7 +36,7 @@ const CreateVault = ({
 }) => {
     const { stats, error, availableHai, parsedAmounts, totalCollateral, totalDebt, collateralRatio, liquidationPrice } =
         useSafeInfo('create')
-    const { library, account } = useActiveWeb3React()
+    const { provider, account } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const {
         safeModel: safeState,
@@ -143,7 +143,7 @@ const CreateVault = ({
     }
 
     const handleConfirm = async () => {
-        if (account && library) {
+        if (account && provider) {
             safeActions.setIsSuccessfulTx(false)
             setShowPreview(false)
             popupsActions.setIsWaitingModalOpen(true)
@@ -160,7 +160,7 @@ const CreateVault = ({
                 totalCollateral,
                 totalDebt,
             })
-            const signer = library.getSigner(account)
+            const signer = provider.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
                 await safeActions.depositAndBorrow({
@@ -302,7 +302,6 @@ const CreateVault = ({
                                                             {item.label}
                                                         </Label>
                                                         <Value>
-                                                            {console.log("item value", item.value)}
                                                             {item.value !== '-' &&
                                                             item.label.toLowerCase().includes('collateral') &&
                                                             item.label.toLowerCase().includes('total')
@@ -461,6 +460,7 @@ const Box = styled.div`
 
 const Col = styled.div`
     flex: 0 0 48%;
+    z-index: 1;
 `
 
 const DropDownContainer = styled.div``

@@ -13,7 +13,7 @@ import useGeb from '~/hooks/useGeb'
 
 const AuctionsTransactions = () => {
     const { t } = useTranslation()
-    const { connector, account, library } = useActiveWeb3React()
+    const { connector, account, provider } = useActiveWeb3React()
     const geb = useGeb()
 
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -78,7 +78,7 @@ const AuctionsTransactions = () => {
 
     const handleConfirm = async () => {
         try {
-            if (account && library) {
+            if (account && provider) {
                 popupsActions.setAuctionOperationPayload({
                     isOpen: false,
                     type: '',
@@ -91,7 +91,7 @@ const AuctionsTransactions = () => {
                     hint: 'Confirm this transaction in your wallet',
                     status: 'loading',
                 })
-                const signer = library.getSigner(account)
+                const signer = provider.getSigner(account)
 
                 if (isBuy) {
                     await auctionsActions.auctionBuy({
@@ -144,6 +144,7 @@ const AuctionsTransactions = () => {
                         title={t('confirm_transaction_details')}
                         description={
                             t('confirm_details_text') +
+                            // @ts-ignore
                             (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
                         }
                     />

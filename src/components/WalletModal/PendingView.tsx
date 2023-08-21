@@ -26,7 +26,6 @@ export default function PendingView({
     connector,
     error = false,
     setPendingError,
-    tryActivation,
 }: {
     connector?: AbstractConnector
     error?: boolean
@@ -42,14 +41,6 @@ export default function PendingView({
                     {error ? (
                         <ErrorGroup>
                             <div>{t('error_connecting')}</div>
-                            <ErrorButton
-                                onClick={() => {
-                                    setPendingError(false)
-                                    connector && tryActivation(connector)
-                                }}
-                            >
-                                {t('try_again')}
-                            </ErrorButton>
                         </ErrorGroup>
                     ) : (
                         <>
@@ -117,18 +108,6 @@ const ErrorGroup = styled.div`
     align-items: center;
     display: flex;
     color: red;
-`
-
-const ErrorButton = styled.div`
-    border-radius: 8px;
-    font-size: 12px;
-    color: ${(props) => props.theme.colors.neutral};
-    background-color: ${(props) => props.theme.colors.placeholder};
-    margin-left: 1rem;
-    padding: 0.5rem;
-    font-weight: 600;
-    user-select: none;
-    cursor: pointer;
 `
 
 const LoadingWrapper = styled.div`

@@ -12,7 +12,7 @@ import VaultHeader from './VaultHeader'
 
 const VaultDetails = ({ ...props }) => {
     const { t } = useTranslation()
-    const { account, library } = useActiveWeb3React()
+    const { account, provider } = useActiveWeb3React()
 
     const { safeModel: safeActions } = useStoreActions((state) => state)
 
@@ -54,11 +54,11 @@ const VaultDetails = ({ ...props }) => {
     }, [safe, safeActions])
 
     useEffect(() => {
-        if (!account || !library) return
+        if (!account || !provider) return
         if (!isNumeric(safeId)) {
             props.history.push('/vaults')
         }
-    }, [account, library, props.history, safeId])
+    }, [account, provider, props.history, safeId])
 
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 
@@ -73,7 +73,9 @@ const VaultDetails = ({ ...props }) => {
 
             {!isLoading && <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
 
-            {(isDeposit || isWithdraw) && !isLoading ? <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} /> : null}
+            {(isDeposit || isWithdraw) && !isLoading ? (
+                <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
+            ) : null}
         </Container>
     )
 }

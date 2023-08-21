@@ -51,7 +51,7 @@ interface Props {
 
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
-    const { chainId, account, library } = useActiveWeb3React()
+    const { chainId, account, provider } = useActiveWeb3React()
     const geb = useGeb()
     const history = useHistory()
 
@@ -82,7 +82,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
         popupsActions.setIsConnectModalOpen(false)
-        popupsActions.setIsConnectorsWalletOpen(false)
         popupsActions.setIsLoadingModalOpen({ text: '', isOpen: false })
         popupsActions.setIsScreenModalOpen(false)
         popupsActions.setIsSettingModalOpen(false)
@@ -147,7 +146,7 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [connectWalletActions])
 
     async function accountChecker() {
-        if (!account || !chainId || !library || !geb) return
+        if (!account || !chainId || !provider || !geb) return
         popupsActions.setWaitingPayload({
             title: '',
             status: 'loading',
@@ -211,7 +210,7 @@ const Shared = ({ children, ...rest }: Props) => {
         if (chainId && chainId !== id) {
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)
-            // settingsActions.setBlockBody(true)
+            settingsActions.setBlockBody(true)
             toast(
                 <ToastPayload
                     icon={'AlertTriangle'}

@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import Stats from './Stats'
-import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
 import VaultList from './VaultList'
@@ -14,7 +13,7 @@ import VaultList from './VaultList'
 const OnBoarding = ({ ...props }) => {
     const { t } = useTranslation()
     const [isOwner, setIsOwner] = useState(true)
-    const { account, library } = useActiveWeb3React()
+    const { account, provider } = useActiveWeb3React()
     const geb = useGeb()
 
     const {
@@ -30,7 +29,7 @@ const OnBoarding = ({ ...props }) => {
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
-            !library ||
+            !provider ||
             connectWalletState.isWrongNetwork
         )
             return
@@ -48,14 +47,14 @@ const OnBoarding = ({ ...props }) => {
             if (
                 (!account && !address) ||
                 (address && !isAddress(address.toLowerCase())) ||
-                !library ||
+                !provider ||
                 connectWalletState.isWrongNetwork
             )
                 fetchSafes()
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, library, safeActions])
+    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, provider, safeActions])
 
     useEffect(() => {
         if (account && address) {
@@ -66,17 +65,13 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {safeState.safeCreated && safeState.list.length ? (
-                    <Stats />
-                ) : <></> }
+                {safeState.safeCreated && safeState.list.length ? <Stats /> : <></>}
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
-                {safeState.safeCreated && safeState.list.length ? (
-                    <></>
-                ) :  <Stats /> }
+                {safeState.safeCreated && safeState.list.length ? <></> : <Stats />}
             </Content>
         </Container>
     )
@@ -89,7 +84,3 @@ const Container = styled.div``
 const Content = styled.div`
     position: relative;
 `
-
-
-
-

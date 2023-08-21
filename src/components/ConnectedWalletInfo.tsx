@@ -6,22 +6,21 @@ import styled from 'styled-components'
 
 import { newTransactionsFirst, returnWalletAddress, getEtherscanLink, SUPPORTED_WALLETS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import ConnectedWalletIcon from './ConnectedWalletIcon'
-import { injected, walletlink } from '~/connectors'
 import { isTransactionRecent } from '~/hooks'
 import ExpandIcon from './Icons/ExpandIcon'
 import Transaction from './Transaction'
 import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
+import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
+import { MetaMask } from '@web3-react/metamask'
+import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
-    const { ethereum } = window
 
-    const { active, account, connector, chainId } = useWeb3React()
+    const { isActive, account, connector, chainId } = useWeb3React()
 
     const [copied, setCopied] = useState(false)
-    const isMetaMask = !!(ethereum && ethereum.isMetaMask)
 
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
     const {
@@ -45,8 +44,10 @@ const ConnectedWalletInfo = () => {
         const name = Object.keys(SUPPORTED_WALLETS)
             .filter(
                 (k) =>
+                    // @ts-ignore
                     SUPPORTED_WALLETS[k].connector === connector &&
-                    (connector !== injected || isMetaMask === (k === 'METAMASK'))
+                    // @ts-ignore
+                    !(connector instanceof MetaMask)
             )
             .map((k) => SUPPORTED_WALLETS[k].name)[0]
         return name
@@ -80,7 +81,7 @@ const ConnectedWalletInfo = () => {
             <DataContainer>
                 <Connection>
                     {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    {connector !== injected && connector !== walletlink ? (
+                    {!(connector instanceof MetaMask) && !(connector instanceof CoinbaseWallet) ? (
                         <Button text={'disconnect'} onClick={handleDisconnect} />
                     ) : (
                         <Button text={'change'} onClick={handleChange} />
@@ -89,9 +90,9 @@ const ConnectedWalletInfo = () => {
 
                 <Address id="web3-account-identifier-row">
                     <ConnectedWalletIcon size={20} />
-                    {account && active ? returnWalletAddress(account) : 'N/A'}
+                    {account && isActive ? returnWalletAddress(account) : 'N/A'}
                 </Address>
-                {account && active ? (
+                {account && isActive ? (
                     <WalletData>
                         {copied ? (
                             <CopyBtn className="greenish">{t('copied')}</CopyBtn>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Loader } from 'react-feather'
 import styled from 'styled-components'
@@ -37,7 +37,7 @@ const TokenInput = ({
 }: Props) => {
     const { t } = useTranslation()
 
-    const [length, setLength] = useState(16)
+    const [length] = useState(16)
 
     const handleValueChange = (values: any) => {
         const { value } = values

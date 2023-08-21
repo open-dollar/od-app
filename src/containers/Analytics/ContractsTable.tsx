@@ -6,10 +6,8 @@ import {
     Container,
     Content,
     Head,
-    Header,
     Heads,
     HeadsContainer,
-    LeftAucInfo,
     List,
     ListItem,
     ListItemLabel,
@@ -23,6 +21,10 @@ interface ContractsTableProps {
     title: string
     colums: string[]
     rows: string[][]
+}
+
+interface Tooltips {
+    [address: string]: string | undefined
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
@@ -57,7 +59,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
 
         setTooltips((prevTooltips) => ({
             ...prevTooltips,
-            [address]: 'Copied!',
+            [address]: 'Copied',
         }))
 
         setTimeout(() => {
@@ -114,10 +116,26 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
     )
 }
 
+const Tooltip = styled.div`
+    position: absolute;
+    top: -20px;
+    right: 0;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #1499DA;
+    border-radius: 5px;
+    color: white;
+    width: 100px!important;
+    height: 30px;
+`
+
+const SecondColumnValue = styled.div`
+    opacity: 0.5;
+`
+
 const AddressColumm = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
     div {
         cursor: pointer;
@@ -125,8 +143,6 @@ const AddressColumm = styled.div`
 `
 
 const SHeads = styled(Heads)`
-    // first column
-
     div:nth-child(1) {
         width: 174px;
     }
@@ -141,14 +157,12 @@ const SHeads = styled(Heads)`
     div:nth-child(3) {
         flex: 1;
         text-align: center;
+        justify-content: flex-end;
     }
 
     width: 100%;
 `
 const SList = styled(List)`
-    & div:nth-child(2) div {
-        opacity: 50%;
-    }
     @media (min-width: 783px) {
         div:nth-child(2) div {
             width: 100%;
@@ -160,6 +174,7 @@ const SList = styled(List)`
 
         div:nth-child(3) {
             flex: 1;
+            justify-content: flex-end;
         }
     }
 

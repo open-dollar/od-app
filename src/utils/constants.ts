@@ -21,9 +21,11 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
 
 export enum Network {
     OPTIMISM_GOERLI = 'optimism-goerli',
+    ARBITRUM = 'arbitrum',
+    ARBITRUM_GOERLI = 'arbitrum-goerli',
 }
 
-export const ETH_NETWORK = Network.OPTIMISM_GOERLI
+export const ETH_NETWORK = Network.ARBITRUM_GOERLI
 
 export const COIN_TICKER = 'OD'
 
@@ -187,7 +189,7 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     hai: INIT_VALUES,
     flx: INIT_VALUES,
 }
-export const network_name = process.env.REACT_APP_NETWORK_ID === '1' ? 'mainnet' : 'optimism-goerli'
+export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbitrum' : 'arbitrum-goerli'
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 export const geb = new Geb(network_name, provider)

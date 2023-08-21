@@ -89,9 +89,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 }
 
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-    1: '',
-    5: 'goerli.',
-    420: 'goerli-optimism.',
+    42161: '',
+    421613: 'goerli.',
 }
 
 const MEDIA_WIDTHS = {

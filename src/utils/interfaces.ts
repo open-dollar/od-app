@@ -7,9 +7,8 @@ import { Geb } from '@usekeyp/od-sdk'
 import { BigNumber } from 'ethers'
 
 export declare enum ChainId {
-    MAINNET = 1,
-    GOERLI = 5,
-    OPTIMISM_GOERLI = 420,
+    ARBITRUM_GOERLI = 421613,
+    ARBITRUM = 42161,
 }
 
 export interface DynamicObject {

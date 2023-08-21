@@ -5156,14 +5156,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/od-sdk@npm:^1.1.0-rc.2":
-  version: 1.1.0-rc.2
-  resolution: "@usekeyp/od-sdk@npm:1.1.0-rc.2"
+"@usekeyp/od-sdk@portal:/home/dev/repos/open-dollar/od-sdk::locator=%40hai-on-op%2Fapp%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@usekeyp/od-sdk@portal:/home/dev/repos/open-dollar/od-sdk::locator=%40hai-on-op%2Fapp%40workspace%3A."
   dependencies:
     ethers: 5.4.7
-  checksum: 4e7f3c71cd9a8f098c03f4bff40dd04f7708affd825e1a0ea285cd59f5fddefbd8354fc55c00e505847d639b4f93741fab7ff8c32e192d1210da5fc1ba269cf5
+  peerDependencies:
+    utf-8-validate: ^5.0.2
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@walletconnect/browser-utils@npm:^1.8.0":
   version: 1.8.0

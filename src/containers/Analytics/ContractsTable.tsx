@@ -91,7 +91,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
                                         {valueIndex === 0 && <>{value}</>}
-                                        {valueIndex === 1 && <>{value}</>}
+                                        {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
@@ -115,19 +115,6 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         </Container>
     )
 }
-
-const Tooltip = styled.div`
-    position: absolute;
-    top: -20px;
-    right: 0;
-    padding: 5px;
-    border: 1px solid black;
-    background-color: #1499DA;
-    border-radius: 5px;
-    color: white;
-    width: 100px!important;
-    height: 30px;
-`
 
 const SecondColumnValue = styled.div`
     opacity: 0.5;

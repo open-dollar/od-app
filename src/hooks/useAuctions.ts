@@ -15,7 +15,7 @@ import {
     ICollateralAuction as SDKCollateralAuction,
     ISurplusAuction as SDKAuction,
 } from '@hai-on-op/sdk/lib/schema/auction'
-import { floatsTypes, parseWad } from '~/utils'
+import { floatsTypes } from '~/utils'
 
 export function useGetAuctions(type: AuctionEventType, tokenSymbol?: string) {
     const { auctionModel } = useStoreState((state) => state)
@@ -201,15 +201,6 @@ export function useCollateralAuctions(tokenSymbol: string): ICollateralAuction[]
 
                 const remainingToRaiseE18 = remainingToRaiseE18Raw > '0' ? remainingToRaiseE18Raw : '0'
 
-                const discPerSecondE18 = gebUtils.decimalShift(BigNumber.from(auc.perSecondDiscountUpdateRate), -9)
-                const disountsDiffE18 = BigNumber.from(auc.maxDiscount)
-                    .mul(BigNumber.from(10).pow(18))
-                    .div(BigNumber.from(auc.startingDiscount))
-                const timeToMaxDiscount =
-                    Math.log(Number(parseWad(disountsDiffE18))) / Math.log(Number(parseWad(discPerSecondE18)))
-                const unixNow = Math.floor(new Date().getTime() / 1000)
-                const maxDiscountTimestamp = Math.floor(unixNow + timeToMaxDiscount).toString()
-
                 const kickBidder = {
                     bidder: startedBy,
                     buyAmount: '0',
@@ -227,7 +218,6 @@ export function useCollateralAuctions(tokenSymbol: string): ICollateralAuction[]
                     remainingToRaiseE18,
                     remainingCollateral,
                     tokenSymbol,
-                    maxDiscountTimestamp,
                 }
             })
 

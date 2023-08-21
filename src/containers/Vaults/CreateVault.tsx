@@ -460,6 +460,7 @@ const Box = styled.div`
 
 const Col = styled.div`
     flex: 0 0 48%;
+    z-index: 1;
 `
 
 const DropDownContainer = styled.div``

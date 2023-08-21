@@ -127,7 +127,7 @@ const Container = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 400;
+    z-index: 20;
     overflow-y: auto;
     overflow-x: hidden;
     &.fade-appear {

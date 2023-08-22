@@ -229,7 +229,7 @@ const Stats = () => {
                                 OD Redemption Rate APY
                             </Text>
                         </Container>
-                    </Wrapper>      
+                    </Wrapper>
                 </>
             ) : (
                 <Loader />
@@ -273,13 +273,13 @@ const Container = styled.div`
     }
 `
 
-    const Inner = styled.div`
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `
+const Inner = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 
-    const LabelContainer = styled.div`
-        max-width: ${(props) => props.theme.global.gridMaxWidth};
-        margin: 0 auto 20px auto;
-    `
+const LabelContainer = styled.div`
+    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    margin: 0 auto 20px auto;
+`

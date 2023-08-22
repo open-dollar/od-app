@@ -9,7 +9,6 @@ deps:
     COPY .yarnrc.yml .yarnrc.yml
     COPY .yarn .yarn
     COPY src src
-    COPY solidity solidity
     COPY craco.config.js craco.config.js
     COPY tsconfig.json tsconfig.json
     COPY public public
@@ -29,4 +28,4 @@ build-app:
     FROM +deps
     ARG ENVIRONMENT='local'
     ARG VERSION='latest'
-    RUN yarn prebuild && yarn build
+    RUN yarn build

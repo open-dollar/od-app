@@ -24,7 +24,7 @@ import {
 } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
-    const { library, account, connector } = useActiveWeb3React()
+    const { provider, account } = useActiveWeb3React()
     const geb = useGeb()
     const proxyAddress = useProxyAddress()
     const [showPreview, setShowPreview] = useState(false)
@@ -148,7 +148,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     }
 
     const handleConfirm = async () => {
-        if (account && library) {
+        if (account && provider) {
             safeActions.setIsSuccessfulTx(false)
             setShowPreview(false)
             popupsActions.setIsWaitingModalOpen(true)
@@ -159,7 +159,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                 status: 'loading',
             })
 
-            const signer = library.getSigner(account)
+            const signer = provider.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
                 if (safeState.singleSafe && isDeposit) {
@@ -174,7 +174,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                     await safeActions.repayAndWithdraw({
                         safeData: {
                             ...safeState.safeData,
-                            isGnosisSafe: connector === gnosisSafe,
+                            isGnosisSafe: false,
                         },
                         signer,
                         safeId: safeState.singleSafe.id,

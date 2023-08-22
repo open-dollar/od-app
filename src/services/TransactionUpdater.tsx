@@ -27,7 +27,7 @@ export function shouldCheck(
 
 export default function TransactionUpdater(): null {
     const toastId = 'transactionId'
-    const { chainId, library } = useActiveWeb3React()
+    const { chainId, provider } = useActiveWeb3React()
     const { transactionsModel: state, connectWalletModel: connectedWalletState } = useStoreState((state) => state)
 
     const lastBlockNumber = chainId ? connectedWalletState.blockNumber[chainId] : null
@@ -35,12 +35,12 @@ export default function TransactionUpdater(): null {
     const transactions = useMemo(() => (chainId ? state.transactions ?? {} : {}), [chainId, state])
 
     useEffect(() => {
-        if (!chainId || !library || !lastBlockNumber) return
+        if (!chainId || !provider || !lastBlockNumber) return
 
         Object.keys(transactions)
             .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
             .forEach((hash) => {
-                library
+                provider
                     .getTransactionReceipt(hash)
                     .then((receipt) => {
                         if (receipt) {
@@ -86,7 +86,7 @@ export default function TransactionUpdater(): null {
                         console.error(`failed to check transaction hash: ${hash}`, error)
                     })
             })
-    }, [chainId, library, transactions, lastBlockNumber])
+    }, [chainId, provider, transactions, lastBlockNumber])
 
     return null
 }

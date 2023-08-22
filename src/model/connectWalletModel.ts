@@ -1,5 +1,6 @@
 import { action, Action, Thunk, thunk } from 'easy-peasy'
-import { fetchTokenData, TokenFetchData } from 'src/utils/virtual/tokenData'
+import { fetchTokenData, TokenFetchData } from '@usekeyp/od-sdk/lib/virtual/tokenData'
+
 import api from '../services/api'
 import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
 import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'

@@ -126,10 +126,10 @@ const Tooltip = styled.div`
     right: 0;
     padding: 5px;
     border: 1px solid black;
-    background-color: #1499DA;
+    background-color: #1499da;
     border-radius: 5px;
     color: white;
-    width: 100px!important;
+    width: 100px !important;
     height: 30px;
 `
 

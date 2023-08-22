@@ -7,7 +7,8 @@ import DataCard, { DataCardProps } from './DataCard'
 import { DataTable, TableProps } from './DataTable'
 import { ContractsTable } from './ContractsTable'
 import { AddressLink } from '~/components/AddressLink'
-import { fetchAnalyticsData } from '~/utils/virtual/virtualAnalyticsData'
+import { fetchAnalyticsData } from '@usekeyp/od-sdk/lib/virtual/virtualAnalyticsData'
+
 import { contractsDescriptions } from '~/utils/contractsDescription'
 import {
     formatDataNumber,

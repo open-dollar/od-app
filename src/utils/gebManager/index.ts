@@ -1,8 +1,9 @@
 import { BigNumber } from 'ethers'
 import { Geb, utils } from '@usekeyp/od-sdk'
 import { ILiquidationResponse, IUserSafeList } from '../interfaces'
-import { TokenLiquidationData, fetchLiquidationData } from '../virtual/virtualLiquidationData'
-import { fetchUserSafes } from '../virtual/virtualUserSafes'
+
+import { TokenLiquidationData, fetchLiquidationData } from '@usekeyp/od-sdk/lib/virtual/virtualLiquidationData'
+import { fetchUserSafes } from '@usekeyp/od-sdk/lib/virtual/virtualUserSafes.js'
 import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 
 interface UserListConfig {
@@ -25,7 +26,7 @@ const getLiquidationDataRpc = async (
             value: parseRay(liquidationData.redemptionPrice),
         },
         currentRedemptionRate: {
-            // Calculate 8h exponentiation of the redemption rate in JS instead of solidity
+            // Calculate 8h exponentiation of the redemption rate
             annualizedRate: Math.pow(Number(parseRay(liquidationData.redemptionRate)), 3600 * 24 * 365).toString(),
         },
         globalDebt: parseRad(liquidationData.globalDebt),

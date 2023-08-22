@@ -59,7 +59,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     }
 
     const n = Number(value)
-
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }

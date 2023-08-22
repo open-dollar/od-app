@@ -218,7 +218,7 @@ const Navbar = () => {
 
 export default Navbar
 
-const screenWidth = "1073px"
+const screenWidth = '1073px'
 
 const Container = styled.div`
     display: flex;

@@ -54,7 +54,12 @@ const App = () => {
                                                     <Route exact strict component={Analytics} path={'/stats'} />
                                                     <Route exact strict component={Privacy} path={'/privacy'} />
                                                     <Route exact strict component={Auctions} path={'/auctions'} />
-                                                    <Route exact strict component={CreateVault} path={'/vaults/create'} />
+                                                    <Route
+                                                        exact
+                                                        strict
+                                                        component={CreateVault}
+                                                        path={'/vaults/create'}
+                                                    />
                                                     <Route
                                                         exact
                                                         strict

@@ -30,7 +30,7 @@ export const getEtherscanLink = (
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block'
 ): string => {
-    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
+    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[42161]}arbiscan.io`
 
     switch (type) {
         case 'transaction': {
@@ -59,7 +59,6 @@ export const formatNumber = (value: string, digits = 6, round = false) => {
     }
 
     const n = Number(value)
-
     if (Number.isInteger(n) || value.length < 5) {
         return n
     }

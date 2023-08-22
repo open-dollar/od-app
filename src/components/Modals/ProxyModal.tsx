@@ -16,7 +16,7 @@ import Modal from './Modal'
 const ProxyModal = () => {
     const [status, setStatus] = useState('stateless')
     const { t } = useTranslation()
-    const { account, library, chainId } = useActiveWeb3React()
+    const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const addTransaction = useTransactionAdder()
     const blocksSinceCheck = use10BlocksConfirmations()
@@ -44,9 +44,10 @@ const ProxyModal = () => {
     const handleCreateAccount = async () => {
         const { blockNumber } = connectWalletState
 
-        if (!account || !library || !chainId) return false
+        if (!account || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
-        const signer = library.getSigner(account)
+        // @ts-ignore
+        const signer = provider.getSigner(account)
 
         try {
             setStatus('loading')

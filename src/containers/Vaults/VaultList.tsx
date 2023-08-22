@@ -92,7 +92,6 @@ const SafeBlocks = styled.div`
 const Title = styled.div`
     font-weight: 700;
     font-size: 34px;
-    
 `
 
 const Header = styled.div`

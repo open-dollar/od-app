@@ -34,8 +34,8 @@ const Navbar = () => {
         connectWalletModel: connectWalletActions,
     } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
-    const { active, account, library } = useWeb3React()
-    const signer = library ? library.getSigner(account) : undefined
+    const { isActive, account, provider } = useWeb3React()
+    const signer = provider ? provider.getSigner(account) : undefined
 
     const handleDollarClick = () => {
         setPopupVisibility(!isPopupVisible)
@@ -53,7 +53,7 @@ const Navbar = () => {
     }
 
     const handleWalletConnect = () => {
-        if (active && account) {
+        if (isActive && account) {
             return popupsActions.setIsConnectedWalletModalOpen(true)
         }
         return popupsActions.setIsConnectorsWalletOpen(true)
@@ -61,9 +61,11 @@ const Navbar = () => {
 
     const handleAddHAI = async () => {
         try {
-            await library?.provider.request({
+            // @ts-ignore
+            await provider?.provider.request({
                 method: 'wallet_watchAsset',
                 params: {
+                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.OD.address,
@@ -136,7 +138,7 @@ const Navbar = () => {
 
     return (
         <Container>
-            <Left isBigWidth={active && account ? true : false}>
+            <Left isBigWidth={isActive && account ? true : false}>
                 <Brand />
                 <Price>
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
@@ -182,12 +184,12 @@ const Navbar = () => {
 
                     {/* Button to connect wallet */}
                     <Button
-                        primary={active && account ? true : false}
+                        primary={account ? true : false}
                         id="web3-status-connected"
                         isLoading={hasPendingTransactions}
                         onClick={handleWalletConnect}
                     >
-                        {active && account ? (
+                        {isActive && account ? (
                             hasPendingTransactions ? (
                                 `${pending.length} Pending`
                             ) : (
@@ -216,7 +218,7 @@ const Navbar = () => {
 
 export default Navbar
 
-const screenWidth = "1073px"
+const screenWidth = '1073px'
 
 const Container = styled.div`
     display: flex;

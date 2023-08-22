@@ -110,39 +110,3 @@ export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: IS
     const txResponse = await signer.sendTransaction(tx)
     return txResponse
 }
-
-// export const handleCollectETH = async (signer: JsonRpcSigner, safe: ISafe) => {
-//     if (!signer || !safe) {
-//         return false
-//     }
-//     const { id: safeId, internalCollateralBalance } = safe
-
-//     if (!safeId) {
-//         throw new Error('No safe Id')
-//     }
-//     if (!internalCollateralBalance) {
-//         throw new Error('No safe internalCollateralBalance')
-//     }
-
-//     const internalCollateralBalanceBN = ethersUtils.parseEther(
-//         internalCollateralBalance
-//     )
-
-//     if (internalCollateralBalanceBN.isZero()) {
-//         throw new Error('internalCollateralBalance is zero')
-//     }
-
-//     const geb = new Geb(ETH_NETWORK, signer)
-
-//     const proxy = await geb.getProxyAction(signer._address)
-
-//     let txData
-//     // txData = await proxy.exitETH(safeId, internalCollateralBalanceBN)
-
-//     if (!txData) throw new Error('No transaction request!')
-
-//     const tx = await handlePreTxGasEstimate(signer, txData)
-
-//     const txResponse = await signer.sendTransaction(tx)
-//     return txResponse
-// }

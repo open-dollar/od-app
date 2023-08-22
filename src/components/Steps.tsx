@@ -35,7 +35,7 @@ const Steps = () => {
             popupsActions.setIsWaitingModalOpen(true)
             popupsActions.setWaitingPayload({
                 title: 'Waiting For Confirmation',
-                text: `Creating new account`,
+                text: `Creating facilitator`,
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
             })

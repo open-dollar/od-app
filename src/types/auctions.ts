@@ -51,5 +51,4 @@ export interface ICollateralAuction extends SDKCollateralAuction {
     remainingToRaiseE18: string
     remainingCollateral: string
     tokenSymbol: string
-    maxDiscountTimestamp: string
 }

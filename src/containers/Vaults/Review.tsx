@@ -20,6 +20,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                 title={t('confirm_transaction_details')}
                 description={
                     t('confirm_details_text') +
+                    // @ts-ignore
                     (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
                 }
             />

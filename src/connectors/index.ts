@@ -18,8 +18,25 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { NetworkConnector } from './NetworkConnector'
+import { Buffer } from 'buffer'
+// @ts-ignore
+import { util } from 'util'
+import { initializeConnector } from '@web3-react/core'
+import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 
 const { REACT_APP_NETWORK_ID, REACT_APP_NETWORK_URL } = process.env
+
+// @ts-ignore
+if (!window.Buffer) {
+    // @ts-ignore
+    window.Buffer = Buffer
+}
+
+// @ts-ignore
+if (!window.util) {
+    // @ts-ignore
+    window.util = util
+}
 
 export const NETWORK_URL = REACT_APP_NETWORK_URL as string
 
@@ -37,12 +54,34 @@ export const injected = new InjectedConnector({
 export const gnosisSafe = new SafeAppConnector()
 
 // mainnet only
-export const walletconnect = new WalletConnectConnector({
-    rpc: { [NETWORK_ID]: NETWORK_URL },
-    bridge: 'https://bridge.walletconnect.org',
-    qrcode: true,
-    pollingInterval: 15000,
-})
+// export const walletconnect = new WalletConnectConnector({
+//     rpc: { [NETWORK_ID]: NETWORK_URL },
+//     bridge: 'https://relay.walletconnect.com',
+//     qrcode: true,
+//     pollingInterval: 15000,
+// })
+
+const TESTNET_CHAINS = {
+    1: 'mainnet',
+    3: 'ropsten',
+}
+
+const [testnet, ...optionalChains] = Object.keys(TESTNET_CHAINS).map(Number)
+
+export const walletconnect = initializeConnector<WalletConnectV2>(
+    // @ts-ignore
+    (actions) =>
+        new WalletConnectV2({
+            actions,
+            options: {
+                // @ts-ignore
+                projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+                chains: [testnet, ...optionalChains],
+                optionalChains,
+                showQrModal: true,
+            },
+        })
+)
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({

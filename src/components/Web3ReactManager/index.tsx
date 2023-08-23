@@ -1,5 +1,5 @@
-// Copyright (C) 2020  Uniswap
-// https://github.com/Uniswap/uniswap-interface
+// Copyright (C) 2023  Uniswap
+// https://github.com/Uniswap/web3-react
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,13 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
-import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
-import { NetworkContextName } from '../../utils/constants'
 import Loader from '../Loader'
 
 const MessageWrapper = styled.div`
@@ -35,19 +34,11 @@ const Message = styled.h2`
 `
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-    const { t } = useTranslation()
-    const { active } = useWeb3React()
-    const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+    const { isActive } = useWeb3React()
+    const { isActive: networkActive } = useWeb3React()
 
     // try to eagerly connect to an injected provider, if it exists and has granted access already
     const triedEager = useEagerConnect()
-
-    // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
-    useEffect(() => {
-        if (triedEager && !networkActive && !networkError && !active) {
-            activateNetwork(network)
-        }
-    }, [triedEager, networkActive, networkError, activateNetwork, active])
 
     // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
     useInactiveListener(!triedEager)
@@ -67,24 +58,6 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
     // on page load, do nothing until we've tried to connect to the injected connector
     if (!triedEager) {
         return null
-    }
-
-    // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
-    if (!active && networkError) {
-        return (
-            <MessageWrapper>
-                <Message>{t('unknownError')}</Message>
-            </MessageWrapper>
-        )
-    }
-
-    // if neither context is active, spin
-    if (!active && !networkActive) {
-        return showLoader ? (
-            <MessageWrapper>
-                <Loader />
-            </MessageWrapper>
-        ) : null
     }
 
     return children

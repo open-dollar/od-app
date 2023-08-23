@@ -10,7 +10,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Steps = () => {
     const { t } = useTranslation()
-    const { account, library, chainId } = useActiveWeb3React()
+    const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const blocksSinceCheck = use10BlocksConfirmations()
     const history = useHistory()
@@ -25,16 +25,16 @@ const Steps = () => {
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     const handleCreateAccount = async () => {
-        if (!account || !library || !chainId) return false
+        if (!account || !provider || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
-        const signer = library.getSigner(account)
+        const signer = provider.getSigner(account)
 
         try {
             connectWalletActions.setIsStepLoading(true)
             popupsActions.setIsWaitingModalOpen(true)
             popupsActions.setWaitingPayload({
                 title: 'Waiting For Confirmation',
-                text: `Creating new account`,
+                text: `Creating facilitator`,
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
             })

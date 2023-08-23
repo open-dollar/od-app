@@ -13,7 +13,7 @@ import Button from './Button'
 const SideMenu = () => {
     const { t } = useTranslation()
     const nodeRef = React.useRef(null)
-    const { active, account, chainId } = useWeb3React()
+    const { isActive, account, chainId } = useWeb3React()
     const [isOpen, setIsOpen] = useState(false)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { connectWalletModel: connectWalletState, popupsModel: popupsState } = useStoreState((state) => state)
@@ -49,7 +49,7 @@ const SideMenu = () => {
 
                     <InnerContainer>
                         <AccountBalance>
-                            {active && account ? (
+                            {isActive && account ? (
                                 <Account
                                     onClick={() => {
                                         popupsActions.setIsConnectedWalletModalOpen(true)

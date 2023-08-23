@@ -15,21 +15,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import React, { useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import { injected } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../utils/constants'
 import usePrevious from '../../hooks/usePrevious'
 
 import Modal from '../Modals/Modal'
-import Option from './Option'
-import PendingView from './PendingView'
 import { useStoreActions, useStoreState } from '../../store'
 import { useTranslation } from 'react-i18next'
-import MetamaskLogo from '../../assets/connectors/metamask.png'
+import AccountCardsWeb3ReactV2 from '~/components/AccountCardsWeb3ReactV2'
 
 const WALLET_VIEWS = {
     OPTIONS: 'options',
@@ -44,7 +40,7 @@ export default function WalletModal() {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { isConnectorsWalletOpen } = popupsState
 
-    const { active, account, connector, activate, error } = useWeb3React()
+    const { isActive, account, connector } = useWeb3React()
 
     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
@@ -56,14 +52,6 @@ export default function WalletModal() {
 
     const toggleWalletModal = () => popupsActions.setIsConnectorsWalletOpen(!isConnectorsWalletOpen)
 
-    // close on connection, when logged out before
-    useEffect(() => {
-        if (account && !previousAccount && isConnectorsWalletOpen) {
-            toggleWalletModal()
-        }
-        // eslint-disable-next-line
-    }, [account, previousAccount, isConnectorsWalletOpen])
-
     // always reset to account view
     useEffect(() => {
         if (isConnectorsWalletOpen) {
@@ -73,16 +61,16 @@ export default function WalletModal() {
     }, [isConnectorsWalletOpen])
 
     // close modal when a connection is successful
-    const activePrevious = usePrevious(active)
+    const activePrevious = usePrevious(isActive)
     const connectorPrevious = usePrevious(connector)
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
-            ((active && !activePrevious) || (connector && connector !== connectorPrevious && !error))
+            ((isActive && !activePrevious) || (connector && connector !== connectorPrevious))
         ) {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
-    }, [setWalletView, active, error, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
+    }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
     const tryActivation = async (connector: AbstractConnector | undefined) => {
         let name = ''
@@ -103,18 +91,21 @@ export default function WalletModal() {
         }
 
         connector &&
-            activate(connector, undefined, true).catch((error) => {
-                if (error instanceof UnsupportedChainIdError) {
-                    activate(connector) // a little janky...can't use setError because the connector isn't set
+            connector.activate().catch((error) => {
+                if (error) {
+                    connector.activate() // a little janky...can't use setError because the connector isn't set
                 } else {
                     setPendingError(true)
                 }
             })
+        // @ts-ignore
         if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
+            // @ts-ignore
             const chainId = await window.ethereum.request({ method: 'net_version' })
-            // Check if chain ID is Optimism Goerli (420) and prompt user to switch networks if not
-            if (chainId !== '420') {
+            // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
+            if (chainId !== process.env.REACT_APP_NETWORK_ID) {
                 try {
+                    // @ts-ignore
                     await window.ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [
@@ -140,112 +131,7 @@ export default function WalletModal() {
         }
     }
 
-    // get wallets user can switch too, depending on device/browser
-    function getOptions() {
-        const isMetamask = window.ethereum && window.ethereum.isMetaMask
-        return Object.keys(SUPPORTED_WALLETS).map((key) => {
-            const option = SUPPORTED_WALLETS[key]
-            // check for mobile options
-            if (isMobile) {
-                if (!window.web3 && !window.ethereum && option.mobile) {
-                    return (
-                        <Option
-                            onClick={() => {
-                                option.connector !== connector && !option.href && tryActivation(option.connector)
-                            }}
-                            id={`connect-${key}`}
-                            key={key}
-                            active={option.connector && option.connector === connector}
-                            color={option.color}
-                            link={option.href}
-                            header={option.name}
-                            subheader={null}
-                            icon={require(`../../assets/connectors/${option.iconName}`)}
-                        />
-                    )
-                }
-                return null
-            }
-
-            // overwrite injected when needed
-            if (option.connector === injected) {
-                // don't show injected if there's no injected provider
-                if (!(window.web3 || window.ethereum)) {
-                    if (option.name === 'MetaMask') {
-                        return (
-                            <Option
-                                id={`connect-${key}`}
-                                key={key}
-                                color={'#E8831D'}
-                                header={'Install Metamask'}
-                                subheader={null}
-                                link={'https://metamask.io/'}
-                                icon={MetamaskLogo}
-                            />
-                        )
-                    } else {
-                        return null //dont want to return install twice
-                    }
-                }
-                // don't return metamask if injected provider isn't metamask
-                else if (option.name === 'MetaMask' && !isMetamask) {
-                    return null
-                }
-                // likewise for generic
-                else if (option.name === 'Injected' && isMetamask) {
-                    return null
-                }
-            }
-
-            // return rest of options
-            return (
-                !isMobile &&
-                !option.mobileOnly && (
-                    <Option
-                        id={`connect-${key}`}
-                        onClick={() => {
-                            option.connector === connector
-                                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                                : !option.href && tryActivation(option.connector)
-                        }}
-                        key={key}
-                        active={option.connector === connector}
-                        color={option.color}
-                        link={option.href}
-                        header={option.name}
-                        subheader={null} //use option.descriptio to bring back multi-line
-                        icon={require(`../../assets/connectors/${option.iconName}`)}
-                    />
-                )
-            )
-        })
-    }
-
     function getModalContent() {
-        if (error) {
-            return (
-                <UpperSection>
-                    <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-                    <HeaderRow>
-                        {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
-                    </HeaderRow>
-                    <ContentWrapper>
-                        {error instanceof UnsupportedChainIdError ? (
-                            <h5>
-                                {t('not_supported')}{' '}
-                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
-                                    Optimism Goerli
-                                </a>
-                                .
-                            </h5>
-                        ) : (
-                            t('error_try_refresh')
-                        )}
-                    </ContentWrapper>
-                </UpperSection>
-            )
-        }
-
         return (
             <UpperSection>
                 <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
@@ -263,20 +149,9 @@ export default function WalletModal() {
                 ) : (
                     <HeaderRow>
                         <HoverText>{t('connect_wallet_title')}</HoverText>
+                        <AccountCardsWeb3ReactV2 />
                     </HeaderRow>
                 )}
-                <ContentWrapper>
-                    {walletView === WALLET_VIEWS.PENDING ? (
-                        <PendingView
-                            connector={pendingWallet}
-                            error={pendingError}
-                            setPendingError={setPendingError}
-                            tryActivation={tryActivation}
-                        />
-                    ) : (
-                        <OptionGrid>{getOptions()}</OptionGrid>
-                    )}
-                </ContentWrapper>
             </UpperSection>
         )
     }

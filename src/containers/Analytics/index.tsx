@@ -417,9 +417,8 @@ const Analytics = () => {
                 </AnaliticsBottom>
                 <TooltipWrapper>
                     <ReactTooltip
-                        variant="dark"
+                        variant="light"
                         data-effect="solid"
-                        arrowColor="#001828"
                         id="analitics"
                         style={{ maxWidth: '300px' }}
                         classNameArrow="tooltip-arrow"
@@ -431,9 +430,8 @@ const Analytics = () => {
                 <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
                 <TooltipWrapper>
                     <ReactTooltip
-                        variant="dark"
+                        variant="light"
                         data-effect="solid"
-                        arrowColor="#001828"
                         id="collaterals-table"
                         style={{ maxWidth: '300px' }}
                         classNameArrow="tooltip-arrow"

@@ -3,7 +3,7 @@ import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 
@@ -295,7 +295,7 @@ const CreateVault = ({
                                                     <Flex key={item.label}>
                                                         <Label color={isPrimary ? 'primary' : 'secondary'}>
                                                             {item.tip ? (
-                                                                <InfoIcon data-tip={item.tip}>
+                                                                <InfoIcon data-tooltip-id='tooltip-create-vault' data-tooltip-content={item.tip}>
                                                                     <Info size="13" />
                                                                 </InfoIcon>
                                                             ) : null}
@@ -335,7 +335,7 @@ const CreateVault = ({
                             </Button>
                         )}
                     </Flex>
-                    <ReactTooltip multiline type="light" data-effect="solid" />
+                    <ReactTooltip id="tooltip-create-vault" variant="light" data-effect="solid" />
                 </Content>
             </InnerContent>
         </>

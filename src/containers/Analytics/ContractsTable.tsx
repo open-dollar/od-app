@@ -1,5 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import {
     Container,
@@ -22,12 +23,8 @@ interface ContractsTableProps {
     rows: string[][]
 }
 
-interface Tooltips {
-    [address: string]: string | undefined
-}
-
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltips, setTooltips] = useState<Tooltips>({})
+    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
     const { chainId } = useWeb3React()
 
     const reorderedColumns = colums && [...colums]
@@ -62,7 +59,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         setTimeout(() => {
             setTooltips((prevTooltips) => ({
                 ...prevTooltips,
-                [address]: undefined,
+                [address]: 'Copy',
             }))
         }, 2000)
     }
@@ -87,31 +84,24 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                                         <ListItemLabel className="list-item-label">
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
+                                        {valueIndex === 0 && <>{value}</>}
                                         {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
                                         {valueIndex === 2 && (
                                             <AddressColumm>
                                                 <AddressLink address={value} chainId={chainId || 420} />
-                                                <WrapperIcon onClick={() => handleCopyAddress(value)}>
+                                                <WrapperIcon
+                                                    data-tooltip-content={tooltips[value] || 'Copy'}
+                                                    data-tooltip-id={value}
+                                                    onClick={() => handleCopyAddress(value)}
+                                                >
                                                     <CopyIconBlue />
                                                 </WrapperIcon>
-                                                {tooltips[value] === 'Copied' && (
-                                                    <Tooltip
-                                                        onClick={() => {
-                                                            setTooltips((prev) => ({
-                                                                ...prev,
-                                                                [value]: undefined,
-                                                            }))
-                                                        }}
-                                                    >
-                                                        Copied
-                                                    </Tooltip>
-                                                )}
                                             </AddressColumm>
                                         )}
-                                        {valueIndex !== 2 && valueIndex !== 1 && <>{value}</>}
                                     </SListItem>
                                 </SHeadsContainer>
                             ))}
+                            <ReactTooltip variant="light" id={`${item[2]}`} openOnClick place="top" />
                         </SList>
                     ))}
                 </SectionContent>
@@ -119,19 +109,6 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
         </Container>
     )
 }
-
-const Tooltip = styled.div`
-    position: absolute;
-    top: -20px;
-    right: 0;
-    padding: 5px;
-    border: 1px solid black;
-    background-color: #1499da;
-    border-radius: 5px;
-    color: white;
-    width: 100px !important;
-    height: 30px;
-`
 
 const SecondColumnValue = styled.div`
     opacity: 0.5;

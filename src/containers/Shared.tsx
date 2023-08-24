@@ -141,9 +141,9 @@ const Shared = ({ children, ...rest }: Props) => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
 
-    useEffect(() => {
-        connectWalletActions.fetchFiatPrice()
-    }, [connectWalletActions])
+    // useEffect(() => {
+    //     connectWalletActions.fetchFiatPrice()
+    // }, [connectWalletActions])
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return

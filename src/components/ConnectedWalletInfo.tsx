@@ -34,12 +34,6 @@ const ConnectedWalletInfo = () => {
         popupsActions.setIsConnectorsWalletOpen(true)
     }
 
-    const handleDisconnect = () => {
-        popupsActions.setIsConnectedWalletModalOpen(false)
-        ;(connector as any).close()
-        connectWalletActions.setStep(0)
-    }
-
     const formatConnectorName = () => {
         const name = Object.keys(SUPPORTED_WALLETS)
             .filter(
@@ -81,11 +75,7 @@ const ConnectedWalletInfo = () => {
             <DataContainer>
                 <Connection>
                     {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    {!(connector instanceof MetaMask) && !(connector instanceof CoinbaseWallet) ? (
-                        <Button text={'disconnect'} onClick={handleDisconnect} />
-                    ) : (
-                        <Button text={'change'} onClick={handleChange} />
-                    )}
+                    <Button text={'change'} onClick={handleChange} />
                 </Connection>
 
                 <Address id="web3-account-identifier-row">

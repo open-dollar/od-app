@@ -25,7 +25,7 @@ export const [coinbaseWallet, hooks] = initializeConnector<CoinbaseWallet>(
             actions,
             options: {
                 url: URLS[parseInt(process.env.REACT_APP_NETWORK_ID || '0')][0],
-                appName: 'od-on-op',
+                appName: 'od-on-arb',
             },
         })
 )

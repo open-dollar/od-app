@@ -41,7 +41,7 @@ const OnBoarding = ({ ...props }) => {
                 tokensData: connectWalletState.tokensData,
             })
         }
-        fetchSafes()
+        if (geb && connectWalletState.tokensData && address) fetchSafes()
         const ms = 3000
         const interval = setInterval(() => {
             if (

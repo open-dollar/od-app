@@ -102,7 +102,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                         <SList key={'row-' + index} className="s-list">
                             {item?.map((value, valueIndex) => (
                                 <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
-                                    <SListItem className="s-list-item">
+                                    <SListItem className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}>
                                         <ListItemLabel className="list-item-label">
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
@@ -147,7 +147,7 @@ const AddressColumm = styled.div`
 
 const SHeads = styled(Heads)`
     div:nth-child(1) {
-        width: 174px;
+        width: 300px;
     }
 
     div:nth-child(2) {
@@ -188,6 +188,11 @@ const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
     @media (max-width: 783px) {
         width: 100%;
+    }
+
+    & .s-list-item-first {
+        width: 310px;
+        word-wrap: break-word;
     }
 `
 

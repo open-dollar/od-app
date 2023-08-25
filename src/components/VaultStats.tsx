@@ -114,7 +114,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
                                 <div>
-                                    <MainValue>{formatWithCommas(totalDebt, 2)}</MainValue>
+                                    <MainValue>{formatWithCommas(totalDebt)}</MainValue>
                                     <MainChange>${formatWithCommas(totalDebtInUSD, 2, 2)}</MainChange>
                                 </div>
                                 {modified ? (

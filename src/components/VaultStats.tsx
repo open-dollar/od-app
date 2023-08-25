@@ -95,7 +95,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <RowWrapper>
                                 <div>
                                     <MainValue>{formatWithCommas(collateral)}</MainValue>
-                                    <MainChange>${formatWithCommas(collateralInUSD)}</MainChange>
+                                    <MainChange>${formatWithCommas(collateralInUSD, 2, 2)}</MainChange>
                                 </div>
                                 {modified ? (
                                     <AfterTextWrapper>
@@ -114,14 +114,14 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <MainLabel>OD Debt</MainLabel>
                             <RowWrapper>
                                 <div>
-                                    <MainValue>{formatWithCommas(totalDebt, 2, 2)}</MainValue>
+                                    <MainValue>{formatWithCommas(totalDebt, 2)}</MainValue>
                                     <MainChange>${formatWithCommas(totalDebtInUSD, 2, 2)}</MainChange>
                                 </div>
                                 {modified ? (
                                     <AfterTextWrapper>
                                         After:{' '}
                                         <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newDebt, 2, 2)}
+                                            {formatWithCommas(newDebt, 2)}
                                         </span>
                                     </AfterTextWrapper>
                                 ) : null}

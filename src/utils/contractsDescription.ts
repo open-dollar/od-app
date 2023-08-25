@@ -26,4 +26,13 @@ export const contractsDescriptions: { [k: string]: string } = {
     piCalculator: 'The PiController contract calculates the redemption rate given error history parameters.',
     weth: 'The Weth contract.',
     protocolToken: 'The ProtocolToken is the ERC20Votes used for Surplus and Debt auctions.',
+    oracleJob:
+        'The OracleJob contract enables keepers to be rewarded for updating the redemption rate, and the oracle price feeds.',
+    accountingJob:
+        'The AccountingJob contract enables keepers to be rewarded for updating the system surplus and debt.',
+    liquidationJob: 'The LiquidationJob contract enables keepers to be rewarded for liquidating SAFEs.',
+    postSettlementSurplusAuctionHouse:
+        'The PostSettlementSurplusAuctionHouse contract is responsible for auctioning all remaining surplus after Global Settlement is triggered.',
+    postSettlementSurplusAuctioneer:
+        'The SettlementSurplusAuctioneer contract receives the surplus from the AccountingEngine when Global Settlement is triggered and auctions it off.',
 }

@@ -26,7 +26,7 @@ import BalanceUpdater from '~/services/BalanceUpdater'
 import WethModal from '~/components/Modals/WETHModal'
 import ToastPayload from '~/components/ToastPayload'
 import CookieBanner from '~/components/CookieBanner'
-import WalletModal from '~/components/WalletModal'
+import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
 import AlertLabel from '~/components/AlertLabel'
 import usePrevious from '~/hooks/usePrevious'
 import SideMenu from '~/components/SideMenu'
@@ -203,14 +203,13 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }
 
-    function networkChecker() {
+    async function networkChecker() {
         accountChange()
         const id: ChainId = NETWORK_ID
         popupsActions.setIsSafeManagerOpen(false)
         if (chainId && chainId !== id) {
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)
-            settingsActions.setBlockBody(true)
             toast(
                 <ToastPayload
                     icon={'AlertTriangle'}
@@ -221,6 +220,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
+            await checkAndSwitchMetamaskNetwork()
         } else {
             toast.update(toastId, { autoClose: 1 })
             settingsActions.setBlockBody(false)

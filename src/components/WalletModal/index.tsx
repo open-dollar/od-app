@@ -34,6 +34,40 @@ const WALLET_VIEWS = {
     PENDING: 'pending',
 }
 
+export async function checkAndSwitchMetamaskNetwork() {
+    // @ts-ignore
+    if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
+        // @ts-ignore
+        const chainId = await window.ethereum.request({ method: 'net_version' })
+        // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
+        if (chainId !== process.env.REACT_APP_NETWORK_ID) {
+            try {
+                // @ts-ignore
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0x66EED`,
+                            chainName: 'Arbitrum Goerli Testnet',
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            rpcUrls: ['https://goerli-rollup.arbitrum.io/rpc'],
+                            blockExplorerUrls: ['https://goerli.arbiscan.io/'],
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Failed to switch network', error)
+            }
+        }
+    } else {
+        console.log('MetaMask is not installed')
+    }
+}
+
 export default function WalletModal() {
     const { t } = useTranslation()
     const { popupsModel: popupsState } = useStoreState((state) => state)
@@ -72,7 +106,7 @@ export default function WalletModal() {
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
-    const tryActivation = async (connector: AbstractConnector | undefined) => {
+     const tryActivation = async (connector: AbstractConnector | undefined) => {
         let name = ''
         Object.keys(SUPPORTED_WALLETS).map((key) => {
             if (connector === SUPPORTED_WALLETS[key].connector) {
@@ -98,37 +132,7 @@ export default function WalletModal() {
                     setPendingError(true)
                 }
             })
-        // @ts-ignore
-        if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
-            // @ts-ignore
-            const chainId = await window.ethereum.request({ method: 'net_version' })
-            // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
-            if (chainId !== process.env.REACT_APP_NETWORK_ID) {
-                try {
-                    // @ts-ignore
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: `0x1a4`,
-                                chainName: 'Optimism Goerli Testnet',
-                                nativeCurrency: {
-                                    name: 'ETH',
-                                    symbol: 'ETH',
-                                    decimals: 18,
-                                },
-                                rpcUrls: ['https://goerli.optimism.io'],
-                                blockExplorerUrls: ['https://goerli-explorer.optimism.io'],
-                            },
-                        ],
-                    })
-                } catch (error) {
-                    console.error('Failed to switch network', error)
-                }
-            }
-        } else {
-            console.log('MetaMask is not installed')
-        }
+        await checkAndSwitchMetamaskNetwork()
     }
 
     function getModalContent() {

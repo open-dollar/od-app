@@ -147,7 +147,7 @@ const AddressColumm = styled.div`
 
 const SHeads = styled(Heads)`
     div:nth-child(1) {
-        width: 300px;
+        width: 310px;
     }
 
     div:nth-child(2) {

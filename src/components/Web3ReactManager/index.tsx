@@ -17,10 +17,9 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
 
 import { useEagerConnect, useInactiveListener } from '../../hooks'
-import Loader from '../Loader'
+import { network } from "~/connectors/network";
 
 const MessageWrapper = styled.div`
     display: flex;
@@ -35,7 +34,6 @@ const Message = styled.h2`
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
     const { isActive } = useWeb3React()
-    const { isActive: networkActive } = useWeb3React()
 
     // try to eagerly connect to an injected provider, if it exists and has granted access already
     const triedEager = useEagerConnect()
@@ -55,10 +53,14 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
         }
     }, [])
 
-    // on page load, do nothing until we've tried to connect to the injected connector
-    if (!triedEager) {
-        return null
-    }
+    // If the RPC connection isn't active, and we've tried connecting eagerly already, connect to RPC
+    useEffect(() => {
+        if (!isActive && triedEager) {
+            void network.activate().catch(() => {
+                console.debug('Failed to connect to network')
+            })
+        }
+    }, [])
 
     return children
 }

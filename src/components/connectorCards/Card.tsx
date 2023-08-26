@@ -129,7 +129,7 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
                     textAlign: 'left',
                 }}
             >
-                <span>{getName(connector)}</span>
+                <span style={{ fontSize: '20px' }}>{getName(connector)}</span>
                 <div>
                     <Status isActivating={isActivating} isActive={isActive} error={error} />
                 </div>

@@ -26,7 +26,7 @@ export function Status({
     error?: Error
 }) {
     return (
-        <div>
+        <div style={{fontWeight: 'normal'}}>
             {error ? (
                 <>
                     🔴 {error.name ?? 'Error'}

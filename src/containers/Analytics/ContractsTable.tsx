@@ -23,30 +23,52 @@ interface ContractsTableProps {
     rows: string[][]
 }
 
-export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
-    const { chainId } = useWeb3React()
-
-    const reorderedColumns = colums && [...colums]
-    if (reorderedColumns && reorderedColumns.length > 2) {
-        ;[reorderedColumns[1], reorderedColumns[2]] = [reorderedColumns[2], reorderedColumns[1]]
+const reorderColumns = (columns: string[]) => {
+    const reordered = [...columns]
+    if (reordered.length > 2) {
+        ;[reordered[1], reordered[2]] = [reordered[2], reordered[1]]
     }
+    return reordered
+}
 
-    let reorderedRows =
-        rows &&
-        rows.map((row) => {
-            if (row && row.length > 2) {
+const reorderRows = (rows: string[][]) => {
+    const SPECIAL_ROWS = ['SystemCoin', 'ProtocolToken']
+
+    // Checking if the special rows are already on top
+    const areSpecialRowsOnTop = SPECIAL_ROWS.every((name, idx) => rows[idx] && rows[idx][0] === name)
+
+    if (areSpecialRowsOnTop) {
+        return rows.map((row) => {
+            if (row.length > 2) {
                 const newRow = [...row]
                 ;[newRow[1], newRow[2]] = [newRow[2], newRow[1]]
                 return newRow
             }
             return row
         })
-
-    if (reorderedRows && reorderedRows.length > 2) {
-        const lastTwoItems = reorderedRows.slice(-2)
-        reorderedRows = lastTwoItems.concat(reorderedRows.slice(0, -2))
     }
+
+    // Extracting special rows and filtering undefined values
+    const specialRows = SPECIAL_ROWS.map((name) => rows.find((row) => row[0] === name)).filter(Boolean) as string[][]
+
+    const otherRows = rows.filter((row) => !SPECIAL_ROWS.includes(row[0]))
+
+    return [...specialRows, ...otherRows].map((row) => {
+        if (row.length > 2) {
+            const newRow = [...row]
+            ;[newRow[1], newRow[2]] = [newRow[2], newRow[1]]
+            return newRow
+        }
+        return row
+    })
+}
+
+export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
+    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
+    const { chainId } = useWeb3React()
+
+    const reorderedColumns = reorderColumns(colums)
+    const reorderedRows = reorderRows(rows)
 
     const handleCopyAddress = (address: string) => {
         navigator.clipboard.writeText(address || '')
@@ -80,7 +102,7 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                         <SList key={'row-' + index} className="s-list">
                             {item?.map((value, valueIndex) => (
                                 <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
-                                    <SListItem className="s-list-item">
+                                    <SListItem className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}>
                                         <ListItemLabel className="list-item-label">
                                             {reorderedColumns[valueIndex]}
                                         </ListItemLabel>
@@ -125,7 +147,7 @@ const AddressColumm = styled.div`
 
 const SHeads = styled(Heads)`
     div:nth-child(1) {
-        width: 174px;
+        width: 310px;
     }
 
     div:nth-child(2) {
@@ -166,6 +188,11 @@ const SHeadsContainer = styled(HeadsContainer)`
     text-align: start;
     @media (max-width: 783px) {
         width: 100%;
+    }
+
+    & .s-list-item-first {
+        width: 310px;
+        word-wrap: break-word;
     }
 `
 

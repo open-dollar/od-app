@@ -1,5 +1,5 @@
 import { utils } from 'ethers'
-import { formatNumber } from './helper'
+import { formatNumber, formatWithCommas } from './helper'
 
 /**
  * @dev Format a number to a string
@@ -15,15 +15,22 @@ export function formatDataNumber(
     decimals = 18,
     formatDecimal = 2,
     currency?: boolean,
-    compact?: boolean
+    compact?: boolean,
+    minimumDecimals: number = 0
 ) {
     let res: number = Number.parseFloat(input)
 
     if (decimals !== 0) res = Number.parseFloat(utils.formatUnits(input, decimals))
 
-    if (res < 0.01) return `${currency ? '$' : ''}${formatNumber(res.toString(), formatDecimal)}`
+    if (res < 0.01) {
+        let resString = res.toFixed(minimumDecimals);
+        return `${currency ? '$' : ''}${resString}`;
+        // old return
+        // return `${currency ? '$' : ''}${formatNumber(res.toString(), formatDecimal)}`
+    }
 
     return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: minimumDecimals,
         maximumFractionDigits: formatDecimal,
         notation: compact ? 'compact' : 'standard',
         style: currency ? 'currency' : 'decimal',

@@ -32,6 +32,11 @@ export default function MetaMaskCard() {
 
     const [error, setError] = useState(undefined)
 
+    useEffect(() => {
+        void metaMask.connectEagerly().catch(() => {
+        })
+    }, [])
+
     return (
         <Card
             activate={false}

@@ -16,10 +16,8 @@
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { SUPPORTED_WALLETS } from '../../utils/constants'
 import usePrevious from '../../hooks/usePrevious'
 
 import Modal from '../Modals/Modal'
@@ -74,7 +72,7 @@ export default function WalletModal() {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { isConnectorsWalletOpen } = popupsState
 
-    const { isActive, account, connector } = useWeb3React()
+    const { isActive, account, connector, chainId } = useWeb3React()
 
     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
@@ -106,50 +104,31 @@ export default function WalletModal() {
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
-     const tryActivation = async (connector: AbstractConnector | undefined) => {
-        let name = ''
-        Object.keys(SUPPORTED_WALLETS).map((key) => {
-            if (connector === SUPPORTED_WALLETS[key].connector) {
-                return (name = SUPPORTED_WALLETS[key].name)
-            }
-            return true
-        })
-        // log selected wallet
-        console.log(`Change wallet, ${name}`)
-        setPendingWallet(connector) // set wallet for pending view
-        setWalletView(WALLET_VIEWS.PENDING)
-
-        // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-        if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
-            connector.walletConnectProvider = undefined
-        }
-
-        connector &&
-            connector.activate().catch((error) => {
-                if (error) {
-                    connector.activate() // a little janky...can't use setError because the connector isn't set
-                } else {
-                    setPendingError(true)
-                }
-            })
-        await checkAndSwitchMetamaskNetwork()
-    }
-
-    function getModalContent() {
+function getModalContent() {
         return (
             <UpperSection>
                 <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-                {walletView !== WALLET_VIEWS.ACCOUNT ? (
+                {(chainId != process.env.REACT_APP_NETWORK_ID && chainId !== undefined) ? (
+                    <>
                     <HeaderRow>
-                        <HoverText
-                            onClick={() => {
-                                setPendingError(false)
-                                setWalletView(WALLET_VIEWS.ACCOUNT)
-                            }}
-                        >
-                            Back
-                        </HoverText>
+                        { 'Wrong Network' }
                     </HeaderRow>
+                    <ContentWrapper>
+                        { process.env.REACT_APP_NETWORK_ID === '42161' ?
+                            <h5>
+                                {t('not_supported')}{' '}
+                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
+                                    Arbitrum One
+                                </a>
+                            </h5> : <h5>
+                                {t('not_supported')}{' '}
+                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421613">
+                                    Arbitrum Goerli
+                                </a>
+                            </h5>
+                        }
+                    </ContentWrapper>
+                    </>
                 ) : (
                     <HeaderRow>
                         <HoverText>{t('connect_wallet_title')}</HoverText>

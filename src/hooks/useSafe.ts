@@ -245,6 +245,9 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             error =
                 error ?? `Please enter the amount of ${collateralName} to be deposited or amount of OD to be borrowed`
         }
+        if (rightInputBN.isZero()) {
+            error = error ?? 'OD borrowed cannot be zero'
+        }
     }
 
     if (type === 'repay_withdraw') {

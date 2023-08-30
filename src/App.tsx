@@ -26,6 +26,7 @@ import { DevLinkProvider } from './devlink'
 
 // Toast css
 import Analytics from './containers/Analytics'
+import { ToastContainer } from "react-toastify";
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -42,6 +43,7 @@ const App = () => {
                 <DevLinkProvider>
                     <GlobalStyle bodyOverflow={bodyOverflow} />
                     <ErrorBoundary>
+                        <ToastContainer />
                         <Shared>
                             <ApolloProvider client={client}>
                                 <StatsProvider>

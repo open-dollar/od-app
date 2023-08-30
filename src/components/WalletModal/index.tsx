@@ -38,7 +38,29 @@ export async function checkAndSwitchMetamaskNetwork() {
         // @ts-ignore
         const chainId = await window.ethereum.request({ method: 'net_version' })
         // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
-        if (chainId !== process.env.REACT_APP_NETWORK_ID) {
+        if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '42161') {
+            try {
+                // @ts-ignore
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0xA4B1`,
+                            chainName: 'Arbitrum One',
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            rpcUrls: ['https://arbitrum-one.publicnode.com'],
+                            blockExplorerUrls: ['https://arbiscan.io/'],
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Failed to switch network', error)
+            }
+        } else {
             try {
                 // @ts-ignore
                 await window.ethereum.request({

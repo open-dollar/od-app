@@ -30,7 +30,14 @@ export const getEtherscanLink = (
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block'
 ): string => {
-    const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[42161]}arbiscan.io`
+    let blockExplorerPrefix;
+    // No special prefix for Arbitrum One's block explorer. Otherwise, use Arbitrum Goerli's block explorer
+    if (chainId.toString() === '42161') {
+        blockExplorerPrefix = ''
+    } else {
+        blockExplorerPrefix = 'goerli'
+    }
+    const prefix = `https://${blockExplorerPrefix}arbiscan.io`
 
     switch (type) {
         case 'transaction': {

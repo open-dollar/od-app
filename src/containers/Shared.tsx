@@ -76,7 +76,7 @@ const Shared = ({ children, ...rest }: Props) => {
         safeModel: safeActions,
         auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
-    const toastId = 'networdToastHash'
+    const toastId = 'networkToastHash'
     const successAccountConnection = 'successAccountConnection'
 
     const resetModals = () => {
@@ -215,21 +215,19 @@ const Shared = ({ children, ...rest }: Props) => {
                     icon={'AlertTriangle'}
                     iconSize={40}
                     iconColor={'orange'}
-                    textColor={'#272727'}
+                    textColor={'#ffffff'}
                     text={`${t('wrong_network')} ${capitalizeName(chainName === '' ? 'Arbitrum' : chainName)}`}
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
             await checkAndSwitchMetamaskNetwork()
         } else {
-            toast.update(toastId, { autoClose: 1 })
+            if (document.querySelector("#networkToastHash") !== null) {
+                document.querySelector("#networkToastHash")?.remove();
+            }
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
-                toast(<ToastPayload icon={'Check'} iconColor={'green'} text={t('wallet_connected')} />, {
-                    type: 'success',
-                    toastId: successAccountConnection,
-                })
                 connectWalletActions.setStep(1)
                 accountChecker()
             }

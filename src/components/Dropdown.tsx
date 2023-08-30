@@ -165,7 +165,7 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
     position: relative;
-    z-index: 300;
+    z-index: 1;
 `
 const DropdownBtn = styled.button`
     border: 1px solid ${(props) => props.theme.colors.border};

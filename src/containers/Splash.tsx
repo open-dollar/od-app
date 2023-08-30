@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import kite from '~/assets/splash/kite.png'
-import { TestComponent } from '~/devlink'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 
@@ -44,7 +43,6 @@ const Splash = () => {
                             >
                                 LAUNCH APP
                             </button>
-                            <TestComponent />
                         </div>
                     </div>
                 </div>

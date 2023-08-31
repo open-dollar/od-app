@@ -81,7 +81,12 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     fetchTokenData: thunk(async (actions, payload) => {
         const tokenList = payload.geb.tokenList
-        const fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
+        let fetched;
+        try {
+            fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
+        } catch (e) {
+            console.debug('Error fetching token data', e)
+        }
         if (fetched) {
             actions.setTokensFetchedData(fetched)
             actions.setForceUpdateTokens(false)

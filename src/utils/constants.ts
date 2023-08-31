@@ -92,8 +92,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 }
 
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-    42161: '',
-    421613: 'goerli.',
+    42161: 'Arbitrum One',
+    421613: 'Arbitrum Goerli.',
 }
 
 const MEDIA_WIDTHS = {

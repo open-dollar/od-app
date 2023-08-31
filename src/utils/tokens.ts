@@ -14,6 +14,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     TOTEM: require('../assets/ttm-img.png'),
     WETH: require('../assets/eth-img.svg').default,
     OD: require('../assets/od-logo.svg').default,
+    ODG: require('../assets/odg.svg').default,
     STN: require('../assets/stn-img.png'),
     FTRG: require('../assets/stETH.svg').default,
 }

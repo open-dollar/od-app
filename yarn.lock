@@ -5074,7 +5074,6 @@ __metadata:
     "@web3-react/walletconnect-connector": 6.2.4
     "@web3-react/walletconnect-v2": ^8.3.7
     "@web3-react/walletlink-connector": 6.2.3
-    "@webflow/webflow-cli": ^1.5.1
     async-retry: ^1.3.1
     autoprefixer: ^9
     axios: ^0.27.2
@@ -5981,17 +5980,6 @@ __metadata:
     "@webassemblyjs/ast": 1.11.6
     "@xtuc/long": 4.2.2
   checksum: 916b90fa3a8aadd95ca41c21d4316d0a7582cf6d0dcf6d9db86ab0de823914df513919fba60ac1edd227ff00e93a66b927b15cbddd36b69d8a34c8815752633c
-  languageName: node
-  linkType: hard
-
-"@webflow/webflow-cli@npm:^1.5.1":
-  version: 1.6.2
-  resolution: "@webflow/webflow-cli@npm:1.6.2"
-  dependencies:
-    commander: ^10.0.0
-  bin:
-    webflow: dist/index.js
-  checksum: bffab0f276122749eb52e6d76ee5c8cc45fea066d406c60133e45fca2d583d20a43940105de9ec0e6c29e4d521b6998820b62e7e07f7b8b5bc72dd27aa721669
   languageName: node
   linkType: hard
 
@@ -7873,13 +7861,6 @@ __metadata:
   version: 2.1.0
   resolution: "comma-number@npm:2.1.0"
   checksum: 088129c6cc06c473340c1d14c8fc6515d76b885e02fe52d5defe25820a5dd7c6ae7aa41ead8d77b8c0001d63696a7ed93f94a2fdcf0eede8b75a34dc277abe0c
-  languageName: node
-  linkType: hard
-
-"commander@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "commander@npm:10.0.1"
-  checksum: 53f33d8927758a911094adadda4b2cbac111a5b377d8706700587650fd8f45b0bbe336de4b5c3fe47fd61f420a3d9bd452b6e0e6e5600a7e74d7bf0174f6efe3
   languageName: node
   linkType: hard
 

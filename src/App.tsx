@@ -21,8 +21,6 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import Privacy from './containers/Privacy'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
-import './devlink/global.css'
-import { DevLinkProvider } from './devlink'
 
 // Toast css
 import Analytics from './containers/Analytics'
@@ -40,7 +38,6 @@ const App = () => {
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={darkTheme}>
-                <DevLinkProvider>
                     <GlobalStyle bodyOverflow={bodyOverflow} />
                     <ErrorBoundary>
                         <ToastContainer />
@@ -87,7 +84,6 @@ const App = () => {
                             </ApolloProvider>
                         </Shared>
                     </ErrorBoundary>
-                </DevLinkProvider>
             </ThemeProvider>
         </I18nextProvider>
     )

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { formatNumber, TOKEN_LOGOS, DEFAULT_SAFE_STATE, formatWithCommas } from '~/utils'
+import {formatNumber, DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo} from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -242,7 +242,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_left`}
                                 token={{
                                     name: singleSafe.collateralName,
-                                    icon: TOKEN_LOGOS[singleSafe.collateralName],
+                                    icon: getTokenLogo(singleSafe.collateralName),
                                 }}
                                 label={
                                     isDeposit
@@ -265,7 +265,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_right`}
                                 token={
                                     tokensData.OD && {
-                                        icon: TOKEN_LOGOS[tokensData.OD.symbol],
+                                        icon: getTokenLogo(tokensData.OD.symbol),
                                         name: tokensData.OD.symbol,
                                     }
                                 }

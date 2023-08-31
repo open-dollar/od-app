@@ -65,7 +65,7 @@ const SideMenu = () => {
                             ) : (
                                 <ConnectBtnContainer>
                                     <Icon src={require('../assets/od-logo.svg').default} />
-                                    <Title>{t('welcome_reflexer')}</Title>
+                                    <Title>{t('welcome_open_dollar')}</Title>
                                     <Text>
                                         {t('connect_text', {
                                             coin_ticker: COIN_TICKER,

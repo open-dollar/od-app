@@ -8,7 +8,7 @@ import Pagination from '~/components/Pagination'
 import { SideLabel } from '~/containers/Vaults/CreateVault'
 import { useCollateralAuctions } from '~/hooks'
 import { useStoreState } from '~/store'
-import { IPaging, TOKEN_LOGOS } from '~/utils'
+import { IPaging, getTokenLogo } from '~/utils'
 import CollateralAuctionBlock from './CollateralAuctionBlock'
 
 export type Item = {
@@ -37,7 +37,7 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
 
     const collaterals = tokensData && Object.values(tokensData).filter((token) => token.isCollateral)
     const collateralsDropdown = collaterals?.map((collateral) => {
-        return { name: collateral.symbol, icon: TOKEN_LOGOS[collateral.symbol] }
+        return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
     })
 
     const dropdownSelected = collateralsDropdown?.find((item) => item.name === selectedItem)!

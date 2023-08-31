@@ -122,7 +122,7 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
                 return
             }
             setTextPayload({
-                title: e.message.includes('proxy') ? 'No Reflexer Account' : 'Transaction Failed.',
+                title: e.message.includes('proxy') ? 'No Open Dollar Account' : 'Transaction Failed.',
                 text: '',
                 status: 'error',
             })

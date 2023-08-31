@@ -5,7 +5,7 @@ import { useActiveWeb3React } from '~/hooks'
 import { timeout } from '../utils/helper'
 import useGeb from './useGeb'
 
-// handle await for 10 blocks confirmation before creating a reflexer account
+// handle await for 10 blocks confirmation before creating an account
 export function use10BlocksConfirmations() {
     const [blocksSinceCheck, setBlocksSinceCheck] = useState<number>()
     const { account, chainId } = useActiveWeb3React()

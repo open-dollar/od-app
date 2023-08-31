@@ -86,6 +86,6 @@ export const walletconnect = initializeConnector<WalletConnectV2>(
 // mainnet only
 export const walletlink = new WalletLinkConnector({
     url: NETWORK_URL,
-    appName: 'Reflexer',
+    appName: 'Open Dollar',
     appLogoUrl: 'https://gblobscdn.gitbook.com/spaces%2F-M9jdHretGKCtWYz5jZR%2Favatar-1593281271873.png?alt=media',
 })

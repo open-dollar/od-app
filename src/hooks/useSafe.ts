@@ -231,7 +231,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     }
 
     if (!proxyAddress) {
-        error = error ?? 'Create a Reflexer Account to continue'
+        error = error ?? 'Create an Open Dollar Account to continue'
     }
 
     if (type === 'deposit_borrow') {

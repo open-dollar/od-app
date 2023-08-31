@@ -18,3 +18,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     STN: require('../assets/stn-img.png'),
     FTRG: require('../assets/stETH.svg').default,
 }
+
+export function getTokenLogo(token: string): string {
+    return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default;
+}

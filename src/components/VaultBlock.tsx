@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { returnState, COIN_TICKER, TOKEN_LOGOS, formatWithCommas } from '~/utils'
+import { returnState, COIN_TICKER, getTokenLogo, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
     return (
@@ -11,7 +11,7 @@ const VaultBlock = ({ ...props }) => {
                     <BlockHeader>
                         <SafeInfo>
                             <img
-                                src={TOKEN_LOGOS[props.collateralName]}
+                                src={getTokenLogo(props.collateralName)}
                                 alt={props.collateralName}
                                 width={'24px'}
                                 height={'24px'}

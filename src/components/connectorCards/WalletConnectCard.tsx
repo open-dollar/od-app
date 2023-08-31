@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { hooks, walletConnect } from '../../connectors/walletConnect'
 import { Card } from './Card'
 
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
 export default function WalletConnectCard() {
     const chainId = useChainId()
@@ -30,7 +30,6 @@ export default function WalletConnectCard() {
     const isActive = useIsActive()
 
     const provider = useProvider()
-    const ENSNames = useENSNames(provider)
 
     const [error, setError] = useState(undefined)
 
@@ -41,12 +40,6 @@ export default function WalletConnectCard() {
         })
     }, [])
 
-    // attempt to connect eagerly on mount
-    useEffect(() => {
-        walletConnect.connectEagerly().catch(() => {
-            console.debug('Failed to connect eagerly to walletconnect')
-        })
-    }, [])
 
     return (
         <Card
@@ -59,7 +52,6 @@ export default function WalletConnectCard() {
             setError={setError}
             accounts={accounts}
             provider={provider}
-            ENSNames={ENSNames}
         />
     )
 }

@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react'
 import { coinbaseWallet, hooks } from '../../connectors/coinbaseWallet'
 import { Card } from './Card'
 
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
 export default function CoinbaseWalletCard() {
     const chainId = useChainId()
@@ -29,14 +29,12 @@ export default function CoinbaseWalletCard() {
     const isActive = useIsActive()
 
     const provider = useProvider()
-    const ENSNames = useENSNames(provider)
 
     const [error, setError] = useState(undefined)
 
     // attempt to connect eagerly on mount
     useEffect(() => {
         void coinbaseWallet.connectEagerly().catch(() => {
-            console.debug('Failed to connect eagerly to coinbase wallet')
         })
     }, [])
 
@@ -51,7 +49,6 @@ export default function CoinbaseWalletCard() {
             setError={setError}
             accounts={accounts}
             provider={provider}
-            ENSNames={ENSNames}
         />
     )
 }

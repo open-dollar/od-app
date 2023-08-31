@@ -23,7 +23,7 @@ import { Card } from './Card'
 
 const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
 
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
 export default function WalletConnectV2Card() {
     const chainId = useChainId()
@@ -45,8 +45,7 @@ export default function WalletConnectV2Card() {
 
     // attempt to connect eagerly on mount
     useEffect(() => {
-        walletConnectV2.connectEagerly().catch((error) => {
-            console.debug('Failed to connect eagerly to walletconnect', error)
+        walletConnectV2.connectEagerly().catch(() => {
         })
     }, [])
 

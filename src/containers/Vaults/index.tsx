@@ -65,13 +65,11 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {safeState.safeCreated && safeState.list.length ? <Stats /> : <></>}
                 {safeState.safeCreated ? (
                     <VaultList address={address} />
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
-                {safeState.safeCreated && safeState.list.length ? <></> : <Stats />}
             </Content>
         </Container>
     )

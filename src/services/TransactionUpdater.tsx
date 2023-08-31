@@ -58,23 +58,6 @@ export default function TransactionUpdater(): null {
                                 },
                                 confirmedTime: new Date().getTime(),
                             })
-                            toast(
-                                <ToastPayload
-                                    icon={receipt.status === 1 ? 'Check' : 'AlertTriangle'}
-                                    iconColor={receipt.status === 1 ? 'green' : 'red'}
-                                    text={
-                                        receipt.status === 1
-                                            ? transactions[hash].summary || 'Transaction Confirmed'
-                                            : 'Transaction Failed'
-                                    }
-                                    payload={{
-                                        type: 'transaction',
-                                        value: hash,
-                                        chainId,
-                                    }}
-                                />,
-                                { toastId }
-                            )
                         } else {
                             store.dispatch.transactionsModel.checkTransaction({
                                 tx: transactions[hash],

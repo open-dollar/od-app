@@ -11,15 +11,15 @@ import { Signer } from '@ethersproject/abstract-signer'
 
 // never send real ether to this, obviously
 
-// Test account if no reflexer account/proxy
+// Test account if no Open Dollar account/proxy
 export const PRIVATE_KEY_NO_PROXY_NEVER_USER = 'fc568e2480f8ebef0d3efd72ef633f4433019fc146b9fba90e2de46b2ad31e71'
 export const ADDRESS_NO_PROXY_NEVER_USER = '0xf3BF66D6c8f425eD0Dc2B3842401fe17eC459Af3'
 
-// Test account if no reflexer account/proxy
+// Test account if no Open Dollar account/proxy
 export const PRIVATE_KEY_NO_SAFES_NEVER_USER = '0x4629da46e55e1fb4a19ce06a7e57455dff0b4b382b20c51ea6d3cf3c149db863'
 export const ADDRESS_NO_SAFES_NEVER_USER = '0x9407Ff9cd0cB64A534d69Fbd61402467359E1903'
 
-// Test account if there is reflexer account and user has safes
+// Test account if there is Open Dollar account and user has safes
 export const PRIVATE_KEY_TEST_NEVER_USE = '0xf29f8d47c750d03d472152d5ccba4bbff99caaad0d6c7d326b20c33fa715d8c8'
 export const TEST_ADDRESS_NEVER_USE = '0x6C5CCF22147A96e27855E26bC6824EB76497D112'
 

@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 
-import { DEFAULT_SAFE_STATE, TOKEN_LOGOS, formatNumber, formatWithCommas } from '~/utils'
+import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -54,7 +54,7 @@ const CreateVault = ({
     const isValid = !error
 
     const collateralsDropdown = collaterals.map((collateral) => {
-        return { name: collateral.symbol, icon: TOKEN_LOGOS[collateral.symbol] }
+        return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
     })
 
     const dropdownSelected = collateralsDropdown.find((item) => item.name === selectedItem)!
@@ -246,7 +246,7 @@ const CreateVault = ({
                                             selectedCollateral?.symbol
                                                 ? {
                                                       name: selectedCollateral?.symbol || '-',
-                                                      icon: TOKEN_LOGOS[selectedCollateral?.symbol],
+                                                      icon: getTokenLogo(selectedCollateral?.symbol),
                                                   }
                                                 : undefined
                                         }
@@ -265,7 +265,7 @@ const CreateVault = ({
                                     <TokenInput
                                         token={
                                             tokensData.OD && {
-                                                icon: TOKEN_LOGOS[tokensData.OD.symbol],
+                                                icon: getTokenLogo(tokensData.OD.symbol),
                                                 name: tokensData.OD.symbol,
                                             }
                                         }

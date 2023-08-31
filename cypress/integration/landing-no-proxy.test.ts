@@ -152,6 +152,6 @@ describe('App Page - No Proxy', () => {
         cy.get('#repay_withdraw').click()
         cy.get('[data-test-id="repay_withdraw_left"]').should('be.disabled')
         cy.get('[data-test-id="repay_withdraw_right"]').type('0.001')
-        cy.contains('Create a Reflexer Account to continue')
+        cy.contains('Create an Open Dollar Account to continue')
     })
 })

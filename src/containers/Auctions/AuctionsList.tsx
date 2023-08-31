@@ -7,7 +7,7 @@ import { useStoreActions, useStoreState } from '~/store'
 import AuctionBlock from '~/components/AuctionBlock'
 import Pagination from '~/components/Pagination'
 import { SideLabel } from '../Vaults/CreateVault'
-import { IPaging, TOKEN_LOGOS } from '~/utils'
+import { IPaging, getTokenLogo } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import { AuctionEventType } from '~/types'
 import Button from '~/components/Button'
@@ -72,7 +72,7 @@ const AuctionsList = ({ type, selectedItem, setSelectedItem }: Props) => {
 
     const collaterals = tokensData && Object.values(tokensData).filter((token) => token.isCollateral)
     const collateralsDropdown = collaterals?.map((collateral) => {
-        return { name: collateral.symbol, icon: TOKEN_LOGOS[collateral.symbol] }
+        return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
     })
 
     const dropdownSelected = collateralsDropdown?.find((item) => item.name === selectedItem)!

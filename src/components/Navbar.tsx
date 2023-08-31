@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { utils } from 'ethers'
 
-import { formatNumber, newTransactionsFirst, returnWalletAddress, TOKEN_LOGOS } from '~/utils'
+import { formatNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { handleTransactionError, isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -142,7 +142,7 @@ const Navbar = () => {
                 <Brand />
                 <Price>
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                        <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
+                        <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
                         {loadingOdValue ? <LoadingDots /> : <span>$1.001</span>}
                         <ArrowWrapper>
                             <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
@@ -176,7 +176,7 @@ const Navbar = () => {
                     )}
                     {/* Button to add HAI to the wallet */}
                     <OdButton onClick={handleAddHAI}>
-                        <Icon src={TOKEN_LOGOS.OD} width={'16px'} height={'16px'} />
+                        <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
                         {haiBalance + ' '}
                         OD
                         <AddIcon src={addIcon} width={'18px'} height={'18px'} />

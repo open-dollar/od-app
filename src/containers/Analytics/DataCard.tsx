@@ -1,11 +1,11 @@
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
-import { TOKEN_LOGOS } from '~/utils'
+import { getTokenLogo } from '~/utils'
 
 const images: { [key: string]: string } = {
     ETH: require('../../assets/eth-icon.svg').default,
-    OD: TOKEN_LOGOS['OD'],
+    OD: getTokenLogo('OD'),
     NFTS: require('../../assets/nfts-icon.svg').default,
 }
 

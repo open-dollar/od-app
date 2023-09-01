@@ -408,6 +408,9 @@ export function useInputsHandlers(): {
 
     const onLeftInput = useCallback(
         (typedValue: string) => {
+            if (typedValue === ".") {
+                typedValue = "0.";
+            }
             safeActions.setSafeData({
                 ...safeData,
                 leftInput: typedValue,
@@ -417,6 +420,9 @@ export function useInputsHandlers(): {
     )
     const onRightInput = useCallback(
         (typedValue: string) => {
+            if (typedValue === ".") {
+                typedValue = "0.";
+            }
             safeActions.setSafeData({
                 ...safeData,
                 rightInput: typedValue,

@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef, useEffect } from 'react'
+import React, { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -8,7 +8,6 @@ import { formatNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress }
 import { useStoreActions, useStoreState } from '~/store'
 import { handleTransactionError, isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
-import addIcon from '~/assets/plus.svg'
 import { Icon } from './TokenInput'
 import NavLinks from './NavLinks'
 import Button from './Button'
@@ -35,7 +34,56 @@ const Navbar = () => {
     } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
     const { isActive, account, provider } = useWeb3React()
+    const odRef = useRef<HTMLButtonElement | null>(null)
+    const tokenPopupRef = useRef<HTMLDivElement | null>(null)
+    const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const signer = provider ? provider.getSigner(account) : undefined
+
+    const handleTokenClick = () => {
+        setTokenPopupVisibility(!isTokenPopupVisible)
+    }
+
+    const handleAddOD = async () => {
+        try {
+            const { ethereum } = window
+            // @ts-ignore
+            await ethereum.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    // @ts-ignore
+                    type: 'ERC20',
+                    options: {
+                        address: connectWalletModel.tokensData.OD.address,
+                        symbol: connectWalletModel.tokensData.OD.symbol,
+                        decimals: connectWalletModel.tokensData.OD.decimals,
+                    },
+                },
+            })
+        } catch (error) {
+            console.log('Error adding OD to the wallet:', error)
+        }
+    }
+
+    const handleAddODG = async () => {
+        try {
+            const { ethereum } = window
+            // @ts-ignore
+            await ethereum.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    // @ts-ignore
+                    type: 'ERC20',
+                    options: {
+                        address: connectWalletModel.tokensData.ODG.address,
+                        symbol: connectWalletModel.tokensData.ODG.symbol,
+                        decimals: connectWalletModel.tokensData.ODG.decimals,
+                    },
+                },
+            })
+        } catch (error) {
+            console.log('Error adding ODG to the wallet:', error)
+        }
+    }
 
     const handleDollarClick = () => {
         setPopupVisibility(!isPopupVisible)
@@ -57,26 +105,6 @@ const Navbar = () => {
             return popupsActions.setIsConnectedWalletModalOpen(true)
         }
         return popupsActions.setIsConnectorsWalletOpen(true)
-    }
-
-    const handleAddHAI = async () => {
-        try {
-            // @ts-ignore
-            await provider?.provider.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    // @ts-ignore
-                    type: 'ERC20',
-                    options: {
-                        address: connectWalletModel.tokensData.OD.address,
-                        symbol: connectWalletModel.tokensData.OD.symbol,
-                        decimals: connectWalletModel.tokensData.OD.decimals,
-                    },
-                },
-            })
-        } catch (error) {
-            console.log('Error adding OD to the wallet:', error)
-        }
     }
 
     const sortedRecentTransactions = useMemo(() => {
@@ -174,13 +202,53 @@ const Navbar = () => {
                             Claim test tokens 🪂
                         </ClaimButton>
                     )}
-                    {/* Button to add HAI to the wallet */}
-                    <OdButton onClick={handleAddHAI}>
-                        <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
-                        {haiBalance + ' '}
-                        OD
-                        <AddIcon src={addIcon} width={'18px'} height={'18px'} />
-                    </OdButton>
+                    {/* Button to add OD and ODG to the wallet */}
+                    <Price>
+                        <DollarValue ref={odRef} onClick={handleTokenClick}>
+                            <Icon
+                                src={require('../assets/od-wallet-icon.svg').default}
+                                width={'16px'}
+                                height={'16px'}
+                            />
+                            {haiBalance + ' '} OD
+                            <ArrowWrapper>
+                                <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                            </ArrowWrapper>
+                        </DollarValue>
+                        {isTokenPopupVisible && (
+                            <PriceInfoPopup ref={tokenPopupRef} className="group">
+                                <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
+                                <PopupColumnWrapper>
+                                    <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
+                                        <IconWrapper>
+                                            <img
+                                                src={require('../assets/od-logo.svg').default}
+                                                height={'24px'}
+                                                width={'24px'}
+                                                alt="X"
+                                            />
+                                        </IconWrapper>
+                                        <PopupColumn>
+                                            <div>OD</div>
+                                        </PopupColumn>
+                                    </PopupWrapperTokenLink>
+                                    <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
+                                        <IconWrapper>
+                                            <img
+                                                src={require('../assets/odg.svg').default}
+                                                height={'24px'}
+                                                width={'24px'}
+                                                alt="X"
+                                            />
+                                        </IconWrapper>
+                                        <PopupColumn>
+                                            <div>ODG</div>
+                                        </PopupColumn>
+                                    </PopupWrapperTokenLink>
+                                </PopupColumnWrapper>
+                            </PriceInfoPopup>
+                        )}
+                    </Price>
 
                     {/* Button to connect wallet */}
                     <Button
@@ -217,6 +285,33 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+const PopupColumn = styled.div`
+    text-align: end;
+`
+
+const PopupWrapperTokenLink = styled.a`
+    display: flex;
+    gap: 8px;
+    font-size: ${(props) => props.theme.font.small};
+    font-weight: 600;
+    color: ${(props) => props.theme.colors.neutral};
+    cursor: pointer;
+`
+
+const PopupColumnWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+`
+
+const TokenTextWrapper = styled.div`
+    font-size: ${(props) => props.theme.font.extraSmall};
+    text-align: left;
+    font-weight: 600;
+    color: #0079ad;
+    margin-bottom: 8px;
+`
 
 const screenWidth = '1073px'
 
@@ -265,7 +360,6 @@ const BtnContainer = styled.div`
     }
 
     svg {
-        stroke: white;
         position: relative;
         margin-right: 5px;
     }
@@ -320,10 +414,6 @@ const InnerBtn = styled(Flex)`
             top: 0 !important;
         }
     }
-`
-
-const AddIcon = styled(Icon)`
-    margin: 0 5px 0 10px;
 `
 
 const OdButton = styled.button`

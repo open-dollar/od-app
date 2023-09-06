@@ -9,7 +9,7 @@ const Brand = ({ height }: Props) => {
     return (
         <Container>
             <a href={'/'}>
-                <img src={Logo} alt="OD" />
+                <img src={Logo} height={'27px'} width={'148px'} alt="OD" />
             </a>
         </Container>
     )
@@ -26,11 +26,6 @@ const Container = styled.div`
                 width: 50px;
                 height: 50px;
             }
-            ${({ theme }) => theme.mediaWidth.upToSmall`
-        width: 50px;
-        height: 50px;
-      }
-      `}
         }
     }
 `

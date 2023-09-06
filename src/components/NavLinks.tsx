@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 
 import { useStoreActions } from '../store'
-import SafeIcon from './Icons/SafeIcon'
 
 const NavLinks = () => {
     const history = useHistory()
@@ -32,7 +31,7 @@ const NavLinks = () => {
                 onClick={(e) => handleLinkClick(e, false)}
                 className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
             >
-                <SafeIcon className="opacity fill" /> {t('app')}
+                {t('app')}
             </NavBarLink>
             <NavBarLink
                 id="auction-link"
@@ -40,7 +39,7 @@ const NavLinks = () => {
                 onClick={(e) => handleLinkClick(e, false)}
                 className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
             >
-                <SafeIcon className="opacity fill" /> {t('auctions')}
+                {t('auctions')}
             </NavBarLink>
             <NavBarLink
                 id="stats-link"
@@ -48,7 +47,7 @@ const NavLinks = () => {
                 onClick={(e) => handleLinkClick(e, false)}
                 className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
             >
-                <SafeIcon className="opacity fill" /> {t('stats')}
+                {t('stats')}
             </NavBarLink>
         </Nav>
     )

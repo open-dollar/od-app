@@ -38,7 +38,16 @@ const getLiquidationDataRpc = async (
         parseTokenLiquidationData(liquidationData.redemptionPrice, tokenLiquidationData)
     )
 
-    const collateralLiquidationData = Object.keys(tokensData).reduce((accumulator, key, index) => {
+    const tokensDataCopy = JSON.parse(JSON.stringify(tokensData))
+
+    // Non-collateral tokens like OD and ODG are not included in the liquidation data
+    Object.keys(tokensDataCopy).forEach((key) => {
+        if (!tokensDataCopy[key].isCollateral) {
+            delete tokensDataCopy[key]
+        }
+    })
+
+    const collateralLiquidationData = Object.keys(tokensDataCopy).reduce((accumulator, key, index) => {
         return { ...accumulator, [key]: parsedLiquidationData[index] }
     }, {})
 

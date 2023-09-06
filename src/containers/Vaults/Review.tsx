@@ -29,7 +29,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                     const isPrimary = key === 'data'
                     return (
                         <div key={key} className="blockie">
-                            <ReactTooltip id="tooltip-review" variant="light" data-effect="solid" />
+                            <ReactTooltip style={{ zIndex: '10' }} id="tooltip-review" variant="light" data-effect="solid" />
                             {stats[key as StatsType].map((item) => {
                                 return (
                                     <Flex key={item.label}>

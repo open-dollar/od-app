@@ -73,7 +73,7 @@ const Stats = () => {
                                 }).format(Number(stats.safeCount))}
                             </Text>
                             <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                                Total Safes
+                                Total Vaults
                             </Text>
                         </Container>
                         <Container direction="column" alignItems="left" justifyContent="center">
@@ -87,7 +87,7 @@ const Stats = () => {
                                 {stats.activeSafesCount}
                             </Text>
                             <Text fontSize={{ lg: '14px', sm: '12px' }} fontWeight="bold">
-                                Active Safes
+                                Active Vaults
                             </Text>
                         </Container>
                         <Container

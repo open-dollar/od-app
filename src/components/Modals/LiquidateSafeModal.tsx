@@ -42,7 +42,7 @@ const LiquidateSafeModal = () => {
                             chainId,
                             hash,
                             from: txResponse.from,
-                            summary: `Liquidate Safe #${liquidateSafePayload.safeId}`,
+                            summary: `Liquidate Vault #${liquidateSafePayload.safeId}`,
                             addedTime: new Date().getTime(),
                             originalTx: txResponse,
                         })
@@ -67,7 +67,7 @@ const LiquidateSafeModal = () => {
 
     return (
         <Modal
-            title="Liquidate Safe"
+            title="Liquidate Vault"
             maxWidth="400px"
             borderRadius="20px"
             isModalOpen={isLiquidateSafeModalOpen}

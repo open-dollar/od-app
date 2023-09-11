@@ -44,6 +44,7 @@ import {
     ETH_NETWORK,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
+import Footer from "~/components/Footer";
 
 interface Props {
     children: ReactNode
@@ -276,6 +277,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 <CookieBanner />
             </EmptyDiv>
             <ImagePreloader />
+            <Footer />
         </Container>
     )
 }

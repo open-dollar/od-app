@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useCallback } from 'react'
+import React, { ReactNode, useEffect, useCallback } from 'react'
 import { getTokenList } from '@usekeyp/od-sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
@@ -44,7 +44,8 @@ import {
     ETH_NETWORK,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
-import Footer from "~/components/Footer";
+import Footer from '~/components/Footer'
+import FooterBackgroundImage from '../assets/footer-bg-art.svg'
 
 interface Props {
     children: ReactNode
@@ -223,8 +224,8 @@ const Shared = ({ children, ...rest }: Props) => {
             )
             await checkAndSwitchMetamaskNetwork()
         } else {
-            if (document.querySelector("#networkToastHash") !== null) {
-                document.querySelector("#networkToastHash")?.remove();
+            if (document.querySelector('#networkToastHash') !== null) {
+                document.querySelector('#networkToastHash')?.remove()
             }
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
@@ -278,6 +279,7 @@ const Shared = ({ children, ...rest }: Props) => {
             </EmptyDiv>
             <ImagePreloader />
             <Footer />
+            <img src={FooterBackgroundImage} alt="" />
         </Container>
     )
 }

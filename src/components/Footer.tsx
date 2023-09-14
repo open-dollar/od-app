@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
                     </InnerLink>
                 </Column>
                 <Column>
-                    <Link target="_blank" href="https://discord.gg/SsQjHYzGDc">
+                    <Link target="_blank" href="https://discord.opendollar.com">
                         Discord
                     </Link>
                     <Link target="_blank" href="https://twitter.com/open_dollar">

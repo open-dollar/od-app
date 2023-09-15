@@ -106,9 +106,6 @@ const FooterAndImageContainer = styled.div`
 `
 
 const FooterImage = styled.div`
-    //position: fixed;
-    //bottom: 0;
-    //left: 0;
     display: flex;
     width: 100%;
     z-index: -1;
@@ -120,7 +117,6 @@ const FooterImage = styled.div`
 const FooterContainer = styled.div`
     display: flex;
     padding-top: 80px;
-    //position: fixed;
     bottom: 170px;
     width: 100%;
     flex-direction: row;

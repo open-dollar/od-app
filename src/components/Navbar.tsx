@@ -483,6 +483,9 @@ const ArrowWrapper = styled.div`
 const ClaimButton = styled(OdButton)``
 
 const DollarValue = styled(OdButton)`
-    width: 133px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    width: auto;
+    white-space: nowrap;
 `

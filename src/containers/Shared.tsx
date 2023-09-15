@@ -278,8 +278,9 @@ const Shared = ({ children, ...rest }: Props) => {
                 <CookieBanner />
             </EmptyDiv>
             <ImagePreloader />
-            <Footer />
-            <img src={FooterBackgroundImage} alt="" />
+            <EmptyDiv>
+                <Footer />
+            </EmptyDiv>
         </Container>
     )
 }

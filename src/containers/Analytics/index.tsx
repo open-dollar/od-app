@@ -284,22 +284,17 @@ const Analytics = () => {
 
     useEffect(() => {
         if (geb) {
-            //@ts-ignore
-            if (geb.addresses.PROXY_FACTORY) {
-                // @ts-ignore
-                const erc20Contract = geb.getErc20Contract(geb.addresses.PROXY_FACTORY)
-                erc20Contract
-                    .totalSupply()
-                    .then((result) => {
-                        setState((prevState) => ({
-                            ...prevState,
-                            totalVaults: result.toString(),
-                        }))
-                    })
-                    .catch((error) => {
-                        console.error('Error fetching totalSupply:', error)
-                    })
-            }
+            geb.contracts.proxyRegistry
+                .totalSupply()
+                .then((result) => {
+                    setState((prevState) => ({
+                        ...prevState,
+                        totalVaults: result.toString(),
+                    }))
+                })
+                .catch((error) => {
+                    console.error('Error fetching totalSupply:', error)
+                })
             fetchAnalyticsData(geb).then((result) => {
                 const colRows = Object.fromEntries(
                     Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [

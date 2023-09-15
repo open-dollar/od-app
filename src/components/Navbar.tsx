@@ -116,7 +116,7 @@ const Navbar = () => {
 
     const hasPendingTransactions = !!pending.length
 
-    const haiBalance = useMemo(() => {
+    const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
         return formatNumber(balances.OD ? utils.formatEther(balances.OD.balanceE18) : '0', 2)
     }, [connectWalletModel.tokensFetchedData])
@@ -210,7 +210,7 @@ const Navbar = () => {
                                 width={'16px'}
                                 height={'16px'}
                             />
-                            {haiBalance + ' '} OD
+                            {odBalance + ' '} OD
                             <ArrowWrapper>
                                 <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                             </ArrowWrapper>
@@ -483,6 +483,9 @@ const ArrowWrapper = styled.div`
 const ClaimButton = styled(OdButton)``
 
 const DollarValue = styled(OdButton)`
-    width: 133px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    width: auto;
+    white-space: nowrap;
 `

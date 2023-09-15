@@ -12,9 +12,9 @@ const INITIAL_STATE = [
     require('../assets/uniswap-icon.svg').default,
     require('../assets/logo192.png').default,
     require('../assets/connectors/metamask.png').default,
-    require('../assets/account-img.png').default,
-    require('../assets/wallet-img.png').default,
-    require('../assets/safe-img.png').default,
+    require('../assets/connect-img.png').default,
+    require('../assets/facilitator-img.png').default,
+    require('../assets/vault-img.png').default,
 ]
 
 const ImagePreloader = () => {

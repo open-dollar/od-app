@@ -155,7 +155,7 @@ const Analytics = () => {
         description: 'Mock dada  for Outstanding OD',
     }
 
-    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: totalVaults, description: 'Vault NFTs' }
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: totalVaults ? totalVaults : '0', description: 'Vault NFTs' }
 
     const annualStabilityFee = {
         title: 'Annual Stability fee',

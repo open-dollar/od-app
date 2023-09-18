@@ -22,6 +22,7 @@ import useGeb from '~/hooks/useGeb'
 
 interface AnalyticsStateProps {
     erc20Supply: string
+    totalVaults: string
     globalDebt: string
     globalDebtUtilization: string
     globalDebtCeiling: string
@@ -40,6 +41,7 @@ const Analytics = () => {
     const { chainId } = useWeb3React()
     const [state, setState] = useState<AnalyticsStateProps>({
         erc20Supply: '',
+        totalVaults: '',
         globalDebt: '',
         globalDebtUtilization: '',
         globalDebtCeiling: '',
@@ -55,6 +57,7 @@ const Analytics = () => {
 
     const {
         erc20Supply,
+        totalVaults,
         globalDebt,
         globalDebtCeiling,
         globalDebtUtilization,
@@ -152,7 +155,7 @@ const Analytics = () => {
         description: 'Mock dada  for Outstanding OD',
     }
 
-    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: '137', description: 'Vault NFTs' }
+    const vaultNFTs = { image: 'NFTS', title: 'Vault NFTs', value: totalVaults ? totalVaults : '0', description: 'Vault NFTs' }
 
     const annualStabilityFee = {
         title: 'Annual Stability fee',
@@ -259,7 +262,7 @@ const Analytics = () => {
     const analiticsData: DataCardProps[] = [
         // totalCollateralLocked,
         // outstandingOd,
-        // vaultNFTs
+        vaultNFTs,
     ]
 
     const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
@@ -281,6 +284,17 @@ const Analytics = () => {
 
     useEffect(() => {
         if (geb) {
+            geb.contracts.proxyRegistry
+                .totalSupply()
+                .then((result) => {
+                    setState((prevState) => ({
+                        ...prevState,
+                        totalVaults: result.toString(),
+                    }))
+                })
+                .catch((error) => {
+                    console.error('Error fetching totalSupply:', error)
+                })
             fetchAnalyticsData(geb).then((result) => {
                 const colRows = Object.fromEntries(
                     Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [

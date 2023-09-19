@@ -1,24 +1,22 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, useIsOwner } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
-import {isNumeric, DEFAULT_SAFE_STATE, parseWad, ISafe, formatUserSafe, ILiquidationData} from '~/utils'
+import { isNumeric, DEFAULT_SAFE_STATE, formatUserSafe, ILiquidationData } from '~/utils'
 import AlertLabel from '~/components/AlertLabel'
 import VaultStats from '~/components/VaultStats'
 import ModifyVault from './ModifyVault'
 import VaultHeader from './VaultHeader'
 import useGeb from "~/hooks/useGeb";
-import { fetchUserSafes } from "@usekeyp/od-sdk/lib/virtual/virtualUserSafes.js";
 import gebManager from "~/utils/gebManager";
+import { ethers } from "ethers";
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
     const { t } = useTranslation()
     const { account, provider } = useActiveWeb3React()
-    const [finalSafe, setFinalSafe] = useState<any>(null);
-
 
     const { safeModel: safeActions } = useStoreActions((state) => state)
 
@@ -50,53 +48,41 @@ const VaultDetails = ({ ...props }) => {
     const safes = safeState.list
     let safe = safes.find((safe) => safe.id === safeId)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            let fetchedSafe = null
-            if (safe) {
-                safeActions.setSingleSafe(safe);
-                safeActions.setSafeData(DEFAULT_SAFE_STATE);
-            }
+    // Fetches vault data of a vault not owned by the user
+    const fetchSingleVaultData = async () => {
+        if (safe && safeId && geb) {
+            safeActions.setSingleSafe(safe);
+            safeActions.setSafeData(DEFAULT_SAFE_STATE);
+        }
 
-            if (!safe && geb && safeId) {
-                const safeDataResponse = await geb.contracts.safeManager.safeData(safeId);
-                // const [userCoinBalance, safesData] = await fetchUserSafes(geb, '0xc295763eed507d4a0f8b77241c03dd3354781a15')
-                // const safess = safesData.map((safe) => ({
-                //     collateral: parseWad(safe.lockedCollateral),
-                //     debt: parseWad(safe.generatedDebt),
-                //     createdAt: null,
-                //     safeHandler: safe.addy,
-                //     safeId: safe.id.toString(),
-                //     collateralType: safe.collateralType,
-                // }))
-                // fetchedSafe = safess.find((safe) => safe.safeId === safeId)
-                console.log(safeDataResponse, 'safeDataResponse')
-                console.log(fetchedSafe, 'fetchedSafe')
-                const secondResp = await gebManager.getUserSafesRpc({   address: '0xc295763eed507d4a0f8b77241c03dd3354781a15',
-                    geb,
-                    tokensData: geb.tokenList,
-                })
-                const newResp = secondResp.safes.find((safe) => safe.safeId === safeId)
-                console.log(newResp, 'newResp')
-                const properSafe = formatUserSafe([newResp], liquidationData as ILiquidationData, geb.tokenList)
-                safeActions.setSingleSafe(properSafe[0])
-                safeActions.setSafeData(DEFAULT_SAFE_STATE);
-                // safeActions.setSafeData({
-                //     leftInput: '0',
-                //     rightInput: '0',
-                //     totalCollateral: '0',
-                //     totalDebt: totalDebt,
-                //     collateralRatio: Number(collateralRatio),
-                //     liquidationPrice: Number(liquidationPrice),
-                //     collateral: properSafe[0].collateral,
-                // })
+        if (!safe && geb && safeId && liquidationData) {
+            const safeDataResponse = await geb.contracts.safeManager.safeData(safeId);
+            const ODProxyAddress = safeDataResponse[0];
+            if (ODProxyAddress.startsWith('0x000000')) {
+                return;
             }
-        };
-        fetchData();
+            const ODProxyContract = new ethers.Contract(ODProxyAddress, '[{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"OnlyOwner","type":"error"},{"inputs":[],"name":"TargetAddressRequired","type":"error"},{"inputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"name":"TargetCallFailed","type":"error"},{"inputs":[],"name":"OWNER","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_target","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"execute","outputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"stateMutability":"payable","type":"function"}]', provider);
+            const ownerAddress = await ODProxyContract.OWNER();
+            const userSafes = await gebManager.getUserSafesRpc({   address: ownerAddress,
+                geb,
+                tokensData: geb.tokenList,
+            })
+            const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
+            if (!safeById) {
+                return;
+            }
+            const formattedSafe = formatUserSafe([safeById], liquidationData as ILiquidationData, geb.tokenList)
+            safeActions.setSingleSafe(formattedSafe[0])
+            safeActions.setSafeData(DEFAULT_SAFE_STATE);
+        }
+    };
+
+    useEffect(() => {
+        fetchSingleVaultData();
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe, safeActions])
+    }, [safe, safeActions, geb, liquidationData])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -107,7 +93,6 @@ const VaultDetails = ({ ...props }) => {
 
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 
-    console.log(isLoading, 'isLoading')
     return (
         <Container>
             {!isOwner ? (

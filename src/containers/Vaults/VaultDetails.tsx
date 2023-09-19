@@ -9,9 +9,9 @@ import AlertLabel from '~/components/AlertLabel'
 import VaultStats from '~/components/VaultStats'
 import ModifyVault from './ModifyVault'
 import VaultHeader from './VaultHeader'
-import useGeb from "~/hooks/useGeb";
-import gebManager from "~/utils/gebManager";
-import { ethers } from "ethers";
+import useGeb from '~/hooks/useGeb'
+import gebManager from '~/utils/gebManager'
+import { ethers } from 'ethers'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -44,41 +44,45 @@ const VaultDetails = ({ ...props }) => {
 
     const { safeModel: safeState } = useStoreState((state) => state)
 
-
     const safes = safeState.list
     let safe = safes.find((safe) => safe.id === safeId)
 
     // Fetches vault data of a vault not owned by the user
     const fetchSingleVaultData = async () => {
         if (safe && safeId && geb) {
-            safeActions.setSingleSafe(safe);
-            safeActions.setSafeData(DEFAULT_SAFE_STATE);
+            safeActions.setSingleSafe(safe)
+            safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }
 
         if (!safe && geb && safeId && liquidationData) {
-            const safeDataResponse = await geb.contracts.safeManager.safeData(safeId);
-            const ODProxyAddress = safeDataResponse[0];
+            const safeDataResponse = await geb.contracts.safeManager.safeData(safeId)
+            const ODProxyAddress = safeDataResponse[0]
             if (ODProxyAddress.startsWith('0x000000')) {
-                return;
+                return
             }
-            const ODProxyContract = new ethers.Contract(ODProxyAddress, '[{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"OnlyOwner","type":"error"},{"inputs":[],"name":"TargetAddressRequired","type":"error"},{"inputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"name":"TargetCallFailed","type":"error"},{"inputs":[],"name":"OWNER","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_target","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"execute","outputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"stateMutability":"payable","type":"function"}]', provider);
-            const ownerAddress = await ODProxyContract.OWNER();
-            const userSafes = await gebManager.getUserSafesRpc({   address: ownerAddress,
+            const ODProxyContract = new ethers.Contract(
+                ODProxyAddress,
+                '[{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"OnlyOwner","type":"error"},{"inputs":[],"name":"TargetAddressRequired","type":"error"},{"inputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"name":"TargetCallFailed","type":"error"},{"inputs":[],"name":"OWNER","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_target","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"execute","outputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"stateMutability":"payable","type":"function"}]',
+                provider
+            )
+            const ownerAddress = await ODProxyContract.OWNER()
+            const userSafes = await gebManager.getUserSafesRpc({
+                address: ownerAddress,
                 geb,
                 tokensData: geb.tokenList,
             })
             const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
             if (!safeById) {
-                return;
+                return
             }
             const formattedSafe = formatUserSafe([safeById], liquidationData as ILiquidationData, geb.tokenList)
             safeActions.setSingleSafe(formattedSafe[0])
-            safeActions.setSafeData(DEFAULT_SAFE_STATE);
+            safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }
-    };
+    }
 
     useEffect(() => {
-        fetchSingleVaultData();
+        fetchSingleVaultData()
         return () => {
             safeActions.setSingleSafe(null)
         }

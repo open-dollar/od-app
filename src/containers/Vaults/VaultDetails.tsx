@@ -1,18 +1,24 @@
-import { useEffect, useMemo } from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, useIsOwner } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
-import { isNumeric, DEFAULT_SAFE_STATE } from '~/utils'
+import {isNumeric, DEFAULT_SAFE_STATE, parseWad, ISafe, formatUserSafe, ILiquidationData} from '~/utils'
 import AlertLabel from '~/components/AlertLabel'
 import VaultStats from '~/components/VaultStats'
 import ModifyVault from './ModifyVault'
 import VaultHeader from './VaultHeader'
+import useGeb from "~/hooks/useGeb";
+import { fetchUserSafes } from "@usekeyp/od-sdk/lib/virtual/virtualUserSafes.js";
+import gebManager from "~/utils/gebManager";
 
 const VaultDetails = ({ ...props }) => {
+    const geb = useGeb()
     const { t } = useTranslation()
     const { account, provider } = useActiveWeb3React()
+    const [finalSafe, setFinalSafe] = useState<any>(null);
+
 
     const { safeModel: safeActions } = useStoreActions((state) => state)
 
@@ -40,14 +46,53 @@ const VaultDetails = ({ ...props }) => {
 
     const { safeModel: safeState } = useStoreState((state) => state)
 
+
     const safes = safeState.list
-    const safe = safes.find((safe) => safe.id === safeId)
+    let safe = safes.find((safe) => safe.id === safeId)
 
     useEffect(() => {
-        if (safe) {
-            safeActions.setSingleSafe(safe)
-            safeActions.setSafeData(DEFAULT_SAFE_STATE)
-        }
+        const fetchData = async () => {
+            let fetchedSafe = null
+            if (safe) {
+                safeActions.setSingleSafe(safe);
+                safeActions.setSafeData(DEFAULT_SAFE_STATE);
+            }
+
+            if (!safe && geb && safeId) {
+                const safeDataResponse = await geb.contracts.safeManager.safeData(safeId);
+                // const [userCoinBalance, safesData] = await fetchUserSafes(geb, '0xc295763eed507d4a0f8b77241c03dd3354781a15')
+                // const safess = safesData.map((safe) => ({
+                //     collateral: parseWad(safe.lockedCollateral),
+                //     debt: parseWad(safe.generatedDebt),
+                //     createdAt: null,
+                //     safeHandler: safe.addy,
+                //     safeId: safe.id.toString(),
+                //     collateralType: safe.collateralType,
+                // }))
+                // fetchedSafe = safess.find((safe) => safe.safeId === safeId)
+                console.log(safeDataResponse, 'safeDataResponse')
+                console.log(fetchedSafe, 'fetchedSafe')
+                const secondResp = await gebManager.getUserSafesRpc({   address: '0xc295763eed507d4a0f8b77241c03dd3354781a15',
+                    geb,
+                    tokensData: geb.tokenList,
+                })
+                const newResp = secondResp.safes.find((safe) => safe.safeId === safeId)
+                console.log(newResp, 'newResp')
+                const properSafe = formatUserSafe([newResp], liquidationData as ILiquidationData, geb.tokenList)
+                safeActions.setSingleSafe(properSafe[0])
+                safeActions.setSafeData(DEFAULT_SAFE_STATE);
+                // safeActions.setSafeData({
+                //     leftInput: '0',
+                //     rightInput: '0',
+                //     totalCollateral: '0',
+                //     totalDebt: totalDebt,
+                //     collateralRatio: Number(collateralRatio),
+                //     liquidationPrice: Number(liquidationPrice),
+                //     collateral: properSafe[0].collateral,
+                // })
+            }
+        };
+        fetchData();
         return () => {
             safeActions.setSingleSafe(null)
         }
@@ -62,6 +107,7 @@ const VaultDetails = ({ ...props }) => {
 
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 
+    console.log(isLoading, 'isLoading')
     return (
         <Container>
             {!isOwner ? (

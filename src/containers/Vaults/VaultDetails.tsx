@@ -45,7 +45,7 @@ const VaultDetails = ({ ...props }) => {
     const { safeModel: safeState } = useStoreState((state) => state)
 
     const safes = safeState.list
-    let safe = safes.find((safe) => safe.id === safeId)
+    const safe = safes.find((safe) => safe.id === safeId)
 
     // Fetches vault data of a vault not owned by the user
     const fetchSingleVaultData = async () => {

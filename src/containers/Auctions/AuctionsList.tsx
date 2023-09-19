@@ -35,8 +35,8 @@ const AuctionsList = ({ type, selectedItem, setSelectedItem }: Props) => {
 
     const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
-    // internalbalance = user's HAI balance in the protocol
-    // protInternalBalance = user's KITE balance in the protocol
+    // internalbalance = user's OD balance in the protocol
+    // protInternalBalance = user's ODG balance in the protocol
     const { internalBalance, protInternalBalance } = auctionsState
 
     const { proxyAddress, tokensData } = connectWalletState

@@ -5130,16 +5130,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@usekeyp/od-sdk@npm:^1.4.0-rc.3":
-  version: 1.4.0-rc.3
-  resolution: "@usekeyp/od-sdk@npm:1.4.0-rc.3"
+"@usekeyp/od-sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@usekeyp/od-sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A."
   dependencies:
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 8a063a0c67c360dcea3ce505c604dbdef0f61021af5224b5a7bb2cc9b00fdfd1654671982beb7debe3a048e45c970a792b2f8cfa57ee88fc1c7b6ee5f727622c
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@walletconnect/browser-utils@npm:^1.8.0":
   version: 1.8.0

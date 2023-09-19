@@ -60,9 +60,7 @@ const AuctionsOperations = () => {
                                 auctionType === 'DEBT' || auctionType === 'COLLATERAL' ? raiCoinAllowance : flxAllowance
                             }
                             coinName={
-                                auctionType === 'DEBT' || auctionType === 'COLLATERAL'
-                                    ? (COIN_TICKER as string)
-                                    : 'KITE'
+                                auctionType === 'DEBT' || auctionType === 'COLLATERAL' ? (COIN_TICKER as string) : 'ODG'
                             }
                             methodName={
                                 auctionType === 'DEBT' || auctionType === 'COLLATERAL' ? 'systemCoin' : 'protocolToken'

@@ -11,11 +11,11 @@ const Accounts = () => {
     const returnLottie = () => {
         switch (step) {
             case 1:
-                return <img src={require('../../assets/facilitator-img.png')} alt="" />
+                return <img src={require('../../assets/od-colorloop.png')} alt="" />
             case 2:
-                return <img src={require('../../assets/vault-img.png')} alt="" />
+                return <img src={require('../../assets/od-vault.png')} alt="" />
             default:
-                return <img src={require('../../assets/connect-img.png')} alt="" />
+                return <img src={require('../../assets/od-land.png')} alt="" />
         }
     }
     return (
@@ -47,7 +47,8 @@ const ImageContainer = styled.div`
     img {
         border-radius: 20px;
         margin: 0 auto;
-        margin-top: 130px;
+        margin-top: 74px;
+        width: 300px;
     }
     > div {
         margin: 0 auto;

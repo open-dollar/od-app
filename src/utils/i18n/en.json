@@ -123,6 +123,5 @@
     "stability_fee_tip": " It is the annual interest rate paid by Vault owners on their debt. Proceeds from the borrow rate go to the protocol’s balance sheet",
     "hai_red_price_tip": "OD’s “moving peg”. It’s the price at which OD is minted or repaid inside the protocol. The OD market price is expected to fluctuate around the redemption price",
     "moneygod_desc": "The Money God League is an initiative to help other teams launch their own OD like assets and share a stake in each of their protocols with the Open Dollar community. You can stake ODG or ODG/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants.",
-    "buy": "Buy Collateral",
-    "sanctioned_wallet": "This wallet is not allowed to connect"
+    "buy": "Buy Collateral"
 }

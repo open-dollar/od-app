@@ -5062,7 +5062,7 @@ __metadata:
     "@types/react-slider": ^1.1.2
     "@types/react-transition-group": ^4.4.0
     "@types/styled-components": ^5.1.3
-    "@usekeyp/od-sdk": ^1.4.0-rc.3
+    "@usekeyp/od-sdk": ^1.4.0-rc.4
     "@walletconnect/web3-provider": 1.8.0
     "@web3-react/coinbase-wallet": ^8.2.0
     "@web3-react/core": ^8.2.0
@@ -5130,14 +5130,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@usekeyp/od-sdk@npm:^1.4.0-rc.3":
-  version: 1.4.0-rc.3
-  resolution: "@usekeyp/od-sdk@npm:1.4.0-rc.3"
+"@usekeyp/od-sdk@npm:^1.4.0-rc.4":
+  version: 1.4.0-rc.4
+  resolution: "@usekeyp/od-sdk@npm:1.4.0-rc.4"
   dependencies:
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 8a063a0c67c360dcea3ce505c604dbdef0f61021af5224b5a7bb2cc9b00fdfd1654671982beb7debe3a048e45c970a792b2f8cfa57ee88fc1c7b6ee5f727622c
+  checksum: cf596255a685e9dbaa46197a0f5cafbb73c479a269cdb4e0f3c0e99764ac1a7e13665aba6c114a8cf3283c387f1630472d696bab65cda85a0b83c807fc0d7c42
   languageName: node
   linkType: hard
 

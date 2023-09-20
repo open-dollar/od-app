@@ -27,8 +27,8 @@ const Results = () => {
     const sellAmount = _.get(selectedAuction, 'sellAmount', '0')
     const tokenSymbol = _.get(selectedAuction, 'tokenSymbol', undefined)
 
-    const buySymbol = buyToken === 'PROTOCOL_TOKEN_LP' ? 'KITE/ETH LP' : buyToken === 'COIN' ? COIN_TICKER : 'KITE'
-    const sellSymbol = sellToken === 'PROTOCOL_TOKEN_LP' ? 'KITE/ETH LP' : sellToken === 'COIN' ? COIN_TICKER : 'KITE'
+    const buySymbol = buyToken === 'PROTOCOL_TOKEN_LP' ? 'ODG/ETH LP' : buyToken === 'COIN' ? COIN_TICKER : 'ODG'
+    const sellSymbol = sellToken === 'PROTOCOL_TOKEN_LP' ? 'ODG/ETH LP' : sellToken === 'COIN' ? COIN_TICKER : 'ODG'
 
     const isClaim = popupsState.auctionOperationPayload.type.includes('claim')
     const isSettle = popupsState.auctionOperationPayload.type.includes('settle')
@@ -72,7 +72,7 @@ const Results = () => {
                 {isClaim ? (
                     <Item>
                         <Label>{`${
-                            Number(protInternalBalance) > Number(internalBalance) ? 'KITE' : 'HAI'
+                            Number(protInternalBalance) > Number(internalBalance) ? 'ODG' : 'OD'
                         } Amount`}</Label>
                         <Value>{`${leftOverBalance}`}</Value>
                     </Item>

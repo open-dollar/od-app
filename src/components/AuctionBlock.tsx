@@ -33,11 +33,11 @@ const AuctionBlock = (auction: Props) => {
     const amountToRaise = _.get(auction, 'amountToRaise', '0')
 
     const sellInititalAmount = _.get(auction, 'sellInitialAmount', '0')
-    const buySymbol = buyToken === 'COIN' ? COIN_TICKER : 'KITE'
+    const buySymbol = buyToken === 'COIN' ? COIN_TICKER : 'ODG'
     const sellAmount = _.get(auction, 'sellAmount', '0')
 
     const tokenSymbol = _.get(auction, 'tokenSymbol', 'TEST')
-    const sellSymbol = eventType === 'COLLATERAL' ? tokenSymbol : sellToken === 'COIN' ? COIN_TICKER : 'KITE'
+    const sellSymbol = eventType === 'COLLATERAL' ? tokenSymbol : sellToken === 'COIN' ? COIN_TICKER : 'ODG'
 
     const auctionDeadline = _.get(auction, 'auctionDeadline', '')
     const isClaimed = _.get(auction, 'isClaimed', false)

@@ -74,13 +74,13 @@ const AuctionsPayment = () => {
     const auctionDeadline = _.get(selectedAuction, 'auctionDeadline', '')
     const isOngoingAuction = auctionDeadline ? Number(auctionDeadline) * 1000 > Date.now() : false
 
-    const haiBalance = _.get(coinBalances, 'hai', '0')
-    const kiteBalance = _.get(coinBalances, 'kite', '0')
-    const haiAllowance = _.get(connectWalletState, 'coinAllowance', '0')
-    const kiteAllowance = _.get(connectWalletState, 'protAllowance', '0')
+    const odBalance = _.get(coinBalances, 'od', '0')
+    const odgBalance = _.get(coinBalances, 'odg', '0')
+    const odAllowance = _.get(connectWalletState, 'coinAllowance', '0')
+    const odgAllowance = _.get(connectWalletState, 'protAllowance', '0')
 
-    const buySymbol = buyToken === 'COIN' ? COIN_TICKER : 'KITE'
-    const sellSymbol = sellToken === 'COIN' ? COIN_TICKER : 'KITE'
+    const buySymbol = buyToken === 'COIN' ? COIN_TICKER : 'ODG'
+    const sellSymbol = sellToken === 'COIN' ? COIN_TICKER : 'ODG'
 
     const collateralPrice = useMemo(() => {
         if (auctionsState.collateralData) {
@@ -157,10 +157,10 @@ const AuctionsPayment = () => {
 
     const maxAmount = (function () {
         if (auctionType === 'COLLATERAL') {
-            const haiToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
-            const haiToBid = ethers.utils.formatUnits(haiToBidPlusOne.toString(), 18)
-            const haiBalanceNumber = Number(haiBalance)
-            return haiBalanceNumber < Number(haiToBid) ? haiBalance : haiToBid.toString()
+            const odToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
+            const odToBid = ethers.utils.formatUnits(odToBidPlusOne.toString(), 18)
+            const odBalanceNumber = Number(odBalance)
+            return odBalanceNumber < Number(odToBid) ? odBalance : odToBid.toString()
         } else {
             return maxBid()
         }
@@ -176,8 +176,8 @@ const AuctionsPayment = () => {
 
         const valueBN = value ? BigNumber.from(toFixedString(value, 'WAD')) : BigNumber.from('0')
 
-        const raiBalanceBN = haiBalance ? BigNumber.from(toFixedString(haiBalance, 'WAD')) : BigNumber.from('0')
-        const flxBalanceBN = kiteBalance ? BigNumber.from(toFixedString(kiteBalance, 'WAD')) : BigNumber.from('0')
+        const raiBalanceBN = odBalance ? BigNumber.from(toFixedString(odBalance, 'WAD')) : BigNumber.from('0')
+        const flxBalanceBN = odgBalance ? BigNumber.from(toFixedString(odgBalance, 'WAD')) : BigNumber.from('0')
         const internalBalanceBN =
             internalBalance && Number(internalBalance) > 0.00001
                 ? BigNumber.from(toFixedString(internalBalance, 'WAD'))
@@ -203,14 +203,12 @@ const AuctionsPayment = () => {
 
         if (auctionType === 'SURPLUS') {
             if (buyAmountBN.gt(totalFlxBalance) || valueBN.gt(flxBalanceBN)) {
-                setError(`Insufficient KITE balance.`)
+                setError(`Insufficient ODG balance.`)
                 return false
             }
 
             if (bids.length > 0 && valueBN.lt(maxBidAmountBN)) {
-                setError(
-                    `You need to bid ${((Number(bidIncrease) - 1) * 100).toFixed(0)}% more KITE vs the highest bid`
-                )
+                setError(`You need to bid ${((Number(bidIncrease) - 1) * 100).toFixed(0)}% more ODG vs the highest bid`)
                 return false
             }
         }
@@ -230,21 +228,21 @@ const AuctionsPayment = () => {
                 setError(
                     `You need to bid ${((Number(debt_amountSoldIncrease) - 1) * 100).toFixed(
                         0
-                    )}% less KITE vs the lowest bid`
+                    )}% less ODG vs the lowest bid`
                 )
                 return false
             }
         }
 
         if (auctionType === 'COLLATERAL') {
-            const haiBalanceBN = ethers.utils.parseUnits(haiBalance)
+            const odBalanceBN = ethers.utils.parseUnits(odBalance)
             const valueBN = value ? ethers.utils.parseUnits(value, 18) : BigNumber.from('0')
             const collateralAmountBN = collateralValue
                 ? ethers.utils.parseUnits(collateralValue, 18)
                 : BigNumber.from('0')
 
             // Collateral Error when you dont have enough balance
-            if (buyAmountBN.gt(totalRaiBalance) || valueBN.gt(haiBalanceBN)) {
+            if (buyAmountBN.gt(totalRaiBalance) || valueBN.gt(odBalanceBN)) {
                 setError(`Insufficient ${COIN_TICKER} balance.`)
                 return false
             }
@@ -261,14 +259,12 @@ const AuctionsPayment = () => {
 
     const hasAllowance = () => {
         let tempValue = value
-        const haiAllowanceBN = haiAllowance ? BigNumber.from(toFixedString(haiAllowance, 'WAD')) : BigNumber.from('0')
-        const kiteAllowanceBN = kiteAllowance
-            ? BigNumber.from(toFixedString(kiteAllowance, 'WAD'))
-            : BigNumber.from('0')
+        const odAllowanceBN = odAllowance ? BigNumber.from(toFixedString(odAllowance, 'WAD')) : BigNumber.from('0')
+        const odgAllowanceBN = odgAllowance ? BigNumber.from(toFixedString(odgAllowance, 'WAD')) : BigNumber.from('0')
 
         if (auctionType === 'COLLATERAL') {
-            const haiAmountBN = amount ? BigNumber.from(toFixedString(amount, 'WAD')) : BigNumber.from('0')
-            return haiAllowanceBN.gte(haiAmountBN)
+            const odAmountBN = amount ? BigNumber.from(toFixedString(amount, 'WAD')) : BigNumber.from('0')
+            return odAllowanceBN.gte(odAmountBN)
         }
 
         if (auctionType === 'DEBT') {
@@ -276,9 +272,9 @@ const AuctionsPayment = () => {
         }
         const valueBN = tempValue ? BigNumber.from(toFixedString(tempValue, 'WAD')) : BigNumber.from('0')
         if (auctionType === 'SURPLUS') {
-            return kiteAllowanceBN.gte(valueBN)
+            return odgAllowanceBN.gte(valueBN)
         }
-        return haiAllowanceBN.gte(valueBN)
+        return odAllowanceBN.gte(valueBN)
     }
 
     const handleSubmit = () => {
@@ -318,7 +314,7 @@ const AuctionsPayment = () => {
             Number(protInternalBalance) > Number(internalBalance)
                 ? Number(protInternalBalance)
                 : Number(internalBalance)
-        const symbol = Number(protInternalBalance) > Number(internalBalance) ? 'KITE' : 'HAI'
+        const symbol = Number(protInternalBalance) > Number(internalBalance) ? 'ODG' : 'OD'
         return { amount, symbol }
     }
 

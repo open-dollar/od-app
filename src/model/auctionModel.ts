@@ -31,11 +31,11 @@ export interface AuctionModel {
     operation: number
     setOperation: Action<AuctionModel, number>
 
-    // protInternalBalance = user's KITE balance in the protocol
+    // protInternalBalance = user's ODG balance in the protocol
     protInternalBalance: string
     setProtInternalBalance: Action<AuctionModel, string>
 
-    // internalbalance = user's HAI balance in the protocol
+    // internalbalance = user's OD balance in the protocol
     internalBalance: string
     setInternalBalance: Action<AuctionModel, string>
 

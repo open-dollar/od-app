@@ -63,10 +63,10 @@ const AuctionsTransactions = () => {
     const handleWaitingTitle = (function () {
         switch (auctionType) {
             case 'DEBT':
-                return isSettle ? 'Claiming KITE' : isClaim ? 'Claiming Tokens' : `Bid ${COIN_TICKER} and Receive KITE`
+                return isSettle ? 'Claiming ODG' : isClaim ? 'Claiming Tokens' : `Bid ${COIN_TICKER} and Receive ODG`
 
             case 'SURPLUS':
-                return isSettle ? 'Claiming HAI' : isClaim ? 'Claiming Tokens' : `Bid KITE and Receive ${COIN_TICKER}`
+                return isSettle ? 'Claiming OD' : isClaim ? 'Claiming Tokens' : `Bid ODG and Receive ${COIN_TICKER}`
 
             case 'COLLATERAL':
                 return 'Buying Collateral'

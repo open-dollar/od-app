@@ -52,11 +52,11 @@ const LiquidateSafeModal = () => {
                             hash: txResponse.hash,
                             status: 'loading',
                         })
-                        txResponse.wait().then(() => {
-                            popupsModel.setIsWaitingModalOpen(false)
-                            history.push('/safes')
-                            closeModal()
-                        })
+                        // txResponse.wait().then(() => {
+                        //     popupsModel.setIsWaitingModalOpen(false)
+                        //     history.push('/safes')
+                        //     closeModal()
+                        // })
                     }
                 })
                 .catch((error) => {

@@ -206,9 +206,9 @@ const Shared = ({ children, ...rest }: Props) => {
     }
 
     async function sanctionsCheck() {
-        if (account && process.env.NODE_ENV === 'production') {
-            const { identifications } = await checkSanctions(account)
-            if (identifications.length > 0) {
+        if (account) {
+            const response = await checkSanctions(account)
+            if (response?.identifications.length === 0 && process.env.NODE_ENV === 'production') {
                 connectWalletActions.setIsWrongNetwork(true)
                 toast(
                     <ToastPayload

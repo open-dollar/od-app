@@ -1,10 +1,10 @@
 import { BigNumber } from 'ethers'
-import { Geb, utils } from '@usekeyp/od-sdk'
+import { Geb, utils } from '@opendollar/sdk'
 import { ILiquidationResponse, IUserSafeList } from '../interfaces'
 
-import { TokenLiquidationData, fetchLiquidationData } from '@usekeyp/od-sdk/lib/virtual/virtualLiquidationData'
-import { fetchUserSafes } from '@usekeyp/od-sdk/lib/virtual/virtualUserSafes.js'
-import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
+import { TokenLiquidationData, fetchLiquidationData } from '@opendollar/sdk/lib/virtual/virtualLiquidationData'
+import { fetchUserSafes } from '@opendollar/sdk/lib/virtual/virtualUserSafes.js'
+import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
 interface UserListConfig {
     geb: Geb

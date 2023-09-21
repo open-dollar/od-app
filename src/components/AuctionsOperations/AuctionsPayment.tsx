@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { utils as gebUtils } from '@usekeyp/od-sdk'
+import { utils as gebUtils } from '@opendollar/sdk'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { BigNumber, ethers, constants } from 'ethers'

@@ -1,9 +1,9 @@
 import { action, Action, Thunk, thunk } from 'easy-peasy'
-import { fetchTokenData, TokenFetchData } from '@usekeyp/od-sdk/lib/virtual/tokenData'
+import { fetchTokenData, TokenFetchData } from '@opendollar/sdk/lib/virtual/tokenData'
 
 import api from '../services/api'
 import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
-import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
+import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
 export interface ConnectWalletModel {
     forceUpdateTokens: boolean
@@ -81,7 +81,7 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     fetchTokenData: thunk(async (actions, payload) => {
         const tokenList = payload.geb.tokenList
-        let fetched;
+        let fetched
         try {
             fetched = await fetchTokenData(payload.geb, payload.user, tokenList)
         } catch (e) {

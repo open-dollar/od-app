@@ -1,8 +1,8 @@
-import { Geb } from '@usekeyp/od-sdk'
+import { Geb } from '@opendollar/sdk'
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 
 // temporary cast
-import { ISurplusAuction as SDKAuction, ICollateralAuction } from '@usekeyp/od-sdk/lib/schema/auction'
+import { ISurplusAuction as SDKAuction, ICollateralAuction } from '@opendollar/sdk/lib/schema/auction'
 import {
     handleAuctionBid,
     handleAuctionBuy,
@@ -14,8 +14,8 @@ import {
 import {
     CollateralAuctionsData,
     fetchCollateralAuctionData,
-} from '@usekeyp/od-sdk/lib/virtual/virtualCollateralAuctionData'
-import { AuctionData, fetchAuctionData } from '@usekeyp/od-sdk/lib/virtual/virtualAuctionData'
+} from '@opendollar/sdk/lib/virtual/virtualCollateralAuctionData'
+import { AuctionData, fetchAuctionData } from '@opendollar/sdk/lib/virtual/virtualAuctionData'
 import { IAuctionBid, IAuction, AuctionEventType } from '~/types'
 import { StoreModel } from '~/model'
 

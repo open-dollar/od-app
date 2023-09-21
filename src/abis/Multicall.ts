@@ -1,4 +1,4 @@
-import { MulticallRequest } from '@usekeyp/od-sdk'
+import { MulticallRequest } from '@opendollar/sdk'
 import { Provider, Listener } from '@ethersproject/providers'
 import { BytesLike } from '@ethersproject/bytes'
 import { BigNumberish } from '@ethersproject/bignumber'

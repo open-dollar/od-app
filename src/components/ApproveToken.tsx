@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
-import { utils as gebUtils } from '@usekeyp/od-sdk'
+import { utils as gebUtils } from '@opendollar/sdk'
 import { utils as ethersUtils } from 'ethers'
 import styled from 'styled-components'
 

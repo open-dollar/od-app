@@ -3530,6 +3530,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opendollar/sdk@npm:^1.5.2-rc.1":
+  version: 1.5.2-rc.1
+  resolution: "@opendollar/sdk@npm:1.5.2-rc.1"
+  dependencies:
+    ethers: 5.4.7
+  peerDependencies:
+    utf-8-validate: ^5.0.2
+  checksum: 28ff95d8cde125b400c4d9296e2ef1b8b07fad262c2eed88a1ba1fcfbb0b59dc413354d329a0b2967104c96d1793c13330b7f3d426174667cf20bdca4f2840a9
+  languageName: node
+  linkType: hard
+
 "@pedrouid/environment@npm:^1.0.1":
   version: 1.0.1
   resolution: "@pedrouid/environment@npm:1.0.1"
@@ -5042,6 +5053,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@gnosis.pm/safe-apps-web3-react": ^0.6.0
+    "@opendollar/sdk": ^1.5.2-rc.1
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2
@@ -5062,7 +5074,6 @@ __metadata:
     "@types/react-slider": ^1.1.2
     "@types/react-transition-group": ^4.4.0
     "@types/styled-components": ^5.1.3
-    "@usekeyp/od-sdk": ^1.4.0-rc.4
     "@walletconnect/web3-provider": 1.8.0
     "@web3-react/coinbase-wallet": ^8.2.0
     "@web3-react/core": ^8.2.0
@@ -5129,17 +5140,6 @@ __metadata:
     react-dom: ^17.0.1
   languageName: unknown
   linkType: soft
-
-"@usekeyp/od-sdk@npm:^1.4.0-rc.4":
-  version: 1.4.0-rc.4
-  resolution: "@usekeyp/od-sdk@npm:1.4.0-rc.4"
-  dependencies:
-    ethers: 5.4.7
-  peerDependencies:
-    utf-8-validate: ^5.0.2
-  checksum: cf596255a685e9dbaa46197a0f5cafbb73c479a269cdb4e0f3c0e99764ac1a7e13665aba6c114a8cf3283c387f1630472d696bab65cda85a0b83c807fc0d7c42
-  languageName: node
-  linkType: hard
 
 "@walletconnect/browser-utils@npm:^1.8.0":
   version: 1.8.0

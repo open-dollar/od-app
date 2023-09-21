@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { TokenData } from '@usekeyp/od-sdk/lib/contracts/addreses'
+import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -295,7 +295,10 @@ const CreateVault = ({
                                                     <Flex key={item.label}>
                                                         <Label color={isPrimary ? 'primary' : 'secondary'}>
                                                             {item.tip ? (
-                                                                <InfoIcon data-tooltip-id='tooltip-create-vault' data-tooltip-content={item.tip}>
+                                                                <InfoIcon
+                                                                    data-tooltip-id="tooltip-create-vault"
+                                                                    data-tooltip-content={item.tip}
+                                                                >
                                                                     <Info size="13" />
                                                                 </InfoIcon>
                                                             ) : null}

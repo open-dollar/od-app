@@ -1,5 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { ICollateralAuction as SDKCollateralAuction } from '@usekeyp/od-sdk/lib/schema/auction'
+import { ICollateralAuction as SDKCollateralAuction } from '@opendollar/sdk/lib/schema/auction'
 
 export type AuctionEventType = 'DEBT' | 'SURPLUS' | 'COLLATERAL'
 

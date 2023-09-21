@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@usekeyp/od-sdk'
+import { Geb } from '@opendollar/sdk'
 import { JsonRpcSigner } from '@ethersproject/providers'
 
 import { IAuctionBid } from '~/types'

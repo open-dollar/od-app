@@ -5,7 +5,7 @@
 import path from 'path'
 import '@testing-library/jest-dom/extend-expect'
 import { ethers } from 'ethers'
-import { Geb } from '@usekeyp/od-sdk'
+import { Geb } from '@opendollar/sdk'
 
 import dotenv from 'dotenv'
 

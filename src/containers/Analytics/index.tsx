@@ -38,7 +38,7 @@ interface AnalyticsStateProps {
 
 const Analytics = () => {
     const geb = useGeb()
-    const { chainId, connector } = useWeb3React()
+    const { chainId } = useWeb3React()
     const [state, setState] = useState<AnalyticsStateProps>({
         erc20Supply: '',
         globalDebt: '',

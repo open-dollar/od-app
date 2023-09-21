@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useCallback } from 'react'
-import { getTokenList } from '@usekeyp/od-sdk/lib/contracts/addreses'
+import { getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'

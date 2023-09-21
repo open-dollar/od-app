@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { Geb } from '@usekeyp/od-sdk'
+import { Geb } from '@opendollar/sdk'
 import { ETH_NETWORK } from './constants'
 
 export interface WrapEtherProps {

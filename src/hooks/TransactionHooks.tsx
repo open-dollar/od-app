@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { TransactionResponse, TransactionRequest } from '@ethersproject/providers'
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
-import { utils as gebUtils } from '@usekeyp/od-sdk'
+import { utils as gebUtils } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
 
 import { newTransactionsFirst } from '../utils/helper'

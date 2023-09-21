@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@usekeyp/od-sdk'
+import { Geb } from '@opendollar/sdk'
 import { css } from 'styled-components'
 import { injected, walletconnect, walletlink } from '../connectors'
 import { SupportedChainId } from './chains'

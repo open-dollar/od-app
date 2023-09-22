@@ -30,7 +30,7 @@ export const [walletConnectV2, hooks] = initializeConnector<WalletConnectV2>(
         new WalletConnectV2({
             actions,
             options: {
-                projectId: 'c8d728041790027d6469878911bff5cf',
+                projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID as string,
                 chains: [supportedChainId],
                 showQrModal: true,
             },

@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 
 import { hooks, metaMask } from '../../connectors/metaMask'
 import { Card } from '~/components/connectorCards/Card'
+import { useStoreActions } from '~/store'
 
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
@@ -30,12 +31,16 @@ export default function MetaMaskCard() {
 
     const provider = useProvider()
 
+    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
+
     const [error, setError] = useState(undefined)
 
     useEffect(() => {
-        void metaMask.connectEagerly().catch(() => {
-        })
-    }, [])
+        void metaMask.connectEagerly().catch(() => {})
+        if (provider?.provider.isMetaMask && accounts) {
+            popupsActions.setIsConnectorsWalletOpen(false)
+        }
+    }, [accounts])
 
     return (
         <Card

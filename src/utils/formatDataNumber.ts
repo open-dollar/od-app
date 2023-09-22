@@ -23,15 +23,16 @@ export function formatDataNumber(
     if (decimals !== 0) res = Number.parseFloat(utils.formatUnits(input, decimals))
 
     if (res < 0.01) {
-        let resString = res.toFixed(minimumDecimals);
-        return `${currency ? '$' : ''}${resString}`;
+        let resString = res.toFixed(minimumDecimals)
+        return `${currency ? '$' : ''}${resString}`
         // old return
         // return `${currency ? '$' : ''}${formatNumber(res.toString(), formatDecimal)}`
     }
-
+    // console.log(Math.min(minimumDecimals, formatDecimal))
     return new Intl.NumberFormat('en-US', {
         minimumFractionDigits: minimumDecimals,
-        maximumFractionDigits: formatDecimal,
+        maximumFractionDigits:
+            minimumDecimals >= formatDecimal ? Math.min(minimumDecimals, formatDecimal) + 1 : formatDecimal,
         notation: compact ? 'compact' : 'standard',
         style: currency ? 'currency' : 'decimal',
         currency: 'USD',

@@ -339,7 +339,7 @@ const Analytics = () => {
                     erc20Supply: formatDataNumber(result.erc20Supply, 18, 0, true),
                     globalDebt: formatDataNumber(result.globalDebt, 18, 0, true),
                     globalDebtCeiling: formatDataNumber(result.globalDebtCeiling, 18, 0, true),
-                    globalDebtUtilization: transformToWadPercentage(result.globalDebt, result.globalDebtCeiling, 3),
+                    globalDebtUtilization: transformToWadPercentage(result.globalDebt, result.globalDebtCeiling),
                     surplusInTreasury: formatDataNumber(result.surplusInTreasury, 18, 0, true),
                     marketPrice: formatDataNumber(result.marketPrice, 18, 3, true, undefined, 2),
                     redemptionPrice: formatDataNumber(result.redemptionPrice, 18, 3, true, undefined, 2),

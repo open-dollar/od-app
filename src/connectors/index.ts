@@ -69,13 +69,11 @@ const TESTNET_CHAINS = {
 const [testnet, ...optionalChains] = Object.keys(TESTNET_CHAINS).map(Number)
 
 export const walletconnect = initializeConnector<WalletConnectV2>(
-    // @ts-ignore
     (actions) =>
         new WalletConnectV2({
             actions,
             options: {
-                // @ts-ignore
-                projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+                projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID as string,
                 chains: [testnet, ...optionalChains],
                 optionalChains,
                 showQrModal: true,

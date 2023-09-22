@@ -37,10 +37,10 @@ export default function MetaMaskCard() {
 
     useEffect(() => {
         void metaMask.connectEagerly().catch(() => {})
-        if (isActive && provider?.provider.isMetaMask) {
+        if (provider?.provider.isMetaMask && accounts) {
             popupsActions.setIsConnectorsWalletOpen(false)
         }
-    }, [isActive])
+    }, [accounts])
 
     return (
         <Card

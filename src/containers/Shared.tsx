@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useCallback } from 'react'
-import { getTokenList } from '@usekeyp/od-sdk/lib/contracts/addreses'
+import { getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
@@ -45,7 +45,7 @@ import {
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
-import checkSanctions from '~/services/checkSanctions'
+import FooterBackgroundImage from '../assets/footer-bg-art.svg'
 
 interface Props {
     children: ReactNode
@@ -53,7 +53,7 @@ interface Props {
 
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
-    const { connector, chainId, account, provider } = useActiveWeb3React()
+    const { chainId, account, provider } = useActiveWeb3React()
     const geb = useGeb()
     const history = useHistory()
 
@@ -79,7 +79,7 @@ const Shared = ({ children, ...rest }: Props) => {
         auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
     const toastId = 'networkToastHash'
-    const sanctionsToastId = 'sanctionsToastHash'
+    const successAccountConnection = 'successAccountConnection'
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -205,29 +205,6 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }
 
-    async function sanctionsCheck() {
-        if (account && process.env.NODE_ENV === 'production') {
-            const { identifications } = await checkSanctions(account)
-            if (identifications.length > 0) {
-                connectWalletActions.setIsWrongNetwork(true)
-                toast(
-                    <ToastPayload
-                        icon={'AlertTriangle'}
-                        iconSize={40}
-                        iconColor={'orange'}
-                        textColor={'#ffffff'}
-                        text={`${t('sanctioned_wallet')}`}
-                    />,
-                    { autoClose: false, type: 'warning', toastId: sanctionsToastId }
-                )
-                return false
-            } else {
-                return true
-            }
-        }
-        return true
-    }
-
     async function networkChecker() {
         accountChange()
         const id: ChainId = NETWORK_ID
@@ -253,13 +230,12 @@ const Shared = ({ children, ...rest }: Props) => {
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
-                sanctionsCheck()
                 connectWalletActions.setStep(1)
                 accountChecker()
             }
         }
     }
-
+    /*eslint-disable-next-line*/
     const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
 
     useEffect(() => {

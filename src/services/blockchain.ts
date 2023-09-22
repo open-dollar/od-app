@@ -1,5 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers/lib/json-rpc-provider'
-import { Geb, TransactionRequest } from '@usekeyp/od-sdk'
+import { Geb, TransactionRequest } from '@opendollar/sdk'
 import { BigNumber, ethers, utils as ethersUtils } from 'ethers'
 
 import { handlePreTxGasEstimate } from '~/hooks'

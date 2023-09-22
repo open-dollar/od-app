@@ -5,17 +5,17 @@ import _ from '~/utils/lodash'
 
 import { useActiveWeb3React } from '~/hooks'
 import { AuctionEventType, IAuction, IAuctionBidder, ICollateralAuction } from '~/types'
-import { AuctionData } from '@usekeyp/od-sdk/lib/virtual/virtualAuctionData'
+import { AuctionData } from '@opendollar/sdk/lib/virtual/virtualAuctionData'
 
-import { radToFixed, wadToFixed } from '@usekeyp/od-sdk/lib/utils'
+import { radToFixed, wadToFixed } from '@opendollar/sdk/lib/utils'
 import useGeb from './useGeb'
-import { utils as gebUtils } from '@usekeyp/od-sdk'
+import { utils as gebUtils } from '@opendollar/sdk'
 
 // temporary cast
 import {
     ICollateralAuction as SDKCollateralAuction,
     ISurplusAuction as SDKAuction,
-} from '@usekeyp/od-sdk/lib/schema/auction'
+} from '@opendollar/sdk/lib/schema/auction'
 import { floatsTypes } from '~/utils'
 
 export function useGetAuctions(type: AuctionEventType, tokenSymbol?: string) {

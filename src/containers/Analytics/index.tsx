@@ -22,7 +22,6 @@ import useGeb from '~/hooks/useGeb'
 
 interface AnalyticsStateProps {
     erc20Supply: string
-    totalVaults: string
     globalDebt: string
     globalDebtUtilization: string
     globalDebtCeiling: string
@@ -34,6 +33,7 @@ interface AnalyticsStateProps {
     pRate: string
     iRate: string
     colRows: (string | JSX.Element)[][]
+    totalVaults: string
 }
 
 const Analytics = () => {
@@ -41,7 +41,6 @@ const Analytics = () => {
     const { chainId } = useWeb3React()
     const [state, setState] = useState<AnalyticsStateProps>({
         erc20Supply: '',
-        totalVaults: '',
         globalDebt: '',
         globalDebtUtilization: '',
         globalDebtCeiling: '',
@@ -53,11 +52,11 @@ const Analytics = () => {
         pRate: '',
         iRate: '',
         colRows: [],
+        totalVaults: '',
     })
 
     const {
         erc20Supply,
-        totalVaults,
         globalDebt,
         globalDebtCeiling,
         globalDebtUtilization,
@@ -69,6 +68,7 @@ const Analytics = () => {
         pRate,
         iRate,
         colRows,
+        totalVaults,
     } = state
 
     const colData: TableProps = {
@@ -158,7 +158,7 @@ const Analytics = () => {
     const vaultNFTs = {
         image: 'NFTS',
         title: 'Vault NFTs',
-        value: totalVaults ? totalVaults : '0',
+        value: totalVaults,
         description: 'Vault NFTs',
     }
 
@@ -289,17 +289,6 @@ const Analytics = () => {
 
     useEffect(() => {
         if (geb) {
-            geb.contracts.proxyRegistry
-                .totalSupply()
-                .then((result) => {
-                    setState((prevState) => ({
-                        ...prevState,
-                        totalVaults: result.toString(),
-                    }))
-                })
-                .catch((error) => {
-                    console.error('Error fetching totalSupply:', error)
-                })
             fetchAnalyticsData(geb).then((result) => {
                 const colRows = Object.fromEntries(
                     Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [
@@ -348,6 +337,7 @@ const Analytics = () => {
                     pRate: transformToAnnualRate(result.redemptionRatePTerm, 27),
                     iRate: transformToAnnualRate(result.redemptionRateITerm, 27),
                     colRows: Object.values(colRows),
+                    totalVaults: result.totalVaults,
                 })
             })
         }

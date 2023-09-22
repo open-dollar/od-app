@@ -178,7 +178,7 @@ const Navbar = () => {
                         </ArrowWrapper>
                     </DollarValue>
                     {isPopupVisible && (
-                        <PriceInfoPopup ref={popupRef} className="group">
+                        <LiquidityInfoPopup ref={popupRef} className="group">
                             <PopupWrapperLink className="group">
                                 <IconWrapper>
                                     <Uniswap />
@@ -188,7 +188,7 @@ const Navbar = () => {
                                     <div>Delta B: +735.14</div>
                                 </PoupColumn>
                             </PopupWrapperLink>
-                        </PriceInfoPopup>
+                        </LiquidityInfoPopup>
                     )}
                 </Price>
             </Left>
@@ -490,6 +490,15 @@ const TestTokenPopup = styled.div`
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
     top: 80px;
+`
+
+const LiquidityInfoPopup = styled.div`
+    position: absolute;
+    min-width: 180px;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 45px;
 `
 
 const PriceInfoPopup = styled.div`

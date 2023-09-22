@@ -2,9 +2,8 @@ import React, { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { utils } from 'ethers'
 
-import { formatNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { handleTransactionError, isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -36,7 +35,9 @@ const Navbar = () => {
     const { isActive, account, provider } = useWeb3React()
     const odRef = useRef<HTMLButtonElement | null>(null)
     const tokenPopupRef = useRef<HTMLDivElement | null>(null)
+    const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
+    const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
     const signer = provider ? provider.getSigner(account) : undefined
 
     const handleTokenClick = () => {
@@ -118,7 +119,7 @@ const Navbar = () => {
 
     const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatNumber(balances.OD ? utils.formatEther(balances.OD.balanceE18) : '0', 2)
+        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 2, 2, false)
     }, [connectWalletModel.tokensFetchedData])
 
     const claimAirdropButton = async (signer: any) => {
@@ -177,7 +178,7 @@ const Navbar = () => {
                         </ArrowWrapper>
                     </DollarValue>
                     {isPopupVisible && (
-                        <PriceInfoPopup ref={popupRef} className="group">
+                        <LiquidityInfoPopup ref={popupRef} className="group">
                             <PopupWrapperLink className="group">
                                 <IconWrapper>
                                     <Uniswap />
@@ -187,23 +188,37 @@ const Navbar = () => {
                                     <div>Delta B: +735.14</div>
                                 </PoupColumn>
                             </PopupWrapperLink>
-                        </PriceInfoPopup>
+                        </LiquidityInfoPopup>
                     )}
                 </Price>
             </Left>
-
             <HideMobile>
                 <NavLinks />
             </HideMobile>
             <RightSide>
                 <BtnContainer>
                     {signer && (
-                        <ClaimButton onClick={() => signer && claimAirdropButton(signer)}>
-                            Claim test tokens 🪂
-                        </ClaimButton>
+                        <>
+                            <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                Test tokens 🪂
+                                <ArrowWrapper>
+                                    <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                </ArrowWrapper>
+                            </ClaimButton>
+                            {isTestTokenPopupVisible && (
+                                <TestTokenPopup ref={testTokenPopupRef} className="group">
+                                    <TestTokenTextWrapper>
+                                        USE THE /CLAIM COMMAND IN OUR{' '}
+                                        <a target="blank" href="https://discord.opendollar.com/">
+                                            DISCORD
+                                        </a>
+                                    </TestTokenTextWrapper>
+                                </TestTokenPopup>
+                            )}
+                        </>
                     )}
                     {/* Button to add OD and ODG to the wallet */}
-                    <Price>
+                    <RightPriceWrapper>
                         <DollarValue ref={odRef} onClick={handleTokenClick}>
                             <Icon
                                 src={require('../assets/od-wallet-icon.svg').default}
@@ -248,7 +263,7 @@ const Navbar = () => {
                                 </PopupColumnWrapper>
                             </PriceInfoPopup>
                         )}
-                    </Price>
+                    </RightPriceWrapper>
 
                     {/* Button to connect wallet */}
                     <Button
@@ -361,7 +376,7 @@ const BtnContainer = styled.div`
 
     svg {
         position: relative;
-        margin-right: 5px;
+        margin-right: 0px;
     }
 `
 
@@ -440,6 +455,15 @@ const OdButton = styled.button`
     }
 `
 
+const RightPriceWrapper = styled.div`
+    position: relative;
+    margin-right: auto;
+
+    @media (max-width: ${screenWidth}) {
+        display: none;
+    }
+`
+
 const Price = styled.div`
     position: relative;
     margin-right: auto;
@@ -450,13 +474,40 @@ const Price = styled.div`
     }
 `
 
-const PriceInfoPopup = styled.div`
+const TestTokenTextWrapper = styled.div`
+    font-size: ${(props) => props.theme.font.extraSmall};
+    text-align: left;
+    font-weight: 600;
+    color: #0079ad;
+    word-wrap: break-word;
+    max-width: 100%;
+`
+
+const TestTokenPopup = styled.div`
+    position: absolute;
+    max-width: 150px;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 80px;
+`
+
+const LiquidityInfoPopup = styled.div`
     position: absolute;
     min-width: 180px;
     padding: 8px;
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
-    top: 56px;
+    top: 45px;
+`
+
+const PriceInfoPopup = styled.div`
+    position: absolute;
+    min-width: 160px;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 45px;
 `
 
 const PopupWrapperLink = styled.a`

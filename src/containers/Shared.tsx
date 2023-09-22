@@ -325,7 +325,9 @@ const Container = styled.div`
     }
 `
 
-const Content = styled.div``
+const Content = styled.div`
+    min-height: 100vh;
+`
 const EmptyDiv = styled.div``
 
 const AlertContainer = styled.div`

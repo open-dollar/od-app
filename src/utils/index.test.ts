@@ -114,30 +114,24 @@ describe('utils', () => {
     })
 
     describe('#ratioChecker', () => {
-        it('returns 0', () => {
-            expect(ratioChecker(0, 1)).toEqual(0)
+        it('returns 1 for Low Risk (>= 151%)', () => {
+            expect(ratioChecker(151)).toEqual(1)
+            expect(ratioChecker(300)).toEqual(1)
         })
 
-        it('returns 1', () => {
-            expect(ratioChecker(300, 1)).toEqual(1)
-        })
-        it('returns 1', () => {
-            expect(ratioChecker(301, 1)).toEqual(1)
+        it('returns 2 for Elevated Risk (137% - 150%)', () => {
+            expect(ratioChecker(137)).toEqual(2)
+            expect(ratioChecker(150)).toEqual(2)
         })
 
-        it('returns 2', () => {
-            expect(ratioChecker(200, 1)).toEqual(2)
+        it('returns 3 for High Risk (120% - 136%)', () => {
+            expect(ratioChecker(120)).toEqual(3)
+            expect(ratioChecker(136)).toEqual(3)
         })
 
-        it('returns 2', () => {
-            expect(ratioChecker(201, 1)).toEqual(2)
-        })
-        it('returns 3', () => {
-            expect(ratioChecker(199, 1)).toEqual(3)
-        })
-
-        it('returns 3', () => {
-            expect(ratioChecker(50, 1)).toEqual(3)
+        it('returns 4 for Liquidation Risk (1% - 119%)', () => {
+            expect(ratioChecker(0)).toEqual(0)
+            expect(ratioChecker(119)).toEqual(4)
         })
     })
 

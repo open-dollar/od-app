@@ -169,7 +169,7 @@ export const formatUserSafe = (
                 id: s.safeId,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
-                riskState: ratioChecker(Number(collateralRatio), Number(safetyCRatio)),
+                riskState: ratioChecker(Number(collateralRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
                 collateralName: collateralBytes32[s.collateralType],
@@ -239,19 +239,17 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
-export const ratioChecker = (currentLiquitdationRatio: number, minLiquidationRatio: number) => {
-    const minLiquidationRatioPercent = minLiquidationRatio * 100
-    const safestRatio = minLiquidationRatioPercent * 2.2
-    const midSafeRatio = minLiquidationRatioPercent * 1.5
-
-    if (currentLiquitdationRatio < minLiquidationRatioPercent && currentLiquitdationRatio > 0) {
-        return 4
-    } else if (currentLiquitdationRatio >= safestRatio) {
+export const ratioChecker = (currentLiquidationRatio: number) => {
+    if (currentLiquidationRatio === 0) {
+        return 0
+    } else if (currentLiquidationRatio >= 151) {
         return 1
-    } else if (currentLiquitdationRatio < safestRatio && currentLiquitdationRatio >= midSafeRatio) {
+    } else if (currentLiquidationRatio >= 137 && currentLiquidationRatio <= 150) {
         return 2
-    } else if (currentLiquitdationRatio < midSafeRatio && currentLiquitdationRatio > 0) {
+    } else if (currentLiquidationRatio >= 120 && currentLiquidationRatio <= 136) {
         return 3
+    } else if (currentLiquidationRatio > 0 && currentLiquidationRatio <= 119) {
+        return 4
     } else {
         return 0
     }
@@ -389,7 +387,7 @@ export const returnState = (state: number) => {
         case 1:
             return 'Low'
         case 2:
-            return 'Medium'
+            return 'Elevated'
         case 3:
             return 'High'
         case 4:

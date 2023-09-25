@@ -101,6 +101,16 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [account, geb, forceUpdateTokens, connectWalletActions])
 
     useEffect(() => {
+        const tokenDataInterval = setInterval(() => {
+            if (account && geb) {
+                connectWalletActions.fetchTokenData({ geb, user: account })
+            }
+        }, 15000)
+
+        return () => clearInterval(tokenDataInterval)
+    }, [account, geb, connectWalletActions])
+
+    useEffect(() => {
         const odBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18
         const odgBalance = connectWalletState?.tokensFetchedData.ODG?.balanceE18
 

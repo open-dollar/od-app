@@ -100,8 +100,7 @@ const Analytics = () => {
             },
             {
                 name: 'Total Locked',
-                description:
-                    'Total amount of collateral tokens deposited in Safes backing OD debt. TODO: replace mocked values',
+                description: 'Total amount of collateral tokens deposited in Safes backing OD debt.',
             },
             {
                 name: 'Total Locked ($)',
@@ -265,7 +264,7 @@ const Analytics = () => {
     }
 
     const analiticsData: DataCardProps[] = [
-        // totalCollateralLocked,
+        totalCollateralLocked,
         // outstandingOd,
         vaultNFTs,
     ]

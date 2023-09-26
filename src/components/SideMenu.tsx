@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, COIN_TICKER, getTokenLogo, formatNumber } from '~/utils'
+import { amountToFiat, returnWalletAddress, COIN_TICKER, getTokenLogo, formatNumber, formatDataNumber } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -20,12 +20,14 @@ const SideMenu = () => {
     const nodeRef = React.useRef(null)
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
+    const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
     const [loadingOdValue, setLoadingOdValue] = useState(false)
     const popupRef = useRef<HTMLDivElement | null>(null)
     const { isActive, account, chainId } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const odRef = useRef<HTMLButtonElement | null>(null)
     const tokenPopupRef = useRef<HTMLDivElement | null>(null)
+    const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const {
@@ -44,9 +46,32 @@ const SideMenu = () => {
         setTokenPopupVisibility(!isTokenPopupVisible)
     }
 
-    const haiBalance = useMemo(() => {
+    const handleClickOutsideOdRef = (event: MouseEvent) => {
+        if (
+            dollarRef.current &&
+            !dollarRef.current.contains(event.target as Node) &&
+            popupRef.current &&
+            !popupRef.current.contains(event.target as Node)
+        ) {
+            setPopupVisibility(false)
+        }
+    }
+
+    const handleClickOutsideTestToken = (event: MouseEvent) => {
+        if (testTokenPopupRef.current && !testTokenPopupRef.current.contains(event.target as Node)) {
+            setTestTokenPopupVisibility(false)
+        }
+    }
+
+    const handleClickOutsideOdWallet = (event: MouseEvent) => {
+        if (tokenPopupRef.current && !tokenPopupRef.current.contains(event.target as Node)) {
+            setTokenPopupVisibility(false)
+        }
+    }
+
+    const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatNumber(balances.OD ? utils.formatEther(balances.OD.balanceE18) : '0', 2)
+        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false)
     }, [connectWalletModel.tokensFetchedData])
 
     const renderBalance = () => {
@@ -99,6 +124,19 @@ const SideMenu = () => {
             console.log('Error adding ODG to the wallet:', error)
         }
     }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutsideOdRef)
+        document.addEventListener('mousedown', handleClickOutsideTestToken)
+        document.addEventListener('mousedown', handleClickOutsideOdWallet)
+
+        return () => {
+            // Cleanup the event listener on component unmount
+            document.removeEventListener('mousedown', handleClickOutsideOdRef)
+            document.removeEventListener('mousedown', handleClickOutsideTestToken)
+            document.removeEventListener('mousedown', handleClickOutsideOdWallet)
+        }
+    }, [])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
@@ -155,7 +193,7 @@ const SideMenu = () => {
                                         width={'16px'}
                                         height={'16px'}
                                     />
-                                    {haiBalance + ' '} OD
+                                    {odBalance + ' '} OD
                                     <ArrowWrapper>
                                         <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                     </ArrowWrapper>
@@ -216,6 +254,24 @@ const SideMenu = () => {
                                     </PriceInfoPopup>
                                 )}
                             </Price>
+                            <Price>
+                                <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                    Test tokens 🪂
+                                    <ArrowWrapper>
+                                        <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                    </ArrowWrapper>
+                                </ClaimButton>
+                                {isTestTokenPopupVisible && (
+                                    <TestTokenPopup ref={testTokenPopupRef} className="group">
+                                        <TestTokenTextWrapper>
+                                            USE THE /CLAIM COMMAND IN OUR{' '}
+                                            <a target="blank" href="https://discord.opendollar.com/">
+                                                DISCORD
+                                            </a>
+                                        </TestTokenTextWrapper>
+                                    </TestTokenPopup>
+                                )}
+                            </Price>
                         </OpenDollarInformationColumn>
                     </InnerContainer>
                 </Inner>
@@ -225,6 +281,23 @@ const SideMenu = () => {
 }
 
 export default SideMenu
+
+const TestTokenTextWrapper = styled.div`
+    font-size: ${(props) => props.theme.font.extraSmall};
+    text-align: left;
+    font-weight: 600;
+    color: #0079ad;
+    word-wrap: break-word;
+    max-width: 100%;
+`
+const TestTokenPopup = styled.div`
+    position: absolute;
+    max-width: 150px;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 45px;
+`
 
 const PopupColumnWrapper = styled.div`
     display: flex;
@@ -241,12 +314,19 @@ const TokenTextWrapper = styled.div`
 `
 
 const OpenDollarInformationColumn = styled.div`
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
     flex-direction: column;
-    padding: 15px 25px;
-    margin-top: 16px;
+    padding: 30px 25px;
+    margin-top: 48px;
     display: flex;
-    justify-content: left;
     gap: 16px;
+    @media (max-width: 767px) {
+        margin-top: 16px;
+        position: unset;
+        transform: initial;
+    }
 `
 
 const PopupColumn = styled.div`
@@ -287,7 +367,7 @@ const PriceInfoPopup = styled.div`
     padding: 8px;
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
-    top: 56px;
+    top: 45px;
 `
 
 const ArrowWrapper = styled.div`
@@ -304,7 +384,6 @@ const AddIcon = styled(Icon)`
 `
 
 const OdButton = styled.button`
-    width: 163.45px;
     outline: none;
     cursor: pointer;
     border: none;
@@ -317,7 +396,6 @@ const OdButton = styled.button`
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 50px;
     transition: all 0.3s ease;
-    margin-right: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -328,9 +406,11 @@ const OdButton = styled.button`
     }
 `
 
+const ClaimButton = styled(OdButton)``
+
 const DollarValue = styled(OdButton)`
-    width: 163.45px;
-    justify-content: space-between;
+    width: auto;
+    white-space: nowrap;
 `
 
 // close button container should be button on right side of screen
@@ -418,8 +498,11 @@ const Address = styled.div`
 
 const Account = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     cursor: pointer;
+    @media (max-width: 767px) {
+        justify-content: flex-start;
+    }
 `
 
 const Title = styled.div`

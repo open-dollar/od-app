@@ -59,7 +59,7 @@ const Nav = styled.div`
     left: 50%;
     transform: translateX(-50%);
     position: absolute;
-    @media (max-width: 1243px) {
+    @media (max-width: 767px) {
         position: unset;
         transform: initial;
     }

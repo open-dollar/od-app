@@ -90,7 +90,7 @@ const Navbar = () => {
         setPopupVisibility(!isPopupVisible)
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutsideOdRef = (event: MouseEvent) => {
         if (
             dollarRef.current &&
             !dollarRef.current.contains(event.target as Node) &&
@@ -98,6 +98,18 @@ const Navbar = () => {
             !popupRef.current.contains(event.target as Node)
         ) {
             setPopupVisibility(false)
+        }
+    }
+
+    const handleClickOutsideTestToken = (event: MouseEvent) => {
+        if (testTokenPopupRef.current && !testTokenPopupRef.current.contains(event.target as Node)) {
+            setTestTokenPopupVisibility(false)
+        }
+    }
+
+    const handleClickOutsideOdWallet = (event: MouseEvent) => {
+        if (tokenPopupRef.current && !tokenPopupRef.current.contains(event.target as Node)) {
+            setTokenPopupVisibility(false)
         }
     }
 
@@ -119,7 +131,7 @@ const Navbar = () => {
 
     const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 2, 2, false)
+        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false)
     }, [connectWalletModel.tokensFetchedData])
 
     const claimAirdropButton = async (signer: any) => {
@@ -157,11 +169,14 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-
+        document.addEventListener('mousedown', handleClickOutsideOdRef)
+        document.addEventListener('mousedown', handleClickOutsideTestToken)
+        document.addEventListener('mousedown', handleClickOutsideOdWallet)
         return () => {
             // Cleanup the event listener on component unmount
-            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('mousedown', handleClickOutsideOdRef)
+            document.removeEventListener('mousedown', handleClickOutsideTestToken)
+            document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
     }, [])
 

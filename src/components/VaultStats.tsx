@@ -165,7 +165,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                             data-tooltip-content={`${
                                                 singleSafe && returnState(singleSafe.riskState)
                                                     ? returnState(singleSafe.riskState)
-                                                    : 'No'
+                                                    : 'Closed'
                                             } Risk`}
                                             className={
                                                 singleSafe && returnState(singleSafe.riskState)
@@ -176,7 +176,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                         <MainValue>
                                             {singleSafe && returnState(singleSafe.riskState)
                                                 ? returnState(singleSafe.riskState)
-                                                : 'No'}
+                                                : 'Closed'}
                                         </MainValue>
                                     </Wrapper>
                                 </Column>
@@ -218,7 +218,9 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </div>
                                 ) : null}
                             </SideTitle>
-                            <SideValue>${singleSafe ? formatWithCommas(singleSafe.liquidationPrice, 2, 2) : '-'}</SideValue>
+                            <SideValue>
+                                ${singleSafe ? formatWithCommas(singleSafe.liquidationPrice, 2, 2) : '-'}
+                            </SideValue>
                         </Side>
 
                         <Side>
@@ -282,7 +284,7 @@ const RowTextWrapper = styled.div`
         &.dimmed {
             color: ${(props) => props.theme.colors.secondary};
         }
-        &.medium {
+        &.elevated {
             color: ${(props) => props.theme.colors.yellowish};
         }
         &.high {
@@ -313,7 +315,7 @@ const AfterTextWrapper = styled.span`
         &.dimmed {
             color: ${(props) => props.theme.colors.secondary};
         }
-        &.medium {
+        &.elevated {
             color: ${(props) => props.theme.colors.yellowish};
         }
         &.high {
@@ -415,7 +417,7 @@ const MainChange = styled.div`
         &.dimmed {
             color: ${(props) => props.theme.colors.secondary};
         }
-        &.medium {
+        &.elevated {
             color: ${(props) => props.theme.colors.yellowish};
         }
         &.high {
@@ -433,7 +435,7 @@ const Circle = styled.div`
     &.dimmed {
         background: ${(props) => props.theme.colors.secondary};
     }
-    &.medium {
+    &.elevated {
         background: ${(props) => props.theme.colors.yellowish};
     }
     &.high {

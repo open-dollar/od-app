@@ -115,29 +115,49 @@ describe('utils', () => {
 
     describe('#ratioChecker', () => {
         it('returns 0', () => {
-            expect(ratioChecker(0, 1)).toEqual(0)
+            expect(ratioChecker(0, 1.2)).toEqual(0)
         })
 
         it('returns 1', () => {
-            expect(ratioChecker(300, 1)).toEqual(1)
+            expect(ratioChecker(300, 1.2)).toEqual(1)
         })
         it('returns 1', () => {
-            expect(ratioChecker(301, 1)).toEqual(1)
+            expect(ratioChecker(301, 1.2)).toEqual(1)
+        })
+
+        it('returns 1', () => {
+            expect(ratioChecker(200, 1.2)).toEqual(1)
+        })
+
+        it('returns 1', () => {
+            expect(ratioChecker(201, 1.2)).toEqual(1)
+        })
+        it('returns 1', () => {
+            expect(ratioChecker(199, 1.2)).toEqual(1)
         })
 
         it('returns 2', () => {
-            expect(ratioChecker(200, 1)).toEqual(2)
+            expect(ratioChecker(150, 1.2)).toEqual(2)
         })
 
         it('returns 2', () => {
-            expect(ratioChecker(201, 1)).toEqual(2)
-        })
-        it('returns 3', () => {
-            expect(ratioChecker(199, 1)).toEqual(3)
+            expect(ratioChecker(140, 1.2)).toEqual(2)
         })
 
         it('returns 3', () => {
-            expect(ratioChecker(50, 1)).toEqual(3)
+            expect(ratioChecker(120, 1.2)).toEqual(3)
+        })
+
+        it('returns 3', () => {
+            expect(ratioChecker(130, 1.2)).toEqual(3)
+        })
+
+        it('returns 4', () => {
+            expect(ratioChecker(50, 1.2)).toEqual(4)
+        })
+
+        it('returns 4', () => {
+            expect(ratioChecker(30, 1.2)).toEqual(4)
         })
     })
 

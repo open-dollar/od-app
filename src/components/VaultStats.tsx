@@ -143,7 +143,10 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                                         After:{' '}
                                                         <span
                                                             className={returnState(
-                                                                ratioChecker(Number(newCollateralRatio))
+                                                                ratioChecker(
+                                                                    Number(newCollateralRatio),
+                                                                    Number(collateralRatio)
+                                                                )
                                                             ).toLowerCase()}
                                                         >
                                                             {formatWithCommas(newCollateralRatio)}%

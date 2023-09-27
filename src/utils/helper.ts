@@ -169,7 +169,7 @@ export const formatUserSafe = (
                 id: s.safeId,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
-                riskState: ratioChecker(Number(collateralRatio)),
+                riskState: ratioChecker(Number(collateralRatio), Number(safetyCRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
                 collateralName: collateralBytes32[s.collateralType],
@@ -239,17 +239,30 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
-export const ratioChecker = (currentLiquidationRatio: number) => {
-    if (currentLiquidationRatio === 0) {
-        return 0
-    } else if (currentLiquidationRatio >= 151) {
-        return 1
-    } else if (currentLiquidationRatio >= 137 && currentLiquidationRatio <= 150) {
-        return 2
-    } else if (currentLiquidationRatio >= 120 && currentLiquidationRatio <= 136) {
-        return 3
-    } else if (currentLiquidationRatio > 0 && currentLiquidationRatio <= 119) {
+/**
+ * Check the risk state of the current liquidation ratio given a fixed minLiquidationRatio
+ * @param currentLiquidationRatio
+ * @param minLiquidationRatio
+ */
+export const ratioChecker = (currentLiquidationRatio: number, minLiquidationRatio: number) => {
+    // Assuming minLiquidationRatioPercent is 120% for now
+    const minLiquidationRatioPercent = minLiquidationRatio * 100
+
+    // lowRiskLowerBound set to 151%
+    const lowRiskLowerBound = minLiquidationRatioPercent * 1.25833
+    // elevatedRiskLowerBound set to 137%
+    const elevatedRiskLowerBound = minLiquidationRatioPercent * 1.14167
+    // highRiskLowerBound set to 120%
+    const highRiskLowerBound = minLiquidationRatioPercent
+
+    if (currentLiquidationRatio < highRiskLowerBound && currentLiquidationRatio > 0) {
         return 4
+    } else if (currentLiquidationRatio >= lowRiskLowerBound) {
+        return 1
+    } else if (currentLiquidationRatio < lowRiskLowerBound && currentLiquidationRatio >= elevatedRiskLowerBound) {
+        return 2
+    } else if (currentLiquidationRatio < elevatedRiskLowerBound && currentLiquidationRatio >= highRiskLowerBound) {
+        return 3
     } else {
         return 0
     }

@@ -17,8 +17,13 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     ODG: require('../assets/odg.svg').default,
     STN: require('../assets/stn-img.png'),
     FTRG: require('../assets/stETH.svg').default,
+    WSTETH: require('../assets/stETH.svg').default,
+    CBETH: require('../assets/cbETH.svg').default,
+    RETH: require('../assets/rETH.svg').default,
+    ARB: require('../assets/arb.svg').default,
+    MAGIC: require('../assets/magic.svg').default,
 }
 
 export function getTokenLogo(token: string): string {
-    return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default;
+    return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default
 }

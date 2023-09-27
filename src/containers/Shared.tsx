@@ -81,7 +81,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
 
-
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
         popupsActions.setIsConnectModalOpen(false)

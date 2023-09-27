@@ -46,9 +46,8 @@ const VaultBlock = ({ ...props }) => {
                             <Label>{'Risk'}</Label>
                             <Wrapper>
                                 <Circle
-                                    
                                     data-tooltip-content={`${
-                                        returnState(props.riskState) ? returnState(props.riskState) : 'No'
+                                        returnState(props.riskState) ? returnState(props.riskState) : 'Closed'
                                     } Risk`}
                                     className={
                                         returnState(props.riskState)
@@ -56,7 +55,7 @@ const VaultBlock = ({ ...props }) => {
                                             : 'dimmed'
                                     }
                                 />{' '}
-                                <div>{returnState(props.riskState) ? returnState(props.riskState) : 'No'}</div>
+                                <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
                     </Block>
@@ -138,7 +137,7 @@ const Circle = styled.div`
     &.dimmed {
         background: ${(props) => props.theme.colors.secondary};
     }
-    &.medium {
+    &.elevated {
         background: ${(props) => props.theme.colors.yellowish};
     }
     &.high {

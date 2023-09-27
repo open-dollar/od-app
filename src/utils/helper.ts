@@ -239,18 +239,29 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 
-export const ratioChecker = (currentLiquitdationRatio: number, minLiquidationRatio: number) => {
+/**
+ * Check the risk state of the current liquidation ratio given a fixed minLiquidationRatio
+ * @param currentLiquidationRatio
+ * @param minLiquidationRatio
+ */
+export const ratioChecker = (currentLiquidationRatio: number, minLiquidationRatio: number) => {
+    // Assuming minLiquidationRatioPercent is 120% for now
     const minLiquidationRatioPercent = minLiquidationRatio * 100
-    const safestRatio = minLiquidationRatioPercent * 2.2
-    const midSafeRatio = minLiquidationRatioPercent * 1.5
 
-    if (currentLiquitdationRatio < minLiquidationRatioPercent && currentLiquitdationRatio > 0) {
+    // lowRiskLowerBound set to 151%
+    const lowRiskLowerBound = minLiquidationRatioPercent * 1.25833
+    // elevatedRiskLowerBound set to 137%
+    const elevatedRiskLowerBound = minLiquidationRatioPercent * 1.14167
+    // highRiskLowerBound set to 120%
+    const highRiskLowerBound = minLiquidationRatioPercent
+
+    if (currentLiquidationRatio < highRiskLowerBound && currentLiquidationRatio > 0) {
         return 4
-    } else if (currentLiquitdationRatio >= safestRatio) {
+    } else if (currentLiquidationRatio >= lowRiskLowerBound) {
         return 1
-    } else if (currentLiquitdationRatio < safestRatio && currentLiquitdationRatio >= midSafeRatio) {
+    } else if (currentLiquidationRatio < lowRiskLowerBound && currentLiquidationRatio >= elevatedRiskLowerBound) {
         return 2
-    } else if (currentLiquitdationRatio < midSafeRatio && currentLiquitdationRatio > 0) {
+    } else if (currentLiquidationRatio < elevatedRiskLowerBound && currentLiquidationRatio >= highRiskLowerBound) {
         return 3
     } else {
         return 0
@@ -389,7 +400,7 @@ export const returnState = (state: number) => {
         case 1:
             return 'Low'
         case 2:
-            return 'Medium'
+            return 'Elevated'
         case 3:
             return 'High'
         case 4:

@@ -144,6 +144,14 @@ describe('utils', () => {
             expect(ratioChecker(140, 1.2)).toEqual(2)
         })
 
+        it('returns 3', () => {
+            expect(ratioChecker(120, 1.2)).toEqual(3)
+        })
+
+        it('returns 3', () => {
+            expect(ratioChecker(130, 1.2)).toEqual(3)
+        })
+
         it('returns 4', () => {
             expect(ratioChecker(50, 1.2)).toEqual(4)
         })

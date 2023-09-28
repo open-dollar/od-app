@@ -5,7 +5,6 @@ async function checkSanctions(address: string) {
     try {
         res = await axios.get(`https://od-bots-git-feature-36-fix-cors-opendollar.vercel.app/api/screen?address=${address}`, {
             headers: {
-                'X-API-Key': process.env.REACT_APP_CHAINALYSIS_KEY as string,
                 Accept: 'application/json',
             },
         })

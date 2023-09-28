@@ -18,13 +18,12 @@ import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/graph'
 
 import GoogleTagManager from './components/Analytics/GoogleTagManager'
-import Privacy from './containers/Privacy'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 
 // Toast css
 import Analytics from './containers/Analytics'
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -38,52 +37,46 @@ const App = () => {
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={darkTheme}>
-                    <GlobalStyle bodyOverflow={bodyOverflow} />
-                    <ErrorBoundary>
-                        <ToastContainer />
-                        <Shared>
-                            <ApolloProvider client={client}>
-                                <StatsProvider>
-                                    <Suspense fallback={null}>
-                                        <Route component={GoogleTagManager} />
-                                        <Web3ReactManager>
-                                            <>
-                                                <Switch>
-                                                    <Route exact strict component={Safes} path={'/'} />
-                                                    <Route exact strict component={Analytics} path={'/stats'} />
-                                                    <Route exact strict component={Privacy} path={'/privacy'} />
-                                                    <Route exact strict component={Auctions} path={'/auctions'} />
-                                                    <Route
-                                                        exact
-                                                        strict
-                                                        component={CreateVault}
-                                                        path={'/vaults/create'}
-                                                    />
-                                                    <Route
-                                                        exact
-                                                        strict
-                                                        component={VaultDetails}
-                                                        path={'/vaults/:id/deposit'}
-                                                    />
-                                                    <Route
-                                                        exact
-                                                        strict
-                                                        component={VaultDetails}
-                                                        path={'/vaults/:id/withdraw'}
-                                                    />
-                                                    <Route exact component={VaultDetails} path={'/vaults/:id'} />
-                                                    <Route exact strict component={Safes} path={'/vaults'} />
-                                                    <Route exact strict component={Safes} path={'/:address'} />
+                <GlobalStyle bodyOverflow={bodyOverflow} />
+                <ErrorBoundary>
+                    <ToastContainer />
+                    <Shared>
+                        <ApolloProvider client={client}>
+                            <StatsProvider>
+                                <Suspense fallback={null}>
+                                    <Route component={GoogleTagManager} />
+                                    <Web3ReactManager>
+                                        <>
+                                            <Switch>
+                                                <Route exact strict component={Safes} path={'/'} />
+                                                <Route exact strict component={Analytics} path={'/stats'} />
+                                                <Route exact strict component={Auctions} path={'/auctions'} />
+                                                <Route exact strict component={CreateVault} path={'/vaults/create'} />
+                                                <Route
+                                                    exact
+                                                    strict
+                                                    component={VaultDetails}
+                                                    path={'/vaults/:id/deposit'}
+                                                />
+                                                <Route
+                                                    exact
+                                                    strict
+                                                    component={VaultDetails}
+                                                    path={'/vaults/:id/withdraw'}
+                                                />
+                                                <Route exact component={VaultDetails} path={'/vaults/:id'} />
+                                                <Route exact strict component={Safes} path={'/vaults'} />
+                                                <Route exact strict component={Safes} path={'/:address'} />
 
-                                                    <Redirect from="*" to="/" />
-                                                </Switch>
-                                            </>
-                                        </Web3ReactManager>
-                                    </Suspense>
-                                </StatsProvider>
-                            </ApolloProvider>
-                        </Shared>
-                    </ErrorBoundary>
+                                                <Redirect from="*" to="/" />
+                                            </Switch>
+                                        </>
+                                    </Web3ReactManager>
+                                </Suspense>
+                            </StatsProvider>
+                        </ApolloProvider>
+                    </Shared>
+                </ErrorBoundary>
             </ThemeProvider>
         </I18nextProvider>
     )

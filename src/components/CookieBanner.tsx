@@ -18,14 +18,9 @@ const CookieBanner = () => {
                     <img src={require('../assets/cookie.svg').default} alt="" />
                     This website uses cookies to enhance the user experience. By continuing to browse the site you're
                     agreeing to our
-                    <CustomLink
-                        to={{
-                            pathname: '/privacy',
-                            state: { goToCookies: true },
-                        }}
-                    >
-                        use of cookies.
-                    </CustomLink>
+                    <a target="_blank" href="https://opendollar.com/tos">
+                        &nbsp;use of cookies.
+                    </a>
                 </CookiesText>
             </CookieConsent>
         </div>

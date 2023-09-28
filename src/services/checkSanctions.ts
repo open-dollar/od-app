@@ -7,7 +7,6 @@ async function checkSanctions(address: string) {
             headers: {
                 'X-API-Key': process.env.REACT_APP_CHAINALYSIS_KEY as string,
                 Accept: 'application/json',
-
             },
         })
         return res.data

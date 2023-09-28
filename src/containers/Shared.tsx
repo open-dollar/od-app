@@ -45,7 +45,7 @@ import {
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
-import FooterBackgroundImage from '../assets/footer-bg-art.svg'
+import checkSanctions from '~/services/checkSanctions'
 
 interface Props {
     children: ReactNode
@@ -79,7 +79,7 @@ const Shared = ({ children, ...rest }: Props) => {
         auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
     const toastId = 'networkToastHash'
-    const successAccountConnection = 'successAccountConnection'
+    const sanctionsToastId = 'sanctionsToastHash'
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -215,6 +215,29 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }
 
+    async function sanctionsCheck() {
+        if (account && process.env.NODE_ENV === 'production') {
+            const response = await checkSanctions(account)
+            if (response?.identifications.length > 0) {
+                connectWalletActions.setIsWrongNetwork(true)
+                toast(
+                    <ToastPayload
+                        icon={'AlertTriangle'}
+                        iconSize={40}
+                        iconColor={'orange'}
+                        textColor={'#ffffff'}
+                        text={`${t('sanctioned_wallet')}`}
+                    />,
+                    { autoClose: false, type: 'warning', toastId: sanctionsToastId }
+                )
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
+
     async function networkChecker() {
         accountChange()
         const id: ChainId = NETWORK_ID
@@ -240,6 +263,7 @@ const Shared = ({ children, ...rest }: Props) => {
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
+                sanctionsCheck()
                 connectWalletActions.setStep(1)
                 accountChecker()
             }

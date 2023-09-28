@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
                 </Row>
                 <Row className="linksRow">
                     <Column>
-                        <Link target="_blank" href="https://opendollar.com/blog">
+                        <Link target="_blank" href="https://blog.opendollar.com/">
                             Blog
                         </Link>
                         <Link target="_blank" href="https://opendollar.com/lite-paper">
@@ -73,16 +73,10 @@ const Footer: React.FC = () => {
                 </Row>
                 <Row className="privacyRow">
                     <Column>
-                        <SmallerLink
-                            target="_blank"
-                            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy"
-                        >
+                        <SmallerLink target="_blank" href="https://opendollar.com/privacy">
                             Privacy Policy
                         </SmallerLink>
-                        <SmallerLink
-                            target="_blank"
-                            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use"
-                        >
+                        <SmallerLink target="_blank" href="https://opendollar.com/tos">
                             Terms of Service
                         </SmallerLink>
                     </Column>

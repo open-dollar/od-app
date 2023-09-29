@@ -301,6 +301,9 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (leftInputBN.isZero()) {
             error = error ?? `Enter ${collateralName} Amount`
         }
+        if (rightInputBN.isZero()) {
+            error = error ?? 'OD borrowed cannot be zero'
+        }
     }
 
     if (type !== 'create') {
@@ -408,8 +411,8 @@ export function useInputsHandlers(): {
 
     const onLeftInput = useCallback(
         (typedValue: string) => {
-            if (typedValue === ".") {
-                typedValue = "0.";
+            if (typedValue === '.') {
+                typedValue = '0.'
             }
             safeActions.setSafeData({
                 ...safeData,
@@ -420,8 +423,8 @@ export function useInputsHandlers(): {
     )
     const onRightInput = useCallback(
         (typedValue: string) => {
-            if (typedValue === ".") {
-                typedValue = "0.";
+            if (typedValue === '.') {
+                typedValue = '0.'
             }
             safeActions.setSafeData({
                 ...safeData,

@@ -42,7 +42,7 @@
     "created": "Created",
     "risk": "Risk",
     "manage_safe": "Manage Vault",
-    "fetching_account_info": "Creating/fetching safe data...",
+    "fetching_account_info": "Creating/fetching vault data...",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
     "repay": "Repay",

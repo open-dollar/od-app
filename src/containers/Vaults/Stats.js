@@ -1,16 +1,13 @@
 'use client'
 
-import { useEffect, useContext } from 'react'
-import { SYSTEMSTATE_QUERY } from '../../utils/queries'
+import { useEffect } from 'react'
+import { SYSTEMSTATE_QUERY } from '~/utils/queries'
 import { useQuery } from '@apollo/client'
-import { formatNumber, getCollateralRatio } from '../../utils/helpers'
-import { useStats } from '../../hooks/useStats'
+import { formatNumber, getCollateralRatio } from '~/utils/helpers'
+import { useStats } from '~/hooks/useStats'
 import styled from 'styled-components'
-import GridContainer from '~/components/GridContainer'
 import Loader from '~/components/Loader'
 import LinkButton from '~/components/LinkButton'
-
-// import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
 const Stats = () => {
     const { loading, data } = useQuery(SYSTEMSTATE_QUERY)

@@ -100,6 +100,7 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }, [account, geb, forceUpdateTokens, connectWalletActions])
 
+    // Get latest token prices every 15 seconds
     useEffect(() => {
         const tokenDataInterval = setInterval(() => {
             if (account && geb) {
@@ -108,6 +109,21 @@ const Shared = ({ children, ...rest }: Props) => {
         }, 15000)
 
         return () => clearInterval(tokenDataInterval)
+    }, [account, geb, connectWalletActions])
+
+    // Get latest vault data every 1 minute
+    useEffect(() => {
+        const statsInterval = setInterval(() => {
+            if (account && geb && connectWalletState.tokensData) {
+                safeActions.fetchUserSafes({
+                    address: account as string,
+                    geb,
+                    tokensData: connectWalletState.tokensData,
+                })
+            }
+        }, 60000)
+
+        return () => clearInterval(statsInterval)
     }, [account, geb, connectWalletActions])
 
     useEffect(() => {

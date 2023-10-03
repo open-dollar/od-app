@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
-import Stats from './Stats'
 import useGeb from '~/hooks/useGeb'
 import Accounts from './Accounts'
 import VaultList from './VaultList'

@@ -29,6 +29,15 @@ declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
 }
 
+console.log(
+    `%c🧙 Join the Open Dollar Team! ⚔️`,
+    'color:blue;font-family:sans-serif;font-size:4rem;-webkit-text-stroke: 1px black;font-weight:bold'
+  )
+  console.log(
+    `%cInquire about your next adventure in our Discord`,
+    'font-family:sans-serif;font-size:1rem;font-weight:bold'
+  )
+
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
 

@@ -28,7 +28,7 @@ const Auctions = ({
     const [type, setType] = useState<AuctionEventType>(queryType || 'SURPLUS')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [selectedItem, setSelectedItem] = useState<string>('WETH')
+    const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
     const geb = useGeb()
     const history = useHistory()
 

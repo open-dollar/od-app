@@ -1,5 +1,5 @@
 import { BigNumber, constants, ethers } from 'ethers'
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import _ from '~/utils/lodash'
 
@@ -9,13 +9,13 @@ import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
 import { COIN_TICKER, formatDataNumber, formatNumber, parseWad } from '~/utils'
 import Button from '~/components/Button'
-import useGeb from "~/hooks/useGeb";
-import { fetchAnalyticsData } from "@opendollar/sdk/lib/virtual/virtualAnalyticsData";
+import useGeb from '~/hooks/useGeb'
+import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
 const CollateralAuctionBlock = (auction: Props) => {
-    const geb = useGeb();
+    const geb = useGeb()
     const { auctionId, isClaimed, remainingToRaiseE18, remainingCollateral, tokenSymbol, biddersList, isCollapsed } =
         auction
 
@@ -31,7 +31,6 @@ const CollateralAuctionBlock = (auction: Props) => {
     const [collapse, setCollapse] = useState(isCollapsed)
     const [marketPriceOD, setMarketPriceOD] = useState('0')
 
-
     const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
         return balances.OD.balanceE18.toString() || '0'
@@ -44,21 +43,21 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     useEffect(() => {
         const fetchODMarketPrice = async () => {
-            let analytics;
+            let analytics
             if (geb) {
                 try {
-                    analytics = await fetchAnalyticsData(geb);
+                    analytics = await fetchAnalyticsData(geb)
                 } catch (e) {
-                    console.error(e);
+                    console.error(e)
                 }
                 if (analytics) {
-                    setMarketPriceOD(analytics.marketPrice);
+                    setMarketPriceOD(analytics.marketPrice)
                 }
             }
-        };
+        }
 
-        fetchODMarketPrice();
-    }, [geb]);
+        fetchODMarketPrice()
+    }, [geb])
 
     const buySymbol = COIN_TICKER
 
@@ -124,10 +123,10 @@ const CollateralAuctionBlock = (auction: Props) => {
     const remainingToRaise = _.get(auction, 'remainingToRaiseE18', '0')
 
     const maxAmount = (function () {
-            const odToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
-            const odToBid = ethers.utils.formatUnits(odToBidPlusOne.toString(), 18)
-            const odBalanceNumber = Number(odBalance)
-            return odBalanceNumber < Number(odToBid) ? odBalance : odToBid.toString()
+        const odToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
+        const odToBid = ethers.utils.formatUnits(odToBidPlusOne.toString(), 18)
+        const odBalanceNumber = Number(odBalance)
+        return odBalanceNumber < Number(odToBid) ? odBalance : odToBid.toString()
     })()
 
     const collateralPrice = useMemo(() => {
@@ -142,8 +141,8 @@ const CollateralAuctionBlock = (auction: Props) => {
         return BigNumber.from('0')
     }, [auctionId, auctionsState.collateralData])
 
-    let maxCollateral;
-    let maxCollateralParsed;
+    let maxCollateral
+    let maxCollateralParsed
     if (collateralPrice) {
         maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount))
             .mul(collateralPrice)
@@ -153,20 +152,19 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     function calculateAuctionEnd() {
         // @ts-ignore
-        const auctionDeadlineUnix = auction?.auctionDeadline;
-        const date = new Date(auctionDeadlineUnix * 1000);
+        const auctionDeadlineUnix = auction?.auctionDeadline
+        const date = new Date(auctionDeadlineUnix * 1000)
         const options = {
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric"
-        };
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        }
         // @ts-ignore
-        return date.toLocaleString("en-US", options);
-
+        return date.toLocaleString('en-US', options)
     }
 
-    const auctionDateString = calculateAuctionEnd();
+    const auctionDateString = calculateAuctionEnd()
 
     const auctionPrice = BigNumber.from(odBalance)
         .mul(BigNumber.from(marketPriceOD))
@@ -176,11 +174,13 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const calculateAuctionDiscount = () => {
         let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
-        return BigNumber.from('1').sub(auctionPrice).div(Math.floor(parseFloat(marketPriceCollateral))).mul(100)
-    };
+        return BigNumber.from('1')
+            .sub(auctionPrice)
+            .div(Math.floor(parseFloat(marketPriceCollateral)))
+            .mul(100)
+    }
 
-   const auctionDiscount = calculateAuctionDiscount()
-
+    const auctionDiscount = calculateAuctionDiscount()
 
     return (
         <Container>
@@ -199,7 +199,14 @@ const CollateralAuctionBlock = (auction: Props) => {
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>MARKET PRICE</InfoLabel>
-                                <InfoValue>{`${'$' + formatNumber(collateralLiquidationData ? collateralLiquidationData!.currentPrice.value.toString() : '0')} ${tokenSymbol}`}</InfoValue>
+                                <InfoValue>{`${
+                                    '$' +
+                                    formatNumber(
+                                        collateralLiquidationData
+                                            ? collateralLiquidationData!.currentPrice.value.toString()
+                                            : '0'
+                                    )
+                                } ${tokenSymbol}`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>

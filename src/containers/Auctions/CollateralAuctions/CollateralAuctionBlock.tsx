@@ -7,10 +7,11 @@ import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
-import { COIN_TICKER, formatDataNumber, formatNumber, parseWad } from '~/utils'
+import {COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, multiplyWad, parseRad, parseWad} from '~/utils'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import {utils as gebUtils} from "@opendollar/sdk";
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
@@ -31,15 +32,10 @@ const CollateralAuctionBlock = (auction: Props) => {
     const [collapse, setCollapse] = useState(isCollapsed)
     const [marketPriceOD, setMarketPriceOD] = useState('0')
 
-    const odBalance = useMemo(() => {
-        const balances = connectWalletModel.tokensFetchedData
-        return balances.OD.balanceE18.toString() || '0'
-    }, [connectWalletModel.tokensFetchedData])
-
-    const collateralBalance = useMemo(() => {
-        const balances = connectWalletModel.tokensFetchedData
-        return balances[tokenSymbol].balanceE18.toString() || '0'
-    }, [connectWalletModel.tokensFetchedData])
+    const odBalance = gebUtils.decimalShift(
+        BigNumber.from(auction.amountToRaise),
+        floatsTypes.WAD - floatsTypes.RAD
+    )
 
     useEffect(() => {
         const fetchODMarketPrice = async () => {
@@ -144,7 +140,7 @@ const CollateralAuctionBlock = (auction: Props) => {
     let maxCollateral
     let maxCollateralParsed
     if (collateralPrice) {
-        maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount))
+        maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount.toString()))
             .mul(collateralPrice)
             .div(constants.WeiPerEther)
         maxCollateralParsed = ethers.utils.formatEther(maxCollateral)
@@ -159,6 +155,7 @@ const CollateralAuctionBlock = (auction: Props) => {
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
+            year: 'numeric'
         }
         // @ts-ignore
         return date.toLocaleString('en-US', options)
@@ -166,18 +163,16 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    const auctionPrice = BigNumber.from(odBalance)
-        .mul(BigNumber.from(marketPriceOD))
-        .div(collateralBalance ? BigNumber.from(collateralBalance) : 1)
+    let auctionPrice = (BigNumber.from(odBalance)).div(maxCollateral ? maxCollateral : BigNumber.from('1'))
 
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
 
     const calculateAuctionDiscount = () => {
         let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
+
+        const first = (auctionPrice).div(BigNumber.from(Math.floor(parseFloat(marketPriceCollateral))))
         return BigNumber.from('1')
-            .sub(auctionPrice)
-            .div(Math.floor(parseFloat(marketPriceCollateral)))
-            .mul(100)
+            .sub(first).mul(100)
     }
 
     const auctionDiscount = calculateAuctionDiscount()
@@ -210,21 +205,12 @@ const CollateralAuctionBlock = (auction: Props) => {
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>
-                                <InfoValue>{`${formatDataNumber(
-                                    auctionPrice ? auctionPrice.toString() : '0',
-                                    18,
-                                    2,
-                                    true
-                                )} ${buySymbol}`}</InfoValue>
+                                <InfoValue>{`$${formatNumber(auctionPrice ? auctionPrice.toString() : '0')} ${buySymbol}`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
-                                <InfoLabel>AUCTION DISCOUNT</InfoLabel>
-                                <InfoValue>{`${formatDataNumber(
-                                    auctionDiscount ? auctionDiscount.toString() : '0',
-                                    18,
-                                    2,
-                                    false
-                                )}% below market price`}</InfoValue>
+                                <InfoLabel>DISCOUNT</InfoLabel>
+                                <InfoValue>{`${formatNumber(
+                                    auctionDiscount ? auctionDiscount.toString() : '0')}%`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>ENDS</InfoLabel>
@@ -306,6 +292,7 @@ const Info = styled.div`
 const InfoCol = styled.div`
     font-size: ${(props) => props.theme.font.small};
     min-width: 100px;
+    padding: 0px 10px 0px;
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       flex: 0 0 100%;
@@ -365,28 +352,6 @@ const RightAucInfo = styled.div`
       flex: 0 0 100%;
       min-width:100%;
       flex-direction:column;
-  `}
-`
-
-const AlertContainer = styled.div`
-    width: 150px;
-    text-align: right;
-    > div {
-        display: inline-block;
-        margin-left: auto;
-        padding-right: 10px !important;
-    }
-    div {
-        font-size: 13px;
-        ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-left:0;
- 
-  `}
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-   
-      margin-top:10px;
-      margin-bottom:10px;
   `}
 `
 

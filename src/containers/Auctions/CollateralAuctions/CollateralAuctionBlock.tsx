@@ -7,11 +7,11 @@ import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
-import {COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, multiplyWad, parseRad, parseWad} from '~/utils'
+import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, multiplyWad, parseRad, parseWad } from '~/utils'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
-import {utils as gebUtils} from "@opendollar/sdk";
+import { utils as gebUtils } from '@opendollar/sdk'
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
@@ -32,10 +32,7 @@ const CollateralAuctionBlock = (auction: Props) => {
     const [collapse, setCollapse] = useState(isCollapsed)
     const [marketPriceOD, setMarketPriceOD] = useState('0')
 
-    const odBalance = gebUtils.decimalShift(
-        BigNumber.from(auction.amountToRaise),
-        floatsTypes.WAD - floatsTypes.RAD
-    )
+    const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 
     useEffect(() => {
         const fetchODMarketPrice = async () => {
@@ -155,7 +152,7 @@ const CollateralAuctionBlock = (auction: Props) => {
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
-            year: 'numeric'
+            year: 'numeric',
         }
         // @ts-ignore
         return date.toLocaleString('en-US', options)
@@ -163,16 +160,14 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    let auctionPrice = (BigNumber.from(odBalance)).div(maxCollateral ? maxCollateral : BigNumber.from('1'))
+    let auctionPrice = BigNumber.from(odBalance).div(maxCollateral ? maxCollateral : BigNumber.from('1'))
 
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
 
     const calculateAuctionDiscount = () => {
         let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
-
-        const first = (auctionPrice).div(BigNumber.from(Math.floor(parseFloat(marketPriceCollateral))))
-        return BigNumber.from('1')
-            .sub(first).mul(100)
+        const quotient = Number(auctionPrice) / Number(marketPriceCollateral ? marketPriceCollateral : '1')
+        return (1 - quotient) * 100
     }
 
     const auctionDiscount = calculateAuctionDiscount()
@@ -205,12 +200,15 @@ const CollateralAuctionBlock = (auction: Props) => {
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>
-                                <InfoValue>{`$${formatNumber(auctionPrice ? auctionPrice.toString() : '0')} ${buySymbol}`}</InfoValue>
+                                <InfoValue>{`$${formatNumber(
+                                    auctionPrice ? auctionPrice.toString() : '0'
+                                )} ${buySymbol}`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>DISCOUNT</InfoLabel>
                                 <InfoValue>{`${formatNumber(
-                                    auctionDiscount ? auctionDiscount.toString() : '0')}%`}</InfoValue>
+                                    auctionDiscount ? auctionDiscount.toString() : '0'
+                                )}%`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>ENDS</InfoLabel>

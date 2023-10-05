@@ -34,23 +34,24 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 
-    useEffect(() => {
-        const fetchODMarketPrice = async () => {
-            let analytics
-            if (geb) {
-                try {
-                    analytics = await fetchAnalyticsData(geb)
-                } catch (e) {
-                    console.error(e)
-                }
-                if (analytics) {
-                    setMarketPriceOD(analytics.marketPrice)
-                }
-            }
-        }
-
-        fetchODMarketPrice()
-    }, [geb])
+    // TODO: Enable once OD price is > 0
+    // useEffect(() => {
+    //     const fetchODMarketPrice = async () => {
+    //         let analytics
+    //         if (geb) {
+    //             try {
+    //                 analytics = await fetchAnalyticsData(geb)
+    //             } catch (e) {
+    //                 console.error(e)
+    //             }
+    //             if (analytics) {
+    //                 setMarketPriceOD(analytics.marketPrice)
+    //             }
+    //         }
+    //     }
+    //
+    //     fetchODMarketPrice()
+    // }, [geb])
 
     const buySymbol = COIN_TICKER
 
@@ -160,7 +161,7 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    let auctionPrice = BigNumber.from(odBalance).div(maxCollateral ? maxCollateral : BigNumber.from('1'))
+    let auctionPrice = (BigNumber.from(odBalance).mul(BigNumber.from(marketPriceOD))).div(maxCollateral && maxCollateral.gt(BigNumber.from('0')) ? maxCollateral : BigNumber.from('1'))
 
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
 

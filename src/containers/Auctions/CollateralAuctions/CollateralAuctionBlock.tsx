@@ -30,7 +30,7 @@ const CollateralAuctionBlock = (auction: Props) => {
     } = useStoreState((state) => state)
 
     const [collapse, setCollapse] = useState(isCollapsed)
-    const [marketPriceOD, setMarketPriceOD] = useState('0')
+    const [marketPriceOD, setMarketPriceOD] = useState('1')
 
     const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 

@@ -68,10 +68,10 @@ export async function checkAndSwitchMetamaskNetwork() {
                     params: [
                         {
                             chainId: `0x66EED`,
-                            chainName: 'Arbitrum Goerli Testnet',
+                            chainName: 'Arbitrum Goerli',
                             nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
+                                name: 'AGOR',
+                                symbol: 'AGOR',
                                 decimals: 18,
                             },
                             rpcUrls: ['https://goerli-rollup.arbitrum.io/rpc'],

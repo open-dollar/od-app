@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -17,10 +17,6 @@ const LiquidateSafeModal = () => {
     const { popupsModel, transactionsModel } = useStoreActions((state) => state)
     const { t } = useTranslation()
     const [accepted, setAccepted] = useState(false)
-    const {
-        safeModel: { safeData, liquidationData, singleSafe },
-        connectWalletModel: { tokensFetchedData },
-    } = useStoreState((state) => state)
     const geb = useGeb()
     const history = useHistory()
 

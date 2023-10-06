@@ -161,7 +161,9 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    let auctionPrice = (BigNumber.from(odBalance).mul(BigNumber.from(marketPriceOD))).div(maxCollateral && maxCollateral.gt(BigNumber.from('0')) ? maxCollateral : BigNumber.from('1'))
+    let auctionPrice = BigNumber.from(odBalance)
+        .mul(BigNumber.from(marketPriceOD))
+        .div(maxCollateral && maxCollateral.gt(BigNumber.from('0')) ? maxCollateral : BigNumber.from('1'))
 
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
 
@@ -197,13 +199,13 @@ const CollateralAuctionBlock = (auction: Props) => {
                                             ? collateralLiquidationData!.currentPrice.value.toString()
                                             : '0'
                                     )
-                                } ${tokenSymbol}`}</InfoValue>
+                                }`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>
                                 <InfoValue>{`$${formatNumber(
                                     auctionPrice ? auctionPrice.toString() : '0'
-                                )} ${buySymbol}`}</InfoValue>
+                                )}`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>DISCOUNT</InfoLabel>

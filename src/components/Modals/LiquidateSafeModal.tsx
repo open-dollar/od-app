@@ -29,7 +29,7 @@ const LiquidateSafeModal = () => {
         if (liquidateSafePayload && geb) {
             popupsModel.setIsWaitingModalOpen(true)
             popupsModel.setWaitingPayload({
-                text: `Starting liquidation for safe #${liquidateSafePayload.safeId}...`,
+                text: `Starting liquidation for vault #${liquidateSafePayload.safeId}...`,
                 title: 'Waiting For Confirmation',
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
@@ -48,15 +48,15 @@ const LiquidateSafeModal = () => {
                         })
                         popupsModel.setWaitingPayload({
                             title: 'Transaction Submitted',
-                            text: `Starting liquidation for safe #${liquidateSafePayload.safeId}...`,
+                            text: `Starting liquidation for vault #${liquidateSafePayload.safeId}...`,
                             hash: txResponse.hash,
                             status: 'loading',
                         })
-                        // txResponse.wait().then(() => {
-                        //     popupsModel.setIsWaitingModalOpen(false)
-                        //     history.push('/safes')
-                        //     closeModal()
-                        // })
+                        txResponse.wait().then(() => {
+                            closeModal()
+                            popupsModel.setIsWaitingModalOpen(false)
+                            history.go(0)
+                        })
                     }
                 })
                 .catch((error) => {

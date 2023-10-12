@@ -18,6 +18,7 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     isLoading?: boolean
     dimmedWithArrow?: boolean
     isBordered?: boolean
+    unstyled?: boolean
     arrowPlacement?: string
     children?: ReactNode
 }
@@ -34,6 +35,7 @@ const Button = ({
     isLoading,
     dimmedWithArrow,
     isBordered,
+    unstyled,
     arrowPlacement = 'left',
     children,
     ...rest
@@ -79,6 +81,13 @@ const Button = ({
                     <Inner> {text && t(text)}</Inner>
                 </BorderedBtn>
             )
+        }
+            else if (unstyled) {
+                return (<UnstyledContainer {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
+                    {text && t(text)}
+                    {children || null}
+                    {isLoading && <Loader inlineButton />}
+                </UnstyledContainer>)
         } else {
             return (
                 <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
@@ -93,6 +102,27 @@ const Button = ({
 }
 
 export default React.memo(Button)
+
+const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
+    outline: none;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    font-size: ${(props) => props.theme.font.small};
+    color: ${(props) => props.theme.colors.neutral};
+    background: none;
+    transition: all 0.3s ease;
+  
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:disabled {
+        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
+        cursor: not-allowed;
+    }
+`
+
 
 const Container = styled.button<{ isLoading?: boolean }>`
     outline: none;

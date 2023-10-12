@@ -232,6 +232,7 @@ const Navbar = () => {
                             )}
                         </>
                     )}
+                    <ODBalanceAndAddressWrapper>
                     {/* Button to add OD and ODG to the wallet */}
                     <RightPriceWrapper>
                         <DollarValue ref={odRef} onClick={handleTokenClick}>
@@ -247,6 +248,29 @@ const Navbar = () => {
                         </DollarValue>
                         {isTokenPopupVisible && (
                             <PriceInfoPopup ref={tokenPopupRef} className="group">
+                                <Button
+                                    style={{fontWeight: 600}}
+                                    unstyled={true}
+                                    primary={account ? true : false}
+                                    id="web3-status-connected"
+                                    isLoading={hasPendingTransactions}
+                                    onClick={handleWalletConnect}
+                                >
+                                    {isActive && account ? (
+                                        hasPendingTransactions ? (
+                                            `${pending.length} Pending`
+                                        ) : (
+                                            <InnerBtn>
+                                                <IdenticonWrapper>
+                                                <Identicon />
+                                                </IdenticonWrapper>
+                                                {returnWalletAddress(account)}
+                                            </InnerBtn>
+                                        )
+                                    ) : (
+                                        t('connect_wallet')
+                                    )}
+                                </Button>
                                 <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                 <PopupColumnWrapper>
                                     <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
@@ -279,27 +303,31 @@ const Navbar = () => {
                             </PriceInfoPopup>
                         )}
                     </RightPriceWrapper>
-
-                    {/* Button to connect wallet */}
-                    <Button
-                        primary={account ? true : false}
-                        id="web3-status-connected"
-                        isLoading={hasPendingTransactions}
-                        onClick={handleWalletConnect}
-                    >
-                        {isActive && account ? (
-                            hasPendingTransactions ? (
-                                `${pending.length} Pending`
+                        <FixedContainer>
+                            <Button
+                                style={{fontSize: 12}}
+                            unstyled={true}
+                            primary={account ? true : false}
+                            id="web3-status-connected"
+                            isLoading={hasPendingTransactions}
+                            onClick={handleWalletConnect}
+                        >
+                            {isActive && account ? (
+                                hasPendingTransactions ? (
+                                    `${pending.length} Pending`
+                                ) : (
+                                    <InnerBtnSmallerAddress>
+                                        <SmallerIdenticonWrapper>
+                                            <Identicon />
+                                        </SmallerIdenticonWrapper>
+                                        {returnWalletAddress(account)}
+                                    </InnerBtnSmallerAddress>
+                                )
                             ) : (
-                                <InnerBtn>
-                                    {returnWalletAddress(account)}
-                                    <Identicon />
-                                </InnerBtn>
-                            )
-                        ) : (
-                            t('connect_wallet')
-                        )}
-                    </Button>
+                                t('connect_wallet')
+                            )}
+                        </Button></FixedContainer>
+                    </ODBalanceAndAddressWrapper>
                 </BtnContainer>
 
                 <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
@@ -315,6 +343,61 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+
+const SmallerIdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '12px')};
+        width: ${({ size }) => (size ? size + 'px' : '12px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+            }
+        }
+    }
+  `
+const FixedContainer = styled.div`
+    position: absolute;
+    top: 84px;
+    right: 73px;
+    z-index: -1;
+`;
+
+const ODBalanceAndAddressWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const IdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '24px')};
+        width: ${({ size }) => (size ? size + 'px' : '24px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+            }
+        }
+    }
+  `
+
 
 const PopupColumn = styled.div`
     text-align: end;
@@ -439,11 +522,21 @@ const Flex = styled.div`
 const InnerBtn = styled(Flex)`
     div {
         display: block !important;
-        margin-left: 5px;
+        margin-right: 5px;
         svg {
             top: 0 !important;
         }
     }
+`
+
+const InnerBtnSmallerAddress = styled(Flex)`
+  div {
+    display: block !important;
+    margin-right: 2.5px;
+    svg {
+      top: 0 !important;
+    }
+  }
 `
 
 const OdButton = styled.button`

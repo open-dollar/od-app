@@ -81,13 +81,20 @@ const Button = ({
                     <Inner> {text && t(text)}</Inner>
                 </BorderedBtn>
             )
-        }
-            else if (unstyled) {
-                return (<UnstyledContainer {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
+        } else if (unstyled) {
+            return (
+                <UnstyledContainer
+                    {...rest}
+                    className={classes}
+                    disabled={disabled}
+                    isLoading={isLoading}
+                    onClick={onClick}
+                >
                     {text && t(text)}
                     {children || null}
                     {isLoading && <Loader inlineButton />}
-                </UnstyledContainer>)
+                </UnstyledContainer>
+            )
         } else {
             return (
                 <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
@@ -112,7 +119,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     color: ${(props) => props.theme.colors.neutral};
     background: none;
     transition: all 0.3s ease;
-  
+
     &:hover {
         opacity: 0.8;
     }
@@ -122,7 +129,6 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
         cursor: not-allowed;
     }
 `
-
 
 const Container = styled.button<{ isLoading?: boolean }>`
     outline: none;

@@ -232,7 +232,6 @@ const Navbar = () => {
                             )}
                         </>
                     )}
-                    <ODBalanceAndAddressWrapper>
                         {/* Button to add OD and ODG to the wallet */}
                         <RightPriceWrapper>
                             <DollarValue ref={odRef} onClick={handleTokenClick}>
@@ -328,7 +327,6 @@ const Navbar = () => {
                                 )}
                             </Button>
                         </FixedContainer>
-                    </ODBalanceAndAddressWrapper>
                 </BtnContainer>
 
                 <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
@@ -370,11 +368,6 @@ const FixedContainer = styled.div`
     top: 84px;
     right: 73px;
     z-index: -1;
-`
-
-const ODBalanceAndAddressWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
 `
 
 const IdenticonWrapper = styled.div<{ size?: number }>`

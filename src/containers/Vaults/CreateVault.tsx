@@ -338,7 +338,12 @@ const CreateVault = ({
                             </Button>
                         )}
                     </Flex>
-                    <ReactTooltip id="tooltip-create-vault" variant="light" data-effect="solid" />
+                    <ReactTooltip
+                        style={{ zIndex: 99 }}
+                        id="tooltip-create-vault"
+                        variant="light"
+                        data-effect="solid"
+                    />
                 </Content>
             </InnerContent>
         </>

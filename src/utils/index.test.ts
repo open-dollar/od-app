@@ -114,50 +114,36 @@ describe('utils', () => {
     })
 
     describe('#ratioChecker', () => {
-        it('returns 0', () => {
-            expect(ratioChecker(0, 1.2)).toEqual(0)
+        it('returns 1 when any parameter is null or undefined', () => {
+            // @ts-ignore
+            expect(ratioChecker(0, null as any, 0)).toEqual(1)
+            expect(ratioChecker(null as any, 1.2, 1.5)).toEqual(1)
+            expect(ratioChecker(150, null as any, 1.5)).toEqual(1)
+            expect(ratioChecker(150, 1.2, null as any)).toEqual(1)
         })
 
-        it('returns 1', () => {
-            expect(ratioChecker(300, 1.2)).toEqual(1)
-        })
-        it('returns 1', () => {
-            expect(ratioChecker(301, 1.2)).toEqual(1)
+        it('returns 0 when currentLiquidationRatio is 0', () => {
+            expect(ratioChecker(0, 1.2, 1.5)).toEqual(0)
         })
 
-        it('returns 1', () => {
-            expect(ratioChecker(200, 1.2)).toEqual(1)
+        it('returns 1 when currentLiquidationRatio is greater than safetyRatio * 1.20', () => {
+            expect(ratioChecker(12100, 1.0, 1.0)).toEqual(1)
+            expect(ratioChecker(13000, 1.2, 1.5)).toEqual(1)
         })
 
-        it('returns 1', () => {
-            expect(ratioChecker(201, 1.2)).toEqual(1)
-        })
-        it('returns 1', () => {
-            expect(ratioChecker(199, 1.2)).toEqual(1)
+        it('returns 2 when currentLiquidationRatio is less than or equal to safetyRatio * 1.20 but greater than safetyRatio', () => {
+            expect(ratioChecker(110, 1.0, 1.0)).toEqual(2)
+            expect(ratioChecker(161, 1.2, 1.5)).toEqual(2)
         })
 
-        it('returns 2', () => {
-            expect(ratioChecker(150, 1.2)).toEqual(2)
+        it('returns 3 when currentLiquidationRatio is less than or equal to safetyRatio but greater than liqRatio', () => {
+            expect(ratioChecker(100, 1.0, 1.0)).toEqual(4)
+            expect(ratioChecker(150, 1.2, 1.5)).toEqual(3)
         })
 
-        it('returns 2', () => {
-            expect(ratioChecker(140, 1.2)).toEqual(2)
-        })
-
-        it('returns 3', () => {
-            expect(ratioChecker(120, 1.2)).toEqual(3)
-        })
-
-        it('returns 3', () => {
-            expect(ratioChecker(130, 1.2)).toEqual(3)
-        })
-
-        it('returns 4', () => {
-            expect(ratioChecker(50, 1.2)).toEqual(4)
-        })
-
-        it('returns 4', () => {
-            expect(ratioChecker(30, 1.2)).toEqual(4)
+        it('returns 4 when currentLiquidationRatio is less than or equal to liqRatio', () => {
+            expect(ratioChecker(100, 1.0, 1.0)).toEqual(4)
+            expect(ratioChecker(135, 1.35, 1.35)).toEqual(4)
         })
     })
 

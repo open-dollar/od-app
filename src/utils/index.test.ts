@@ -115,7 +115,6 @@ describe('utils', () => {
 
     describe('#ratioChecker', () => {
         it('returns 1 when any parameter is null or undefined', () => {
-            // @ts-ignore
             expect(ratioChecker(0, null as any, 0)).toEqual(1)
             expect(ratioChecker(null as any, 1.2, 1.5)).toEqual(1)
             expect(ratioChecker(150, null as any, 1.5)).toEqual(1)

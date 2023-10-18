@@ -145,7 +145,16 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                                             className={returnState(
                                                                 ratioChecker(
                                                                     Number(newCollateralRatio),
-                                                                    Number(collateralRatio)
+                                                                    Number(
+                                                                        safeState.liquidationData!
+                                                                            .collateralLiquidationData[collateralName]
+                                                                            .liquidationCRatio
+                                                                    ),
+                                                                    Number(
+                                                                        safeState.liquidationData!
+                                                                            .collateralLiquidationData[collateralName]
+                                                                            .safetyCRatio
+                                                                    )
                                                                 )
                                                             ).toLowerCase()}
                                                         >

@@ -169,7 +169,7 @@ export const formatUserSafe = (
                 id: s.safeId,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
-                riskState: ratioChecker(Number(collateralRatio), Number(safetyCRatio)),
+                riskState: ratioChecker(Number(collateralRatio), Number(liquidationCRatio), Number(safetyCRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
                 collateralName: collateralBytes32[s.collateralType],
@@ -242,30 +242,22 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
 /**
  * Check the risk state of the current liquidation ratio given a fixed minLiquidationRatio
  * @param currentLiquidationRatio
- * @param minLiquidationRatio
+ * @param liqRatio
+ * @param safetyRatio
  */
-export const ratioChecker = (currentLiquidationRatio: number, minLiquidationRatio: number) => {
-    // Assuming minLiquidationRatioPercent is 120% for now
-    const minLiquidationRatioPercent = minLiquidationRatio * 100
-
-    // lowRiskLowerBound set to 151%
-    const lowRiskLowerBound = minLiquidationRatioPercent * 1.25833
-    // elevatedRiskLowerBound set to 137%
-    const elevatedRiskLowerBound = minLiquidationRatioPercent * 1.14167
-    // highRiskLowerBound set to 120%
-    const highRiskLowerBound = minLiquidationRatioPercent
-
-    if (currentLiquidationRatio < highRiskLowerBound && currentLiquidationRatio > 0) {
-        return 4
-    } else if (currentLiquidationRatio >= lowRiskLowerBound) {
+export const ratioChecker = (currentLiquidationRatio: number, liqRatio: number, safetyRatio: number) => {
+    if (currentLiquidationRatio == null || Number.isNaN(currentLiquidationRatio) || !liqRatio || !safetyRatio) {
+        console.error('Error calculating risk state')
         return 1
-    } else if (currentLiquidationRatio < lowRiskLowerBound && currentLiquidationRatio >= elevatedRiskLowerBound) {
-        return 2
-    } else if (currentLiquidationRatio < elevatedRiskLowerBound && currentLiquidationRatio >= highRiskLowerBound) {
-        return 3
-    } else {
-        return 0
     }
+    const currentLiquidationRatioAsDecimal = currentLiquidationRatio / 100
+
+    if (currentLiquidationRatioAsDecimal === 0) return 0
+    if (currentLiquidationRatioAsDecimal <= liqRatio) return 4
+    if (currentLiquidationRatioAsDecimal > liqRatio && currentLiquidationRatioAsDecimal <= safetyRatio) return 3
+    if (currentLiquidationRatioAsDecimal > safetyRatio && currentLiquidationRatioAsDecimal <= safetyRatio * 1.2)
+        return 2
+    return 1
 }
 
 export const getInterestOwed = (debt: string, accumulatedRate: string) => {

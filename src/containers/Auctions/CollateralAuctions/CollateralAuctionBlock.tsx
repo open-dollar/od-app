@@ -30,28 +30,27 @@ const CollateralAuctionBlock = (auction: Props) => {
     } = useStoreState((state) => state)
 
     const [collapse, setCollapse] = useState(isCollapsed)
-    const [marketPriceOD, setMarketPriceOD] = useState('1')
+    const [marketPriceOD, setMarketPriceOD] = useState(BigNumber.from('1'))
 
     const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 
-    // TODO: Enable once OD price is > 0
-    // useEffect(() => {
-    //     const fetchODMarketPrice = async () => {
-    //         let analytics
-    //         if (geb) {
-    //             try {
-    //                 analytics = await fetchAnalyticsData(geb)
-    //             } catch (e) {
-    //                 console.error(e)
-    //             }
-    //             if (analytics) {
-    //                 setMarketPriceOD(analytics.marketPrice)
-    //             }
-    //         }
-    //     }
-    //
-    //     fetchODMarketPrice()
-    // }, [geb])
+    useEffect(() => {
+        const fetchODMarketPrice = async () => {
+            let analytics
+            if (geb) {
+                try {
+                    analytics = await fetchAnalyticsData(geb)
+                } catch (e) {
+                    console.error(e)
+                }
+                if (analytics) {
+                    setMarketPriceOD(BigNumber.from(analytics.marketPrice))
+                }
+            }
+        }
+
+        fetchODMarketPrice()
+    }, [geb])
 
     const buySymbol = COIN_TICKER
 
@@ -169,7 +168,8 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const calculateAuctionDiscount = () => {
         let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
-        const quotient = Number(auctionPrice) / Number(marketPriceCollateral ? marketPriceCollateral : '1')
+        const decimalAuctionPrice = ethers.utils.formatEther(auctionPrice)
+        const quotient = Number(decimalAuctionPrice) / Number(marketPriceCollateral ? marketPriceCollateral : '1')
         return (1 - quotient) * 100
     }
 
@@ -197,21 +197,22 @@ const CollateralAuctionBlock = (auction: Props) => {
                                     formatNumber(
                                         collateralLiquidationData
                                             ? collateralLiquidationData!.currentPrice.value.toString()
-                                            : '0'
-                                    )
+                                            : '0')
                                 }`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>
-                                <InfoValue>{`$${formatNumber(
-                                    auctionPrice ? auctionPrice.toString() : '0'
-                                )}`}</InfoValue>
+                                <InfoValue>
+                                    {`${formatDataNumber(auctionPrice ? auctionPrice.toString() : '0', 18, 2, true)}`}
+                                </InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>DISCOUNT</InfoLabel>
-                                <InfoValue>{`${formatNumber(
-                                    auctionDiscount ? auctionDiscount.toString() : '0'
-                                )}%`}</InfoValue>
+                                <InfoValue>
+                                    {`${formatNumber(
+                                    auctionDiscount ? auctionDiscount.toString() : '0', 3
+                                )}%`}
+                                </InfoValue>
                             </InfoCol>
                             <InfoCol>
                                 <InfoLabel>ENDS</InfoLabel>

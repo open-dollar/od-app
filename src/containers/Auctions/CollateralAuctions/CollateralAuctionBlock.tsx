@@ -197,7 +197,8 @@ const CollateralAuctionBlock = (auction: Props) => {
                                     formatNumber(
                                         collateralLiquidationData
                                             ? collateralLiquidationData!.currentPrice.value.toString()
-                                            : '0')
+                                            : '0'
+                                    )
                                 }`}</InfoValue>
                             </InfoCol>
                             <InfoCol>
@@ -209,9 +210,7 @@ const CollateralAuctionBlock = (auction: Props) => {
                             <InfoCol>
                                 <InfoLabel>DISCOUNT</InfoLabel>
                                 <InfoValue>
-                                    {`${formatNumber(
-                                    auctionDiscount ? auctionDiscount.toString() : '0', 3
-                                )}%`}
+                                    {`${formatNumber(auctionDiscount ? auctionDiscount.toString() : '0', 3)}%`}
                                 </InfoValue>
                             </InfoCol>
                             <InfoCol>

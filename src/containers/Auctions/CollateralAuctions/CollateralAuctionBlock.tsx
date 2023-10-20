@@ -1,6 +1,5 @@
-import dayjs from 'dayjs'
-import { BigNumber } from 'ethers'
-import { useState } from 'react'
+import { BigNumber, constants, ethers } from 'ethers'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import _ from '~/utils/lodash'
 
@@ -8,13 +7,16 @@ import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
-import { COIN_TICKER, formatNumber, parseWad } from '~/utils'
-import AlertLabel from '~/components/AlertLabel'
+import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, multiplyWad, parseRad, parseWad } from '~/utils'
 import Button from '~/components/Button'
+import useGeb from '~/hooks/useGeb'
+import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import { utils as gebUtils } from '@opendollar/sdk'
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
 const CollateralAuctionBlock = (auction: Props) => {
+    const geb = useGeb()
     const { auctionId, isClaimed, remainingToRaiseE18, remainingCollateral, tokenSymbol, biddersList, isCollapsed } =
         auction
 
@@ -22,16 +24,37 @@ const CollateralAuctionBlock = (auction: Props) => {
     const { popupsModel: popupsActions, auctionModel: auctionActions } = useStoreActions((state) => state)
 
     const { connectWalletModel: connectWalletState, auctionModel: auctionsState } = useStoreState((state) => state)
+    const { connectWalletModel } = useStoreState((state) => state)
+    const {
+        safeModel: { liquidationData },
+    } = useStoreState((state) => state)
 
     const [collapse, setCollapse] = useState(isCollapsed)
+    const [marketPriceOD, setMarketPriceOD] = useState(BigNumber.from('1'))
+
+    const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
+
+    useEffect(() => {
+        const fetchODMarketPrice = async () => {
+            let analytics
+            if (geb) {
+                try {
+                    analytics = await fetchAnalyticsData(geb)
+                } catch (e) {
+                    console.error(e)
+                }
+                if (analytics) {
+                    setMarketPriceOD(BigNumber.from(analytics.marketPrice))
+                }
+            }
+        }
+
+        fetchODMarketPrice()
+    }, [geb])
 
     const buySymbol = COIN_TICKER
 
     const isOngoingAuction = BigNumber.from(remainingCollateral).gt('0') && BigNumber.from(remainingToRaiseE18).gt('0')
-
-    const remainingCollateralParsed = formatNumber(parseWad(BigNumber.from(remainingCollateral)), 4)
-
-    const buyAmountParsed = formatNumber(parseWad(BigNumber.from(remainingToRaiseE18)), 4)
 
     const eventType = 'COLLATERAL'
 
@@ -90,25 +113,67 @@ const CollateralAuctionBlock = (auction: Props) => {
         }
         return null
     }
+    const remainingToRaise = _.get(auction, 'remainingToRaiseE18', '0')
 
-    const returnLabel = () => {
-        if (isOngoingAuction) {
-            return {
-                text: 'Auction is Ongoing',
-                label: 'warning',
-            }
-        } else if (isClaimed) {
-            return {
-                text: 'Auction Completed',
-                label: 'success',
-            }
-        } else {
-            return {
-                text: 'Auction to Settle',
-                label: 'greenish',
-            }
+    const maxAmount = (function () {
+        const odToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
+        const odToBid = ethers.utils.formatUnits(odToBidPlusOne.toString(), 18)
+        const odBalanceNumber = Number(odBalance)
+        return odBalanceNumber < Number(odToBid) ? odBalance : odToBid.toString()
+    })()
+
+    const collateralPrice = useMemo(() => {
+        if (auctionsState.collateralData) {
+            const data = auctionsState.collateralData.filter((item) => item._auctionId.toString() === auctionId)
+            const price = data[0]?._boughtCollateral.mul(constants.WeiPerEther).div(data[0]._adjustedBid)
+
+            // we divide by 1e18 because we multiplied by 1e18 in the line above
+            // this was required to handle decimal prices (<0)
+            return price
         }
+        return BigNumber.from('0')
+    }, [auctionId, auctionsState.collateralData])
+
+    let maxCollateral
+    let maxCollateralParsed
+    if (collateralPrice) {
+        maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount.toString()))
+            .mul(collateralPrice)
+            .div(constants.WeiPerEther)
+        maxCollateralParsed = ethers.utils.formatEther(maxCollateral)
     }
+
+    function calculateAuctionEnd() {
+        // @ts-ignore
+        const auctionDeadlineUnix = auction?.auctionDeadline
+        const date = new Date(auctionDeadlineUnix * 1000)
+        const options = {
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            year: 'numeric',
+        }
+        // @ts-ignore
+        return date.toLocaleString('en-US', options)
+    }
+
+    const auctionDateString = calculateAuctionEnd()
+
+    let auctionPrice = BigNumber.from(odBalance)
+        .mul(BigNumber.from(marketPriceOD))
+        .div(maxCollateral && maxCollateral.gt(BigNumber.from('0')) ? maxCollateral : BigNumber.from('1'))
+
+    const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
+
+    const calculateAuctionDiscount = () => {
+        let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
+        const decimalAuctionPrice = ethers.utils.formatEther(auctionPrice)
+        const quotient = Number(decimalAuctionPrice) / Number(marketPriceCollateral ? marketPriceCollateral : '1')
+        return (1 - quotient) * 100
+    }
+
+    const auctionDiscount = calculateAuctionDiscount()
 
     return (
         <Container>
@@ -122,22 +187,38 @@ const CollateralAuctionBlock = (auction: Props) => {
                     <InfoContainer>
                         <Info>
                             <InfoCol>
-                                <InfoLabel>{tokenSymbol} OFFERED</InfoLabel>
-                                <InfoValue>{`${remainingCollateralParsed} ${tokenSymbol}`}</InfoValue>
+                                <InfoLabel>AVAILABLE</InfoLabel>
+                                <InfoValue>{`${formatNumber(maxCollateralParsed || '0', 4)} ${tokenSymbol}`}</InfoValue>
                             </InfoCol>
-
                             <InfoCol>
-                                <InfoLabel>
-                                    {buySymbol} {eventType === 'COLLATERAL' ? 'TO RAISE' : 'BID'}
-                                </InfoLabel>
-                                <InfoValue>{`${buyAmountParsed} ${buySymbol}`}</InfoValue>
+                                <InfoLabel>MARKET PRICE</InfoLabel>
+                                <InfoValue>{`${
+                                    '$' +
+                                    formatNumber(
+                                        collateralLiquidationData
+                                            ? collateralLiquidationData!.currentPrice.value.toString()
+                                            : '0'
+                                    )
+                                }`}</InfoValue>
+                            </InfoCol>
+                            <InfoCol>
+                                <InfoLabel>AUCTION PRICE</InfoLabel>
+                                <InfoValue>
+                                    {`${formatDataNumber(auctionPrice ? auctionPrice.toString() : '0', 18, 2, true)}`}
+                                </InfoValue>
+                            </InfoCol>
+                            <InfoCol>
+                                <InfoLabel>DISCOUNT</InfoLabel>
+                                <InfoValue>
+                                    {`${formatNumber(auctionDiscount ? auctionDiscount.toString() : '0', 3)}%`}
+                                </InfoValue>
+                            </InfoCol>
+                            <InfoCol>
+                                <InfoLabel>ENDS</InfoLabel>
+                                <InfoValue>{auctionDateString}</InfoValue>
                             </InfoCol>
                         </Info>
                     </InfoContainer>
-
-                    <AlertContainer>
-                        <AlertLabel text={returnLabel().text + ' '} type={returnLabel().label} />
-                    </AlertContainer>
                 </RightAucInfo>
             </Header>
             {collapse ? null : (
@@ -212,6 +293,7 @@ const Info = styled.div`
 const InfoCol = styled.div`
     font-size: ${(props) => props.theme.font.small};
     min-width: 100px;
+    padding: 0px 10px 0px;
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       flex: 0 0 100%;
@@ -271,28 +353,6 @@ const RightAucInfo = styled.div`
       flex: 0 0 100%;
       min-width:100%;
       flex-direction:column;
-  `}
-`
-
-const AlertContainer = styled.div`
-    width: 200px;
-    text-align: right;
-    > div {
-        display: inline-block;
-        margin-left: auto;
-        padding-right: 10px !important;
-    }
-    div {
-        font-size: 13px;
-        ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-left:0;
- 
-  `}
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-   
-      margin-top:10px;
-      margin-bottom:10px;
   `}
 `
 

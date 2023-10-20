@@ -232,74 +232,101 @@ const Navbar = () => {
                             )}
                         </>
                     )}
-                    {/* Button to add OD and ODG to the wallet */}
-                    <RightPriceWrapper>
-                        <DollarValue ref={odRef} onClick={handleTokenClick}>
-                            <Icon
-                                src={require('../assets/od-wallet-icon.svg').default}
-                                width={'16px'}
-                                height={'16px'}
-                            />
-                            {odBalance + ' '} OD
-                            <ArrowWrapper>
-                                <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                            </ArrowWrapper>
-                        </DollarValue>
-                        {isTokenPopupVisible && (
-                            <PriceInfoPopup ref={tokenPopupRef} className="group">
-                                <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
-                                <PopupColumnWrapper>
-                                    <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
-                                        <IconWrapper>
-                                            <img
-                                                src={require('../assets/od-logo.svg').default}
-                                                height={'24px'}
-                                                width={'24px'}
-                                                alt="X"
-                                            />
-                                        </IconWrapper>
-                                        <PopupColumn>
-                                            <div>OD</div>
-                                        </PopupColumn>
-                                    </PopupWrapperTokenLink>
-                                    <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
-                                        <IconWrapper>
-                                            <img
-                                                src={require('../assets/odg.svg').default}
-                                                height={'24px'}
-                                                width={'24px'}
-                                                alt="X"
-                                            />
-                                        </IconWrapper>
-                                        <PopupColumn>
-                                            <div>ODG</div>
-                                        </PopupColumn>
-                                    </PopupWrapperTokenLink>
-                                </PopupColumnWrapper>
-                            </PriceInfoPopup>
-                        )}
-                    </RightPriceWrapper>
-
-                    {/* Button to connect wallet */}
-                    <Button
-                        primary={account ? true : false}
-                        id="web3-status-connected"
-                        isLoading={hasPendingTransactions}
-                        onClick={handleWalletConnect}
-                    >
-                        {isActive && account ? (
-                            hasPendingTransactions ? (
-                                `${pending.length} Pending`
-                            ) : (
-                                <InnerBtn>
-                                    {returnWalletAddress(account)}
-                                    <Identicon />
-                                </InnerBtn>
-                            )
-                        ) : (
-                            t('connect_wallet')
-                        )}
-                    </Button>
+                        {/* Button to add OD and ODG to the wallet */}
+                        <RightPriceWrapper>
+                            <DollarValue ref={odRef} onClick={handleTokenClick}>
+                                <Icon
+                                    src={require('../assets/od-wallet-icon.svg').default}
+                                    width={'16px'}
+                                    height={'16px'}
+                                />
+                                {odBalance + ' '} OD
+                                <ArrowWrapper>
+                                    <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                </ArrowWrapper>
+                            </DollarValue>
+                            {isTokenPopupVisible && (
+                                <PriceInfoPopup ref={tokenPopupRef} className="group">
+                                    <Button
+                                        style={{ fontWeight: 600 }}
+                                        unstyled={true}
+                                        primary={account ? true : false}
+                                        id="web3-status-connected"
+                                        isLoading={hasPendingTransactions}
+                                        onClick={handleWalletConnect}
+                                    >
+                                        {isActive && account ? (
+                                            hasPendingTransactions ? (
+                                                `${pending.length} Pending`
+                                            ) : (
+                                                <InnerBtn>
+                                                    <IdenticonWrapper>
+                                                        <Identicon />
+                                                    </IdenticonWrapper>
+                                                    {returnWalletAddress(account)}
+                                                </InnerBtn>
+                                            )
+                                        ) : (
+                                            t('connect_wallet')
+                                        )}
+                                    </Button>
+                                    <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
+                                    <PopupColumnWrapper>
+                                        <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
+                                            <IconWrapper>
+                                                <img
+                                                    src={require('../assets/od-logo.svg').default}
+                                                    height={'24px'}
+                                                    width={'24px'}
+                                                    alt="X"
+                                                />
+                                            </IconWrapper>
+                                            <PopupColumn>
+                                                <div>OD</div>
+                                            </PopupColumn>
+                                        </PopupWrapperTokenLink>
+                                        <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
+                                            <IconWrapper>
+                                                <img
+                                                    src={require('../assets/odg.svg').default}
+                                                    height={'24px'}
+                                                    width={'24px'}
+                                                    alt="X"
+                                                />
+                                            </IconWrapper>
+                                            <PopupColumn>
+                                                <div>ODG</div>
+                                            </PopupColumn>
+                                        </PopupWrapperTokenLink>
+                                    </PopupColumnWrapper>
+                                </PriceInfoPopup>
+                            )}
+                        </RightPriceWrapper>
+                        <FixedContainer>
+                            <Button
+                                style={{ fontSize: 12 }}
+                                unstyled={true}
+                                primary={account ? true : false}
+                                id="web3-status-connected"
+                                isLoading={hasPendingTransactions}
+                                onClick={handleWalletConnect}
+                            >
+                                {isActive && account ? (
+                                    hasPendingTransactions ? (
+                                        `${pending.length} Pending`
+                                    ) : (
+                                        <InnerBtnSmallerAddress>
+                                            <SmallerIdenticonWrapper>
+                                                <Identicon />
+                                            </SmallerIdenticonWrapper>
+                                            {returnWalletAddress(account)}
+                                        </InnerBtnSmallerAddress>
+                                    )
+                                ) : (
+                                    t('connect_wallet')
+                                )}
+                            </Button>
+                        </FixedContainer>
                 </BtnContainer>
 
                 <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
@@ -315,6 +342,54 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+const SmallerIdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '12px')};
+        width: ${({ size }) => (size ? size + 'px' : '12px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+            }
+        }
+    }
+`
+const FixedContainer = styled.div`
+    position: absolute;
+    top: 84px;
+    right: 73px;
+    z-index: -1;
+`
+
+const IdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '24px')};
+        width: ${({ size }) => (size ? size + 'px' : '24px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+            }
+        }
+    }
+`
 
 const PopupColumn = styled.div`
     text-align: end;
@@ -439,7 +514,17 @@ const Flex = styled.div`
 const InnerBtn = styled(Flex)`
     div {
         display: block !important;
-        margin-left: 5px;
+        margin-right: 5px;
+        svg {
+            top: 0 !important;
+        }
+    }
+`
+
+const InnerBtnSmallerAddress = styled(Flex)`
+    div {
+        display: block !important;
+        margin-right: 2.5px;
         svg {
             top: 0 !important;
         }

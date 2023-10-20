@@ -17,8 +17,10 @@ import {
     transformToWadPercentage,
     transformToAnnualRate,
     transformToEightHourlyRate,
+    formatNumber,
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
+import { fetchPoolData } from '@opendollar/sdk'
 
 interface AnalyticsStateProps {
     erc20Supply: string
@@ -28,6 +30,7 @@ interface AnalyticsStateProps {
     surplusInTreasury: string
     marketPrice: string
     redemptionPrice: string
+    totalLiquidity: string
     annualRate: string
     eightRate: string
     pRate: string
@@ -47,6 +50,7 @@ const Analytics = () => {
         surplusInTreasury: '',
         marketPrice: '',
         redemptionPrice: '',
+        totalLiquidity: '',
         annualRate: '',
         eightRate: '',
         pRate: '',
@@ -63,6 +67,7 @@ const Analytics = () => {
         surplusInTreasury,
         marketPrice,
         redemptionPrice,
+        totalLiquidity,
         annualRate,
         eightRate,
         pRate,
@@ -182,9 +187,9 @@ const Analytics = () => {
     }
 
     const liquidityUniswap = {
-        title: 'OD/ETH Liquidity in uniswap',
-        value: '$240,714',
-        description: 'Mock dada for OD/ETH Liquidity in uniswap',
+        title: 'OD/ETH Liquidity in Camelot',
+        value: '$' + totalLiquidity,
+        description: 'Total OD/ETH Liquidity in Camelot',
     }
 
     const marketPriceODG = {
@@ -282,64 +287,84 @@ const Analytics = () => {
     const pricesData: DataCardProps[] = [
         marketPriceData, // check for market price OD not OD
         redemptionPriceData,
-        // liquidityUniswap,
+        liquidityUniswap,
         // marketPriceODG,
     ]
 
     useEffect(() => {
-        if (geb) {
-            fetchAnalyticsData(geb).then((result) => {
-                const colRows = Object.fromEntries(
-                    Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [
-                        key,
-                        [
-                            key, // Symbol
-                            <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />, // ERC20 address + link to etherscan
-                            <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />, // ERC20 address + link to etherscan
-                            formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
-                            formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
-                            transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
-                            transformToAnnualRate(
-                                multiplyRates(value?.stabilityFee?.toString(), result.redemptionRate?.toString()) ||
-                                    '0',
-                                27
-                            ), // Borrow rate
-                            formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
-                            transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()), // Debt Utilization
-                            formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
-                            formatDataNumber(
-                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) || '0',
-                                18,
-                                2,
-                                true,
-                                true
-                            ), // Amount locked in USD
-                            transformToWadPercentage(
-                                multiplyWad(value?.debtAmount?.toString(), result?.redemptionPrice?.toString()),
-                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
-                            ), // Debt amount / locked amount in USD
-                        ],
-                    ])
-                )
+        async function fetchData() {
+            if (geb) {
+                try {
+                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
 
-                setState({
-                    ...state,
-                    erc20Supply: formatDataNumber(result.erc20Supply, 18, 0, true),
-                    globalDebt: formatDataNumber(result.globalDebt, 18, 0, true),
-                    globalDebtCeiling: formatDataNumber(result.globalDebtCeiling, 18, 0, true),
-                    globalDebtUtilization: transformToWadPercentage(result.globalDebt, result.globalDebtCeiling),
-                    surplusInTreasury: formatDataNumber(result.surplusInTreasury, 18, 0, true),
-                    marketPrice: formatDataNumber(result.marketPrice, 18, 3, true, undefined, 2),
-                    redemptionPrice: formatDataNumber(result.redemptionPrice, 18, 3, true, undefined, 2),
-                    annualRate: transformToAnnualRate(result.redemptionRate, 27, 3),
-                    eightRate: transformToEightHourlyRate(result.redemptionRate, 27, 3),
-                    pRate: transformToAnnualRate(result.redemptionRatePTerm, 27),
-                    iRate: transformToAnnualRate(result.redemptionRateITerm, 27),
-                    colRows: Object.values(colRows),
-                    totalVaults: result.totalVaults,
-                })
-            })
+                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+
+                    const colRows = Object.fromEntries(
+                        Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => [
+                            key,
+                            [
+                                key,
+                                <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />,
+                                <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
+                                formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
+                                formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
+                                transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
+                                transformToAnnualRate(
+                                    multiplyRates(
+                                        value?.stabilityFee?.toString(),
+                                        analyticsData.redemptionRate?.toString()
+                                    ) || '0',
+                                    27
+                                ),
+                                formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true),
+                                transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()),
+                                formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true),
+                                formatDataNumber(
+                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) ||
+                                        '0',
+                                    18,
+                                    2,
+                                    true,
+                                    true
+                                ),
+                                transformToWadPercentage(
+                                    multiplyWad(
+                                        value?.debtAmount?.toString(),
+                                        analyticsData?.redemptionPrice?.toString()
+                                    ),
+                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
+                                ),
+                            ],
+                        ])
+                    )
+
+                    setState((prevState) => ({
+                        ...prevState,
+                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 0, true),
+                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 0, true),
+                        globalDebtCeiling: formatDataNumber(analyticsData.globalDebtCeiling, 18, 0, true),
+                        globalDebtUtilization: transformToWadPercentage(
+                            analyticsData.globalDebt,
+                            analyticsData.globalDebtCeiling
+                        ),
+                        surplusInTreasury: formatDataNumber(analyticsData.surplusInTreasury, 18, 0, true),
+                        marketPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 4),
+                        redemptionPrice: formatDataNumber(analyticsData.redemptionPrice, 18, 3, true, undefined, 4),
+                        totalLiquidity: formattedLiquidity,
+                        annualRate: transformToAnnualRate(analyticsData.redemptionRate, 27, 3),
+                        eightRate: transformToEightHourlyRate(analyticsData.redemptionRate, 27, 3),
+                        pRate: transformToAnnualRate(analyticsData.redemptionRatePTerm, 27),
+                        iRate: transformToAnnualRate(analyticsData.redemptionRateITerm, 27),
+                        colRows: Object.values(colRows),
+                        totalVaults: analyticsData.totalVaults,
+                    }))
+                } catch (error) {
+                    console.error('Error fetching data:', error)
+                }
+            }
         }
+
+        fetchData()
     }, [geb])
 
     return (

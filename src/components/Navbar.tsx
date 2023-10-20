@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { formatDataNumber, formatNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { handleTransactionError, isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -13,12 +13,17 @@ import Button from './Button'
 import Brand from './Brand'
 import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
-import Uniswap from './Icons/Uniswap'
-import LoadingDots from './Icons/LoadingDots'
+import Camelot from './Icons/Camelot'
+import { fetchPoolData } from '@opendollar/sdk'
+import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import useGeb from '~/hooks/useGeb'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
-    const [loadingOdValue, setLoadingOdValue] = useState(false)
+    const [state, setState] = useState({
+        odPrice: '',
+        totalLiquidity: '',
+    })
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const popupRef = useRef<HTMLDivElement | null>(null)
     const { t } = useTranslation()
@@ -33,8 +38,8 @@ const Navbar = () => {
     } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
     const { isActive, account, provider } = useWeb3React()
+    const geb = useGeb()
     const odRef = useRef<HTMLButtonElement | null>(null)
-    const tokenPopupRef = useRef<HTMLDivElement | null>(null)
     const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
@@ -108,7 +113,7 @@ const Navbar = () => {
     }
 
     const handleClickOutsideOdWallet = (event: MouseEvent) => {
-        if (tokenPopupRef.current && !tokenPopupRef.current.contains(event.target as Node)) {
+        if (odRef.current && !odRef.current.contains(event.target as Node)) {
             setTokenPopupVisibility(false)
         }
     }
@@ -169,6 +174,25 @@ const Navbar = () => {
     }
 
     useEffect(() => {
+        async function fetchData() {
+            if (geb) {
+                try {
+                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+
+                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+
+                    setState((prevState) => ({
+                        ...prevState,
+                        odPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 2),
+                        totalLiquidity: formattedLiquidity,
+                    }))
+                } catch (error) {
+                    console.error('Error fetching data:', error)
+                }
+            }
+        }
+
+        fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
         document.addEventListener('mousedown', handleClickOutsideOdWallet)
@@ -178,7 +202,7 @@ const Navbar = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [])
+    }, [geb])
 
     return (
         <Container>
@@ -187,7 +211,7 @@ const Navbar = () => {
                 <Price>
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                         <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
-                        {loadingOdValue ? <LoadingDots /> : <span>$1.001</span>}
+                        <span>{state.odPrice}</span>
                         <ArrowWrapper>
                             <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                         </ArrowWrapper>
@@ -196,11 +220,11 @@ const Navbar = () => {
                         <LiquidityInfoPopup ref={popupRef} className="group">
                             <PopupWrapperLink className="group">
                                 <IconWrapper>
-                                    <Uniswap />
+                                    <Camelot />
                                 </IconWrapper>
                                 <PoupColumn>
-                                    <div>Liquidity: $3.53M</div>
-                                    <div>Delta B: +735.14</div>
+                                    <div>Liquidity: ${state.totalLiquidity}</div>
+                                    <CamelotText>View on Camelot Exchange</CamelotText>
                                 </PoupColumn>
                             </PopupWrapperLink>
                         </LiquidityInfoPopup>
@@ -211,7 +235,7 @@ const Navbar = () => {
                 <NavLinks />
             </HideMobile>
             <RightSide>
-                <BtnContainer>
+                <BtnContainer ref={testTokenPopupRef}>
                     {signer && (
                         <>
                             <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
@@ -221,7 +245,7 @@ const Navbar = () => {
                                 </ArrowWrapper>
                             </ClaimButton>
                             {isTestTokenPopupVisible && (
-                                <TestTokenPopup ref={testTokenPopupRef} className="group">
+                                <TestTokenPopup className="group">
                                     <TestTokenTextWrapper>
                                         USE THE /CLAIM COMMAND IN OUR{' '}
                                         <a target="blank" href="https://discord.opendollar.com/">
@@ -246,7 +270,7 @@ const Navbar = () => {
                             </ArrowWrapper>
                         </DollarValue>
                         {isTokenPopupVisible && (
-                            <PriceInfoPopup ref={tokenPopupRef} className="group">
+                            <PriceInfoPopup className="group">
                                 <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                 <PopupColumnWrapper>
                                     <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
@@ -315,6 +339,12 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+const CamelotText = styled.div`
+    font-size: xx-small;
+    font-weight: 400;
+    color: #ffaf1d;
+`
 
 const PopupColumn = styled.div`
     text-align: end;
@@ -509,7 +539,7 @@ const TestTokenPopup = styled.div`
 
 const LiquidityInfoPopup = styled.div`
     position: absolute;
-    min-width: 180px;
+    min-width: 190px;
     padding: 8px;
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
@@ -538,9 +568,7 @@ const IconWrapper = styled.div`
     align-items: center;
 `
 
-const PoupColumn = styled.div`
-    text-align: end;
-`
+const PoupColumn = styled.div``
 
 const ArrowWrapper = styled.div`
     margin-left: 8px;

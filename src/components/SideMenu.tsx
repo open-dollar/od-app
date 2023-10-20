@@ -1,32 +1,34 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, COIN_TICKER, getTokenLogo, formatNumber, formatDataNumber } from '~/utils'
+import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, formatNumber } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
 import Button from './Button'
 
-import { utils } from 'ethers'
-import LoadingDots from '~/components/Icons/LoadingDots'
 import ArrowDown from '~/components/Icons/ArrowDown'
-import Uniswap from '~/components/Icons/Uniswap'
+import Camelot from '~/components/Icons/Camelot'
+import { fetchPoolData } from '@opendollar/sdk'
+import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import useGeb from '~/hooks/useGeb'
 
 const SideMenu = () => {
-    const { t } = useTranslation()
     const nodeRef = React.useRef(null)
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
-    const [loadingOdValue, setLoadingOdValue] = useState(false)
+    const [state, setState] = useState({
+        odPrice: '',
+        totalLiquidity: '',
+    })
     const popupRef = useRef<HTMLDivElement | null>(null)
     const { isActive, account, chainId } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
+    const geb = useGeb()
     const odRef = useRef<HTMLButtonElement | null>(null)
-    const tokenPopupRef = useRef<HTMLDivElement | null>(null)
     const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -64,7 +66,7 @@ const SideMenu = () => {
     }
 
     const handleClickOutsideOdWallet = (event: MouseEvent) => {
-        if (tokenPopupRef.current && !tokenPopupRef.current.contains(event.target as Node)) {
+        if (odRef.current && !odRef.current.contains(event.target as Node)) {
             setTokenPopupVisibility(false)
         }
     }
@@ -126,6 +128,25 @@ const SideMenu = () => {
     }
 
     useEffect(() => {
+        async function fetchData() {
+            if (geb) {
+                try {
+                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+
+                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+
+                    setState((prevState) => ({
+                        ...prevState,
+                        odPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 2),
+                        totalLiquidity: formattedLiquidity,
+                    }))
+                } catch (error) {
+                    console.error('Error fetching data:', error)
+                }
+            }
+        }
+
+        fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
         document.addEventListener('mousedown', handleClickOutsideOdWallet)
@@ -136,7 +157,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [])
+    }, [geb])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
@@ -199,7 +220,7 @@ const SideMenu = () => {
                                     </ArrowWrapper>
                                 </DollarValue>
                                 {isTokenPopupVisible && (
-                                    <PriceInfoPopup ref={tokenPopupRef} className="group">
+                                    <PriceInfoPopup className="group">
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
@@ -235,26 +256,26 @@ const SideMenu = () => {
                             <Price>
                                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                                     <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
-                                    {loadingOdValue ? <LoadingDots /> : <span>$1.001</span>}
+                                    <span>{state.odPrice}</span>
                                     <ArrowWrapper>
                                         <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                                     </ArrowWrapper>
                                 </DollarValue>
                                 {isPopupVisible && (
-                                    <PriceInfoPopup ref={popupRef} className="group">
+                                    <LiquidityPriceInfoPopup ref={popupRef} className="group">
                                         <PopupWrapperLink className="group">
                                             <IconWrapper>
-                                                <Uniswap />
+                                                <Camelot />
                                             </IconWrapper>
                                             <PopupColumn>
-                                                <div>Liquidity: $3.53M</div>
-                                                <div>Delta B: +735.14</div>
+                                                <div>Liquidity: ${state.totalLiquidity}</div>
+                                                <CamelotText>View on Camelot Exchange</CamelotText>
                                             </PopupColumn>
                                         </PopupWrapperLink>
-                                    </PriceInfoPopup>
+                                    </LiquidityPriceInfoPopup>
                                 )}
                             </Price>
-                            <Price>
+                            <Price ref={testTokenPopupRef}>
                                 <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
                                     Test tokens 🪂
                                     <ArrowWrapper>
@@ -262,7 +283,7 @@ const SideMenu = () => {
                                     </ArrowWrapper>
                                 </ClaimButton>
                                 {isTestTokenPopupVisible && (
-                                    <TestTokenPopup ref={testTokenPopupRef} className="group">
+                                    <TestTokenPopup className="group">
                                         <TestTokenTextWrapper>
                                             USE THE /CLAIM COMMAND IN OUR{' '}
                                             <a target="blank" href="https://discord.opendollar.com/">
@@ -281,6 +302,12 @@ const SideMenu = () => {
 }
 
 export default SideMenu
+
+const CamelotText = styled.div`
+    font-size: xx-small;
+    font-weight: 400;
+    color: #ffaf1d;
+`
 
 const TestTokenTextWrapper = styled.div`
     font-size: ${(props) => props.theme.font.extraSmall};
@@ -329,9 +356,7 @@ const OpenDollarInformationColumn = styled.div`
     }
 `
 
-const PopupColumn = styled.div`
-    text-align: end;
-`
+const PopupColumn = styled.div``
 
 const IconWrapper = styled.div`
     display: flex;
@@ -360,10 +385,20 @@ const Price = styled.div`
     margin-right: auto;
 `
 
+const LiquidityPriceInfoPopup = styled.div`
+    position: absolute;
+    z-index: 500;
+    min-width: 190px;
+    padding: 8px;
+    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    top: 45px;
+`
+
 const PriceInfoPopup = styled.div`
     position: absolute;
     z-index: 500;
-    min-width: 180px;
+    min-width: 160px;
     padding: 8px;
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 8px;
@@ -377,10 +412,6 @@ const ArrowWrapper = styled.div`
 const Icon = styled.img`
     margin-right: 10px;
     max-width: 23px;
-`
-
-const AddIcon = styled(Icon)`
-    margin: 0 5px 0 10px;
 `
 
 const OdButton = styled.button`
@@ -503,15 +534,4 @@ const Account = styled.div`
     @media (max-width: 767px) {
         justify-content: flex-start;
     }
-`
-
-const Title = styled.div`
-    font-size: 22px;
-    font-weight: 600;
-`
-
-const Text = styled.div`
-    font-size: 14px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 `

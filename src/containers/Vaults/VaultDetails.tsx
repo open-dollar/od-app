@@ -12,6 +12,7 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
+import Stats from '~/containers/Vaults/Stats'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -98,20 +99,25 @@ const VaultDetails = ({ ...props }) => {
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 
     return (
-        <Container>
-            {!isOwner ? (
-                <LabelContainer>
-                    <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
-                </LabelContainer>
-            ) : null}
-            <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+        <>
+            <Container>
+                {!isOwner ? (
+                    <LabelContainer>
+                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
+                    </LabelContainer>
+                ) : null}
+                <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
 
-            {!isLoading && <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />}
+                {!isLoading && (
+                    <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
+                )}
 
-            {(isDeposit || isWithdraw) && !isLoading ? (
-                <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
-            ) : null}
-        </Container>
+                {(isDeposit || isWithdraw) && !isLoading ? (
+                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
+                ) : null}
+            </Container>
+            <Stats />
+        </>
     )
 }
 

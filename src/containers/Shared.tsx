@@ -60,6 +60,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
+    const poolData = { OD_balance: '', WETH_balance: '', totalLiquidityUSD: '' }
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
     const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
@@ -166,6 +167,7 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [auctionsData, setInternalBalance, setProtInternalBalance])
 
     useEffect(() => {
+        connectWalletActions.setPoolFetchedData(poolData)
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
 

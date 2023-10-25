@@ -46,6 +46,7 @@ import {
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
+import { PoolData } from "@opendollar/sdk/lib/virtual/tokenData";
 
 interface Props {
     children: ReactNode
@@ -60,7 +61,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    const poolData = { OD_balance: '', WETH_balance: '', totalLiquidityUSD: '' }
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
     const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
@@ -167,13 +167,14 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [auctionsData, setInternalBalance, setProtInternalBalance])
 
     useEffect(() => {
-        connectWalletActions.setPoolFetchedData(poolData)
+        async function fetchPoolData() {
+            connectWalletActions.fetchPoolData(geb).then((result: PoolData) => connectWalletActions.setPoolFetchedData(result))
+        }
+        if (geb) {
+            fetchPoolData()
+        }
         connectWalletActions.setTokensData(tokensData)
-    }, [connectWalletActions, tokensData])
-
-    // useEffect(() => {
-    //     connectWalletActions.fetchFiatPrice()
-    // }, [connectWalletActions])
+    }, [connectWalletActions, tokensData, geb])
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return

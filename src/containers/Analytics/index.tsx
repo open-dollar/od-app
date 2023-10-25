@@ -306,7 +306,7 @@ const Analytics = () => {
                             ), // Borrow rate
                             formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
                             transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()), // Debt Utilization
-                            formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
+                            formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true) + ' ' + key, // Amount locked
                             formatDataNumber(
                                 multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) || '0',
                                 18,

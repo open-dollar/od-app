@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { StoreProvider } from 'easy-peasy'
 import './index.css'
 import App from './App'
@@ -33,13 +33,13 @@ const connectors: [MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet |
 ReactDOM.render(
     <React.StrictMode>
         <HelmetProvider>
-            <HashRouter>
+            <BrowserRouter>
                 <Web3ReactProvider connectors={connectors}>
                     <StoreProvider store={store}>
                         <App />
                     </StoreProvider>
                 </Web3ReactProvider>
-            </HashRouter>
+            </BrowserRouter>
         </HelmetProvider>
     </React.StrictMode>,
     document.getElementById('root')

@@ -24,6 +24,7 @@ import Auctions from './containers/Auctions'
 // Toast css
 import Analytics from './containers/Analytics'
 import { ToastContainer } from 'react-toastify'
+import PageNotFound from '~/containers/PageNotFound'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -32,11 +33,11 @@ declare module 'styled-components' {
 console.log(
     `%c🧙 Join the Open Dollar Team! ⚔️`,
     'color:blue;font-family:sans-serif;font-size:4rem;-webkit-text-stroke: 1px black;font-weight:bold'
-  )
-  console.log(
+)
+console.log(
     `%cInquire about your next adventure in our Discord`,
     'font-family:sans-serif;font-size:1rem;font-weight:bold'
-  )
+)
 
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
@@ -57,6 +58,7 @@ const App = () => {
                                     <Web3ReactManager>
                                         <>
                                             <Switch>
+                                                <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
@@ -76,8 +78,7 @@ const App = () => {
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
-
-                                                <Redirect from="*" to="/" />
+                                                <Redirect path="*" to="/404" />
                                             </Switch>
                                         </>
                                     </Web3ReactManager>

@@ -19,6 +19,7 @@ import {
     transformToEightHourlyRate,
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
+import { BigNumber } from 'ethers'
 
 interface AnalyticsStateProps {
     erc20Supply: string
@@ -34,6 +35,7 @@ interface AnalyticsStateProps {
     iRate: string
     colRows: (string | JSX.Element)[][]
     totalVaults: string
+    totalCollateralSum: string
 }
 
 const Analytics = () => {
@@ -53,6 +55,7 @@ const Analytics = () => {
         iRate: '',
         colRows: [],
         totalVaults: '',
+        totalCollateralSum: '',
     })
 
     const {
@@ -69,6 +72,7 @@ const Analytics = () => {
         iRate,
         colRows,
         totalVaults,
+        totalCollateralSum,
     } = state
 
     const colData: TableProps = {
@@ -143,7 +147,7 @@ const Analytics = () => {
     const totalCollateralLocked = {
         image: 'ETH',
         title: 'Total Collateral Locked',
-        value: '26500004',
+        value: totalCollateralSum,
         description: 'Mock dada for Total Collateral Locked',
     }
 
@@ -289,37 +293,46 @@ const Analytics = () => {
     useEffect(() => {
         if (geb) {
             fetchAnalyticsData(geb).then((result) => {
+                let totalLockedValue = BigNumber.from('0')
                 const colRows = Object.fromEntries(
-                    Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => [
-                        key,
-                        [
-                            key, // Symbol
-                            <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />, // ERC20 address + link to etherscan
-                            <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />, // ERC20 address + link to etherscan
-                            formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
-                            formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
-                            transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
-                            transformToAnnualRate(
-                                multiplyRates(value?.stabilityFee?.toString(), result.redemptionRate?.toString()) ||
-                                    '0',
-                                27
-                            ), // Borrow rate
-                            formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
-                            transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()), // Debt Utilization
-                            formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
-                            formatDataNumber(
-                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) || '0',
-                                18,
-                                2,
-                                true,
-                                true
-                            ), // Amount locked in USD
-                            transformToWadPercentage(
-                                multiplyWad(value?.debtAmount?.toString(), result?.redemptionPrice?.toString()),
-                                multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
-                            ), // Debt amount / locked amount in USD
-                        ],
-                    ])
+                    Object.entries(result?.tokenAnalyticsData).map(([key, value], index) => {
+                        const lockedAmountInUsd = multiplyWad(
+                            value?.lockedAmount?.toString(),
+                            value?.currentPrice?.toString()
+                        )
+                        totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+                        return [
+                            key,
+                            [
+                                key, // Symbol
+                                <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />, // ERC20 address + link to etherscan
+                                <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />, // ERC20 address + link to etherscan
+                                formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true), // Current price
+                                formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true), // Next price
+                                transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27), // Stability fee
+                                transformToAnnualRate(
+                                    multiplyRates(value?.stabilityFee?.toString(), result.redemptionRate?.toString()) ||
+                                        '0',
+                                    27
+                                ), // Borrow rate
+                                formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true), // Debt Amount
+                                transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()), // Debt Utilization
+                                formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true), // Amount locked
+                                formatDataNumber(
+                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) ||
+                                        '0',
+                                    18,
+                                    2,
+                                    true,
+                                    true
+                                ), // Amount locked in USD
+                                transformToWadPercentage(
+                                    multiplyWad(value?.debtAmount?.toString(), result?.redemptionPrice?.toString()),
+                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
+                                ), // Debt amount / locked amount in USD
+                            ],
+                        ]
+                    })
                 )
 
                 setState({
@@ -337,6 +350,7 @@ const Analytics = () => {
                     iRate: transformToAnnualRate(result.redemptionRateITerm, 27),
                     colRows: Object.values(colRows),
                     totalVaults: result.totalVaults,
+                    totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
                 })
             })
         }

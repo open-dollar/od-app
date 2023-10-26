@@ -120,6 +120,8 @@
     "liquidate_button": "Liquidate Vault #",
     "eth_next_osm_tip": "Next collateral price that will be used by the system. This price is updated once per hour",
     "eth_osm_tip": "Current collateral price used by the system. This price is delayed 1h from the live collateral price feed and it’s only updated once per hour",
+    "debt_owed_tip": "Total amount of OD that is owed by this vault",
+    "collateral_deposited_tip": "Total amount of collateral that is deposited in this vault",
     "stability_fee_tip": " It is the annual interest rate paid by Vault owners on their debt. Proceeds from the borrow rate go to the protocol’s balance sheet",
     "hai_red_price_tip": "OD’s “moving peg”. It’s the price at which OD is minted or repaid inside the protocol. The OD market price is expected to fluctuate around the redemption price",
     "moneygod_desc": "The Money God League is an initiative to help other teams launch their own OD like assets and share a stake in each of their protocols with the Open Dollar community. You can stake ODG or ODG/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants.",

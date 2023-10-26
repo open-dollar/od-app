@@ -91,44 +91,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 <Left>
                     <Inner className="main">
                         <Main>
-                            <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
-                            <RowWrapper>
-                                <div>
-                                    <MainValue>{formatWithCommas(collateral)}</MainValue>
-                                    <MainChange>${formatWithCommas(collateralInUSD, 2, 2)}</MainChange>
-                                </div>
-                                {modified ? (
-                                    <AfterTextWrapper>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newCollateral)}
-                                        </span>
-                                    </AfterTextWrapper>
-                                ) : (
-                                    <></>
-                                )}
-                            </RowWrapper>
-                        </Main>
-
-                        <Main className="mid">
-                            <MainLabel>OD Debt</MainLabel>
-                            <RowWrapper>
-                                <div>
-                                    <MainValue>{formatWithCommas(totalDebt)}</MainValue>
-                                    <MainChange>${formatWithCommas(totalDebtInUSD, 2, 2)}</MainChange>
-                                </div>
-                                {modified ? (
-                                    <AfterTextWrapper>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newDebt, 2)}
-                                        </span>
-                                    </AfterTextWrapper>
-                                ) : null}
-                            </RowWrapper>
-                        </Main>
-
-                        <Main>
                             <ColumnWrapper>
                                 <Column>
                                     <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
@@ -196,6 +158,43 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
                 <Right>
                     <Inner>
+                        <Side>
+                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                <Info size="16" />
+                            </InfoIcon>
+                            <SideTitle>
+                                Debt Owed
+                                {modified ? (
+                                    <div className="sideNote">
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newDebt, 2)}
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </SideTitle>
+                            <SideValue>{formatWithCommas(totalDebt)} OD</SideValue>
+                        </Side>
+                        <Side>
+                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('collateral_deposited_tip')}>
+                                <Info size="16" />
+                            </InfoIcon>
+                            <SideTitle>
+                                Collateral Deposited
+                                <MainChange>${formatWithCommas(collateralInUSD, 2, 2)}</MainChange>
+                                {modified ? (
+                                        <div className="sideNote">
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newCollateral)}
+                                        </span>
+                                        </div>
+                                ) : (
+                                    <></>
+                                )}
+                            </SideTitle>
+                            <SideValue>{formatWithCommas(collateral)} {singleSafe?.collateralName}</SideValue>
+                        </Side>
                         <Side>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('eth_osm_tip')}>
                                 <Info size="16" />

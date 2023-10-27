@@ -46,6 +46,7 @@ import {
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
+import Stats from '~/containers/Vaults/Stats'
 
 interface Props {
     children: ReactNode
@@ -60,6 +61,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
+    const { pathname } = location
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
     const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
@@ -313,7 +315,6 @@ const Shared = ({ children, ...rest }: Props) => {
             <EmptyDiv>
                 <Navbar />
             </EmptyDiv>
-
             {SYSTEM_STATUS && SYSTEM_STATUS.toLowerCase() === 'shutdown' ? (
                 <AlertContainer>
                     <AlertLabel type="danger" text={t('shutdown_text')} />
@@ -327,6 +328,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <EmptyDiv>
                 <CookieBanner />
             </EmptyDiv>
+            {pathname === '/' ? <Stats /> : <></>}
             <ImagePreloader />
             <EmptyDiv>
                 <Footer />

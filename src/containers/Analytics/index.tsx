@@ -21,6 +21,7 @@ import {
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
+import { BigNumber } from 'ethers'
 
 interface AnalyticsStateProps {
     erc20Supply: string
@@ -37,6 +38,7 @@ interface AnalyticsStateProps {
     iRate: string
     colRows: (string | JSX.Element)[][]
     totalVaults: string
+    totalCollateralSum: string
 }
 
 const Analytics = () => {
@@ -57,6 +59,7 @@ const Analytics = () => {
         iRate: '',
         colRows: [],
         totalVaults: '',
+        totalCollateralSum: '',
     })
 
     const {
@@ -74,6 +77,7 @@ const Analytics = () => {
         iRate,
         colRows,
         totalVaults,
+        totalCollateralSum,
     } = state
 
     const colData: TableProps = {
@@ -148,7 +152,7 @@ const Analytics = () => {
     const totalCollateralLocked = {
         image: 'ETH',
         title: 'Total Collateral Locked',
-        value: '26500004',
+        value: totalCollateralSum,
         description: 'Mock dada for Total Collateral Locked',
     }
 
@@ -296,46 +300,53 @@ const Analytics = () => {
             if (geb) {
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
-
+                    let totalLockedValue = BigNumber.from('0')
                     const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
 
                     const colRows = Object.fromEntries(
-                        Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => [
-                            key,
-                            [
+                        Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
+                            const lockedAmountInUsd = multiplyWad(
+                                value?.lockedAmount?.toString(),
+                                value?.currentPrice?.toString()
+                            )
+                            totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+                            return [
                                 key,
-                                <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />,
-                                <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
-                                formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
-                                formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
-                                transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
-                                transformToAnnualRate(
-                                    multiplyRates(
-                                        value?.stabilityFee?.toString(),
-                                        analyticsData.redemptionRate?.toString()
-                                    ) || '0',
-                                    27
-                                ),
-                                formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true),
-                                transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()),
-                                formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true),
-                                formatDataNumber(
-                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) ||
-                                        '0',
-                                    18,
-                                    2,
-                                    true,
-                                    true
-                                ),
-                                transformToWadPercentage(
-                                    multiplyWad(
-                                        value?.debtAmount?.toString(),
-                                        analyticsData?.redemptionPrice?.toString()
+                                [
+                                    key,
+                                    <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />,
+                                    <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
+                                    formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
+                                    formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
+                                    transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
+                                    transformToAnnualRate(
+                                        multiplyRates(
+                                            value?.stabilityFee?.toString(),
+                                            analyticsData.redemptionRate?.toString()
+                                        ) || '0',
+                                        27
                                     ),
-                                    multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
-                                ),
-                            ],
-                        ])
+                                    formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true),
+                                    transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()),
+                                    formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true) + ' ' + key,
+                                    formatDataNumber(
+                                        multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) ||
+                                        '0',
+                                        18,
+                                        2,
+                                        true,
+                                        true
+                                    ),
+                                    transformToWadPercentage(
+                                        multiplyWad(
+                                            value?.debtAmount?.toString(),
+                                            analyticsData?.redemptionPrice?.toString()
+                                        ),
+                                        multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
+                                    ),
+                                ],
+                            ]
+                        })
                     )
 
                     setState((prevState) => ({
@@ -357,6 +368,7 @@ const Analytics = () => {
                         iRate: transformToAnnualRate(analyticsData.redemptionRateITerm, 27),
                         colRows: Object.values(colRows),
                         totalVaults: analyticsData.totalVaults,
+                        totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
                     }))
                 } catch (error) {
                     console.error('Error fetching data:', error)

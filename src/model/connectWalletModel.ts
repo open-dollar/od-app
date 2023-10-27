@@ -1,16 +1,14 @@
 import { action, Action, Thunk, thunk } from 'easy-peasy'
-import { fetchPoolData, fetchTokenData, PoolData, TokenFetchData } from '@opendollar/sdk/lib/virtual/tokenData'
+import { fetchTokenData, TokenFetchData } from '@opendollar/sdk/lib/virtual/tokenData'
 
 import api from '../services/api'
 import { IBlockNumber, IFetchTokensDataPayload, ITokenBalance } from '../utils/interfaces'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
-import { Geb } from '@opendollar/sdk'
 
 export interface ConnectWalletModel {
     forceUpdateTokens: boolean
     tokensData: { [token: string]: TokenData }
     tokensFetchedData: { [token: string]: TokenFetchData }
-    poolFetchedData: PoolData
     blockNumber: IBlockNumber
     fiatPrice: number
     flxPrice: number
@@ -28,7 +26,6 @@ export interface ConnectWalletModel {
     isStepLoading: boolean
     fetchFiatPrice: Thunk<ConnectWalletModel>
     fetchTokenData: Thunk<ConnectWalletModel, IFetchTokensDataPayload>
-    fetchPoolData: Thunk<ConnectWalletModel, Geb>
     setFiatPrice: Action<ConnectWalletModel, number>
     setFlxPrice: Action<ConnectWalletModel, number>
     setIsWrongNetwork: Action<ConnectWalletModel, boolean>
@@ -46,7 +43,6 @@ export interface ConnectWalletModel {
     setClaimableFLX: Action<ConnectWalletModel, string>
     setTokensData: Action<ConnectWalletModel, { [token: string]: TokenData }>
     setTokensFetchedData: Action<ConnectWalletModel, { [token: string]: TokenFetchData }>
-    setPoolFetchedData: Action<ConnectWalletModel, PoolData>
     setForceUpdateTokens: Action<ConnectWalletModel, boolean>
 }
 
@@ -62,11 +58,6 @@ const connectWalletModel: ConnectWalletModel = {
     uniswapPoolBalance: { 1: '0', 42: '0', 420: '0' },
     tokensData: {},
     tokensFetchedData: {},
-    poolFetchedData: {
-        OD_balance: '0',
-        WETH_balance: '0',
-        totalLiquidityUSD: '0',
-    },
     claimableFLX: '0',
     fiatPrice: 0,
     flxPrice: 0,
@@ -86,17 +77,6 @@ const connectWalletModel: ConnectWalletModel = {
 
         if (res && res.usd_24h_change) {
             actions.setEthPriceChange(res.usd_24h_change)
-        }
-    }),
-    fetchPoolData: thunk(async (actions, geb) => {
-        let fetched
-        try {
-            fetched = await fetchPoolData(geb)
-        } catch (e) {
-            console.debug('Error fetching pool data', e)
-        }
-        if (fetched) {
-            actions.setPoolFetchedData(fetched)
         }
     }),
     fetchTokenData: thunk(async (actions, payload) => {
@@ -176,9 +156,6 @@ const connectWalletModel: ConnectWalletModel = {
     }),
     setTokensFetchedData: action((state, payload) => {
         state.tokensFetchedData = payload
-    }),
-    setPoolFetchedData: action((state, payload) => {
-        state.poolFetchedData = payload
     }),
     setForceUpdateTokens: action((state, payload) => {
         state.forceUpdateTokens = payload

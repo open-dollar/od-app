@@ -17,6 +17,7 @@ import Camelot from './Icons/Camelot'
 import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
+import { BigNumber, ethers } from 'ethers'
 
 const Navbar = () => {
     const [isPopupVisible, setPopupVisibility] = useState(false)
@@ -39,7 +40,7 @@ const Navbar = () => {
     const { connectWalletModel } = useStoreState((state) => state)
     const { isActive, account, provider } = useWeb3React()
     const geb = useGeb()
-    const odRef = useRef<HTMLButtonElement | null>(null)
+    const odRef = useRef<HTMLDivElement | null>(null)
     const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
@@ -179,7 +180,14 @@ const Navbar = () => {
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
 
-                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+                    const formattedLiquidity = formatDataNumber(
+                        ethers.utils
+                            .parseEther(BigNumber.from(Math.floor(Number(poolData?.totalLiquidityUSD))).toString())
+                            .toString(),
+                        18,
+                        0,
+                        true
+                    ).toString()
 
                     setState((prevState) => ({
                         ...prevState,
@@ -223,7 +231,7 @@ const Navbar = () => {
                                     <Camelot />
                                 </IconWrapper>
                                 <PoupColumn>
-                                    <div>Liquidity: ${state.totalLiquidity}</div>
+                                    <div>Liquidity: {state.totalLiquidity}</div>
                                     <CamelotText>View on Camelot Exchange</CamelotText>
                                 </PoupColumn>
                             </PopupWrapperLink>
@@ -257,8 +265,8 @@ const Navbar = () => {
                         </>
                     )}
                     {/* Button to add OD and ODG to the wallet */}
-                    <RightPriceWrapper>
-                        <DollarValue ref={odRef} onClick={handleTokenClick}>
+                    <RightPriceWrapper ref={odRef}>
+                        <DollarValue onClick={handleTokenClick}>
                             <Icon
                                 src={require('../assets/od-wallet-icon.svg').default}
                                 width={'16px'}
@@ -271,6 +279,29 @@ const Navbar = () => {
                         </DollarValue>
                         {isTokenPopupVisible && (
                             <PriceInfoPopup className="group">
+                                <Button
+                                    style={{ fontWeight: 600 }}
+                                    unstyled={true}
+                                    primary={account ? true : false}
+                                    id="web3-status-connected"
+                                    isLoading={hasPendingTransactions}
+                                    onClick={handleWalletConnect}
+                                >
+                                    {isActive && account ? (
+                                        hasPendingTransactions ? (
+                                            `${pending.length} Pending`
+                                        ) : (
+                                            <InnerBtn>
+                                                <IdenticonWrapper>
+                                                    <Identicon />
+                                                </IdenticonWrapper>
+                                                {returnWalletAddress(account)}
+                                            </InnerBtn>
+                                        )
+                                    ) : (
+                                        t('connect_wallet')
+                                    )}
+                                </Button>
                                 <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                 <PopupColumnWrapper>
                                     <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
@@ -303,27 +334,31 @@ const Navbar = () => {
                             </PriceInfoPopup>
                         )}
                     </RightPriceWrapper>
-
-                    {/* Button to connect wallet */}
-                    <Button
-                        primary={account ? true : false}
-                        id="web3-status-connected"
-                        isLoading={hasPendingTransactions}
-                        onClick={handleWalletConnect}
-                    >
-                        {isActive && account ? (
-                            hasPendingTransactions ? (
-                                `${pending.length} Pending`
+                    <FixedContainer>
+                        <Button
+                            style={{ fontSize: 12 }}
+                            unstyled={true}
+                            primary={account ? true : false}
+                            id="web3-status-connected"
+                            isLoading={hasPendingTransactions}
+                            onClick={handleWalletConnect}
+                        >
+                            {isActive && account ? (
+                                hasPendingTransactions ? (
+                                    `${pending.length} Pending`
+                                ) : (
+                                    <InnerBtnSmallerAddress>
+                                        <SmallerIdenticonWrapper>
+                                            <Identicon />
+                                        </SmallerIdenticonWrapper>
+                                        {returnWalletAddress(account)}
+                                    </InnerBtnSmallerAddress>
+                                )
                             ) : (
-                                <InnerBtn>
-                                    {returnWalletAddress(account)}
-                                    <Identicon />
-                                </InnerBtn>
-                            )
-                        ) : (
-                            t('connect_wallet')
-                        )}
-                    </Button>
+                                t('connect_wallet')
+                            )}
+                        </Button>
+                    </FixedContainer>
                 </BtnContainer>
 
                 <MenuBtn onClick={() => popupsActions.setShowSideMenu(true)}>
@@ -339,6 +374,54 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+const SmallerIdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '12px')};
+        width: ${({ size }) => (size ? size + 'px' : '12px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '12px')} !important;
+            }
+        }
+    }
+`
+const FixedContainer = styled.div`
+    position: absolute;
+    top: 84px;
+    right: 73px;
+    z-index: -1;
+`
+
+const IdenticonWrapper = styled.div<{ size?: number }>`
+    display: flex;
+    & > img,
+    span,
+    svg {
+        height: ${({ size }) => (size ? size + 'px' : '24px')};
+        width: ${({ size }) => (size ? size + 'px' : '24px')};
+    }
+
+    div {
+        height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+        width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+        svg {
+            rect {
+                height: ${({ size }) => (size ? size + 'px' : '22.6px')} !important;
+                width: ${({ size }) => (size ? size + 'px' : '24px')} !important;
+            }
+        }
+    }
+`
 
 const CamelotText = styled.div`
     font-size: xx-small;
@@ -469,7 +552,17 @@ const Flex = styled.div`
 const InnerBtn = styled(Flex)`
     div {
         display: block !important;
-        margin-left: 5px;
+        margin-right: 5px;
+        svg {
+            top: 0 !important;
+        }
+    }
+`
+
+const InnerBtnSmallerAddress = styled(Flex)`
+    div {
+        display: block !important;
+        margin-right: 2.5px;
         svg {
             top: 0 !important;
         }
@@ -568,7 +661,9 @@ const IconWrapper = styled.div`
     align-items: center;
 `
 
-const PoupColumn = styled.div``
+const PoupColumn = styled.div`
+    text-align: end;
+`
 
 const ArrowWrapper = styled.div`
     margin-left: 8px;

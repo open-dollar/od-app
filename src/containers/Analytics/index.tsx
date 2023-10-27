@@ -21,7 +21,7 @@ import {
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 
 interface AnalyticsStateProps {
     erc20Supply: string
@@ -192,7 +192,7 @@ const Analytics = () => {
 
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
-        value: '$' + totalLiquidity,
+        value: totalLiquidity,
         description: 'Total OD/ETH Liquidity in Camelot',
     }
 
@@ -301,7 +301,14 @@ const Analytics = () => {
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
                     let totalLockedValue = BigNumber.from('0')
-                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+                    const formattedLiquidity = formatDataNumber(
+                        ethers.utils
+                            .parseEther(BigNumber.from(Math.floor(Number(poolData?.totalLiquidityUSD))).toString())
+                            .toString(),
+                        18,
+                        0,
+                        true
+                    ).toString()
 
                     const colRows = Object.fromEntries(
                         Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
@@ -327,11 +334,16 @@ const Analytics = () => {
                                         27
                                     ),
                                     formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true),
-                                    transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()),
-                                    formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true) + ' ' + key,
+                                    transformToWadPercentage(
+                                        value?.debtAmount?.toString(),
+                                        value?.debtCeiling?.toString()
+                                    ),
+                                    formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true) +
+                                        ' ' +
+                                        key,
                                     formatDataNumber(
                                         multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString()) ||
-                                        '0',
+                                            '0',
                                         18,
                                         2,
                                         true,

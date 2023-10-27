@@ -14,6 +14,7 @@ import Camelot from '~/components/Icons/Camelot'
 import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
+import { BigNumber, ethers } from 'ethers'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -133,7 +134,14 @@ const SideMenu = () => {
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
 
-                    const formattedLiquidity = formatNumber(poolData?.totalLiquidityUSD, 6, false).toString()
+                    const formattedLiquidity = formatDataNumber(
+                        ethers.utils
+                            .parseEther(BigNumber.from(Math.floor(Number(poolData?.totalLiquidityUSD))).toString())
+                            .toString(),
+                        18,
+                        0,
+                        true
+                    ).toString()
 
                     setState((prevState) => ({
                         ...prevState,
@@ -268,7 +276,7 @@ const SideMenu = () => {
                                                 <Camelot />
                                             </IconWrapper>
                                             <PopupColumn>
-                                                <div>Liquidity: ${state.totalLiquidity}</div>
+                                                <div>Liquidity: {state.totalLiquidity}</div>
                                                 <CamelotText>View on Camelot Exchange</CamelotText>
                                             </PopupColumn>
                                         </PopupWrapperLink>

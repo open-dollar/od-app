@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
@@ -8,6 +8,8 @@ import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+//@ts-ignore
+import { renderSvg } from '@opendollar/svg-playground'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
@@ -41,6 +43,28 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         10
     )
     const ODPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
+    const [svg, setSvg] = useState('')
+
+    const statsForSVG = {
+        vaultID: singleSafe?.id,
+        stabilityFee:  getRatePercentage(singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0', 2) + '%',
+        debtAmount: formatWithCommas(totalDebt) + ' OD',
+        collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
+        collateralizationRatio: Number(singleSafe?.collateralRatio),
+        safetyRatio: Number(
+            safeState.liquidationData!.collateralLiquidationData[
+                collateralName].safetyCRatio
+        ),
+        liqRatio: Number(
+            safeState.liquidationData!.collateralLiquidationData[
+                collateralName
+                ].liquidationCRatio
+        ),
+    }
+
+    useEffect(() => {
+        setSvg(renderSvg(statsForSVG))
+    }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData])
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -68,7 +92,9 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 <Left>
                     <Inner className="main">
                         <Main>
-                            <ColumnWrapper></ColumnWrapper>
+                                <div>
+                                    <div style={{width: '100%', height: '100%', position: 'relative'}} dangerouslySetInnerHTML={{__html: svg}}></div>
+                                </div>
                         </Main>
                     </Inner>
                 </Left>

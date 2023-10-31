@@ -47,7 +47,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
     const statsForSVG = {
         vaultID: singleSafe?.id,
-        stabilityFee:  getRatePercentage(singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0', 2) + '%',
+        stabilityFee:  Math.floor(Number(getRatePercentage(singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0', 2))).toString() + '%',
         debtAmount: formatWithCommas(totalDebt) + ' OD',
         collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
         collateralizationRatio: Number(singleSafe?.collateralRatio),
@@ -90,13 +90,13 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         <>
             <Flex>
                 <Left>
-                    <Inner className="main">
+                    <InnerLeft className="main">
                         <Main>
-                                <div>
-                                    <div style={{width: '100%', height: '100%', position: 'relative'}} dangerouslySetInnerHTML={{__html: svg}}></div>
+                                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', position: 'relative', overflow: 'scroll'}}>
+                                    <div style={{maxWidth: '100%', height: 'auto', border: '1px solid #00374E', borderRadius: '0px'}} dangerouslySetInnerHTML={{__html: svg}}></div>
                                 </div>
                         </Main>
-                    </Inner>
+                    </InnerLeft>
                 </Left>
 
                 <Right>
@@ -276,10 +276,11 @@ const Flex = styled.div`
     }
 `
 
-const ColumnWrapper = styled.div`
+const InnerLeft = styled.div`
+    height: 100%;
     display: flex;
-    justify-content: space-between;
-    gap: 24px;
+    flex-direction: column;
+    justify-content: center;
 `
 
 const Inner = styled.div`
@@ -334,6 +335,9 @@ const Side = styled.div`
     }
   border-bottom: 1px solid #00587E;
   padding-bottom: 8px;
+  svg {
+    border: 1px solid #00374E;
+  }
 `
 
 const SideTitle = styled.div`

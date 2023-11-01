@@ -16,16 +16,15 @@ const {
 } = process.env
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
-    [SupportedChainId.OPTIMISM_GOERLI]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export enum Network {
-    OPTIMISM_GOERLI = 'optimism-goerli',
     ARBITRUM = 'arbitrum',
-    ARBITRUM_GOERLI = 'arbitrum-goerli',
+    ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
 }
 
-export const ETH_NETWORK = Network.ARBITRUM_GOERLI
+export const ETH_NETWORK = Network.ARBITRUM_SEPOLIA
 
 export const COIN_TICKER = 'OD'
 
@@ -88,7 +87,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     42161: 'Arbitrum One',
-    421613: 'Arbitrum Goerli.',
+    421614: 'Arbitrum Sepolia.',
 }
 
 const MEDIA_WIDTHS = {
@@ -185,7 +184,8 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     hai: INIT_VALUES,
     flx: INIT_VALUES,
 }
-export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbitrum' : 'arbitrum-goerli'
+
+export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbitrum' : 'arbitrum-sepolia'
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 export const geb = new Geb(network_name, provider)

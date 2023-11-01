@@ -67,15 +67,15 @@ export async function checkAndSwitchMetamaskNetwork() {
                     method: 'wallet_addEthereumChain',
                     params: [
                         {
-                            chainId: `0x66EED`,
-                            chainName: 'Arbitrum Goerli',
+                            chainId: `0x66EEE`,
+                            chainName: 'Arbitrum Sepolia',
                             nativeCurrency: {
                                 name: 'AGOR',
                                 symbol: 'AGOR',
                                 decimals: 18,
                             },
-                            rpcUrls: ['https://goerli-rollup.arbitrum.io/rpc'],
-                            blockExplorerUrls: ['https://goerli.arbiscan.io/'],
+                            rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
+                            blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
                         },
                     ],
                 })
@@ -144,8 +144,8 @@ function getModalContent() {
                                 </a>
                             </h5> : <h5>
                                 {t('not_supported')}{' '}
-                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421613">
-                                    Arbitrum Goerli
+                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
+                                    Arbitrum Sepolia
                                 </a>
                             </h5>
                         }

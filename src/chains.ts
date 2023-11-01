@@ -71,11 +71,11 @@ export const MAINNET_CHAINS: ChainConfig = {
 }
 
 export const TESTNET_CHAINS: ChainConfig = {
-    421613: {
+    421614: {
         urls: ['https://goerli-rollup.arbitrum.io/rpc'],
-        name: 'Arbitrum Goerli',
+        name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
-        blockExplorerUrls: ['https://testnet.arbiscan.io'],
+        blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
     },
     420: {
         urls: ['https://goerli.optimism.io'],

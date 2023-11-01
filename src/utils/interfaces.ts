@@ -7,7 +7,7 @@ import { Geb } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
 
 export declare enum ChainId {
-    ARBITRUM_GOERLI = 421613,
+    ARBITRUM_SEPOLIA = 421614,
     ARBITRUM = 42161,
 }
 

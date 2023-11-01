@@ -9,7 +9,7 @@ import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, return
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
-import { renderSvg } from '@opendollar/svg-playground'
+import { renderSvg } from '@opendollar/svg-generator'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
@@ -47,19 +47,20 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
     const statsForSVG = {
         vaultID: singleSafe?.id,
-        stabilityFee:  Math.floor(Number(getRatePercentage(singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0', 2))).toString() + '%',
+        stabilityFee:
+            Math.floor(
+                Number(
+                    getRatePercentage(
+                        singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
+                        2
+                    )
+                )
+            ).toString() + '%',
         debtAmount: formatWithCommas(totalDebt) + ' OD',
         collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
         collateralizationRatio: Number(singleSafe?.collateralRatio),
-        safetyRatio: Number(
-            safeState.liquidationData!.collateralLiquidationData[
-                collateralName].safetyCRatio
-        ),
-        liqRatio: Number(
-            safeState.liquidationData!.collateralLiquidationData[
-                collateralName
-                ].liquidationCRatio
-        ),
+        safetyRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio),
+        liqRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationCRatio),
     }
 
     useEffect(() => {
@@ -92,16 +93,34 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 <Left>
                     <InnerLeft className="main">
                         <Main>
-                                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', position: 'relative', overflow: 'scroll'}}>
-                                    <div style={{maxWidth: '100%', height: 'auto', border: '1px solid #00374E', borderRadius: '0px'}} dangerouslySetInnerHTML={{__html: svg}}></div>
-                                </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    height: '100%',
+                                    position: 'relative',
+                                    overflow: 'scroll',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        maxWidth: '100%',
+                                        height: 'auto',
+                                        border: '1px solid #00374E',
+                                        borderRadius: '0px',
+                                    }}
+                                    dangerouslySetInnerHTML={{ __html: svg }}
+                                ></div>
+                            </div>
                         </Main>
                     </InnerLeft>
                 </Left>
 
                 <Right>
                     <Inner>
-                        <Side style={{borderTop: '1px solid #00587E', paddingTop: '8px'}}>
+                        <Side style={{ borderTop: '1px solid #00587E', paddingTop: '8px' }}>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
@@ -156,10 +175,39 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             <SideTitle>
                                 Collateral Ratio (min {collateralRatio}%)
                                 <div>
-                                    <span style={{color: '#FCBF3B', fontSize: '12px', fontWeight:'400', lineHeight: '15.6px', opacity: '60%'}}>Safety: {Number(safeState.liquidationData!.collateralLiquidationData[
-                                        collateralName].safetyCRatio) * 100}%</span> &nbsp;
-                                    <span style={{color: '#E45200', fontSize: '12px', fontWeight:'400', lineHeight: '15.6px', opacity: '60%'}}>Minimum: {Number(safeState.liquidationData!.collateralLiquidationData[
-                                        collateralName].liquidationCRatio) * 100}%</span>
+                                    <span
+                                        style={{
+                                            color: '#FCBF3B',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                            opacity: '60%',
+                                        }}
+                                    >
+                                        Safety:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .safetyCRatio
+                                        ) * 100}
+                                        %
+                                    </span>{' '}
+                                    &nbsp;
+                                    <span
+                                        style={{
+                                            color: '#E45200',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                            opacity: '60%',
+                                        }}
+                                    >
+                                        Minimum:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .liquidationCRatio
+                                        ) * 100}
+                                        %
+                                    </span>
                                 </div>
                                 {modified ? (
                                     <div className="sideNote">
@@ -280,7 +328,6 @@ const InnerLeft = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 `
 
 const Inner = styled.div`
@@ -328,16 +375,17 @@ const DollarValue = styled.div`
 
 const Side = styled.div`
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
     &:last-child {
         margin-bottom: 0;
     }
-  border-bottom: 1px solid #00587E;
-  padding-bottom: 8px;
-  svg {
-    border: 1px solid #00374E;
-  }
+    border-bottom: 1px solid #00587e;
+    padding-bottom: 4px;
+    @media (max-width: 767px) {
+        padding-top: 4px;
+    }
+    svg {
+        border: 1px solid #00374e;
+    }
 `
 
 const SideTitle = styled.div`
@@ -368,7 +416,7 @@ const InfoIcon = styled.div`
         fill: ${(props) => props.theme.colors.secondary};
         color: ${(props) => props.theme.colors.foreground};
         position: relative;
-        top: 2px;
+        top: 4px;
         margin-right: 5px;
     }
 `

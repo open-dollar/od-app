@@ -393,7 +393,7 @@ const Analytics = () => {
     return (
         <Container>
             <Section>
-                <Title>Analytics</Title>
+                <Title>Stats</Title>
                 <AnaliticsTop>
                     {analiticsData &&
                         analiticsData?.map((val, index) => (

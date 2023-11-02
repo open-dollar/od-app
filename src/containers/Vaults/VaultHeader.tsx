@@ -35,7 +35,7 @@ const VaultHeader = ({
                 <LeftSide>
                     <SafeInfo>
                         <UpperInfo>
-                            Vault <span>#{safeId}</span>
+                            {singleSafe?.collateralName} Vault <span>#{safeId}</span>
                         </UpperInfo>
                     </SafeInfo>
                 </LeftSide>

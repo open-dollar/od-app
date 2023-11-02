@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
@@ -8,6 +8,8 @@ import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+//@ts-ignore
+import { renderSvg } from '@opendollar/svg-generator'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
@@ -20,7 +22,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
-
     const { singleSafe } = safeState
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
@@ -41,7 +42,30 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty,
         10
     )
-    const haiPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
+    const ODPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
+    const [svg, setSvg] = useState('')
+
+    const statsForSVG = {
+        vaultID: singleSafe?.id,
+        stabilityFee:
+            Math.floor(
+                Number(
+                    getRatePercentage(
+                        singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
+                        2
+                    )
+                )
+            ).toString() + '%',
+        debtAmount: formatWithCommas(totalDebt) + ' OD',
+        collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
+        collateralizationRatio: Number(singleSafe?.collateralRatio),
+        safetyRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio),
+        liqRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationCRatio),
+    }
+
+    useEffect(() => {
+        setSvg(renderSvg(statsForSVG))
+    }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData])
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -56,28 +80,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         }
     }
 
-    // const handleCollectSurplus = async () => {
-    //     if (!library || !account) throw new Error('No library or account')
-    //     if (!singleSafe) throw new Error('no safe')
-    //     setIsLoading(true)
-    //     try {
-    //         popupsActions.setIsWaitingModalOpen(true)
-    //         popupsActions.setWaitingPayload({
-    //             title: 'Waiting For Confirmation',
-    //             text: 'Collecting ETH',
-    //             hint: 'Confirm this transaction in your wallet',
-    //             status: 'loading',
-    //         })
-    //         const signer = library.getSigner(account)
-    //         await safeActions.collectETH({ signer, safe: singleSafe })
-    //         await timeout(3000)
-    //     } catch (e) {
-    //         handleTransactionError(e)
-    //     } finally {
-    //         setIsLoading(false)
-    //     }
-    // }
-
     const modified = useMemo(() => {
         if (isModifying) {
             return parsedAmounts.rightInput || parsedAmounts.leftInput
@@ -89,113 +91,158 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         <>
             <Flex>
                 <Left>
-                    <Inner className="main">
+                    <InnerLeft className="main">
                         <Main>
-                            <MainLabel>{singleSafe?.collateralName} Collateral</MainLabel>
-                            <RowWrapper>
-                                <div>
-                                    <MainValue>{formatWithCommas(collateral)}</MainValue>
-                                    <MainChange>${formatWithCommas(collateralInUSD, 2, 2)}</MainChange>
-                                </div>
-                                {modified ? (
-                                    <AfterTextWrapper>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newCollateral)}
-                                        </span>
-                                    </AfterTextWrapper>
-                                ) : (
-                                    <></>
-                                )}
-                            </RowWrapper>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    height: '100%',
+                                    position: 'relative',
+                                    overflow: 'scroll',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        maxWidth: '100%',
+                                        height: 'auto',
+                                        border: '1px solid #00374E',
+                                        borderRadius: '0px',
+                                    }}
+                                    dangerouslySetInnerHTML={{ __html: svg }}
+                                ></div>
+                            </div>
                         </Main>
-
-                        <Main className="mid">
-                            <MainLabel>OD Debt</MainLabel>
-                            <RowWrapper>
-                                <div>
-                                    <MainValue>{formatWithCommas(totalDebt)}</MainValue>
-                                    <MainChange>${formatWithCommas(totalDebtInUSD, 2, 2)}</MainChange>
-                                </div>
-                                {modified ? (
-                                    <AfterTextWrapper>
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newDebt, 2)}
-                                        </span>
-                                    </AfterTextWrapper>
-                                ) : null}
-                            </RowWrapper>
-                        </Main>
-
-                        <Main>
-                            <ColumnWrapper>
-                                <Column>
-                                    <MainLabel>Collateral Ratio (min {collateralRatio}%)</MainLabel>
-                                    <RowTextWrapper>
-                                        <MainValue>
-                                            {singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%
-                                        </MainValue>
-                                        <MainChange>
-                                            {modified ? (
-                                                <AfterTextWrapper>
-                                                    <>
-                                                        After:{' '}
-                                                        <span
-                                                            className={returnState(
-                                                                ratioChecker(
-                                                                    Number(newCollateralRatio),
-                                                                    Number(
-                                                                        safeState.liquidationData!
-                                                                            .collateralLiquidationData[collateralName]
-                                                                            .liquidationCRatio
-                                                                    ),
-                                                                    Number(
-                                                                        safeState.liquidationData!
-                                                                            .collateralLiquidationData[collateralName]
-                                                                            .safetyCRatio
-                                                                    )
-                                                                )
-                                                            ).toLowerCase()}
-                                                        >
-                                                            {formatWithCommas(newCollateralRatio)}%
-                                                        </span>
-                                                    </>
-                                                </AfterTextWrapper>
-                                            ) : null}
-                                        </MainChange>
-                                    </RowTextWrapper>
-                                </Column>
-                                <Column>
-                                    <MainLabel>Risk</MainLabel>
-                                    <Wrapper>
-                                        <Circle
-                                            data-tooltip-id="vault-stats"
-                                            data-tooltip-content={`${
-                                                singleSafe && returnState(singleSafe.riskState)
-                                                    ? returnState(singleSafe.riskState)
-                                                    : 'Closed'
-                                            } Risk`}
-                                            className={
-                                                singleSafe && returnState(singleSafe.riskState)
-                                                    ? returnState(singleSafe.riskState).toLowerCase()
-                                                    : 'dimmed'
-                                            }
-                                        />{' '}
-                                        <MainValue>
-                                            {singleSafe && returnState(singleSafe.riskState)
-                                                ? returnState(singleSafe.riskState)
-                                                : 'Closed'}
-                                        </MainValue>
-                                    </Wrapper>
-                                </Column>
-                            </ColumnWrapper>
-                        </Main>
-                    </Inner>
+                    </InnerLeft>
                 </Left>
 
                 <Right>
                     <Inner>
+                        <Side style={{ borderTop: '1px solid #00587E', paddingTop: '8px' }}>
+                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                <Info size="16" />
+                            </InfoIcon>
+                            <SideTitle>
+                                Debt Owed
+                                {modified ? (
+                                    <div className="sideNote">
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newDebt, 2)}
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </SideTitle>
+                            <SideValue>
+                                {formatWithCommas(totalDebt)} OD
+                                <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
+                            </SideValue>
+                        </Side>
+                        <Side>
+                            <InfoIcon
+                                data-tooltip-id="vault-stats"
+                                data-tooltip-content={t('collateral_deposited_tip')}
+                            >
+                                <Info size="16" />
+                            </InfoIcon>
+                            <SideTitle>
+                                Collateral Deposited
+                                {modified ? (
+                                    <div className="sideNote">
+                                        After:{' '}
+                                        <span className={isDeposit ? 'green' : 'yellow'}>
+                                            {formatWithCommas(newCollateral)}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
+                            </SideTitle>
+                            <SideValue>
+                                {formatWithCommas(collateral)} {singleSafe?.collateralName}
+                                <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
+                            </SideValue>
+                        </Side>
+                        <Side>
+                            <InfoIcon
+                                data-tooltip-id="vault-stats"
+                                data-tooltip-content={t('collateral_deposited_tip')}
+                            >
+                                <Info size="16" />
+                            </InfoIcon>
+                            <SideTitle>
+                                Collateral Ratio (min {collateralRatio}%)
+                                <div>
+                                    <span
+                                        style={{
+                                            color: '#FCBF3B',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                            opacity: '60%',
+                                        }}
+                                    >
+                                        Safety:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .safetyCRatio
+                                        ) * 100}
+                                        %
+                                    </span>{' '}
+                                    &nbsp;
+                                    <span
+                                        style={{
+                                            color: '#E45200',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                            opacity: '60%',
+                                        }}
+                                    >
+                                        Minimum:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .liquidationCRatio
+                                        ) * 100}
+                                        %
+                                    </span>
+                                </div>
+                                {modified ? (
+                                    <div className="sideNote">
+                                        After:{' '}
+                                        <span
+                                            className={
+                                                isDeposit
+                                                    ? 'green'
+                                                    : 'yellow' &&
+                                                      returnState(
+                                                          ratioChecker(
+                                                              Number(newCollateralRatio),
+                                                              Number(
+                                                                  safeState.liquidationData!.collateralLiquidationData[
+                                                                      collateralName
+                                                                  ].liquidationCRatio
+                                                              ),
+                                                              Number(
+                                                                  safeState.liquidationData!.collateralLiquidationData[
+                                                                      collateralName
+                                                                  ].safetyCRatio
+                                                              )
+                                                          )
+                                                      ).toLowerCase()
+                                            }
+                                        >
+                                            {formatWithCommas(newCollateralRatio)}%
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
+                            </SideTitle>
+                            <SideValue>{singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%</SideValue>
+                        </Side>
                         <Side>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('eth_osm_tip')}>
                                 <Info size="16" />
@@ -209,7 +256,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <Info size="16" />
                             </InfoIcon>
                             <SideTitle>OD Redemption Price</SideTitle>
-                            <SideValue>{haiPrice}</SideValue>
+                            <SideValue>${ODPrice}</SideValue>
                         </Side>
 
                         <Side>
@@ -277,88 +324,12 @@ const Flex = styled.div`
     }
 `
 
-const RowTextWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    color: ${(props) => props.theme.colors.customSecondary};
-    span {
-        margin-left: 0.5rem;
-        &.green,
-        &.low {
-            color: ${(props) => props.theme.colors.blueish};
-        }
-        &.yellow {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.dimmed {
-            color: ${(props) => props.theme.colors.secondary};
-        }
-        &.elevated {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.high {
-            color: ${(props) => props.theme.colors.dangerColor};
-        }
-    }
-`
-
-const RowWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`
-
-const AfterTextWrapper = styled.span`
-    display: flex;
-    color: ${(props) => props.theme.colors.customSecondary};
-    span {
-        margin-left: 0.5rem;
-        color: ${(props) => props.theme.colors.blueish};
-        &.green,
-        &.low {
-            color: ${(props) => props.theme.colors.blueish};
-        }
-        &.yellow {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.dimmed {
-            color: ${(props) => props.theme.colors.secondary};
-        }
-        &.elevated {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.high {
-            color: ${(props) => props.theme.colors.dangerColor};
-        }
-    }
-`
-
-const Wrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: #dadada;
-    font-size: 14px;
-    font-weight: 400;
-
-    & div {
-        margin-right: 8px;
-    }
-`
-
-const ColumnWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-`
-
-const Column = styled.div`
+const InnerLeft = styled.div`
+    height: 100%;
     display: flex;
     flex-direction: column;
-    @media (max-width: 767px) {
-        flex-direction: column;
-    }
 `
+
 const Inner = styled.div`
     background: ${(props) => props.theme.colors.colorPrimary};
     padding: 20px;
@@ -397,70 +368,23 @@ const Main = styled.div`
     }
 `
 
-const MainLabel = styled.div`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.secondary};
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-`
-
-const MainValue = styled.div`
-    font-weight: 700;
-    font-size: 20px;
-    color: white;
-    margin-right: 8px;
-`
-
-const MainChange = styled.div`
+const DollarValue = styled.div`
     font-size: 13px;
-    color: ${(props) => props.theme.colors.customSecondary};
-    span {
-        &.green,
-        &.low {
-            color: ${(props) => props.theme.colors.blueish};
-        }
-        &.yellow {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.dimmed {
-            color: ${(props) => props.theme.colors.secondary};
-        }
-        &.elevated {
-            color: ${(props) => props.theme.colors.yellowish};
-        }
-        &.high {
-            color: ${(props) => props.theme.colors.dangerColor};
-        }
-    }
-`
-const Circle = styled.div`
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: ${(props) => props.theme.colors.successColor};
-    margin-right: 5px;
-    cursor: pointer;
-    &.dimmed {
-        background: ${(props) => props.theme.colors.secondary};
-    }
-    &.elevated {
-        background: ${(props) => props.theme.colors.yellowish};
-    }
-    &.high {
-        background: ${(props) => props.theme.colors.dangerColor};
-    }
-    &.liquidation {
-        background: ${(props) => props.theme.colors.dangerColor};
-    }
+    color: ${(props) => props.theme.colors.blueish};
 `
 
 const Side = styled.div`
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
     &:last-child {
         margin-bottom: 0;
+    }
+    border-bottom: 1px solid #00587e;
+    padding-bottom: 4px;
+    @media (max-width: 767px) {
+        padding-top: 4px;
+    }
+    svg {
+        border: 1px solid #00374e;
     }
 `
 
@@ -481,35 +405,10 @@ const SideTitle = styled.div`
 `
 const SideValue = styled.div`
     margin-left: auto;
+    text-align: right;
     color: ${(props) => props.theme.colors.customSecondary};
     font-size: 16px;
 `
-
-// const SurplusBlock = styled.div``
-
-// const StateInner = styled.div`
-//     border: 1px solid ${(props) => props.theme.colors.border};
-//     border-radius: 15px;
-//     background: #1e3b58;
-//     text-align: center;
-//     padding: 20px;
-//     position: relative;
-//     margin-top: 20px;
-//     button {
-//         background: ${(props) => props.theme.colors.greenish};
-//         color: ${(props) => props.theme.colors.primary};
-//     }
-// `
-
-// const Text = styled.div`
-//     font-size: ${(props) => props.theme.font.small};
-// `
-
-// const Inline = styled.div`
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-// `
 
 const InfoIcon = styled.div`
     cursor: pointer;
@@ -517,7 +416,7 @@ const InfoIcon = styled.div`
         fill: ${(props) => props.theme.colors.secondary};
         color: ${(props) => props.theme.colors.foreground};
         position: relative;
-        top: 2px;
+        top: 4px;
         margin-right: 5px;
     }
 `

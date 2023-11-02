@@ -72,7 +72,7 @@ export const MAINNET_CHAINS: ChainConfig = {
 
 export const TESTNET_CHAINS: ChainConfig = {
     421614: {
-        urls: ['https://goerli-rollup.arbitrum.io/rpc'],
+        urls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],

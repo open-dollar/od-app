@@ -25,7 +25,7 @@ const Auctions = ({
     const [showFaqs, setShowFaqs] = useState(false)
     const query = useQuery()
     const queryType = query.get('type') as AuctionEventType | null
-    const [type, setType] = useState<AuctionEventType>(queryType || 'SURPLUS')
+    const [type, setType] = useState<AuctionEventType>(queryType || 'COLLATERAL')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
@@ -108,7 +108,7 @@ const Auctions = ({
         if (queryType) {
             setType(queryType)
         } else {
-            setType('SURPLUS')
+            setType('COLLATERAL')
         }
     }, [queryType])
 
@@ -164,14 +164,14 @@ const Auctions = ({
             </Content>
 
             <Switcher>
-                <Tab className={type === 'DEBT' ? 'active' : ''} onClick={() => onTabClick('DEBT')}>
-                    Debt Auctions
+                <Tab className={type === 'COLLATERAL' ? 'active' : ''} onClick={() => onTabClick('COLLATERAL')}>
+                    Collateral Auctions
                 </Tab>
                 <Tab className={type === 'SURPLUS' ? 'active' : ''} onClick={() => onTabClick('SURPLUS')}>
                     Surplus Auctions
                 </Tab>
-                <Tab className={type === 'COLLATERAL' ? 'active' : ''} onClick={() => onTabClick('COLLATERAL')}>
-                    Collateral Auctions
+                <Tab className={type === 'DEBT' ? 'active' : ''} onClick={() => onTabClick('DEBT')}>
+                    Debt Auctions
                 </Tab>
             </Switcher>
 

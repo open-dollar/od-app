@@ -196,7 +196,11 @@ const SHeadsContainer = styled(HeadsContainer)`
     }
 `
 
-const SListItem = styled(ListItem)`
+interface ListItemProps {
+    index?: number
+}
+
+const SListItem = styled.div<ListItemProps>`
     text-align: start;
     text-overflow: ellipsis;
     font-size: 16px;
@@ -207,6 +211,25 @@ const SListItem = styled(ListItem)`
         font-size: 16px;
         font-weight: 400;
     }
+    width: 174px;
+    color: ${(props) => props.theme.colors.customSecondary};
+    padding: 15px 10px;
+    &:first-child {
+        padding: 15px 25px;
+    }
+
+    &:nth-child(1) {
+        background-color: #002b40;
+    }
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+      &:first-child {
+        padding: 15px 20px;
+    }
+    padding: 15px 20px;
+    text-align: start;
+    flex: 0 0 100%;
+    min-width:50%;
+  `}
 `
 
 const WrapperIcon = styled.div`

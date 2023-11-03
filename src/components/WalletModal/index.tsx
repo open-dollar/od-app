@@ -67,15 +67,15 @@ export async function checkAndSwitchMetamaskNetwork() {
                     method: 'wallet_addEthereumChain',
                     params: [
                         {
-                            chainId: `0x66EED`,
-                            chainName: 'Arbitrum Goerli',
+                            chainId: `0x66EEE`,
+                            chainName: 'Arbitrum Sepolia',
                             nativeCurrency: {
-                                name: 'AGOR',
-                                symbol: 'AGOR',
+                                name: 'ETH',
+                                symbol: 'ETH',
                                 decimals: 18,
                             },
-                            rpcUrls: ['https://goerli-rollup.arbitrum.io/rpc'],
-                            blockExplorerUrls: ['https://goerli.arbiscan.io/'],
+                            rpcUrls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
+                            blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
                         },
                     ],
                 })
@@ -126,30 +126,30 @@ export default function WalletModal() {
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
-function getModalContent() {
+    function getModalContent() {
         return (
             <UpperSection>
                 <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-                {(chainId != process.env.REACT_APP_NETWORK_ID && chainId !== undefined) ? (
+                {chainId != process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
-                    <HeaderRow>
-                        { 'Wrong Network' }
-                    </HeaderRow>
-                    <ContentWrapper>
-                        { process.env.REACT_APP_NETWORK_ID === '42161' ?
-                            <h5>
-                                {t('not_supported')}{' '}
-                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
-                                    Arbitrum One
-                                </a>
-                            </h5> : <h5>
-                                {t('not_supported')}{' '}
-                                <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421613">
-                                    Arbitrum Goerli
-                                </a>
-                            </h5>
-                        }
-                    </ContentWrapper>
+                        <HeaderRow>{'Wrong Network'}</HeaderRow>
+                        <ContentWrapper>
+                            {process.env.REACT_APP_NETWORK_ID === '42161' ? (
+                                <h5>
+                                    {t('not_supported')}{' '}
+                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
+                                        Arbitrum One
+                                    </a>
+                                </h5>
+                            ) : (
+                                <h5>
+                                    {t('not_supported')}{' '}
+                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
+                                        Arbitrum Sepolia
+                                    </a>
+                                </h5>
+                            )}
+                        </ContentWrapper>
                     </>
                 ) : (
                     <HeaderRow>

@@ -141,7 +141,7 @@ Cypress.Commands.overwrite('visit', (original, url, options) => {
         onBeforeLoad(win) {
             options && options.onBeforeLoad && options.onBeforeLoad(win)
             win.localStorage.clear()
-            const provider = new JsonRpcProvider('https://optimism-goerli.public.blastapi.io', 420)
+            const provider = new JsonRpcProvider('https://arbitrum-sepolia.public.blastapi.io', 420)
             const signer = new Wallet(privateKey, provider)
             win.ethereum = new CustomizedBridge(signer, provider, walletAddress, allowTx)
         },

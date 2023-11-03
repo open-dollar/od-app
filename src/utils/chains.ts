@@ -1,3 +1,3 @@
 export enum SupportedChainId {
-    OPTIMISM_GOERLI = 420,
+    ARBITRUM_SEPOLIA = 421614,
 }

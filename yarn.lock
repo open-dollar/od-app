@@ -2268,7 +2268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/contracts@npm:5.7.0":
+"@ethersproject/contracts@npm:5.7.0, @ethersproject/contracts@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/contracts@npm:5.7.0"
   dependencies:
@@ -2529,7 +2529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5, @ethersproject/providers@npm:^5.7.2":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -3590,6 +3590,16 @@ __metadata:
   peerDependencies:
     utf-8-validate: ^5.0.2
   checksum: 31c32f3ca7c18ddc7ad7e6ba169259d397547430e7c5e8534e886ea760e07180d1134598cc164a7ab83f07a377c561d56fa0569e435a3a349c7d2c54e46f99fa
+  languageName: node
+  linkType: hard
+
+"@opendollar/svg-generator@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@opendollar/svg-generator@npm:1.0.0"
+  dependencies:
+    "@ethersproject/contracts": ^5.7.0
+    "@ethersproject/providers": ^5.7.2
+  checksum: c97097b34cfb6c67e836172dbe085263b2943f545bb61b52042f88e2e269873d1d48249be549d986732650846147b45fb03004f2a03dcdcbb532fc9727082095
   languageName: node
   linkType: hard
 
@@ -5183,6 +5193,7 @@ __metadata:
     "@ethersproject/providers": 5.4.5
     "@gnosis.pm/safe-apps-web3-react": ^0.6.0
     "@opendollar/sdk": ^1.5.8-rc.2
+    "@opendollar/svg-generator": 1.0.0
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2

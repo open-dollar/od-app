@@ -3581,15 +3581,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:^1.5.8-rc.1":
-  version: 1.5.8-rc.1
-  resolution: "@opendollar/sdk@npm:1.5.8-rc.1"
+"@opendollar/sdk@npm:^1.5.8-rc.2":
+  version: 1.5.8-rc.2
+  resolution: "@opendollar/sdk@npm:1.5.8-rc.2"
   dependencies:
     "@opendollar/abis": ^0.0.0-ad5646d3
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 97d589dbd290591567b771f0e05e280c760ec6af636fae6bb2e23f8fbba1e19e771714f48fd8997c08a47524e6466aff051d2b4841d31d05ee32b637edc2dd4d
+  checksum: 31c32f3ca7c18ddc7ad7e6ba169259d397547430e7c5e8534e886ea760e07180d1134598cc164a7ab83f07a377c561d56fa0569e435a3a349c7d2c54e46f99fa
   languageName: node
   linkType: hard
 
@@ -5182,7 +5182,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@gnosis.pm/safe-apps-web3-react": ^0.6.0
-    "@opendollar/sdk": ^1.5.8-rc.1
+    "@opendollar/sdk": ^1.5.8-rc.2
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2

@@ -21,6 +21,7 @@ export const contractsDescriptions: { [k: string]: string } = {
     systemCoin:
         'The System Coin contract is the ERC20 token (OD) that is used to mint or burn debts within the system.',
     proxyRegistry: 'The ProxyRegistry contract hosts proxy ownership and facilitates deployment.',
+    vault721: 'The Vault721 contract is the ERC721 contract which records and manages vault ownership.',
     medianizerCoin: 'The Oracle responsible for quoting the price of the system Coin.',
     rateSetter: 'The RateSetter contract is responsible for the triggering the update of the PI Controller.',
     piCalculator: 'The PiController contract calculates the redemption rate given error history parameters.',

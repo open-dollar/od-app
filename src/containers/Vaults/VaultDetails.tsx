@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -18,7 +18,6 @@ const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
     const { t } = useTranslation()
     const { account, provider } = useActiveWeb3React()
-
     const { safeModel: safeActions } = useStoreActions((state) => state)
 
     const {
@@ -50,13 +49,13 @@ const VaultDetails = ({ ...props }) => {
 
     // Fetches vault data of a vault not owned by the user
     const fetchSingleVaultData = async () => {
-        if (safe && safeId && geb) {
+        if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }
 
-        if (!safe && geb && safeId && liquidationData) {
-            const safeDataResponse = await geb.contracts.safeManager.safeData(safeId)
+        if (!safe && geb && safeId) {
+            const safeDataResponse = await geb.contracts.safeManager.connect(geb.provider).safeData(safeId)
             const ODProxyAddress = safeDataResponse[0]
             if (ODProxyAddress.startsWith('0x000000')) {
                 return
@@ -72,22 +71,39 @@ const VaultDetails = ({ ...props }) => {
                 geb,
                 tokensData: geb.tokenList,
             })
+            const { collateralLiquidationData } = userSafes
+            const constructedLiquidationData: ILiquidationData = {
+                currentRedemptionPrice: userSafes.systemState.currentRedemptionPrice.value,
+                currentRedemptionRate: userSafes.systemState.currentRedemptionRate.annualizedRate,
+                globalDebt: userSafes.systemState.globalDebt,
+                perSafeDebtCeiling: userSafes.systemState.perSafeDebtCeiling,
+                globalDebtCeiling: userSafes.systemState.globalDebtCeiling,
+                collateralLiquidationData: collateralLiquidationData,
+            }
+            safeActions.setLiquidationData(constructedLiquidationData)
+
             const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
             if (!safeById) {
                 return
             }
-            const formattedSafe = formatUserSafe([safeById], liquidationData as ILiquidationData, geb.tokenList)
+            const formattedSafe = formatUserSafe(
+                [safeById],
+                constructedLiquidationData as ILiquidationData,
+                geb.tokenList
+            )
             safeActions.setSingleSafe(formattedSafe[0])
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }
     }
 
     useEffect(() => {
-        fetchSingleVaultData()
+        if (!liquidationData || !singleSafe) {
+            fetchSingleVaultData()
+        }
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe, safeActions, geb, liquidationData])
+    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
 
     useEffect(() => {
         if (!account || !provider) return

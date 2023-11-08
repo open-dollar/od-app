@@ -9,7 +9,7 @@ import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, return
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
-import { renderSvg } from '@opendollar/svg-generator'
+import { generateSvg } from '@opendollar/svg-generator'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
@@ -64,7 +64,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     }
 
     useEffect(() => {
-        setSvg(renderSvg(statsForSVG))
+        setSvg(generateSvg(statsForSVG))
     }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData])
 
     const returnRedRate = () => {

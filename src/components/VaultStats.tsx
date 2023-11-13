@@ -102,6 +102,8 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     height: '100%',
                                     position: 'relative',
                                     overflow: 'scroll',
+                                    scrollbarWidth: 'none',
+                                    scrollbarColor: 'transparent',
                                 }}
                             >
                                 <div

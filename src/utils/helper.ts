@@ -254,6 +254,7 @@ export const ratioChecker = (currentLiquidationRatio: number, liqRatio: number, 
 
     if (currentLiquidationRatioAsDecimal === 0) return 0
     if (currentLiquidationRatioAsDecimal < liqRatio) return 4
+    if (currentLiquidationRatioAsDecimal === liqRatio) return 3
     if (currentLiquidationRatioAsDecimal > liqRatio && currentLiquidationRatioAsDecimal <= safetyRatio) return 3
     if (currentLiquidationRatioAsDecimal > safetyRatio && currentLiquidationRatioAsDecimal <= safetyRatio * 1.2)
         return 2

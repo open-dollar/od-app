@@ -136,13 +136,13 @@ describe('utils', () => {
         })
 
         it('returns 3 when currentLiquidationRatio is less than or equal to safetyRatio but greater than liqRatio', () => {
-            expect(ratioChecker(100, 1.0, 1.0)).toEqual(4)
+            expect(ratioChecker(100, 1.0, 1.0)).toEqual(3)
             expect(ratioChecker(150, 1.2, 1.5)).toEqual(3)
         })
 
-        it('returns 4 when currentLiquidationRatio is less than or equal to liqRatio', () => {
-            expect(ratioChecker(100, 1.0, 1.0)).toEqual(4)
-            expect(ratioChecker(135, 1.35, 1.35)).toEqual(4)
+        it('returns 4 when currentLiquidationRatio is less than liqRatio and 3 when equal', () => {
+            expect(ratioChecker(100, 1.0, 1.0)).toEqual(3)
+            expect(ratioChecker(135, 1.35, 1.35)).toEqual(3)
         })
     })
 

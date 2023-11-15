@@ -93,17 +93,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                 <Left>
                     <InnerLeft className="main">
                         <Main>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                    height: '100%',
-                                    position: 'relative',
-                                    overflow: 'scroll',
-                                }}
-                            >
+                            <SVGContainer>
                                 <div
                                     style={{
                                         maxWidth: '100%',
@@ -113,7 +103,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     }}
                                     dangerouslySetInnerHTML={{ __html: svg }}
                                 ></div>
-                            </div>
+                            </SVGContainer>
                         </Main>
                     </InnerLeft>
                 </Left>
@@ -316,6 +306,21 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 }
 
 export default VaultStats
+
+const SVGContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+`
 
 const Flex = styled.div`
     display: flex;

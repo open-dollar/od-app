@@ -271,13 +271,13 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 }
                                 label={
                                     isDeposit
-                                        ? `Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.OD.symbol}`
-                                        : `Balance: ${formatWithCommas(haiBalance)} ${tokensData.OD.symbol}`
+                                        ? `Borrow OD: ${formatWithCommas(availableHai, 2)} ${tokensData.OD.symbol}`
+                                        : `Balance: ${formatWithCommas(haiBalance, 2)} ${tokensData.OD.symbol}`
                                 }
                                 rightLabel={
                                     isDeposit
-                                        ? `~$${formatWithCommas(haiBalanceUSD)}`
-                                        : `OD Owed: ${formatWithCommas(availableHai)}`
+                                        ? `~$${formatWithCommas(haiBalanceUSD, 2)}`
+                                        : `OD Owed: ${formatWithCommas(availableHai, 2)}`
                                 }
                                 onChange={onRightInput}
                                 value={rightInput}

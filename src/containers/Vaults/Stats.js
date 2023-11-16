@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import {
-    formatDataNumber,
+    formatDataNumber, multiplyWad,
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
-import { ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 
 const Stats = () => {
     const geb = useGeb()
@@ -16,19 +16,30 @@ const Stats = () => {
         totalVaults: '',
         wETHBalance: '',
         odBalance: '',
+        totalCollateralSum: '',
     })
 
     useEffect(() => {
         async function fetchData() {
             if (geb) {
+                let totalLockedValue = BigNumber.from('0')
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+                    Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
+                        const lockedAmountInUsd = multiplyWad(
+                            value?.lockedAmount?.toString(),
+                            value?.currentPrice?.toString()
+                        )
+                        totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+                    })
                     setState((prevState) => ({
                         ...prevState,
                         totalVaults: analyticsData.totalVaults,
                         wETHBalance: formatDataNumber(poolData.WETH_balance, 18, 2, false),
                         odBalance: formatDataNumber(poolData.OD_balance, 18, 2, false),
+                        totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
                     }))
+
                 } catch (error) {
                     console.error('Error fetching data:', error)
                 }
@@ -98,7 +109,7 @@ const Stats = () => {
 
                 <Container>
                     <StatItem>
-                        <TextHeader>Collateral Ratio</TextHeader>
+                        <TextHeader>Total Collateral Locked</TextHeader>
                         <Text
                             fontSize={{ lg: '28px', sm: '18px' }}
                             mb=".5rem"
@@ -106,12 +117,7 @@ const Stats = () => {
                             backgroundClip="text"
                             fontWeight="extrabold"
                         >
-                            {/*{getCollateralRatio(*/}
-                            {/*    stats?.globalCollateral,*/}
-                            {/*    stats?.globalDebt,*/}
-                            {/*    stats?.liquidationPrice,*/}
-                            {/*    stats?.liquidationCRatio*/}
-                            {/*)}*/}%
+                            {state?.totalCollateralSum}
                         </Text>
                     </StatItem>
                 </Container>

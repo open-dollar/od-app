@@ -250,10 +250,10 @@ const CreateVault = ({
                                                   }
                                                 : undefined
                                         }
-                                        label={`Balance: ${formatWithCommas(selectedTokenBalance)} ${
+                                        label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
                                             selectedCollateral?.symbol
                                         }`}
-                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
+                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
                                         onChange={onLeftInput}
                                         value={leftInput}
                                         handleMaxClick={onMaxLeftInput}

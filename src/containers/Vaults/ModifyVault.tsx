@@ -283,6 +283,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 value={rightInput}
                                 handleMaxClick={onMaxRightInput}
                                 disabled={isDeposit && !isOwner}
+                                decimals={5}
                             />
                         </InputBlock>
                     </Inner>

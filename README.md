@@ -49,13 +49,22 @@ yarn build
 yarn start
 ```
 
-### Configuring the environment
+## Configuring the environment
 
 To have the app default to a different network when a wallet is not connected:
 
 1. Create a file and name it `.env.development.local`
 2. Change `REACT_APP_NETWORK_ID` to `"420"`
 3. Change `REACT_APP_NETWORK_URL` to e.g. `"https://opt-goerli.g.alchemy.com/v2/{YOUR_INFURA_KEY}"`
+4. Change `REACT_APP_FALLBACK_SUBGRAPH_URL` to actual values in the format `https://${GRAPH_NODE_PLAYGROUND_BASE_URL}/subgraphs/name/NAME_OF_YOUR_SUBGRAPH`
+The current value of the `GRAPH_NODE_PLAYGROUND_BASE_URL` in the Render-deployed subgraph can be found in the Render dashboard under the Environment section of the NGINX Render service.
+The subgraph name can be queried in the Render database service by following the `README.md` instructions in the [od-subgraph](https://github.com/open-dollar/od-subgraph) repo.
+
+### Subgraph Redundancy
+
+When a request fails to our hosted subgraph in The Graph, we will automatically retry the request to our Render-hosted subgraph
+in the `querySubgraph` SDK function. Make sure you've set `REACT_APP_FALLBACK_SUBGRAPH_URL` as a .env variable to ensure
+there's a fallback subgraph to query.
 
 ## Testing
 

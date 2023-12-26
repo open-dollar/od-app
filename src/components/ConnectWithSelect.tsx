@@ -17,13 +17,12 @@
 import type { Web3ReactHooks } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
-import { WalletConnect } from '@web3-react/walletconnect'
 import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 
 import { IconWrapper } from '~/components/ConnectedWalletIcon'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 
-function getStatusIcon(connector: MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet | Network) {
+function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network) {
     if (connector instanceof MetaMask) {
         return (
             <IconWrapper size={32}>
@@ -54,7 +53,7 @@ export function ConnectWithSelect({
     isActive,
     error,
 }: {
-    connector: MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet | Network
+    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network
     activeChainId: ReturnType<Web3ReactHooks['useChainId']>
     isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
     isActive: ReturnType<Web3ReactHooks['useIsActive']>

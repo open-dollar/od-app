@@ -47,7 +47,7 @@ import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
 import Stats from '~/containers/Vaults/Stats'
-import { PoolData } from "@opendollar/sdk/lib/virtual/tokenData";
+import { PoolData } from '@opendollar/sdk/lib/virtual/tokenData'
 
 interface Props {
     children: ReactNode

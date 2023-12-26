@@ -89,10 +89,7 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
 
                 if (desiredChainId === -1) {
                     await connector.activate()
-                } else if (
-                    connector instanceof WalletConnectV2 ||
-                    connector instanceof Network
-                ) {
+                } else if (connector instanceof WalletConnectV2 || connector instanceof Network) {
                     await connector.activate(desiredChainId)
                 } else {
                     await connector.activate(getAddChainParameters(desiredChainId))

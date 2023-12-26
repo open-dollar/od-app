@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import {formatNumber, DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo} from '~/utils'
+import { formatNumber, DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'

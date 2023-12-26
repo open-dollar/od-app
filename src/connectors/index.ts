@@ -49,7 +49,6 @@ export const injected = new InjectedConnector({
     supportedChainIds: [420],
 })
 
-
 const TESTNET_CHAINS = {
     1: 'mainnet',
     3: 'ropsten',

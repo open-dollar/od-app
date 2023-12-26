@@ -1,237 +1,165 @@
 {
-  "_format": "hh-sol-cache-2",
-  "files": {
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/TokensData.sol": {
-      "lastModificationDate": 1691789683792,
-      "contentHash": "7cd9c91ecb29fe9bdffbe03cb7680739",
-      "sourceName": "contracts/TokensData.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
+    "_format": "hh-sol-cache-2",
+    "files": {
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/TokensData.sol": {
+            "lastModificationDate": 1691789683792,
+            "contentHash": "7cd9c91ecb29fe9bdffbe03cb7680739",
+            "sourceName": "contracts/TokensData.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": ["IERC20", "TokensData"]
+        },
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualLiquidationData.sol": {
+            "lastModificationDate": 1691789683793,
+            "contentHash": "f816e04ea9d05c50435e6b72a4f39690",
+            "sourceName": "contracts/VirtualLiquidationData.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": [
+                "ILiquidationEngine",
+                "IOracleRelayer",
+                "ISAFEEngine",
+                "ITaxCollector",
+                "VirtualLiquidationData"
+            ]
+        },
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualAuctionsData.sol": {
+            "lastModificationDate": 1691789683792,
+            "contentHash": "c6f44f04d74318c110d400267d168649",
+            "sourceName": "contracts/VirtualAuctionsData.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": [
+                "IAccountingEngine",
+                "IDebtAuctionHouse",
+                "IERC20",
+                "ISAFEEngine",
+                "ISurplusAuctionHouse",
+                "VirtualAuctionsData"
+            ]
+        },
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualCollateralAuctionData.sol": {
+            "lastModificationDate": 1691789683793,
+            "contentHash": "67ec607fb634a835e8168075e2d41fa0",
+            "sourceName": "contracts/VirtualCollateralAuctionData.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": ["IncreasingDiscountCollateralAuctionHouse", "VirtualCollateralAuctionsData"]
+        },
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualAnalyticsData.sol": {
+            "lastModificationDate": 1691789683792,
+            "contentHash": "dfe19a156ef11cd7756324966f4c31c9",
+            "sourceName": "contracts/VirtualAnalyticsData.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": [
+                "IBaseOracle",
+                "IDelayedOracle",
+                "IERC20",
+                "IOracleRelayer",
+                "IPIDController",
+                "ISAFEEngine",
+                "ITaxCollector",
+                "VirtualAnalyticsData"
+            ]
+        },
+        "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualUserSafes.sol": {
+            "lastModificationDate": 1692033091398,
+            "contentHash": "c5cf6aba7a4111a116443ab63e663e53",
+            "sourceName": "contracts/VirtualUserSafes.sol",
+            "solcConfig": {
+                "version": "0.8.13",
+                "settings": {
+                    "optimizer": {
+                        "enabled": false,
+                        "runs": 200
+                    },
+                    "outputSelection": {
+                        "*": {
+                            "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"],
+                            "": ["ast"]
+                        }
+                    }
+                }
+            },
+            "imports": [],
+            "versionPragmas": ["^0.8.13"],
+            "artifacts": ["IERC20", "IProxyRegistry", "ISAFEEngine", "ISafeManager", "VirtualUserSafes"]
         }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "IERC20",
-        "TokensData"
-      ]
-    },
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualLiquidationData.sol": {
-      "lastModificationDate": 1691789683793,
-      "contentHash": "f816e04ea9d05c50435e6b72a4f39690",
-      "sourceName": "contracts/VirtualLiquidationData.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "ILiquidationEngine",
-        "IOracleRelayer",
-        "ISAFEEngine",
-        "ITaxCollector",
-        "VirtualLiquidationData"
-      ]
-    },
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualAuctionsData.sol": {
-      "lastModificationDate": 1691789683792,
-      "contentHash": "c6f44f04d74318c110d400267d168649",
-      "sourceName": "contracts/VirtualAuctionsData.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "IAccountingEngine",
-        "IDebtAuctionHouse",
-        "IERC20",
-        "ISAFEEngine",
-        "ISurplusAuctionHouse",
-        "VirtualAuctionsData"
-      ]
-    },
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualCollateralAuctionData.sol": {
-      "lastModificationDate": 1691789683793,
-      "contentHash": "67ec607fb634a835e8168075e2d41fa0",
-      "sourceName": "contracts/VirtualCollateralAuctionData.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "IncreasingDiscountCollateralAuctionHouse",
-        "VirtualCollateralAuctionsData"
-      ]
-    },
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualAnalyticsData.sol": {
-      "lastModificationDate": 1691789683792,
-      "contentHash": "dfe19a156ef11cd7756324966f4c31c9",
-      "sourceName": "contracts/VirtualAnalyticsData.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "IBaseOracle",
-        "IDelayedOracle",
-        "IERC20",
-        "IOracleRelayer",
-        "IPIDController",
-        "ISAFEEngine",
-        "ITaxCollector",
-        "VirtualAnalyticsData"
-      ]
-    },
-    "/Users/alekseevaiana/programming/keyp/open-dollar-app/solidity/contracts/VirtualUserSafes.sol": {
-      "lastModificationDate": 1692033091398,
-      "contentHash": "c5cf6aba7a4111a116443ab63e663e53",
-      "sourceName": "contracts/VirtualUserSafes.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.13"
-      ],
-      "artifacts": [
-        "IERC20",
-        "IProxyRegistry",
-        "ISAFEEngine",
-        "ISafeManager",
-        "VirtualUserSafes"
-      ]
     }
-  }
 }

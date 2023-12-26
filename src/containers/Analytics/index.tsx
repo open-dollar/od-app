@@ -20,7 +20,7 @@ import {
 } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from 'ethers'
 
 interface AnalyticsStateProps {
     erc20Supply: string

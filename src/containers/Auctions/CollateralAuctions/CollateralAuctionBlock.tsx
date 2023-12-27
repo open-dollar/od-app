@@ -125,7 +125,9 @@ const CollateralAuctionBlock = (auction: Props) => {
     const collateralPrice = useMemo(() => {
         if (auctionsState.collateralData) {
             const data = auctionsState.collateralData.filter((item) => item._auctionId.toString() === auctionId)
-            const price = data[0]?._boughtCollateral.mul(constants.WeiPerEther).div(data[0]._adjustedBid.gt(0) ? data[0]._adjustedBid : 1)
+            const price = data[0]?._boughtCollateral
+                .mul(constants.WeiPerEther)
+                .div(data[0]._adjustedBid.gt(0) ? data[0]._adjustedBid : 1)
 
             // we divide by 1e18 because we multiplied by 1e18 in the line above
             // this was required to handle decimal prices (<0)
@@ -160,9 +162,10 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    let auctionPrice = maxCollateral && maxCollateral.gt(BigNumber.from('0')) ? BigNumber.from(odBalance)
-        .mul(BigNumber.from(marketPriceOD))
-        .div(maxCollateral) : BigNumber.from('0')
+    let auctionPrice =
+        maxCollateral && maxCollateral.gt(BigNumber.from('0'))
+            ? BigNumber.from(odBalance).mul(BigNumber.from(marketPriceOD)).div(maxCollateral)
+            : BigNumber.from('0')
 
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
 

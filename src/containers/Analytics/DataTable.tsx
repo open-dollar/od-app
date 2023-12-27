@@ -24,7 +24,9 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
                             <HeadsContainer key={title + '-column-' + index} index={index}>
-                                <Head data-tooltip-content={description} data-tooltip-id="collaterals-table">{name}</Head>
+                                <Head data-tooltip-content={description} data-tooltip-id="collaterals-table">
+                                    {name}
+                                </Head>
                             </HeadsContainer>
                         ))}
                     </Heads>

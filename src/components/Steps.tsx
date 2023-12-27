@@ -107,7 +107,6 @@ const Steps = () => {
 
     return (
         <StepsContainer>
-
             <StepsBars>
                 {step !== 0 ? (
                     <>

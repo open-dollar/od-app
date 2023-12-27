@@ -19,7 +19,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
 import { useEagerConnect, useInactiveListener } from '../../hooks'
-import { network } from "~/connectors/network";
+import { network } from '~/connectors/network'
 
 const MessageWrapper = styled.div`
     display: flex;

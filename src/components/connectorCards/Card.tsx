@@ -17,7 +17,6 @@
 import { ConnectWithSelect } from '../ConnectWithSelect'
 import type { Connector } from '@web3-react/types'
 import { MetaMask } from '@web3-react/metamask'
-import { WalletConnect } from '@web3-react/walletconnect'
 import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { Network } from '@web3-react/network'
@@ -29,7 +28,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
 
 interface Props {
-    connector: MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet | Network
+    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network
     activeChainId: ReturnType<Web3ReactHooks['useChainId']>
     chainIds?: ReturnType<Web3ReactHooks['useChainId']>[]
     isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
@@ -43,7 +42,6 @@ interface Props {
 function getName(connector: Connector) {
     if (connector instanceof MetaMask) return 'MetaMask'
     if (connector instanceof WalletConnectV2) return 'WalletConnect V2'
-    if (connector instanceof WalletConnect) return 'WalletConnect'
     if (connector instanceof CoinbaseWallet) return 'Coinbase Wallet'
     if (connector instanceof Network) return 'Network'
     return 'Unknown'
@@ -91,11 +89,7 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
 
                 if (desiredChainId === -1) {
                     await connector.activate()
-                } else if (
-                    connector instanceof WalletConnectV2 ||
-                    connector instanceof WalletConnect ||
-                    connector instanceof Network
-                ) {
+                } else if (connector instanceof WalletConnectV2 || connector instanceof Network) {
                     await connector.activate(desiredChainId)
                 } else {
                     await connector.activate(getAddChainParameters(desiredChainId))

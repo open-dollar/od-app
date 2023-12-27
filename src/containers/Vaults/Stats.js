@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
-import {
-    formatDataNumber, multiplyWad,
-} from '~/utils'
+import { formatDataNumber, multiplyWad } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
@@ -39,7 +37,6 @@ const Stats = () => {
                         odBalance: formatDataNumber(poolData.OD_balance, 18, 2, false),
                         totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
                     }))
-
                 } catch (error) {
                     console.error('Error fetching data:', error)
                 }

@@ -7,7 +7,6 @@ import TransactionOverview from '~/components/TransactionOverview'
 import { returnConnectorName } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-
 const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
     const { stats } = useSafeInfo(type)
     const { t } = useTranslation()
@@ -29,13 +28,21 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                     const isPrimary = key === 'data'
                     return (
                         <div key={key} className="blockie">
-                            <ReactTooltip style={{ zIndex: '10' }} id="tooltip-review" variant="light" data-effect="solid" />
+                            <ReactTooltip
+                                style={{ zIndex: '10' }}
+                                id="tooltip-review"
+                                variant="light"
+                                data-effect="solid"
+                            />
                             {stats[key as StatsType].map((item) => {
                                 return (
                                     <Flex key={item.label}>
                                         <Label color={isPrimary ? 'primary' : 'secondary'}>
                                             {item.tip ? (
-                                                <InfoIcon data-tooltip-id='tooltip-review' data-tooltip-content={item.tip}>
+                                                <InfoIcon
+                                                    data-tooltip-id="tooltip-review"
+                                                    data-tooltip-content={item.tip}
+                                                >
                                                     <Info size="13" />
                                                 </InfoIcon>
                                             ) : null}

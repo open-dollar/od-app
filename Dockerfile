@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -7,7 +7,10 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /od-app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* ./
+COPY package.json ./
+RUN rm -rf node_modules yarn.lock
+RUN yarn set version 3.2.3
+RUN yarn install
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -19,8 +22,6 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN yarn set version 3.2.3
 RUN yarn build
 
 # If using npm comment out above and use below instead

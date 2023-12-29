@@ -58,10 +58,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const collateralUnitPriceUSD = formatNumber(
         safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value
     )
-    const selectedTokenBalanceInUSD = formatNumber(
-        (Number(collateralUnitPriceUSD) * Number(leftInputBalance)).toString(),
-        2
-    )
+
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
     const [unlockState, approveUnlock] = useTokenApproval(
@@ -93,6 +90,12 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const haiBalance = ethers.utils.formatEther(tokenBalances.OD?.balanceE18 || '0')
 
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
+
+    const collateralBalanceUSD = useTokenBalanceInUSD(
+        // @ts-ignore
+        singleSafe?.collateralName,
+        leftInput ? leftInput : 0
+    )
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
@@ -250,7 +253,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                               singleSafe.collateralName
                                           }`
                                 }
-                                rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD)}`}
+                                rightLabel={`~$${formatWithCommas(collateralBalanceUSD)}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}

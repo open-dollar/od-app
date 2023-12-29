@@ -47,7 +47,7 @@ import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
 import Stats from '~/containers/Vaults/Stats'
-import { PoolData } from '@opendollar/sdk/lib/virtual/tokenData'
+import axios from "axios";
 
 interface Props {
     children: ReactNode
@@ -63,6 +63,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const location = useLocation()
     const { pathname } = location
+    const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
     const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
@@ -83,6 +84,7 @@ const Shared = ({ children, ...rest }: Props) => {
     } = useStoreActions((state) => state)
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
+    const geoBlockToastId = 'geoBlockToastHash'
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -176,6 +178,25 @@ const Shared = ({ children, ...rest }: Props) => {
     //     connectWalletActions.fetchFiatPrice()
     // }, [connectWalletActions])
 
+    const fetchUserCountry = async () => {
+        try {
+            const response = await axios.get('https://api.country.is');
+            return response.data?.country;
+        } catch (error) {
+            console.error('Error fetching country:', error);
+            return null;
+        }
+    };
+
+    const isUserGeoBlocked = async () => {
+        if (!isGeofenceEnabled) {
+            return false;
+        }
+
+        const userCountry = await fetchUserCountry();
+        return userCountry === 'US';
+    };
+
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
         popupsActions.setWaitingPayload({
@@ -257,6 +278,30 @@ const Shared = ({ children, ...rest }: Props) => {
         return true
     }
 
+    async function geoBlockCheck() {
+        if (account && isGeofenceEnabled) {
+            const isBlocked = await isUserGeoBlocked();
+            if (isBlocked) {
+                connectWalletActions.setIsWrongNetwork(true)
+                settingsActions.setBlockBody(true)
+                toast(
+                    <ToastPayload
+                        icon={'AlertTriangle'}
+                        iconSize={40}
+                        iconColor={'orange'}
+                        textColor={'#ffffff'}
+                        text={`${t('geoblocked_wallet')}`}
+                    />,
+                    { autoClose: false, type: 'warning', toastId: geoBlockToastId }
+                )
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
+
     async function networkChecker() {
         accountChange()
         const id: ChainId = NETWORK_ID
@@ -283,6 +328,7 @@ const Shared = ({ children, ...rest }: Props) => {
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
                 sanctionsCheck()
+                geoBlockCheck()
                 connectWalletActions.setStep(1)
                 accountChecker()
             }

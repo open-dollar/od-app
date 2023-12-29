@@ -58,7 +58,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
             ).toString() + '%',
         debtAmount: formatWithCommas(totalDebt) + ' OD',
         collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
-        collateralizationRatio: Number(singleSafe?.collateralRatio),
+        collateralizationRatio: singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
         safetyRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio),
         liqRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationCRatio),
     }

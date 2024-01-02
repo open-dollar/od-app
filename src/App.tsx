@@ -49,7 +49,7 @@ const App = () => {
             <ThemeProvider theme={darkTheme}>
                 <GlobalStyle bodyOverflow={bodyOverflow} />
                 <ErrorBoundary>
-                    <ToastContainer />
+                    <ToastContainer style={{ zIndex: 1001, position: "sticky", top: 0, left: 0, width: "100%" }} />
                     <Shared>
                         <ApolloProvider client={client}>
                             <StatsProvider>

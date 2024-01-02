@@ -3488,7 +3488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/abis@npm:^0.0.0-ad5646d3":
+"@opendollar/abis@npm:^0.0.0-874f6292":
   version: 0.0.0-f9f4cf29
   resolution: "@opendollar/abis@npm:0.0.0-f9f4cf29"
   dependencies:
@@ -3507,15 +3507,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:^1.5.8-rc.5":
-  version: 1.5.8-rc.5
-  resolution: "@opendollar/sdk@npm:1.5.8-rc.5"
+"@opendollar/sdk@npm:^1.5.8-rc.6":
+  version: 1.5.8-rc.6
+  resolution: "@opendollar/sdk@npm:1.5.8-rc.6"
   dependencies:
-    "@opendollar/abis": ^0.0.0-ad5646d3
+    "@opendollar/abis": ^0.0.0-874f6292
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: dd95f632567cb3aadef8d2af0ae52e30115ab2042906411ec01c56da98e135586382a9b123a2131243b2affb707a8a1dac02b85fe31164588e2ac2eaca507f88
+  checksum: f88cdbb24596d49667f551f382842e3f26969b6bc6bf81843d51f72a5e5315922d51ab8c4f99e7d50a834ad576783b19f0e121d7beba725a496b0b4878aff487
   languageName: node
   linkType: hard
 
@@ -5110,7 +5110,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": ^1.5.8-rc.5
+    "@opendollar/sdk": ^1.5.8-rc.6
     "@opendollar/svg-generator": 1.0.2
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4

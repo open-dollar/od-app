@@ -9,9 +9,8 @@ COPY package.json ./
 COPY .yarnrc.yml ./
 COPY yarn.lock ./
 COPY .yarn/ ./.yarn/
-# NOTE: This is a workaround but we can reduce the size of the Docker image by removing the following line.
-COPY . ./
-
+COPY craco.config.js ./
+COPY tsconfig.json ./
 # Install the application dependencies
 RUN yarn install
 
@@ -30,4 +29,4 @@ FROM httpd:alpine AS runner
 WORKDIR /var/www/html
 
 # Copy the build directory from base stage to the runner stage
-COPY --from=base /od-app/build/ .
+COPY --from=build /od-app/build/ .

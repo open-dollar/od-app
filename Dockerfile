@@ -9,6 +9,8 @@ COPY package.json ./
 COPY .yarnrc.yml ./
 COPY yarn.lock ./
 COPY .yarn/ ./.yarn/
+# NOTE: This is a workaround but we can reduce the size of the Docker image by removing the following line.
+COPY . ./
 
 # Install the application dependencies
 RUN yarn install

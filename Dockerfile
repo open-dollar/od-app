@@ -8,7 +8,7 @@ WORKDIR /od-app
 COPY package.json ./
 COPY .yarnrc.yml ./
 COPY yarn.lock ./
-COPY .yarn ./
+COPY .yarn/ ./.yarn/
 
 # Install the application dependencies
 RUN yarn install

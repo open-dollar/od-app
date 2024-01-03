@@ -1,8 +1,7 @@
 version: '3.7'
 services:
   app:
-    container_name: od-app-container
-    image: od-app:latest
+    image: open-dollar-app:latest
     build:
       context: .
       dockerfile: Dockerfile

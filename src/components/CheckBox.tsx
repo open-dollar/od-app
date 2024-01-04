@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
-interface Props {
+interface CheckBoxInputProps {
     checked: boolean
-    onChange: (state: boolean) => void
+    onChange: (e: any ) => void
 }
 
-const CheckBox = ({ checked, onChange }: Props) => {
+interface StyledCheckboxProps {
+    className: string
+    children: ReactNode
+}
+
+interface IconProps {
+    viewBox: string
+    children?: ReactNode
+}
+
+const CheckBox = ({ checked, onChange }: CheckBoxInputProps) => {
     const getChecked = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.checked)
 
     return (
@@ -30,15 +40,15 @@ const CheckboxContainer = styled.label`
     cursor: pointer;
 `
 
-const Icon = styled.svg`
+const Icon = styled.svg<IconProps>`
     fill: none;
     stroke: ${(props) => props.theme.colors.blueish};
     stroke-width: 2px;
     visibility: hidden;
     display: block;
-`
+`;
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })<CheckBoxInputProps>`
     border: 0;
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -49,9 +59,9 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
     position: absolute;
     white-space: nowrap;
     width: 1px;
-`
+`;
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled.div<StyledCheckboxProps>`
     display: inline-block;
     width: 20px;
     height: 20px;

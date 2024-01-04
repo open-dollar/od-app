@@ -6,6 +6,11 @@ interface Props {
     padding?: string
     isBlock?: boolean
 }
+
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+    isBlock?: boolean;
+}
+
 const AlertLabel = ({ text, type, padding, isBlock = true }: Props) => {
     return (
         <Container
@@ -36,7 +41,7 @@ const Circle = styled.div`
     border-radius: 50%;
     margin-right: 5px;
 `
-const Container = styled.div<{ isBlock?: boolean }>`
+const Container = styled.div<ContainerProps>`
     padding: 8px;
     height: fit-content;
     text-align: center;

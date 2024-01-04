@@ -1,8 +1,11 @@
+import React from 'react'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 import { getEtherscanLink, returnWalletAddress } from '~/utils'
 
-export const Link = styled.a`
+interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> { href: string, target: string}
+
+export const Link = styled.a<LinkProps>`
     ${ExternalLinkArrow}
 `
 

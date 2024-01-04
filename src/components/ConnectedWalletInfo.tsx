@@ -1,3 +1,4 @@
+import React from 'react'
 import { useMemo, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { useWeb3React } from '@web3-react/core'
@@ -132,7 +133,7 @@ const ConnectedWalletInfo = () => {
 
 export default ConnectedWalletInfo
 
-const BtnContainer = styled.div`
+const BtnContainer = styled.div<{children?: React.ReactNode, className: string}>`
     displat: flex;
     justify-content: center;
     margin-top: 24px;
@@ -154,7 +155,7 @@ const BtnContainer = styled.div`
     `}
 `
 
-const BtnInner = styled.div`
+const BtnInner = styled.div<{children?: React.ReactNode}>`
     display: flex;
     align-items: center;
     gap: 5px;
@@ -175,7 +176,7 @@ const Connection = styled.div`
     }
 `
 
-const Address = styled.div`
+const Address = styled.div<{children?: React.ReactNode, id: string}>`
     display: flex;
     margin: 20px 0;
     align-items: center;
@@ -187,13 +188,13 @@ const Address = styled.div`
     font-size: ${(props) => props.theme.font.large};
 `
 
-const WalletData = styled.div`
+const WalletData = styled.div<{children?: React.ReactNode}>`
     display: flex;
     align-items: center;
     align-items: center;
 `
 
-const CopyBtn = styled.div`
+const CopyBtn = styled.div<{children?: React.ReactNode, className?: string}>`
     color: ${(props) => props.theme.colors.secondary};
     font-size: ${(props) => props.theme.font.small};
     transition: all 0.3s ease;
@@ -225,7 +226,7 @@ const CopyBtn = styled.div`
     margin-right: 20px;
 `
 
-const LinkBtn = styled.a`
+const LinkBtn = styled.a<{children?: React.ReactNode, href:string, target:string}>`
     color: ${(props) => props.theme.colors.secondary};
     font-size: ${(props) => props.theme.font.small};
     transition: all 0.3s ease;

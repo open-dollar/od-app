@@ -5,6 +5,7 @@ import { getEtherscanLink, returnWalletAddress } from '~/utils'
 
 interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> { href: string, target: string}
 
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {}
 export const Link = styled.a<LinkProps>`
     ${ExternalLinkArrow}
 `

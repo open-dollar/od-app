@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -147,8 +148,9 @@ const SectionContent = styled.div`
     color: ${(props) => props.theme.colors.secondary};
     text-align: left;
 `
+interface ColProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const Col = styled.div`
+const Col = styled.div<ColProps>`
     margin-bottom: 10px;
     &:last-child {
         margin-bottom: 0;
@@ -162,7 +164,9 @@ const InnerCol = styled.div`
     text-align: center;
 `
 
-const HeaderSection = styled.div`
+interface HeaderSectionProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const HeaderSection = styled.div<HeaderSectionProps>`
     display: flex;
     align-items: center;
     cursor: pointer;

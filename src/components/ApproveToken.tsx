@@ -25,6 +25,9 @@ interface Props {
     auctionType: AuctionEventType
 }
 
+interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
 const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, coinName, auctionType }: Props) => {
     const TEXT_PAYLOAD_DEFAULT_STATE = {
         title: `${coinName} Allowance`,
@@ -194,7 +197,7 @@ const ImgContainer = styled.div`
     }
 `
 
-const Title = styled.div`
+const Title = styled.h1<TitleProps>`
     font-size: ${(props) => props.theme.font.medium};
     color: ${(props) => props.theme.colors.primary};
     font-weight: 600;
@@ -204,7 +207,7 @@ const Title = styled.div`
     }
 `
 
-const Text = styled.div`
+const Text = styled.p<TextProps>`
     font-size: ${(props) => props.theme.font.small};
     color: ${(props) => props.theme.colors.primary};
     margin: 10px 0;

@@ -1,3 +1,4 @@
+import React from 'react'
 import { BigNumber, constants, ethers } from 'ethers'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -270,7 +271,7 @@ const Container = styled.div`
     margin-bottom: 15px;
     background: #05284c;
 `
-const Header = styled.div`
+const Header = styled.div<{onClick?: React.MouseEventHandler, children?: React.ReactNode}>`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     padding: 20px;
@@ -340,7 +341,7 @@ const BtnContainer = styled.div`
     border-top: 1px solid ${(props) => props.theme.colors.border};
 `
 
-const LeftAucInfo = styled.div<{ type?: string }>`
+const LeftAucInfo = styled.div<{ type?: string, children?: React.ReactNode }>`
     display: flex;
     align-items: center;
     img {
@@ -401,7 +402,7 @@ const ListItemLabel = styled.div`
   `}
 `
 
-const List = styled.div`
+const List = styled.div<{children?: React.ReactNode}>`
     display: flex;
     align-items: center;
     border-radius: 10px;

@@ -26,8 +26,8 @@ RUN yarn build
 # Use Apache HTTP server Alpine variant image to run the built application
 FROM httpd:alpine AS runner
 
-# Set the working directory cursor to /var/www/html
-WORKDIR /var/www/html
+# Set the working directory cursor to the default Apache directory
+WORKDIR /usr/local/apache2/htdocs/
 
 # Copy the build directory from base stage to the runner stage
 COPY --from=base /od-app/build/ .

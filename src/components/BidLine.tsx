@@ -1,3 +1,4 @@
+import React from 'react'
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 
@@ -58,7 +59,9 @@ const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbo
 
 export default BidLine
 
-const Link = styled.a`
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {}
+
+const Link = styled.a<LinkProps>`
     ${ExternalLinkArrow}
 `
 

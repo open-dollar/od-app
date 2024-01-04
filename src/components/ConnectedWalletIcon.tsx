@@ -1,3 +1,4 @@
+import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
@@ -46,7 +47,7 @@ const ConnectedWalletIcon = ({ size }: Props) => {
 
 export default ConnectedWalletIcon
 
-export const IconWrapper = styled.div<{ size?: number }>`
+export const IconWrapper = styled.div<{ size?: number, children?: React.ReactNode, className?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;

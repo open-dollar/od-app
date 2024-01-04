@@ -1,3 +1,4 @@
+import React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 import { ArrowLeft, Info, Loader } from 'react-feather'
@@ -434,7 +435,7 @@ const Header = styled.div`
         }
     }
 `
-const Btn = styled.button`
+const Btn = styled.button<React.HTMLAttributes<HTMLButtonElement>>`
     border: 0;
     padding: 0;
     border-radius: 0;
@@ -498,7 +499,7 @@ const Stats = styled.div`
     }
 `
 
-const Flex = styled.div`
+const Flex = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -517,8 +518,12 @@ const Flex = styled.div`
             }
         }
     }
+    
 `
-const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
+interface LabelProps extends React.HTMLAttributes<HTMLDivElement>{
+    color?: 'primary' | 'secondary'
+}
+const Label = styled.div<LabelProps>`
     font-size: ${(props) => props.theme.font.small};
     color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.primary)};
     display: flex;
@@ -533,7 +538,7 @@ const Value = styled.div`
     color: ${(props) => props.theme.colors.primary};
 `
 
-const InfoIcon = styled.div`
+const InfoIcon = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     cursor: pointer;
     svg {
         fill: ${(props) => props.theme.colors.secondary};
@@ -543,7 +548,7 @@ const InfoIcon = styled.div`
     }
 `
 
-const Note = styled.div`
+const Note = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     color: ${(props) => props.theme.colors.secondary};
     font-size: ${(props) => props.theme.font.extraSmall};
     span {

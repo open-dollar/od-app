@@ -1,4 +1,4 @@
-import { HelpCircle } from 'react-feather'
+import React from 'react'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 
@@ -8,11 +8,11 @@ export interface TableProps {
     rows: (string | JSX.Element)[][]
 }
 
-interface HeadsContainerProps {
+interface HeadsContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     index?: number
 }
 
-interface ListItemProps {
+interface ListItemProps extends React.HTMLAttributes<HTMLDivElement>{
     index?: number
 }
 
@@ -171,7 +171,7 @@ export const Heads = styled.div`
     display:none;
   `}
 `
-export const ListContainer = styled.div`
+export const ListContainer = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     & div {
         z-index: 0;
     }
@@ -184,7 +184,7 @@ export const ListContainer = styled.div`
     }
 `
 
-export const Head = styled.p`
+export const Head = styled.p<React.HTMLAttributes<HTMLParagraphElement>>`
     /* flex: 0 0 16.6%; */
     font-size: 12px;
     width: 174px;
@@ -197,7 +197,7 @@ export const Head = styled.p`
     }
 `
 
-export const ListItemLabel = styled.span`
+export const ListItemLabel = styled.span<React.HTMLAttributes<HTMLSpanElement>>`
     display: none;
     ${({ theme }) => theme.mediaWidth.upToSmall`
     display:block;
@@ -208,7 +208,7 @@ export const ListItemLabel = styled.span`
   `}
 `
 
-export const List = styled.div`
+export const List = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     display: flex;
     border-radius: 4px;
     width: max-content;

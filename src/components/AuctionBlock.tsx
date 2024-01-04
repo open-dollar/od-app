@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -297,12 +298,15 @@ const AuctionBlock = (auction: Props) => {
 
 export default AuctionBlock
 
-const Container = styled.div`
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const Container = styled.div<ContainerProps>`
     border-radius: 15px;
     margin-bottom: 15px;
     background: #05284c;
 `
-const Header = styled.div`
+interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+const Header = styled.div<HeaderProps>`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     padding: 20px;
@@ -362,8 +366,9 @@ const Content = styled.div`
 const SectionContent = styled.div`
     font-size: ${(props) => props.theme.font.default};
 `
+interface LinkProps extends React.HTMLAttributes<HTMLDivElement> {href: string, target: string}
 
-const Link = styled.a`
+const Link = styled.a<LinkProps>`
     ${ExternalLinkArrow}
 `
 
@@ -374,8 +379,9 @@ const BtnContainer = styled.div`
     margin-top: 10px;
     border-top: 1px solid ${(props) => props.theme.colors.border};
 `
+interface LeftAucInfoProps extends React.HTMLAttributes<HTMLDivElement> { type?: string }
 
-const LeftAucInfo = styled.div<{ type?: string }>`
+const LeftAucInfo = styled.div<LeftAucInfoProps>`
     display: flex;
     align-items: center;
     img {
@@ -458,7 +464,9 @@ const ListItemLabel = styled.div`
   `}
 `
 
-const List = styled.div`
+interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const List = styled.div<ListProps>`
     display: flex;
     align-items: center;
     border-radius: 10px;

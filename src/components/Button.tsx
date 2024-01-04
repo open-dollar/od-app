@@ -1,46 +1,46 @@
-import React, { ReactNode } from 'react'
+import React, {MouseEventHandler, ReactNode} from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 import classNames from 'classnames'
 
 import Arrow from './Icons/Arrow'
 import Loader from './Loader'
 
-interface Props extends React.HTMLAttributes<HTMLButtonElement> {
-    text?: string
-    onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void
-    primary?: boolean
-    secondary?: boolean
-    dimmed?: boolean
-    dimmedNormal?: boolean
-    withArrow?: boolean
-    disabled?: boolean
-    isLoading?: boolean
-    dimmedWithArrow?: boolean
-    isBordered?: boolean
-    unstyled?: boolean
-    arrowPlacement?: string
-    children?: ReactNode
+interface CustomProps {
+    text?: string,
+    primary?: boolean,
+    secondary?: boolean,
+    dimmed?: boolean,
+    dimmedNormal?: boolean,
+    withArrow?: boolean,
+    isLoading?: boolean,
+    dimmedWithArrow?: boolean,
+    isBordered?: boolean,
+    unstyled?: boolean,
+    arrowPlacement?: string,
 }
 
-const Button = ({
-    text,
-    onClick,
-    dimmed,
-    dimmedNormal,
-    primary,
-    secondary,
-    withArrow,
-    disabled,
-    isLoading,
-    dimmedWithArrow,
-    isBordered,
-    unstyled,
-    arrowPlacement = 'left',
-    children,
-    ...rest
-}: Props) => {
+type Props = CustomProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+
+const Button = (props: Props) => {
     const { t } = useTranslation()
+
+    const {
+        text,
+        onClick,
+        dimmed,
+        dimmedNormal,
+        primary,
+        secondary,
+        withArrow,
+        isLoading,
+        dimmedWithArrow,
+        isBordered,
+        unstyled,
+        arrowPlacement = 'left',
+        children,
+        ...rest
+    } = props
 
     const classes = classNames({
         primary,
@@ -51,7 +51,7 @@ const Button = ({
     const returnType = () => {
         if (dimmed) {
             return (
-                <DimmedBtn {...rest} disabled={disabled} onClick={onClick}>
+                <DimmedBtn {...rest} onClick={onClick}>
                     {text && t(text)}
                 </DimmedBtn>
             )
@@ -59,7 +59,7 @@ const Button = ({
 
         if (dimmedWithArrow) {
             return (
-                <DimmedBtn {...rest} disabled={disabled} onClick={onClick}>
+                <DimmedBtn {...rest} onClick={onClick}>
                     {arrowPlacement === 'left' ? (
                         <img src={require('../assets/dark-arrow.svg').default} alt={''} />
                     ) : null}
@@ -71,13 +71,13 @@ const Button = ({
             )
         } else if (withArrow) {
             return (
-                <ArrowBtn {...rest} disabled={disabled} onClick={onClick}>
+                <ArrowBtn {...rest} onClick={onClick}>
                     <span>{text && t(text)}</span> <Arrow />
                 </ArrowBtn>
             )
         } else if (isBordered) {
             return (
-                <BorderedBtn {...rest} disabled={disabled} onClick={onClick}>
+                <BorderedBtn {...rest} onClick={onClick}>
                     <Inner> {text && t(text)}</Inner>
                 </BorderedBtn>
             )
@@ -86,7 +86,6 @@ const Button = ({
                 <UnstyledContainer
                     {...rest}
                     className={classes}
-                    disabled={disabled}
                     isLoading={isLoading}
                     onClick={onClick}
                 >
@@ -97,7 +96,7 @@ const Button = ({
             )
         } else {
             return (
-                <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
+                <Container {...rest} className={classes} isLoading={isLoading} onClick={onClick}>
                     {text && t(text)}
                     {children || null}
                     {isLoading && <Loader inlineButton />}
@@ -108,9 +107,22 @@ const Button = ({
     return returnType()
 }
 
+
 export default React.memo(Button)
 
-const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
+interface ButtonProps {
+    children?: ReactNode;
+    isLoading?: boolean;
+    className?: string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+
+
+
+
+
+const UnstyledContainer = styled.button<ButtonProps>`
     outline: none;
     cursor: pointer;
     border: none;
@@ -130,7 +142,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     }
 `
 
-const Container = styled.button<{ isLoading?: boolean }>`
+const Container = styled.button<ButtonProps>`
     outline: none;
     cursor: pointer;
     min-width: 134px;
@@ -163,7 +175,7 @@ const Container = styled.button<{ isLoading?: boolean }>`
     }
 `
 
-const DimmedBtn = styled.button`
+const DimmedBtn = styled.button<React.HTMLAttributes<HTMLButtonElement>>`
     cursor: pointer;
     border: none;
     box-shadow: none;
@@ -195,7 +207,7 @@ const DimmedBtn = styled.button`
     }
 `
 
-const ArrowBtn = styled.button`
+const ArrowBtn = styled.button<React.HTMLAttributes<HTMLButtonElement>>`
     span {
         background: ${(props) => props.theme.colors.gradient};
         background-clip: text;
@@ -228,7 +240,7 @@ const ArrowBtn = styled.button`
     }
 `
 
-const BorderedBtn = styled.button`
+const BorderedBtn = styled.button<React.HTMLAttributes<HTMLButtonElement>>`
     background: ${(props) => props.theme.colors.gradient};
     padding: 2px;
     border-radius: 25px;

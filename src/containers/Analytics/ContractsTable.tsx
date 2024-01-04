@@ -1,3 +1,4 @@
+import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
@@ -145,7 +146,7 @@ const AddressColumm = styled.div`
     }
 `
 
-const SHeads = styled(Heads)`
+const SHeads = styled(Heads)<{children?: React.ReactNode, className: string}>`
     div:nth-child(1) {
         width: 310px;
     }
@@ -183,8 +184,13 @@ const SList = styled(List)`
 
     width: 100%;
 `
+interface SHeadsContainerProps {
+    children?: React.ReactNode;
+    className?: string;
 
-const SHeadsContainer = styled(HeadsContainer)`
+}
+
+const SHeadsContainer = styled(HeadsContainer)<SHeadsContainerProps>`
     text-align: start;
     @media (max-width: 783px) {
         width: 100%;
@@ -196,7 +202,7 @@ const SHeadsContainer = styled(HeadsContainer)`
     }
 `
 
-interface ListItemProps {
+interface ListItemProps extends React.HTMLAttributes<HTMLDivElement>{
     index?: number
 }
 
@@ -232,7 +238,7 @@ const SListItem = styled.div<ListItemProps>`
   `}
 `
 
-const WrapperIcon = styled.div`
+const WrapperIcon = styled.div<{children?: React.ReactNode, onClick: any}>`
     display: flex;
     justify-content: center;
     margin-left: 16px;

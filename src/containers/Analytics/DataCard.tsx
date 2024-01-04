@@ -1,3 +1,4 @@
+import React from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
@@ -63,7 +64,7 @@ const Block = styled.div`
     }
 `
 
-export const InfoIcon = styled.div`
+export const InfoIcon = styled.div<React.HTMLAttributes<HTMLDivElement>>`
     cursor: pointer;
     position: absolute;
     right: 12px;

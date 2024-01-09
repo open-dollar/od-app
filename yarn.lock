@@ -3519,13 +3519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/svg-generator@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@opendollar/svg-generator@npm:1.0.2"
+"@opendollar/svg-generator@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@opendollar/svg-generator@npm:1.0.3"
   dependencies:
     "@ethersproject/contracts": ^5.7.0
     "@ethersproject/providers": ^5.7.2
-  checksum: ae7149dc31c41208eca4edfb38cf9d0a0ddb19131f41710ff9e43a3dcd3c245d0f51ad7f5335d2aa8c0fcb51fe61e2f2de19b4c25b6fa147856b3b646e2121a5
+  checksum: c91bd776e93b5309225d34a6d6467ea019b2ef149c49c716a95a0e79cb4bc5d6a4c08f82136ec6f3009c86b319c48b05bcae36527e3b01504d78b39d87281064
   languageName: node
   linkType: hard
 
@@ -5111,7 +5111,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@opendollar/sdk": ^1.5.8-rc.6
-    "@opendollar/svg-generator": 1.0.2
+    "@opendollar/svg-generator": 1.0.3
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2

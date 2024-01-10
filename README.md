@@ -80,28 +80,31 @@ yarn test:e2e
 yarn test
 ```
 
-## Open Dollar App - Docker Deployment Guide
+## Docker Compose
 
-This guide walks you through the steps to run the Open Dollar App using Docker Compose based on the provided docker-compose.yml and Dockerfile.
-##### Pre-requisites:
-Ensure Docker and Docker Compose are installed on your system.
 ##### Dockerfile Overview:
-Our Dockerfile is a multi-stage build file with two main stages - 'base' and 'runner'.
-
-* In the 'base' stage, we initialize a Node.js environment. We copy our package.json, yarn.lock, .yarnrc.yml, and .yarn files into the image for yarn package manager configuration. Afterwards, we install our dependencies and copy our source code (public/ and src/) into the image. We then run yarn build to create a production build of our application.
-* In the 'runner' stage, we start with an Apache HTTP Server in Alpine Linux as our base image. Next, we copy the build from 'base' stage to /var/www/html directory in our image.
-##### Docker Compose Overview:
-Our docker-compose.yml file defines our services, networks and volumes. Currently, it only has one service 'app'.
-* 'app': This service builds a Docker image named 'open-dollar-app:latest' using the context as the current directory and Dockerfile for building instructions. It then runs the container, with port 80 of the container mapped to port 8080 of the host.
+1. **Base setup:**
+Uses node:16 as the base image.
+Sets a working directory at /od-app.
+2. **Dependency management:**
+Copies files and directories relevant to Yarn and app dependencies.
+Runs yarn install to install the necessary dependencies.
+3. **Environment variables:**
+Sets up various build-time and run-time variables.
+4. **App build:**
+Copies app source code into the Docker image.
+Runs yarn build to build the application.
+5. **Runner setup:**
+Switches to httpd:alpine as the base image for the runner stage.
+Sets a working directory in the Apache server's filesystem.
+Copies the built application from the first stage to the runner stage, making it ready to operate using Apache HTTP Server.
 ##### Running the Services:
-To run the services, navigate to the directory containing the docker-compose.yml file and execute the following command:
+Run the docker compose and set the environment variables via CLI arguments and take account the "Configuring the environment" section above:
 ```bash
-docker-compose up --build
+REACT_APP_NETWORK_ID=XXXX REACT_APP_NETWORK_URL=XXXX docker-compose up --build
 ```
-The --build option tells Docker Compose to build the images before starting the containers.
-Once the command runs successfully, you'll be able to access the application on http://localhost:8080.
-Note: To close down the services, use Control + C to interrupt the running command, then use the following command to remove the containers:
+You'll be able to access the application on http://localhost:8080.
+##### Stopping the Services:
 ```bash
 docker-compose down
 ```
-That's it! You have successfully built and run the Docker services for Open Dollar App.

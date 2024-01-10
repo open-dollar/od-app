@@ -1,23 +1,23 @@
-import React from 'react'
-import styled from 'styled-components'
-import Logo from '../assets/od-full-logo-grey.svg'
-import { useStoreActions } from '~/store'
-import { Link as RouterLink } from 'react-router-dom'
-import FooterBackgroundImage from '~/assets/footer-bg-art.svg'
+import React from 'react';
+import styled from 'styled-components';
+import Logo from '../assets/od-full-logo-grey.svg';
+import { useStoreActions } from '~/store';
+import { Link as RouterLink } from 'react-router-dom';
+import FooterBackgroundImage from '~/assets/footer-bg-art.svg';
 
 const Footer: React.FC = () => {
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state);
 
     const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, disable = false, externalLink = '') => {
         if (disable) {
-            e.preventDefault()
+            e.preventDefault();
         }
-        popupsActions.setShowSideMenu(false)
+        popupsActions.setShowSideMenu(false);
         if (externalLink) {
-            window.open(externalLink, '_blank')
-            e.preventDefault()
+            window.open(externalLink, '_blank');
+            e.preventDefault();
         }
-    }
+    };
     return (
         <FooterAndImageContainer>
             <FooterContainer>
@@ -28,57 +28,36 @@ const Footer: React.FC = () => {
                                 <img src={Logo} height={'13px'} width={'89px'} alt="OD" />
                             </a>
                         </LogoContainer>
+                        <SmallText>
+                            Leverage your liquid staking tokens with the most flexible stablecoin protocol
+                        </SmallText>
                     </Column>
                 </Row>
                 <Row className="linksRow">
                     <Column>
-                        <Link target="_blank" href="https://blog.opendollar.com/">
-                            Blog
-                        </Link>
-                        <Link target="_blank" href="https://opendollar.com/lite-paper">
-                            Lite Paper
-                        </Link>
+                        <Header>PROJECT</Header>
+                        <Link target="_blank" href="https://docs.opendollar.com/">Docs</Link>
+                        <Link target="_blank" href="https://github.com/open-dollar">GitHub</Link>
+                        <Link target="_blank" href="https://tally.so/r/wa26qX">Partner</Link>
                     </Column>
                     <Column>
-                        <InnerLink
-                            to="/vaults"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
-                        >
-                            App
-                        </InnerLink>
-                        <InnerLink
-                            to="/auctions"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
-                        >
-                            Auctions
-                        </InnerLink>
-                        <InnerLink
-                            to="/stats"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
-                        >
-                            Stats
-                        </InnerLink>
+                        <Header>TESTNET</Header>
+                        <InnerLink to="/vaults" onClick={(e) => handleLinkClick(e, false)} className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}>App</InnerLink>
+                        <InnerLink to="/auctions" onClick={(e) => handleLinkClick(e, false)} className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}>Auctions</InnerLink>
+                        <InnerLink to="/stats" onClick={(e) => handleLinkClick(e, false)} className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}>Stats</InnerLink>
                     </Column>
                     <Column>
-                        <Link target="_blank" href="https://discord.opendollar.com">
-                            Discord
-                        </Link>
-                        <Link target="_blank" href="https://twitter.com/open_dollar">
-                            Twitter
-                        </Link>
+                        <Header>SOCIALS</Header>
+                        <Link target="_blank" href="https://discord.opendollar.com">Discord</Link>
+                        <Link target="_blank" href="https://twitter.com/open_dollar">Twitter</Link>
+                        <Link target="_blank" href="https://t.me/open_dollar">Telegram</Link>
+                        <Link target="_blank" href="https://debank.com/official/Open_Dollar">DeBank</Link>
                     </Column>
                 </Row>
                 <Row className="privacyRow">
                     <Column>
-                        <SmallerLink target="_blank" href="https://opendollar.com/privacy">
-                            Privacy Policy
-                        </SmallerLink>
-                        <SmallerLink target="_blank" href="https://opendollar.com/tos">
-                            Terms of Service
-                        </SmallerLink>
+                        <SmallerLink target="_blank" href="https://opendollar.com/privacy">Privacy Policy</SmallerLink>
+                        <SmallerLink target="_blank" href="https://opendollar.com/tos">Terms of Service</SmallerLink>
                     </Column>
                 </Row>
             </FooterContainer>
@@ -86,10 +65,17 @@ const Footer: React.FC = () => {
                 <img src={FooterBackgroundImage} alt="" />
             </FooterImage>
         </FooterAndImageContainer>
-    )
-}
+    );
+};
 
-export default Footer
+export default Footer;
+
+const Header = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #58A6FF;
+`;
 
 const FooterAndImageContainer = styled.div`
     display: flex;
@@ -196,6 +182,18 @@ const InnerLink = styled(RouterLink)`
 
     @media (max-width: 767px) {
         margin: 5px 0;
+    }
+`
+
+const SmallText = styled.div`
+    font-size: 12px;
+    line-height: 21px;
+    max-width: 300px;
+    color: ${(props) => props.theme.colors.secondary};
+    button {
+        img {
+            display: none;
+        }
     }
 `
 

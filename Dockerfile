@@ -12,6 +12,19 @@ COPY .yarn/ ./.yarn/
 # NOTE: This is a workaround but we can reduce the size of the Docker image by removing the following line.
 COPY . ./
 
+
+# Add ARG for each environment variable
+ARG REACT_APP_NETWORK_ID
+ARG REACT_APP_NETWORK_URL
+ARG REACT_APP_FALLBACK_SUBGRAPH_URL
+ARG REACT_APP_GEOFENCE_ENABLED
+
+# Set ENV for each environment variable
+ENV REACT_APP_NETWORK_ID=${REACT_APP_NETWORK_ID}
+ENV REACT_APP_NETWORK_URL=${REACT_APP_NETWORK_URL}
+ENV REACT_APP_FALLBACK_SUBGRAPH_URL=${REACT_APP_FALLBACK_SUBGRAPH_URL}
+ENV REACT_APP_GEOFENCE_ENABLED=${REACT_APP_GEOFENCE_ENABLED}
+
 # Install the application dependencies
 RUN yarn install
 

@@ -31,10 +31,7 @@ Testnet app (`dev`): http://app.dev.opendollar.com/
 Run the app locally using docker: 
 
 ```bash
-// TODO: This is incorrect. Update with proper env set and ports exposed
-REACT_APP_NETWORK_ID=420 \
-REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com \
-docker run open-dollar-app
+docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -d open-dollar-app
 ```
 
 The application will be available on http://localhost:8080.

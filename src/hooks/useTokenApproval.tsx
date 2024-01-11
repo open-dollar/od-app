@@ -61,8 +61,14 @@ export function useTokenApproval(
             return ApprovalState.UNKNOWN
         }
 
-        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
-        // we might not have enough data to know whether or not we need to approve
+        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
+
+        // Add a 0.001% buffer to the approval amount to avoid failed txs due to rounding errors
+        let buffer = originalApprovalAmount.div(BigNumber.from(100000));
+
+        // Add buffer to the original amount
+        const approvalAmount = originalApprovalAmount.add(buffer);
+
         if (!currentAllowance) return ApprovalState.UNKNOWN
 
         // amountToApprove will be defined if currentAllowance is
@@ -108,7 +114,13 @@ export function useTokenApproval(
             status: 'loading',
         })
 
-        const approvalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
+        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
+
+        // Add a 0.001% buffer to the approval amount to avoid failed txs due to rounding errors
+        let buffer = originalApprovalAmount.div(BigNumber.from(100000));
+
+        // Add buffer to the original amount
+        const approvalAmount = originalApprovalAmount.add(buffer);
 
         let useExact = exactApproval
         const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {

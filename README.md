@@ -12,7 +12,7 @@
   OD App
 </h1>
 
-Deposit your crypto assets, generate OD and lever up your position.
+Frontend application for Open Dollar
 
 <!-- - Website: [Open Dollar](https://www.opendollar.com/)
 - App: [Open Dollar App](https://app.opendollar.com/#/)
@@ -21,33 +21,47 @@ Deposit your crypto assets, generate OD and lever up your position.
 - Discord: [Open Dollar](https://discord.gg/GjDQ5HaAR4)
 -->
 
-## Deployments
+# Deployments
 
-http://app.opendollar.com/
-dev branch http://app.optimism-goerli.opendollar.com/
-https://open-dollar-app.vercel.app/
+Production app (`main`): http://app.opendollar.com/
+Testnet app (`dev`): http://app.dev.opendollar.com/
 
-## Development
+# Run the app locally
 
-### Install Dependencies
+Run the app locally using docker: 
+
+```bash
+// TODO: This is incorrect. Update with proper env set and ports exposed
+REACT_APP_NETWORK_ID=420 \
+REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com \
+docker run open-dollar-app
+```
+
+The application will be available on http://localhost:8080.
+
+# Development
+
+## Setup
+
+Install dependencies
 
 ```bash
 yarn
 ```
 
-### Run
+Setup the environment by creating the file `.env.development.local`:
 
 ```bash
-yarn prebuild
+cp example.env .env.development.local
 ```
 
-```bash
-yarn build
-```
+Start the app
 
 ```bash
 yarn start
 ```
+
+If you have issues, check you are using node v16
 
 ## Configuring the environment
 
@@ -80,31 +94,10 @@ yarn test:e2e
 yarn test
 ```
 
-## Docker Compose
+## Docker
 
-##### Dockerfile Overview:
-1. **Base setup:**
-Uses node:16 as the base image.
-Sets a working directory at /od-app.
-2. **Dependency management:**
-Copies files and directories relevant to Yarn and app dependencies.
-Runs yarn install to install the necessary dependencies.
-3. **Environment variables:**
-Sets up various build-time and run-time variables.
-4. **App build:**
-Copies app source code into the Docker image.
-Runs yarn build to build the application.
-5. **Runner setup:**
-Switches to httpd:alpine as the base image for the runner stage.
-Sets a working directory in the Apache server's filesystem.
-Copies the built application from the first stage to the runner stage, making it ready to operate using Apache HTTP Server.
-##### Running the Services:
-Run the docker compose and set the environment variables via CLI arguments and take account the "Configuring the environment" section above:
+### Build the image locally
+
 ```bash
-REACT_APP_NETWORK_ID=XXXX REACT_APP_NETWORK_URL=XXXX docker-compose up --build
-```
-You'll be able to access the application on http://localhost:8080.
-##### Stopping the Services:
-```bash
-docker-compose down
+docker build -t open-dollar-app .
 ```

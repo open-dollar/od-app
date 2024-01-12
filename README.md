@@ -32,10 +32,10 @@ Run the app locally using docker:
 
 ```bash
 # mainnet
-docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 -d open-dollar-app
+docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 open-dollar/od-app
 
 # testnet
-docker run -e REACT_APP_NETWORK_ID=421614 -e REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public -p 3000:3000 -d open-dollar-app
+docker run -e REACT_APP_NETWORK_ID=421614 -e REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public -p 3000:3000 open-dollar/od-app
 ```
 
 > Note: If using Wallet Connect, you must include the environment variable `WALLET_CONNECT_PROJECT_ID` eg. `-e WALLET_CONNECT_PROJECT_ID=xxxxx`
@@ -102,5 +102,5 @@ yarn test
 ### Build the image locally
 
 ```bash
-docker build -t open-dollar-app .
+docker build -t open-dollar/od-app .
 ```

@@ -31,8 +31,14 @@ Testnet app (`dev`): http://app.dev.opendollar.com/
 Run the app locally using docker: 
 
 ```bash
+# mainnet
 docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 -d open-dollar-app
+
+# testnet
+docker run -e REACT_APP_NETWORK_ID=421614 -e REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public -p 3000:3000 -d open-dollar-app
 ```
+
+> Note: If using Wallet Connect, you must include the environment variable `WALLET_CONNECT_PROJECT_ID` eg. `-e WALLET_CONNECT_PROJECT_ID=xxxxx`
 
 The application will be available on http://localhost:3000.
 

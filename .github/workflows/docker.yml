@@ -30,7 +30,7 @@ jobs:
               run: |
                   version=$(jq -r '.version' package.json)-rc.${{ github.sha }}
                   if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-                    version=$(jq -r '.version' package.json)"
+                    version=$(jq -r '.version' package.json)
                   fi
                   echo "::set-output name=version::$version"
             - name: Build and push Docker image

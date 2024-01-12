@@ -26,21 +26,17 @@ Frontend application for Open Dollar
 Production app (`main`): http://app.opendollar.com/
 Testnet app (`dev`): http://app.dev.opendollar.com/
 
-# Run the app locally
+# ⚡️ Run the app locally
 
-Run the app locally using docker: 
+Run the most recent release of the app using docker: 
 
 ```bash
-# mainnet
-docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 ghcr.io/open-dollar/od-app
-
-# testnet
-docker run -e REACT_APP_NETWORK_ID=421614 -e REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public -p 3000:3000 ghcr.io/open-dollar/od-app
+docker run -p 3000:3000 ghcr.io/open-dollar/od-app:latest
 ```
 
-> Note: If using Wallet Connect, you must include the environment variable `WALLET_CONNECT_PROJECT_ID` eg. `-e WALLET_CONNECT_PROJECT_ID=xxxxx`
-
 The application will be available on http://localhost:3000.
+
+For testnet, select select the most recent release candidtate version from the [container registry](https://github.com/open-dollar/od-app/pkgs/container/od-app)
 
 # Development
 
@@ -101,9 +97,20 @@ yarn test
 
 ### Build the image locally
 
+For Arbitrum-Sepolia:
+
 ```bash
 docker build --build-arg REACT_APP_NETWORK_ID=421614 \
 --build-arg REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public \
+--build-arg REACT_APP_WALLET_CONNECT_PROJECT_ID=fb1d2dba2f157d3d719134e58dda98a7 \
+-t open-dollar/od-app .
+```
+
+For Arbitrum One:
+
+```bash
+docker build --build-arg REACT_APP_NETWORK_ID=42161 \
+--build-arg REACT_APP_NETWORK_URL=https://arbitrum.blockpi.network/v1/rpc/public \
 --build-arg REACT_APP_WALLET_CONNECT_PROJECT_ID=fb1d2dba2f157d3d719134e58dda98a7 \
 -t open-dollar/od-app .
 ```

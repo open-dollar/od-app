@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  app:
+    image: open-dollar-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_NETWORK_ID: ${REACT_APP_NETWORK_ID}
+        REACT_APP_NETWORK_URL: ${REACT_APP_NETWORK_URL}
+        REACT_APP_FALLBACK_SUBGRAPH_URL: ${REACT_APP_FALLBACK_SUBGRAPH_URL}
+        REACT_APP_GEOFENCE_ENABLED: ${REACT_APP_GEOFENCE_ENABLED}
+    ports:
+      - "8080:80"

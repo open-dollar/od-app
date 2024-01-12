@@ -12,7 +12,7 @@
   OD App
 </h1>
 
-Deposit your crypto assets, generate OD and lever up your position.
+Frontend application for Open Dollar
 
 <!-- - Website: [Open Dollar](https://www.opendollar.com/)
 - App: [Open Dollar App](https://app.opendollar.com/#/)
@@ -21,33 +21,50 @@ Deposit your crypto assets, generate OD and lever up your position.
 - Discord: [Open Dollar](https://discord.gg/GjDQ5HaAR4)
 -->
 
-## Deployments
+# Deployments
 
-http://app.opendollar.com/
-dev branch http://app.optimism-goerli.opendollar.com/
-https://open-dollar-app.vercel.app/
+Production app (`main`): http://app.opendollar.com/
+Testnet app (`dev`): http://app.dev.opendollar.com/
 
-## Development
+# Run the app locally
 
-### Install Dependencies
+Run the app locally using docker: 
+
+```bash
+# mainnet
+docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 open-dollar/od-app
+
+# testnet
+docker run -e REACT_APP_NETWORK_ID=421614 -e REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public -p 3000:3000 open-dollar/od-app
+```
+
+> Note: If using Wallet Connect, you must include the environment variable `WALLET_CONNECT_PROJECT_ID` eg. `-e WALLET_CONNECT_PROJECT_ID=xxxxx`
+
+The application will be available on http://localhost:3000.
+
+# Development
+
+## Setup
+
+Install dependencies
 
 ```bash
 yarn
 ```
 
-### Run
+Setup the environment by creating the file `.env.development.local`:
 
 ```bash
-yarn prebuild
+cp example.env .env.development.local
 ```
 
-```bash
-yarn build
-```
+Start the app
 
 ```bash
 yarn start
 ```
+
+If you have issues, check you are using node v16
 
 ## Configuring the environment
 
@@ -78,4 +95,12 @@ yarn test:e2e
 
 ```bash
 yarn test
+```
+
+## Docker
+
+### Build the image locally
+
+```bash
+docker build -t open-dollar/od-app .
 ```

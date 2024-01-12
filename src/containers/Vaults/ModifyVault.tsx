@@ -61,12 +61,15 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
+    const isMaxRepayAmount = parsedAmounts.rightInput === availableHai && availableHai !== '0'
+
     const [unlockState, approveUnlock] = useTokenApproval(
         parsedAmounts.rightInput,
         tokensData?.OD.address,
         proxyAddress,
         '18',
-        true
+        true,
+        isMaxRepayAmount
     )
 
     const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(

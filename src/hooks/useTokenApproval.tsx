@@ -43,7 +43,8 @@ export function useTokenApproval(
     tokenAddress?: string,
     spender?: string,
     decimals: string = '18',
-    exactApproval: boolean = false
+    exactApproval: boolean = false,
+    isMaxRepayAmount: boolean = false
 ): [ApprovalState, () => Promise<void>] {
     const { account } = useActiveWeb3React()
     const geb = useGeb()
@@ -63,8 +64,12 @@ export function useTokenApproval(
 
         let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
 
-        // Add a 0.001% buffer to the approval amount to avoid failed txs due to rounding errors
-        let buffer = originalApprovalAmount.div(BigNumber.from(100000));
+        let buffer = BigNumber.from(0)
+
+        // Add a 0.001 buffer to the approval amount to avoid failed txs due to rounding errors
+        if (isMaxRepayAmount) {
+            buffer = ethers.utils.parseEther("0.001");
+        }
 
         // Add buffer to the original amount
         const approvalAmount = originalApprovalAmount.add(buffer);
@@ -116,8 +121,12 @@ export function useTokenApproval(
 
         let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
 
-        // Add a 0.001% buffer to the approval amount to avoid failed txs due to rounding errors
-        let buffer = originalApprovalAmount.div(BigNumber.from(100000));
+        let buffer = BigNumber.from(0)
+
+        // Add a 0.001 buffer to the approval amount to avoid failed txs due to rounding errors
+        if (isMaxRepayAmount) {
+            buffer = ethers.utils.parseEther("0.001");
+        }
 
         // Add buffer to the original amount
         const approvalAmount = originalApprovalAmount.add(buffer);

@@ -28,15 +28,15 @@ jobs:
             - name: Determine version
               id: version
               run: |
+                  version=$(jq -r '.version' package.json)-rc.${{ github.sha }}
                   if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-                    echo "::set-output name=version::$(jq -r '.version' package.json)"
-                  el
-                    echo "::set-output name=version::$(jq -r '.version' package.json)-rc.${{ github.sha }}"
+                    version=$(jq -r '.version' package.json)"
                   fi
-
+                  echo "::set-output name=version::$version"
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
               with:
                   context: .
+                  file: ./Dockerfile
                   push: true
                   tags: ghcr.io/${{ github.repository_owner }}/od-app:${{ steps.version.outputs.version }}

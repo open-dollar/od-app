@@ -31,10 +31,10 @@ Testnet app (`dev`): http://app.dev.opendollar.com/
 Run the app locally using docker: 
 
 ```bash
-docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 8080:3000 -d open-dollar-app
+docker run -e REACT_APP_NETWORK_ID=420 -e REACT_APP_NETWORK_URL=https://arbitrum-one.publicnode.com -p 3000:3000 -d open-dollar-app
 ```
 
-The application will be available on http://localhost:8080.
+The application will be available on http://localhost:3000.
 
 # Development
 

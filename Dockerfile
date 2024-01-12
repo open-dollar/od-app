@@ -19,7 +19,7 @@ RUN yarn install
 COPY public/ public/
 COPY src/ src/
 
-EXPOSE 8080:3000
+EXPOSE 3000:3000
 
 # Start the application
 CMD ["yarn", "start"]

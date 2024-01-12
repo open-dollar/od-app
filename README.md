@@ -102,5 +102,8 @@ yarn test
 ### Build the image locally
 
 ```bash
-docker build -t open-dollar/od-app .
+docker build --build-arg REACT_APP_NETWORK_ID=421614 \
+--build-arg REACT_APP_NETWORK_URL=https://arbitrum-sepolia.blockpi.network/v1/rpc/public \
+--build-arg REACT_APP_WALLET_CONNECT_PROJECT_ID=fb1d2dba2f157d3d719134e58dda98a7 \
+-t open-dollar/od-app .
 ```

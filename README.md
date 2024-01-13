@@ -28,7 +28,7 @@ Testnet app (`dev`): http://app.dev.opendollar.com/
 
 # ⚡️ Run the app locally
 
-Run the most recent release of the app using docker: 
+Run the most recent release of the app on Arbitrum network: 
 
 ```bash
 docker run -p 3000:3000 ghcr.io/open-dollar/od-app:latest
@@ -36,7 +36,7 @@ docker run -p 3000:3000 ghcr.io/open-dollar/od-app:latest
 
 The application will be available on http://localhost:3000.
 
-For testnet, select select the most recent release candidtate version from the [container registry](https://github.com/open-dollar/od-app/pkgs/container/od-app)
+> For network Arbitrum Sepolia, select a release candidate version from the [container registry](https://github.com/open-dollar/od-app/pkgs/container/od-app)
 
 # Development
 

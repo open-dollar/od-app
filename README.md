@@ -23,20 +23,21 @@ Frontend application for Open Dollar
 
 # Deployments
 
-Production app (`main`): http://app.opendollar.com/
-Testnet app (`dev`): http://app.dev.opendollar.com/
+http://app.opendollar.com/ Production `main` branch
+
+http://app.dev.opendollar.com/ Testnet `dev` branch
 
 # ⚡️ Run the app locally
 
-Run the most recent release of the app on Arbitrum network: 
+You don't need to be a developer to run the application on your machine. For security and resilliency we publish a container with everything you need. After installing [Docker](https://docs.docker.com/desktop/), run the following command:
 
 ```bash
 docker run -p 3000:3000 ghcr.io/open-dollar/od-app:latest
 ```
 
-The application will be available on http://localhost:3000.
+The application will be available on http://localhost:3000
 
-> For network Arbitrum Sepolia, select a release candidate version from the [container registry](https://github.com/open-dollar/od-app/pkgs/container/od-app)
+> For network Arbitrum Sepolia, use a release candidate (eg. 1.2.0-rc.abc123) version from the [container registry](https://github.com/open-dollar/od-app/pkgs/container/od-app)
 
 # Development
 

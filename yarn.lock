@@ -3488,34 +3488,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/abis@npm:^0.0.0-874f6292":
-  version: 0.0.0-f9f4cf29
-  resolution: "@opendollar/abis@npm:0.0.0-f9f4cf29"
+"@opendollar/abis@npm:0.0.0-980e6a5e":
+  version: 0.0.0-980e6a5e
+  resolution: "@opendollar/abis@npm:0.0.0-980e6a5e"
   dependencies:
     "@defi-wonderland/solidity-utils": 0.0.0-4298c6c6
     "@ethersproject/abi": 5.7.0
     "@ethersproject/providers": 5.7.2
     "@openzeppelin/contracts": 4.8.2
-    "@typechain/ethers-v6": ^0.5.0
-    "@typechain/web3-v1": ^6.0.6
-    "@uniswap/v3-periphery": "git+https://github.com/Uniswap/v3-periphery.git#0.8"
+    "@openzeppelin/contracts-upgradeable": 4.8.2
+    "@typechain/ethers-v6": ^0.5.1
+    "@typechain/web3-v1": ^6.0.7
     bn.js: 5.2.1
     ethers: 6.0.3
     forge-std: "git+https://github.com/foundry-rs/forge-std.git#e8a047e3f40f13fa37af6fe14e6e06283d9a060e"
-    typechain: ^8.3.1
-  checksum: 6c42300d1c1fd6db37dfb4f5c115db83ea25b630a9656d42ec4c390ce0c7fd5c6a5e7590e57930eb70ad828417f950484bce68f2eed052295aef6193976c967c
+    typechain: ^8.3.2
+  checksum: 9ae4ebe6e1e7707900dc89cbf788b380b7f6593088574d3ec293623dbb2a2456db4464ef2a25da6cd2aa20ae3731f6ec05648c7f1f462897fe2b1b7c31888c23
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:^1.5.8-rc.6":
-  version: 1.5.8-rc.6
-  resolution: "@opendollar/sdk@npm:1.5.8-rc.6"
+"@opendollar/sdk@npm:^1.5.9-rc.1":
+  version: 1.5.9-rc.1
+  resolution: "@opendollar/sdk@npm:1.5.9-rc.1"
   dependencies:
-    "@opendollar/abis": ^0.0.0-874f6292
+    "@opendollar/abis": 0.0.0-980e6a5e
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: f88cdbb24596d49667f551f382842e3f26969b6bc6bf81843d51f72a5e5315922d51ab8c4f99e7d50a834ad576783b19f0e121d7beba725a496b0b4878aff487
+  checksum: cfd193702c6db7ed001ccf80c578e6401530bed71f8b8f68b64acefa2bcc9aa43fe51a5ca6d288cc21e74069621249d2eed3b362113f28d54281e67d9bc25405
   languageName: node
   linkType: hard
 
@@ -3529,10 +3529,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.6.0":
-  version: 4.6.0
-  resolution: "@openzeppelin/contracts@npm:4.6.0"
-  checksum: ad20acffd3dd86ee9dd1a21cce033acbce165cb4ef34ffeeb40a4298b8601de0c8149365eac2bc6d0caeaf7cf5144822a7e7236dd4f087aa841058b289d154bf
+"@openzeppelin/contracts-upgradeable@npm:4.8.2":
+  version: 4.8.2
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.8.2"
+  checksum: 88158656f40688e107ec9d99f78a757fdb140e5e1f3e49e9a18a46e85f2c1b5df99fcc3c9c0df25ed1a6068bf49749ba7e3475fdfa12bc0d9909424043e90468
   languageName: node
   linkType: hard
 
@@ -4200,7 +4200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/ethers-v6@npm:^0.5.0":
+"@typechain/ethers-v6@npm:^0.5.1":
   version: 0.5.1
   resolution: "@typechain/ethers-v6@npm:0.5.1"
   dependencies:
@@ -4214,7 +4214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/web3-v1@npm:^6.0.6":
+"@typechain/web3-v1@npm:^6.0.7":
   version: 6.0.7
   resolution: "@typechain/web3-v1@npm:6.0.7"
   dependencies:
@@ -5072,33 +5072,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v2-core@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@uniswap/v2-core@npm:1.0.1"
-  checksum: 61fc8beb5f2875fc3fe6b00043c9491f0eb9839b824af44d53a303f3df1970c6c3e8a555b7a0150e0ad75b8e49ad6e3cf7d923109da31884536a7a844c24cda0
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-core@npm:1.0.2-solc-0.8-simulate":
-  version: 1.0.2-solc-0.8-simulate
-  resolution: "@uniswap/v3-core@npm:1.0.2-solc-0.8-simulate"
-  checksum: 62b1a9bb79a172be36b55c860eac7210271b6f8cfc3566c7acfec0880ea36e40e0f40343de55672e2c5ca1650969f33aecae5186f0cc26fa4fbe3aa5cc1b95be
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-periphery@git+https://github.com/Uniswap/v3-periphery.git#0.8":
-  version: 1.4.2-solc-0.8
-  resolution: "@uniswap/v3-periphery@https://github.com/Uniswap/v3-periphery.git#commit=b325bb0905d922ae61fcc7df85ee802e8df5e96c"
-  dependencies:
-    "@openzeppelin/contracts": 4.6.0
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.2-solc-0.8-simulate
-    base64-sol: 1.1.0
-    hardhat-watcher: ^2.1.1
-  checksum: 4dd0296ce64c37f22309b956bd7cd03faa568a525d4f650a4ffc163bf05ff287271b875ffddf2cbd00b0f98a15aea8bb162a97172d05f4c189d372c61a3a55e8
-  languageName: node
-  linkType: hard
-
 "@usekeyp/od-app@workspace:.":
   version: 0.0.0-use.local
   resolution: "@usekeyp/od-app@workspace:."
@@ -5110,7 +5083,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": ^1.5.8-rc.6
+    "@opendollar/sdk": ^1.5.9-rc.1
     "@opendollar/svg-generator": 1.0.3
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^4.2.4
@@ -6774,13 +6747,6 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: f23823513b63173a001030fae4f2dabe283b99a9d324ade3ad3d148e218134676f1ee8568c877cd79ec1c53158dcf2d2ba527a97c606618928ba99dd930102bf
-  languageName: node
-  linkType: hard
-
-"base64-sol@npm:1.1.0":
-  version: 1.1.0
-  resolution: "base64-sol@npm:1.1.0"
-  checksum: 31738b1e64e1ca73b5bf9e8bba2af0f9bbbb2ab43853698880ead84fa103b9087f0dbaab952f3238a6c80ea9c701794b7a46d1ad9b0809efc85af80073249212
   languageName: node
   linkType: hard
 
@@ -10862,17 +10828,6 @@ __metadata:
   version: 2.0.1
   resolution: "handle-thing@npm:2.0.1"
   checksum: 7ae34ba286a3434f1993ebd1cc9c9e6b6d8ea672182db28b1afc0a7119229552fa7031e3e5f3cd32a76430ece4e94b7da6f12af2eb39d6239a7693e4bd63a998
-  languageName: node
-  linkType: hard
-
-"hardhat-watcher@npm:^2.1.1":
-  version: 2.5.0
-  resolution: "hardhat-watcher@npm:2.5.0"
-  dependencies:
-    chokidar: ^3.5.3
-  peerDependencies:
-    hardhat: ^2.0.0
-  checksum: 7b9d8a3a5f89315ee39318be48effb7e5b8180f542542bdadb040dfff4983f11e1fe1c8f0baecbf830591b3a4b93d510966397573adf5878d7fe247b7bad549e
   languageName: node
   linkType: hard
 
@@ -18257,7 +18212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typechain@npm:^8.3.1":
+"typechain@npm:^8.3.2":
   version: 8.3.2
   resolution: "typechain@npm:8.3.2"
   dependencies:

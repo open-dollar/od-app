@@ -56,7 +56,7 @@ const VaultDetails = ({ ...props }) => {
 
         if (!safe && geb && safeId) {
             const safeDataResponse = await geb.contracts.safeManager.connect(geb.provider).safeData(safeId)
-            const ODProxyAddress = safeDataResponse[0]
+            const ODProxyAddress = safeDataResponse[1]
             if (ODProxyAddress.startsWith('0x000000')) {
                 return
             }

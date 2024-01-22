@@ -56,8 +56,8 @@ const Footer: React.FC = () => {
                 </Row>
                 <Row className="privacyRow">
                     <Column>
-                        <SmallerLink target="_blank" href="https://opendollar.com/privacy">Privacy Policy</SmallerLink>
-                        <SmallerLink target="_blank" href="https://opendollar.com/tos">Terms of Service</SmallerLink>
+                        <SmallerLink target="_blank" href="https://www.opendollar.com/privacy">Privacy Policy</SmallerLink>
+                        <SmallerLink target="_blank" href="https://www.opendollar.com/terms">Terms of Service</SmallerLink>
                     </Column>
                 </Row>
             </FooterContainer>

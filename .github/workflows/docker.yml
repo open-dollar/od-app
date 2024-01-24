@@ -4,7 +4,7 @@ on:
     push:
         branches:
             - main
-            - dev
+            # - dev
     workflow_dispatch:
 
 jobs:
@@ -29,15 +29,25 @@ jobs:
               id: version
               run: |
                   version=$(jq -r '.version' package.json)-rc.${{ github.sha }}
+                  networkId=421614
+                  networkUrl=https://arbitrum-sepolia.blockpi.network/v1/rpc/public
                   if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
                     version=$(jq -r '.version' package.json)
+                    networkId=42161
+                    networkUrl=https://arbitrum.blockpi.network/v1/rpc/public
                   fi
                   echo "::set-output name=version::$version"
+                  echo "::set-output name=networkId::$networkId"
+                  echo "::set-output name=networkUrl::$networkUrl"
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
               with:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  platforms: linux/amd64,linux/arm64
+                  platforms: linux/arm64
+                  build-args: |
+                      REACT_APP_NETWORK_ID=${{ steps.version.outputs.networkId }}
+                      REACT_APP_NETWORK_URL=${{ steps.version.outputs.networkUrl }}
+                      REACT_APP_WALLET_CONNECT_PROJECT_ID=fb1d2dba2f157d3d719134e58dda98a7
                   tags: ghcr.io/${{ github.repository_owner }}/od-app:${{ steps.version.outputs.version }}

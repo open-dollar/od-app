@@ -301,7 +301,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             unlockState === ApprovalState.PENDING || unlockState === ApprovalState.NOT_APPROVED ? (
                                 <Button
                                     disabled={!isValid || unlockState === ApprovalState.PENDING}
-                                    text={unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Unlock OD'}
+                                    text={unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Approve OD'}
                                     onClick={approveUnlock}
                                 />
                             ) : (

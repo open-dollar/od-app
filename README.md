@@ -29,10 +29,16 @@ http://app.dev.opendollar.com/ Testnet `dev` branch
 
 # ⚡️ Run the app locally
 
-You don't need to be a developer to run the application on your machine. For security and resilliency we publish a container with everything you need. After installing [Docker](https://docs.docker.com/desktop/), run the following command:
+For security and resilliency we publish the app as a self-contained Docker image 
+
+1. Install [Docker](https://docs.docker.com/desktop/)
+2. Get the latest [Release](https://github.com/open-dollar/od-app/releases), eg. `1.5.9`
+3. Run the start command, replacing `<VERSION_NUMBER>` with the release
 
 ```bash
-docker run -p 3000:3000 ghcr.io/open-dollar/od-app:latest
+docker run -p 3000:3000 ghcr.io/open-dollar/od-app:<VERSION_NUMBER>
+# For example:
+docker run -p 3000:3000 ghcr.io/open-dollar/od-app:1.5.9
 ```
 
 The application will be available on http://localhost:3000

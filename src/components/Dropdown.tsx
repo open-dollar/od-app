@@ -7,6 +7,7 @@ type Item =
     | string
     | {
           name: string
+          value?: string | number
           icon: string
           href?: string
           isExternal?: boolean
@@ -132,16 +133,19 @@ const Dropdown = (props: Props) => {
                                     {typeof item === 'string' ? (
                                         item
                                     ) : (
-                                        <ItemImg>
-                                            <img
-                                                src={item.icon}
-                                                alt=""
-                                                style={{
-                                                    width: imgSize || '20px',
-                                                }}
-                                            />{' '}
-                                            {item.name}
-                                        </ItemImg>
+                                        <ItemContainer>
+                                            <ItemImg>
+                                                <img
+                                                    src={item.icon}
+                                                    alt=""
+                                                    style={{
+                                                        width: imgSize || '20px',
+                                                    }}
+                                                />{' '}
+                                                {item.name}
+                                            </ItemImg>
+                                            {item.value}
+                                        </ItemContainer>
                                     )}
                                 </DropDownItem>
                             ))}
@@ -225,6 +229,12 @@ const ItemImg = styled.div`
     img {
         margin-right: 10px;
     }
+`
+
+const ItemContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `
 
 const Link = styled.a`

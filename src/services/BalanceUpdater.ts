@@ -1,47 +1,59 @@
 import { ethers } from 'ethers'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../hooks'
 import useDebounce from '../hooks/useDebounce'
 import store, { useStoreState } from '../store'
 
+const ERC20_ABI = ['function balanceOf(address) view returns (uint256)']
+
 export default function ApplicationUpdater(): null {
     const { provider, chainId, account } = useActiveWeb3React()
     const { connectWalletModel: connectedWalletState } = useStoreState((state) => state)
-    const { blockNumber } = connectedWalletState
+    const { blockNumber, tokensData } = connectedWalletState
 
-    const [state, setState] = useState<{
-        chainId: number | undefined
-        balance: number
-    }>({
+    const [state, setState] = useState({
         chainId,
         balance: 0,
+        collateralBalances: {},
     })
-
-    const fetchEthBalanceCallBack = useCallback(
-        (result: any) => {
-            setState((state) => {
-                if (chainId === state.chainId) {
-                    return {
-                        chainId,
-                        balance: Number(ethers.utils.formatEther(result)),
-                    }
-                }
-                return state
-            })
-        },
-        [chainId, setState]
-    )
 
     // attach/detach listeners
     useEffect(() => {
-        if (!chainId || !account) return undefined
-        setState({ chainId, balance: 0 })
-        // @ts-ignore
-        provider
-            .getBalance(account)
-            .then(fetchEthBalanceCallBack)
-            .catch((error) => console.error(`Failed to fetch balance for chainId: ${chainId}`, error))
-    }, [chainId, provider, fetchEthBalanceCallBack, account, blockNumber])
+        const getBalances = async () => {
+            if (!chainId || !account || !provider) return undefined
+
+            try {
+                const ethBalance = ethers.utils.formatEther(await provider.getBalance(account))
+                setState((state) => ({ ...state, balance: Number(ethBalance) }))
+
+                if (tokensData) {
+                    const balances = await Promise.all(
+                        Object.values(tokensData).map(async (tokenData) => {
+                            const { address, decimals, symbol } = tokenData;
+                
+                            const tokenContract = new ethers.Contract(address, ERC20_ABI, provider);
+                
+                            const balance = await tokenContract.balanceOf(account);
+                            const formattedBalance = ethers.utils.formatUnits(balance, decimals);
+                
+                            return [symbol, formattedBalance]
+                        })
+                    );
+
+                    const collateralBalances = balances.reduce((acc, [symbol, balance]) => {
+                        acc[symbol] = balance;
+                        return acc;
+                    }, {} as Record<string, string>);
+
+                    setState((state) => ({ ...state, collateralBalances }))
+                }
+            } catch (e) {
+                console.error(`Failed to fetch balance for chainId: ${chainId}`, e)
+            }
+        }
+
+        getBalances()
+    }, [chainId, provider, account, blockNumber, tokensData])
 
     const debouncedState = useDebounce(state, 100)
 
@@ -51,7 +63,14 @@ export default function ApplicationUpdater(): null {
             chainId: debouncedState.chainId,
             balance: debouncedState.balance,
         })
-    }, [debouncedState.balance, debouncedState.chainId])
+
+        if (debouncedState.collateralBalances) {
+            store.dispatch.connectWalletModel.updateCollateralBalances({
+                chainId: debouncedState.chainId,
+                balances: debouncedState.collateralBalances,
+            })
+        }
+    }, [debouncedState.balance, debouncedState.chainId, debouncedState.collateralBalances])
 
     return null
 }

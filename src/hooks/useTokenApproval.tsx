@@ -62,17 +62,17 @@ export function useTokenApproval(
             return ApprovalState.UNKNOWN
         }
 
-        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
+        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
 
         let buffer = BigNumber.from(0)
 
         // Add a 0.001 buffer to the approval amount to avoid failed txs due to rounding errors
         if (isMaxRepayAmount) {
-            buffer = ethers.utils.parseEther('0.001')
+            buffer = ethers.utils.parseEther("0.001");
         }
 
         // Add buffer to the original amount
-        const approvalAmount = originalApprovalAmount.add(buffer)
+        const approvalAmount = originalApprovalAmount.add(buffer);
 
         if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -119,17 +119,17 @@ export function useTokenApproval(
             status: 'loading',
         })
 
-        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18)
+        let originalApprovalAmount = ethers.utils.parseEther(amount).mul(tokenDecimals).div(decimals18);
 
         let buffer = BigNumber.from(0)
 
         // Add a 0.001 buffer to the approval amount to avoid failed txs due to rounding errors
         if (isMaxRepayAmount) {
-            buffer = ethers.utils.parseEther('0.001')
+            buffer = ethers.utils.parseEther("0.001");
         }
 
         // Add buffer to the original amount
-        const approvalAmount = originalApprovalAmount.add(buffer)
+        const approvalAmount = originalApprovalAmount.add(buffer);
 
         let useExact = exactApproval
         const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {

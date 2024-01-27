@@ -29,21 +29,21 @@ export default function ApplicationUpdater(): null {
                 if (tokensData) {
                     const balances = await Promise.all(
                         Object.values(tokensData).map(async (tokenData) => {
-                            const { address, decimals, symbol } = tokenData
-
-                            const tokenContract = new ethers.Contract(address, ERC20_ABI, provider)
-
-                            const balance = await tokenContract.balanceOf(account)
-                            const formattedBalance = ethers.utils.formatUnits(balance, decimals)
-
+                            const { address, decimals, symbol } = tokenData;
+                
+                            const tokenContract = new ethers.Contract(address, ERC20_ABI, provider);
+                
+                            const balance = await tokenContract.balanceOf(account);
+                            const formattedBalance = ethers.utils.formatUnits(balance, decimals);
+                
                             return [symbol, formattedBalance]
                         })
-                    )
+                    );
 
                     const collateralBalances = balances.reduce((acc, [symbol, balance]) => {
-                        acc[symbol] = balance
-                        return acc
-                    }, {} as Record<string, string>)
+                        acc[symbol] = balance;
+                        return acc;
+                    }, {} as Record<string, string>);
 
                     setState((state) => ({ ...state, collateralBalances }))
                 }

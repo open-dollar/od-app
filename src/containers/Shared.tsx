@@ -47,7 +47,7 @@ import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
 import Stats from '~/containers/Vaults/Stats'
-import axios from 'axios'
+import axios from "axios";
 
 interface Props {
     children: ReactNode
@@ -180,22 +180,22 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const fetchUserCountry = async () => {
         try {
-            const response = await axios.get('https://api.country.is')
-            return response.data?.country
+            const response = await axios.get('https://api.country.is');
+            return response.data?.country;
         } catch (error) {
-            console.error('Error fetching country:', error)
-            return null
+            console.error('Error fetching country:', error);
+            return null;
         }
-    }
+    };
 
     const isUserGeoBlocked = async () => {
         if (!isGeofenceEnabled) {
-            return false
+            return false;
         }
 
-        const userCountry = await fetchUserCountry()
-        return userCountry === 'US'
-    }
+        const userCountry = await fetchUserCountry();
+        return userCountry === 'US';
+    };
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
@@ -280,7 +280,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function geoBlockCheck() {
         if (account && isGeofenceEnabled) {
-            const isBlocked = await isUserGeoBlocked()
+            const isBlocked = await isUserGeoBlocked();
             if (isBlocked) {
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)

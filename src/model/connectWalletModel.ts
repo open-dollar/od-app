@@ -21,7 +21,6 @@ export interface ConnectWalletModel {
     ethBalance: ITokenBalance
     odBalance: ITokenBalance
     uniswapPoolBalance: ITokenBalance
-    collateralBalances: { [token: string]: ITokenBalance }
     claimableFLX: string
     isWrongNetwork: boolean
     isStepLoading: boolean
@@ -34,7 +33,6 @@ export interface ConnectWalletModel {
     updateEthBalance: Action<ConnectWalletModel, { chainId: number; balance: number }>
     updateHaiBalance: Action<ConnectWalletModel, { chainId: number; balance: string }>
     updateUniswapPoolBalance: Action<ConnectWalletModel, { chainId: number; balance: string }>
-    updateCollateralBalances: Action<ConnectWalletModel, { chainId: number; balances: Record<string, string> }>
     setStep: Action<ConnectWalletModel, number>
     setProxyAddress: Action<ConnectWalletModel, string>
     setCoinAllowance: Action<ConnectWalletModel, string>
@@ -64,7 +62,6 @@ const connectWalletModel: ConnectWalletModel = {
     fiatPrice: 0,
     flxPrice: 0,
     ethPriceChange: 0,
-    collateralBalances: {},
     step: 0,
     proxyAddress: '',
     coinAllowance: '',
@@ -126,10 +123,6 @@ const connectWalletModel: ConnectWalletModel = {
     updateUniswapPoolBalance: action((state, payload) => {
         const { chainId, balance } = payload
         state.uniswapPoolBalance[chainId] = balance
-    }),
-    updateCollateralBalances: action((state, payload) => {
-        const { chainId, balances } = payload
-        state.collateralBalances[chainId] = balances
     }),
     setStep: action((state, payload) => {
         state.step = payload

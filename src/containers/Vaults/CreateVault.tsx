@@ -24,7 +24,6 @@ import {
     useSafeInfo,
     StatsType,
 } from '~/hooks'
-import { fetchTokenData } from '@opendollar/sdk'
 
 const CreateVault = ({
     selectedItem,

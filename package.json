@@ -26,7 +26,7 @@
         "@ethersproject/address": "^5.0.10",
         "@ethersproject/experimental": "5.4.0",
         "@ethersproject/providers": "5.4.5",
-        "@opendollar/sdk": "^1.5.9-rc.1",
+        "@opendollar/sdk": "^1.6.0-rc.1",
         "@opendollar/svg-generator": "1.0.3",
         "@react-spring/web": "^9.7.3",
         "@testing-library/jest-dom": "^4.2.4",

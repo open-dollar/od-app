@@ -53,14 +53,26 @@ const CreateVault = ({
     const { t } = useTranslation()
     const isValid = !error
 
+    const formattedCollateralBalances = useMemo(() => {
+        return collaterals.reduce((acc, collateral) => {
+            const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
+            const formattedBalance = ethers.utils.formatEther(balance)
+            return { ...acc, [collateral.symbol]: formattedBalance }
+        }, {} as { [symbol: string]: string })
+    }, [collaterals, tokensFetchedData])
+
     const collateralsDropdown = collaterals.map((collateral) => {
-        return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
+        return {
+            name: collateral.symbol,
+            icon: getTokenLogo(collateral.symbol),
+            value: formatWithCommas(formattedCollateralBalances[collateral.symbol])
+        }
     })
 
     const dropdownSelected = collateralsDropdown.find((item) => item.name === selectedItem)!
 
     const selectedCollateral = tokensData && tokensData[selectedItem]
-    const selectedCollateralBalance = ethers.utils.formatEther(tokensFetchedData[selectedItem].balanceE18)
+    const selectedCollateralBalance = formattedCollateralBalances[selectedItem]
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 

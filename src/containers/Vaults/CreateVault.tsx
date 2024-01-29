@@ -62,7 +62,11 @@ const CreateVault = ({
     }, [collaterals, tokensFetchedData])
 
     const collateralsDropdown = collaterals.map((collateral) => {
-        return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol), value: formattedCollateralBalances[collateral.symbol] }
+        return {
+            name: collateral.symbol,
+            icon: getTokenLogo(collateral.symbol),
+            value: formatWithCommas(formattedCollateralBalances[collateral.symbol])
+        }
     })
 
     const dropdownSelected = collateralsDropdown.find((item) => item.name === selectedItem)!

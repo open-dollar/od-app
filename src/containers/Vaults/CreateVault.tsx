@@ -65,7 +65,7 @@ const CreateVault = ({
         return {
             name: collateral.symbol,
             icon: getTokenLogo(collateral.symbol),
-            value: formatWithCommas(formattedCollateralBalances[collateral.symbol])
+            value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
         }
     })
 

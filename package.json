@@ -10,9 +10,9 @@
         "prettier": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\"",
         "prettier:fix": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\" --fix",
         "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-        "lint:fix": "yarn run lint -- --fix",
-        "format": "yarn run prettier:fix && npm run lint:fix",
-        "format:check": "yarn run prettier && npm run lint"
+        "lint:fix": "yarn run lint --fix",
+        "format": "yarn run prettier:fix && yarn run lint:fix",
+        "format:check": "yarn run prettier && yarn run lint"
     },
     "peerDependencies": {
         "@babel/runtime": "^7.17.0",

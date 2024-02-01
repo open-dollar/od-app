@@ -135,6 +135,15 @@ const Input = styled.input`
     border: none;
     width: 100%;
     outline: none;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-moz-focus-outer {
+        border: 0;
+    }
 
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
@@ -170,6 +179,14 @@ const Input = styled.input`
     }
 
     &::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
+    }
+
+    &::-moz-range-track {
+        -webkit-appearance: none;
+    }
+
+    &::-ms-track {
         -webkit-appearance: none;
     }
 `

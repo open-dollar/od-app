@@ -53,10 +53,15 @@ const DepositFundsModal = () => {
             backgroundColor={theme.colors.colorPrimary}
             hideHeader
             hideFooter
+            backDropClose
         >
             <InnerContent>
                 <HeaderContainer>
-                    <ArrowLeft size="24" onClick={() => popupsActions.setIsDepositFundsModalOpen(false)} />
+                    <ArrowLeft
+                        size="24"
+                        onClick={() => popupsActions.setIsDepositFundsModalOpen(false)}
+                        cursor="pointer"
+                    />
                     <HeaderText>Deposit funds</HeaderText>
                 </HeaderContainer>
                 <HorizontalSeparator />
@@ -76,7 +81,7 @@ const DepositFundsModal = () => {
                         handleMaxClick={() => setDepositAmount(depositAssetBalance)}
                     />
                 </Container>
-                <Container style={{ marginBottom: 24 }}>
+                <Container>
                     {/* TODO: Use real date values */}
                     <DateInfoContainer>
                         <DateInfoLabel>{t('pool_start_date')}</DateInfoLabel>
@@ -146,17 +151,17 @@ const WarningLabelContainer = styled.div`
     background-color: ${(props) => `${props.theme.colors.yellowish}40`};
     border-radius: 6px;
     padding: 12px 24px;
+    margin: 30px 0;
 `
 
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 24px;
     gap: 10px;
 `
 
 const WarningLabel = styled.p`
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.small};
     font-weight: 500;
     color: ${(props) => props.theme.colors.yellowish};
     margin-left: 24px;
@@ -176,38 +181,38 @@ const WarningBang = styled.span`
     border-radius: 50%;
     border: 2px;
     border-style: solid;
-    border-color: ${({ theme }) => theme.colors.yellowish};
+    border-color: ${(props) => props.theme.colors.yellowish};
 `
 
 const HeaderText = styled.span`
     flex-grow: 1;
     text-align: center;
     font-weight: 600;
-    font-size: 18px;
+    font-size: ${(props) => props.theme.font.medium};
 `
 
 const HorizontalSeparator = styled.span`
     display: block;
     width: 100%;
     height: 0.5px;
-    background-color: ${(props) => props.theme.colors.blueish};
+    background-color: #00587E;
     margin: 26px 0;
 `
 
 const InputLabel = styled.h2`
-    font-size: 16px;
+    font-size: ${(props) => props.theme.font.default};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
     margin-bottom: 10px;
 `
 
 const DateInfoLabel = styled.span`
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.small};
     color: ${(props) => props.theme.colors.secondary};
 `
 
 const DateInfoValue = styled.span`
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
 `

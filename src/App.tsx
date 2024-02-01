@@ -79,7 +79,12 @@ const App = () => {
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
-                                                <Route exact strict component={DepositFunds} path={'/tvl/:token/deposit'} />
+                                                <Route
+                                                    exact
+                                                    strict
+                                                    component={DepositFunds}
+                                                    path={'/tvl/:token/deposit'}
+                                                />
                                                 <Redirect path="*" to="/404" />
                                             </Switch>
                                         </>

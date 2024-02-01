@@ -165,7 +165,7 @@ const Input = styled.input`
         border: 3px;
         border-style: solid;
         border-color: ${({ theme }) => theme.colors.colorPrimary};
-        transform: translateY(-35%)
+        transform: translateY(-35%);
     }
 
     &::-ms-thumb {

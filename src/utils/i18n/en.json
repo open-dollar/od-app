@@ -127,5 +127,13 @@
     "moneygod_desc": "The Money God League is an initiative to help other teams launch their own OD like assets and share a stake in each of their protocols with the Open Dollar community. You can stake ODG or ODG/ETH Uniswap v2 LP tokens and receive (un)governance tokens in League participants.",
     "buy": "Buy Collateral",
     "sanctioned_wallet": "This wallet is not allowed to connect",
-    "geoblocked_wallet": "We're sorry but your country is not currently supported"
+    "geoblocked_wallet": "We're sorry but your country is not currently supported",
+    "amount": "Amount",
+    "balance": "Balance",
+    "deposit_funds": "Deposit Funds",
+    "pool_start_date": "Pool start date",
+    "current_date": "Current date",
+    "tokens_will_be_unlocked": "Tokens will be unlocked",
+    "deposit_funds_warning": "When protocol is live this deposit will be converted into OD vault and mint 1 OD",
+    "approve_token": "Approve {{symbol}}"
 }

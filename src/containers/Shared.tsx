@@ -27,6 +27,7 @@ import WethModal from '~/components/Modals/WETHModal'
 import ToastPayload from '~/components/ToastPayload'
 import CookieBanner from '~/components/CookieBanner'
 import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
+import DepositFundsModal from '~/components/Modals/DepositFundsModal'
 import AlertLabel from '~/components/AlertLabel'
 import usePrevious from '~/hooks/usePrevious'
 import SideMenu from '~/components/SideMenu'
@@ -359,6 +360,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <LiquidateSafeModal />
             <WaitingModal />
             <TopUpModal />
+            <DepositFundsModal />
             <EmptyDiv>
                 <Navbar />
             </EmptyDiv>

@@ -87,7 +87,7 @@ export function useBlockNumber() {
 // returns amount of currency in USD
 export function useTokenBalanceInUSD(token: TokenType, balance: string) {
     const ethPrice = store.getState().connectWalletModel.fiatPrice
-    const haiPrice = store.getState().safeModel.liquidationData!.currentRedemptionPrice
+    const haiPrice = store.getState().safeModel.liquidationData?.currentRedemptionPrice
 
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice

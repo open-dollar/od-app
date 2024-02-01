@@ -24,6 +24,7 @@ export interface PopupsModel {
     isLoadingModalOpen: LoadingPayload
     isWaitingModalOpen: boolean
     waitingPayload: IWaitingPayload
+    isDepositFundsModalOpen: boolean
     setIsSettingModalOpen: Action<PopupsModel, boolean>
     setIsConnectModalOpen: Action<PopupsModel, boolean>
     setIsConnectedWalletModalOpen: Action<PopupsModel, boolean>
@@ -46,6 +47,7 @@ export interface PopupsModel {
     setIsClaimPopupOpen: Action<PopupsModel, boolean>
     setHasFLXClaim: Action<PopupsModel, boolean>
     setReturnProxyFunction: Action<PopupsModel, (storeActions: any) => void | null>
+    setIsDepositFundsModalOpen: Action<PopupsModel, boolean>
 }
 
 const popupsModel: PopupsModel = {
@@ -60,6 +62,7 @@ const popupsModel: PopupsModel = {
     isWaitingModalOpen: false,
     isSafeManagerOpen: false,
     isClaimPopupOpen: false,
+    isDepositFundsModalOpen: false,
     liquidateSafePayload: null,
     returnProxyFunction: () => {},
     waitingPayload: {
@@ -171,6 +174,9 @@ const popupsModel: PopupsModel = {
     }),
     setHasFLXClaim: action((state, payload) => {
         state.hasFLXClaim = payload
+    }),
+    setIsDepositFundsModalOpen: action((state, payload) => {
+        state.isDepositFundsModalOpen = payload
     }),
 }
 

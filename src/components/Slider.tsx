@@ -158,13 +158,14 @@ const Input = styled.input`
     }
 
     &::-moz-range-thumb {
-        height: 18px;
-        width: 18px;
+        height: 14px;
+        width: 14px;
         background: ${({ theme }) => theme.colors.blueish};
         border-radius: 100%;
         border: 3px;
         border-style: solid;
         border-color: ${({ theme }) => theme.colors.colorPrimary};
+        transform: translateY(-35%)
     }
 
     &::-ms-thumb {

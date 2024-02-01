@@ -76,7 +76,7 @@ const DepositFunds = ({ ...props }) => {
                         <HeaderText>Deposit funds</HeaderText>
                     </HeaderContainer>
                     <HorizontalSeparator />
-                    <InnerContainer style={{ marginBottom: 32 }}>
+                    <InnerContainer style={{ marginBottom: 28 }}>
                         <InputLabel>{t('amount')}</InputLabel>
                         <TokenInput
                             token={
@@ -221,6 +221,7 @@ const HeaderText = styled.span`
     flex-grow: 1;
     text-align: center;
     font-weight: 600;
+    padding: 0 24px 0 0;
     font-size: ${(props) => props.theme.font.medium};
 `
 

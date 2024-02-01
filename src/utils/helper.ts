@@ -416,6 +416,11 @@ export const shortStringDate = (date: string | number | Date): string => {
 
     const day = unPaddedDay < 10 ? `0${unPaddedDay}` : unPaddedDay
     const month = unPaddedMonth < 10 ? `0${unPaddedMonth}` : unPaddedMonth
-    
+
     return `${day}.${month}.${d.getFullYear()}`
+}
+
+export const isEmptyObject = <T extends {}>(obj: T) => {
+    if (obj === null || obj === undefined) return true
+    return Object.keys(obj).length === 0
 }

@@ -8,6 +8,7 @@ import GlobalStyle from './GlobalStyle'
 import Web3ReactManager from './components/Web3ReactManager'
 import Safes from './containers/Vaults'
 import VaultDetails from './containers/Vaults/VaultDetails'
+import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
 import { useStoreState } from './store'
 import { Theme } from './utils/interfaces'
@@ -78,6 +79,7 @@ const App = () => {
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
+                                                <Route exact strict component={DepositFunds} path={'/tvl/:token/deposit'} />
                                                 <Redirect path="*" to="/404" />
                                             </Switch>
                                         </>

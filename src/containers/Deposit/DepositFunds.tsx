@@ -53,6 +53,9 @@ const DepositFunds = ({ ...props }) => {
         }
     }, [history, tokenSymbol, tokensData])
 
+    // TODO: Implement onDeposit function once contracts are ready
+    const onDeposit = () => console.log('Deposit')
+
     return (
         <Container>
             <Content>
@@ -110,9 +113,7 @@ const DepositFunds = ({ ...props }) => {
                         )}
                         <Button
                             text="deposit"
-                            onClick={() => {
-                                console.log('Deposit funds')
-                            }}
+                            onClick={onDeposit}
                             style={{ width: '100%' }}
                             disabled={approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0}
                         />

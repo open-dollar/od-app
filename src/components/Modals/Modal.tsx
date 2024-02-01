@@ -23,7 +23,6 @@ interface Props {
     hideFooter?: boolean
     backDropColor?: string
     startConfetti?: boolean
-    backgroundColor?: string
 }
 const Modal = ({
     title,
@@ -39,10 +38,8 @@ const Modal = ({
     borderRadius,
     backDropClose,
     hideHeader,
-    hideFooter,
     startConfetti = false,
     backDropColor,
-    backgroundColor,
 }: Props) => {
     const { t } = useTranslation()
     const nodeRef = React.useRef(null)
@@ -94,7 +91,6 @@ const Modal = ({
                                     width: width || '100%',
                                     maxWidth: maxWidth || '720px',
                                     borderRadius,
-                                    backgroundColor,
                                 }}
                             >
                                 {hideHeader ? null : (
@@ -105,7 +101,7 @@ const Modal = ({
                                 )}
                                 <Body>{children}</Body>
 
-                                {(showXButton && !submitBtnText) || hideFooter ? null : (
+                                {showXButton && !submitBtnText ? null : (
                                     <Footer>
                                         <Button dimmed onClick={closeModal} text={t('cancel')} />
 

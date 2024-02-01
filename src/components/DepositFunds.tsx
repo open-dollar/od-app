@@ -2,26 +2,23 @@ import { useState, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
-import { useTheme } from 'styled-components'
+import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTokenBalanceInUSD, useTokenApproval, useProxyAddress } from '~/hooks'
 import { getTokenLogo, formatWithCommas } from '~/utils'
-import { useStoreActions, useStoreState } from '../../store'
+import { useStoreState } from '../store'
 import { shortStringDate } from '~/utils'
 import { ApprovalState } from '~/hooks'
-import Modal from './Modal'
-import TokenInput from '../TokenInput'
-import Button from '../Button'
+import TokenInput from './TokenInput'
+import Button from './Button'
 
-const DepositFundsModal = () => {
-    const theme = useTheme()
+const DepositFunds = () => {
     const { t } = useTranslation()
+    const history = useHistory()
     const proxyAddress = useProxyAddress()
 
     const [depositAmount, setDepositAmount] = useState('0')
 
-    const { popupsModel: popupsState } = useStoreState((state) => state)
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
@@ -45,27 +42,18 @@ const DepositFundsModal = () => {
     )
 
     return (
-        <Modal
-            title="deposit_funds"
-            isModalOpen={popupsState.isDepositFundsModalOpen}
-            borderRadius="20px"
-            maxWidth="498px"
-            backgroundColor={theme.colors.colorPrimary}
-            hideHeader
-            hideFooter
-            backDropClose
-        >
-            <InnerContent>
+        <Container>
+            <InnerContainer>
                 <HeaderContainer>
                     <ArrowLeft
                         size="24"
-                        onClick={() => popupsActions.setIsDepositFundsModalOpen(false)}
+                        onClick={() => history.goBack()}
                         cursor="pointer"
                     />
                     <HeaderText>Deposit funds</HeaderText>
                 </HeaderContainer>
                 <HorizontalSeparator />
-                <Container style={{ marginBottom: 32 }}>
+                <InnerContainer style={{ marginBottom: 32 }}>
                     <InputLabel>{t('amount')}</InputLabel>
                     <TokenInput
                         token={
@@ -80,8 +68,8 @@ const DepositFundsModal = () => {
                         value={depositAmount}
                         handleMaxClick={() => setDepositAmount(depositAssetBalance)}
                     />
-                </Container>
-                <Container>
+                </InnerContainer>
+                <InnerContainer>
                     {/* TODO: Use real date values */}
                     <DateInfoContainer>
                         <DateInfoLabel>{t('pool_start_date')}</DateInfoLabel>
@@ -95,20 +83,20 @@ const DepositFundsModal = () => {
                         <DateInfoLabel>{t('tokens_will_be_unlocked')}</DateInfoLabel>
                         <DateInfoValue>{shortStringDate(1677653610000)}</DateInfoValue>
                     </DateInfoContainer>
-                </Container>
+                </InnerContainer>
                 <WarningLabelContainer>
-                    <Container style={{ display: 'flex' }}>
+                    <InnerContainer style={{ display: 'flex' }}>
                         <WarningBang>!</WarningBang>
                         <WarningLabel>{t('deposit_funds_warning')}</WarningLabel>
-                    </Container>
+                    </InnerContainer>
                 </WarningLabelContainer>
                 <ButtonContainer>
-                    {(approvalState !== ApprovalState.APPROVED || depositAmount === '0') && (
+                    {(approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0) && (
                         <Button
                             text={t('approve_token', { symbol: tokensData?.WSTETH?.symbol })}
                             onClick={() => approve()}
                             style={{ width: '100%' }}
-                            disabled={depositAmount === '0'}
+                            disabled={Number(depositAmount) === 0}
                         />
                     )}
                     <Button
@@ -117,19 +105,22 @@ const DepositFundsModal = () => {
                             console.log('Deposit funds')
                         }}
                         style={{ width: '100%' }}
-                        disabled={approvalState !== ApprovalState.APPROVED || depositAmount === '0'}
+                        disabled={approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0}
                     />
                 </ButtonContainer>
-            </InnerContent>
-        </Modal>
+            </InnerContainer>
+        </Container>
     )
 }
 
-const Container = styled.div``
-
-const InnerContent = styled.div`
-    padding: 6px 8px;
+const Container = styled.div`
+    background-color: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 20px;
+    max-width: 498px;
+    padding: 30px 32px;
 `
+
+const InnerContainer = styled.div``
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -218,4 +209,4 @@ const DateInfoValue = styled.span`
     color: ${(props) => props.theme.colors.neutral};
 `
 
-export default DepositFundsModal
+export default DepositFunds

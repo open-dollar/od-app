@@ -103,20 +103,21 @@ const DepositFundsModal = () => {
                     </Container>
                 </WarningLabelContainer>
                 <ButtonContainer>
-                    <Button
-                        text={t('approve_token', { symbol: tokensData?.WSTETH?.symbol })}
-                        onClick={() => approve()}
-                        style={{ width: '50%' }}
-                        disabled={depositAmount === '0' || approvalState === ApprovalState.APPROVED}
-                        isLoading={approvalState === ApprovalState.PENDING}
-                    />
+                    {(approvalState !== ApprovalState.APPROVED || depositAmount === '0') && (
+                        <Button
+                            text={t('approve_token', { symbol: tokensData?.WSTETH?.symbol })}
+                            onClick={() => approve()}
+                            style={{ width: '100%' }}
+                            disabled={depositAmount === '0'}
+                        />
+                    )}
                     <Button
                         text="deposit"
                         onClick={() => {
                             console.log('Deposit funds')
                         }}
-                        style={{ width: '50%' }}
-                        disabled={approvalState !== ApprovalState.APPROVED}
+                        style={{ width: '100%' }}
+                        disabled={approvalState !== ApprovalState.APPROVED || depositAmount === '0'}
                     />
                 </ButtonContainer>
             </InnerContent>
@@ -195,7 +196,7 @@ const HorizontalSeparator = styled.span`
     display: block;
     width: 100%;
     height: 0.5px;
-    background-color: #00587E;
+    background-color: #00587e;
     margin: 26px 0;
 `
 

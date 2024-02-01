@@ -4,28 +4,32 @@ import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useTokenApproval, useProxyAddress } from '~/hooks'
+import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
-import { useStoreState } from '../../store'
+import { useStoreState, useStoreActions } from '~/store'
 import { shortStringDate, isEmptyObject } from '~/utils'
 import { ApprovalState } from '~/hooks'
-import TokenInput from '../../components/TokenInput'
-import Button from '../../components/Button'
+import TokenInput from '~/components/TokenInput'
+import Button from '~/components/Button'
 
 const DepositFunds = ({ ...props }) => {
     const { t } = useTranslation()
     const history = useHistory()
     const proxyAddress = useProxyAddress()
 
-    const [depositAmount, setDepositAmount] = useState('0')
+    const { account, isActive } = useActiveWeb3React()
+
+    const [depositAmount, setDepositAmount] = useState('')
 
     const tokenPath = props.match.params.token as string
     const tokenSymbol = tokenPath.toUpperCase()
 
     const {
         safeModel: { liquidationData },
-        connectWalletModel: { tokensData, tokensFetchedData },
+        connectWalletModel: { tokensData, tokensFetchedData, isWrongNetwork },
     } = useStoreState((state) => state)
+
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const tokenData = tokensData?.[tokenSymbol]
     const tokenFetchedData = tokensFetchedData?.[tokenSymbol]
@@ -46,6 +50,13 @@ const DepositFunds = ({ ...props }) => {
         tokenFetchedData?.decimals,
         true
     )
+
+    const shouldDisplayApproveButton = approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0
+    const shouldDisplayConnectWalletButton = !account || !isActive
+
+    const shouldDisableApproveButton = Number(depositAmount) === 0 || isWrongNetwork
+    const shouldDisableDepositButton =
+        approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
         if (!isEmptyObject(tokensData) && !tokensData?.[tokenSymbol]?.isCollateral) {
@@ -102,22 +113,33 @@ const DepositFunds = ({ ...props }) => {
                             <WarningLabel>{t('deposit_funds_warning')}</WarningLabel>
                         </InnerContainer>
                     </WarningLabelContainer>
-                    <ButtonContainer>
-                        {(approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0) && (
+                    <InnerContainer>
+                        {shouldDisplayConnectWalletButton ? (
                             <Button
-                                text={t('approve_token', { symbol: tokenData?.symbol })}
-                                onClick={() => approve()}
+                                text="connect_wallet"
+                                onClick={() => popupsActions.setIsConnectorsWalletOpen(true)}
                                 style={{ width: '100%' }}
-                                disabled={Number(depositAmount) === 0}
+                                disabled={isWrongNetwork}
                             />
+                        ) : (
+                            <ButtonContainer>
+                                {shouldDisplayApproveButton && (
+                                    <Button
+                                        text={t('approve_token', { symbol: tokenData?.symbol })}
+                                        onClick={approve}
+                                        style={{ width: '100%' }}
+                                        disabled={shouldDisableApproveButton}
+                                    />
+                                )}
+                                <Button
+                                    text="deposit"
+                                    onClick={onDeposit}
+                                    style={{ width: '100%' }}
+                                    disabled={shouldDisableDepositButton}
+                                />
+                            </ButtonContainer>
                         )}
-                        <Button
-                            text="deposit"
-                            onClick={onDeposit}
-                            style={{ width: '100%' }}
-                            disabled={approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0}
-                        />
-                    </ButtonContainer>
+                    </InnerContainer>
                 </InnerContainer>
             </Content>
         </Container>

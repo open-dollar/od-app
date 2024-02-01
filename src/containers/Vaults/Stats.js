@@ -54,7 +54,7 @@ const Stats = () => {
                     <a
                         style={{ color: '#1499DA', fontWeight: '600', fontSize: '14px' }}
                         href="https://stats.opendollar.com/"
-                        target="_blank"
+                        target="_blank" rel="noreferrer"
                     >
                         View All Stats
                     </a>

@@ -36,13 +36,21 @@ const DepositFunds = ({ ...props }) => {
     const tokenData = tokensData?.[tokenSymbol]
     const tokenFetchedData = tokensFetchedData?.[tokenSymbol]
 
+    const depositAssetUSDValue = formatNumber(
+        liquidationData?.collateralLiquidationData?.[tokenSymbol]?.currentPrice?.value || '0'
+    )
+
     const depositAssetBalance = useMemo(
         () => ethers.utils.formatEther(tokenFetchedData?.balanceE18 || '0'),
         [tokenFetchedData?.balanceE18]
     )
 
-    const depositAssetUSDValue = formatNumber(
-        liquidationData?.collateralLiquidationData?.[tokenSymbol]?.currentPrice?.value || '0'
+    const depositAmountUSDValue = useMemo(
+        () =>
+            depositAmount && depositAssetUSDValue
+                ? formatNumber(String(Number(depositAmount) * Number(depositAssetUSDValue)))
+                : '',
+        [depositAmount, depositAssetUSDValue]
     )
 
     const [approvalState, approve] = useTokenApproval(
@@ -90,7 +98,7 @@ const DepositFunds = ({ ...props }) => {
                                 }
                             }
                             label={`Balance: ${formatWithCommas(depositAssetBalance)} ${tokenData?.symbol}`}
-                            rightLabel={`~$${formatWithCommas(depositAssetUSDValue)}`}
+                            rightLabel={`~$${formatWithCommas(depositAmountUSDValue)}`}
                             onChange={(e) => setDepositAmount(e)}
                             value={depositAmount}
                             handleMaxClick={() => setDepositAmount(depositAssetBalance)}

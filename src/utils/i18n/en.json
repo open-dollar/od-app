@@ -134,6 +134,6 @@
     "pool_start_date": "Pool start date",
     "current_date": "Current date",
     "tokens_will_be_unlocked": "Tokens will be unlocked",
-    "deposit_funds_warning": "When protocol is live this deposit will be converted into OD vault and mint 1 OD",
+    "deposit_funds_warning": "When protocol is live this deposit will be converted into OD vault and mint 1 OD.",
     "approve_token": "Approve {{symbol}}"
 }

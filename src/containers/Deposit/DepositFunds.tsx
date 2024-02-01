@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft, Info, AlertCircle } from 'react-feather'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from 'styled-components'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
 import { useStoreState, useStoreActions } from '~/store'
@@ -14,6 +15,7 @@ import Button from '~/components/Button'
 
 const DepositFunds = ({ ...props }) => {
     const { t } = useTranslation()
+    const { colors } = useTheme()
     const history = useHistory()
     const proxyAddress = useProxyAddress()
 
@@ -67,6 +69,8 @@ const DepositFunds = ({ ...props }) => {
     // TODO: Implement onDeposit function once contracts are ready
     const onDeposit = () => console.log('Deposit')
 
+    const onInfoClick = () => console.log('Info')
+
     return (
         <Container>
             <Content>
@@ -103,13 +107,22 @@ const DepositFunds = ({ ...props }) => {
                             <DateInfoValue>{shortStringDate(1675061610000)}</DateInfoValue>
                         </DateInfoContainer>
                         <DateInfoContainer>
-                            <DateInfoLabel>{t('tokens_will_be_unlocked')}</DateInfoLabel>
+                            <InnerContainer style={{ display: 'flex', alignItems: 'center' }}>
+                                <DateInfoLabel>{t('tokens_will_be_unlocked')}</DateInfoLabel>
+                                <Info
+                                    size="16"
+                                    color={colors.blueish}
+                                    style={{ marginLeft: 6 }}
+                                    cursor="pointer"
+                                    onClick={onInfoClick}
+                                />
+                            </InnerContainer>
                             <DateInfoValue>{shortStringDate(1677653610000)}</DateInfoValue>
                         </DateInfoContainer>
                     </InnerContainer>
                     <WarningLabelContainer>
-                        <InnerContainer style={{ display: 'flex' }}>
-                            <WarningBang>!</WarningBang>
+                        <InnerContainer style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <AlertCircle size="24" color={colors.yellowish} style={{ height: 'auto', marginTop: 1 }} />
                             <WarningLabel>{t('deposit_funds_warning')}</WarningLabel>
                         </InnerContainer>
                     </WarningLabelContainer>
@@ -183,7 +196,7 @@ const WarningLabelContainer = styled.div`
     justify-content: center;
     background-color: ${(props) => `${props.theme.colors.yellowish}40`};
     border-radius: 6px;
-    padding: 12px 24px;
+    padding: 12px 14px 12px 14px;
     margin: 30px 0;
 `
 
@@ -197,24 +210,8 @@ const WarningLabel = styled.p`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 500;
     color: ${(props) => props.theme.colors.yellowish};
-    margin-left: 24px;
-    line-height: 1.2;
-`
-
-const WarningBang = styled.span`
-    position: absolute;
-    align-items: center;
-    text-align: center;
-    line-height: 1.1;
-    font-size: 10px;
-    font-weight: 900;
-    color: ${(props) => props.theme.colors.yellowish};
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 2px;
-    border-style: solid;
-    border-color: ${(props) => props.theme.colors.yellowish};
+    margin-left: 6px;
+    line-height: 18.2px;
 `
 
 const HeaderText = styled.span`

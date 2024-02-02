@@ -200,7 +200,11 @@ const Navbar = () => {
             }
         }
 
-        fetchData()
+        try {
+            fetchData()
+        } catch (error) {
+            console.error('Error fetching navbar analytics data: ', error)
+        }
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
         document.addEventListener('mousedown', handleClickOutsideOdWallet)

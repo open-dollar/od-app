@@ -81,7 +81,8 @@ const Steps = () => {
                         text={'create_account_text'}
                         btnText={'create_account'}
                         handleClick={handleCreateAccount}
-                        isDisabled={isWrongNetwork}
+                        // Disable for TVL feature
+                        isDisabled={true}
                         isLoading={isStepLoading}
                     />
                 )

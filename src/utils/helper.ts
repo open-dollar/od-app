@@ -407,3 +407,20 @@ export const returnFiatValue = (value: string, price: number) => {
     if (!value || !price) return '0.00'
     return formatNumber(numeral(value).multiply(price).value().toString(), 2)
 }
+
+export const shortStringDate = (date: string | number | Date): string => {
+    const d = new Date(date)
+
+    const unPaddedDay = d.getDate()
+    const unPaddedMonth = d.getMonth() + 1
+
+    const day = unPaddedDay < 10 ? `0${unPaddedDay}` : unPaddedDay
+    const month = unPaddedMonth < 10 ? `0${unPaddedMonth}` : unPaddedMonth
+
+    return `${day}.${month}.${d.getFullYear()}`
+}
+
+export const isEmptyObject = <T extends {}>(obj: T) => {
+    if (obj === null || obj === undefined) return true
+    return Object.keys(obj).length === 0
+}

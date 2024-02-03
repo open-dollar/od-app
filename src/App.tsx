@@ -83,7 +83,7 @@ const App = () => {
                                                     exact
                                                     strict
                                                     component={DepositFunds}
-                                                    path={'/tvl/:token/deposit'}
+                                                    path={'/deposit/:token/deposit'}
                                                 />
                                                 <Redirect path="*" to="/404" />
                                             </Switch>

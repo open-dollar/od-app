@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Button from '~/components/Button'
-import LinkButton from '~/components/LinkButton'
 import { useStoreActions, useStoreState } from '~/store'
 
 const VaultHeader = ({

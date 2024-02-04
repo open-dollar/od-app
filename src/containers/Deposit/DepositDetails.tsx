@@ -10,6 +10,9 @@ import { useActiveWeb3React } from '~/hooks'
 const OnBoarding = ({ ...props }) => {
     const { account, provider } = useActiveWeb3React()
 
+    const tokenPath = props.match.params.token as string
+    const tokenSymbol = tokenPath.toUpperCase()
+
     const {
         connectWalletModel: connectWalletState,
         safeModel: safeState,
@@ -25,25 +28,10 @@ const OnBoarding = ({ ...props }) => {
                 <Container>
                     <Header>
                         <Col>
-                            <Title>{'Deposit'}</Title>
+                            <Title>{tokenSymbol}</Title>
                         </Col>
                     </Header>
                 </Container>
-                Deposit your staked assets into the deposit pool to earn ODG rewards, before the protocol is live.
-                <LinkButton
-                    id="deposit_wsteth"
-                    text={'WSTETH'}
-                    url={`/deposit/wsteth`}
-                    color="colorPrimary"
-                    border={true}
-                />
-                <LinkButton
-                    id="deposit_wsteth"
-                    text={'CBETH'}
-                    url={`/deposit/cbeth`}
-                    color="colorPrimary"
-                    border={true}
-                />
             </Content>
         </MainContainer>
     )

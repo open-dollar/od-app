@@ -42,7 +42,11 @@ const OnBoarding = ({ ...props }) => {
         }
 
         if (geb && connectWalletState.tokensData) {
-            fetchSafes()
+            try {
+                fetchSafes()
+            } catch (error) {
+                console.error('Error fetching safes: ', error)
+            }
         }
 
         const ms = 3000

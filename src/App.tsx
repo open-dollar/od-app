@@ -26,6 +26,7 @@ import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
+import Deposit from '~/containers/Deposit'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -60,6 +61,7 @@ const App = () => {
                                         <>
                                             <Switch>
                                                 <Route exact strict component={PageNotFound} path="/404" />
+                                                <Route exact strict component={Deposit} path={'/deposit'} />
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />

@@ -84,6 +84,7 @@
     "redemption_price_tip": "The 'moving peg' that the OD market price should return to",
     "collateral_ratio_tip": "The ratio between the value of the collateral and the value of debt in your Vault",
     "auctions": "Auctions",
+    "vaults": "Vaults",
     "auctions_header_text": "Dashboard to bid in {{type}} auctions",
     "claim_tokens": "Claim Tokens",
     "claim_flx": "Claim ODG",

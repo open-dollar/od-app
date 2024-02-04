@@ -4,15 +4,19 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import LinkButton from '~/components/LinkButton'
 
+import { fetchNitroPoolODGwstETH } from '@opendollar/sdk'
+import useGeb from '~/hooks/useGeb'
+
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 
 const OnBoarding = ({ ...props }) => {
     const { account, provider } = useActiveWeb3React()
-
+    const [nitroData, setNitroData] = useState({})
     const tokenPath = props.match.params.token as string
     const tokenSymbol = tokenPath.toUpperCase()
 
+    const geb = useGeb()
     const {
         connectWalletModel: connectWalletState,
         safeModel: safeState,
@@ -22,6 +26,16 @@ const OnBoarding = ({ ...props }) => {
 
     const address: string = props.match.params.address ?? ''
 
+    useEffect(() => {
+        if (!geb) return
+        fetchNitroData()
+    }, [tokenSymbol, geb])
+
+    const fetchNitroData = async () => {
+        const data = await fetchNitroPoolODGwstETH(geb, '0x4391D56A8E56BE1fB30a45bAa0E5B7a4b488FbAa')
+        console.log(data)
+        setNitroData(data)
+    }
     return (
         <MainContainer id="deposit-page">
             <Content>
@@ -32,6 +46,7 @@ const OnBoarding = ({ ...props }) => {
                         </Col>
                     </Header>
                 </Container>
+                {JSON.stringify(nitroData)}
             </Content>
         </MainContainer>
     )

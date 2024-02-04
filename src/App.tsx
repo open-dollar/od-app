@@ -25,7 +25,7 @@ import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
-import Deposit from "~/containers/Deposit";
+import Deposit from '~/containers/Deposit'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
@@ -50,7 +50,7 @@ const App = () => {
             <ThemeProvider theme={darkTheme}>
                 <GlobalStyle bodyOverflow={bodyOverflow} />
                 <ErrorBoundary>
-                    <ToastContainer style={{ zIndex: 1001, position: "sticky", top: 0, left: 0, width: "100%" }} />
+                    <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />
                     <Shared>
                         <ApolloProvider client={client}>
                             <StatsProvider>
@@ -60,8 +60,8 @@ const App = () => {
                                         <>
                                             <Switch>
                                                 <Route exact strict component={PageNotFound} path="/404" />
-                                                <Route exact strict component={Deposit} path={'/'} />
-                                                <Route exact strict component={Safes} path={'/vaults'} />
+                                                <Route exact strict component={Deposit} path={'/deposit'} />
+                                                <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />

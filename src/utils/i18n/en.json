@@ -138,5 +138,5 @@
     "deposit_funds_warning": "When protocol is live this deposit will be converted into OD vault and mint 1 OD.",
     "approve_token": "Approve {{symbol}}",
     "deposits": "Deposits",
-    "deposit_staked_assets": "Deposit your staked assets into deposit pool to earn ODG rewards, before protocol is live."
+    "deposit_staked_assets": "Deposit your staked assets into the deposit pool to earn ODG rewards, before the protocol is live."
 }

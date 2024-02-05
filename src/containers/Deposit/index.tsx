@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import LinkButton from '~/components/LinkButton'
 
-import { useStoreState, useStoreActions } from '~/store'
-import { useActiveWeb3React } from '~/hooks'
-
-const OnBoarding = ({ ...props }) => {
-    const {t} = useTranslation()
-    const { account, provider } = useActiveWeb3React()
-
-    const {
-        connectWalletModel: connectWalletState,
-        safeModel: safeState,
-        popupsModel: popupsState,
-    } = useStoreState((state) => state)
-    const { popupsModel: popupsActions, safeModel: safeActions } = useStoreActions((state) => state)
-
-    const address: string = props.match.params.address ?? ''
+const OnBoarding = () => {
+    const { t } = useTranslation()
 
     return (
         <MainContainer id="deposit-page">
             <Content>
                 <Container>
-                <Header>
-                <Title>{t('deposit')}</Title>
-                <Subtitle>{t('deposit_staked_assets')}</Subtitle>
-            </Header>
+                    <Header>
+                        <Title>{t('deposit')}</Title>
+                        <Subtitle>{t('deposit_staked_assets')}</Subtitle>
+                    </Header>
                 </Container>
                 <LinkButton
                     id="deposit_wsteth"

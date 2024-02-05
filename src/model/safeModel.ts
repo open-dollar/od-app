@@ -169,7 +169,7 @@ const safeModel: SafeModel = {
         const storeActions = getStoreActions()
         const state = getState()
         const { isSuccessfulTx } = state
-        let fetched;
+        let fetched
         try {
             fetched = await fetchUserSafes(payload)
         } catch (e) {

@@ -1,35 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import LinkButton from '~/components/LinkButton'
 
-import { useStoreState, useStoreActions } from '~/store'
-import { useActiveWeb3React } from '~/hooks'
-
-const OnBoarding = ({ ...props }) => {
-    const { account, provider } = useActiveWeb3React()
-
-    const {
-        connectWalletModel: connectWalletState,
-        safeModel: safeState,
-        popupsModel: popupsState,
-    } = useStoreState((state) => state)
-    const { popupsModel: popupsActions, safeModel: safeActions } = useStoreActions((state) => state)
-
-    const address: string = props.match.params.address ?? ''
+const OnBoarding = () => {
+    const { t } = useTranslation()
 
     return (
         <MainContainer id="deposit-page">
             <Content>
                 <Container>
                     <Header>
-                        <Col>
-                            <Title>{'Deposit'}</Title>
-                        </Col>
+                        <Title>{t('deposit')}</Title>
+                        <Subtitle>{t('deposit_staked_assets')}</Subtitle>
                     </Header>
                 </Container>
-                Deposit your staked assets into the deposit pool to earn ODG rewards, before the protocol is live.
                 <LinkButton
                     id="deposit_wsteth"
                     text={'WSTETH'}
@@ -61,7 +45,6 @@ const Container = styled.div`
         margin: 50px auto;
     }
 `
-
 const Content = styled.div`
     position: relative;
 `
@@ -100,14 +83,21 @@ const TextHeader = styled.div`
 `
 
 const Header = styled.div`
-    margin-bottom: 16px;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80px;
 `
 
-const Title = styled.div`
+const Title = styled.h1`
     font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 34px;
+`
+
+const Subtitle = styled.h3`
+    font-weight: 400;
+    font-size: 14px;
+    color: ${(props) => props.theme.colors.secondary};
 `
 
 const Wrapper = styled.div`

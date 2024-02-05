@@ -1,11 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Logo from '../assets/od-full-logo-grey.svg'
 import { useStoreActions } from '~/store'
 import { Link as RouterLink } from 'react-router-dom'
 import FooterBackgroundImage from '~/assets/footer-bg-art.svg'
 
 const Footer: React.FC = () => {
+    const { t } = useTranslation()
+    const history = useHistory()
+    const { location } = history
+
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, disable = false, externalLink = '') => {
@@ -53,21 +59,28 @@ const Footer: React.FC = () => {
                             onClick={(e) => handleLinkClick(e, false)}
                             className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
                         >
-                            App
+                            {t('vaults')}
+                        </InnerLink>
+                        <InnerLink
+                            to="/deposit"
+                            onClick={(e) => handleLinkClick(e, false)}
+                            className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
+                        >
+                            {t('deposit')}
                         </InnerLink>
                         <InnerLink
                             to="/auctions"
                             onClick={(e) => handleLinkClick(e, false)}
                             className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
                         >
-                            Auctions
+                            {t('auctions')}
                         </InnerLink>
                         <InnerLink
                             to="/stats"
                             onClick={(e) => handleLinkClick(e, false)}
                             className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
                         >
-                            Stats
+                            {t('stats')}
                         </InnerLink>
                     </Column>
                     <Column>

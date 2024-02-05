@@ -11,7 +11,6 @@ const Footer: React.FC = () => {
     const { t } = useTranslation()
     const history = useHistory()
     const { location } = history
-    
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 

@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
                             onClick={(e) => handleLinkClick(e, false)}
                             className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
                         >
-                            {t('accounts')}
+                            {t('vaults')}
                         </InnerLink>
                         <InnerLink
                             to="/deposit"

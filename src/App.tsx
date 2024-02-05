@@ -66,7 +66,6 @@ const App = () => {
                                                 <Route exact strict component={Deposit} path={'/deposit'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
-                                                <Route exact strict component={Deposit} path={'/deposit'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
                                                 <Route
                                                     exact

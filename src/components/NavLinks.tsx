@@ -31,7 +31,7 @@ const NavLinks = () => {
                 onClick={(e) => handleLinkClick(e, false)}
                 className={location.pathname.startsWith('/vaults') || location.pathname === '/' ? 'activeLink' : ''}
             >
-                {t('accounts')}
+                {t('vaults')}
             </NavBarLink>
             <NavBarLink
                 id="deposit-link"

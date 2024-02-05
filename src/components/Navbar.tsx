@@ -223,7 +223,7 @@ const Navbar = () => {
                 <Price>
                     <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                         <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
-                        <span>{state.odPrice}</span>
+                        <span>{state.odPrice || '$1.00'}</span>
                         <ArrowWrapper>
                             <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                         </ArrowWrapper>

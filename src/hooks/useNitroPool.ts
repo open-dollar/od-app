@@ -39,8 +39,6 @@ export const useNitroPool = () => {
             return
         }
 
-        console.log('fetching nitro pool details')
-
         fetchPoolDetails()
     }, [depositTokensData, fetchPoolDetails, geb, nitroPoolDetails])
 

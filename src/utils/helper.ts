@@ -5,7 +5,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { floatsTypes, SUPPORTED_WALLETS } from './constants'
 import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
 import { injected } from '~/connectors'
 
@@ -433,4 +433,18 @@ export const getCompactFiatValue = (value: string | number): string => {
     })
 
     return formatter.format(Number(value)).toLowerCase()
+}
+
+export const getDateCountdown = (date: string | number | Date) => { 
+    const d = new Date(date)
+    const now = new Date()
+
+    const diff = d.getTime() - now.getTime()
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+    return { days, hours, minutes, seconds }
 }

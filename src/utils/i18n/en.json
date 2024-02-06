@@ -142,5 +142,15 @@
     "tvl": "TVL",
     "apr": "APR",
     "your_deposit": "Your deposit",
-    "your_rewards": "Your rewards"
+    "your_rewards": "Your rewards",
+    "total_value_locked": "Total Value Locked",
+    "pending_rewards": "Pending Rewards",
+    "status": "Status",
+    "duration": "Duration",
+    "end_in": "End in",
+    "deposit_end_time": "Deposit end time",
+    "harvests": "Harvests",
+    "minimum_lock": "Minimum lock",
+    "locked_until": "Locked until",
+    "whitelist": "Whitelist"
 }

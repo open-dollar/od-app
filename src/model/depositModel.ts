@@ -1,5 +1,5 @@
-import { action, Action } from "easy-peasy"
-import { NitroPoolDetails } from "@opendollar/sdk"
+import { action, Action } from 'easy-peasy'
+import { NitroPoolDetails } from '@opendollar/sdk'
 
 export interface DepositModel {
     depositTokens: Set<string>

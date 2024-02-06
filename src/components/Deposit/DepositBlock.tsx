@@ -124,7 +124,7 @@ const Label = styled.div`
     letter-spacing: -0.09px;
     line-height: 21px;
     @media (max-width: 767px) {
-       font-size: ${(props) => props.theme.font.small};
+        font-size: ${(props) => props.theme.font.small};
     }
 `
 

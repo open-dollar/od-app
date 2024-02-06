@@ -3,19 +3,17 @@ import styled from 'styled-components'
 import DepositBlock from '~/components/Deposit/DepositBlock'
 import { useNitroPool } from '~/hooks'
 
-const OnBoarding = () => {
+const Deposit = () => {
     const { t } = useTranslation()
     const { poolDetails, depositTokens } = useNitroPool()
 
     return (
         <MainContainer id="deposit-page">
-            <Content>
-                <Container>
-                    <Header>
-                        <Title>{t('deposit')}</Title>
-                        <Subtitle>{t('deposit_staked_assets')}</Subtitle>
-                    </Header>
-                </Container>
+            <Header>
+                <Title>{t('deposit')}</Title>
+                <Subtitle>{t('deposit_staked_assets')}</Subtitle>
+            </Header>
+            <DepositListContainer>
                 {depositTokens.map((tokenData) => {
                     const tokenPoolDetails = poolDetails[tokenData.symbol]
                     const userDepositInfo = tokenPoolDetails?.userInfo
@@ -31,16 +29,14 @@ const OnBoarding = () => {
                         />
                     )
                 })}
-            </Content>
+            </DepositListContainer>
         </MainContainer>
     )
 }
 
-export default OnBoarding
+export default Deposit
 
-const MainContainer = styled.div``
-
-const Container = styled.div`
+const MainContainer = styled.div`
     max-width: 880px;
     margin: 80px auto;
     padding: 0 15px;
@@ -48,15 +44,15 @@ const Container = styled.div`
         margin: 50px auto;
     }
 `
-const Content = styled.div`
-    position: relative;
-`
+
+const DepositListContainer = styled.div``
 
 const Header = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 80px;
+    margin-bottom: 60px;
 `
 
 const Title = styled.h1`

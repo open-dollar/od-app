@@ -424,3 +424,13 @@ export const isEmptyObject = <T extends {}>(obj: T) => {
     if (obj === null || obj === undefined) return true
     return Object.keys(obj).length === 0
 }
+
+export const getCompactFiatValue = (value: string | number): string => {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        notation: 'compact',
+    })
+
+    return formatter.format(Number(value)).toLowerCase()
+}

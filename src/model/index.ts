@@ -5,6 +5,7 @@ import safeModel, { SafeModel } from './safeModel'
 import transactionsModel, { TransactionsModel } from './transactionsModel'
 import multicallModel, { MulticallModel } from './multicallModel'
 import auctionModel, { AuctionModel } from './auctionModel'
+import depositModel, { DepositModel } from './depositModel'
 
 export interface StoreModel {
     settingsModel: SettingsModel
@@ -14,6 +15,7 @@ export interface StoreModel {
     transactionsModel: TransactionsModel
     multicallModel: MulticallModel
     auctionModel: AuctionModel
+    depositModel: DepositModel
 }
 
 const model: StoreModel = {
@@ -24,6 +26,7 @@ const model: StoreModel = {
     transactionsModel,
     multicallModel,
     auctionModel,
+    depositModel,
 }
 
 export default model

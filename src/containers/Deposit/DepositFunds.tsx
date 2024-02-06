@@ -8,7 +8,7 @@ import { useTheme } from 'styled-components'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
 import { useStoreState, useStoreActions } from '~/store'
-import { shortStringDate, isEmptyObject } from '~/utils'
+import { shortStringDate } from '~/utils'
 import { ApprovalState } from '~/hooks'
 import TokenInput from '~/components/TokenInput'
 import Button from '~/components/Button'
@@ -29,6 +29,7 @@ const DepositFunds = ({ ...props }) => {
     const {
         safeModel: { liquidationData },
         connectWalletModel: { tokensData, tokensFetchedData, isWrongNetwork },
+        depositModel: { depositTokens },
     } = useStoreState((state) => state)
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -69,14 +70,15 @@ const DepositFunds = ({ ...props }) => {
         approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
-        if (!isEmptyObject(tokensData) && !tokensData?.[tokenSymbol]?.isCollateral) {
+        if (!depositTokens.has(tokenSymbol)) {
             history.push('/404')
         }
-    }, [history, tokenSymbol, tokensData])
+    }, [depositTokens, history, tokenSymbol, tokensData])
 
     // TODO: Implement onDeposit function once contracts are ready
     const onDeposit = () => console.log('Deposit')
 
+    // TODO: Implement onInfoClick function once contracts are ready
     const onInfoClick = () => console.log('Info')
 
     return (

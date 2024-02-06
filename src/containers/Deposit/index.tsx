@@ -25,7 +25,7 @@ const Deposit = () => {
                             tvl={tokenPoolDetails?.tvl}
                             apr={tokenPoolDetails?.apy}
                             userDeposit={userDepositInfo?.totalDepositAmount?.toString()}
-                            userRewards={userDepositInfo?.rewardDebtToken2?.toString()}
+                            userRewards={userDepositInfo?.rewardDebtToken1?.toString()}
                         />
                     )
                 })}

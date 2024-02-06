@@ -52,7 +52,7 @@ const Header = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: 80px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 `
 
 const Title = styled.h1`

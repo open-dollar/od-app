@@ -4,6 +4,7 @@ export type ParsedNitroPool = {
     pool?: {
         tvl: number
         apr: number
+        address: string
         isActive: boolean
         duration: number
         endsIn: number

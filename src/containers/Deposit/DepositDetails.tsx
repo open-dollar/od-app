@@ -6,7 +6,7 @@ import { ArrowLeft, Plus } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
-import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical } from '~/utils'
+import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, camelotBaseUrl } from '~/utils'
 import StatusPill from '~/components/StatusPill'
 import { DepositDetailCard, DepositCardText, DepositCardSecondaryText } from '~/components/Deposit'
 import Button from '~/components/Button'
@@ -93,7 +93,8 @@ const DepositDetails = ({ ...props }) => {
     }
 
     const onClickDeposit = () => {
-        history.push(`/deposit/${tokenSymbol.toLowerCase()}/deposit`)
+        if (!pool?.address) return
+        window.open(`${camelotBaseUrl}/nitro/${pool.address}`, '_blank')
     }
 
     return (
@@ -114,6 +115,7 @@ const DepositDetails = ({ ...props }) => {
                         <Title>{tokenSymbol}</Title>
                     </Flex>
                     <Button
+                        disabled={!pool?.address || !pool?.isActive}
                         onClick={onClickDeposit}
                         style={{
                             display: 'flex',

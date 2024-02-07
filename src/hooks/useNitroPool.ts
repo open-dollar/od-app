@@ -29,7 +29,7 @@ export const useNitroPool = () => {
 
     const getParsedNitroPool = useCallback(
         (pool: NitroPoolDetails, collateralToken: string): ParsedNitroPool => {
-            if (!pool || !geb?.tokenList) {
+            if (!pool || !geb?.tokenList || !geb?.contracts) {
                 return {}
             }
 
@@ -60,10 +60,15 @@ export const useNitroPool = () => {
                 userInfo?.pendingRewardsToken1 &&
                 formatUnits(userInfo.pendingRewardsToken1, rewardTokenData.decimals).toString()
 
+            // @ts-ignore
+            // TODO: Find safer way to retrieve contract without using ts-ignore
+            const nitroPoolAddress = geb.contracts[`camelot${collateralToken}NitroPool`].address
+
             return {
                 pool: {
                     tvl,
                     apr: apy,
+                    address: nitroPoolAddress,
                     isActive: endTimeMs > now,
                     duration: endTimeMs - startTimeMs,
                     endsIn: endTimeMs > now ? endTimeMs - now : 0,
@@ -86,12 +91,12 @@ export const useNitroPool = () => {
                     averageApr: apy,
                 },
                 tokens: {
-                    reward: geb.tokenList.ODG,
-                    collateral: geb.tokenList[collateralToken],
+                    reward: rewardTokenData,
+                    collateral: collateralTokenData,
                 },
             }
         },
-        [geb?.tokenList]
+        [geb?.contracts, geb?.tokenList]
     )
 
     const fetchPoolDetails = useCallback(async () => {

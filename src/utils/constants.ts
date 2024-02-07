@@ -177,3 +177,5 @@ export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbi
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 export const geb = new Geb(network_name, provider)
+
+export const camelotBaseUrl = process.env.CAMELOT_BASE_URL || 'https://app.camelot.exchange'

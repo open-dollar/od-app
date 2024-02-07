@@ -45,7 +45,6 @@ export const useNitroPool = () => {
                 userInfo?.pendingRewardsToken1 && formatUnits(userInfo.pendingRewardsToken1, rewardTokenData.decimals)
 
             // @ts-ignore
-            // TODO: Find safer way to retrieve contract without using ts-ignore
             const nitroPoolAddress = geb.contracts[`camelot${collateralToken}NitroPool`].address
 
             return {
@@ -88,7 +87,7 @@ export const useNitroPool = () => {
 
         const fetchedNitroPoolDetails = await Promise.all(
             availableCollateralsForDeposit().map(async (symbol) => ({
-                [symbol]: await fetchNitroPool(geb, symbol, '0x8cc44a3Fe63E844f37CeE1C91f7b5bc4aD26639e'),
+                [symbol]: await fetchNitroPool(geb, symbol, account),
             }))
         )
 

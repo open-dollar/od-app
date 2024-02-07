@@ -14,7 +14,6 @@ export * from './retry'
 export * from './tokens'
 export * from './validations'
 export * from './wrapEther'
-export * from './deposits'
 
 // export gebManager
 export * from './gebManager/index'

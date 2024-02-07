@@ -38,12 +38,12 @@ export const DepositBlock = (props: DepositBlockProps) => {
                         <Item>
                             <Label>{t('your_deposit')}</Label>
                             <Value>
-                                {props.userDeposit ? formatNumber(props.userDeposit, 2) : '0.00'} {props.ticker}
+                                {props.userDeposit ? formatNumber(props.userDeposit) : '0.00'} {props.ticker}
                             </Value>
                         </Item>
                         <Item>
                             <Label>{t('your_rewards')}</Label>
-                            <Value>{props.userRewards ? formatNumber(props.userRewards, 2) : '0.00'} ODG</Value>
+                            <Value>{props.userRewards ? formatNumber(props.userRewards) : '0.00'} ODG</Value>
                         </Item>
                     </Block>
                 </BlockContainer>

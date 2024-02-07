@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useHistory } from 'react-router-dom'
@@ -6,8 +6,7 @@ import { ArrowLeft, Plus } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
-import { ParsedNitroPool } from '~/types'
-import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, getParsedNitroPool } from '~/utils'
+import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical } from '~/utils'
 import StatusPill from '~/components/StatusPill'
 import { DepositDetailCard, DepositCardText, DepositCardSecondaryText } from '~/components/Deposit'
 import Button from '~/components/Button'
@@ -17,8 +16,6 @@ const DepositDetails = ({ ...props }) => {
     const tokenSymbol = tokenPath.toUpperCase()
     const history = useHistory()
 
-    const [{ pool, status, authorizations, requirements }, setParsedPoolDetails] = useState<ParsedNitroPool>({})
-
     const { t } = useTranslation()
     const { colors } = useTheme()
 
@@ -26,28 +23,15 @@ const DepositDetails = ({ ...props }) => {
         depositModel: { depositTokens },
     } = useStoreState((state) => state)
 
-    const { poolDetails } = useNitroPool()
+    const [poolDetails] = useNitroPool()
 
-    const tokenPoolDetails = poolDetails[tokenSymbol]
+    const pool = poolDetails[tokenSymbol]?.pool
 
     useEffect(() => {
         if (!depositTokens.has(tokenSymbol)) {
             props.history.push('/404')
         }
     }, [depositTokens, poolDetails, props.history, tokenSymbol])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setParsedPoolDetails(getParsedNitroPool(tokenPoolDetails))
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [poolDetails, tokenPoolDetails, tokenSymbol])
-
-    // Set initial countdown on mount before interval is kicked off
-    useEffect(() => {
-        setParsedPoolDetails(getParsedNitroPool(tokenPoolDetails))
-    }, [tokenPoolDetails])
 
     const getCountdownString = (remainingTimeMs: number): React.ReactNode => {
         const { days, hours, minutes, seconds } = msToCalendrical(remainingTimeMs)
@@ -153,30 +137,32 @@ const DepositDetails = ({ ...props }) => {
                         { title: t('apr'), content: formatNumber(String(pool?.apr), 2) + '%' },
                         {
                             title: t('pending_rewards'),
-                            content: `${formatNumber(String(pool?.pendingRewards || 0))} ODG`,
+                            content: `${formatNumber(String(pool?.pendingRewards))} ODG`,
                         },
                     ]}
                 />
                 <DepositDetailCard
                     values={[
-                        { title: t('status'), content: getStatusPill('active', 'inactive', status?.isActive) },
-                        { title: t('duration'), content: status?.duration && msToMonthDayString(status.duration) },
-                        { title: t('end_in'), content: status?.endIn && getCountdownString(status.endIn) },
+                        { title: t('status'), content: getStatusPill('active', 'inactive', pool?.isActive) },
+                        { title: t('duration'), content: pool?.duration && msToMonthDayString(pool.duration) },
+                        { title: t('end_in'), content: pool?.endsIn && getCountdownString(pool.endsIn) },
                     ]}
                 />
                 <DepositDetailCard
                     values={[
                         {
                             title: t('deposits'),
-                            content: getStatusPill('enabled', 'disabled', authorizations?.depositsEnabled),
+                            content: getStatusPill('enabled', 'disabled', pool?.authorizations?.depositsEnabled),
                         },
                         {
                             title: t('deposit_end_time'),
-                            content: authorizations?.depositsEndIn && getCountdownString(authorizations.depositsEndIn),
+                            content:
+                                pool?.authorizations?.depositsEndIn &&
+                                getCountdownString(pool.authorizations.depositsEndIn),
                         },
                         {
                             title: t('harvests'),
-                            content: getStatusPill('enabled', 'disabled', authorizations?.harvestsEnabled),
+                            content: getStatusPill('enabled', 'disabled', pool?.authorizations?.harvestsEnabled),
                         },
                     ]}
                 />
@@ -184,13 +170,14 @@ const DepositDetails = ({ ...props }) => {
                     values={[
                         {
                             title: t('minimum_lock'),
-                            content: requirements?.lockDuration && msToMonthDayString(requirements.lockDuration),
+                            content:
+                                pool?.requirements?.lockDuration && msToMonthDayString(pool.requirements.lockDuration),
                         },
                         {
                             title: t('locked_until'),
-                            content: requirements?.lockUntil && formatDate(requirements?.lockUntil),
+                            content: pool?.requirements?.lockUntil && formatDate(pool.requirements.lockUntil),
                         },
-                        { title: t('whitelist'), content: requirements?.whitelist },
+                        { title: t('whitelist'), content: pool?.requirements?.whitelist },
                     ]}
                 />
             </Grid>

@@ -1,22 +1,31 @@
+import { TokenData } from '@opendollar/sdk'
+
 export type ParsedNitroPool = {
     pool?: {
         tvl: number
         apr: number
-        pendingRewards?: string
-    }
-    status?: {
         isActive: boolean
         duration: number
-        endIn: number
+        endsIn: number
+        pendingRewards: string
+        authorizations?: {
+            depositsEnabled: boolean
+            depositsEndIn: number
+            harvestsEnabled: boolean
+        }
+        requirements?: {
+            lockDuration: number
+            lockUntil: number
+            whitelist: boolean
+        }
     }
-    authorizations?: {
-        depositsEnabled: boolean
-        depositsEndIn: number
-        harvestsEnabled: boolean
+    user?: {
+        deposit?: string
+        pendingRewards?: string
+        averageApr?: number
     }
-    requirements?: {
-        lockDuration: number
-        lockUntil: number
-        whitelist: boolean
+    tokens?: {
+        reward: TokenData
+        collateral: TokenData
     }
 }

@@ -6,7 +6,14 @@ import { ArrowLeft, Plus } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
-import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, camelotBaseUrl } from '~/utils'
+import {
+    getTokenLogo,
+    getCompactFiatValue,
+    getDateTimeString,
+    formatNumber,
+    msToCalendrical,
+    camelotBaseUrl,
+} from '~/utils'
 import StatusPill from '~/components/StatusPill'
 import { DepositDetailCard, DepositCardText, DepositCardSecondaryText } from '~/components/Deposit'
 import Button from '~/components/Button'
@@ -80,11 +87,6 @@ const DepositDetails = ({ ...props }) => {
                 )}
             </Flex>
         )
-    }
-
-    const formatDate = (dateStr: number): string => {
-        const d = new Date(dateStr)
-        return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`
     }
 
     const getStatusPill = (activeText: string, inactiveText: string, isActive?: boolean): React.ReactNode => {
@@ -180,7 +182,7 @@ const DepositDetails = ({ ...props }) => {
                         },
                         {
                             title: t('locked_until'),
-                            content: pool?.requirements?.lockUntil && formatDate(pool.requirements.lockUntil),
+                            content: pool?.requirements?.lockUntil && getDateTimeString(pool.requirements.lockUntil),
                         },
                         { title: t('whitelist'), content: pool?.requirements?.whitelist },
                     ]}

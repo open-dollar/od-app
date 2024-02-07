@@ -459,3 +459,8 @@ export const msToCalendrical = (ms: number) => {
         seconds,
     }
 }
+
+export const getDateTimeString = (date: string | number | Date): string => {
+    const d = new Date(date)
+    return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`
+}

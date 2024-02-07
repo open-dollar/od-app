@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useHistory } from 'react-router-dom'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft, Plus } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
@@ -10,6 +10,7 @@ import { ParsedNitroPool } from '~/types'
 import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, getParsedNitroPool } from '~/utils'
 import StatusPill from '~/components/StatusPill'
 import { DepositDetailCard, DepositCardText, DepositCardSecondaryText } from '~/components/Deposit'
+import Button from '~/components/Button'
 
 const DepositDetails = ({ ...props }) => {
     const tokenPath = props.match.params.token as string
@@ -107,6 +108,10 @@ const DepositDetails = ({ ...props }) => {
         )
     }
 
+    const onClickDeposit = () => {
+        history.push(`/deposit/${tokenSymbol.toLowerCase()}/deposit`)
+    }
+
     return (
         <MainContainer>
             <Header>
@@ -115,13 +120,30 @@ const DepositDetails = ({ ...props }) => {
                     <SecondaryText>{t('back')}</SecondaryText>
                 </Flex>
                 <Flex>
-                    <img
-                        src={getTokenLogo(tokenSymbol)}
-                        alt={tokenSymbol}
-                        width={48}
-                        style={{ height: 'auto', marginRight: 10 }}
-                    />
-                    <Title>{tokenSymbol}</Title>
+                    <Flex>
+                        <img
+                            src={getTokenLogo(tokenSymbol)}
+                            alt={tokenSymbol}
+                            width={48}
+                            style={{ height: 'auto', marginRight: 10 }}
+                        />
+                        <Title>{tokenSymbol}</Title>
+                    </Flex>
+                    <Button
+                        onClick={onClickDeposit}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            paddingRight: 12,
+                            paddingLeft: 12,
+                            alignItems: 'center',
+                            height: 32,
+                            marginLeft: 'auto',
+                        }}
+                    >
+                        <Plus height={18} width={18} style={{ marginRight: 8 }} />
+                        {t('deposit_funds')}
+                    </Button>
                 </Flex>
             </Header>
             <Grid>

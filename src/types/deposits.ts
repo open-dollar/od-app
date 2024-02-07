@@ -15,7 +15,7 @@ export type ParsedNitroPool = {
         harvestsEnabled: boolean
     }
     requirements?: {
-        lockDuration: number 
+        lockDuration: number
         lockUntil: number
         whitelist: boolean
     }

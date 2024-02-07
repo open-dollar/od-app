@@ -450,13 +450,12 @@ export const msToCalendrical = (ms: number) => {
     const hours = Math.floor(ms / (1000 * 60 * 60)) % 24
     const days = Math.floor(ms / (1000 * 60 * 60 * 24)) % 30 // use naive approach for months (30 days in month)
     const months = Math.floor(ms / (1000 * 60 * 60 * 24 * 30)) % 12
-    
+
     return {
-      months,
-      days,
-      hours,
-      minutes,
-      seconds,
-    };
-  }
-  
+        months,
+        days,
+        hours,
+        minutes,
+        seconds,
+    }
+}

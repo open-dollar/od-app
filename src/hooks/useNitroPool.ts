@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useCallback } from 'react'
 import useGeb from './useGeb'
 import { useStoreState, useStoreActions } from '~/store'
-import { fetchNitroPoolODGWSTETH } from '@opendollar/sdk'
+import { fetchNitroPool } from '@opendollar/sdk'
 import { isEmptyObject } from '~/utils'
 
 export const useNitroPool = () => {
@@ -27,7 +27,8 @@ export const useNitroPool = () => {
 
         const fetchedNitroPoolDetails = await Promise.all(
             Array.from(depositTokensData).map(async ({ symbol, address }) => ({
-                [symbol]: await fetchNitroPoolODGWSTETH(geb, address),
+                // TODO: Improve this type casting hack
+                [symbol]: await fetchNitroPool(geb, symbol as 'WSTETH' | 'RETH', address),
             }))
         )
 

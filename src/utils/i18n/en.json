@@ -152,5 +152,9 @@
     "harvests": "Harvests",
     "minimum_lock": "Minimum lock",
     "locked_until": "Locked until",
-    "whitelist": "Whitelist"
+    "whitelist": "Whitelist",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "active": "Active",
+    "inactive": "Inactive"
 }

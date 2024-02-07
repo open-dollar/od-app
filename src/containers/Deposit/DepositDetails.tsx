@@ -1,11 +1,14 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
+import { useHistory } from 'react-router-dom'
+import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
-import { getTokenLogo, getCompactFiatValue, formatNumber, getDateCountdown } from '~/utils'
-import { ArrowLeft } from 'react-feather'
+import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, getParsedNitroPool } from '~/utils'
+import StatusPill from '~/components/StatusPill'
+import { ParsedNitroPool } from '~/types'
 
 interface DepositDetailsProps {
     values: { title: string; content: React.ReactNode | string | number }[]
@@ -27,9 +30,9 @@ const DepositDetailCard = ({ values }: DepositDetailsProps) => {
 const DepositDetails = ({ ...props }) => {
     const tokenPath = props.match.params.token as string
     const tokenSymbol = tokenPath.toUpperCase()
+    const history = useHistory()
 
-    const [depositEndTimeCountdown, setDepositEndTimeCountdown] = useState('')
-    const [endTimeCountdown, setEndTimeCountdown] = useState('')
+    const [{ pool, status, authorizations, requirements }, setParsedPoolDetails] = useState<ParsedNitroPool>({})
 
     const { t } = useTranslation()
     const { colors } = useTheme()
@@ -41,13 +44,6 @@ const DepositDetails = ({ ...props }) => {
     const { poolDetails } = useNitroPool()
 
     const tokenPoolDetails = poolDetails[tokenSymbol]
-    const userDepositInfo = tokenPoolDetails?.userInfo
-    const poolSettings = tokenPoolDetails?.settings
-
-    const formatCountDown = useCallback((unixDate: number) => {
-        const { days, hours, minutes, seconds } = getDateCountdown(unixDate * 1000)
-        return `${days}D ${hours}h ${minutes}min ${seconds}sec`
-    }, [])
 
     useEffect(() => {
         if (!depositTokens.has(tokenSymbol)) {
@@ -57,19 +53,82 @@ const DepositDetails = ({ ...props }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (poolSettings?.endTime?.toNumber())
-                setEndTimeCountdown(formatCountDown(poolSettings.endTime?.toNumber()))
-            if (poolSettings?.depositEndTime?.toNumber())
-                setDepositEndTimeCountdown(formatCountDown(poolSettings.depositEndTime?.toNumber()))
+            setParsedPoolDetails(getParsedNitroPool(tokenPoolDetails))
         }, 1000)
 
         return () => clearInterval(interval)
-    }, [formatCountDown, poolDetails, poolSettings?.depositEndTime, poolSettings?.endTime, tokenSymbol])
+    }, [poolDetails, tokenPoolDetails, tokenSymbol])
+
+    // Set initial countdown on mount before interval is kicked off
+    useEffect(() => {
+        setParsedPoolDetails(getParsedNitroPool(tokenPoolDetails))
+    }, [tokenPoolDetails])
+
+    console.log(tokenPoolDetails)
+
+    const getCountdownString = (remainingTimeMs: number): React.ReactNode => {
+        const { days, hours, minutes, seconds } = msToCalendrical(remainingTimeMs)
+        if (!days && !hours && !minutes && !seconds) return ''
+
+        return (
+            <Flex>
+                <InfoCardText>
+                    {days}
+                    <InfoCardSecondaryText>D&nbsp;</InfoCardSecondaryText>
+                </InfoCardText>
+                <InfoCardText>
+                    {hours}
+                    <InfoCardSecondaryText>h&nbsp;</InfoCardSecondaryText>
+                </InfoCardText>
+                <InfoCardText>
+                    {minutes}
+                    <InfoCardSecondaryText>min&nbsp;</InfoCardSecondaryText>
+                </InfoCardText>
+                <InfoCardText>
+                    {seconds}
+                    <InfoCardSecondaryText>sec&nbsp;</InfoCardSecondaryText>
+                </InfoCardText>
+            </Flex>
+        )
+    }
+
+    const msToMonthDayString = (ms: number): React.ReactNode => {
+        const { months, days } = msToCalendrical(ms)
+        if (!months && !days) return ''
+
+        return (
+            <Flex>
+                {months > 0 && (
+                    <InfoCardText>
+                        {months} <InfoCardSecondaryText>{'months'}&nbsp;</InfoCardSecondaryText>
+                    </InfoCardText>
+                )}
+                {days > 0 && (
+                    <InfoCardText>
+                        {days} <InfoCardSecondaryText>{'days'}&nbsp;</InfoCardSecondaryText>
+                    </InfoCardText>
+                )}
+            </Flex>
+        )
+    }
+
+    const formatDate = (dateStr: number): string => {
+        const d = new Date(dateStr)
+        return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`
+    }
+
+    const getStatusPill = (activeText: string, inactiveText: string, isActive?: boolean): React.ReactNode => {
+        if (isActive === undefined) return ''
+
+        return (
+            <StatusPill status={isActive ? 'enabled' : 'disabled'} text={isActive ? t(activeText) : t(inactiveText)} />
+        )
+    }
 
     return (
         <MainContainer>
             <Header>
-                <Flex style={{ marginBottom: 22 }}>
+                <Flex style={{ marginBottom: 22, cursor: 'pointer' }} onClick={() => history.goBack()}>
                     <ArrowLeft height={16} style={{ height: 'auto', color: colors.secondary }} />
                     <SecondaryText>{t('back')}</SecondaryText>
                 </Flex>
@@ -86,33 +145,48 @@ const DepositDetails = ({ ...props }) => {
             <Grid>
                 <DepositDetailCard
                     values={[
-                        { title: t('total_value_locked'), content: getCompactFiatValue(tokenPoolDetails?.tvl) },
-                        { title: t('apr'), content: formatNumber(String(tokenPoolDetails?.apy), 2) + '%' },
+                        { title: t('total_value_locked'), content: getCompactFiatValue(pool?.tvl || 0) },
+                        { title: t('apr'), content: formatNumber(String(pool?.apr), 2) + '%' },
                         {
                             title: t('pending_rewards'),
-                            content: `${formatNumber(userDepositInfo?.pendingRewardsToken1?.toString() || '0', 2)} ODG`,
+                            content: `${formatNumber(String(pool?.pendingRewards || 0))} ODG`,
                         },
                     ]}
                 />
                 <DepositDetailCard
                     values={[
-                        { title: t('status'), content: 'TODO' },
-                        { title: t('duration'), content: 'TODO' },
-                        { title: t('end_in'), content: endTimeCountdown },
+                        { title: t('status'), content: getStatusPill('active', 'inactive', status?.isActive) },
+                        { title: t('duration'), content: status?.duration && msToMonthDayString(status.duration) },
+                        { title: t('end_in'), content: status?.endIn && getCountdownString(status.endIn) },
                     ]}
                 />
                 <DepositDetailCard
                     values={[
-                        { title: t('deposits'), content: 'TODO' },
-                        { title: t('deposit_end_time'), content: depositEndTimeCountdown },
-                        { title: t('harvests'), content: 'TODO' },
+                        {
+                            title: t('deposits'),
+                            content: getStatusPill('enabled', 'disabled', authorizations?.depositsEnabled),
+                        },
+                        {
+                            title: t('deposit_end_time'),
+                            content: authorizations?.depositsEndIn && getCountdownString(authorizations.depositsEndIn),
+                        },
+                        {
+                            title: t('harvests'),
+                            content: getStatusPill('enabled', 'disabled', authorizations?.harvestsEnabled),
+                        },
                     ]}
                 />
                 <DepositDetailCard
                     values={[
-                        { title: t('minimum_lock'), content: 'TODO' },
-                        { title: t('locked_until'), content: 'TODO' },
-                        { title: t('whitelist'), content: '-' },
+                        {
+                            title: t('minimum_lock'),
+                            content: requirements?.lockDuration && msToMonthDayString(requirements.lockDuration),
+                        },
+                        {
+                            title: t('locked_until'),
+                            content: requirements?.lockUntil && formatDate(requirements?.lockUntil),
+                        },
+                        { title: t('whitelist'), content: requirements?.whitelist },
                     ]}
                 />
             </Grid>
@@ -170,15 +244,23 @@ const Title = styled.div`
 const InfoCardTitle = styled.p`
     font-weight: 600;
     font-size: 12px;
-    line-height: 16px
+    line-height: 16px;
     color: ${(props) => props.theme.colors.secondary};
+    margin-bottom: 4px;
 `
 
-const InfoCardText = styled.h3`
+const InfoCardText = styled.span`
     font-weight: 700;
     font-size: 20px;
     line-height: 24px;
     color: ${(props) => props.theme.colors.primary};
+`
+
+const InfoCardSecondaryText = styled.span`
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: ${(props) => props.theme.colors.secondary};
 `
 
 const SecondaryText = styled.p`

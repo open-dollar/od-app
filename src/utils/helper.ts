@@ -435,16 +435,28 @@ export const getCompactFiatValue = (value: string | number): string => {
     return formatter.format(Number(value)).toLowerCase()
 }
 
-export const getDateCountdown = (date: string | number | Date) => { 
-    const d = new Date(date)
-    const now = new Date()
+export const getCountdownString = (countdownToMs: number): string => {
+    const seconds = Math.floor(countdownToMs / 1000) % 60
+    const minutes = Math.floor(countdownToMs / (1000 * 60)) % 60
+    const hours = Math.floor(countdownToMs / (1000 * 60 * 60)) % 24
+    const days = Math.floor(countdownToMs / (1000 * 60 * 60 * 24))
 
-    const diff = d.getTime() - now.getTime()
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
-
-    return { days, hours, minutes, seconds }
+    return `${days}D ${hours}h ${minutes}min ${seconds}sec`
 }
+
+export const msToCalendrical = (ms: number) => {
+    const seconds = Math.floor(ms / 1000) % 60
+    const minutes = Math.floor(ms / (1000 * 60)) % 60
+    const hours = Math.floor(ms / (1000 * 60 * 60)) % 24
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24)) % 30 // use naive approach for months (30 days in month)
+    const months = Math.floor(ms / (1000 * 60 * 60 * 24 * 30)) % 12
+    
+    return {
+      months,
+      days,
+      hours,
+      minutes,
+      seconds,
+    };
+  }
+  

@@ -16,16 +16,15 @@ const Deposit = () => {
             <DepositListContainer>
                 {depositTokens.map((tokenData) => {
                     const tokenPoolDetails = poolDetails[tokenData.symbol]
-                    const userDepositInfo = tokenPoolDetails?.userInfo
-
                     return (
                         <DepositBlock
                             key={tokenData.symbol}
                             ticker={tokenData.symbol}
                             tvl={tokenPoolDetails?.tvl}
                             apr={tokenPoolDetails?.apy}
-                            userDeposit={userDepositInfo?.totalDepositAmount?.toString()}
-                            userRewards={userDepositInfo?.rewardDebtToken1?.toString()}
+                            // TODO: Update values once user pool deposit data is available
+                            userDeposit={'0'}
+                            userRewards={'0'}
                         />
                     )
                 })}

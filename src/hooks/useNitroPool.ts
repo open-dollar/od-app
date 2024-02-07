@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useCallback, useState } from 'react'
 import { formatUnits } from 'ethers/lib/utils'
 import { fetchNitroPool, NitroPoolDetails } from '@opendollar/sdk'
 import { useStoreState, useStoreActions } from '~/store'
@@ -136,7 +136,7 @@ export const useNitroPool = () => {
         return () => clearInterval(interval)
     }, [fetchPoolDetails])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setParsedNitroPools()
 
         // Interval used for date and countdown updates. Updates every second

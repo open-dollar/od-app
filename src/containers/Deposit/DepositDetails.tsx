@@ -48,8 +48,6 @@ const DepositDetails = ({ ...props }) => {
         setParsedPoolDetails(getParsedNitroPool(tokenPoolDetails))
     }, [tokenPoolDetails])
 
-    console.log(tokenPoolDetails)
-
     const getCountdownString = (remainingTimeMs: number): React.ReactNode => {
         const { days, hours, minutes, seconds } = msToCalendrical(remainingTimeMs)
         if (!days && !hours && !minutes && !seconds) return ''

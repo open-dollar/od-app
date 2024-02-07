@@ -63,16 +63,19 @@ const DepositDetails = ({ ...props }) => {
         const { months, days } = msToCalendrical(ms)
         if (!months && !days) return ''
 
+        const daysString = days > 1 ? 'days' : 'day'
+        const monthsString = months > 1 ? 'months' : 'month'
+
         return (
             <Flex>
                 {months > 0 && (
                     <DepositCardText>
-                        {months} <DepositCardSecondaryText>months&nbsp;</DepositCardSecondaryText>
+                        {months} <DepositCardSecondaryText>{monthsString}&nbsp;</DepositCardSecondaryText>
                     </DepositCardText>
                 )}
                 {days > 0 && (
                     <DepositCardText>
-                        {days} <DepositCardSecondaryText>days&nbsp;</DepositCardSecondaryText>
+                        {days} <DepositCardSecondaryText>{daysString}&nbsp;</DepositCardSecondaryText>
                     </DepositCardText>
                 )}
             </Flex>

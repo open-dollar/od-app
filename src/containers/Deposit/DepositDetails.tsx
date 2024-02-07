@@ -144,7 +144,7 @@ const DepositDetails = ({ ...props }) => {
                         { title: t('apr'), content: formatNumber(String(pool?.apr), 2) + '%' },
                         {
                             title: t('pending_rewards'),
-                            content: `${formatNumber(String(pool?.pendingRewards))} ODG`,
+                            content: `${pool?.pendingRewards ? formatNumber(String(pool?.pendingRewards)) : '0'} ODG`,
                         },
                     ]}
                 />

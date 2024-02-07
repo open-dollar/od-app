@@ -70,7 +70,9 @@ const DepositFunds = ({ ...props }) => {
         approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
-        if (!availableCollateralsForDeposit().includes(tokenSymbol as any)) {
+        const availableCollateralTokens = availableCollateralsForDeposit() as string[]
+
+        if (!availableCollateralTokens.includes(tokenSymbol)) {
             history.push('/404')
         }
     }, [history, tokenSymbol, tokensData])

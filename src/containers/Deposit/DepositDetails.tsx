@@ -31,10 +31,12 @@ const DepositDetails = ({ ...props }) => {
     const pool = poolDetails[tokenSymbol]?.pool
 
     useEffect(() => {
-        if (!availableCollateralsForDeposit().includes(tokenSymbol as any)) {
-            props.history.push('/404')
+        const availableCollateralTokens = availableCollateralsForDeposit() as string[]
+
+        if (!availableCollateralTokens.includes(tokenSymbol)) {
+            history.push('/404')
         }
-    }, [poolDetails, props.history, tokenSymbol])
+    }, [history, tokenSymbol])
 
     const getCountdownString = (remainingTimeMs: number): React.ReactNode => {
         const { days, hours, minutes, seconds } = msToCalendrical(remainingTimeMs)

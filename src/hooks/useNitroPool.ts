@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useCallback, useState } from 'react'
+import { useEffect, useLayoutEffect, useCallback, useState } from 'react'
 import { formatUnits } from 'ethers/lib/utils'
 import { fetchNitroPool, availableCollateralsForDeposit, NitroPoolDetails } from '@opendollar/sdk'
 import { useStoreState, useStoreActions } from '~/store'
@@ -18,14 +18,6 @@ export const useNitroPool = () => {
     const {
         depositModel: { setNitroPoolDetails },
     } = useStoreActions((actions) => actions)
-
-    const depositTokensData = useMemo(() => {
-        if (!geb) return []
-
-        return Object.keys(geb.tokenList)
-            .filter((token) => availableCollateralsForDeposit().includes(token as any))
-            .map((token) => geb.tokenList[token])
-    }, [geb])
 
     const getParsedNitroPool = useCallback(
         (pool: NitroPoolDetails, collateralToken: string): ParsedNitroPool => {
@@ -95,14 +87,13 @@ export const useNitroPool = () => {
         if (!geb || !account) return
 
         const fetchedNitroPoolDetails = await Promise.all(
-            Array.from(depositTokensData).map(async ({ symbol }) => ({
-                // TODO: Improve this type casting hack
-                [symbol]: await fetchNitroPool(geb, symbol as any, '0x8cc44a3Fe63E844f37CeE1C91f7b5bc4aD26639e'),
+            availableCollateralsForDeposit().map(async (symbol) => ({
+                [symbol]: await fetchNitroPool(geb, symbol, '0x8cc44a3Fe63E844f37CeE1C91f7b5bc4aD26639e'),
             }))
         )
 
         setNitroPoolDetails(Object.assign({}, ...fetchedNitroPoolDetails))
-    }, [account, depositTokensData, geb, setNitroPoolDetails])
+    }, [account, geb, setNitroPoolDetails])
 
     const setParsedNitroPools = useCallback(() => {
         for (const [symbol, poolDetails] of Object.entries(nitroPoolDetails)) {

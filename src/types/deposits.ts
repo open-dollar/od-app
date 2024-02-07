@@ -8,7 +8,7 @@ export type ParsedNitroPool = {
         isActive: boolean
         duration: number
         endsIn: number
-        pendingRewards: string
+        pendingRewards: number
         authorizations?: {
             depositsEnabled: boolean
             depositsEndIn: number

@@ -4,8 +4,8 @@ import { useTheme } from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { ArrowLeft, Plus } from 'react-feather'
 import styled from 'styled-components'
+import { availableCollateralsForDeposit } from '@opendollar/sdk'
 import { useNitroPool } from '~/hooks'
-import { useStoreState } from '~/store'
 import {
     getTokenLogo,
     getCompactFiatValue,
@@ -26,19 +26,15 @@ const DepositDetails = ({ ...props }) => {
     const { t } = useTranslation()
     const { colors } = useTheme()
 
-    const {
-        depositModel: { depositTokens },
-    } = useStoreState((state) => state)
-
     const [poolDetails] = useNitroPool()
 
     const pool = poolDetails[tokenSymbol]?.pool
 
     useEffect(() => {
-        if (!depositTokens.has(tokenSymbol)) {
+        if (!availableCollateralsForDeposit().includes(tokenSymbol as any)) {
             props.history.push('/404')
         }
-    }, [depositTokens, poolDetails, props.history, tokenSymbol])
+    }, [poolDetails, props.history, tokenSymbol])
 
     const getCountdownString = (remainingTimeMs: number): React.ReactNode => {
         const { days, hours, minutes, seconds } = msToCalendrical(remainingTimeMs)

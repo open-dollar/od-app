@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
+import { availableCollateralsForDeposit } from '@opendollar/sdk'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
 import { useStoreState, useStoreActions } from '~/store'
@@ -29,7 +30,6 @@ const DepositFunds = ({ ...props }) => {
     const {
         safeModel: { liquidationData },
         connectWalletModel: { tokensData, tokensFetchedData, isWrongNetwork },
-        depositModel: { depositTokens },
     } = useStoreState((state) => state)
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -70,10 +70,10 @@ const DepositFunds = ({ ...props }) => {
         approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
-        if (!depositTokens.has(tokenSymbol)) {
+        if (!availableCollateralsForDeposit().includes(tokenSymbol as any)) {
             history.push('/404')
         }
-    }, [depositTokens, history, tokenSymbol, tokensData])
+    }, [history, tokenSymbol, tokensData])
 
     // TODO: Implement onDeposit function once contracts are ready
     const onDeposit = () => console.log('Deposit')

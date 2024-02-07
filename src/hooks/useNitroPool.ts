@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useCallback, useState } from 'react'
 import { formatUnits } from 'ethers/lib/utils'
-import { fetchNitroPool, NitroPoolDetails } from '@opendollar/sdk'
+import { fetchNitroPool, availableCollateralsForDeposit, NitroPoolDetails } from '@opendollar/sdk'
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from './useActiveWeb3React'
 import useGeb from './useGeb'
@@ -13,7 +13,7 @@ export const useNitroPool = () => {
     const [nitroPools, setNitroPools] = useState<{ [symbol: string]: ParsedNitroPool }>({})
 
     const {
-        depositModel: { depositTokens, nitroPoolDetails },
+        depositModel: { nitroPoolDetails },
     } = useStoreState((state) => state)
     const {
         depositModel: { setNitroPoolDetails },
@@ -23,9 +23,9 @@ export const useNitroPool = () => {
         if (!geb) return []
 
         return Object.keys(geb.tokenList)
-            .filter((token) => depositTokens.has(token))
+            .filter((token) => availableCollateralsForDeposit().includes(token as any))
             .map((token) => geb.tokenList[token])
-    }, [depositTokens, geb])
+    }, [geb])
 
     const getParsedNitroPool = useCallback(
         (pool: NitroPoolDetails, collateralToken: string): ParsedNitroPool => {
@@ -33,7 +33,7 @@ export const useNitroPool = () => {
                 return {}
             }
 
-            const { tvl, apy, userInfo, settings } = pool
+            const { tvl, apy, pendingRewards, userInfo, settings } = pool
 
             const now = Date.now()
 
@@ -47,18 +47,10 @@ export const useNitroPool = () => {
             const rewardTokenData = geb.tokenList.ODG
             const collateralTokenData = geb.tokenList[collateralToken]
 
-            // TODO: Replace with actual pending rewards
-            const poolPendingRewards =
-                userInfo?.pendingRewardsToken1 &&
-                formatUnits(userInfo.pendingRewardsToken1, rewardTokenData.decimals).toString()
-
             const userDeposit =
-                userInfo?.totalDepositAmount &&
-                formatUnits(userInfo.totalDepositAmount, collateralTokenData.decimals).toString()
-
+                userInfo?.totalDepositAmount && formatUnits(userInfo.totalDepositAmount, collateralTokenData.decimals)
             const userRewards =
-                userInfo?.pendingRewardsToken1 &&
-                formatUnits(userInfo.pendingRewardsToken1, rewardTokenData.decimals).toString()
+                userInfo?.pendingRewardsToken1 && formatUnits(userInfo.pendingRewardsToken1, rewardTokenData.decimals)
 
             // @ts-ignore
             // TODO: Find safer way to retrieve contract without using ts-ignore
@@ -72,7 +64,7 @@ export const useNitroPool = () => {
                     isActive: endTimeMs > now,
                     duration: endTimeMs - startTimeMs,
                     endsIn: endTimeMs > now ? endTimeMs - now : 0,
-                    pendingRewards: poolPendingRewards || '0',
+                    pendingRewards: pendingRewards.pending1,
                     authorizations: {
                         depositsEnabled: !depositEndTimeMs || depositEndTimeMs > now,
                         depositsEndIn: depositEndTimeMs > now ? depositEndTimeMs - now : 0,
@@ -105,11 +97,7 @@ export const useNitroPool = () => {
         const fetchedNitroPoolDetails = await Promise.all(
             Array.from(depositTokensData).map(async ({ symbol }) => ({
                 // TODO: Improve this type casting hack
-                [symbol]: await fetchNitroPool(
-                    geb,
-                    symbol as 'WSTETH' | 'RETH',
-                    '0x8cc44a3Fe63E844f37CeE1C91f7b5bc4aD26639e'
-                ),
+                [symbol]: await fetchNitroPool(geb, symbol as any, '0x8cc44a3Fe63E844f37CeE1C91f7b5bc4aD26639e'),
             }))
         )
 

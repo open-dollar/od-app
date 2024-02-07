@@ -11,7 +11,7 @@ interface DepositBlockProps {
     userRewards?: string
 }
 
-const DepositBlock = (props: DepositBlockProps) => {
+export const DepositBlock = (props: DepositBlockProps) => {
     const { t } = useTranslation()
 
     return (

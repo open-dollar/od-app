@@ -6,26 +6,10 @@ import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
 import { useNitroPool } from '~/hooks'
 import { useStoreState } from '~/store'
+import { ParsedNitroPool } from '~/types'
 import { getTokenLogo, getCompactFiatValue, formatNumber, msToCalendrical, getParsedNitroPool } from '~/utils'
 import StatusPill from '~/components/StatusPill'
-import { ParsedNitroPool } from '~/types'
-
-interface DepositDetailsProps {
-    values: { title: string; content: React.ReactNode | string | number }[]
-}
-
-const DepositDetailCard = ({ values }: DepositDetailsProps) => {
-    return (
-        <InformationCard>
-            {values.map((value, index) => (
-                <Container key={index}>
-                    <InfoCardTitle>{value.title.toUpperCase()}</InfoCardTitle>
-                    <InfoCardText>{value.content ? value.content : '-'}</InfoCardText>
-                </Container>
-            ))}
-        </InformationCard>
-    )
-}
+import { DepositDetailCard, DepositCardText, DepositCardSecondaryText } from '~/components/Deposit'
 
 const DepositDetails = ({ ...props }) => {
     const tokenPath = props.match.params.token as string
@@ -72,22 +56,22 @@ const DepositDetails = ({ ...props }) => {
 
         return (
             <Flex>
-                <InfoCardText>
+                <DepositCardText>
                     {days}
-                    <InfoCardSecondaryText>D&nbsp;</InfoCardSecondaryText>
-                </InfoCardText>
-                <InfoCardText>
+                    <DepositCardSecondaryText>D&nbsp;</DepositCardSecondaryText>
+                </DepositCardText>
+                <DepositCardText>
                     {hours}
-                    <InfoCardSecondaryText>h&nbsp;</InfoCardSecondaryText>
-                </InfoCardText>
-                <InfoCardText>
+                    <DepositCardSecondaryText>h&nbsp;</DepositCardSecondaryText>
+                </DepositCardText>
+                <DepositCardText>
                     {minutes}
-                    <InfoCardSecondaryText>min&nbsp;</InfoCardSecondaryText>
-                </InfoCardText>
-                <InfoCardText>
+                    <DepositCardSecondaryText>min&nbsp;</DepositCardSecondaryText>
+                </DepositCardText>
+                <DepositCardText>
                     {seconds}
-                    <InfoCardSecondaryText>sec&nbsp;</InfoCardSecondaryText>
-                </InfoCardText>
+                    <DepositCardSecondaryText>sec&nbsp;</DepositCardSecondaryText>
+                </DepositCardText>
             </Flex>
         )
     }
@@ -99,14 +83,14 @@ const DepositDetails = ({ ...props }) => {
         return (
             <Flex>
                 {months > 0 && (
-                    <InfoCardText>
-                        {months} <InfoCardSecondaryText>{'months'}&nbsp;</InfoCardSecondaryText>
-                    </InfoCardText>
+                    <DepositCardText>
+                        {months} <DepositCardSecondaryText>months&nbsp;</DepositCardSecondaryText>
+                    </DepositCardText>
                 )}
                 {days > 0 && (
-                    <InfoCardText>
-                        {days} <InfoCardSecondaryText>{'days'}&nbsp;</InfoCardSecondaryText>
-                    </InfoCardText>
+                    <DepositCardText>
+                        {days} <DepositCardSecondaryText>days&nbsp;</DepositCardSecondaryText>
+                    </DepositCardText>
                 )}
             </Flex>
         )
@@ -205,8 +189,6 @@ const MainContainer = styled.div`
     }
 `
 
-const Container = styled.div``
-
 const Flex = styled.div`
     display: flex;
     align-items: center;
@@ -216,16 +198,6 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-`
-
-const InformationCard = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: ${(props) => props.theme.colors.colorPrimary};
-    height: 224px;
-    padding: 20px;
-    border-radius: 8px;
 `
 
 const Header = styled.div`
@@ -239,28 +211,6 @@ const Title = styled.div`
     font-weight: 700;
     font-size: 34px;
     line-height: 40px;
-`
-
-const InfoCardTitle = styled.p`
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    color: ${(props) => props.theme.colors.secondary};
-    margin-bottom: 4px;
-`
-
-const InfoCardText = styled.span`
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-    color: ${(props) => props.theme.colors.primary};
-`
-
-const InfoCardSecondaryText = styled.span`
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-    color: ${(props) => props.theme.colors.secondary};
 `
 
 const SecondaryText = styled.p`

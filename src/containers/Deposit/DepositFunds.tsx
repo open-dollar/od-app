@@ -169,6 +169,8 @@ const DepositFunds = ({ ...props }) => {
     )
 }
 
+export default DepositFunds
+
 const Container = styled.div`
     max-width: 498px;
     margin: 120px auto;
@@ -257,5 +259,3 @@ const DateInfoValue = styled.span`
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
 `
-
-export default DepositFunds

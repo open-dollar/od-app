@@ -258,7 +258,12 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (rightInputBN.gt(availableHaiBN)) {
             error = error ?? `OD to repay cannot exceed owed amount`
         }
-
+        if (rightInputBN.eq(availableHaiBN) || (rightInputBN.lt(availableHaiBN) && rightInputBN.gt(availableHaiBN.sub(ONE_DAY_WORTH_SF))) && leftInputBN.lt(availableCollateralBN)) {
+            error = error ?? `You must withdraw all ${collateralName} when repaying all OD`;
+        }
+        if (!rightInputBN.isZero() && leftInputBN.lt(ethers.utils.parseEther('0.01'))) {
+            error = error ?? `You must withdraw more than 0.01 ${collateralName} when repaying`;
+        }
         if (!rightInputBN.isZero()) {
             const repayPercent = returnPercentAmount(rightInput, availableHai as string)
 

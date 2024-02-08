@@ -5,7 +5,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { floatsTypes, SUPPORTED_WALLETS } from './constants'
 import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
 import { injected } from '~/connectors'
 
@@ -433,4 +433,34 @@ export const getCompactFiatValue = (value: string | number): string => {
     })
 
     return formatter.format(Number(value)).toLowerCase()
+}
+
+export const getCountdownString = (countdownToMs: number): string => {
+    const seconds = Math.floor(countdownToMs / 1000) % 60
+    const minutes = Math.floor(countdownToMs / (1000 * 60)) % 60
+    const hours = Math.floor(countdownToMs / (1000 * 60 * 60)) % 24
+    const days = Math.floor(countdownToMs / (1000 * 60 * 60 * 24))
+
+    return `${days}D ${hours}h ${minutes}min ${seconds}sec`
+}
+
+export const msToCalendrical = (ms: number) => {
+    const seconds = Math.floor(ms / 1000) % 60
+    const minutes = Math.floor(ms / (1000 * 60)) % 60
+    const hours = Math.floor(ms / (1000 * 60 * 60)) % 24
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24)) % 30 // use naive approach for months (30 days in month)
+    const months = Math.floor(ms / (1000 * 60 * 60 * 24 * 30)) % 12
+
+    return {
+        months,
+        days,
+        hours,
+        minutes,
+        seconds,
+    }
+}
+
+export const getDateTimeString = (date: string | number | Date): string => {
+    const d = new Date(date)
+    return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`
 }

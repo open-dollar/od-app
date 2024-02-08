@@ -5,7 +5,7 @@ import { useNitroPool } from '~/hooks'
 
 const Deposit = () => {
     const { t } = useTranslation()
-    const { poolDetails, depositTokens } = useNitroPool()
+    const [nitroPools] = useNitroPool()
 
     return (
         <MainContainer id="deposit-page">
@@ -14,18 +14,17 @@ const Deposit = () => {
                 <Subtitle>{t('deposit_staked_assets')}</Subtitle>
             </Header>
             <DepositListContainer>
-                {depositTokens.map((tokenData) => {
-                    const tokenPoolDetails = poolDetails[tokenData.symbol]
-                    const userDepositInfo = tokenPoolDetails?.userInfo
+                {Object.values(nitroPools).map(({ tokens, pool, user }) => {
+                    if (!pool || !tokens) return null
 
                     return (
                         <DepositBlock
-                            key={tokenData.symbol}
-                            ticker={tokenData.symbol}
-                            tvl={tokenPoolDetails?.tvl}
-                            apr={tokenPoolDetails?.apy}
-                            userDeposit={userDepositInfo?.totalDepositAmount?.toString()}
-                            userRewards={userDepositInfo?.rewardDebtToken1?.toString()}
+                            key={tokens.collateral.symbol}
+                            ticker={tokens.collateral.symbol}
+                            tvl={pool.tvl}
+                            apr={pool.apr}
+                            userDeposit={user?.deposit}
+                            userRewards={user?.pendingRewards}
                         />
                     )
                 })}

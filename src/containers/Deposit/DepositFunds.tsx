@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
+import { availableCollateralsForDeposit } from '@opendollar/sdk'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
 import { useStoreState, useStoreActions } from '~/store'
@@ -29,7 +30,6 @@ const DepositFunds = ({ ...props }) => {
     const {
         safeModel: { liquidationData },
         connectWalletModel: { tokensData, tokensFetchedData, isWrongNetwork },
-        depositModel: { depositTokens },
     } = useStoreState((state) => state)
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -70,10 +70,12 @@ const DepositFunds = ({ ...props }) => {
         approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
-        if (!depositTokens.has(tokenSymbol)) {
+        const availableCollateralTokens = availableCollateralsForDeposit() as string[]
+
+        if (!availableCollateralTokens.includes(tokenSymbol)) {
             history.push('/404')
         }
-    }, [depositTokens, history, tokenSymbol, tokensData])
+    }, [history, tokenSymbol, tokensData])
 
     // TODO: Implement onDeposit function once contracts are ready
     const onDeposit = () => console.log('Deposit')
@@ -169,6 +171,8 @@ const DepositFunds = ({ ...props }) => {
     )
 }
 
+export default DepositFunds
+
 const Container = styled.div`
     max-width: 498px;
     margin: 120px auto;
@@ -257,5 +261,3 @@ const DateInfoValue = styled.span`
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
 `
-
-export default DepositFunds

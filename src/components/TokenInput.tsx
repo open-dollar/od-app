@@ -42,8 +42,8 @@ const TokenInput = ({
     const handleValueChange = (values: NumberFormatValues) => {
         const { value } = values
 
-        if (value === ".") {
-            onChange("0.")
+        if (value === '.') {
+            onChange('0.')
             return
         }
 

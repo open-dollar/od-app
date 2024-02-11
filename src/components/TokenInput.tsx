@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Loader } from 'react-feather'
 import styled from 'styled-components'
-import { NumericFormat } from 'react-number-format'
+import { NumericFormat, NumberFormatValues } from 'react-number-format'
 
 interface Props {
     label: string
@@ -39,9 +39,30 @@ const TokenInput = ({
 
     const [length] = useState(16)
 
-    const handleValueChange = (values: any) => {
+    const handleValueChange = (values: NumberFormatValues) => {
         const { value } = values
+
+        if (value === ".") {
+            onChange("0.")
+            return
+        }
+
         onChange(value)
+    }
+
+    const validateInput = (values: NumberFormatValues) => {
+        const { formattedValue, value } = values
+        const [firstChar, secondChar] = [value.charAt(0), value.charAt(1)]
+
+        if (firstChar === '.') {
+            return true
+        }
+
+        if (firstChar === '0' && secondChar && secondChar !== '.') {
+            return false
+        }
+
+        return formattedValue === '' || Number(formattedValue) >= 0
     }
 
     return (
@@ -70,6 +91,7 @@ const TokenInput = ({
                         disabled={disabled}
                         customInput={CustomInput} // You use your styled component as the actual input
                         data-test-id={data_test_id}
+                        isAllowed={validateInput}
                     />
                 </Flex>
                 <Flex>

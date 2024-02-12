@@ -234,6 +234,8 @@ export const getLiquidationPrice = (
 export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPrice: string): Boolean => {
     if (isNaN(Number(totalDebt))) return true
     const totalDebtBN = BigNumber.from(toFixedString(totalDebt, 'WAD'))
+    // We cannot withdraw more than the total collateral
+    if (Number(totalCollateral) < 0) return false
     const totalCollateralBN = BigNumber.from(toFixedString(totalCollateral, 'WAD'))
     const safetyPriceBN = BigNumber.from(toFixedString(safetyPrice, 'RAY'))
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))

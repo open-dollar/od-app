@@ -26,9 +26,10 @@ import { Status } from '~/components/connectorCards/Status'
 import styled from 'styled-components'
 import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
+import { GnosisSafe } from "@web3-react/gnosis-safe";
 
 interface Props {
-    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network
+    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
     activeChainId: ReturnType<Web3ReactHooks['useChainId']>
     chainIds?: ReturnType<Web3ReactHooks['useChainId']>[]
     isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
@@ -44,6 +45,7 @@ function getName(connector: Connector) {
     if (connector instanceof WalletConnectV2) return 'WalletConnect V2'
     if (connector instanceof CoinbaseWallet) return 'Coinbase Wallet'
     if (connector instanceof Network) return 'Network'
+    if (connector instanceof GnosisSafe) return 'Gnosis Safe'
     return 'Unknown'
 }
 

@@ -14,21 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import MetaMaskCard from '~/components/connectorCards/MetaMaskCard'
-import CoinbaseWalletCard from '~/components/connectorCards/CoinbaseWalletCard'
-import WalletConnectV2Card from '~/components/connectorCards/WalletConnectV2Card'
-import React from 'react'
-import GnosisSafeCard from "~/components/connectorCards/GnosisCard";
+import { initializeConnector } from '@web3-react/core'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
-export default function AccountCardsWeb3ReactV2() {
-    return (
-        <>
-            <div style={{ display: 'flex', flexFlow: 'wrap', fontFamily: 'sans-serif' }}>
-                <MetaMaskCard />
-                <WalletConnectV2Card />
-                <CoinbaseWalletCard />
-                <GnosisSafeCard />
-            </div>
-        </>
-    )
-}
+export const [gnosisSafe, hooks] = initializeConnector<GnosisSafe>((actions) => new GnosisSafe({ actions }))

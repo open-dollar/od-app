@@ -21,8 +21,9 @@ import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 
 import { IconWrapper } from '~/components/ConnectedWalletIcon'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
+import { GnosisSafe } from "@web3-react/gnosis-safe";
 
-function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network) {
+function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe) {
     if (connector instanceof MetaMask) {
         return (
             <IconWrapper size={32}>
@@ -44,6 +45,15 @@ function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | 
                 />
             </IconWrapper>
         )
+    } else if (connector instanceof GnosisSafe) {
+        return (
+            <IconWrapper size={32}>
+                <img
+                    src={require('../assets/connectors/gnosisWalletIcon.svg').default}
+                    alt={'gnosis safe logo'}
+                />
+            </IconWrapper>
+        )
     }
     return null
 }
@@ -53,7 +63,7 @@ export function ConnectWithSelect({
     isActive,
     error,
 }: {
-    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network
+    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
     activeChainId: ReturnType<Web3ReactHooks['useChainId']>
     isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
     isActive: ReturnType<Web3ReactHooks['useIsActive']>

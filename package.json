@@ -14,6 +14,9 @@
         "format": "yarn run prettier:fix && yarn run lint:fix",
         "format:check": "yarn run prettier && yarn run lint"
     },
+    "engines": {
+        "node": ">=20.0.0"
+    },
     "peerDependencies": {
         "react": "^18.2.0",
         "react-dom": "^18.2.0"

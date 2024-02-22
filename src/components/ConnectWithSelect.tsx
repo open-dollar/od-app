@@ -86,7 +86,7 @@ export function ConnectWithSelect({
                             }
                         }}
                     >
-                        {connector instanceof MetaMask ? '' : <>{'Disconnect'}</>}
+                        {connector instanceof MetaMask || connector instanceof GnosisSafe ? '' : <>{'Disconnect'}</>}
                     </div>
                 )
             ) : (

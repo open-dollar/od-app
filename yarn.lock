@@ -3617,9 +3617,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/abis@npm:0.0.0-ddd353db":
-  version: 0.0.0-ddd353db
-  resolution: "@opendollar/abis@npm:0.0.0-ddd353db"
+"@opendollar/abis@npm:0.0.0-c0c20343 ":
+  version: 0.0.0-c0c20343
+  resolution: "@opendollar/abis@npm:0.0.0-c0c20343"
   dependencies:
     "@defi-wonderland/solidity-utils": 0.0.0-4298c6c6
     "@ethersproject/abi": 5.7.0
@@ -3632,21 +3632,20 @@ __metadata:
     ethers: 6.0.3
     forge-std: "git+https://github.com/foundry-rs/forge-std.git#e8a047e3f40f13fa37af6fe14e6e06283d9a060e"
     typechain: ^8.3.2
-  checksum: 37defa9fd986f0591610b2cf1cd8a4211b6d6c8e01ab1f1ad8a245f57fc84481553cb34e6dcc986d191fa53add65f772f07d9757239fb73bcf2f178a2ad56fb9
+  checksum: a1df9980c8c63b77b743c8992b0b5ac4faa49a9322f46f273c80ba3c00da42f53bd2931c974b00084fcc855cb77c81de5d5883f8d7210a2140eda8b1cc8e29b0
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:^1.6.1-rc.1":
-  version: 1.6.1-rc.1
-  resolution: "@opendollar/sdk@npm:1.6.1-rc.1"
+"@opendollar/sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@opendollar/sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A."
   dependencies:
-    "@opendollar/abis": 0.0.0-ddd353db
+    "@opendollar/abis": "0.0.0-c0c20343 "
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 524760d71abf0ada700ac825b53f9cb6148a1f7dcfcdedb5c23eed754afa0bc8b074b6f6d349b0d9fee77fd64f94d93acf0924868b1ef7fd1c06eadfd252fc31
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@opendollar/svg-generator@npm:1.0.3":
   version: 1.0.3
@@ -5370,7 +5369,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": ^1.6.1-rc.1
+    "@opendollar/sdk": ^1.6.4-rc.1
     "@opendollar/svg-generator": 1.0.3
     "@react-spring/web": ^9.7.3
     "@testing-library/jest-dom": ^6.4.2

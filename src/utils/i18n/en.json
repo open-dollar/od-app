@@ -21,7 +21,7 @@
     "back": "Back",
     "confirm_transaction_details": "Confirm Transaction Details",
     "confirm_details_text": "Please review and click on the Confirm Transaction button to submit and sign the transaction ",
-    "view_etherscan": "View on Etherscan",
+    "view_etherscan": "View on Arbiscan",
     "wrong_network": "Heads up, you’re on the wrong network! Please switch to ",
     "account_details": "Account",
     "connected_with": "Connected with",

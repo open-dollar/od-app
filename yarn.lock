@@ -3636,16 +3636,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@opendollar/sdk@portal:/Users/dev/repos/opendollar/od-sdk::locator=%40usekeyp%2Fod-app%40workspace%3A."
+"@opendollar/sdk@npm:^1.6.4-rc.1":
+  version: 1.6.4-rc.1
+  resolution: "@opendollar/sdk@npm:1.6.4-rc.1"
   dependencies:
     "@opendollar/abis": "0.0.0-c0c20343 "
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
+  checksum: 6dd71a843fd6a7fa1690cac967ccdc54b0b3dcb744567e923a383fbcdf8111d61a8066caa92c48c339af6cd3acb2d719baae8233ff2f6445a9121d79fd181844
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@opendollar/svg-generator@npm:1.0.3":
   version: 1.0.3

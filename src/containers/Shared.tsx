@@ -41,7 +41,7 @@ import {
     SYSTEM_STATUS,
     timeout,
     ChainId,
-    ETH_NETWORK,
+    ETH_NETWORK, IS_IN_IFRAME,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
@@ -55,7 +55,7 @@ interface Props {
 
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
-    const { chainId, account, provider } = useActiveWeb3React()
+    const { chainId, account, provider, connector } = useActiveWeb3React()
     const geb = useGeb()
     const history = useHistory()
 
@@ -306,6 +306,21 @@ const Shared = ({ children, ...rest }: Props) => {
         accountChange()
         const id: ChainId = NETWORK_ID
         popupsActions.setIsSafeManagerOpen(false)
+        // Gnosis Safe is not compatible with Arbitrum testnets
+        if (connector && IS_IN_IFRAME && id !== 42161) {
+            connectWalletActions.setIsWrongNetwork(true)
+            toast(
+                <ToastPayload
+                    icon={'AlertTriangle'}
+                    iconSize={40}
+                    iconColor={'orange'}
+                    textColor={'#ffffff'}
+                    text={`${t('gnosis_safe_mainnet_only')}`}
+                />,
+                { autoClose: false, type: 'warning', toastId }
+            )
+            return
+        }
         if (chainId && chainId !== id) {
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)

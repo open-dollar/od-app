@@ -11,14 +11,16 @@ const { REACT_APP_SYSTEM_STATUS, REACT_APP_NETWORK_URL } = process.env
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
     [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.OPTIMISM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export enum Network {
     ARBITRUM = 'arbitrum',
     ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
+    OPTIMISM = 'optimism',
 }
 
-export const ETH_NETWORK = Network.ARBITRUM_SEPOLIA
+export const ETH_NETWORK = Network.OPTIMISM
 
 export const COIN_TICKER = 'OD'
 

@@ -65,8 +65,8 @@ const Shared = ({ children, ...rest }: Props) => {
     const { pathname } = location
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
-    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
-    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
+    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).HAI.address)
+    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).KITE.address)
 
     const {
         settingsModel: settingsState,

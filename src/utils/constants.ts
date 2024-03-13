@@ -76,6 +76,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     42161: 'Arbitrum One',
     421614: 'Arbitrum Sepolia.',
+    10: 'Optimism',
 }
 
 const MEDIA_WIDTHS = {
@@ -173,7 +174,12 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     flx: INIT_VALUES,
 }
 
-export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbitrum' : 'arbitrum-sepolia'
+export const network_name = () => {
+    if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
+    if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
+    if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
+    return 'arbitrum-sepolia'
+}
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
-export const geb = new Geb(network_name, provider)
+export const geb = new Geb(network_name(), provider)

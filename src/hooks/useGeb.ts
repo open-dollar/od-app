@@ -7,7 +7,7 @@ import { formatNumber } from '~/utils/helper'
 import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 
-type TokenType = 'ETH' | 'OD' | 'WETH'
+type TokenType = 'ETH' | 'OD' | 'WETH' | 'HAI'
 
 // connect to @opendollar/sdk
 
@@ -17,7 +17,7 @@ export default function useGeb(): Geb {
 
     useEffect(() => {
         if (!provider) return
-        const geb = new Geb(network_name, provider.getSigner())
+        const geb = new Geb(network_name(), provider.getSigner())
         setState(geb)
     }, [provider])
 

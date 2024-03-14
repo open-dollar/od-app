@@ -13,22 +13,25 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
     [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',
     [SupportedChainId.ARBITRUM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
     [SupportedChainId.OPTIMISM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.OPTIMISM_GOERLI]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export enum Network {
     ARBITRUM = 'arbitrum',
     ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
     OPTIMISM = 'optimism',
+    OPTIMISM_GOERLI = 'optimism-goerli',
 }
 
 const getNetwork = (): Network => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return Network.ARBITRUM
     if (process.env.REACT_APP_NETWORK_ID === '421614') return Network.ARBITRUM_SEPOLIA
     if (process.env.REACT_APP_NETWORK_ID === '10') return Network.OPTIMISM
+    if (process.env.REACT_APP_NETWORK_ID === '420') return Network.OPTIMISM_GOERLI
     return Network.ARBITRUM_SEPOLIA
 }
 
-export const ETH_NETWORK = getNetwork()
+export const ETH_NETWORK: Network = getNetwork()
 
 export const COIN_TICKER = 'OD'
 
@@ -87,6 +90,7 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     42161: 'Arbitrum One',
     421614: 'Arbitrum Sepolia.',
     10: 'Optimism',
+    420: 'Optimism Goerli',
 }
 
 const MEDIA_WIDTHS = {
@@ -188,8 +192,11 @@ export const network_name = () => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
     if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
     if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
+    if (process.env.REACT_APP_NETWORK_ID === '420') return 'optimism-goerli'
     return 'arbitrum-sepolia'
 }
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
+//TODO: Need to add OP goerli/sepolia to GebDeployment type in SDK
+// @ts-ignore
 export const geb = new Geb(network_name(), provider)

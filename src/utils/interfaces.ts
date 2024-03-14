@@ -10,6 +10,7 @@ export declare enum ChainId {
     ARBITRUM_SEPOLIA = 421614,
     ARBITRUM = 42161,
     OPTIMISM = 10,
+    OPTIMISM_GOERLI = 420,
 }
 
 export interface DynamicObject {

@@ -11,6 +11,7 @@ const { REACT_APP_SYSTEM_STATUS, REACT_APP_NETWORK_URL } = process.env
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
     [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.ARBITRUM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
     [SupportedChainId.OPTIMISM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
@@ -20,7 +21,14 @@ export enum Network {
     OPTIMISM = 'optimism',
 }
 
-export const ETH_NETWORK = Network.OPTIMISM
+const getNetwork = (): Network => {
+    if (process.env.REACT_APP_NETWORK_ID === '42161') return Network.ARBITRUM
+    if (process.env.REACT_APP_NETWORK_ID === '421614') return Network.ARBITRUM_SEPOLIA
+    if (process.env.REACT_APP_NETWORK_ID === '10') return Network.OPTIMISM
+    return Network.ARBITRUM_SEPOLIA
+}
+
+export const ETH_NETWORK = getNetwork()
 
 export const COIN_TICKER = 'OD'
 

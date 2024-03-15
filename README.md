@@ -29,9 +29,13 @@ http://app.opendollar.com/ Production `main` branch
 
 http://app.dev.opendollar.com/ Testnet `dev` branch
 
+## Deployment Diagram of open-dollar-app on Vercel
+
+<img alt="vercel deployment diagram of open-dollar-app" width="439" height="183.5"  src='public/od-app-vercel-architecture.png' />
+
 # ⚡️ Run the app locally
 
-For security and resilliency we publish the app as a self-contained Docker image 
+For security and resiliency we publish the app as a self-contained Docker image 
 
 1. Install [Docker](https://docs.docker.com/desktop/)
 2. Get the latest [Release](https://github.com/open-dollar/od-app/releases), eg. `1.5.9`

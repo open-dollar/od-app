@@ -62,7 +62,7 @@ const TokenInput = ({
             return false
         }
 
-        return formattedValue === '' || Number(formattedValue) >= 0
+        return formattedValue === '' || Number(formattedValue.replace(/,/g, '')) >= 0
     }
 
     return (

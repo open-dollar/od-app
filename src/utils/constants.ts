@@ -19,15 +19,13 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
 export enum Network {
     ARBITRUM = 'arbitrum',
     ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
-    OPTIMISM = 'optimism',
-    OPTIMISM_GOERLI = 'optimism-goerli',
+    OPTIMISM = 'optimism'
 }
 
 const getNetwork = (): Network => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return Network.ARBITRUM
     if (process.env.REACT_APP_NETWORK_ID === '421614') return Network.ARBITRUM_SEPOLIA
     if (process.env.REACT_APP_NETWORK_ID === '10') return Network.OPTIMISM
-    if (process.env.REACT_APP_NETWORK_ID === '420') return Network.OPTIMISM_GOERLI
     return Network.ARBITRUM_SEPOLIA
 }
 
@@ -90,7 +88,6 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     42161: 'Arbitrum One',
     421614: 'Arbitrum Sepolia.',
     10: 'Optimism',
-    420: 'Optimism Goerli',
 }
 
 const MEDIA_WIDTHS = {
@@ -192,7 +189,6 @@ export const network_name = () => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
     if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
     if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
-    if (process.env.REACT_APP_NETWORK_ID === '420') return 'optimism-goerli'
     return 'arbitrum-sepolia'
 }
 

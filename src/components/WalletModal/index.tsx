@@ -82,28 +82,6 @@ export async function checkAndSwitchMetamaskNetwork() {
             } catch (error) {
                 console.error('Failed to switch network', error)
             }
-        } else if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '420') {
-            try {
-                // @ts-ignore
-                await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [
-                        {
-                            chainId: `0x1A4`,
-                            chainName: 'Optimism Goerli',
-                            nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
-                                decimals: 18,
-                            },
-                            rpcUrls: ['https://goerli.optimism-rpc.publicnode.com'],
-                            blockExplorerUrls: ['https://goerli-optimism.etherscan.io/'],
-                        },
-                    ],
-                })
-            } catch (error) {
-                console.error('Failed to switch network', error)
-            }
         } else {
             try {
                 // @ts-ignore

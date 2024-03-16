@@ -21,7 +21,7 @@
     "back": "Back",
     "confirm_transaction_details": "Confirm Transaction Details",
     "confirm_details_text": "Please review and click on the Confirm Transaction button to submit and sign the transaction ",
-    "view_etherscan": "View on Etherscan",
+    "view_etherscan": "View on Arbiscan",
     "wrong_network": "Heads up, you’re on the wrong network! Please switch to ",
     "gnosis_safe_mainnet_only": "Gnosis Safe isn't compatible with Arbitrum testnets. Please switch to a different wallet outside the Gnosis Safe App Viewer.",
     "account_details": "Account",

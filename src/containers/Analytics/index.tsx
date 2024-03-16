@@ -164,9 +164,9 @@ const Analytics = () => {
 
     const vaultNFTs = {
         image: 'NFTS',
-        title: 'Vault NFTs',
+        title: 'NFVs',
         value: totalVaults,
-        description: 'Vault NFTs',
+        description: 'NFVs',
     }
 
     const annualStabilityFee = {

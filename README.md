@@ -94,6 +94,7 @@ there's a fallback subgraph to query.
 
 ```bash
 yarn test:e2e
+
 ```
 
 ### Jest test

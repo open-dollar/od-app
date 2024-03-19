@@ -29,6 +29,8 @@ import PageNotFound from '~/containers/PageNotFound'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}
+
+    
 }
 
 console.log(

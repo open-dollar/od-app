@@ -9,8 +9,10 @@
         "eject": "craco eject",
         "prettier": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\"",
         "prettier:fix": "prettier --write \"{,**/*.{ts,tsx,json,js,md}}\" --fix",
+        "prettier:check": "prettier \"{,**/*.{ts,tsx,json,js,md}}\" --list-different",
         "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
         "lint:fix": "yarn run lint --fix",
+        "lint:check": "yarn run lint --max-warnings=0",
         "format": "yarn run prettier:fix && yarn run lint:fix",
         "format:check": "yarn run prettier && yarn run lint"
     },

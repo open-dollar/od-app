@@ -14,9 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import usePrevious from '../../hooks/usePrevious'
 
@@ -94,15 +93,13 @@ export default function WalletModal() {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { isConnectorsWalletOpen } = popupsState
 
-    const { isActive, account, connector, chainId } = useWeb3React()
+    const { isActive, connector, chainId } = useWeb3React()
 
-    const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-    const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
-
-    const [pendingError, setPendingError] = useState<boolean>()
-
-    const previousAccount = usePrevious(account)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_pendingError, setPendingError] = useState<boolean>()
 
     const toggleWalletModal = () => popupsActions.setIsConnectorsWalletOpen(!isConnectorsWalletOpen)
 
@@ -130,7 +127,7 @@ export default function WalletModal() {
         return (
             <UpperSection>
                 <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
-                {chainId != process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
+                {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>
                         <ContentWrapper>
@@ -224,11 +221,6 @@ const UpperSection = styled.div`
         margin-top: 0;
         font-weight: 500;
     }
-`
-
-const OptionGrid = styled.div`
-    display: grid;
-    grid-gap: 10px;
 `
 
 const HoverText = styled.div`

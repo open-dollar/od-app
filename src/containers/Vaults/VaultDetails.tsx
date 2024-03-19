@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -48,7 +48,7 @@ const VaultDetails = ({ ...props }) => {
     const safe = safes.find((safe) => safe.id === safeId)
 
     // Fetches vault data of a vault not owned by the user
-    const fetchSingleVaultData = async () => {
+    const fetchSingleVaultData = useCallback(async () => {
         if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
@@ -94,7 +94,7 @@ const VaultDetails = ({ ...props }) => {
             safeActions.setSingleSafe(formattedSafe[0])
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }
-    }
+    }, [safe, safeId, geb, liquidationData, safeActions, provider])
 
     useEffect(() => {
         if (!liquidationData || !singleSafe) {
@@ -103,7 +103,7 @@ const VaultDetails = ({ ...props }) => {
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
+    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData, singleSafe, fetchSingleVaultData])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -122,7 +122,7 @@ const VaultDetails = ({ ...props }) => {
                         <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                     </LabelContainer>
                 ) : null}
-                <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+                <VaultHeader safeId={safeId} />
 
                 {!isLoading && (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />

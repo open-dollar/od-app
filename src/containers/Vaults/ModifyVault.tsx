@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { formatNumber, DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo } from '~/utils'
+import { DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -55,9 +55,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         : '-'
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
-    const collateralUnitPriceUSD = formatNumber(
-        safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value
-    )
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
@@ -84,7 +81,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     useEffect(() => {
         return onClearAll
-    }, [])
+    }, [onClearAll])
 
     const { leftInput, rightInput } = parsedAmounts
 

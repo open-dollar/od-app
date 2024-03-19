@@ -45,27 +45,30 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     const ODPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
     const [svg, setSvg] = useState('')
 
-    const statsForSVG = {
-        vaultID: singleSafe?.id,
-        stabilityFee:
-            Math.floor(
-                Number(
-                    getRatePercentage(
-                        singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
-                        2
+    const statsForSVG = useMemo(
+        () => ({
+            vaultID: singleSafe?.id,
+            stabilityFee:
+                Math.floor(
+                    Number(
+                        getRatePercentage(
+                            singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
+                            2
+                        )
                     )
-                )
-            ).toString() + '%',
-        debtAmount: formatWithCommas(totalDebt) + ' OD',
-        collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
-        collateralizationRatio: singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
-        safetyRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio),
-        liqRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationCRatio),
-    }
+                ).toString() + '%',
+            debtAmount: formatWithCommas(totalDebt) + ' OD',
+            collateralAmount: formatWithCommas(collateral) + ' ' + collateralName,
+            collateralizationRatio: singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
+            safetyRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio),
+            liqRatio: Number(safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationCRatio),
+        }),
+        [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData]
+    )
 
     useEffect(() => {
         setSvg(generateSvg(statsForSVG))
-    }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData])
+    }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData, statsForSVG])
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'

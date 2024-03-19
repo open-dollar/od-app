@@ -1,5 +1,4 @@
 import { utils } from 'ethers'
-import { formatNumber, formatWithCommas } from './helper'
 
 /**
  * @dev Format a number to a string

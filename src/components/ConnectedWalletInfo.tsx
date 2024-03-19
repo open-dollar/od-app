@@ -13,7 +13,6 @@ import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
 import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
 import { MetaMask } from '@web3-react/metamask'
-import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
@@ -23,11 +22,7 @@ const ConnectedWalletInfo = () => {
     const [copied, setCopied] = useState(false)
 
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
-    const {
-        popupsModel: popupsActions,
-        connectWalletModel: connectWalletActions,
-        transactionsModel: transactionsActions,
-    } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions, transactionsModel: transactionsActions } = useStoreActions((state) => state)
 
     const handleChange = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)

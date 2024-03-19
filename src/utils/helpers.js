@@ -84,31 +84,35 @@ export const getLiquidationPrice = (totalCollateral, totalDebt, liquidationCRati
 }
 
 export const getActivityName = (debt, collateral) => {
-    if (debt != 0 && collateral != 0) {
-        if (Math.sign(debt) == 1) {
-            return Math.sign(collateral) == 1 ? 'Mint RAI & Deposit ETH' : 'Mint RAI & Withdraw ETH'
+    const [debtNum, collateralNum] = [Number(debt), Number(collateral)]
+
+    if (debtNum !== 0 && collateralNum !== 0) {
+        if (Math.sign(debt) === 1) {
+            return Math.sign(collateral) === 1 ? 'Mint RAI & Deposit ETH' : 'Mint RAI & Withdraw ETH'
         } else {
-            return Math.sign(collateral) == 1 ? 'Burn RAI & Deposit ETH' : 'Burn RAI & Withdraw ETH'
+            return Math.sign(collateral) === 1 ? 'Burn RAI & Deposit ETH' : 'Burn RAI & Withdraw ETH'
         }
-    } else if (debt != 0) {
-        return Math.sign(debt) == 1 ? 'Mint RAI' : 'Burn RAI'
-    } else if (collateral != 0) {
-        return Math.sign(collateral) == 1 ? 'Deposit ETH' : 'Withdraw ETH'
+    } else if (debtNum !== 0) {
+        return Math.sign(debt) === 1 ? 'Mint RAI' : 'Burn RAI'
+    } else if (collateralNum !== 0) {
+        return Math.sign(collateral) === 1 ? 'Deposit ETH' : 'Withdraw ETH'
     } else {
         return 'No change'
     }
 }
 
 export const getActivityBool = (debt, collateral) => {
-    if (Math.sign(debt) == -1 && collateral == 0) {
+    const [debtNum, collateralNum] = [Number(debt), Number(collateral)]
+
+    if (Math.sign(debt) === -1 && collateralNum === 0) {
         return 'increase'
-    } else if (Math.sign(debt) == 1 && collateral == 0) {
+    } else if (Math.sign(debt) === 1 && collateralNum === 0) {
         return 'decrease'
-    } else if (Math.sign(debt) == -1 && Math.sign(collateral) == -1) {
+    } else if (Math.sign(debt) === -1 && Math.sign(collateral) === -1) {
         return 'none'
-    } else if (Math.sign(collateral) == -1 && debt == 0) {
+    } else if (Math.sign(collateral) === -1 && debtNum === 0) {
         return 'decrease'
-    } else if (Math.sign(collateral) == 1 && debt == 0) {
+    } else if (Math.sign(collateral) === 1 && debtNum === 0) {
         return 'increase'
     } else {
         return 'none'

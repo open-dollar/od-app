@@ -66,7 +66,6 @@ const Analytics = () => {
         globalDebt,
         globalDebtCeiling,
         globalDebtUtilization,
-        surplusInTreasury,
         marketPrice,
         redemptionPrice,
         totalLiquidity,
@@ -155,13 +154,6 @@ const Analytics = () => {
         description: 'Mock dada for Total Collateral Locked',
     }
 
-    const outstandingOd = {
-        image: 'OD',
-        title: 'Outstanding OD',
-        value: '3,205,400 / 10,000,000',
-        description: 'Mock dada  for Outstanding OD',
-    }
-
     const vaultNFTs = {
         image: 'NFTS',
         title: 'Vault NFTs',
@@ -177,28 +169,10 @@ const Analytics = () => {
 
     const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
 
-    const feesPendingAuction = {
-        title: 'Fees pending auction',
-        value: '16,066 OD',
-        description: 'Mock dada for Fees pending auction',
-    }
-
-    const totalFeesEarned = {
-        title: 'total Fees earned',
-        value: '501,677 OD',
-        description: 'Mock dada total for Fees earned',
-    }
-
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
         value: totalLiquidity,
         description: 'Total OD/ETH Liquidity in Camelot',
-    }
-
-    const marketPriceODG = {
-        title: 'Market Price ODG',
-        value: '$10,833 ',
-        description: 'Mock dada for Market Price ODG',
     }
 
     const contractsData = {
@@ -242,12 +216,6 @@ const Analytics = () => {
                 </p>
             </RateContainer>
         ),
-    }
-    const surplusInTreasuryData: DataCardProps = {
-        title: 'Surplus in Treasury',
-        value: surplusInTreasury,
-        description:
-            "Total OD accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
     }
     const annualRedemptionRate: DataCardProps = {
         title: 'Annual Redemption Rate',
@@ -388,7 +356,7 @@ const Analytics = () => {
         }
 
         fetchData()
-    }, [geb])
+    }, [chainId, geb])
 
     return (
         <Container>
@@ -597,10 +565,6 @@ const SubTitle = styled.h3`
     font-weight: 700;
     color: #0079ad;
     margin-bottom: 16px;
-`
-
-const DataContainer = styled.div`
-    width: 100%;
 `
 
 // Rate styles

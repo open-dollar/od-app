@@ -26,7 +26,7 @@ import { Status } from '~/components/connectorCards/Status'
 import styled from 'styled-components'
 import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
-import { GnosisSafe } from "@web3-react/gnosis-safe";
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 interface Props {
     connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe

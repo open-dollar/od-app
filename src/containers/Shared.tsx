@@ -41,7 +41,8 @@ import {
     SYSTEM_STATUS,
     timeout,
     ChainId,
-    ETH_NETWORK, IS_IN_IFRAME,
+    ETH_NETWORK,
+    IS_IN_IFRAME,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
@@ -129,7 +130,7 @@ const Shared = ({ children, ...rest }: Props) => {
         }, 60000)
 
         return () => clearInterval(statsInterval)
-    }, [account, geb, connectWalletActions])
+    }, [account, geb, connectWalletState.tokensData, safeActions])
 
     useEffect(() => {
         const odBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18

@@ -82,7 +82,17 @@ export function useTokenApproval(
                 ? ApprovalState.PENDING
                 : ApprovalState.NOT_APPROVED
             : ApprovalState.APPROVED
-    }, [amount, tokenAddress, spender, geb, tokenDecimals, currentAllowance, pendingApproval, pendingAllowance])
+    }, [
+        amount,
+        tokenAddress,
+        spender,
+        geb,
+        tokenDecimals,
+        isMaxRepayAmount,
+        currentAllowance,
+        pendingApproval,
+        pendingAllowance,
+    ])
 
     const tokenContract = useTokenContract(tokenAddress)
 
@@ -170,7 +180,17 @@ export function useTokenApproval(
                 console.debug('Failed to approve token', error)
                 handleTransactionError(error)
             })
-    }, [approvalState, tokenAddress, tokenContract, amount, spender, tokenDecimals, exactApproval, updateAllowance])
+    }, [
+        approvalState,
+        tokenAddress,
+        tokenContract,
+        amount,
+        spender,
+        tokenDecimals,
+        isMaxRepayAmount,
+        exactApproval,
+        updateAllowance,
+    ])
 
     return [approvalState, approve]
 }

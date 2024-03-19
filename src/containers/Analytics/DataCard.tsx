@@ -17,10 +17,6 @@ export interface DataCardProps {
     children?: React.ReactChildren | React.ReactChild
 }
 
-const el = () => {
-    return <>Hey hey</>
-}
-
 const DataCard = ({ title, image, value, description, children }: DataCardProps) => {
     return (
         <Block>

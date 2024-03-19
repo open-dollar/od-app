@@ -26,6 +26,7 @@ import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
+import checkSanctions from './services/checkSanctions'
 
 declare module 'styled-components' {
     export interface DefaultTheme extends Theme {}

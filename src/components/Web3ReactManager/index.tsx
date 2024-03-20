@@ -49,7 +49,8 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
                 console.debug('Failed to connect to network')
             })
         }
-    }, [isActive, triedEager])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return children
 }

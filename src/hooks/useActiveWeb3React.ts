@@ -42,7 +42,8 @@ export function useEagerConnect() {
                 }
             })
         }
-    }, [connector, isActive])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive])
 
     return true
 }
@@ -88,5 +89,6 @@ export function useInactiveListener(suppress = false) {
         }
 
         return undefined
-    }, [connector, isActive, suppress])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive, suppress])
 }

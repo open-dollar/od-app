@@ -356,7 +356,8 @@ const Analytics = () => {
         }
 
         fetchData()
-    }, [chainId, geb])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [geb])
 
     return (
         <Container>

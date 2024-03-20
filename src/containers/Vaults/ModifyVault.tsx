@@ -81,7 +81,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     useEffect(() => {
         return onClearAll
-    }, [onClearAll])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const { leftInput, rightInput } = parsedAmounts
 

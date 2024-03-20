@@ -40,7 +40,8 @@ export default function MetaMaskCard() {
         if (provider?.provider.isMetaMask && accounts) {
             popupsActions.setIsConnectorsWalletOpen(false)
         }
-    }, [accounts, popupsActions, provider?.provider.isMetaMask])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accounts])
 
     return (
         <Card

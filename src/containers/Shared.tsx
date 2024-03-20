@@ -130,7 +130,8 @@ const Shared = ({ children, ...rest }: Props) => {
         }, 60000)
 
         return () => clearInterval(statsInterval)
-    }, [account, geb, connectWalletState.tokensData, safeActions])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account, geb, connectWalletActions])
 
     useEffect(() => {
         const odBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18

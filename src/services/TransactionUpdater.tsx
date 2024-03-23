@@ -1,4 +1,6 @@
 import { useEffect, useMemo } from 'react'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { toast } from 'react-toastify'
 import { useActiveWeb3React } from '../hooks'
 import store, { useStoreState } from '../store'
 

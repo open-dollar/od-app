@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -29,7 +29,7 @@ const Slider = ({
     const { colors } = useTheme()
 
     const changeCallback = useCallback(
-        (e) => {
+        (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange(parseInt(e.target.value))
         },
         [onChange]

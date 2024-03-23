@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Geb } from '@opendollar/sdk'
+import { IODSafeManager } from '@opendollar/sdk/lib/typechained'
 
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
@@ -30,7 +31,7 @@ export function useIsOwner(safeId: string): boolean {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
 
-    const getIsOwnerCallback = useCallback((res) => {
+    const getIsOwnerCallback = useCallback((res: [string, IODSafeManager.SAFEDataStructOutput]) => {
         if (res) {
             const [proxyAddress, { owner }] = res
             if (proxyAddress && owner) {

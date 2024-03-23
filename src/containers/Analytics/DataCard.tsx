@@ -14,7 +14,7 @@ export interface DataCardProps {
     title: string
     value: string
     description?: string
-    children?: React.ReactChildren | React.ReactChild
+    children?: React.ReactNode
 }
 
 const DataCard = ({ title, image, value, description, children }: DataCardProps) => {

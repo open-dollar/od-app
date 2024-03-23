@@ -54,7 +54,7 @@
         "classnames": "^2.2.6",
         "comma-number": "^2.1.0",
         "dayjs": "^1.9.4",
-        "easy-peasy": "^3.3.1",
+        "easy-peasy": "^5.1.0",
         "ethers": "5.4.7",
         "gh-pages": "^4.0.0",
         "graphql": "^16.8.1",

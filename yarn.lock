@@ -1654,6 +1654,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.17.2":
+  version: 7.24.1
+  resolution: "@babel/runtime@npm:7.24.1"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: 500c6a99ddd84f37c7bc5dbc84777af47b1372b20e879941670451d55484faf18a673c5ebee9ca2b0f36208a729417873b35b1b92e76f811620f6adf7b8cb0f1
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.22.15, @babel/template@npm:^7.23.9, @babel/template@npm:^7.3.3":
   version: 7.23.9
   resolution: "@babel/template@npm:7.23.9"
@@ -5420,7 +5429,7 @@ __metadata:
     cypress: ^13.6.4
     cypress-wait-until: ^1.7.1
     dayjs: ^1.9.4
-    easy-peasy: ^3.3.1
+    easy-peasy: ^5.1.0
     ethers: 5.4.7
     gh-pages: ^4.0.0
     graphql: ^16.8.1
@@ -8595,13 +8604,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debounce@npm:^1.2.0":
-  version: 1.2.1
-  resolution: "debounce@npm:1.2.1"
-  checksum: 6c9320aa0973fc42050814621a7a8a78146c1975799b5b3cc1becf1f77ba9a5aa583987884230da0842a03f385def452fad5d60db97c3d1c8b824e38a8edf500
-  languageName: node
-  linkType: hard
-
 "debug@npm:2.6.9, debug@npm:^2.1.3, debug@npm:^2.6.0":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -9097,22 +9099,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"easy-peasy@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "easy-peasy@npm:3.3.1"
+"easy-peasy@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "easy-peasy@npm:5.2.0"
   dependencies:
-    debounce: ^1.2.0
-    immer-peasy: 3.1.3
-    is-plain-object: ^3.0.0
-    memoizerific: ^1.11.3
-    prop-types: ^15.6.2
-    redux: ^4.0.5
-    redux-thunk: ^2.3.0
-    symbol-observable: ^1.2.0
-    ts-toolbelt: ^6.1.6
+    "@babel/runtime": ^7.17.2
+    fast-deep-equal: ^3.1.3
+    immer: ^9.0.12
+    redux: ^4.1.2
+    redux-thunk: ^2.4.1
+    ts-toolbelt: ^9.6.0
+    use-sync-external-store: ^1.2.0
   peerDependencies:
-    react: ^16.8.0
-  checksum: 34184ef9f41bca6ae7b4dcefe22f77904b98383dbe4f2baf64f5c982ed02e1a88bddac673d95a5d821c8006209f5b73874cfa14c8550ffcb8fdd7066bcb8345b
+    "@types/react": ^16.8 || ^17.0 || ^18.0
+    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+    react-native: ">=0.59"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 8c2f7533e8ed12a8ce5d40aa6c0f7ba0db5eba73089f827e1333b75d19e005179b79862930d99386e74305f8eb8ebd2a2dfd4e06bf75718563dabb5fe03a3859
   languageName: node
   linkType: hard
 
@@ -11715,14 +11728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer-peasy@npm:3.1.3":
-  version: 3.1.3
-  resolution: "immer-peasy@npm:3.1.3"
-  checksum: 90c29bad625ac1306e52f4ae9985d2296782dfc20d2f5607706ed23d19d93fae200da03fc4276a891c2cdab99ac707e86f7af83893e2bdc44a55dc6fab32d495
-  languageName: node
-  linkType: hard
-
-"immer@npm:^9.0.7":
+"immer@npm:^9.0.12, immer@npm:^9.0.7":
   version: 9.0.21
   resolution: "immer@npm:9.0.21"
   checksum: 03ea3ed5d4d72e8bd428df4a38ad7e483ea8308e9a113d3b42e0ea2cc0cc38340eb0a6aca69592abbbf047c685dbda04e3d34bf2ff438ab57339ed0a34cc0a05
@@ -12136,13 +12142,6 @@ __metadata:
   dependencies:
     isobject: ^3.0.1
   checksum: f050fdd5203d9c81e8c4df1b3ff461c4bc64e8b5ca383bcdde46131361d0a678e80bcf00b5257646f6c636197629644d53bd8e2375aea633de09a82d57e942f4
-  languageName: node
-  linkType: hard
-
-"is-plain-object@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "is-plain-object@npm:3.0.1"
-  checksum: eac88599d3f030b313aa5a12d09bd3c52ce3b8cd975b2fdda6bb3bb69ac0bc1b93cd292123769eb480b914d1dd1fed7633cdeb490458d41294eb32efdedec230
   languageName: node
   linkType: hard
 
@@ -13939,13 +13938,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"map-or-similar@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "map-or-similar@npm:1.5.0"
-  checksum: 33c6ccfdc272992e33e4e99a69541a3e7faed9de3ac5bc732feb2500a9ee71d3f9d098980a70b7746e7eeb7f859ff7dfb8aa9b5ecc4e34170a32ab78cfb18def
-  languageName: node
-  linkType: hard
-
 "md5.js@npm:^1.3.4":
   version: 1.3.5
   resolution: "md5.js@npm:1.3.5"
@@ -13984,15 +13976,6 @@ __metadata:
   dependencies:
     fs-monkey: ^1.0.4
   checksum: 038fc81bce17ea92dde15aaa68fa0fdaf4960c721ce3ffc7c2cb87a259333f5159784ea48b3b72bf9e054254d9d0d0d5209d0fdc3d07d08653a09933b168fbd7
-  languageName: node
-  linkType: hard
-
-"memoizerific@npm:^1.11.3":
-  version: 1.11.3
-  resolution: "memoizerific@npm:1.11.3"
-  dependencies:
-    map-or-similar: ^1.5.0
-  checksum: 661bf69b7afbfad57f0208f0c63324f4c96087b480708115b78ee3f0237d86c7f91347f6db31528740b2776c2e34c709bcb034e1e910edee2270c9603a0a469e
   languageName: node
   linkType: hard
 
@@ -16906,7 +16889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-thunk@npm:^2.3.0":
+"redux-thunk@npm:^2.4.1":
   version: 2.4.2
   resolution: "redux-thunk@npm:2.4.2"
   peerDependencies:
@@ -16915,7 +16898,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.0.5":
+"redux@npm:^4.1.2":
   version: 4.2.1
   resolution: "redux@npm:4.2.1"
   dependencies:
@@ -18482,13 +18465,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"symbol-observable@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "symbol-observable@npm:1.2.0"
-  checksum: 009fee50798ef80ed4b8195048288f108b03de162db07493f2e1fd993b33fafa72d659e832b584da5a2427daa78e5a738fb2a9ab027ee9454252e0bedbcd1fdc
-  languageName: node
-  linkType: hard
-
 "symbol-observable@npm:^4.0.0":
   version: 4.0.0
   resolution: "symbol-observable@npm:4.0.0"
@@ -18936,10 +18912,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-toolbelt@npm:^6.1.6":
-  version: 6.15.5
-  resolution: "ts-toolbelt@npm:6.15.5"
-  checksum: c2c5cf77b006cbedb836abb260e9544aef268b0fc718e52db44600308ac6836c8c1824f57373ed72f920b92eb1daa78d1a9cec4c12368230a208e0723de9c2f0
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 838f9a2f0fe881d5065257a23b402c41315b33ff987b73db3e2b39fcb70640c4c7220e1ef118ed5676763543724fdbf4eda7b0e2c17acb667ed1401336af9f8c
   languageName: node
   linkType: hard
 
@@ -19471,7 +19447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:

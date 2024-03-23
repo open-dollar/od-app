@@ -139,5 +139,6 @@
     "approve_token": "Approve {{symbol}}",
     "liquidity": "Liquidity",
     "view_on_camelot_exchange": "View on Camelot Exchange",
-    "claim_on_discord": "Use the /CLAIM command in our Discord"
+    "claim_on_discord": "Use the /CLAIM command in our Discord",
+    "add_token_to_wallet": "Add token to wallet"
 }

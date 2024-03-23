@@ -2,17 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-import {
-    Container,
-    Content,
-    Head,
-    Heads,
-    HeadsContainer,
-    List,
-    ListItem,
-    ListItemLabel,
-    SectionContent,
-} from './DataTable'
+import { Container, Content, Head, Heads, HeadsContainer, List, ListItemLabel, SectionContent } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
 import CopyIconBlue from '~/components/Icons/CopyIconBlue'
 import { useState } from 'react'

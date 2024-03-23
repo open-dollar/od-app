@@ -5,7 +5,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { getAddress } from '@ethersproject/address'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
-import { ETHERSCAN_PREFIXES, floatsTypes, SUPPORTED_WALLETS } from './constants'
+import { floatsTypes, SUPPORTED_WALLETS } from './constants'
 import { ChainId, ILiquidationData, ISafe, ITransaction } from './interfaces'
 import { injected } from '~/connectors'
 

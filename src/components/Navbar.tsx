@@ -1,17 +1,16 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { formatDataNumber, formatNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import { handleTransactionError, isTransactionRecent } from '~/hooks'
+import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
 import { Icon } from './TokenInput'
 import NavLinks from './NavLinks'
 import Button from './Button'
 import Brand from './Brand'
-import { claimAirdrop } from '~/services/blockchain'
 import ArrowDown from './Icons/ArrowDown'
 import Camelot from './Icons/Camelot'
 import { fetchPoolData } from '@opendollar/sdk'
@@ -32,11 +31,7 @@ const Navbar = () => {
 
     const { transactions } = transactionsState
 
-    const {
-        popupsModel: popupsActions,
-        transactionsModel,
-        connectWalletModel: connectWalletActions,
-    } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
     const { isActive, account, provider } = useWeb3React()
     const geb = useGeb()
@@ -139,40 +134,6 @@ const Navbar = () => {
         const balances = connectWalletModel.tokensFetchedData
         return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false)
     }, [connectWalletModel.tokensFetchedData])
-
-    const claimAirdropButton = async (signer: any) => {
-        popupsActions.setIsWaitingModalOpen(true)
-        popupsActions.setWaitingPayload({
-            text: 'Claiming test tokens...',
-            title: 'Waiting For Confirmation',
-            hint: 'Confirm this transaction in your wallet',
-            status: 'loading',
-        })
-        claimAirdrop(signer)
-            .then((txResponse) => {
-                if (txResponse) {
-                    transactionsModel.addTransaction({
-                        chainId: txResponse.chainId,
-                        hash: txResponse.hash,
-                        from: txResponse.from,
-                        summary: 'Claiming test tokens',
-                        addedTime: new Date().getTime(),
-                        originalTx: txResponse,
-                    })
-                    popupsActions.setWaitingPayload({
-                        title: 'Transaction Submitted',
-                        hash: txResponse.hash,
-                        status: 'success',
-                    })
-                    txResponse.wait().then(() => {
-                        connectWalletActions.setForceUpdateTokens(true)
-                    })
-                }
-            })
-            .catch((error) => {
-                handleTransactionError(error)
-            })
-    }
 
     useEffect(() => {
         async function fetchData() {

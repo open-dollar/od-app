@@ -31,7 +31,7 @@ export default function MetaMaskCard() {
 
     const provider = useProvider()
 
-    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const [error, setError] = useState(undefined)
 
@@ -40,6 +40,7 @@ export default function MetaMaskCard() {
         if (provider?.provider.isMetaMask && accounts) {
             popupsActions.setIsConnectorsWalletOpen(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accounts])
 
     return (

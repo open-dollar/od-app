@@ -23,7 +23,7 @@ const Stats = () => {
                 let totalLockedValue = BigNumber.from('0')
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
-                    Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
+                    Object.entries(analyticsData?.tokenAnalyticsData).forEach(([_, value]) => {
                         const lockedAmountInUsd = multiplyWad(
                             value?.lockedAmount?.toString(),
                             value?.currentPrice?.toString()

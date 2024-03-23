@@ -51,21 +51,21 @@ const Footer: React.FC = () => {
                         <InnerLink
                             to="/vaults"
                             onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
+                            className={window.location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
                         >
                             App
                         </InnerLink>
                         <InnerLink
                             to="/auctions"
                             onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
+                            className={window.location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
                         >
                             Auctions
                         </InnerLink>
                         <InnerLink
                             to="/stats"
                             onClick={(e) => handleLinkClick(e, false)}
-                            className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
+                            className={window.location.pathname.startsWith('/stats') ? 'activeLink' : ''}
                         >
                             Stats
                         </InnerLink>

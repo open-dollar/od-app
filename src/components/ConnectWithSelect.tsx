@@ -21,7 +21,7 @@ import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 
 import { IconWrapper } from '~/components/ConnectedWalletIcon'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
-import { GnosisSafe } from "@web3-react/gnosis-safe";
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe) {
     if (connector instanceof MetaMask) {
@@ -48,10 +48,7 @@ function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | 
     } else if (connector instanceof GnosisSafe) {
         return (
             <IconWrapper size={32}>
-                <img
-                    src={require('../assets/connectors/gnosisWalletIcon.svg').default}
-                    alt={'gnosis safe logo'}
-                />
+                <img src={require('../assets/connectors/gnosisWalletIcon.svg').default} alt={'gnosis safe logo'} />
             </IconWrapper>
         )
     }

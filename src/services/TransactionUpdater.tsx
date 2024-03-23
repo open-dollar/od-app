@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { toast } from 'react-toastify'
-import ToastPayload from '../components/ToastPayload'
 import { useActiveWeb3React } from '../hooks'
 import store, { useStoreState } from '../store'
 
@@ -26,7 +26,6 @@ export function shouldCheck(
 }
 
 export default function TransactionUpdater(): null {
-    const toastId = 'transactionId'
     const { chainId, provider } = useActiveWeb3React()
     const { transactionsModel: state, connectWalletModel: connectedWalletState } = useStoreState((state) => state)
 

@@ -124,6 +124,10 @@ const Navbar = () => {
         return popupsActions.setIsConnectorsWalletOpen(true)
     }
 
+    const handleLinkToDiscord = () => {
+        window.open('https://discord.opendollar.com/', '_blank')
+    }
+
     const sortedRecentTransactions = useMemo(() => {
         const txs = Object.values(transactions)
         return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
@@ -229,7 +233,7 @@ const Navbar = () => {
                             {isTestTokenPopupVisible && (
                                 <InfoPopup className="group">
                                     <InfoPopupContentWrapper>
-                                        <Flex style={{ alignItems: 'flex-start' }}>
+                                        <Flex style={{ alignItems: 'flex-start', cursor: 'pointer' }} onClick={handleLinkToDiscord}>
                                             <img src={require('../assets/discord.svg').default} alt="Discord" />
                                             <InfoPopUpSubText style={{ marginLeft: 10 }}>
                                                 {t('claim_on_discord')}

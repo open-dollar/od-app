@@ -232,7 +232,10 @@ const Navbar = () => {
                             {isTestTokenPopupVisible && (
                                 <InfoPopup className="group">
                                     <InfoPopupContentWrapper>
-                                        <Flex style={{ alignItems: 'flex-start', cursor: 'pointer' }} onClick={handleLinkToDiscord}>
+                                        <Flex
+                                            style={{ alignItems: 'flex-start', cursor: 'pointer' }}
+                                            onClick={handleLinkToDiscord}
+                                        >
                                             <img src={require('../assets/discord.svg').default} alt="Discord" />
                                             <InfoPopUpSubText style={{ marginLeft: 10 }}>
                                                 {t('claim_on_discord')}

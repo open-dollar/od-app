@@ -218,7 +218,7 @@ const SideMenu = () => {
                             <Price>
                                 <DollarValue ref={odRef} onClick={handleTokenClick}>
                                     <Icon
-                                        src={require('../assets/od-wallet-icon.svg').default}
+                                        src={require('../assets/wallet-icon.svg').default}
                                         width={'16px'}
                                         height={'16px'}
                                     />

@@ -18,45 +18,20 @@ export interface DynamicObject {
 interface IColors {
     primary: string
     secondary: string
-    gradient: string
+    tertiary: string
     neutral: string
     background: string
-    overlay: string
-    border: string
-    foreground: string
-    dangerColor: string
-    dangerBackground: string
-    dangerBorder: string
-    alertColor: string
-    alertBackground: string
-    alertBorder: string
-    successColor: string
-    successBackground: string
-    successBorder: string
-    warningColor: string
-    warningBackground: string
-    warningBorder: string
-    placeholder: string
-    inputBorderColor: string
-    boxShadow: string
-    customSecondary: string
-    greenish: string
-    blueish: string
-    yellowish: string
-    dimmedColor: string
-    dimmedBackground: string
-    dimmedBorder: string
-    colorPrimary: string
-    colorSecondary: string
 }
 
 interface IFonts {
-    extraSmall: string
+    xxSmall: string
+    xSmall: string
     small: string
     default: string
     medium: string
     large: string
-    extraLarge: string
+    xLarge: string
+    xxLarge: string
 }
 
 interface IGlobal {
@@ -74,11 +49,14 @@ interface IMediaWidth {
     upToLarge: ThemedCssFunction<DefaultTheme>
 }
 
-export interface Theme {
-    colors: IColors
+export interface SharedTheme {
     font: IFonts
     global: IGlobal
     mediaWidth: IMediaWidth
+}
+
+export interface Theme extends SharedTheme {
+    colors: IColors
 }
 
 export interface LangOption {

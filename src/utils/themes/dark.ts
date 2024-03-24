@@ -1,57 +1,17 @@
-import { mediaWidthTemplates } from '../constants'
+import { sharedTheme } from './shared'
 import { Theme } from '../interfaces'
 
 const darkTheme: Theme = {
+    ...sharedTheme,
+    // Currently same as light theme.
+    // TODO: Implement dark theme once the design is read - 2024-03-18 @kai-thompson
     colors: {
-        primary: '#fff',
-        secondary: '#A5A5A5',
-        customSecondary: '#DADADA',
-        gradient: 'linear-gradient(225deg, #78D8FF 0%, #4CE096 100%)',
-        neutral: '#ffffff',
-        background: '#001828',
-        overlay: 'rgba(0, 0, 0, 0.8)',
-        greenish: '#2AC384',
-        blueish: '#1499DA',
-        border: '#08223E',
-        yellowish: '#D9960A',
-        foreground: '#05192e',
-        dangerColor: '#e75966',
-        dangerBackground: '#F8D7DA',
-        dangerBorder: '#F5C6CB',
-        alertColor: '#316398',
-        alertBackground: '#CCE5FF',
-        alertBorder: '#B8DAFF',
-        successColor: '#217435',
-        successBackground: '#D4EDDA',
-        successBorder: '#C3E6CB',
-        warningColor: '#856404',
-        warningBackground: '#FFF3CD',
-        warningBorder: '#856404',
-        placeholder: '#05172B',
-        inputBorderColor: '#6fbcdb',
-        boxShadow: '#eef3f9',
-        dimmedColor: '#ffffff',
-        dimmedBackground: '#A4ABB7',
-        dimmedBorder: '#878787',
-        colorPrimary: '#002B40',
-        colorSecondary: '#031A31',
+        primary: '#1A74EC',
+        secondary: '#6396FF',
+        tertiary: '#475662',
+        neutral: '#FFFFFF',
+        background: '#E2F1FF',
     },
-    font: {
-        extraSmall: '12px',
-        small: '14px',
-        default: '16px',
-        medium: '18px',
-        large: '20px',
-        extraLarge: '22px',
-    },
-    global: {
-        gridMaxWidth: '1454px',
-        borderRadius: '4px',
-        extraCurvedRadius: '20px',
-        buttonPadding: '8px 16px',
-        modalWidth: '720px',
-    },
-    mediaWidth: mediaWidthTemplates,
 }
 
 export { darkTheme }

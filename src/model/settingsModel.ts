@@ -13,9 +13,6 @@ export interface SettingsModel {
     setBodyOverFlow: Action<SettingsModel, boolean>
     setBlockBody: Action<SettingsModel, boolean>
 }
-// const local_blockchain_connection = localStorage.getItem(
-//     'blockchain_connection'
-// )
 
 const settingsModel: SettingsModel = {
     isLightTheme: isLight ? JSON.parse(isLight) : true,

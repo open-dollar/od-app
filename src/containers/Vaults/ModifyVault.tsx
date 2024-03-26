@@ -107,7 +107,17 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     }
 
     const onMaxRightInput = () => {
-        onRightInput(availableHai)
+        if (isDeposit) {
+            onRightInput(availableHai)
+        } else {
+            const availableHaiBN = ethers.utils.parseEther(availableHai)
+
+            const haiBalanceBN = tokenBalances.OD.balanceE18 ? tokenBalances.OD.balanceE18 : BigNumber.from('0')
+
+            const isMoreDebt = availableHaiBN.gt(haiBalanceBN)
+
+            onRightInput(isMoreDebt ? ethers.utils.formatEther(haiBalanceBN) : availableHai)
+        }
     }
 
     const handleWaitingTitle = () => {

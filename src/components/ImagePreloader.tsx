@@ -1,5 +1,6 @@
 const INITIAL_STATE = [
-    require('../assets/od-full-logo.svg').default,
+    require('../assets/od-full-logo-dark.svg').default,
+    require('../assets/od-full-logo-light.svg').default,
     require('../assets/dark-arrow.svg').default,
     require('../assets/connectors/walletConnectIcon.svg').default,
     require('../assets/connectors/coinbaseWalletIcon.svg').default,

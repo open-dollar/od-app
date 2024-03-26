@@ -1,15 +1,17 @@
 import styled from 'styled-components'
-import Logo from '../assets/od-full-logo.svg'
+import { useStoreState } from '~/store'
+import DarkFullLogo from '~/assets/od-full-logo-dark.svg'
+import LightFullLogo from '~/assets/od-full-logo-light.svg'
 
-interface Props {
-    height?: number
-}
+const Brand = () => {
+    const isLightTheme = useStoreState((state) => state.settingsModel.isLightTheme)
 
-const Brand = ({ height }: Props) => {
+    const LogoComponent = isLightTheme ? LightFullLogo : DarkFullLogo
+
     return (
         <Container>
             <a href={'/'}>
-                <img src={Logo} height={'27px'} width={'148px'} alt="OD" />
+                <img src={LogoComponent} alt="OD" />
             </a>
         </Container>
     )

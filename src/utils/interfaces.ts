@@ -18,9 +18,12 @@ export interface DynamicObject {
 interface IColors {
     primary: string
     secondary: string
-    gradient: string
+    tertiary: string
     neutral: string
     background: string
+    accent: string
+    // deprecated colors
+    gradient: string
     overlay: string
     border: string
     foreground: string
@@ -51,12 +54,14 @@ interface IColors {
 }
 
 interface IFonts {
-    extraSmall: string
+    xxSmall: string
+    xSmall: string
     small: string
     default: string
     medium: string
     large: string
-    extraLarge: string
+    xLarge: string
+    xxLarge: string
 }
 
 interface IGlobal {
@@ -74,11 +79,14 @@ interface IMediaWidth {
     upToLarge: ThemedCssFunction<DefaultTheme>
 }
 
-export interface Theme {
-    colors: IColors
+export interface SharedTheme {
     font: IFonts
     global: IGlobal
     mediaWidth: IMediaWidth
+}
+
+export interface Theme extends SharedTheme {
+    colors: IColors
 }
 
 export interface LangOption {

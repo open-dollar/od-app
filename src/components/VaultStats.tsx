@@ -5,7 +5,14 @@ import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState } from '~/utils'
+import {
+    formatNumber,
+    formatWithCommas,
+    getRatePercentage,
+    ratioChecker,
+    returnState,
+    returnTotalDebt
+} from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
@@ -22,13 +29,17 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
-    const { singleSafe } = safeState
+    const { singleSafe, liquidationData } = safeState
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
 
-    const totalDebt = formatNumber(singleSafe?.totalDebt || '0')
+    const collateralLiquidationData = liquidationData!.collateralLiquidationData[singleSafe?.collateralName as string]
 
-    const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebt as string)
+    const totalDebtCalc = returnTotalDebt(singleSafe?.debt as string, collateralLiquidationData.accumulatedRate, true) as string
+
+    const totalDebt = formatWithCommas(totalDebtCalc, 3)
+
+    const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebtCalc, 2)
 
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(

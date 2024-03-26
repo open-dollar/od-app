@@ -56,20 +56,20 @@ const NavLinks = () => {
 export default NavLinks
 
 const Nav = styled.div`
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     @media (max-width: 767px) {
         position: unset;
         transform: initial;
     }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
-  `}
+    ${({ theme }) => theme.mediaWidth.upToSmall``}
 `
 
 const BtnStyle = css`
-    color: ${(props) => props.theme.colors.secondary};
+    font-family: 'Barlow', sans-serif;
+    color: ${(props) => props.theme.colors.accent};
     transition: all 0.3s ease;
 
     &:hover {
@@ -118,9 +118,9 @@ const BtnStyle = css`
 `
 const NavBarLink = styled(NavLink)`
     ${BtnStyle}
-    position: relative;
     &.activeLink {
-        color: ${(props) => props.theme.colors.neutral};
+        font-weight: 700;
+        color: ${(props) => props.theme.colors.primary};
         &:before {
             content: '';
             position: absolute;

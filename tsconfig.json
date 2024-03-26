@@ -16,7 +16,6 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true,
-        "noOverloadMatchesThisCall": false,
         "paths": {
             "~/*": ["./src/*"]
         }

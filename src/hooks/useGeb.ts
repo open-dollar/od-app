@@ -92,9 +92,6 @@ export function useTokenBalanceInUSD(token: TokenType, balance: string, minDecim
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice
         if (!balance) return '0'
-        if (minDecimals > 2) {
-            return formatWithCommas((Number(price) * Number(balance)).toString(), minDecimals)
-        }
         return formatNumber((Number(price) * Number(balance)).toString(), minDecimals)
     }, [token, ethPrice, haiPrice, balance, minDecimals])
 }

@@ -35,9 +35,11 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
     const collateralLiquidationData = liquidationData!.collateralLiquidationData[singleSafe?.collateralName as string]
 
-    const totalDebt = formatWithCommas(returnTotalDebt(singleSafe?.debt as string, collateralLiquidationData.accumulatedRate, true) as string, 3)
+    const totalDebtCalc = returnTotalDebt(singleSafe?.debt as string, collateralLiquidationData.accumulatedRate, true) as string
 
-    const totalDebtInUSD = useTokenBalanceInUSD('OD', returnTotalDebt(singleSafe?.debt as string, collateralLiquidationData.accumulatedRate, true) as string, 2)
+    const totalDebt = formatWithCommas(totalDebtCalc, 3)
+
+    const totalDebtInUSD = useTokenBalanceInUSD('OD', totalDebtCalc, 2)
 
     const collateralName = singleSafe!.collateralName
     const collateralUnitPriceUSD = formatNumber(

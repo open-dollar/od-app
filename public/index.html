@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta http-equiv="Content-Security-Policy"
+              content="
+        default-src 'self' blob: https://verify.walletconnect.com https://verify.walletconnect.org;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        script-src 'self' http://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/matomo.js https://usekeyp.matomo.cloud/matomo.js;
+        media-src 'self';
+        img-src 'self' data: blob: https://explorer-api.walletconnect.com https://usekeyp.matomo.cloud;
+        connect-src 'self' blob: https://arbitrum-sepolia.blockpi.network https://arbitrum-sepolia.infura.io https://arbitrum.blockpi.network https://arbitrum-mainnet.infura.io https://optimism-mainnet.infura.io https://optimism.blockpi.network wss://relay.walletconnect.com/ https://verify.walletconnect.org wss://www.walletlink.org/rpc https://explorer-api.walletconnect.com https://chain-proxy.wallet.coinbase.com https://rpc.walletconnect.com https://api.studio.thegraph.com https://od-subgraph-node-image.onrender.com https://usekeyp.matomo.cloud https://opt-mainnet.g.alchemy.com https://arb-mainnet.g.alchemy.com https://bot.opendollar.com https://bot.dev.opendollar.com;
+        object-src 'self' blob:;
+        form-action 'self';
+        font-src 'self' data: https://fonts.gstatic.com;
+      ">
+
         <meta charset="utf-8" />
         <link rel="shortcut icon" href="%PUBLIC_URL%/od-logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,19 +27,8 @@
         <title>OD | App</title>
 
         <!-- Matomo -->
-        <script>
-            var _paq = window._paq = window._paq || [];
-            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-            var u="https://usekeyp.matomo.cloud/";
-            _paq.push(['setTrackerUrl', u+'matomo.php']);
-            _paq.push(['setSiteId', '6']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.async=true; g.src='//cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-            })();
-        </script>
+        <script src="./tracking.js"></script>
+        <script src="https://usekeyp.matomo.cloud/matomo.js" async defer></script>
         <!-- End Matomo Code -->
     </head>
     <body>

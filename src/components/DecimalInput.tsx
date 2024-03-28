@@ -40,7 +40,7 @@ const DecimalInput = ({
         if (decimalRegex.test(val)) {
             val.includes('.') ? setLength(17) : setLength(16)
             if (val.startsWith('0') && val.charAt(1) !== '.') {
-                const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.');
+                const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.')
                 onChange(returnedVal)
             } else if (val.startsWith('.')) {
                 onChange('0' + val)

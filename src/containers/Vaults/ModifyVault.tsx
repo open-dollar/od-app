@@ -56,7 +56,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
 
-    const [collateralInUSD, setCollateralInUSD] = useState('0');
+    const [collateralInUSD, setCollateralInUSD] = useState('0')
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
@@ -94,14 +94,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     useEffect(() => {
         const calculateCollateralInUSD = () => {
-            const unitPriceUSD = parseFloat(collateralUnitPriceUSD);
-            const collateralAmount = parseFloat(parsedAmounts.leftInput || '0');
-            const totalInUSD = unitPriceUSD * collateralAmount;
-            setCollateralInUSD(formatWithCommas(totalInUSD.toFixed(2)));
-        };
+            const unitPriceUSD = parseFloat(collateralUnitPriceUSD)
+            const collateralAmount = parseFloat(parsedAmounts.leftInput || '0')
+            const totalInUSD = unitPriceUSD * collateralAmount
+            setCollateralInUSD(formatWithCommas(totalInUSD.toFixed(2)))
+        }
 
-        calculateCollateralInUSD();
-    }, [parsedAmounts.leftInput, collateralUnitPriceUSD]);
+        calculateCollateralInUSD()
+    }, [parsedAmounts.leftInput, collateralUnitPriceUSD])
 
     const { leftInput, rightInput } = parsedAmounts
 

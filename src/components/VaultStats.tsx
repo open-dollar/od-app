@@ -5,14 +5,7 @@ import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import {
-    formatNumber,
-    formatWithCommas,
-    getRatePercentage,
-    ratioChecker,
-    returnState,
-    returnTotalDebt
-} from '~/utils'
+import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState, returnTotalDebt } from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
@@ -35,7 +28,11 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
     const collateralLiquidationData = liquidationData!.collateralLiquidationData[singleSafe?.collateralName as string]
 
-    const totalDebtCalc = returnTotalDebt(singleSafe?.debt as string, collateralLiquidationData.accumulatedRate, true) as string
+    const totalDebtCalc = returnTotalDebt(
+        singleSafe?.debt as string,
+        collateralLiquidationData.accumulatedRate,
+        true
+    ) as string
 
     const totalDebt = formatWithCommas(totalDebtCalc, 3)
 

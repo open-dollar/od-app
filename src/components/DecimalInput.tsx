@@ -17,18 +17,18 @@ interface Props {
 }
 
 export function processInputValue(inputValue: string): string {
-    const decimalRegex = /^-?\d+(\.\d{1,4})?$/;
-    let processedValue = inputValue;
+    const decimalRegex = /^-?\d+(\.\d{1,4})?$/
+    let processedValue = inputValue
     if (decimalRegex.test(inputValue)) {
         if (inputValue.startsWith('0') && inputValue.charAt(1) !== '.') {
-            processedValue = inputValue.replace(/(\d)(?=(\d))/, '$1.');
+            processedValue = inputValue.replace(/(\d)(?=(\d))/, '$1.')
         } else if (inputValue.startsWith('.')) {
-            processedValue = '0' + inputValue;
+            processedValue = '0' + inputValue
         } else if (inputValue.length === 6 && Number(inputValue) === 0) {
-            processedValue = '';
+            processedValue = ''
         }
     }
-    return processedValue;
+    return processedValue
 }
 
 const DecimalInput = ({
@@ -49,11 +49,11 @@ const DecimalInput = ({
     const [length, setLength] = useState(16)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        const processedValue = processInputValue(val);
-        setLength(val.includes('.') ? 17 : 16);
-        onChange(processedValue);
-    };
+        const val = e.target.value
+        const processedValue = processInputValue(val)
+        setLength(val.includes('.') ? 17 : 16)
+        onChange(processedValue)
+    }
 
     return (
         <Container>

@@ -4,7 +4,7 @@ import { IODSafeManager } from '@opendollar/sdk/lib/typechained'
 
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
-import { formatNumber, formatWithCommas } from '~/utils/helper'
+import { formatNumber } from '~/utils/helper'
 import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 

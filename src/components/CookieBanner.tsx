@@ -1,5 +1,4 @@
 import CookieConsent from 'react-cookie-consent'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const CookieBanner = () => {
@@ -40,17 +39,6 @@ const CookiesText = styled.span`
         margin-right: 10px;
     }
 
-    @media (max-width: 991px) {
-        font-size: 14px;
-    }
-`
-
-const CustomLink = styled(Link)`
-    @media (min-width: 991px) {
-        font-size: 16px;
-        margin-left: 4px !important;
-    }
-    color: ${(props) => props.theme.colors.blueish};
     @media (max-width: 991px) {
         font-size: 14px;
     }

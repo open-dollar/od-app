@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -103,7 +103,8 @@ const VaultDetails = ({ ...props }) => {
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -122,7 +123,7 @@ const VaultDetails = ({ ...props }) => {
                         <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                     </LabelContainer>
                 ) : null}
-                <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+                <VaultHeader safeId={safeId} />
 
                 {!isLoading && (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />

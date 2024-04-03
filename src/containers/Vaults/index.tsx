@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isAddress } from '@ethersproject/address'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
@@ -10,8 +9,8 @@ import Accounts from './Accounts'
 import VaultList from './VaultList'
 
 const OnBoarding = ({ ...props }) => {
-    const { t } = useTranslation()
-    const [isOwner, setIsOwner] = useState(true)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_isOwner, setIsOwner] = useState(true)
     const { account, provider } = useActiveWeb3React()
     const geb = useGeb()
 
@@ -20,7 +19,7 @@ const OnBoarding = ({ ...props }) => {
         safeModel: safeState,
         popupsModel: popupsState,
     } = useStoreState((state) => state)
-    const { popupsModel: popupsActions, safeModel: safeActions } = useStoreActions((state) => state)
+    const { safeModel: safeActions } = useStoreActions((state) => state)
 
     const address: string = props.match.params.address ?? ''
 

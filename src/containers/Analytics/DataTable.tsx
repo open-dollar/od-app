@@ -1,4 +1,3 @@
-import { HelpCircle } from 'react-feather'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 

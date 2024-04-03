@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { formatNumber, DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo } from '~/utils'
+import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -55,9 +55,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         : '-'
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
-    const collateralUnitPriceUSD = formatNumber(
-        safeState.liquidationData!.collateralLiquidationData[singleSafe!.collateralName].currentPrice.value
-    )
+
+    const [collateralInUSD, setCollateralInUSD] = useState('0')
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
 
@@ -84,7 +83,25 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     useEffect(() => {
         return onClearAll
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const collateralName = singleSafe?.collateralName || ''
+
+    const collateralUnitPriceUSD = formatNumber(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value
+    ).toString()
+
+    useEffect(() => {
+        const calculateCollateralInUSD = () => {
+            const unitPriceUSD = parseFloat(collateralUnitPriceUSD)
+            const collateralAmount = parseFloat(parsedAmounts.leftInput || '0')
+            const totalInUSD = unitPriceUSD * collateralAmount
+            setCollateralInUSD(formatWithCommas(totalInUSD.toFixed(2)))
+        }
+
+        calculateCollateralInUSD()
+    }, [parsedAmounts.leftInput, collateralUnitPriceUSD])
 
     const { leftInput, rightInput } = parsedAmounts
 
@@ -93,12 +110,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const haiBalance = ethers.utils.formatEther(tokenBalances.OD?.balanceE18 || '0')
 
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
-
-    const collateralBalanceUSD = useTokenBalanceInUSD(
-        // @ts-ignore
-        singleSafe?.collateralName,
-        leftInput ? leftInput : 0
-    )
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
@@ -256,7 +267,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                               singleSafe.collateralName
                                           }`
                                 }
-                                rightLabel={`~$${formatWithCommas(collateralBalanceUSD)}`}
+                                rightLabel={`~$${collateralInUSD}`}
                                 onChange={onLeftInput}
                                 value={leftInput}
                                 handleMaxClick={onMaxLeftInput}

@@ -4,18 +4,9 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Button from '~/components/Button'
-import LinkButton from '~/components/LinkButton'
 import { useStoreActions, useStoreState } from '~/store'
 
-const VaultHeader = ({
-    safeId,
-    isModifying,
-    isDeposit,
-}: {
-    safeId: string
-    isModifying: boolean
-    isDeposit: boolean
-}) => {
+const VaultHeader = ({ safeId }: { safeId: string }) => {
     const history = useHistory()
     const { openLiquidateSafeModal } = useStoreActions((state) => state.popupsModel)
     const { singleSafe } = useStoreState((state) => state.safeModel)
@@ -24,7 +15,7 @@ const VaultHeader = ({
         history.push(`/vaults`)
     }, [history])
 
-    const canLiquidate = singleSafe && singleSafe.riskState == 4
+    const canLiquidate = singleSafe && Number(singleSafe.riskState) === 4
 
     return (
         <Container>

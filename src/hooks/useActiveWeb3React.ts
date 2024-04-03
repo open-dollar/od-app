@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { BaseProvider, Web3Provider } from '@ethersproject/providers'
 import { getPriorityConnector, useWeb3React, Web3ReactPriorityHooks } from '@web3-react/core'
@@ -42,6 +42,7 @@ export function useEagerConnect() {
                 }
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive])
 
     return true
@@ -88,5 +89,6 @@ export function useInactiveListener(suppress = false) {
         }
 
         return undefined
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive, suppress])
 }

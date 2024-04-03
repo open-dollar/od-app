@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Geb } from '@opendollar/sdk'
+import { IODSafeManager } from '@opendollar/sdk/lib/typechained'
 
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
@@ -30,7 +31,7 @@ export function useIsOwner(safeId: string): boolean {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
 
-    const getIsOwnerCallback = useCallback((res) => {
+    const getIsOwnerCallback = useCallback((res: [string, IODSafeManager.SAFEDataStructOutput]) => {
         if (res) {
             const [proxyAddress, { owner }] = res
             if (proxyAddress && owner) {
@@ -85,13 +86,13 @@ export function useBlockNumber() {
 }
 
 // returns amount of currency in USD
-export function useTokenBalanceInUSD(token: TokenType, balance: string) {
+export function useTokenBalanceInUSD(token: TokenType, balance: string, minDecimals = 2) {
     const ethPrice = store.getState().connectWalletModel.fiatPrice
     const haiPrice = store.getState().safeModel.liquidationData?.currentRedemptionPrice
 
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice
         if (!balance) return '0'
-        return formatNumber((Number(price) * Number(balance)).toString(), 2)
-    }, [token, ethPrice, haiPrice, balance])
+        return formatNumber((Number(price) * Number(balance)).toString(), minDecimals)
+    }, [token, ethPrice, haiPrice, balance, minDecimals])
 }

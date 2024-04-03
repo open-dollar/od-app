@@ -7,7 +7,7 @@ import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
-import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, multiplyWad, parseRad, parseWad } from '~/utils'
+import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, parseWad } from '~/utils'
 import Button from '~/components/Button'
 import useGeb from '~/hooks/useGeb'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
@@ -24,7 +24,6 @@ const CollateralAuctionBlock = (auction: Props) => {
     const { popupsModel: popupsActions, auctionModel: auctionActions } = useStoreActions((state) => state)
 
     const { connectWalletModel: connectWalletState, auctionModel: auctionsState } = useStoreState((state) => state)
-    const { connectWalletModel } = useStoreState((state) => state)
     const {
         safeModel: { liquidationData },
     } = useStoreState((state) => state)

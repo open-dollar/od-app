@@ -19,7 +19,9 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
 
     return (
         <Container id={id}>
-            <Stepper step={stepNumber}/>
+            <StepperWrapper>
+                <Stepper step={stepNumber} />
+            </StepperWrapper>
             <Title>{t(title)}</Title>
             <Text>{t(text)}</Text>
             <Button
@@ -39,6 +41,16 @@ export default StepsContent
 const Container = styled.div`
     text-align: center;
     margin-top: 20px;
+`
+
+const StepperWrapper = styled.div`
+    width: 898px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: 34px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px 0px #0D4B9D33;
 `
 
 const Title = styled.div`

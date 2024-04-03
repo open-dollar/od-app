@@ -43,7 +43,6 @@ const Stepper: React.FC<StepperProps> = ({ step }) => {
 
 export default Stepper
 
-// Styled components
 const Container = styled.div`
     display: flex;
     align-items: flex-start;
@@ -53,19 +52,20 @@ const Container = styled.div`
 const StepWrapper = styled.div`
     display: flex;
     align-items: center;
+    margin-bottom: 12px;
 `
 
 const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 4px solid #ffffff ${(props) => (props.isCompleted ? 'transparent' : '#1C293A4D')};
+    border: ${(props) => (props.isCompleted ? 'transparent' : '3px solid #1C293A4D')};
     background: ${(props) => (props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent')};
 `
 
 const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     height: 3px;
-    min-width: 30px;
+    min-width: 340px;
     background: ${(props) => (props.isCompleted ? 'linear-gradient(90deg, #DDF08B 0%, #00B1F5 100%)' : '#1C293A4D')};
 `
 
@@ -84,5 +84,4 @@ const Text = styled.p`
 
 const StepperContainer = styled.div`
     display: flex;
-    justify-content: center;
 `

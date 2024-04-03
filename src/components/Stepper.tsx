@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Check from './Icons/Check'
 
 interface StepProps {
     title: string
@@ -12,7 +13,9 @@ const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent, isLast
     return (
         <Container>
             <StepWrapper>
-                <Circle isCompleted={isCompleted} isCurrent={isCurrent} />
+                <Circle isCompleted={isCompleted} isCurrent={isCurrent}>
+                    {isCompleted && <Check />}
+                </Circle>
                 {!isLastStep && <Line isCompleted={isCompleted} isCurrent={isCurrent} />}
             </StepWrapper>
             <Title>{title}</Title>
@@ -31,11 +34,18 @@ const Stepper: React.FC<StepperProps> = ({ step }) => {
         { title: 'Step 2', text: 'Create Vault Facilitator' },
         { title: 'Step 3', text: 'Create a Vault' },
     ]
-    
+
     return (
         <StepperContainer>
             {steps.map((item, index) => (
-                <Step key={index} title={item.title} text={item.text} isCompleted={true} isCurrent={true} isLastStep={index === steps.length - 1}/>
+                <Step
+                    key={index}
+                    title={item.title}
+                    text={item.text}
+                    isCompleted={false}
+                    isCurrent={false}
+                    isLastStep={index === steps.length - 1}
+                ></Step>
             ))}
         </StepperContainer>
     )
@@ -56,11 +66,14 @@ const StepWrapper = styled.div`
 `
 
 const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
-    width: 24px;
-    height: 24px;
+    width: ${(props) => (props.isCompleted ? '42px' : '24px')};
+    height: ${(props) => (props.isCompleted ? '42px' : '24px')};
     border-radius: 50%;
     border: ${(props) => (props.isCompleted ? 'transparent' : '3px solid #1C293A4D')};
     background: ${(props) => (props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent')};
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`

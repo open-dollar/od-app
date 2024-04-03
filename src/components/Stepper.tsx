@@ -1,0 +1,86 @@
+import styled from 'styled-components'
+
+interface StepProps {
+    title: string;
+    text: string;
+    isCompleted: boolean;
+    isCurrent: boolean;
+}
+
+const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent }) => {
+    console.log({isCompleted})
+    return (
+        <Container>
+            <Circle isCompleted={isCompleted} isCurrent={isCurrent} />
+            <Line isCompleted={isCompleted} isCurrent={isCurrent} />
+            <Title>{title}</Title>
+            <Text>{text}</Text>
+        </Container>
+    );
+};
+
+interface StepperProps {
+    step: number;
+}
+
+const Stepper: React.FC<StepperProps> = ({ step }) => {
+    const steps = [
+        { title: 'Step 1', text: 'Connect Wallet' },
+        { title: 'Step 2', text: 'Create Vault Facilitator' },
+        { title: 'Step 3', text: 'Create a Vault' },
+    ];
+
+    return (
+        <StepperContainer>
+            {steps.map((item, index) => (
+                <Step
+                    key={index}
+                    title={item.title}
+                    text={item.text}
+                    isCompleted={true}
+                    isCurrent={true}
+                />
+            ))}
+        </StepperContainer>
+    );
+};
+
+export default Stepper
+
+// Styled components
+const Container = styled.div`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+`;
+
+const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 4px solid #FFFFFF ${props => props.isCompleted ? 'transparent' : '#1C293A4D'};
+    background: ${props => props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent'};
+`;
+
+const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
+    height: 2px;
+    flex-grow: 1;
+    background-color: ${props => props.isCompleted ? 'green' : 'grey'};
+`;
+
+const Title = styled.h3`
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #475662;
+`;
+
+const Text = styled.p`
+    font-weight: 400;
+    font-size: 18px;
+    color: #475662
+`;
+
+const StepperContainer = styled.div`
+    display: flex;
+`;

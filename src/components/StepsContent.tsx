@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Button from './Button'
+import Stepper from './Stepper'
 
 interface Props {
     title: string
@@ -18,6 +19,7 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
 
     return (
         <Container id={id}>
+            <Stepper step={stepNumber}/>
             <Title>{t(title)}</Title>
             <Text>{t(text)}</Text>
             <Button

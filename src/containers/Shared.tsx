@@ -328,6 +328,7 @@ const Shared = ({ children, ...rest }: Props) => {
             connectWalletActions.setIsWrongNetwork(true)
             toast(
                 <ToastPayload
+                   
                     icon={'AlertTriangle'}
                     iconSize={40}
                     iconColor={'orange'}
@@ -356,7 +357,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         networkCheckerCallBack()
-    }, [networkCheckerCallBack])
+    }, [account])
 
     return (
         <Container>

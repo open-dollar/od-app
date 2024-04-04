@@ -302,7 +302,7 @@ const Navbar = () => {
                             primary={account ? true : false}
                             id="web3-status-connected"
                             isLoading={hasPendingTransactions}
-                            onClick={handleWalletConnect}
+                            onClick={() => handleWalletConnect()}
                         >
                             {isActive && account ? (
                                 hasPendingTransactions ? (

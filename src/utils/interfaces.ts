@@ -9,6 +9,7 @@ import { BigNumber } from 'ethers'
 export declare enum ChainId {
     ARBITRUM_SEPOLIA = 421614,
     ARBITRUM = 42161,
+    OPTIMISM = 10,
 }
 
 export interface DynamicObject {

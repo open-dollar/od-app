@@ -44,7 +44,6 @@ const Container = styled.div`
 `
 
 const StepperWrapper = styled.div`
-    width: 898px;
     padding-top: 22px;
     padding-bottom: 22px;
     padding-left: 34px;

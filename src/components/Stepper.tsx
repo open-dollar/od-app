@@ -13,9 +13,11 @@ const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent, isLast
     return (
         <Container>
             <StepWrapper>
-                <Circle isCompleted={isCompleted} isCurrent={isCurrent}>
-                    {isCompleted && <Check />}
-                </Circle>
+                <CircleWrapper>
+                    <Circle isCompleted={isCompleted} isCurrent={isCurrent}>
+                        {isCompleted && <Check />}
+                    </Circle>
+                </CircleWrapper>
                 {!isLastStep && <Line isCompleted={isCompleted} isCurrent={isCurrent} />}
             </StepWrapper>
             <Title>{title}</Title>
@@ -34,7 +36,6 @@ const Stepper: React.FC<StepperProps> = ({ step }) => {
         { title: 'Step 2', text: 'Create Vault Facilitator' },
         { title: 'Step 3', text: 'Create a Vault' },
     ]
-
     return (
         <StepperContainer>
             {steps.map((item, index) => (
@@ -42,10 +43,11 @@ const Stepper: React.FC<StepperProps> = ({ step }) => {
                     key={index}
                     title={item.title}
                     text={item.text}
-                    isCompleted={false}
-                    isCurrent={false}
+                    isCompleted={step > index + 1}
+                    isCurrent={index + 1 === step}
                     isLastStep={index === steps.length - 1}
-                ></Step>
+                >
+                </Step>
             ))}
         </StepperContainer>
     )
@@ -62,15 +64,21 @@ const Container = styled.div`
 const StepWrapper = styled.div`
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+`
+
+const CircleWrapper = styled.div`
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     width: ${(props) => (props.isCompleted ? '42px' : '24px')};
     height: ${(props) => (props.isCompleted ? '42px' : '24px')};
     border-radius: 50%;
-    border: ${(props) => (props.isCompleted ? 'transparent' : '3px solid #1C293A4D')};
-    background: ${(props) => (props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent')};
+    border: ${(props) => (props.isCompleted || props.isCurrent ? 'transparent' : '3px solid #1C293A4D')};
+    background: ${(props) => (props.isCompleted || props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent')};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,6 +88,8 @@ const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     height: 3px;
     min-width: 340px;
     background: ${(props) => (props.isCompleted ? 'linear-gradient(90deg, #DDF08B 0%, #00B1F5 100%)' : '#1C293A4D')};
+
+    /* @media (min-width: 640px) */
 `
 
 const Title = styled.h3`

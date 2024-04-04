@@ -16,11 +16,15 @@ interface Props {
 
 const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisabled, isLoading, id }: Props) => {
     const { t } = useTranslation()
-
+    const steps = [
+        { title: 'Step 1', text: 'Connect Wallet' },
+        { title: 'Step 2', text: 'Create Vault Facilitator' },
+        { title: 'Step 3', text: 'Create a Vault' },
+    ]
     return (
         <Container id={id}>
             <StepperWrapper>
-                <Stepper step={stepNumber} />
+                <Stepper step={stepNumber} steps={steps}/>
             </StepperWrapper>
             <Title>{t(title)}</Title>
             <Text>{t(text)}</Text>

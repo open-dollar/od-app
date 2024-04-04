@@ -26,19 +26,20 @@ const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent, isLast
     )
 }
 
-interface StepperProps {
-    step: number
+type StepT = {
+    title: string
+    text: string
 }
 
-const Stepper: React.FC<StepperProps> = ({ step }) => {
-    const steps = [
-        { title: 'Step 1', text: 'Connect Wallet' },
-        { title: 'Step 2', text: 'Create Vault Facilitator' },
-        { title: 'Step 3', text: 'Create a Vault' },
-    ]
+interface StepperProps {
+    step: number
+    steps: StepT[]
+}
+
+const Stepper: React.FC<StepperProps> = ({ step, steps }: { step: number; steps: StepT[] }) => {
     return (
         <StepperContainer>
-            {steps.map((item, index) => (
+            {steps.map((item: StepT, index) => (
                 <Step
                     key={index}
                     title={item.title}
@@ -46,8 +47,7 @@ const Stepper: React.FC<StepperProps> = ({ step }) => {
                     isCompleted={step > index + 1}
                     isCurrent={index + 1 === step}
                     isLastStep={index === steps.length - 1}
-                >
-                </Step>
+                ></Step>
             ))}
         </StepperContainer>
     )
@@ -78,7 +78,8 @@ const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     height: ${(props) => (props.isCompleted ? '42px' : '24px')};
     border-radius: 50%;
     border: ${(props) => (props.isCompleted || props.isCurrent ? 'transparent' : '3px solid #1C293A4D')};
-    background: ${(props) => (props.isCompleted || props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent')};
+    background: ${(props) =>
+        props.isCompleted || props.isCurrent ? 'linear-gradient(90deg, #00B1F5 0%, #DDF08B 100%)' : 'transparent'};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,12 +98,22 @@ const Title = styled.h3`
     text-transform: uppercase;
     font-size: 14px;
     color: #475662;
+    display: none;
+
+    @media (min-width: 950px) { /* Display on screens wider than 900px */
+        display: block;
+    }
 `
 
 const Text = styled.p`
     font-weight: 400;
     font-size: 18px;
     color: #475662;
+    display: none;
+
+    @media (min-width: 950px) { /* Display on screens wider than 900px */
+        display: block;
+    }
 `
 
 const StepperContainer = styled.div`

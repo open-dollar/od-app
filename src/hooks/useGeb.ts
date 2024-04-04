@@ -18,7 +18,7 @@ export default function useGeb(): Geb {
 
     useEffect(() => {
         if (!provider) return
-        const geb = new Geb(network_name, provider.getSigner())
+        const geb = new Geb(network_name(), provider.getSigner())
         setState(geb)
     }, [provider])
 

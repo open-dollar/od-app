@@ -59,6 +59,28 @@ export async function checkAndSwitchMetamaskNetwork() {
             } catch (error) {
                 console.error('Failed to switch network', error)
             }
+        } else if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '10') {
+            try {
+                // @ts-ignore
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0xA`,
+                            chainName: 'OP Mainnet',
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            rpcUrls: ['https://optimism-rpc.publicnode.com'],
+                            blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Failed to switch network', error)
+            }
         } else {
             try {
                 // @ts-ignore
@@ -122,6 +144,47 @@ export default function WalletModal() {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
+    
+    function getHeaderContent() {
+        if (process.env.REACT_APP_NETWORK_ID === '42161') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
+                        Arbitrum One
+                    </a>
+                </h5>
+            )
+        } else if (process.env.REACT_APP_NETWORK_ID === '10') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/10">
+                        OP Mainnet
+                    </a>
+                </h5>
+            )
+        }  else if (process.env.REACT_APP_NETWORK_ID === '420') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
+                        OP Goerli
+                    </a>
+                </h5>
+            )
+
+        } else {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
+                        Arbitrum Sepolia
+                    </a>
+                </h5>
+            )
+        }
+    }
 
     function getModalContent() {
         return (
@@ -131,21 +194,7 @@ export default function WalletModal() {
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>
                         <ContentWrapper>
-                            {process.env.REACT_APP_NETWORK_ID === '42161' ? (
-                                <h5>
-                                    {t('not_supported')}{' '}
-                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
-                                        Arbitrum One
-                                    </a>
-                                </h5>
-                            ) : (
-                                <h5>
-                                    {t('not_supported')}{' '}
-                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
-                                        Arbitrum Sepolia
-                                    </a>
-                                </h5>
-                            )}
+                            {getHeaderContent()}
                         </ContentWrapper>
                     </>
                 ) : (

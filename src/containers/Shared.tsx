@@ -328,7 +328,6 @@ const Shared = ({ children, ...rest }: Props) => {
             connectWalletActions.setIsWrongNetwork(true)
             toast(
                 <ToastPayload
-                   
                     icon={'AlertTriangle'}
                     iconSize={40}
                     iconColor={'orange'}

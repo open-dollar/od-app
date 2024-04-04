@@ -87,10 +87,12 @@ const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
 
 const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     height: 3px;
-    min-width: 340px;
+    width: 340px;
     background: ${(props) => (props.isCompleted ? 'linear-gradient(90deg, #DDF08B 0%, #00B1F5 100%)' : '#1C293A4D')};
 
-    /* @media (min-width: 640px) */
+    @media (max-width: 960px) {
+        width: 100px;
+    }
 `
 
 const Title = styled.h3`
@@ -100,7 +102,7 @@ const Title = styled.h3`
     color: #475662;
     display: none;
 
-    @media (min-width: 950px) { /* Display on screens wider than 900px */
+    @media (min-width: 960px) { /* Display on screens wider than 900px */
         display: block;
     }
 `
@@ -111,7 +113,7 @@ const Text = styled.p`
     color: #475662;
     display: none;
 
-    @media (min-width: 950px) { /* Display on screens wider than 900px */
+    @media (min-width: 960px) { /* Display on screens wider than 900px */
         display: block;
     }
 `

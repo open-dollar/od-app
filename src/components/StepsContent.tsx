@@ -45,15 +45,19 @@ export default StepsContent
 const Container = styled.div`
     text-align: center;
     margin-top: 20px;
+    display: flex;
+    align-items: center;
 `
 
 const StepperWrapper = styled.div`
     padding-top: 22px;
     padding-bottom: 22px;
     padding-left: 34px;
+    padding-right: 28px;
     background-color: white;
     border-radius: 4px;
     box-shadow: 0px 4px 6px 0px #0D4B9D33;
+    width: fit-content;
 `
 
 const Title = styled.div`

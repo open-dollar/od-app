@@ -356,7 +356,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         networkCheckerCallBack()
-    }, [networkCheckerCallBack])
+    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>

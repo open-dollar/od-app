@@ -95,11 +95,6 @@ const Analytics = () => {
                     'Next system price of the collateral, this value is already quoted, and will impact the system on the next price update.',
             },
             { name: 'Stability Fee', description: 'Annual interest rate paid by Safe owners on their debt.' },
-            // {
-            //     name: 'Borrow Rate',
-            //     description:
-            //         'Total annual interest paid by Safe owners on their debt, includes "Stability Fee" and "Annual Redemption Rate".',
-            // },
             { name: 'Total Debt', description: 'Total amount of OD minted per collateral.' },
             {
                 name: 'Debt Utilization',

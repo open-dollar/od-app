@@ -40,7 +40,6 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
 
                                     return (
                                         <>
-                                            {console.log({ value }, valueIndex)}
                                             <HeadsContainer key={'row-item-' + valueIndex}>
                                                 <ListItem index={valueIndex}>
                                                     <ListItemLabel>{colums[valueIndex]?.name}</ListItemLabel>

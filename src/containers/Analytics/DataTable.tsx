@@ -33,10 +33,6 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                         {rows?.map((item, index) => (
                             <List key={'row-' + index}>
                                 {item?.map((value, valueIndex) => {
-                                    // skip borrow rate info
-                                    if (valueIndex === 6) {
-                                        return null
-                                    }
                                     return (
                                         <HeadsContainer key={'row-item-' + valueIndex}>
                                             <ListItem index={valueIndex}>

@@ -278,6 +278,7 @@ const Analytics = () => {
                                 value?.currentPrice?.toString()
                             )
                             totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+
                             return [
                                 key,
                                 [
@@ -286,7 +287,6 @@ const Analytics = () => {
                                     <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
                                     formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
                                     formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
-                                    transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
                                     transformToAnnualRate(
                                         multiplyRates(
                                             value?.stabilityFee?.toString(),

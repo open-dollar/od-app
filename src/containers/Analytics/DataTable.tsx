@@ -35,8 +35,12 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                                 {item?.map((value, valueIndex) => (
                                     <HeadsContainer key={'row-item-' + valueIndex}>
                                         <ListItem index={valueIndex}>
-                                            <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
-                                            {value}
+                                            {/* {console.log("column label: ", colums[valueIndex], "column value: ", value)} */}
+                                            {/* if I remove column, there is a wrong switch and all collumns are mixed */}
+                                            {colums[valueIndex] && (
+                                                <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
+                                            )}
+                                            {colums[valueIndex] && value}
                                         </ListItem>
                                     </HeadsContainer>
                                 ))}

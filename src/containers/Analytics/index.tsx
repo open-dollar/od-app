@@ -161,12 +161,6 @@ const Analytics = () => {
         description: 'Vault NFTs',
     }
 
-    const annualStabilityFee = {
-        title: 'Annual Stability fee',
-        value: '2.0%',
-        description: 'Mock dada for Annual Stability fee',
-    }
-
     const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
 
     const liquidityUniswap = {
@@ -245,8 +239,6 @@ const Analytics = () => {
         vaultNFTs,
     ]
 
-    const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
-
     const systemInfoData: DataCardProps[] = [
         circulation,
         // feesPendingAuction,
@@ -259,6 +251,8 @@ const Analytics = () => {
         marketPriceData, // check for market price OD not OD
         redemptionPriceData,
         liquidityUniswap,
+        annualRedemptionRate,
+        eightHourlyRedemptionRate
         // marketPriceODG,
     ]
 
@@ -376,30 +370,6 @@ const Analytics = () => {
                         ))}
                 </AnaliticsTop>
                 <AnaliticsMiddle>
-                    {systemRatesData && (
-                        <LeftColumn>
-                            <SubTitle>System Rates</SubTitle>
-                            <LeftTopRow>
-                                <DataCard
-                                    title={systemRatesData[0].title}
-                                    value={systemRatesData[0].value}
-                                    description={systemRatesData[0].description}
-                                />
-                            </LeftTopRow>
-                            <FlexMultipleRow>
-                                <DataCard
-                                    title={systemRatesData[1].title}
-                                    value={systemRatesData[1].value}
-                                    description={systemRatesData[1].description}
-                                />
-                                <DataCard
-                                    title={systemRatesData[2].title}
-                                    value={systemRatesData[2].value}
-                                    description={systemRatesData[2].description}
-                                />
-                            </FlexMultipleRow>
-                        </LeftColumn>
-                    )}
                     {systemInfoData && (
                         <RightColumn>
                             <SubTitle>System Info</SubTitle>

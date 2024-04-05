@@ -32,18 +32,24 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                     <ListContainer>
                         {rows?.map((item, index) => (
                             <List key={'row-' + index}>
-                                {item?.map((value, valueIndex) => (
-                                    <HeadsContainer key={'row-item-' + valueIndex}>
-                                        <ListItem index={valueIndex}>
-                                            {/* {console.log("column label: ", colums[valueIndex], "column value: ", value)} */}
-                                            {/* if I remove column, there is a wrong switch and all collumns are mixed */}
-                                            {colums[valueIndex] && (
-                                                <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
-                                            )}
-                                            {colums[valueIndex] && value}
-                                        </ListItem>
-                                    </HeadsContainer>
-                                ))}
+                                {item?.map((value, valueIndex) => {
+                                    // Skip rendering the item if valueIndex is 6
+                                    if (valueIndex === 6) {
+                                        return null
+                                    }
+
+                                    return (
+                                        <>
+                                            {console.log({ value }, valueIndex)}
+                                            <HeadsContainer key={'row-item-' + valueIndex}>
+                                                <ListItem index={valueIndex}>
+                                                    <ListItemLabel>{colums[valueIndex]?.name}</ListItemLabel>
+                                                    {value}
+                                                </ListItem>
+                                            </HeadsContainer>
+                                        </>
+                                    )
+                                })}
                             </List>
                         ))}
                     </ListContainer>

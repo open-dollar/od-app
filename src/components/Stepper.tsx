@@ -11,7 +11,7 @@ interface StepProps {
 
 const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent, isLastStep }) => {
     return (
-        <Container>
+        <Container  isLastStep={isLastStep}>
             <StepWrapper>
                 <CircleWrapper>
                     <Circle isCompleted={isCompleted} isCurrent={isCurrent}>
@@ -55,14 +55,16 @@ const Stepper: React.FC<StepperProps> = ({ step, steps }: { step: number; steps:
 
 export default Stepper
 
-const Container = styled.div`
+const Container = styled.div<{ isLastStep: boolean }>`
     display: flex;
+    flex: ${(props) => (props.isLastStep ? 'none' : '1')};
     align-items: flex-start;
     flex-direction: column;
 `
 
 const StepWrapper = styled.div`
     display: flex;
+    width: 100%;
     align-items: center;
 `
 
@@ -87,12 +89,8 @@ const Circle = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
 
 const Line = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
     height: 3px;
-    width: 340px;
+    flex: 1;
     background: ${(props) => (props.isCompleted ? 'linear-gradient(90deg, #DDF08B 0%, #00B1F5 100%)' : '#1C293A4D')};
-
-    @media (max-width: 960px) {
-        width: 100px;
-    }
 `
 
 const Title = styled.h3`

@@ -88,7 +88,7 @@ const StepperWrapper = styled.div`
     background-color: white;
     border-radius: 4px;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
-    width: fit-content;
+    width: 100%;
     margin-bottom: 105px;
 `
 

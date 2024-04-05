@@ -37,16 +37,13 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                                     if (valueIndex === 6) {
                                         return null
                                     }
-
                                     return (
-                                        <>
-                                            <HeadsContainer key={'row-item-' + valueIndex}>
-                                                <ListItem index={valueIndex}>
-                                                    <ListItemLabel>{colums[valueIndex]?.name}</ListItemLabel>
-                                                    {value}
-                                                </ListItem>
-                                            </HeadsContainer>
-                                        </>
+                                        <HeadsContainer key={'row-item-' + valueIndex}>
+                                            <ListItem index={valueIndex}>
+                                                <ListItemLabel>{colums[valueIndex]?.name}</ListItemLabel>
+                                                {value}
+                                            </ListItem>
+                                        </HeadsContainer>
                                     )
                                 })}
                             </List>

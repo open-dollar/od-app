@@ -10,6 +10,7 @@ import Safes from './containers/Vaults'
 import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
+import Bridge from './containers/Bridge'
 import { useStoreState } from './store'
 import { Theme } from './utils/interfaces'
 import { darkTheme } from './utils/themes/dark'
@@ -67,6 +68,7 @@ const App = () => {
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
+                                                <Route exact strict component={Bridge} path={'/bridge'} />
                                                 <Route
                                                     exact
                                                     strict

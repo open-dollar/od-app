@@ -189,7 +189,7 @@ export const network_name = () => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
     if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
     if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
-    return 'arbitrum-sepolia'
+    else return 'arbitrum-sepolia'
 }
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)

@@ -5,6 +5,7 @@ import { IODSafeManager } from '@opendollar/sdk/lib/typechained'
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
 import { formatNumber } from '~/utils/helper'
+import { GebDeployment } from '@opendollar/sdk'
 import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 
@@ -18,7 +19,7 @@ export default function useGeb(): Geb {
 
     useEffect(() => {
         if (!provider) return
-        const geb = new Geb(network_name(), provider.getSigner())
+        const geb = new Geb(network_name() as GebDeployment, provider.getSigner())
         setState(geb)
     }, [provider])
 

@@ -129,6 +129,7 @@ const SideMenu = () => {
     }
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return;
         async function fetchData() {
             if (geb) {
                 try {
@@ -165,7 +166,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb])
+    }, [geb, chainId])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)

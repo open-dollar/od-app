@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useCallback } from 'react'
-import { getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
+import { GebDeployment, getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
@@ -66,8 +66,8 @@ const Shared = ({ children, ...rest }: Props) => {
     const { pathname } = location
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
-    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
-    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
+    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK as GebDeployment).OD.address)
+    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK as GebDeployment).ODG.address)
 
     const {
         settingsModel: settingsState,
@@ -175,10 +175,6 @@ const Shared = ({ children, ...rest }: Props) => {
     useEffect(() => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
-
-    // useEffect(() => {
-    //     connectWalletActions.fetchFiatPrice()
-    // }, [connectWalletActions])
 
     const fetchUserCountry = async () => {
         try {
@@ -323,7 +319,32 @@ const Shared = ({ children, ...rest }: Props) => {
             )
             return
         }
-        if (chainId && chainId !== id) {
+        
+        if (document.querySelector('#networkToastHash') !== null) {
+            document.querySelector('#networkToastHash')?.remove()
+        }
+        settingsActions.setBlockBody(false)
+        connectWalletActions.setIsWrongNetwork(false)
+        if (account) {
+            sanctionsCheck()
+            geoBlockCheck()
+            connectWalletActions.setStep(1)
+            accountChecker()
+        }
+    }
+    /*eslint-disable-next-line*/
+    const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
+
+    useEffect(() => {
+        networkCheckerCallBack()
+    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (chainId && chainId === NETWORK_ID) {
+            toast.dismiss(toastId);
+        }
+        if (chainId && chainId !== NETWORK_ID) {
+            const id: ChainId = NETWORK_ID
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)
             toast(
@@ -336,27 +357,9 @@ const Shared = ({ children, ...rest }: Props) => {
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
-            await checkAndSwitchMetamaskNetwork()
-        } else {
-            if (document.querySelector('#networkToastHash') !== null) {
-                document.querySelector('#networkToastHash')?.remove()
-            }
-            settingsActions.setBlockBody(false)
-            connectWalletActions.setIsWrongNetwork(false)
-            if (account) {
-                sanctionsCheck()
-                geoBlockCheck()
-                connectWalletActions.setStep(1)
-                accountChecker()
-            }
+            checkAndSwitchMetamaskNetwork()
         }
-    }
-    /*eslint-disable-next-line*/
-    const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
-
-    useEffect(() => {
-        networkCheckerCallBack()
-    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [chainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>

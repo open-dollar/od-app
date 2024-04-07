@@ -7,9 +7,11 @@ import { formatDataNumber, multiplyWad } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
+import { useActiveWeb3React } from '~/hooks'
 
 const Stats = () => {
     const geb = useGeb()
+    const { chainId } = useActiveWeb3React()
     const [state, setState] = useState({
         totalVaults: '',
         wETHBalance: '',
@@ -18,6 +20,7 @@ const Stats = () => {
     })
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return;
         async function fetchData() {
             if (geb) {
                 let totalLockedValue = BigNumber.from('0')
@@ -44,7 +47,7 @@ const Stats = () => {
         }
 
         fetchData()
-    }, [geb])
+    }, [geb, chainId])
 
     return (
         <ComponentContainer>

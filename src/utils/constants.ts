@@ -19,7 +19,7 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
 export enum Network {
     ARBITRUM = 'arbitrum',
     ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
-    OPTIMISM = 'optimism'
+    OPTIMISM = 'optimism',
 }
 
 const getNetwork = (): Network => {

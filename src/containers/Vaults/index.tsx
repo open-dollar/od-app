@@ -24,7 +24,7 @@ const OnBoarding = ({ ...props }) => {
     const address: string = props.match.params.address ?? ''
 
     useEffect(() => {
-        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return;
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
@@ -32,7 +32,7 @@ const OnBoarding = ({ ...props }) => {
             connectWalletState.isWrongNetwork
         )
             return
-        
+
         async function fetchSafes() {
             await safeActions.fetchUserSafes({
                 address: address || (account as string),
@@ -57,7 +57,16 @@ const OnBoarding = ({ ...props }) => {
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, provider, safeActions, chainId])
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
     useEffect(() => {
         if (account && address) {

@@ -319,7 +319,7 @@ const Shared = ({ children, ...rest }: Props) => {
             )
             return
         }
-        
+
         if (document.querySelector('#networkToastHash') !== null) {
             document.querySelector('#networkToastHash')?.remove()
         }
@@ -341,7 +341,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {
-            toast.dismiss(toastId);
+            toast.dismiss(toastId)
         }
         if (chainId && chainId !== NETWORK_ID) {
             const id: ChainId = NETWORK_ID

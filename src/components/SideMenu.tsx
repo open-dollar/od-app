@@ -129,7 +129,7 @@ const SideMenu = () => {
     }
 
     useEffect(() => {
-        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return;
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 try {

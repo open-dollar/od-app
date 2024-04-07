@@ -15,6 +15,7 @@ export interface PopupsModel {
     hasFLXClaim: boolean
     isProxyModalOpen: boolean
     isScreenModalOpen: boolean
+    isBridgeModalOpen: boolean
     isVotingModalOpen: boolean
     auctionOperationPayload: IAuctionOperation
     liquidateSafePayload: { safeId: string } | null
@@ -31,6 +32,7 @@ export interface PopupsModel {
     setIsScreenModalOpen: Action<PopupsModel, boolean>
     setIsConnectorsWalletOpen: Action<PopupsModel, boolean>
     setIsLoadingModalOpen: Action<PopupsModel, LoadingPayload>
+    setIsBridgeModalOpen: Action<PopupsModel, boolean>
     setSafeOperationPayload: Action<PopupsModel, IOperation & { isCreate: boolean }>
     setAlertPayload: Action<PopupsModel, IAlert | null>
     setESMOperationPayload: Action<PopupsModel, IOperation>
@@ -60,6 +62,7 @@ const popupsModel: PopupsModel = {
     isWaitingModalOpen: false,
     isSafeManagerOpen: false,
     isClaimPopupOpen: false,
+    isBridgeModalOpen: true,
     liquidateSafePayload: null,
     returnProxyFunction: () => {},
     waitingPayload: {
@@ -139,6 +142,9 @@ const popupsModel: PopupsModel = {
     setAuctionOperationPayload: action((state, payload) => {
         state.auctionOperationPayload = payload
     }),
+    setIsBridgeModalOpen: action((state, payload) => {
+        state.isBridgeModalOpen = payload
+    }),
     setIsWaitingModalOpen: action((state, payload) => {
         state.isWaitingModalOpen = payload
         if (!payload) {
@@ -151,6 +157,7 @@ const popupsModel: PopupsModel = {
             }
         }
     }),
+
     setWaitingPayload: action((state, payload) => {
         state.waitingPayload = payload
     }),

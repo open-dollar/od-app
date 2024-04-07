@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
-
+import BridgeModal from '~/components/Modals/BridgeModal'
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
@@ -41,7 +41,7 @@ const Bridge = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                Bridge
+                <BridgeModal />
             </Content>
         </Container>
     )

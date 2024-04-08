@@ -5,32 +5,32 @@ import { useStoreState } from '~/store';
 import { getTokenLogo } from '~/utils';
 import { formatWithCommas } from '~/utils';
 import Dropdown from '~/components/Dropdown';
+import { formatBridgeUrl } from '~/utils/formatBridgeUrl';
 
 interface BridgeFundsFormProps {
   // Add any props you need here
 }
 
 const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
-  const [selectedItem, setSelectedItem] = useState('OD');
   const [loading, setLoading] = useState(false);
-  const [fromTokenAddress, setFromTokenAddress] = useState('');
-  const [toTokenAddress, setToTokenAddress] = useState('');
-  const [amount, setAmount] = useState('');
-  const [fromChain, setFromChain] = useState('');
-  const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
-  const { proxyAddress, tokensData } = connectWalletState
-  const collaterals = tokensData && Object.values(tokensData).filter((token) => token.isCollateral)
-  const collateralsDropdown = collaterals?.map((collateral) => {
-    return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
-  })
+  const [fromTokenAddress, setFromTokenAddress] = useState('0x6B175474E89094C44Da98b954EedeAC495271d0F'); //DAI ETH
+  const [toTokenAddress, setToTokenAddress] = useState('0x5979D7b546E38E414F7E9822514be443A4800529'); //WSETH ARB
+  const [amount, setAmount] = useState('100');
+  const [fromChain, setFromChain] = useState(10);
+ 
+  const handleBridge = async () => {
+    setLoading(true)
+    const url = formatBridgeUrl(amount, fromTokenAddress, fromChain, toTokenAddress)
+    window.open(url, '_blank')
+  }
 
-  const dropdownSelected = collateralsDropdown?.find((item) => item.name === selectedItem)!
-  if (!tokensData?.OD || !selectedItem || !dropdownSelected) return null
+  // const dropdownSelected = collateralsDropdown?.find((item) => item.name === selectedItem)!
+  // if (!tokensData?.OD || !selectedItem || !dropdownSelected) return <>No items</>
   return (
     // Add your JSX code here
     <Container>
       <Content>
-        <Dropdown
+        {/* <Dropdown
           items={collateralsDropdown!}
           itemSelected={dropdownSelected!}
           getSelectedItem={setSelectedItem}
@@ -48,7 +48,8 @@ const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
           value={amount}
           handleMaxClick={() => setAmount('')}
           data_test_id="repay_withdraw"
-        />
+        /> */}
+        <button onClick={handleBridge}>Bridge</button>
       </Content>
     </Container>
   );

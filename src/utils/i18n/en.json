@@ -81,6 +81,7 @@
     "proxy_wallet_text": "Your wallet is connected! Now, let's create your Account",
     "shutdown_text": "The global settlement procedure was triggered for this system. You can't manage your Vaults from this application anymore.",
     "block_connection": "Blockchain Connection",
+    "bridge": "Bridge",
     "insurance": "Insurance",
     "redemption_price_tip": "The 'moving peg' that the OD market price should return to",
     "collateral_ratio_tip": "The ratio between the value of the collateral and the value of debt in your Vault",

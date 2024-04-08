@@ -23,32 +23,23 @@ const NavLinks = () => {
         }
     }
 
+    const links = [{ name: 'app', to: '/vaults' }, { name: 'auctions', to: '/auctions' }, { name: 'stats', to: '/stats' }, { name: 'bridge', to: '/bridge'}]
+
     return (
         <Nav>
-            <NavBarLink
-                id="app-link"
-                to="/vaults"
-                onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
-            >
-                {t('app')}
-            </NavBarLink>
-            <NavBarLink
-                id="auction-link"
-                to="/auctions"
-                onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
-            >
-                {t('auctions')}
-            </NavBarLink>
-            <NavBarLink
-                id="stats-link"
-                to="/stats"
-                onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/stats') ? 'activeLink' : ''}
-            >
-                {t('stats')}
-            </NavBarLink>
+            {links.map((link) => {
+                return (
+                    <NavBarLink
+                        key={`link-${link.name}`}
+                        to={link.to}
+                        id={`${link.name}-link`}
+                        onClick={(e) => handleLinkClick(e, false)}
+                        className={location.pathname.startsWith(link.to) ? 'activeLink' : ''}
+                    >
+                        {t(link.name)}
+                    </NavBarLink>
+                )    
+            })}
         </Nav>
     )
 }

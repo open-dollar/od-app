@@ -5,6 +5,7 @@ import BridgeModal from '~/components/Modals/BridgeModal'
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
+import BridgeFundsForm from './BridgeFundsForm'
 
 const Bridge = ({ ...props }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,9 +41,7 @@ const Bridge = ({ ...props }) => {
 
     return (
         <Container id="app-page">
-            <Content>
-                <BridgeModal />
-            </Content>
+            <BridgeFundsForm />
         </Container>
     )
 }

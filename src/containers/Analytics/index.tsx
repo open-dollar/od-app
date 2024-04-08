@@ -498,13 +498,7 @@ const AnaliticsBottom = styled.div`
     `}
 `
 
-const LeftColumn = styled.div``
-
 const RightColumn = styled.div``
-
-const LeftTopRow = styled.div`
-    margin-bottom: 24px;
-`
 
 const FlexMultipleRow = styled.div`
     display: flex;

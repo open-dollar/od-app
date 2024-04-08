@@ -21,7 +21,7 @@ const Accounts = () => {
     return (
         <Container>
             <Content>
-                <ImageContainer>{returnLottie()}</ImageContainer>
+                {/* <ImageContainer>{returnLottie()}</ImageContainer> */}
                 <Steps />
             </Content>
         </Container>

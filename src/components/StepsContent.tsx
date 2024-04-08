@@ -24,6 +24,8 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
 
     const returnLottie = (step: number) => {
         switch (step) {
+            case 0:
+                return <img src={require('../assets/closed-vault.png')} alt="" />
             case 1:
                 return <img src={require('../assets/wallet.png')} alt="" />
             case 2:
@@ -32,15 +34,19 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                 return <img src={require('../assets/od-land.png')} alt="" />
         }
     }
+    console.log({ stepNumber })
 
     return (
         <Container id={id}>
-            <StepperWrapper>
-                <Stepper step={stepNumber} steps={steps} />
-            </StepperWrapper>
-            <ContentContainer>
+            {stepNumber > 0 && (
+                <StepperWrapper>
+                    <Stepper step={stepNumber} steps={steps} />
+                </StepperWrapper>
+            )}
+
+            <ContentContainer stepNumber={0}>
                 <ImageContainer>{returnLottie(stepNumber)}</ImageContainer>
-                <ContentWrapper>
+                <ContentWrapper stepNumber={0}>
                     <Title>{t(title)}</Title>
                     <Text>{t(text)}</Text>
                     <Button
@@ -69,14 +75,16 @@ const Container = styled.div`
 
 const ImageContainer = styled.div``
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ stepNumber: number }>`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: ${(props) => (props.stepNumber === 0 ? 'center' : 'flex-start')};
 `
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{ stepNumber: number }>`
     display: flex;
+    flex-direction: ${(props) => (props.stepNumber === 0 ? 'column' : 'row')};
+    justify-content: center;
     max-width: 923px;
 `
 
@@ -92,22 +100,21 @@ const StepperWrapper = styled.div`
     margin-bottom: 105px;
 `
 
-const Title = styled.div`
+const Title = styled.h2`
     /* font-size: ${(props) => props.theme.font.large}; */
-    font-size: 28px;
+    font-size: 60px;
     font-weight: 600;
     /* color: ${(props) => props.theme.colors.neutral}; */
     color: #1c293a;
     margin-bottom: 10px;
 `
 
-const Text = styled.div`
+const Text = styled.p`
     /* font-size: ${(props) => props.theme.font.small}; */
-    font-size: 18px;
-    text-align: start;
+    font-size: 28px;
+    /* text-align: start; */
     /* color: ${(props) => props.theme.colors.secondary}; */
     color: #475662;
     margin-bottom: 20px;
-    line-height: 21px;
-    max-width: 550px;
+    line-height: 38px;
 `

@@ -51,14 +51,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const tokenBalances = connectWalletModel.tokensFetchedData
     const tokensData = connectWalletModel.tokensData
     const depositTokenBalance = singleSafe
-        ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balanceE18)
+        ? ethers.utils.formatEther(tokenBalances[singleSafe?.collateralName]?.balanceE18 ?? 0)
         : '-'
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
 
     const [collateralInUSD, setCollateralInUSD] = useState('0')
 
-    const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
+    const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe?.collateralName]?.decimals : '18'
 
     const isMaxRepayAmount = parsedAmounts.rightInput === availableHai && availableHai !== '0'
 

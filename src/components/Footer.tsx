@@ -111,9 +111,9 @@ const FooterContainer = styled.div`
     padding-bottom: 60px;
     width: 100%;
     flex-direction: row;
-    background: linear-gradient(to bottom, #1A74EC, #6396FF);
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     color: ${(props) => props.theme.colors.blueish};
-    
+
     @media (max-width: 767px) {
         flex-direction: column;
         justify-content: start;
@@ -147,7 +147,7 @@ const Column = styled.div`
         padding-left: 20px;
         padding-right: 20px;
     }
-    
+
     &.logoRow {
         @media (max-width: 767px) {
             width: 100%;

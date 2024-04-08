@@ -32,14 +32,16 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                     <ListContainer>
                         {rows?.map((item, index) => (
                             <List key={'row-' + index}>
-                                {item?.map((value, valueIndex) => (
-                                    <HeadsContainer key={'row-item-' + valueIndex}>
-                                        <ListItem index={valueIndex}>
-                                            <ListItemLabel>{colums[valueIndex].name}</ListItemLabel>
-                                            {value}
-                                        </ListItem>
-                                    </HeadsContainer>
-                                ))}
+                                {item?.map((value, valueIndex) => {
+                                    return (
+                                        <HeadsContainer key={'row-item-' + valueIndex}>
+                                            <ListItem index={valueIndex}>
+                                                <ListItemLabel>{colums[valueIndex]?.name}</ListItemLabel>
+                                                {value}
+                                            </ListItem>
+                                        </HeadsContainer>
+                                    )
+                                })}
                             </List>
                         ))}
                     </ListContainer>

@@ -144,7 +144,7 @@ export default function WalletModal() {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
-    
+
     function getHeaderContent() {
         if (process.env.REACT_APP_NETWORK_ID === '42161') {
             return (
@@ -164,7 +164,7 @@ export default function WalletModal() {
                     </a>
                 </h5>
             )
-        }  else if (process.env.REACT_APP_NETWORK_ID === '420') {
+        } else if (process.env.REACT_APP_NETWORK_ID === '420') {
             return (
                 <h5>
                     {t('not_supported')}{' '}
@@ -173,7 +173,6 @@ export default function WalletModal() {
                     </a>
                 </h5>
             )
-
         } else {
             return (
                 <h5>
@@ -193,9 +192,7 @@ export default function WalletModal() {
                 {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>
-                        <ContentWrapper>
-                            {getHeaderContent()}
-                        </ContentWrapper>
+                        <ContentWrapper>{getHeaderContent()}</ContentWrapper>
                     </>
                 ) : (
                     <HeaderRow>

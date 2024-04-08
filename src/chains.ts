@@ -76,7 +76,7 @@ export const TESTNET_CHAINS: ChainConfig = {
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
-    }
+    },
 }
 
 const supportedChainId = parseInt(process.env.REACT_APP_NETWORK_ID || '', 10)

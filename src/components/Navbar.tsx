@@ -17,8 +17,10 @@ import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
+import { useActiveWeb3React } from '~/hooks'
 
 const Navbar = () => {
+    const { chainId } = useActiveWeb3React()
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const [state, setState] = useState({
         odPrice: '',
@@ -136,6 +138,7 @@ const Navbar = () => {
     }, [connectWalletModel.tokensFetchedData])
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 try {
@@ -171,7 +174,7 @@ const Navbar = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb])
+    }, [geb, chainId])
 
     return (
         <Container>

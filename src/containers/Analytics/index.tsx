@@ -95,11 +95,6 @@ const Analytics = () => {
                     'Next system price of the collateral, this value is already quoted, and will impact the system on the next price update.',
             },
             { name: 'Stability Fee', description: 'Annual interest rate paid by Safe owners on their debt.' },
-            {
-                name: 'Borrow Rate',
-                description:
-                    'Total annual interest paid by Safe owners on their debt, includes "Stability Fee" and "Annual Redemption Rate".',
-            },
             { name: 'Total Debt', description: 'Total amount of OD minted per collateral.' },
             {
                 name: 'Debt Utilization',
@@ -159,12 +154,6 @@ const Analytics = () => {
         title: 'Vault NFTs',
         value: totalVaults,
         description: 'Vault NFTs',
-    }
-
-    const annualStabilityFee = {
-        title: 'Annual Stability fee',
-        value: '2.0%',
-        description: 'Mock dada for Annual Stability fee',
     }
 
     const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
@@ -245,8 +234,6 @@ const Analytics = () => {
         vaultNFTs,
     ]
 
-    const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
-
     const systemInfoData: DataCardProps[] = [
         circulation,
         // feesPendingAuction,
@@ -259,6 +246,8 @@ const Analytics = () => {
         marketPriceData, // check for market price OD not OD
         redemptionPriceData,
         liquidityUniswap,
+        annualRedemptionRate,
+        eightHourlyRedemptionRate,
         // marketPriceODG,
     ]
 
@@ -284,6 +273,7 @@ const Analytics = () => {
                                 value?.currentPrice?.toString()
                             )
                             totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+
                             return [
                                 key,
                                 [
@@ -292,7 +282,6 @@ const Analytics = () => {
                                     <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
                                     formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
                                     formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
-                                    transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
                                     transformToAnnualRate(
                                         multiplyRates(
                                             value?.stabilityFee?.toString(),
@@ -376,30 +365,6 @@ const Analytics = () => {
                         ))}
                 </AnaliticsTop>
                 <AnaliticsMiddle>
-                    {systemRatesData && (
-                        <LeftColumn>
-                            <SubTitle>System Rates</SubTitle>
-                            <LeftTopRow>
-                                <DataCard
-                                    title={systemRatesData[0].title}
-                                    value={systemRatesData[0].value}
-                                    description={systemRatesData[0].description}
-                                />
-                            </LeftTopRow>
-                            <FlexMultipleRow>
-                                <DataCard
-                                    title={systemRatesData[1].title}
-                                    value={systemRatesData[1].value}
-                                    description={systemRatesData[1].description}
-                                />
-                                <DataCard
-                                    title={systemRatesData[2].title}
-                                    value={systemRatesData[2].value}
-                                    description={systemRatesData[2].description}
-                                />
-                            </FlexMultipleRow>
-                        </LeftColumn>
-                    )}
                     {systemInfoData && (
                         <RightColumn>
                             <SubTitle>System Info</SubTitle>
@@ -533,13 +498,7 @@ const AnaliticsBottom = styled.div`
     `}
 `
 
-const LeftColumn = styled.div``
-
 const RightColumn = styled.div``
-
-const LeftTopRow = styled.div`
-    margin-bottom: 24px;
-`
 
 const FlexMultipleRow = styled.div`
     display: flex;

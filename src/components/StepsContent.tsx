@@ -29,13 +29,15 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
             case 1:
                 return <img src={require('../assets/wallet.png')} alt="" />
             case 2:
-                return <img src={require('../assets/od-vault.png')} alt="" />
+                return <img src={require('../assets/vault-facilitator.png')} alt="" />
+            case 3:
+                return <img src={require('../assets/opened-vault.png')} alt="" />
             default:
                 return <img src={require('../assets/od-land.png')} alt="" />
         }
     }
     console.log({ stepNumber })
-
+    stepNumber = 2
     return (
         <Container id={id}>
             {stepNumber > 0 && (
@@ -44,9 +46,9 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                 </StepperWrapper>
             )}
 
-            <ContentContainer stepNumber={0}>
+            <ContentContainer stepNumber={stepNumber}>
                 <ImageContainer>{returnLottie(stepNumber)}</ImageContainer>
-                <ContentWrapper stepNumber={0}>
+                <ContentWrapper stepNumber={stepNumber}>
                     <Title>{t(title)}</Title>
                     <Text>{t(text)}</Text>
                     <Button
@@ -73,12 +75,22 @@ const Container = styled.div`
     align-items: center;
 `
 
-const ImageContainer = styled.div``
+const ImageContainer = styled.div`
+    margin-right: 30px;
+
+    @media (max-width: 960px) {
+        margin-right: 0;
+    }
+`
 
 const ContentWrapper = styled.div<{ stepNumber: number }>`
     display: flex;
     flex-direction: column;
     align-items: ${(props) => (props.stepNumber === 0 ? 'center' : 'flex-start')};
+
+    @media (max-width: 960px) {
+        align-items: center;
+    }
 `
 
 const ContentContainer = styled.div<{ stepNumber: number }>`
@@ -86,6 +98,17 @@ const ContentContainer = styled.div<{ stepNumber: number }>`
     flex-direction: ${(props) => (props.stepNumber === 0 ? 'column' : 'row')};
     justify-content: center;
     max-width: 923px;
+
+    & img {
+        max-width: ${(props) => (props.stepNumber === 0 ? '609px' : '319px')}
+    }
+
+    @media (max-width: 960px) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
 `
 
 const StepperWrapper = styled.div`
@@ -103,7 +126,7 @@ const StepperWrapper = styled.div`
 const Title = styled.h2`
     /* font-size: ${(props) => props.theme.font.large}; */
     font-size: 60px;
-    font-weight: 600;
+    font-weight: 700;
     /* color: ${(props) => props.theme.colors.neutral}; */
     color: #1c293a;
     margin-bottom: 10px;
@@ -112,6 +135,7 @@ const Title = styled.h2`
 const Text = styled.p`
     /* font-size: ${(props) => props.theme.font.small}; */
     font-size: 28px;
+    font-weight: 400px;
     /* text-align: start; */
     /* color: ${(props) => props.theme.colors.secondary}; */
     color: #475662;

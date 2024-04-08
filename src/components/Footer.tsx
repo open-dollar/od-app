@@ -77,6 +77,9 @@ const Footer: React.FC = () => {
                         <Link target="_blank" href="https://warpcast.com/open-dollar">
                             Farcaster
                         </Link>
+                        <Link target="_blank" href="https://debank.com/official/Open_Dollar">
+                            DeBank
+                        </Link>
                     </Column>
                 </Row>
             </FooterContainer>
@@ -119,9 +122,11 @@ const FooterContainer = styled.div`
 
 const Row = styled.div`
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
     width: 100%;
+    justify-content: space-between;
+    @media (max-width: 767px) {
+        justify-content: space-between;
+    }
     &.logoContainerAndText {
         display: flex;
         flex-direction: column;
@@ -135,8 +140,8 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 
     @media (max-width: 767px) {
         padding-left: 20px;

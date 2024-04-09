@@ -16,7 +16,7 @@
 
 import type { Web3ReactHooks } from '@web3-react/core'
 import { CHAINS } from '~/chains'
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChainId']> }) {
     if (chainId === undefined) return null
@@ -46,5 +46,5 @@ const ChainHeader = styled.div`
     font-family: 'Open Sans', serif;
     font-size: 16px;
     line-height: 24px;
-    color: #E2F1FF;
+    color: #e2f1ff;
 `

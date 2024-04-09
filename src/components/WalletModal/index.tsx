@@ -185,7 +185,7 @@ const CloseIcon = styled.div`
 `
 
 const Wrapper = styled.div`
-    background: linear-gradient(to bottom, #1a74ec, #6396ff);;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     border-radius: 2.43px;
     padding: 1rem;
     width: 100%;
@@ -234,5 +234,5 @@ const HoverText = styled.div`
     }
     padding-bottom: 24.89px;
     margin-bottom: 24.89px;
-    border-bottom: 1px solid rgba(255, 255, 255, .2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `

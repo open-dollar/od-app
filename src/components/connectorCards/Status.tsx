@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import type { Web3ReactHooks } from '@web3-react/core'
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export function Status({
     isActivating,
@@ -30,7 +30,7 @@ export function Status({
         <StatusText>
             {error ? (
                 <>
-                     {error.name ?? 'Error'}
+                    {error.name ?? 'Error'}
                     {error.message ? `: ${error.message}` : null}
                 </>
             ) : isActivating ? (
@@ -49,5 +49,5 @@ const StatusText = styled.div`
     font-family: 'Open Sans', serif;
     font-size: 16px;
     line-height: 24px;
-    color: #E2F1FF;
+    color: #e2f1ff;
 `

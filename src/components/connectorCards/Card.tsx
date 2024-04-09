@@ -131,7 +131,7 @@ const NetworkCard = styled.div`
     display: flex;
     flex-direction: column;
     text-align: left;
-    margin-left: 19.4px
+    margin-left: 19.4px;
 `
 
 const NetworkHeader = styled.h3`

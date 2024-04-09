@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TokenInput from '~/components/TokenInput';
-import { useStoreState } from '~/store';
-import { getTokenLogo } from '~/utils';
-import { formatWithCommas } from '~/utils';
+import Button from '~/components/Button';
 import Dropdown from '~/components/Dropdown';
 import { formatBridgeUrl } from '~/utils/formatBridgeUrl';
 
@@ -17,39 +14,32 @@ const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
   const [toTokenAddress, setToTokenAddress] = useState('0x5979D7b546E38E414F7E9822514be443A4800529'); //WSETH ARB
   const [amount, setAmount] = useState('100');
   const [fromChain, setFromChain] = useState(10);
- 
+
+  const chains = [{ name: 'Ethereum', value: 1, icon: ''}, { name: 'Arbitrum', value: 412621, icon: ''}, { name: 'Polygon', value: 137, icon: ''}]
+  const tokens = [{ name: 'Token 1', value: '', icon: '' }, { name: 'Token 2', value: '', icon: '' }, { name: 'Token 3', value: '', icon: '' }]
   const handleBridge = async () => {
     setLoading(true)
     const url = formatBridgeUrl(amount, fromTokenAddress, fromChain, toTokenAddress)
     window.open(url, '_blank')
   }
 
-  // const dropdownSelected = collateralsDropdown?.find((item) => item.name === selectedItem)!
-  // if (!tokensData?.OD || !selectedItem || !dropdownSelected) return <>No items</>
   return (
     // Add your JSX code here
     <Container>
       <Content>
-        {/* <Dropdown
-          items={collateralsDropdown!}
-          itemSelected={dropdownSelected!}
-          getSelectedItem={setSelectedItem}
+        <Dropdown
+          items={chains}
+          itemSelected={'Ethereum'}
         />
-        <TokenInput
-          token={
-              tokensData.OD && {
-                  icon: getTokenLogo(tokensData.OD.symbol),
-                  name: tokensData.OD.symbol,
-              }
-          }
-          label={`Amount`}
-          rightLabel={`~$${formatWithCommas(amount)}`}
-          onChange={(e: any) => setAmount(e.target.value)}
-          value={amount}
-          handleMaxClick={() => setAmount('')}
-          data_test_id="repay_withdraw"
-        /> */}
-        <button onClick={handleBridge}>Bridge</button>
+        <Dropdown
+          items={tokens}
+          itemSelected={tokens[0]}
+        />
+        <Dropdown
+          items={[{ name: 'Arbitrum', value: 42161, icon: ''}]}
+          itemSelected={{ name: 'Arbitrum', value: 42161, icon: ''}}
+        />
+        <Button onClick={handleBridge} style={{ backgroundColor: 'black' }}>Bridge</Button>
       </Content>
     </Container>
   );

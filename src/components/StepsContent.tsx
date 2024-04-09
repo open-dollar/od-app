@@ -128,7 +128,8 @@ const Title = styled.h2`
     font-weight: 700;
     /* color: ${(props) => props.theme.colors.neutral}; */
     color: #1c293a;
-    margin-bottom: 10px;
+    margin-bottom: 28px;
+    margin-top: -50px;
 `
 
 const Text = styled.p`
@@ -138,6 +139,6 @@ const Text = styled.p`
     /* text-align: start; */
     /* color: ${(props) => props.theme.colors.secondary}; */
     color: #475662;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     line-height: 38px;
 `

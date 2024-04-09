@@ -5,6 +5,7 @@ import Identicon from './Icons/Identicon'
 import { MetaMask } from '@web3-react/metamask'
 import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
+import {DivNode} from "tailwindcss/src/value-parser";
 
 interface Props {
     size?: number
@@ -46,7 +47,7 @@ const ConnectedWalletIcon = ({ size }: Props) => {
 
 export default ConnectedWalletIcon
 
-export const IconWrapper = styled.div<{ size?: number }>`
+export const IconWrapper = styled.div<{ size?: number, children?: React.ReactNode, className?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;

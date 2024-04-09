@@ -16,6 +16,7 @@
 
 import type { Web3ReactHooks } from '@web3-react/core'
 import { CHAINS } from '~/chains'
+import styled from "styled-components";
 
 export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChainId']> }) {
     if (chainId === undefined) return null
@@ -24,18 +25,26 @@ export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChai
 
     if (name) {
         return (
-            <div>
+            <ChainHeader>
                 Chain:{' '}
                 <b>
                     {name} ({chainId})
                 </b>
-            </div>
+            </ChainHeader>
         )
     }
 
     return (
-        <div>
+        <ChainHeader>
             Chain Id: <b>{chainId}</b>
-        </div>
+        </ChainHeader>
     )
 }
+
+const ChainHeader = styled.div`
+    font-weight: 400;
+    font-family: 'Open Sans', serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #E2F1FF;
+`

@@ -11,7 +11,7 @@ interface StepProps {
 
 const Step: React.FC<StepProps> = ({ title, text, isCompleted, isCurrent, isLastStep }) => {
     return (
-        <Container  isLastStep={isLastStep}>
+        <Container isLastStep={isLastStep}>
             <StepWrapper>
                 <CircleWrapper>
                     <Circle isCompleted={isCompleted} isCurrent={isCurrent}>
@@ -100,7 +100,8 @@ const Title = styled.h3`
     color: #475662;
     display: none;
 
-    @media (min-width: 960px) { /* Display on screens wider than 900px */
+    @media (min-width: 960px) {
+        /* Display on screens wider than 900px */
         display: block;
     }
 `
@@ -111,7 +112,8 @@ const Text = styled.p`
     color: #475662;
     display: none;
 
-    @media (min-width: 960px) { /* Display on screens wider than 900px */
+    @media (min-width: 960px) {
+        /* Display on screens wider than 900px */
         display: block;
     }
 `

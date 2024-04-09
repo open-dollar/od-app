@@ -5,7 +5,6 @@ import Identicon from './Icons/Identicon'
 import { MetaMask } from '@web3-react/metamask'
 import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
-import { DivNode } from 'tailwindcss/src/value-parser'
 
 interface Props {
     size?: number

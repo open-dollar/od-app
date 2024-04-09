@@ -8,15 +8,9 @@ const CookieBanner = () => {
                 <CookieConsent
                     location="bottom"
                     buttonText="Accept"
-                    buttonStyle={{
-                        border: '2px solid #E2F1FF',
-                        background: 'transparent',
-                        paddingTop: '11px !important',
-                    }}
                     cookieName="cookiesAccepted"
                     style={{
                         background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
-                        boxShadow: '0 0 6px rgba(0,0,0,0.16)',
                         alignItems: 'center',
                     }}
                 >

@@ -36,8 +36,8 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                 return <img src={require('../assets/od-land.png')} alt="" />
         }
     }
-
-    stepNumber = 0
+    console.log({stepNumber})
+    stepNumber = 2
     return (
         <Container id={id}>
             {stepNumber > 0 && (
@@ -45,9 +45,8 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                     <Stepper step={stepNumber} steps={steps} />
                 </StepperWrapper>
             )}
-
             <ContentContainer stepNumber={stepNumber}>
-                <ImageContainer>{returnLottie(stepNumber)}</ImageContainer>
+                <ImageContainer stepNumber={stepNumber}>{returnLottie(stepNumber)}</ImageContainer>
                 <ContentWrapper stepNumber={stepNumber}>
                     <Title>{t(title)}</Title>
                     <Text>{t(text)}</Text>
@@ -59,8 +58,7 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                         text={t(btnText)}
                         onClick={handleClick}
                         secondary
-
-/>
+                    />
                 </ContentWrapper>
             </ContentContainer>
         </Container>
@@ -77,9 +75,9 @@ const Container = styled.div`
     align-items: center;
 `
 
-const ImageContainer = styled.div`
-    margin-right: 30px;
-    max-width: 608px;
+const ImageContainer = styled.div<{ stepNumber: number }>`
+    margin-right: ${(props) => (props.stepNumber === 0 ? '' : '30px')};
+    max-width: ${(props) => (props.stepNumber === 0 ? '608px' : '319px')};
 
     @media (max-width: 960px) {
         margin-right: 0;
@@ -101,13 +99,11 @@ const ContentContainer = styled.div<{ stepNumber: number }>`
     flex-direction: ${(props) => (props.stepNumber === 0 ? 'column' : 'row')};
     justify-content: center;
     max-width: 923px;
+    align-items: center;
 
     @media (max-width: 960px) {
         flex-direction: column;
-        align-items: center;
     }
-
-
 `
 
 const StepperWrapper = styled.div`
@@ -129,16 +125,19 @@ const Title = styled.h2`
     /* color: ${(props) => props.theme.colors.neutral}; */
     color: #1c293a;
     margin-bottom: 28px;
-    margin-top: -50px;
 `
 
 const Text = styled.p`
     /* font-size: ${(props) => props.theme.font.small}; */
     font-size: 28px;
     font-weight: 400px;
-    /* text-align: start; */
     /* color: ${(props) => props.theme.colors.secondary}; */
     color: #475662;
     margin-bottom: 28px;
     line-height: 38px;
+    text-align: start;
+
+    @media (max-width: 960px) {
+        text-align: center;
+    }
 `

@@ -3,31 +3,56 @@ import styled from 'styled-components'
 
 const CookieBanner = () => {
     return (
-        <div id="cookies-consent">
-            <CookieConsent
-                location="bottom"
-                buttonText="Accept"
-                cookieName="cookiesAccepted"
-                style={{
-                    background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
-                    boxShadow: '0 0 6px rgba(0,0,0,0.16)',
-                }}
-            >
-                <CookiesText>
-                    <p>
-                        This website uses cookies to enhance the user experience. By continuing to browse the site
-                        you're agreeing to our 
-                        <a target="_blank" href="https://opendollar.com/tos" rel="noreferrer">
-                             &nbsp;use of cookies.
-                        </a>
-                    </p>
-                </CookiesText>
-            </CookieConsent>
-        </div>
+        <StyledConsentButton>
+            <div id="cookies-consent">
+                <CookieConsent
+                    location="bottom"
+                    buttonText="Accept"
+                    buttonStyle={{
+                        border: '2px solid #E2F1FF',
+                        background: 'transparent',
+                        paddingTop: '11px !important',
+                    }}
+                    cookieName="cookiesAccepted"
+                    style={{
+                        background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
+                        boxShadow: '0 0 6px rgba(0,0,0,0.16)',
+                        alignItems: 'center',
+                    }}
+                >
+                    <CookiesText>
+                        <p>
+                            This website uses cookies to enhance the user experience. By continuing to browse the site
+                            you're agreeing to our &nbsp;
+                            <a target="_blank" href="https://opendollar.com/tos" rel="noreferrer">
+                                use of cookies
+                            </a>
+                            .
+                        </p>
+                    </CookiesText>
+                </CookieConsent>
+            </div>
+        </StyledConsentButton>
     )
 }
 
 export default CookieBanner
+
+const StyledConsentButton = styled.div`
+    #cookies-consent button {
+        border: 2px solid #e2f1ff !important;
+        border-radius: 4px !important;
+        background: transparent !important;
+        padding: 10px 30px !important;
+        font-size: 18px;
+        font-weight: 600;
+        width: 163px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+`
 
 const CookiesText = styled.span`
     color: white;

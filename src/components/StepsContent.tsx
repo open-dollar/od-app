@@ -36,8 +36,8 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                 return <img src={require('../assets/od-land.png')} alt="" />
         }
     }
-    console.log({ stepNumber })
-    stepNumber = 2
+
+    stepNumber = 0
     return (
         <Container id={id}>
             {stepNumber > 0 && (
@@ -58,7 +58,9 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                         isLoading={isLoading}
                         text={t(btnText)}
                         onClick={handleClick}
-                    />
+                        secondary
+
+/>
                 </ContentWrapper>
             </ContentContainer>
         </Container>
@@ -77,6 +79,7 @@ const Container = styled.div`
 
 const ImageContainer = styled.div`
     margin-right: 30px;
+    max-width: 608px;
 
     @media (max-width: 960px) {
         margin-right: 0;
@@ -98,10 +101,6 @@ const ContentContainer = styled.div<{ stepNumber: number }>`
     flex-direction: ${(props) => (props.stepNumber === 0 ? 'column' : 'row')};
     justify-content: center;
     max-width: 923px;
-
-    & img {
-        max-width: ${(props) => (props.stepNumber === 0 ? '609px' : '319px')}
-    }
 
     @media (max-width: 960px) {
         flex-direction: column;

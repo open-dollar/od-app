@@ -125,7 +125,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     }
 
     &:disabled {
-        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
+        background: ${(props) => (props.isLoading ? props.theme.l.colors.placeholder : props.theme.colors.secondary)};
         cursor: not-allowed;
     }
 `
@@ -136,22 +136,22 @@ const Container = styled.button<{ isLoading?: boolean }>`
     min-width: 134px;
     border: none;
     box-shadow: none;
-    padding: 8px 30px;
+    padding: 15px 45px;
     line-height: 24px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
     background: ${(props) => props.theme.colors.blueish};
-    border-radius: 50px;
+    border-radius: 3px;
     transition: all 0.3s ease;
     &.dimmedNormal {
         background: ${(props) => props.theme.colors.secondary};
     }
     &.primary {
-        background: ${(props) => props.theme.colors.colorPrimary};
+        background: ${(props) => props.theme.colors.gradientBg};
     }
     &.secondary {
-        background: ${(props) => props.theme.colors.colorSecondary};
+        background: ${(props) => props.theme.colors.secondary};
     }
     &:hover {
         opacity: 0.8;

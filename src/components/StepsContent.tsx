@@ -36,8 +36,6 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                 return <img src={require('../assets/od-land.png')} alt="" />
         }
     }
-    console.log({ stepNumber })
-    stepNumber = 2
     return (
         <Container id={id}>
             {stepNumber > 0 && (

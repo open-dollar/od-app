@@ -1,22 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/od-full-logo-grey.svg'
-import { useStoreActions } from '~/store'
-import { Link as RouterLink } from 'react-router-dom'
 
 const Footer: React.FC = () => {
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
-    const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, disable = false, externalLink = '') => {
-        if (disable) {
-            e.preventDefault()
-        }
-        popupsActions.setShowSideMenu(false)
-        if (externalLink) {
-            window.open(externalLink, '_blank')
-            e.preventDefault()
-        }
-    }
     return (
         <FooterAndImageContainer>
             <FooterContainer>

@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Logo from '../assets/od-full-logo-grey.svg'
 
 const Footer: React.FC = () => {
-
     return (
         <FooterAndImageContainer>
             <FooterContainer>

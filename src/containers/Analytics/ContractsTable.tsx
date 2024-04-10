@@ -4,8 +4,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { Container, Content, Head, Heads, HeadsContainer, List, ListItemLabel, SectionContent } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
-import CopyIconBlue from '~/components/Icons/CopyIconBlue'
-import { useState } from 'react'
 
 interface ContractsTableProps {
     title: string
@@ -54,27 +52,10 @@ const reorderRows = (rows: string[][]) => {
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
     const { chainId } = useWeb3React()
 
     const reorderedColumns = reorderColumns(colums)
     const reorderedRows = reorderRows(rows)
-
-    const handleCopyAddress = (address: string) => {
-        navigator.clipboard.writeText(address || '')
-
-        setTooltips((prevTooltips) => ({
-            ...prevTooltips,
-            [address]: 'Copied',
-        }))
-
-        setTimeout(() => {
-            setTooltips((prevTooltips) => ({
-                ...prevTooltips,
-                [address]: 'Copy',
-            }))
-        }, 2000)
-    }
 
     return (
         <Container>
@@ -211,12 +192,4 @@ const SListItem = styled.div<ListItemProps>`
     flex: 0 0 100%;
     min-width:50%;
   `}
-`
-
-const WrapperIcon = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-left: 16px;
-    width: 20px;
-    height: 20px;
 `

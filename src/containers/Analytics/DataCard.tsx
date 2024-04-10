@@ -2,14 +2,6 @@ import { ReactNode } from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
-import { getTokenLogo } from '~/utils'
-
-const images: { [key: string]: string } = {
-    ETH: require('../../assets/eth-icon.svg').default,
-    OD: getTokenLogo('OD'),
-    NFTS: require('../../assets/nfts-icon.svg').default,
-}
-
 export interface DataCardProps {
     title: string
     value: string

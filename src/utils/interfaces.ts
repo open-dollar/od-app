@@ -22,6 +22,7 @@ interface IColors {
     neutral: string
     background: string
     accent: string
+    gradientBg: string
     // deprecated colors
     gradient: string
     overlay: string

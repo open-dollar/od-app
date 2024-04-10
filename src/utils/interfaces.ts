@@ -468,3 +468,11 @@ export interface CallResults {
         }
     }
 }
+
+export interface BridgeTransaction {
+    fromTokenAddress: string,
+    originChain: number,
+    toChain?: number,
+    toTokenAddress?: string,
+    amount?: string
+}

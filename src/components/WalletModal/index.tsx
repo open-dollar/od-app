@@ -173,11 +173,11 @@ export default function WalletModal() {
 
 const CloseIcon = styled.div`
     position: absolute;
-    right: 1rem;
-    top: 14px;
+    left: 24rem;
+    top: -64px;
     font-size: 30px;
     z-index: 2;
-    color: ${(props) => props.theme.colors.neutral};
+    color: black;
     &:hover {
         cursor: pointer;
         opacity: 0.6;
@@ -185,15 +185,14 @@ const CloseIcon = styled.div`
 `
 
 const Wrapper = styled.div`
-    margin: 0;
-    padding: 0;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
+    border-radius: 2.43px;
+    padding: 1rem;
     width: 100%;
-    background: ${(props) => props.theme.colors.background};
-    border-radius: 20px;
 `
 
 const HeaderRow = styled.div`
-    padding: 1rem 1rem;
+    text-align: center;
     font-weight: 800;
 `
 
@@ -226,8 +225,14 @@ const UpperSection = styled.div`
 const HoverText = styled.div`
     color: ${(props) => props.theme.colors.neutral};
     position: relative;
+    font-size: 19.04px;
+    line-height: 25.93px;
+    font-weight: 700;
     top: 10px;
     :hover {
         cursor: pointer;
     }
+    padding-bottom: 24.89px;
+    margin-bottom: 24.89px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `

@@ -10,14 +10,13 @@ const images: { [key: string]: string } = {
 }
 
 export interface DataCardProps {
-    image?: string
     title: string
     value: string
     description?: string
     children?: React.ReactChildren | React.ReactChild
 }
 
-const DataCard = ({ title, image, value, description, children }: DataCardProps) => {
+const DataCard = ({ title, value, description, children }: DataCardProps) => {
     return (
         <Block>
             {description && (
@@ -25,9 +24,6 @@ const DataCard = ({ title, image, value, description, children }: DataCardProps)
                     <Info size="20" />
                 </InfoIcon>
             )}
-
-            {image && <img src={images[`${image}`]} alt={image} width="50px" height="50px" />}
-
             <DataTitle>{title}</DataTitle>
             <DataValue>{value}</DataValue>
             {children}
@@ -48,7 +44,8 @@ const Block = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 20px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    color: white;
+    background: ${(props) => props.theme.colors.primary};
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         max-width: 100%;

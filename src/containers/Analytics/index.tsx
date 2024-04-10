@@ -368,7 +368,6 @@ const Analytics = () => {
                         analiticsData?.map((val, index) => (
                             <DataCard
                                 key={val.title + index}
-                                image={val.image}
                                 title={val.title}
                                 value={val.value}
                                 description={val.description}

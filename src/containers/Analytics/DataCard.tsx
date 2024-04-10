@@ -35,7 +35,7 @@ const DataCard = ({ title, bg, value, description, children }: DataCardProps) =>
 
 export default DataCard
 
-const Block = styled.div<{ bg: 'light' | 'dark', children: ReactNode }>`
+const Block = styled.div<{ bg: 'light' | 'dark'; children: ReactNode }>`
     position: relative;
     display: flex;
     flex-direction: column;

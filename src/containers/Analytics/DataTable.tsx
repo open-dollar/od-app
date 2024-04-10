@@ -191,7 +191,7 @@ export const Head = styled.p`
     font-size: 12px;
     width: 174px;
     font-weight: 400;
-    
+
     text-transform: uppercase;
     color: ${(props) => props.theme.colors.tertiary};
     padding-left: 10px;

@@ -437,6 +437,7 @@ const Analytics = () => {
                             title={val.title}
                             value={val.value}
                             description={val.description}
+                            bg={'light'}
                         />
                     ))}
                 </AnaliticsBottom>

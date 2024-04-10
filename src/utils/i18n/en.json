@@ -4,7 +4,7 @@
     "connect_wallet": "Connect Wallet",
     "getting_started": "Getting Started",
     "getting_started_text": "Connect your wallet to start opening Vaults",
-    "create_account": "Create Vault Facilitator",
+    "create_account": "Vault Facilitator",
     "create_account_text": "The Vault Facilitator contract enables sending multiple transactions at once. It is the same DSProxy used by Maker and Balancer.",
     "create_safe": "Create a Vault",
     "create_safe_text": "Your Vault Facilitator contract was deployed! Now you can deposit collateral and borrow {{coin_ticker}} using a Vault.",

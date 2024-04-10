@@ -107,14 +107,6 @@ const Steps = () => {
 
     return (
         <StepsContainer>
-            <StepsBars>
-                {step !== 0 ? (
-                    <>
-                        <StepBar className={step !== 0 ? 'active' : ''} />
-                        <StepBar className={step === 2 ? 'active' : ''} />
-                    </>
-                ) : null}
-            </StepsBars>
             {returnSteps(step)}
             {step === 1 && ctHash ? (
                 <>
@@ -151,33 +143,13 @@ const StepsContainer = styled.div`
     }
 `
 
-const StepsBars = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-
-const StepBar = styled.div`
-    width: 68px;
-    height: 4px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.placeholder};
-    &.active {
-        background: ${(props) => props.theme.colors.gradient};
-    }
-    margin-right: 8px;
-    &:last-child {
-        margin-right: 0;
-    }
-`
-
 const Confirmations = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     margin-top: 10px;
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.secondary};
 `

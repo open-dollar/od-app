@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
@@ -10,10 +11,10 @@ const images: { [key: string]: string } = {
 }
 
 export interface DataCardProps {
-    bg?: 'light' | 'dark'
     title: string
     value: string
     description?: string
+    bg: 'light' | 'dark'
     children?: React.ReactChildren | React.ReactChild
 }
 
@@ -34,7 +35,7 @@ const DataCard = ({ title, bg, value, description, children }: DataCardProps) =>
 
 export default DataCard
 
-const Block = styled.div<{ bg: 'light' | 'dark' }>`
+const Block = styled.div<{ bg: 'light' | 'dark', children: ReactNode }>`
     position: relative;
     display: flex;
     flex-direction: column;

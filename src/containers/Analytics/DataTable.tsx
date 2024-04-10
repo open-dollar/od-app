@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 
@@ -9,6 +10,8 @@ export interface TableProps {
 
 interface HeadsContainerProps {
     index?: number
+    key?: string
+    children: ReactNode
 }
 
 interface ListItemProps {
@@ -163,7 +166,7 @@ export const Heads = styled.div`
     }
 
     & div:first-child {
-        background-color: #001828;
+        background-color: ${props => props.theme.colors.background};
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -209,12 +212,12 @@ export const ListItemLabel = styled.span`
 
 export const List = styled.div`
     display: flex;
-    border-radius: 4px;
+    border-radius: 0px;
     width: max-content;
 
     align-items: start;
     justify-content: space-between;
-    background: #002b40;
+    background: white;
     margin-bottom: 24px;
 
     & div:nth-child(1) div {
@@ -238,14 +241,14 @@ export const ListItem = styled.div<ListItemProps>`
     /* flex: 0 0 16.6%; */
     width: 174px;
     color: ${(props) => props.theme.colors.customSecondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     padding: 15px 10px;
     &:first-child {
-        padding: 15px 25px;
+        padding: 15px 19px;
     }
 
     &:nth-child(1) {
-        background-color: #002b40;
+        background-color: white;
     }
 
     text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
@@ -259,7 +262,7 @@ export const ListItem = styled.div<ListItemProps>`
 
     flex: 0 0 50%;
     min-width:50%;
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     font-weight:900;
   `}
 `

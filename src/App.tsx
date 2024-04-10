@@ -46,11 +46,9 @@ const App = () => {
 
     const { bodyOverflow, isLightTheme } = settingsState
 
-    const theme = isLightTheme ? lightTheme : darkTheme
-
     return (
         <I18nextProvider i18n={i18next}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={lightTheme}>
                 <GlobalStyle bodyOverflow={bodyOverflow} />
                 <ErrorBoundary>
                     <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />

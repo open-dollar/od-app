@@ -483,6 +483,7 @@ const TooltipWrapper = styled.div`
 `
 
 const Container = styled.div`
+    font-family: 'Open Sans', sans-serif;
     max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
@@ -558,6 +559,7 @@ const FlexMultipleRow = styled.div`
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
+    font-family: 'Barlow', sans-serif;
     margin-bottom: 40px;
     color: ${(props) => props.theme.colors.accent};
 `

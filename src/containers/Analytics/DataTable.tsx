@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 
@@ -166,7 +166,7 @@ export const Heads = styled.div`
     }
 
     & div:first-child {
-        background-color: ${props => props.theme.colors.background};
+        background-color: ${(props) => props.theme.colors.background};
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -190,9 +190,10 @@ export const Head = styled.p`
     /* flex: 0 0 16.6%; */
     font-size: 12px;
     width: 174px;
-    font-weight: 600;
+    font-weight: 400;
+    
     text-transform: uppercase;
-    color: #4a4d53;
+    color: ${(props) => props.theme.colors.tertiary};
     padding-left: 10px;
     &:first-child {
         padding: 0 25px;
@@ -240,8 +241,9 @@ export const List = styled.div`
 export const ListItem = styled.div<ListItemProps>`
     /* flex: 0 0 16.6%; */
     width: 174px;
-    color: ${(props) => props.theme.colors.customSecondary};
+    color: ${(props) => props.theme.colors.tertiary};
     font-size: ${(props) => props.theme.font.xSmall};
+    font-weight: 700;
     padding: 15px 10px;
     &:first-child {
         padding: 15px 19px;
@@ -252,6 +254,12 @@ export const ListItem = styled.div<ListItemProps>`
     }
 
     text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
+
+    a {
+        color: ${(props) => props.theme.colors.tertiary};
+        font-weight: 700;
+        font-size: ${(props) => props.theme.font.xSmall};
+    }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       &:first-child {

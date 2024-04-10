@@ -559,12 +559,13 @@ const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
     margin-bottom: 40px;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const SubTitle = styled.h3`
     font-size: 34px;
     font-weight: 700;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.accent};
     margin-bottom: 16px;
 `
 

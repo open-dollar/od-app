@@ -26,7 +26,7 @@ const model: StoreModel = {
     transactionsModel,
     multicallModel,
     auctionModel,
-    bridgeModel
+    bridgeModel,
 }
 
 export default model

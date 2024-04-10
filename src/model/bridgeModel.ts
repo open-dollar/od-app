@@ -38,10 +38,15 @@ const bridgeModel: BridgeModel = {
         state.amount = payload
     }),
     bridge: action((state, payload) => {
-      console.log('Bridge transaction', payload)
-      const url = formatBridgeUrl({ amount: state.amount, fromTokenAddress: state.fromTokenAddress, originChain: state.originChain, toTokenAddress: state.toTokenAddress })  
-      window.open(url, '_blank')
-    })
+        console.log('Bridge transaction', payload)
+        const url = formatBridgeUrl({
+            amount: state.amount,
+            fromTokenAddress: state.fromTokenAddress,
+            originChain: state.originChain,
+            toTokenAddress: state.toTokenAddress,
+        })
+        window.open(url, '_blank')
+    }),
 }
 
 export default bridgeModel

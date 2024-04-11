@@ -294,6 +294,7 @@ const CreateVault = ({
 
                             <Col>
                                 <Stats>
+                                    <SubTitle>Overview</SubTitle>
                                     {Object.keys(stats).map((key) => {
                                         const isPrimary = key === 'data'
                                         return (
@@ -402,7 +403,7 @@ const ReviewContainer = styled.div`
     background: ${(props) => props.theme.colors.colorSecondary};
 `
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1130px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
@@ -481,13 +482,13 @@ const WrapBox = styled.div`
 const Box = styled.div`
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     border: 3px solid #1a74ec;
     box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
         2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
 
     padding: 22px;
     border-radius: 8px;
+    background: white;
 `
 
 const FooterWrapper = styled.div`
@@ -508,6 +509,7 @@ const FooterWrapper = styled.div`
 const ColWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 30px;
 
     @media (max-width: 767px) {
         flex-direction: column;
@@ -533,6 +535,8 @@ const Inputs = styled.div`
 `
 
 const Stats = styled.div`
+    background: ${(props) => props.theme.colors.background};
+    padding: 24px;
     .blockie {
         border-bottom: 1px solid ${(props) => props.theme.colors.border};
         &:last-child {
@@ -542,6 +546,12 @@ const Stats = styled.div`
     @media (max-width: 767px) {
         margin-top: 20px;
     }
+`
+const SubTitle = styled.div`
+    color: ${(props) => props.theme.colors.accent};
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
 `
 
 const Flex = styled.div`

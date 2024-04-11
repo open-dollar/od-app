@@ -97,6 +97,7 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsVotingModalOpen(false)
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
+        popupsActions.setIsBridgeModalOpen(false)
     }
     const forceUpdateTokens = connectWalletState.forceUpdateTokens
 

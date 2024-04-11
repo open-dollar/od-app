@@ -23,7 +23,12 @@ const NavLinks = () => {
         }
     }
 
-    const links = [{ name: 'app', to: '/vaults' }, { name: 'auctions', to: '/auctions' }, { name: 'stats', to: '/stats' }, { name: 'bridge', to: '/bridge'}]
+    const links = [
+        { name: 'app', to: '/vaults' },
+        { name: 'auctions', to: '/auctions' },
+        { name: 'stats', to: '/stats' },
+        { name: 'bridge', to: '/bridge' },
+    ]
 
     return (
         <Nav>
@@ -38,7 +43,7 @@ const NavLinks = () => {
                     >
                         {t(link.name)}
                     </NavBarLink>
-                )    
+                )
             })}
         </Nav>
     )

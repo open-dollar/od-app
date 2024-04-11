@@ -29,11 +29,32 @@ const WaitingModal = () => {
     const returnStatusIcon = (status: string) => {
         switch (status) {
             case 'success':
-                return <img src={require('../../assets/tx-submitted-icon.svg').default} width={106} height={165} alt="error" />
+                return (
+                    <img
+                        src={require('../../assets/tx-submitted-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
             case 'error':
-                return <img src={require('../../assets/tx-failed-icon.svg').default} width={106} height={165} alt="error" />
+                return (
+                    <img
+                        src={require('../../assets/tx-failed-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
             default:
-                return <img src={require('../../assets/tx-waiting-for-confirmation-icon.svg').default} width={106} height={165} alt="error" />
+                return (
+                    <img
+                        src={require('../../assets/tx-waiting-for-confirmation-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
         }
     }
     return (
@@ -42,41 +63,41 @@ const WaitingModal = () => {
             <InnerContainer data-test-id="waiting-modal">
                 {returnStatusIcon(status)}
                 <TextColumnContainer>
-                {
-                    <Title data-test-id="waiting-modal-title" className={status}>
-                        {title ? title : t('initializing')}
-                    </Title>
-                }
+                    {
+                        <Title data-test-id="waiting-modal-title" className={status}>
+                            {title ? title : t('initializing')}
+                        </Title>
+                    }
 
-                {text || (status === 'success' && !isCreate) ? (
-                    <Text className={status}>
-                        {status === 'success' && chainId && hash ? (
-                            <a
-                                href={getEtherscanLink(chainId, hash, 'transaction')}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {t('view_etherscan')}
-                            </a>
-                        ) : status === 'success' && isCreate ? (
-                            <CreateNew>
-                                <Loader width={'14px'} /> {text}
-                            </CreateNew>
-                        ) : (
-                            text
-                        )}
-                    </Text>
-                ) : null}
-                {hint && <Hint>{hint}</Hint>}
+                    {text || (status === 'success' && !isCreate) ? (
+                        <Text className={status}>
+                            {status === 'success' && chainId && hash ? (
+                                <a
+                                    href={getEtherscanLink(chainId, hash, 'transaction')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {t('view_etherscan')}
+                                </a>
+                            ) : status === 'success' && isCreate ? (
+                                <CreateNew>
+                                    <Loader width={'14px'} /> {text}
+                                </CreateNew>
+                            ) : (
+                                text
+                            )}
+                        </Text>
+                    ) : null}
+                    {hint && <Hint>{hint}</Hint>}
 
-                {status !== 'loading' && !isCreate ? (
-                    <BtnContainer>
-                        <Button
-                            text={status === 'success' ? 'close' : 'dismiss'}
-                            onClick={() => popupsActions.setIsWaitingModalOpen(false)}
-                        />
-                    </BtnContainer>
-                ) : null}
+                    {status !== 'loading' && !isCreate ? (
+                        <BtnContainer>
+                            <Button
+                                text={status === 'success' ? 'close' : 'dismiss'}
+                                onClick={() => popupsActions.setIsWaitingModalOpen(false)}
+                            />
+                        </BtnContainer>
+                    ) : null}
                 </TextColumnContainer>
             </InnerContainer>
         </Modal>
@@ -104,7 +125,6 @@ const CloseIcon = styled.div`
         opacity: 0.6;
     }
 `
-
 
 const InnerContainer = styled.div`
     display: flex;
@@ -164,7 +184,7 @@ const Hint = styled.div`
 const BtnContainer = styled.div`
     border-radius: 4px;
     text-align: center;
-    border: #E2F1FF 2px solid;
+    border: #e2f1ff 2px solid;
 `
 
 const CreateNew = styled.div`

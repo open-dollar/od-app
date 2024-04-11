@@ -501,10 +501,6 @@ const AnaliticsTop = styled.div`
     gap: 24px;
     margin-bottom: 64px;
 
-    & div {
-        height: 231px;
-    }
-
     ${({ theme }) => theme.mediaWidth.upToSmall`
         flex-wrap: wrap;
     `}

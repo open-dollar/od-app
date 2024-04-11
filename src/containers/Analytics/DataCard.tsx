@@ -70,7 +70,7 @@ export const InfoIcon = styled.div`
 `
 
 const DataTitle = styled.div<{ bg: 'light' | 'dark' }>`
-    font-size: ${(props) => props.theme.font.xSmall};
+    font-size: ${(props) => props.theme.font.small};
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 8px;
@@ -79,8 +79,7 @@ const DataTitle = styled.div<{ bg: 'light' | 'dark' }>`
 `
 
 const DataValue = styled.div`
-    font-size: 24px;
+    font-size: 48px;
     font-weight: 700;
     text-align: center;
-    line-height: 28.8px;
 `

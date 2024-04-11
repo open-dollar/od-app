@@ -472,20 +472,26 @@ const Box = styled.div`
 
     padding: 22px;
     border-radius: 8px;
+`
+
+const FooterWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+
     @media (max-width: 767px) {
         flex-direction: column;
         padding: 15px 0;
     }
 `
 
-const FooterWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
-
 const ColWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+        padding: 15px 0;
+    }
 `
 
 const Col = styled.div`
@@ -530,7 +536,6 @@ const Flex = styled.div`
         button {
             width: 100%;
             text-align: center;
-            flex: 0 0 48%;
         }
         @media (max-width: 767px) {
             flex-direction: column;

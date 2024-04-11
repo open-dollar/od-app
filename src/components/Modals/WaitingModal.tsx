@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { AlertTriangle, CheckCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '../../GlobalStyle'
@@ -30,17 +29,19 @@ const WaitingModal = () => {
     const returnStatusIcon = (status: string) => {
         switch (status) {
             case 'success':
-                return <CheckCircle width={'60px'} className={status} />
+                return <img src={require('../../assets/tx-submitted-icon.svg').default} width={106} height={165} alt="error" />
             case 'error':
-                return <AlertTriangle width={'60px'} className={status} />
+                return <img src={require('../../assets/tx-failed-icon.svg').default} width={106} height={165} alt="error" />
             default:
-                return <Loader width={'60px'} />
+                return <img src={require('../../assets/tx-waiting-for-confirmation-icon.svg').default} width={106} height={165} alt="error" />
         }
     }
     return (
-        <Modal width={'350px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
+        <Modal width={'445px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
+            <CloseIcon onClick={() => popupsActions.setIsWaitingModalOpen(false)}>&times;</CloseIcon>
             <InnerContainer data-test-id="waiting-modal">
                 {returnStatusIcon(status)}
+                <TextColumnContainer>
                 {
                     <Title data-test-id="waiting-modal-title" className={status}>
                         {title ? title : t('initializing')}
@@ -76,6 +77,7 @@ const WaitingModal = () => {
                         />
                     </BtnContainer>
                 ) : null}
+                </TextColumnContainer>
             </InnerContainer>
         </Modal>
     )
@@ -83,10 +85,33 @@ const WaitingModal = () => {
 
 export default WaitingModal
 
+const TextColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+`
+
+const CloseIcon = styled.div`
+    position: relative;
+    left: 28rem;
+    overflow: hidden;
+    font-size: 30px;
+    z-index: 2;
+    color: black;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+    }
+`
+
+
 const InnerContainer = styled.div`
-    background: ${(props) => props.theme.colors.foreground};
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     text-align: center;
-    border-radius: 20px;
+    border-radius: 4px;
     padding: 20px 20px 35px 20px;
     svg {
         margin: 25px auto;
@@ -105,35 +130,41 @@ const InnerContainer = styled.div`
 `
 
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
     color: ${(props) => props.theme.colors.neutral};
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 32px;
+    font-family: 'Barlow', serif;
     &.error {
-        color: rgb(255, 104, 113);
-        font-weight: normal;
+        color: white;
+        font-weight: 700;
+        font-size: 32px;
+        font-family: 'Barlow', serif;
     }
 `
 
 const Text = styled.div`
-    font-size: ${(props) => props.theme.font.small};
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
     color: ${(props) => props.theme.colors.neutral};
     margin: 10px 0;
     a {
+        color: white;
         ${ExternalLinkArrow}
     }
 `
 
 const Hint = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
-    color: ${(props) => props.theme.colors.secondary};
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
 `
 
 const BtnContainer = styled.div`
-    padding: 20px;
-    margin: 20px -20px -38px;
-    background-color: ${(props) => props.theme.colors.border};
-    border-radius: 0 0 20px 20px;
+    border-radius: 4px;
     text-align: center;
+    border: #E2F1FF 2px solid;
 `
 
 const CreateNew = styled.div`

@@ -215,130 +215,136 @@ const CreateVault = ({
                             <ArrowLeft onClick={() => history.goBack()} />
                         </Btn>
                         <span className="title"> {t('create_safe')}</span>
-                        <Btn className="clear" onClick={reset}>
-                            Clear All
-                        </Btn>
                     </Header>
                     <Box>
-                        {selectedCollateral ? (
-                            <Col>
-                                <DropDownContainer>
-                                    <SideLabel>{`Select Collateral Type`}</SideLabel>
-                                    <Dropdown
-                                        items={collateralsDropdown}
-                                        itemSelected={dropdownSelected}
-                                        getSelectedItem={setSelectedItem}
-                                    />
-                                    {dropdownSelected.name === 'WETH' && (
-                                        <WrapBox>
-                                            Don't have WETH?{' '}
-                                            <WrapBtn onClick={wrapEth} color="secondary">
-                                                Wrap ETH
-                                            </WrapBtn>
-                                        </WrapBox>
-                                    )}
-                                </DropDownContainer>
+                        <ColWrapper>
+                            {selectedCollateral ? (
+                                <Col>
+                                    <DropDownContainer>
+                                        <SideLabel>{`Select Collateral Type`}</SideLabel>
+                                        <Dropdown
+                                            items={collateralsDropdown}
+                                            itemSelected={dropdownSelected}
+                                            getSelectedItem={setSelectedItem}
+                                        />
+                                        {dropdownSelected.name === 'WETH' && (
+                                            <WrapBox>
+                                                Don't have WETH?{' '}
+                                                <WrapBtn onClick={wrapEth} color="secondary">
+                                                    Wrap ETH
+                                                </WrapBtn>
+                                            </WrapBox>
+                                        )}
+                                    </DropDownContainer>
 
-                                <Inputs>
-                                    <SideLabel>{`Deposit ${selectedItem} and Borrow OD`}</SideLabel>
+                                    <Inputs>
+                                        <SideLabel>{`Deposit ${selectedItem} and Borrow OD`}</SideLabel>
 
-                                    <TokenInput
-                                        token={
-                                            selectedCollateral?.symbol
-                                                ? {
-                                                      name: selectedCollateral?.symbol || '-',
-                                                      icon: getTokenLogo(selectedCollateral?.symbol),
-                                                  }
-                                                : undefined
-                                        }
-                                        label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
-                                            selectedCollateral?.symbol
-                                        }`}
-                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
-                                        onChange={onLeftInput}
-                                        value={leftInput}
-                                        handleMaxClick={onMaxLeftInput}
-                                        data_test_id="deposit_borrow"
-                                        decimals={Number(selectedCollateralDecimals)}
-                                    />
-
-                                    <br />
-                                    <TokenInput
-                                        token={
-                                            tokensData.OD && {
-                                                icon: getTokenLogo(tokensData.OD.symbol),
-                                                name: tokensData.OD.symbol,
+                                        <TokenInput
+                                            token={
+                                                selectedCollateral?.symbol
+                                                    ? {
+                                                          name: selectedCollateral?.symbol || '-',
+                                                          icon: getTokenLogo(selectedCollateral?.symbol),
+                                                      }
+                                                    : undefined
                                             }
-                                        }
-                                        label={`Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.OD?.symbol}`}
-                                        rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
-                                        onChange={onRightInput}
-                                        value={rightInput}
-                                        handleMaxClick={onMaxRightInput}
-                                        data_test_id="repay_withdraw"
-                                    />
-                                </Inputs>
-                                <Note data-test-id="debt_floor_note">
-                                    <span>Note:</span>
-                                    {` The minimum amount to mint per vault is ${debtFloor} OD`}
-                                </Note>
-                            </Col>
-                        ) : (
-                            <Col>
-                                <Loader width={'100%'} />
-                            </Col>
-                        )}
+                                            label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
+                                                selectedCollateral?.symbol
+                                            }`}
+                                            rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
+                                            onChange={onLeftInput}
+                                            value={leftInput}
+                                            handleMaxClick={onMaxLeftInput}
+                                            data_test_id="deposit_borrow"
+                                            decimals={Number(selectedCollateralDecimals)}
+                                        />
 
-                        <Col>
-                            <Stats>
-                                {Object.keys(stats).map((key) => {
-                                    const isPrimary = key === 'data'
-                                    return (
-                                        <div key={key} className="blockie">
-                                            {stats[key as StatsType].map((item) => {
-                                                return (
-                                                    <Flex key={item.label}>
-                                                        <Label color={isPrimary ? 'primary' : 'secondary'}>
-                                                            {item.tip ? (
-                                                                <InfoIcon
-                                                                    data-tooltip-id="tooltip-create-vault"
-                                                                    data-tooltip-content={item.tip}
-                                                                >
-                                                                    <Info size="13" />
-                                                                </InfoIcon>
-                                                            ) : null}
-                                                            {item.label}
-                                                        </Label>
-                                                        <Value>
-                                                            {item.value !== '-' &&
-                                                            item.label.toLowerCase().includes('collateral') &&
-                                                            item.label.toLowerCase().includes('total')
-                                                                ? formatWithCommas(item.value)
-                                                                : item.value}
-                                                        </Value>
-                                                    </Flex>
-                                                )
-                                            })}
-                                        </div>
-                                    )
-                                })}
-                            </Stats>
-                        </Col>
+                                        <br />
+                                        <TokenInput
+                                            token={
+                                                tokensData.OD && {
+                                                    icon: getTokenLogo(tokensData.OD.symbol),
+                                                    name: tokensData.OD.symbol,
+                                                }
+                                            }
+                                            label={`Borrow OD: ${formatWithCommas(availableHai)} ${
+                                                tokensData.OD?.symbol
+                                            }`}
+                                            rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
+                                            onChange={onRightInput}
+                                            value={rightInput}
+                                            handleMaxClick={onMaxRightInput}
+                                            data_test_id="repay_withdraw"
+                                        />
+                                    </Inputs>
+                                    <Note data-test-id="debt_floor_note">
+                                        <span>Note:</span>
+                                        {` The minimum amount to mint per vault is ${debtFloor} OD`}
+                                    </Note>
+                                </Col>
+                            ) : (
+                                <Col>
+                                    <Loader width={'100%'} />
+                                </Col>
+                            )}
+
+                            <Col>
+                                <Stats>
+                                    {Object.keys(stats).map((key) => {
+                                        const isPrimary = key === 'data'
+                                        return (
+                                            <div key={key} className="blockie">
+                                                {stats[key as StatsType].map((item) => {
+                                                    return (
+                                                        <Flex key={item.label}>
+                                                            <Label color={isPrimary ? 'primary' : 'secondary'}>
+                                                                {item.tip ? (
+                                                                    <InfoIcon
+                                                                        data-tooltip-id="tooltip-create-vault"
+                                                                        data-tooltip-content={item.tip}
+                                                                    >
+                                                                        <Info size="13" />
+                                                                    </InfoIcon>
+                                                                ) : null}
+                                                                {item.label}
+                                                            </Label>
+                                                            <Value>
+                                                                {item.value !== '-' &&
+                                                                item.label.toLowerCase().includes('collateral') &&
+                                                                item.label.toLowerCase().includes('total')
+                                                                    ? formatWithCommas(item.value)
+                                                                    : item.value}
+                                                            </Value>
+                                                        </Flex>
+                                                    )
+                                                })}
+                                            </div>
+                                        )
+                                    })}
+                                </Stats>
+                            </Col>
+                        </ColWrapper>
+                        <FooterWrapper>
+                            <Btn className="clear" onClick={reset}>
+                                Clear All
+                            </Btn>
+                            <Flex className="hasBtn">
+                                {approvalState === ApprovalState.APPROVED ? (
+                                    <Button onClick={handleSubmit} disabled={!isValid}>
+                                        {error ?? 'Review Transaction'}
+                                    </Button>
+                                ) : approvalState === ApprovalState.PENDING ? (
+                                    <Button disabled={true}>Pending Approval..</Button>
+                                ) : (
+                                    <Button onClick={approve} disabled={!isValid}>
+                                        {error ?? `Approve ${selectedItem}`}
+                                    </Button>
+                                )}
+                            </Flex>
+                        </FooterWrapper>
                     </Box>
 
-                    <Flex className="hasBtn">
-                        {approvalState === ApprovalState.APPROVED ? (
-                            <Button onClick={handleSubmit} disabled={!isValid}>
-                                {error ?? 'Review Transaction'}
-                            </Button>
-                        ) : approvalState === ApprovalState.PENDING ? (
-                            <Button disabled={true}>Pending Approval..</Button>
-                        ) : (
-                            <Button onClick={approve} disabled={!isValid}>
-                                {error ?? `Approve ${selectedItem}`}
-                            </Button>
-                        )}
-                    </Flex>
                     <ReactTooltip
                         style={{ zIndex: 99 }}
                         id="tooltip-create-vault"
@@ -458,7 +464,8 @@ const WrapBox = styled.div`
 
 const Box = styled.div`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    /* justify-content: space-between; */
     border: 3px solid #1a74ec;
     box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
         2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
@@ -469,6 +476,16 @@ const Box = styled.div`
         flex-direction: column;
         padding: 15px 0;
     }
+`
+
+const FooterWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+const ColWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
 `
 
 const Col = styled.div`

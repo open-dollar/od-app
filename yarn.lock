@@ -3750,34 +3750,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/abis@npm:0.0.0-ddd353db":
-  version: 0.0.0-ddd353db
-  resolution: "@opendollar/abis@npm:0.0.0-ddd353db"
+"@opendollar/abis@npm:0.0.0-605371bd":
+  version: 0.0.0-605371bd
+  resolution: "@opendollar/abis@npm:0.0.0-605371bd"
   dependencies:
     "@defi-wonderland/solidity-utils": 0.0.0-4298c6c6
     "@ethersproject/abi": 5.7.0
     "@ethersproject/providers": 5.7.2
-    "@openzeppelin/contracts": 4.8.2
-    "@openzeppelin/contracts-upgradeable": 4.8.2
+    "@openzeppelin/contracts": 4.9.6
+    "@openzeppelin/contracts-upgradeable": 4.9.6
     "@typechain/ethers-v6": ^0.5.1
     "@typechain/web3-v1": ^6.0.7
     bn.js: 5.2.1
     ethers: 6.0.3
     forge-std: "git+https://github.com/foundry-rs/forge-std.git#e8a047e3f40f13fa37af6fe14e6e06283d9a060e"
     typechain: ^8.3.2
-  checksum: 37defa9fd986f0591610b2cf1cd8a4211b6d6c8e01ab1f1ad8a245f57fc84481553cb34e6dcc986d191fa53add65f772f07d9757239fb73bcf2f178a2ad56fb9
+  checksum: 1f5be422f652833ce5d1d9ccc5c00d6481878b66e88f9b168a629440d4c48182ffb1547b03809a1bc43306ce4ee8f5a7cd92b012dfc199b14b1be44db09573b1
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.6.1-rc.3":
-  version: 1.6.1-rc.3
-  resolution: "@opendollar/sdk@npm:1.6.1-rc.3"
+"@opendollar/sdk@npm:1.6.5-rc.1":
+  version: 1.6.5-rc.1
+  resolution: "@opendollar/sdk@npm:1.6.5-rc.1"
   dependencies:
-    "@opendollar/abis": 0.0.0-ddd353db
+    "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 715518fd6d1ee47ae38abf31f16cce8aff9ea5a5ddca4a0eaeea9afb0d7bec7f47773992eea3a091c0dec1d94d86c7cc7e1dc3da0ac1776f77e2125919c3646c
+  checksum: acb540018d25cad462a4713f5482acf35a807189e72587bd8e25f6c541442ac04836b769fb4fbe4b111d691f8689571c0fe623b8d710bdb7770b3b5f50a041a2
   languageName: node
   linkType: hard
 
@@ -3791,10 +3791,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.8.2":
-  version: 4.8.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.8.2"
-  checksum: 88158656f40688e107ec9d99f78a757fdb140e5e1f3e49e9a18a46e85f2c1b5df99fcc3c9c0df25ed1a6068bf49749ba7e3475fdfa12bc0d9909424043e90468
+"@openzeppelin/contracts-upgradeable@npm:4.9.6":
+  version: 4.9.6
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.9.6"
+  checksum: c2bbd28130f630601fdae0eda6aea170f9a730b1f31b069c9029b7131d3e0c05041821c75555039488a340cb2c0eb848a1ce0921553bc2c5cdd5be2b56dd427d
   languageName: node
   linkType: hard
 
@@ -3805,10 +3805,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.8.2":
-  version: 4.8.2
-  resolution: "@openzeppelin/contracts@npm:4.8.2"
-  checksum: 43a55fa0c563bc567f3d605d7bfd9a316054a5a75e5dd22a520fd3685e58a4b0095682824b91ae94e1d902264f5b1b4621d0f3eef009a6d7a2e27b2984c602a9
+"@openzeppelin/contracts@npm:4.9.6":
+  version: 4.9.6
+  resolution: "@openzeppelin/contracts@npm:4.9.6"
+  checksum: f834b000778f634a260ed5507827cc67c0922557a1f57e1d76cf7ace061fea171aaf16640ba2e54fd7ed2cc629a9d706bc671a9692d2bb9a9469ea6154de6e8c
   languageName: node
   linkType: hard
 
@@ -5501,7 +5501,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": 1.6.1-rc.3
+    "@opendollar/sdk": 1.6.5-rc.1
     "@opendollar/svg-generator": 1.0.3
     "@react-spring/web": ^9.7.3
     "@testing-library/dom": ^9.3.4

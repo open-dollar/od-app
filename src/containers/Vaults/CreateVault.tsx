@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
-import { ArrowLeft, Info, Loader } from 'react-feather'
+import { ChevronLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
@@ -212,7 +212,10 @@ const CreateVault = ({
                 <Content>
                     <Header>
                         <Btn>
-                            <ArrowLeft onClick={() => history.goBack()} />
+                            <FlexBtn>
+                                <ChevronLeft onClick={() => history.goBack()} />
+                                <span>Back</span>
+                            </FlexBtn>
                         </Btn>
                         <span className="title"> {t('create_safe')}</span>
                     </Header>
@@ -409,6 +412,7 @@ const Container = styled.div`
 const InnerContent = styled.div`
     border-radius: 20px;
     background: ${(props) => props.theme.colors.colorSecondary};
+    font-family: 'Open Sans', sans-serif;
 `
 
 const Content = styled.div`
@@ -420,13 +424,10 @@ const BtnContainer = styled.div`
 `
 const Header = styled.div`
     display: flex;
-    align-items: center;
-    padding: 10px 0 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 55px;
 
-    .clear {
-        cursor: pointer;
-        color: ${(props) => props.theme.colors.blueish};
-    }
     span {
         flex: 0 0 55px;
         font-size: 14px;
@@ -434,9 +435,11 @@ const Header = styled.div`
         &.title {
             display: block;
             flex: 1;
+            font-family: 'Barlow', sans-serif;
             text-align: center;
             font-weight: bold;
-            font-size: ${(props) => props.theme.font.medium};
+            font-size: ${(props) => props.theme.font.xxLarge};
+            color: #1c293a;
         }
     }
 `
@@ -447,9 +450,22 @@ const Btn = styled.button`
     box-shadow: none;
     outline: none;
     background: transparent;
+`
+
+const FlexBtn = styled.div`
+    display: flex;
+    align-items: center;
+
+    span {
+        color: ${(props) => props.theme.colors.accent};
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
     svg {
-        color: ${(props) => props.theme.colors.customSecondary};
+        color: ${(props) => props.theme.colors.accent};
         cursor: pointer;
+        width: 50px;
     }
 `
 
@@ -477,6 +493,11 @@ const Box = styled.div`
 const FooterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+
+    .clear {
+        cursor: pointer;
+        color: ${(props) => props.theme.colors.blueish};
+    }
 
     @media (max-width: 767px) {
         flex-direction: column;

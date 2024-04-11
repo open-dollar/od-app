@@ -302,6 +302,7 @@ const CreateVault = ({
                                                     return (
                                                         <Flex key={item.label}>
                                                             <Label color={isPrimary ? 'primary' : 'secondary'}>
+                                                                {item.label}
                                                                 {item.tip ? (
                                                                     <InfoIcon
                                                                         data-tooltip-id="tooltip-create-vault"
@@ -310,7 +311,6 @@ const CreateVault = ({
                                                                         <Info size="13" />
                                                                     </InfoIcon>
                                                                 ) : null}
-                                                                {item.label}
                                                             </Label>
                                                             <Value>
                                                                 {item.value !== '-' &&
@@ -470,7 +470,7 @@ const FlexBtn = styled.div`
 `
 
 const WrapBtn = styled(Btn)`
-    color: ${(props) => props.theme.colors.blueish};
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const WrapBox = styled.div`
@@ -533,9 +533,6 @@ const Inputs = styled.div`
 `
 
 const Stats = styled.div`
-    padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.placeholder};
     .blockie {
         border-bottom: 1px solid ${(props) => props.theme.colors.border};
         &:last-child {
@@ -567,27 +564,28 @@ const Flex = styled.div`
     }
 `
 const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.primary)};
+    font-size: ${(props) => props.theme.font.default};
+    font-weight: 400;
+    color: ${(props) => props.theme.colors.accent};
     display: flex;
     align-items: center;
-    svg {
-        margin-right: 5px;
-    }
 `
 
 const Value = styled.div`
     font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const InfoIcon = styled.div`
     cursor: pointer;
     svg {
-        fill: ${(props) => props.theme.colors.secondary};
+        /* fill: ${(props) => props.theme.colors.secondary}; */
         color: ${(props) => props.theme.colors.placeholder};
         position: relative;
-        top: 2px;
+        width: 20px;
+        height: 20px;
+        margin-left: 8px;
     }
 `
 

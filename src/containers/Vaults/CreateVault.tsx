@@ -278,6 +278,10 @@ const CreateVault = ({
                                         data_test_id="repay_withdraw"
                                     />
                                 </Inputs>
+                                <Note data-test-id="debt_floor_note">
+                                    <span>Note:</span>
+                                    {` The minimum amount to mint per vault is ${debtFloor} OD`}
+                                </Note>
                             </Col>
                         ) : (
                             <Col>
@@ -323,10 +327,6 @@ const CreateVault = ({
                     </Box>
 
                     <Flex className="hasBtn">
-                        <Note data-test-id="debt_floor_note">
-                            <span>Note:</span>
-                            {` The minimum amount to mint per vault is ${debtFloor} OD`}
-                        </Note>
                         {approvalState === ApprovalState.APPROVED ? (
                             <Button onClick={handleSubmit} disabled={!isValid}>
                                 {error ?? 'Review Transaction'}
@@ -413,7 +413,6 @@ const BtnContainer = styled.div`
     text-align: center;
 `
 const Header = styled.div`
-    border-bottom: 1px solid ${(props) => props.theme.colors.border};
     display: flex;
     align-items: center;
     padding: 10px 0 20px 0;
@@ -460,7 +459,12 @@ const WrapBox = styled.div`
 const Box = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 30px 0;
+    border: 3px solid #1a74ec;
+    box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
+        2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
+
+    padding: 22px;
+    border-radius: 8px;
     @media (max-width: 767px) {
         flex-direction: column;
         padding: 15px 0;

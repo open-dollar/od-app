@@ -7,7 +7,7 @@
         style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
         script-src 'self' http://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/matomo.js https://usekeyp.matomo.cloud/matomo.js;
         media-src 'self';
-        img-src 'self' data: blob: https://explorer-api.walletconnect.com https://usekeyp.matomo.cloud;
+        img-src 'self' data: blob: https://explorer-api.walletconnect.com https://usekeyp.matomo.cloud https://app.opendollar.com;
         connect-src 'self' blob: https://arbitrum-sepolia.blockpi.network https://arbitrum-sepolia.infura.io https://arbitrum.blockpi.network https://arbitrum-mainnet.infura.io https://optimism-mainnet.infura.io https://optimism.blockpi.network wss://relay.walletconnect.com/ https://verify.walletconnect.org wss://www.walletlink.org/rpc https://explorer-api.walletconnect.com https://chain-proxy.wallet.coinbase.com https://rpc.walletconnect.com https://api.studio.thegraph.com https://od-subgraph-node-image.onrender.com https://usekeyp.matomo.cloud https://opt-mainnet.g.alchemy.com https://arb-mainnet.g.alchemy.com https://bot.opendollar.com https://bot.dev.opendollar.com https://mainnet.optimism.io/  https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/rai;
         object-src 'self' blob:;
         form-action 'self';
@@ -16,13 +16,26 @@
 
         <meta charset="utf-8" />
         <link rel="shortcut icon" href="%PUBLIC_URL%/od-logo.svg" />
+        <meta property="og:title" content="Open Dollar | Vaults" />
+        <meta property="og:description" content="Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability." />
+        <meta property="og:type" content="image/png" />
+        <meta property="og:url" content="https://app.opendollar.com" />
+        <meta property="og:image" content="https://app.opendollar.com/og.png" />
+        <meta property="og:image:width" content="1280" />
+        <meta property="og:image:height" content="720" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Open Dollar | Vaults" />
+        <meta name="twitter:description" content="Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability." />
+        <meta name="twitter:image" content="https://app.opendollar.com/og.png" />
+        <meta name="twitter:image:width" content="1280" />
+        <meta name="twitter:image:height" content="720" />
+        <meta name="twitter:url" content="https://app.opendollar.com" />
+        <meta name="twitter:site" content="@open_dollar" />
+        <meta name="twitter:creator" content="@open_dollar" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta
-            name="description"
-            content="Volatility dampened synthetic instruments"
-        />
         <link rel="apple-touch-icon" href="%PUBLIC_URL%/od-logo.svg" />
+        <meta name="description" content="Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability." />
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
         <title>OD | App</title>
 

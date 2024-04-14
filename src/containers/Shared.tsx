@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useCallback, useState } from 'react'
+import { ReactNode, useEffect, useCallback } from 'react'
 import { GebDeployment, getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
@@ -55,7 +55,6 @@ interface Props {
 }
 
 const Shared = ({ children, ...rest }: Props) => {
-    const [_isOwner, setIsOwner] = useState(true)
     const { t } = useTranslation()
     const { chainId, account, provider, connector } = useActiveWeb3React()
     const geb = useGeb()
@@ -159,7 +158,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 connectWalletActions.setCoinAllowance(formattedAllowance)
             })
         }
-    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract])
+    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract, chainId])
 
     useEffect(() => {
         if (auctionsData) {
@@ -346,12 +345,6 @@ const Shared = ({ children, ...rest }: Props) => {
         safeActions,
         chainId,
     ])
-
-    useEffect(() => {
-        if (account && address) {
-            setIsOwner(account.toLowerCase() === address.toLowerCase())
-        }
-    }, [address, account])
 
     async function networkChecker() {
         accountChange()

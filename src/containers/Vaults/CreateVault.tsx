@@ -375,7 +375,7 @@ const CreateVaultContainer = () => {
         if (collaterals.length > 0 && selectedItem === '') setSelectedItem(collaterals[0].symbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
-    
+
     return (
         <Container>
             {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (

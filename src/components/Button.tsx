@@ -5,7 +5,6 @@ import classNames from 'classnames'
 
 import Arrow from './Icons/Arrow'
 import Loader from './Loader'
-import { type } from 'os'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     text?: string

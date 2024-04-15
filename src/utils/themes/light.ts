@@ -11,7 +11,7 @@ const lightTheme: Theme = {
         background: '#E2F1FF',
         accent: '#1C293A',
         gradient: '',
-        gradientBg: "linear-gradient(180deg, #1A74EC 0%, #6396FF 100%)",
+        gradientBg: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%)',
         overlay: '',
         border: '',
         foreground: '',

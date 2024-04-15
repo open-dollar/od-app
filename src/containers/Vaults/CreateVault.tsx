@@ -508,7 +508,11 @@ const FooterWrapper = styled.div`
 
     .clear {
         cursor: pointer;
-        color: ${(props) => props.theme.colors.blueish};
+        color: ${(props) => props.theme.colors.accent};
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
 
     @media (max-width: 767px) {

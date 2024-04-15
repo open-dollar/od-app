@@ -142,8 +142,8 @@ export const Icon = styled.img`
 `
 
 const CustomInput = styled.input`
-    font-size: ${(props) => props.theme.font.large};
-    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
     transition: all 0.3s ease;
     width: 100%;
     border: none;
@@ -152,7 +152,7 @@ const CustomInput = styled.input`
     display: flex;
     align-items: center;
     text-align: right;
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.accent};
     line-height: 24px;
     outline: none;
 
@@ -187,9 +187,11 @@ const Flex = styled.div`
 const TokenBox = styled.div`
     display: flex;
     align-items: center;
-    font-size: ${(props) => props.theme.font.medium};
+    font-size: 14px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
     background: ${(props) => props.theme.colors.background};
-    padding: 12px;
+    padding: 15px;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
 `

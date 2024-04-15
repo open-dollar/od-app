@@ -96,9 +96,10 @@ const TokenInput = ({
                     {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
                 </Flex>
             </Content>
+
             <Flex>
                 <Label data-test-id={data_test_id + '_label'}>
-                    {console.log({label})}
+                    {console.log({ label })}
                     {label}
                 </Label>
                 {rightLabel ? <Label>{rightLabel}</Label> : null}
@@ -129,7 +130,7 @@ const Content = styled.div`
     border: 2px solid ${(props) => props.theme.colors.primary};
     border-radius: 4px;
     transition: all 0.3s ease;
-    padding: 10px 20px;
+    padding-right: 12px;
     margin-bottom: 8px;
     &.disabled {
         cursor: not-allowed;
@@ -147,13 +148,11 @@ const CustomInput = styled.input`
     transition: all 0.3s ease;
     width: 100%;
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     height: 36px;
     display: flex;
     align-items: center;
-    padding: 0 0 0 5px;
     text-align: right;
-    background: ${(props) => props.theme.colors.placeholder};
     color: ${(props) => props.theme.colors.primary};
     line-height: 24px;
     outline: none;
@@ -190,5 +189,8 @@ const TokenBox = styled.div`
     display: flex;
     align-items: center;
     font-size: ${(props) => props.theme.font.medium};
-    flex: 0 0 40%;
+    background: ${(props) => props.theme.colors.background};
+    padding: 12px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
 `

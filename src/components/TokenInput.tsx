@@ -93,15 +93,16 @@ const TokenInput = ({
                         data-test-id={data_test_id}
                         isAllowed={validateInput}
                     />
-                </Flex>
-                <Flex>
-                    <Label data-test-id={data_test_id + '_label'}>
-                        {label}{' '}
-                        {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
-                    </Label>
-                    {rightLabel ? <Label>{rightLabel}</Label> : null}
+                    {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
                 </Flex>
             </Content>
+            <Flex>
+                <Label data-test-id={data_test_id + '_label'}>
+                    {console.log({label})}
+                    {label}
+                </Label>
+                {rightLabel ? <Label>{rightLabel}</Label> : null}
+            </Flex>
         </Container>
     )
 }
@@ -112,23 +113,24 @@ const Container = styled.div``
 
 const Label = styled.div`
     line-height: 21px;
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.small};
+    color: ${(props) => props.theme.colors.accent};
+    font-size: 13px;
     letter-spacing: -0.09px;
     text-transform: capitalize;
     display: flex;
     align-items: center;
     @media (max-width: 767px) {
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
     }
 `
 
 const Content = styled.div`
     background: ${(props) => props.theme.colors.placeholder};
-    border: 1px solid ${(props) => props.theme.colors.border};
-    border-radius: 10px;
+    border: 2px solid ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
     transition: all 0.3s ease;
     padding: 10px 20px;
+    margin-bottom: 8px;
     &.disabled {
         cursor: not-allowed;
     }

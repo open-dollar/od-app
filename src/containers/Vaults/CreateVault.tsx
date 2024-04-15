@@ -229,6 +229,7 @@ const CreateVault = ({
                                             items={collateralsDropdown}
                                             itemSelected={dropdownSelected}
                                             getSelectedItem={setSelectedItem}
+                                            fontSize='22px'
                                         />
                                         {dropdownSelected.name === 'WETH' && (
                                             <WrapBox>
@@ -537,6 +538,7 @@ const Inputs = styled.div`
 const Stats = styled.div`
     background: ${(props) => props.theme.colors.background};
     padding: 24px;
+    border-radius: 4px;
     .blockie {
         border-bottom: 1px solid ${(props) => props.theme.colors.border};
         &:last-child {

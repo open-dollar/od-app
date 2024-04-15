@@ -93,7 +93,7 @@ const TokenInput = ({
                         data-test-id={data_test_id}
                         isAllowed={validateInput}
                     />
-                    {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
+                    {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
                 </Flex>
             </Content>
             <Flex>
@@ -166,14 +166,14 @@ const CustomInput = styled.input`
 const MaxBtn = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
-    background: transparent;
-    padding: 0px;
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.blueish};
-    font-size: ${(props) => props.theme.font.extraSmall};
-    border-radius: 0;
-    text-transform: capitalize;
-    margin-left: 3px;
+    background: ${(props) => props.theme.colors.background};
+    padding: 0px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.primary};
+    font-size: ${(props) => props.theme.font.default};
+    text-transform: uppercase;
+    margin-left: 16px;
 `
 
 const Flex = styled.div`

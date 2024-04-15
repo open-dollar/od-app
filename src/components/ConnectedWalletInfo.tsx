@@ -165,6 +165,7 @@ const Address = styled.div`
     display: flex;
     margin: 20px 0;
     align-items: center;
+    line-height: 20px;
     color: ${(props) => props.theme.colors.neutral};
     img {
         width: 20px;

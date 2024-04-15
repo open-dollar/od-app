@@ -8,7 +8,6 @@ import { useWeb3React } from '@web3-react/core'
 
 const StyledIdenticonContainer = styled.div`
     border-radius: 1.125rem;
-    background-color: ${({ theme }) => theme.colors.background};
 `
 
 export default function Identicon() {

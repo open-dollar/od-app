@@ -16,7 +16,6 @@ export interface DataCardProps {
 }
 
 const DataCard = ({ title, bg, image, value, description, children }: DataCardProps) => {
-    console.log({ image })
     return (
         <Block bg={bg}>
             {description && (
@@ -24,8 +23,6 @@ const DataCard = ({ title, bg, image, value, description, children }: DataCardPr
                     <Info size="20" />
                 </InfoIcon>
             )}
-            {console.log('images:', images)}
-            {console.log('image prop:', image)}
             {image && <img src={images[`${image}`]} alt={image} width="262px" height="50px" />}
             <DataTitle bg={bg}>{title}</DataTitle>
             <DataValue>{value}</DataValue>
@@ -54,7 +51,7 @@ const Block = styled.div<{ bg: 'light' | 'dark'; children: ReactNode }>`
     height: 100%;
     border-radius: 8px;
     color: ${(props) => (props.bg === 'light' ? props.theme.colors.primary : 'white')};
-    background: ${(props) => (props.bg === 'light' ? 'white' : props.theme.colors.primary)};
+    background: ${(props) => (props.bg === 'light' ? 'white' : props.theme.colors.gradientBg)};
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         max-width: 100%;

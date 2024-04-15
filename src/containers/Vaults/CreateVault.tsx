@@ -229,7 +229,7 @@ const CreateVault = ({
                                             items={collateralsDropdown}
                                             itemSelected={dropdownSelected}
                                             getSelectedItem={setSelectedItem}
-                                            fontSize='22px'
+                                            fontSize='14px'
                                         />
                                         {dropdownSelected.name === 'WETH' && (
                                             <WrapBox>

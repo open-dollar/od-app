@@ -86,7 +86,7 @@ const Dropdown = (props: Props) => {
                 <DropdownBtn
                     style={{
                         padding: padding || '15px',
-                        fontSize: fontSize || '16px',
+                        fontSize: fontSize || '14px',
                     }}
                     onClick={() => setIsOpen(!isOpen)}
                 >
@@ -114,7 +114,7 @@ const Dropdown = (props: Props) => {
                         )}
                     </span>
 
-                    {items.length > 0 ? <ChevronDown size="25" strokeWidth={3}/> : null}
+                    {items.length > 0 ? <ChevronDown size="25" color="#0071E7" strokeWidth={3} /> : null}
                 </DropdownBtn>
                 {items.length > 0 ? (
                     <DropdownMenu
@@ -175,23 +175,21 @@ const DropdownBtn = styled.button`
     border: 2px solid ${(props) => props.theme.colors.primary};
     box-shadow: none;
     background: ${(props) => props.theme.colors.placeholder};
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.accent};
     border-radius: 4px;
-    font-size: 18px;
+    font-weight: 700;
 
     outline: none;
     text-align: left;
     cursor: pointer;
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     .text {
         display: inline-block;
         vertical-align: middle;
-    }
-    svg {
-        position: absolute;
-        top: 36%;
-        right: 20px;
     }
 `
 

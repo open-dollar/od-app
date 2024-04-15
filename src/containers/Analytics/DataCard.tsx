@@ -2,15 +2,21 @@ import { ReactNode } from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
+const images: { [key: string]: string } = {
+    lock: require('../../assets/stats-img-lock.png'),
+    vault: require('../../assets/stats-img-vault.png'),
+}
 export interface DataCardProps {
     title: string
     value: string
     description?: string
-    bg: 'light' | 'dark'
+    bg?: 'light' | 'dark'
+    image?: string
     children?: React.ReactChildren | React.ReactChild
 }
 
-const DataCard = ({ title, bg, value, description, children }: DataCardProps) => {
+const DataCard = ({ title, bg, image, value, description, children }: DataCardProps) => {
+    console.log({ image })
     return (
         <Block bg={bg}>
             {description && (
@@ -18,6 +24,9 @@ const DataCard = ({ title, bg, value, description, children }: DataCardProps) =>
                     <Info size="20" />
                 </InfoIcon>
             )}
+            {console.log('images:', images)}
+            {console.log('image prop:', image)}
+            {image && <img src={images[`${image}`]} alt={image} width="262px" height="50px" />}
             <DataTitle bg={bg}>{title}</DataTitle>
             <DataValue>{value}</DataValue>
             {children}

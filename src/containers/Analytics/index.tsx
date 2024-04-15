@@ -148,14 +148,14 @@ const Analytics = () => {
     }, [geb])
 
     const totalCollateralLocked = {
-        image: 'ETH',
+        image: 'lock',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
         description: 'Mock dada for Total Collateral Locked',
     }
 
     const vaultNFTs = {
-        image: 'NFTS',
+        image: 'vault',
         title: 'Vault NFTs',
         value: totalVaults,
         description: 'Vault NFTs',
@@ -368,6 +368,7 @@ const Analytics = () => {
                         analiticsData?.map((val, index) => (
                             <DataCard
                                 key={val.title + index}
+                                image={val.image}
                                 title={val.title}
                                 value={val.value}
                                 description={val.description}

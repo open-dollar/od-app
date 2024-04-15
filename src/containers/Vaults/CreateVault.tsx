@@ -389,8 +389,8 @@ export default CreateVaultContainer
 
 const ReviewContainer = styled.div`
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
 `
 const Container = styled.div`
     max-width: 880px;
@@ -409,8 +409,14 @@ const Content = styled.div`
     padding: 20px;
 `
 const BtnContainer = styled.div`
-    padding-top: 20px;
+    margin-top: 24px;
     text-align: center;
+    border: 2px solid #e2f1ff;
+    border-radius: 4px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
 `
 const Header = styled.div`
     border-bottom: 1px solid ${(props) => props.theme.colors.border};

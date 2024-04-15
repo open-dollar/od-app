@@ -282,7 +282,6 @@ const CreateVault = ({
                                         />
                                     </Inputs>
                                     <Note data-test-id="debt_floor_note">
-                                        <span>Note:</span>
                                         {` The minimum amount to mint per vault is ${debtFloor} OD`}
                                     </Note>
                                 </Col>
@@ -601,9 +600,15 @@ const InfoIcon = styled.div`
 `
 
 const Note = styled.div`
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
-    span {
-        color: ${(props) => props.theme.colors.yellowish};
-    }
+    color: ${(props) => props.theme.colors.accent};
+    background-color: ${(props) => props.theme.colors.background};
+    padding-left: 18px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    border-left: 3px solid ${(props) => props.theme.colors.primary};
+    font-size: 15px;
+    font-weight: 600;
+    color: ${(props) => props.theme.colors.primary};
 `

@@ -96,7 +96,6 @@ const TokenInput = ({
                     {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
                 </Flex>
             </Content>
-
             <Flex>
                 <Label data-test-id={data_test_id + '_label'}>
                     {console.log({ label })}

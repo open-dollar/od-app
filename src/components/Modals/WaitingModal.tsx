@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '../../GlobalStyle'
@@ -11,6 +11,7 @@ import Modal from './Modal'
 
 const WaitingModal = () => {
     const { t } = useTranslation()
+    const modalRef = useRef<HTMLDivElement>(null)
 
     const { popupsModel: popupsState, safeModel: safeState } = useStoreState((state) => state)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -25,6 +26,19 @@ const WaitingModal = () => {
         }
         // eslint-disable-next-line
     }, [list.length])
+
+    useEffect(() => {
+        const handleClickOutside = (event: { target: any }) => {
+            if (modalRef?.current && !modalRef?.current?.contains(event.target)) {
+                popupsActions.setIsWaitingModalOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [modalRef])
 
     const returnStatusIcon = (status: string) => {
         switch (status) {
@@ -59,8 +73,7 @@ const WaitingModal = () => {
     }
     return (
         <Modal width={'445px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
-            <CloseIcon onClick={() => popupsActions.setIsWaitingModalOpen(false)}>&times;</CloseIcon>
-            <InnerContainer data-test-id="waiting-modal">
+            <InnerContainer data-test-id="waiting-modal" ref={modalRef}>
                 {returnStatusIcon(status)}
                 <TextColumnContainer>
                     {
@@ -113,26 +126,13 @@ const TextColumnContainer = styled.div`
     gap: 10px;
 `
 
-const CloseIcon = styled.div`
-    position: relative;
-    left: 28rem;
-    overflow: hidden;
-    font-size: 30px;
-    z-index: 2;
-    color: black;
-    &:hover {
-        cursor: pointer;
-        opacity: 0.6;
-    }
-`
-
 const InnerContainer = styled.div`
     display: flex;
     justify-content: space-between;
     background: linear-gradient(to bottom, #1a74ec, #6396ff);
     text-align: center;
     border-radius: 4px;
-    padding: 20px 20px 35px 20px;
+    padding: 20px 50px 35px 50px;
     svg {
         margin: 25px auto;
         stroke: #4ac6b2;
@@ -152,12 +152,12 @@ const InnerContainer = styled.div`
 const Title = styled.div`
     color: ${(props) => props.theme.colors.neutral};
     font-weight: 700;
-    font-size: 32px;
+    font-size: 23px;
     font-family: 'Barlow', serif;
     &.error {
         color: white;
         font-weight: 700;
-        font-size: 32px;
+        font-size: 23px;
         font-family: 'Barlow', serif;
     }
 `

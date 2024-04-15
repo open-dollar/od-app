@@ -310,7 +310,7 @@ const CreateVault = ({
                                                                             data-tooltip-id="tooltip-create-vault"
                                                                             data-tooltip-content={item.tip}
                                                                         >
-                                                                            <Info size="13" />
+                                                                            <Info size="13" color="#1C293A" />
                                                                         </InfoIcon>
                                                                     ) : null}
                                                                 </Label>

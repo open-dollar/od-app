@@ -229,7 +229,7 @@ const CreateVault = ({
                                             items={collateralsDropdown}
                                             itemSelected={dropdownSelected}
                                             getSelectedItem={setSelectedItem}
-                                            fontSize='14px'
+                                            fontSize="14px"
                                         />
                                         {dropdownSelected.name === 'WETH' && (
                                             <WrapBox>
@@ -301,26 +301,28 @@ const CreateVault = ({
                                             <div key={key} className="blockie">
                                                 {stats[key as StatsType].map((item) => {
                                                     return (
-                                                        <Flex key={item.label}>
-                                                            <Label color={isPrimary ? 'primary' : 'secondary'}>
-                                                                {item.label}
-                                                                {item.tip ? (
-                                                                    <InfoIcon
-                                                                        data-tooltip-id="tooltip-create-vault"
-                                                                        data-tooltip-content={item.tip}
-                                                                    >
-                                                                        <Info size="13" />
-                                                                    </InfoIcon>
-                                                                ) : null}
-                                                            </Label>
-                                                            <Value>
-                                                                {item.value !== '-' &&
-                                                                item.label.toLowerCase().includes('collateral') &&
-                                                                item.label.toLowerCase().includes('total')
-                                                                    ? formatWithCommas(item.value)
-                                                                    : item.value}
-                                                            </Value>
-                                                        </Flex>
+                                                        <StatItemWrapper>
+                                                            <Flex key={item.label}>
+                                                                <Label color={isPrimary ? 'primary' : 'secondary'}>
+                                                                    {item.label}
+                                                                    {item.tip ? (
+                                                                        <InfoIcon
+                                                                            data-tooltip-id="tooltip-create-vault"
+                                                                            data-tooltip-content={item.tip}
+                                                                        >
+                                                                            <Info size="13" />
+                                                                        </InfoIcon>
+                                                                    ) : null}
+                                                                </Label>
+                                                                <Value>
+                                                                    {item.value !== '-' &&
+                                                                    item.label.toLowerCase().includes('collateral') &&
+                                                                    item.label.toLowerCase().includes('total')
+                                                                        ? formatWithCommas(item.value)
+                                                                        : item.value}
+                                                                </Value>
+                                                            </Flex>
+                                                        </StatItemWrapper>
                                                     )
                                                 })}
                                             </div>
@@ -419,6 +421,15 @@ const InnerContent = styled.div`
 const Content = styled.div`
     padding: 20px;
 `
+
+const StatItemWrapper = styled.div`
+    border-bottom: 1px solid #1a74ec4d;
+
+    &:last-child {
+        border: 0;
+    }
+`
+
 const BtnContainer = styled.div`
     padding-top: 20px;
     text-align: center;
@@ -540,7 +551,7 @@ const Stats = styled.div`
     padding: 24px;
     border-radius: 4px;
     .blockie {
-        border-bottom: 1px solid ${(props) => props.theme.colors.border};
+        border-bottom: 1px solid #1a74ec4d;
         &:last-child {
             border: 0;
         }

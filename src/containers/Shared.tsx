@@ -49,6 +49,7 @@ import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
 import Stats from '~/containers/Vaults/Stats'
 import axios from 'axios'
+import NotFound from './PageNotFound'
 
 interface Props {
     children: ReactNode

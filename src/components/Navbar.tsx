@@ -398,11 +398,10 @@ const Container = styled.div`
     height: 77px;
     align-items: center;
     justify-content: center;
-    padding: 6px 0 10px 0;
     position: relative;
     z-index: 5;
     width: 100%;
-    background: ${(props) => props.theme.colors.background};
+    background: ${(props) => props.theme.colors.neutral};
     box-shadow: 0 8px linear-gradient(360deg, #d8e1ff -10.39%, #e2e8fb 0%);
 
     @media (max-width: ${screenWidth}) {
@@ -430,6 +429,7 @@ const ContainerShadowWrapper = styled(Flex)`
 `
 
 const ContentWrapper = styled(Flex)`
+    height: 100%;
     justify-content: space-between;
     width: 100%;
     max-width: 1360px;
@@ -486,7 +486,7 @@ const HideMobile = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: -webkit-fill-available;
+    height: 100%;
     @media (max-width: ${screenWidth}) {
         display: none;
     }
@@ -598,6 +598,7 @@ const InfoPopUpHorizontalSeparator = styled.div`
 
 const InfoPopupContentWrapper = styled.div`
     padding: 16px;
+    background: ${(props) => props.theme.colors.neutral};
 `
 
 const InfoPopUpText = styled.div`

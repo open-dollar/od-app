@@ -48,16 +48,6 @@ const VaultBlock = ({ ...props }) => {
                         >
                             <Label>{'Risk'}</Label>
                             <Wrapper>
-                                {/* <Circle
-                                    data-tooltip-content={`${
-                                        returnState(props.riskState) ? returnState(props.riskState) : 'Closed'
-                                    } Risk`}
-                                    className={
-                                        returnState(props.riskState)
-                                            ? returnState(props.riskState).toLowerCase()
-                                            : 'dimmed'
-                                    }
-                                />{' '} */}
                                 <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
@@ -143,27 +133,6 @@ const SafeTitle = styled.div`
     }
 `
 
-const Circle = styled.div`
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: ${(props) => props.theme.colors.successColor};
-    margin-right: 5px;
-    cursor: pointer;
-    &.dimmed {
-        background: ${(props) => props.theme.colors.secondary};
-    }
-    &.elevated {
-        background: ${(props) => props.theme.colors.yellowish};
-    }
-    &.high {
-        background: ${(props) => props.theme.colors.dangerColor};
-    }
-    &.liquidation {
-        background: ${(props) => props.theme.colors.dangerColor};
-    }
-`
-
 const Block = styled.div`
     display: flex;
     justify-content: space-between;
@@ -199,11 +168,11 @@ const Item = styled.div`
     }
 
     &.elevated div:last-child {
-        color: #FFAF1D;
+        color: #ffaf1d;
     }
 
     &.high div:last-child {
-        color: #E75966;
+        color: #e75966;
     }
 
     &.liquidation div:last-child {

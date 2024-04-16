@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Plus } from 'react-feather'
 
 import { useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
@@ -9,6 +8,7 @@ import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
+import Button from '~/components/Button'
 
 const VaultList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
@@ -45,16 +45,15 @@ const VaultList = ({ address }: { address?: string }) => {
                         </CheckboxContainer>
                         <Col className={'last-col'}>
                             {safeState.safeCreated && isOwner ? (
-                                <LinkButton
-                                    id="create-safe"
-                                    disabled={connectWalletState.isWrongNetwork}
-                                    url={'/vaults/create'}
-                                >
-                                    <BtnInner>
-                                        <Plus size={18} />
-                                        {t('new_safe')}
-                                    </BtnInner>
-                                </LinkButton>
+                                <LinkBtnContainer>
+                                    <LinkButton
+                                        id="create-safe"
+                                        disabled={connectWalletState.isWrongNetwork}
+                                        url={'/vaults/create'}
+                                    >
+                                        <BtnInner>{t('create_safe')}</BtnInner>
+                                    </LinkButton>
+                                </LinkBtnContainer>
                             ) : null}
                         </Col>
                     </Header>
@@ -85,6 +84,24 @@ const Container = styled.div`
         margin: 50px auto;
     }
 `
+
+const LinkBtnContainer = styled.div`
+    outline: none;
+    cursor: pointer;
+    min-width: 134px;
+    padding: 15px 45px;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    background: ${(props) => props.theme.colors.gradientBg};
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    font-family: ${(props) => props.theme.family.headers};
+    &:hover {
+        opacity: 0.8;
+    }
+`
+
 const SafeBlocks = styled.div`
     border-radius: 8px;
 `

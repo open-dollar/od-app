@@ -36,10 +36,14 @@ const VaultList = ({ address }: { address?: string }) => {
             return (
                 <Container>
                     <Header>
-                        <Col>
+                        <Col className="first-col">
                             <Title>{'Vaults'}</Title>
                         </Col>
-                        <Col>
+                        <CheckboxContainer>
+                            <CheckBox checked={showEmpty} onChange={setShowEmpty} />
+                            <span>Show empty vaults</span>
+                        </CheckboxContainer>
+                        <Col className={"last-col"}>
                             {safeState.safeCreated && isOwner ? (
                                 <LinkButton
                                     id="create-safe"
@@ -62,10 +66,6 @@ const VaultList = ({ address }: { address?: string }) => {
                             </div>
                         ))}
                     </SafeBlocks>
-                    <CheckboxContainer>
-                        <CheckBox checked={showEmpty} onChange={setShowEmpty} />
-                        <span>Show empty vaults</span>
-                    </CheckboxContainer>
                 </Container>
             )
         }
@@ -109,6 +109,14 @@ const Col = styled.div`
         min-width: 100px;
         padding: 4px 12px;
     }
+
+    &.first-col {
+        margin-right: 33px;
+    }
+
+    &.last-col {
+        margin-left: auto;
+    }
 `
 
 const BtnInner = styled.div`
@@ -122,12 +130,10 @@ const BtnInner = styled.div`
 const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 9px;
     justify-content: flex-end;
     span {
         margin-left: 10px;
         position: relative;
         font-size: 13px;
-        top: -3px;
     }
 `

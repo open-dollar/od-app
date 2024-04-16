@@ -78,10 +78,10 @@ const BlockContainer = styled.div`
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 15px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: white;
     position: relative;
     &.empty {
-        background: #1e3b58;
+        background: white;
     }
 `
 

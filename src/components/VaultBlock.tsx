@@ -132,7 +132,7 @@ const SafeTitle = styled.div`
     font-size: 32px;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
-    font-weight: 700; 
+    font-weight: 700;
 
     span {
         font-weight: 500;

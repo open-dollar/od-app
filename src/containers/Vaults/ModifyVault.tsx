@@ -370,7 +370,7 @@ const ButtonContainer = styled.div`
     }
 `
 const Container = styled.div`
-    border-radius: 15px;
+    border-radius: 4px;
     padding: 20px;
     margin-top: 20px;
     background: ${(props) => props.theme.colors.colorPrimary};
@@ -395,13 +395,19 @@ const InputBlock = styled.div`
 
 const ReviewContainer = styled.div`
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
 `
 
 const BtnContainer = styled.div`
-    padding-top: 20px;
+    margin-top: 24px;
     text-align: center;
+    border: 2px solid #e2f1ff;
+    border-radius: 4px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
 `
 
 const SideLabel = styled.div`

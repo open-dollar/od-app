@@ -78,7 +78,7 @@ const BlockContainer = styled.div`
     border-radius: 4px;
     margin-bottom: 29px;
     background: white;
-    box-shadow: 0px 4px 6px 0px #0D4B9D33;
+    box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -90,12 +90,11 @@ const BlockContainer = styled.div`
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #1C293A33;
+    border-bottom: 1px solid #1c293a33;
     padding-left: 34px;
     padding-top: 22px;
     padding-bottom: 11px;
     padding-right: 34px;
-
 `
 
 const Wrapper = styled.div`

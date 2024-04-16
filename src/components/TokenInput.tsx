@@ -98,7 +98,6 @@ const TokenInput = ({
             </Content>
             <Flex>
                 <Label data-test-id={data_test_id + '_label'}>
-                    {console.log({ label })}
                     {label}
                 </Label>
                 {rightLabel ? <Label>{rightLabel}</Label> : null}

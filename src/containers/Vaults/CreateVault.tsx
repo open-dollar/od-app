@@ -301,8 +301,8 @@ const CreateVault = ({
                                             <div key={key} className="blockie">
                                                 {stats[key as StatsType].map((item) => {
                                                     return (
-                                                        <StatItemWrapper>
-                                                            <Flex key={item.label}>
+                                                        <StatItemWrapper key={item.label}>
+                                                            <Flex>
                                                                 <Label color={isPrimary ? 'primary' : 'secondary'}>
                                                                     {item.label}
                                                                     {item.tip ? (
@@ -493,9 +493,7 @@ const WrapBox = styled.div`
 const Box = styled.div`
     display: flex;
     flex-direction: column;
-    border: 3px solid #1a74ec;
-    box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
-        2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
+    box-shadow: 0px 4px 6px 0px #0d4b9d33;
 
     padding: 22px;
     border-radius: 8px;

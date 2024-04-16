@@ -76,9 +76,10 @@ const Container = styled.div`
 
 const BlockContainer = styled.div`
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 4px;
     margin-bottom: 15px;
     background: white;
+    box-shadow: 0px 4px 6px 0px #0D4B9D33;
     position: relative;
     &.empty {
         background: white;

@@ -393,7 +393,7 @@ const ReviewContainer = styled.div`
     background: ${(props) => props.theme.colors.colorSecondary};
 `
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1362px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {

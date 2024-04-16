@@ -78,7 +78,7 @@ const VaultList = ({ address }: { address?: string }) => {
 export default VaultList
 
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1360px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {

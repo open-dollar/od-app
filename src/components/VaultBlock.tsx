@@ -13,8 +13,8 @@ const VaultBlock = ({ ...props }) => {
                             <img
                                 src={getTokenLogo(props.collateralName)}
                                 alt={props.collateralName}
-                                width={'24px'}
-                                height={'24px'}
+                                width={'70px'}
+                                height={'70px'}
                             />
                             <SafeData>
                                 <SafeTitle>
@@ -193,21 +193,18 @@ const Item = styled.div`
 `
 
 const Label = styled.div`
-    font-size: 13px;
-    color: ${(props) => props.theme.colors.secondary};
-    letter-spacing: -0.09px;
-    line-height: 21px;
+    font-size: 18px;
+    color: ${(props) => props.theme.colors.tertiary};
+    font-weight: 400;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
 `
 
 const Value = styled.div`
-    font-size: 13px;
-    color: ${(props) => props.theme.colors.primary};
-    letter-spacing: -0.09px;
-    line-height: 21px;
-    font-weight: 600;
+    font-size: 26px;
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }

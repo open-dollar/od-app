@@ -97,9 +97,7 @@ const TokenInput = ({
                 </Flex>
             </Content>
             <Flex>
-                <Label data-test-id={data_test_id + '_label'}>
-                    {label}
-                </Label>
+                <Label data-test-id={data_test_id + '_label'}>{label}</Label>
                 {rightLabel ? <Label>{rightLabel}</Label> : null}
             </Flex>
         </Container>

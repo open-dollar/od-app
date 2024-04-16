@@ -38,11 +38,9 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
     }
     return (
         <Container id={id}>
-            {stepNumber > 0 && (
-                <StepperWrapper>
-                    <Stepper step={stepNumber} steps={steps} />
-                </StepperWrapper>
-            )}
+            <StepperWrapper stepNumber={stepNumber}>
+                <Stepper step={stepNumber} steps={steps} />
+            </StepperWrapper>
             <ContentContainer stepNumber={stepNumber}>
                 <ImageContainer stepNumber={stepNumber}>{returnLottie(stepNumber)}</ImageContainer>
                 <ContentWrapper stepNumber={stepNumber}>
@@ -75,7 +73,7 @@ const Container = styled.div`
 
 const ImageContainer = styled.div<{ stepNumber: number }>`
     margin-right: ${(props) => (props.stepNumber === 0 ? '' : '30px')};
-    max-width: ${(props) => (props.stepNumber === 0 ? '608px' : '319px')};
+    max-width: ${(props) => (props.stepNumber === 0 ? '358px' : '319px')};
 
     @media (max-width: 960px) {
         margin-right: 0;
@@ -104,32 +102,25 @@ const ContentContainer = styled.div<{ stepNumber: number }>`
     }
 `
 
-const StepperWrapper = styled.div`
-    padding-top: 22px;
-    padding-bottom: 22px;
-    padding-left: 34px;
-    padding-right: 28px;
+const StepperWrapper = styled.div<{ stepNumber: number }>`
+    padding: 22px 28px 22px 34px;
     background-color: white;
     border-radius: 4px;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     width: 100%;
-    margin-bottom: 105px;
+    margin-bottom: ${(props) => (props.stepNumber === 2 || props.stepNumber === 1 ? '80px' : '40px')};
 `
 
 const Title = styled.h2`
-    /* font-size: ${(props) => props.theme.font.large}; */
-    font-size: 60px;
+    font-size: 40px;
     font-weight: 700;
-    /* color: ${(props) => props.theme.colors.neutral}; */
     color: #1c293a;
     margin-bottom: 28px;
 `
 
 const Text = styled.p`
-    /* font-size: ${(props) => props.theme.font.small}; */
-    font-size: 28px;
-    font-weight: 400px;
-    /* color: ${(props) => props.theme.colors.secondary}; */
+    font-size: 18px;
+    font-weight: 400;
     color: #475662;
     margin-bottom: 28px;
     line-height: 38px;

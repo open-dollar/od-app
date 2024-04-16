@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { returnState, COIN_TICKER, getTokenLogo, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
+    console.log(props.riskState)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>
@@ -47,7 +48,7 @@ const VaultBlock = ({ ...props }) => {
                         >
                             <Label>{'Risk'}</Label>
                             <Wrapper>
-                                <Circle
+                                {/* <Circle
                                     data-tooltip-content={`${
                                         returnState(props.riskState) ? returnState(props.riskState) : 'Closed'
                                     } Risk`}
@@ -56,7 +57,7 @@ const VaultBlock = ({ ...props }) => {
                                             ? returnState(props.riskState).toLowerCase()
                                             : 'dimmed'
                                     }
-                                />{' '}
+                                />{' '} */}
                                 <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
@@ -104,8 +105,10 @@ const Wrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
     color: #dadada;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 26px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 `
 
 const SafeInfo = styled.div`
@@ -189,6 +192,22 @@ const Item = styled.div`
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    &.low div:last-child {
+        color: #459d00;
+    }
+
+    &.elevated div:last-child {
+        color: #FFAF1D;
+    }
+
+    &.high div:last-child {
+        color: #E75966;
+    }
+
+    &.liquidation div:last-child {
+        color: #e75966;
     }
 `
 

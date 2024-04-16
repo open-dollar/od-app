@@ -148,14 +148,14 @@ const Analytics = () => {
     }, [geb])
 
     const totalCollateralLocked = {
-        image: 'ETH',
+        image: 'lock',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
         description: 'Mock dada for Total Collateral Locked',
     }
 
     const vaultNFTs = {
-        image: 'NFTS',
+        image: 'vault',
         title: 'Vault NFTs',
         value: totalVaults,
         description: 'Vault NFTs',
@@ -438,6 +438,7 @@ const Analytics = () => {
                             title={val.title}
                             value={val.value}
                             description={val.description}
+                            bg={'light'}
                         />
                     ))}
                 </AnaliticsBottom>
@@ -483,6 +484,7 @@ const TooltipWrapper = styled.div`
 `
 
 const Container = styled.div`
+    font-family: 'Open Sans', sans-serif;
     max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
@@ -499,10 +501,6 @@ const AnaliticsTop = styled.div`
     display: flex;
     gap: 24px;
     margin-bottom: 64px;
-
-    & div {
-        height: 231px;
-    }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         flex-wrap: wrap;
@@ -558,13 +556,15 @@ const FlexMultipleRow = styled.div`
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
+    font-family: 'Barlow', sans-serif;
     margin-bottom: 40px;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const SubTitle = styled.h3`
     font-size: 34px;
     font-weight: 700;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.accent};
     margin-bottom: 16px;
 `
 

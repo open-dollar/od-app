@@ -17,7 +17,9 @@ const VaultBlock = ({ ...props }) => {
                                 height={'24px'}
                             />
                             <SafeData>
-                                <SafeTitle>{`Vault #${props.id}`}</SafeTitle>
+                                <SafeTitle>
+                                    Vault <span>#{props.id}</span>
+                                </SafeTitle>
                             </SafeData>
                         </SafeInfo>
                     </BlockHeader>
@@ -120,18 +122,22 @@ const SafeInfo = styled.div`
 `
 
 const SafeData = styled.div`
-    margin-left: 16px;
+    margin-left: 20px;
     ${({ theme }) => theme.mediaWidth.upToSmall`
     margin-left: 10px;
   `}
 `
 
 const SafeTitle = styled.div`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.primary};
-    letter-spacing: -0.33px;
-    line-height: 22px;
-    font-weight: 600;
+    font-size: 32px;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700; 
+
+    span {
+        font-weight: 500;
+        color: ${(props) => props.theme.colors.primary};
+    }
 `
 
 const Circle = styled.div`

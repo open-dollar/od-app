@@ -110,7 +110,7 @@ const Title = styled.div`
     font-weight: 700;
     font-size: 60px;
     font-family: ${(props) => props.theme.family.headers};
-    color: ${(props) => props.theme.colors.accent}
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const Header = styled.div`
@@ -121,6 +121,10 @@ const Header = styled.div`
     &.safesList {
         padding: 0 20px;
         margin: 20px 0;
+    }
+
+    @media (max-width: 767px) {
+        flex-direction: column;
     }
 `
 const Col = styled.div`
@@ -135,6 +139,13 @@ const Col = styled.div`
 
     &.last-col {
         margin-left: auto;
+    }
+
+    @media (max-width: 767px) {
+        &.last-col {
+            margin-left: 0;
+            margin-top: 30px;
+        }
     }
 `
 

@@ -13,8 +13,8 @@ const sharedTheme: SharedTheme = {
         xxLarge: '60px',
     },
     family: {
-        headers: "'Barlow', sans-serif'",
-        default: "'Open Sans', serif'",
+        headers: 'Barlow, sans-serif',
+        default: 'Open Sans, serif',
     },
     global: {
         gridMaxWidth: '1454px',

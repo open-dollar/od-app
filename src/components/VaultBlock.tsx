@@ -75,12 +75,13 @@ const Container = styled.div`
 `
 
 const BlockContainer = styled.div`
-    padding: 20px;
     border-radius: 4px;
-    margin-bottom: 15px;
+    margin-bottom: 29px;
     background: white;
     box-shadow: 0px 4px 6px 0px #0D4B9D33;
     position: relative;
+    display: flex;
+    flex-direction: column;
     &.empty {
         background: white;
     }
@@ -89,6 +90,12 @@ const BlockContainer = styled.div`
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #1C293A33;
+    padding-left: 34px;
+    padding-top: 22px;
+    padding-bottom: 11px;
+    padding-right: 34px;
+
 `
 
 const Wrapper = styled.div`
@@ -151,11 +158,13 @@ const Circle = styled.div`
 
 const Block = styled.div`
     display: flex;
-    position: absolute;
-    right: 7px;
-    top: 13px;
+    justify-content: space-between;
+
+    padding-left: 34px;
+    padding-top: 19px;
+    padding-bottom: 22px;
+    padding-right: 34px;
     @media (max-width: 767px) {
-        position: static;
         display: block;
         margin-top: 10px;
         &:last-child {
@@ -166,7 +175,6 @@ const Block = styled.div`
 
 const Item = styled.div`
     margin: 0 12px;
-    text-align: end;
     @media (max-width: 767px) {
         display: flex;
         width: auto;

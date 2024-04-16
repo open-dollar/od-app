@@ -59,19 +59,26 @@ const Nav = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
+    height: 100%;
     @media (max-width: 767px) {
         position: unset;
         transform: initial;
+        flex-direction: column;
     }
     ${({ theme }) => theme.mediaWidth.upToSmall``}
 `
 
 const BtnStyle = css`
     font-family: 'Barlow', sans-serif;
-    color: ${(props) => props.theme.colors.accent};
+    color: black;
     transition: all 0.3s ease;
-
+    padding: 10px 10px;
+    width: 100%;
+    width: 5vw;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
     &:hover {
         color: ${(props) => props.theme.colors.blueish};
     }
@@ -94,16 +101,11 @@ const BtnStyle = css`
         `}
     }
 
-    margin-right: 20px;
     &:last-child {
         margin-right: 0;
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
-  border-bottom: 1px solid ${(props) => props.theme.colors.border};
-  &:first-child {
-    border-top: 1px solid ${(props) => props.theme.colors.border};
-  }
       flex: 0 0 100%;
       min-width: 100%;
       font-weight: normal;
@@ -119,8 +121,15 @@ const BtnStyle = css`
 const NavBarLink = styled(NavLink)`
     ${BtnStyle}
     &.activeLink {
+        display: flex;
+        align-items: center;
+        padding: 10px 10px;
+        width: 5vw;
+        height: 100%;
         font-weight: 700;
-        color: ${(props) => props.theme.colors.primary};
+        border-bottom: 5px solid ${(props) => props.theme.colors.secondary};
+        background: ${(props) => props.theme.colors.primary};
+        color: ${(props) => props.theme.colors.neutral};
         &:before {
             content: '';
             position: absolute;
@@ -129,7 +138,6 @@ const NavBarLink = styled(NavLink)`
             width: 100%;
             height: 3px;
             border-radius: 2px;
-            background: ${(props) => props.theme.colors.blueish};
         }
         ${({ theme }) => theme.mediaWidth.upToSmall`
         &:before {

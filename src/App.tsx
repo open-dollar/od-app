@@ -12,7 +12,6 @@ import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
 import { useStoreState } from './store'
 import { Theme } from './utils/interfaces'
-import { darkTheme } from './utils/themes/dark'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 
@@ -44,13 +43,11 @@ console.log(
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
 
-    const { bodyOverflow, isLightTheme } = settingsState
-
-    const theme = isLightTheme ? lightTheme : darkTheme
+    const { bodyOverflow } = settingsState
 
     return (
         <I18nextProvider i18n={i18next}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={lightTheme}>
                 <GlobalStyle bodyOverflow={bodyOverflow} />
                 <ErrorBoundary>
                     <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />

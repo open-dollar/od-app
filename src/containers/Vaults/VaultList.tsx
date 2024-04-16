@@ -108,7 +108,9 @@ const SafeBlocks = styled.div`
 
 const Title = styled.div`
     font-weight: 700;
-    font-size: 34px;
+    font-size: 60px;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent}
 `
 
 const Header = styled.div`
@@ -148,9 +150,14 @@ const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-top: 17px;
     span {
         margin-left: 10px;
         position: relative;
-        font-size: 13px;
+        font-size: 14px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: ${(props) => props.theme.colors.accent};
+        letter-spacing: 3px;
     }
 `

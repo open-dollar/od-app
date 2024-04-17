@@ -343,13 +343,11 @@ const InfoCol = styled.div`
 
 const InfoLabel = styled.div`
     color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
 `
 const InfoValue = styled.div`
     margin-top: 3px;
     color: ${(props) => props.theme.colors.primary};
     font-weight: normal;
-    font-size: ${(props) => props.theme.font.extraSmall};
 `
 
 const Content = styled.div`
@@ -490,7 +488,6 @@ const List = styled.div`
 const ListItem = styled.div`
     flex: 0 0 16.6%;
     color: ${(props) => props.theme.colors.customSecondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
     padding: 15px 10px;
     &:first-child {
         padding-left: 25px;
@@ -504,7 +501,6 @@ const ListItem = styled.div`
 
     flex: 0 0 50%;
     min-width:50%;
-    font-size: ${(props) => props.theme.font.extraSmall};
     font-weight:900;
   `}
 `

@@ -319,7 +319,6 @@ const CamelotText = styled.div`
 `
 
 const TestTokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
     color: ${(props) => props.theme.colors.neutral};
     text-align: left;
     font-weight: 600;
@@ -344,7 +343,6 @@ const PopupColumnWrapper = styled.div`
 `
 
 const TokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
     text-align: left;
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};

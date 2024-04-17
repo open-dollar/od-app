@@ -116,7 +116,6 @@ const Header = styled.div`
     cursor: pointer;
     button {
         margin-left: 10px;
-        font-size: ${(props) => props.theme.font.extraSmall};
         min-width: auto !important;
         border-radius: 25px;
         padding: 2px 10px;

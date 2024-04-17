@@ -138,7 +138,6 @@ const Label = styled.div`
 const Date = styled.div`
     letter-spacing: 0.01px;
     color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
 `
 
 const Value = styled.div`
@@ -150,7 +149,6 @@ const Value = styled.div`
 `
 
 const ExternalLink = styled.a`
-    font-size: ${(props) => props.theme.font.extraSmall};
     background: ${(props) => props.theme.colors.gradient};
     background-clip: text;
     -webkit-background-clip: text;

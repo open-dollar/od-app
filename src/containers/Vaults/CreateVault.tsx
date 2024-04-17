@@ -552,7 +552,6 @@ const InfoIcon = styled.div`
 
 const Note = styled.div`
     color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
     span {
         color: ${(props) => props.theme.colors.yellowish};
     }

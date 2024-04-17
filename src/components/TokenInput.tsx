@@ -118,9 +118,6 @@ const Label = styled.div`
     text-transform: capitalize;
     display: flex;
     align-items: center;
-    @media (max-width: 767px) {
-        font-size: ${(props) => props.theme.font.extraSmall};
-    }
 `
 
 const Content = styled.div`
@@ -168,7 +165,6 @@ const MaxBtn = styled.div`
     padding: 0px;
     font-weight: 600;
     color: ${(props) => props.theme.colors.blueish};
-    font-size: ${(props) => props.theme.font.extraSmall};
     border-radius: 0;
     text-transform: capitalize;
     margin-left: 3px;

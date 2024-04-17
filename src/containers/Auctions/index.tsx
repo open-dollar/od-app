@@ -255,8 +255,10 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
+    font-size: 60px;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
     min-width: 180px;
 `
 const Content = styled.div`

@@ -18,10 +18,6 @@ import type { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect
 import { GnosisSafe } from '@web3-react/gnosis-safe'
 import { gnosisSafe, hooks } from '~/connectors/gnosisSafe'
 
-if ('ethereum' in window) {
-    ;(window.ethereum as any).autoRefreshOnNetworkChange = false
-}
-
 const connectors: [MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe, Web3ReactHooks][] = [
     [metaMask, metaMaskHooks],
     [walletConnectV2, walletConnectV2Hooks],

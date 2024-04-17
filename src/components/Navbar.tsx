@@ -142,6 +142,7 @@ const Navbar = () => {
     }, [connectWalletModel.tokensFetchedData])
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 try {
@@ -177,7 +178,7 @@ const Navbar = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb])
+    }, [geb, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <ContainerShadowWrapper>

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@opendollar/sdk'
+import { Geb, GebDeployment } from '@opendollar/sdk'
 import { JsonRpcSigner } from '@ethersproject/providers'
 
 import { IAuctionBid } from '~/types'
@@ -19,7 +19,7 @@ export const handleAuctionBuy = async ({ signer, haiAmount, auctionId, collatera
         return false
     }
 
-    const geb = new Geb(ETH_NETWORK, signer)
+    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
     const haiAmountBN = ethers.utils.parseUnits(haiAmount, 18)
     const collateralAmountBN = ethers.utils.parseUnits(collateralAmount, 18)
@@ -39,7 +39,7 @@ export const handleAuctionBid = async ({ signer, bid, auctionId, auctionType }: 
         return false
     }
 
-    const geb = new Geb(ETH_NETWORK, signer)
+    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
     const bidBN = ethers.utils.parseEther(bid)
 
@@ -63,7 +63,7 @@ export const handleAuctionClaim = async ({ signer, auctionId, auctionType }: IAu
     if (!signer || !auctionId || !auctionType) {
         return false
     }
-    const geb = new Geb(ETH_NETWORK, signer)
+    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
 
     let tx
@@ -89,7 +89,7 @@ export const handleClaimInternalBalance = async ({ signer, type, bid: amount, to
     if (!signer) {
         return false
     }
-    const geb = new Geb(ETH_NETWORK, signer)
+    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
     console.log({ signer, type, bid: amount, token })
     let txData: ethers.PopulatedTransaction

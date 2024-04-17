@@ -104,7 +104,7 @@ const VaultDetails = ({ ...props }) => {
             safeActions.setSingleSafe(null)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
+    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -129,9 +129,12 @@ const VaultDetails = ({ ...props }) => {
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
                 )}
 
-                {(isDeposit || isWithdraw) && !isLoading ? (
+                {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
                     <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
                 ) : null}
+
+                {/* Users can only repay debt from a vault they don't own */}
+                {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
             </Container>
             <Stats />
         </>

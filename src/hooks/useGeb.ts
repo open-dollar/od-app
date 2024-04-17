@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Geb } from '@opendollar/sdk'
+import { IODSafeManager } from '@opendollar/sdk/lib/typechained'
 
 import store, { useStoreActions, useStoreState } from '~/store'
 import { EMPTY_ADDRESS, network_name } from '~/utils/constants'
 import { formatNumber } from '~/utils/helper'
+import { GebDeployment } from '@opendollar/sdk'
 import { useActiveWeb3React } from '~/hooks'
 import { NETWORK_ID } from '~/connectors'
 
@@ -17,7 +19,7 @@ export default function useGeb(): Geb {
 
     useEffect(() => {
         if (!provider) return
-        const geb = new Geb(network_name, provider.getSigner())
+        const geb = new Geb(network_name() as GebDeployment, provider.getSigner())
         setState(geb)
     }, [provider])
 
@@ -30,7 +32,7 @@ export function useIsOwner(safeId: string): boolean {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
 
-    const getIsOwnerCallback = useCallback((res) => {
+    const getIsOwnerCallback = useCallback((res: [string, IODSafeManager.SAFEDataStructOutput]) => {
         if (res) {
             const [proxyAddress, { owner }] = res
             if (proxyAddress && owner) {
@@ -85,13 +87,13 @@ export function useBlockNumber() {
 }
 
 // returns amount of currency in USD
-export function useTokenBalanceInUSD(token: TokenType, balance: string) {
+export function useTokenBalanceInUSD(token: TokenType, balance: string, minDecimals = 2) {
     const ethPrice = store.getState().connectWalletModel.fiatPrice
     const haiPrice = store.getState().safeModel.liquidationData?.currentRedemptionPrice
 
     return useMemo(() => {
         const price = token === 'ETH' || token === 'WETH' ? ethPrice : haiPrice
         if (!balance) return '0'
-        return formatNumber((Number(price) * Number(balance)).toString(), 2)
-    }, [token, ethPrice, haiPrice, balance])
+        return formatNumber((Number(price) * Number(balance)).toString(), minDecimals)
+    }, [token, ethPrice, haiPrice, balance, minDecimals])
 }

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Plus } from 'react-feather'
 
 import { useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
@@ -36,21 +35,24 @@ const VaultList = ({ address }: { address?: string }) => {
             return (
                 <Container>
                     <Header>
-                        <Col>
+                        <Col className="first-col">
                             <Title>{'Vaults'}</Title>
                         </Col>
-                        <Col>
+                        <CheckboxContainer>
+                            <CheckBox checked={showEmpty} onChange={setShowEmpty} />
+                            <span>Show empty vaults</span>
+                        </CheckboxContainer>
+                        <Col className={'last-col'}>
                             {safeState.safeCreated && isOwner ? (
-                                <LinkButton
-                                    id="create-safe"
-                                    disabled={connectWalletState.isWrongNetwork}
-                                    url={'/vaults/create'}
-                                >
-                                    <BtnInner>
-                                        <Plus size={18} />
-                                        {t('new_safe')}
-                                    </BtnInner>
-                                </LinkButton>
+                                <LinkBtnContainer>
+                                    <LinkButton
+                                        id="create-safe"
+                                        disabled={connectWalletState.isWrongNetwork}
+                                        url={'/vaults/create'}
+                                    >
+                                        <BtnInner>{t('create_safe')}</BtnInner>
+                                    </LinkButton>
+                                </LinkBtnContainer>
                             ) : null}
                         </Col>
                     </Header>
@@ -62,10 +64,6 @@ const VaultList = ({ address }: { address?: string }) => {
                             </div>
                         ))}
                     </SafeBlocks>
-                    <CheckboxContainer>
-                        <CheckBox checked={showEmpty} onChange={setShowEmpty} />
-                        <span>Show empty vaults</span>
-                    </CheckboxContainer>
                 </Container>
             )
         }
@@ -78,13 +76,30 @@ const VaultList = ({ address }: { address?: string }) => {
 export default VaultList
 
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1360px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
         margin: 50px auto;
     }
 `
+
+const LinkBtnContainer = styled.div`
+    outline: none;
+    cursor: pointer;
+    min-width: 100px;
+    padding: 8px 20px;
+    font-weight: 700;
+    color: white;
+    background: ${(props) => props.theme.colors.gradientBg};
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    font-family: ${(props) => props.theme.family.headers};
+    &:hover {
+        opacity: 0.8;
+    }
+`
+
 const SafeBlocks = styled.div`
     border-radius: 8px;
 `
@@ -92,6 +107,8 @@ const SafeBlocks = styled.div`
 const Title = styled.div`
     font-weight: 700;
     font-size: 34px;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const Header = styled.div`
@@ -103,11 +120,30 @@ const Header = styled.div`
         padding: 0 20px;
         margin: 20px 0;
     }
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
 `
 const Col = styled.div`
     a {
         min-width: 100px;
         padding: 4px 12px;
+    }
+
+    &.first-col {
+        margin-right: 33px;
+    }
+
+    &.last-col {
+        margin-left: auto;
+    }
+
+    @media (max-width: 767px) {
+        &.last-col {
+            margin-left: 0;
+            margin-top: 30px;
+        }
     }
 `
 
@@ -122,12 +158,15 @@ const BtnInner = styled.div`
 const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 9px;
     justify-content: flex-end;
+    margin-top: 5px;
     span {
         margin-left: 10px;
         position: relative;
-        font-size: 13px;
-        top: -3px;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: ${(props) => props.theme.colors.accent};
+        letter-spacing: 3px;
     }
 `

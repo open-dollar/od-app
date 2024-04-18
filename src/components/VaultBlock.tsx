@@ -4,20 +4,18 @@ import styled from 'styled-components'
 import { returnState, COIN_TICKER, getTokenLogo, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
+    console.log(props.riskState)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>
                 <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
-                            <img
-                                src={getTokenLogo(props.collateralName)}
-                                alt={props.collateralName}
-                                width={'24px'}
-                                height={'24px'}
-                            />
+                            <img src={getTokenLogo(props.collateralName)} alt={props.collateralName} width={'50px'} />
                             <SafeData>
-                                <SafeTitle>{`Vault #${props.id}`}</SafeTitle>
+                                <SafeTitle>
+                                    Vault <span>#{props.id}</span>
+                                </SafeTitle>
                             </SafeData>
                         </SafeInfo>
                     </BlockHeader>
@@ -45,16 +43,6 @@ const VaultBlock = ({ ...props }) => {
                         >
                             <Label>{'Risk'}</Label>
                             <Wrapper>
-                                <Circle
-                                    data-tooltip-content={`${
-                                        returnState(props.riskState) ? returnState(props.riskState) : 'Closed'
-                                    } Risk`}
-                                    className={
-                                        returnState(props.riskState)
-                                            ? returnState(props.riskState).toLowerCase()
-                                            : 'dimmed'
-                                    }
-                                />{' '}
                                 <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
@@ -75,19 +63,26 @@ const Container = styled.div`
 `
 
 const BlockContainer = styled.div`
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 4px;
+    margin-bottom: 29px;
+    background: white;
+    box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
+    display: flex;
+    flex-direction: column;
     &.empty {
-        background: #1e3b58;
+        background: white;
     }
 `
 
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #1c293a33;
+    padding-left: 34px;
+    padding-top: 22px;
+    padding-bottom: 11px;
+    padding-right: 34px;
 `
 
 const Wrapper = styled.div`
@@ -95,8 +90,10 @@ const Wrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
     color: #dadada;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.font.default};
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 `
 
 const SafeInfo = styled.div`
@@ -113,48 +110,33 @@ const SafeInfo = styled.div`
 `
 
 const SafeData = styled.div`
-    margin-left: 16px;
+    margin-left: 20px;
     ${({ theme }) => theme.mediaWidth.upToSmall`
     margin-left: 10px;
   `}
 `
 
 const SafeTitle = styled.div`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.primary};
-    letter-spacing: -0.33px;
-    line-height: 22px;
-    font-weight: 600;
-`
+    font-size: ${(props) => props.theme.font.large};
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
 
-const Circle = styled.div`
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: ${(props) => props.theme.colors.successColor};
-    margin-right: 5px;
-    cursor: pointer;
-    &.dimmed {
-        background: ${(props) => props.theme.colors.secondary};
-    }
-    &.elevated {
-        background: ${(props) => props.theme.colors.yellowish};
-    }
-    &.high {
-        background: ${(props) => props.theme.colors.dangerColor};
-    }
-    &.liquidation {
-        background: ${(props) => props.theme.colors.dangerColor};
+    span {
+        font-weight: 500;
+        color: ${(props) => props.theme.colors.primary};
     }
 `
 
 const Block = styled.div`
     display: flex;
-    position: absolute;
-    right: 7px;
-    top: 13px;
+    justify-content: space-between;
+
+    padding-left: 34px;
+    padding-top: 19px;
+    padding-bottom: 22px;
+    padding-right: 34px;
     @media (max-width: 767px) {
-        position: static;
         display: block;
         margin-top: 10px;
         &:last-child {
@@ -165,7 +147,6 @@ const Block = styled.div`
 
 const Item = styled.div`
     margin: 0 12px;
-    text-align: end;
     @media (max-width: 767px) {
         display: flex;
         width: auto;
@@ -176,24 +157,37 @@ const Item = styled.div`
             margin-bottom: 0;
         }
     }
+
+    &.low div:last-child {
+        color: #459d00;
+    }
+
+    &.elevated div:last-child {
+        color: #ffaf1d;
+    }
+
+    &.high div:last-child {
+        color: #e75966;
+    }
+
+    &.liquidation div:last-child {
+        color: #e75966;
+    }
 `
 
 const Label = styled.div`
-    font-size: 13px;
-    color: ${(props) => props.theme.colors.secondary};
-    letter-spacing: -0.09px;
-    line-height: 21px;
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.tertiary};
+    font-weight: 400;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
 `
 
 const Value = styled.div`
-    font-size: 13px;
-    color: ${(props) => props.theme.colors.primary};
-    letter-spacing: -0.09px;
-    line-height: 21px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }

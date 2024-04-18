@@ -405,7 +405,7 @@ const ReviewContainer = styled.div`
     background: linear-gradient(to bottom, #1a74ec, #6396ff);
 `
 const Container = styled.div`
-    max-width: 1130px;
+    max-width: 1362px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {

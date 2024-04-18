@@ -177,71 +177,72 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
+            <Wrapper>
+                {type === 'SURPLUS' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Surplus: </SurplusTitle>
+                                    <span>{formatNumber(systemSurplus, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
+                                </Box>
 
-            {type === 'SURPLUS' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Surplus: </SurplusTitle>
-                                <span>{formatNumber(systemSurplus, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
-                            </Box>
+                                {!surplusCooldownDone || allowStartSurplusAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
+                                )}
 
-                            {!surplusCooldownDone || allowStartSurplusAuction ? null : (
-                                <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
-                            )}
+                                {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
+                            </div>
+                            <Button
+                                text={'Start Surplus Auction'}
+                                onClick={handleStartSurplusAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartSurplusAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
 
-                            {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
-                        </div>
-                        <Button
-                            text={'Start Surplus Auction'}
-                            onClick={handleStartSurplusAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartSurplusAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
+                {type === 'DEBT' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Debt: </SurplusTitle>
+                                    <span>{formatNumber(systemDebt, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(debtAmountToSell, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
+                                    <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
+                                </Box>
 
-            {type === 'DEBT' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Debt: </SurplusTitle>
-                                <span>{formatNumber(systemDebt, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(debtAmountToSell, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
-                                <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
-                            </Box>
-
-                            {allowStartDebtAuction ? null : (
-                                <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
-                            )}
-                        </div>
-                        <Button
-                            text={'Start Debt Auction'}
-                            onClick={handleStartDebtAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartDebtAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
-            {type === 'COLLATERAL' ? (
-                <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            ) : (
-                <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            )}
+                                {allowStartDebtAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
+                                )}
+                            </div>
+                            <Button
+                                text={'Start Debt Auction'}
+                                onClick={handleStartDebtAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartDebtAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
+                {type === 'COLLATERAL' ? (
+                    <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                ) : (
+                    <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                )}
+            </Wrapper>
         </Container>
     )
 }
@@ -255,6 +256,11 @@ const Container = styled.div`
     @media (max-width: 767px) {
         margin: 50px auto;
     }
+`
+
+const Wrapper = styled.div`
+    background: white;
+    border-radius: 4px;
 `
 
 const Title = styled.div`

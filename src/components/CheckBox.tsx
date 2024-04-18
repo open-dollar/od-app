@@ -47,8 +47,8 @@ const StyledCheckbox = styled.div`
     div {
         border-radius: 4px;
         background: ${(props) => props.theme.colors.primary};
-        width: 32px;
-        height: 32px;
+        width: 25px;
+        height: 25px;
         display: flex;
         justify-content: center;
         align-items: center;

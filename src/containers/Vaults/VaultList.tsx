@@ -35,14 +35,18 @@ const VaultList = ({ address }: { address?: string }) => {
             return (
                 <Container>
                     <Header>
-                        <Col className="first-col">
+                        <Col className="first-col" className="first-col">
                             <Title>{'Vaults'}</Title>
                         </Col>
                         <CheckboxContainer>
                             <CheckBox checked={showEmpty} onChange={setShowEmpty} />
                             <span>Show empty vaults</span>
                         </CheckboxContainer>
-                        <Col className={'last-col'}>
+                        <CheckboxContainer>
+                            <CheckBox checked={showEmpty} onChange={setShowEmpty} />
+                            <span>Show empty vaults</span>
+                        </CheckboxContainer>
+                        <Col className={'last-col'} className={'last-col'}>
                             {safeState.safeCreated && isOwner ? (
                                 <LinkBtnContainer>
                                     <LinkButton
@@ -87,9 +91,8 @@ const Container = styled.div`
 const LinkBtnContainer = styled.div`
     outline: none;
     cursor: pointer;
-    min-width: 134px;
-    padding: 15px 45px;
-    font-size: 26px;
+    min-width: 100px;
+    padding: 8px 20px;
     font-weight: 700;
     color: white;
     background: ${(props) => props.theme.colors.gradientBg};
@@ -107,7 +110,7 @@ const SafeBlocks = styled.div`
 
 const Title = styled.div`
     font-weight: 700;
-    font-size: 60px;
+    font-size: 34px;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
 `
@@ -160,11 +163,11 @@ const CheckboxContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: 17px;
+    margin-top: 5px;
     span {
         margin-left: 10px;
         position: relative;
-        font-size: 14px;
+        font-size: 12px;
         text-transform: uppercase;
         font-weight: 700;
         color: ${(props) => props.theme.colors.accent};

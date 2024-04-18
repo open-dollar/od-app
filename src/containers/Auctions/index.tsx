@@ -289,19 +289,21 @@ const Switcher = styled.div`
     margin: 40px auto;
     padding: 10px;
     flex-wrap: wrap;
+    gap: 25px;
 `
 
 const Tab = styled.div`
-    background: transparent;
+    background: white;
     flex: 1;
     text-align: center;
     min-width: fit-content;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 3px;
     padding: 10px 20px;
     color: ${(props) => props.theme.colors.primary};
     &.active {
-        background: ${(props) => props.theme.colors.colorPrimary};
+        background: ${(props) => props.theme.colors.primary};
+        color: white;
     }
 `
 

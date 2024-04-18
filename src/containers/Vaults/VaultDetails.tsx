@@ -145,7 +145,7 @@ export default VaultDetails
 
 const Container = styled.div`
     max-width: 880px;
-    margin: 80px auto;
+    margin: 50px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
         margin: 50px auto;

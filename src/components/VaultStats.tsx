@@ -109,8 +109,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     style={{
                                         maxWidth: '100%',
                                         height: 'auto',
-                                        border: '1px solid #00374E',
-                                        borderRadius: '0px',
                                     }}
                                     dangerouslySetInnerHTML={{ __html: svg }}
                                 ></div>
@@ -121,10 +119,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
                 <Right>
                     <Inner>
-                        <Side style={{ borderTop: '1px solid #00587E', paddingTop: '8px' }}>
-                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
-                                <Info size="16" />
-                            </InfoIcon>
+                        <Side>
                             <SideTitle>
                                 Debt Owed
                                 {modified ? (
@@ -136,18 +131,15 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </div>
                                 ) : null}
                             </SideTitle>
+                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                <Info size="16" />
+                            </InfoIcon>
                             <SideValue>
                                 {formatWithCommas(totalDebt)} OD
                                 <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
                             </SideValue>
                         </Side>
                         <Side>
-                            <InfoIcon
-                                data-tooltip-id="vault-stats"
-                                data-tooltip-content={t('collateral_deposited_tip')}
-                            >
-                                <Info size="16" />
-                            </InfoIcon>
                             <SideTitle>
                                 Collateral Deposited
                                 {modified ? (
@@ -161,18 +153,18 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     <></>
                                 )}
                             </SideTitle>
-                            <SideValue>
-                                {formatWithCommas(collateral)} {singleSafe?.collateralName}
-                                <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
-                            </SideValue>
-                        </Side>
-                        <Side>
                             <InfoIcon
                                 data-tooltip-id="vault-stats"
                                 data-tooltip-content={t('collateral_deposited_tip')}
                             >
                                 <Info size="16" />
                             </InfoIcon>
+                            <SideValue>
+                                {formatWithCommas(collateral)} {singleSafe?.collateralName}
+                                <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
+                            </SideValue>
+                        </Side>
+                        <Side>
                             <SideTitle>
                                 Collateral Ratio (min {collateralRatio}%)
                                 <div>
@@ -242,28 +234,31 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     <></>
                                 )}
                             </SideTitle>
+                            <InfoIcon
+                                data-tooltip-id="vault-stats"
+                                data-tooltip-content={t('collateral_deposited_tip')}
+                            >
+                                <Info size="16" />
+                            </InfoIcon>
                             <SideValue>{singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%</SideValue>
                         </Side>
                         <Side>
+                            <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('eth_osm_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
                             <SideValue>${formatWithCommas(collateralUnitPriceUSD, 2, 2)}</SideValue>
                         </Side>
 
                         <Side>
+                            <SideTitle>OD Redemption Price</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('hai_red_price_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>OD Redemption Price</SideTitle>
                             <SideValue>${ODPrice}</SideValue>
                         </Side>
 
                         <Side>
-                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('liquidation_price_tip')}>
-                                <Info size="16" />
-                            </InfoIcon>
                             <SideTitle>
                                 Liquidation Price
                                 {modified ? (
@@ -275,24 +270,27 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </div>
                                 ) : null}
                             </SideTitle>
+                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('liquidation_price_tip')}>
+                                <Info size="16" />
+                            </InfoIcon>
                             <SideValue>
                                 ${singleSafe ? formatWithCommas(singleSafe.liquidationPrice, 2, 2) : '-'}
                             </SideValue>
                         </Side>
 
                         <Side>
+                            <SideTitle>Liquidation Penalty</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('liquidation_penalty_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>Liquidation Penalty</SideTitle>
                             <SideValue>{`${liquidationPenalty}%`}</SideValue>
                         </Side>
 
                         <Side>
+                            <SideTitle>Stability Fee</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('stability_fee_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>Stability Fee</SideTitle>
                             <SideValue>{`${
                                 singleSafe?.totalAnnualizedStabilityFee
                                     ? getRatePercentage(singleSafe?.totalAnnualizedStabilityFee, 2)
@@ -301,10 +299,10 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         </Side>
 
                         <Side>
+                            <SideTitle>Annual Redemption Rate</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('annual_redemption_tip')}>
                                 <Info size="16" />
                             </InfoIcon>
-                            <SideTitle>Annual Redemption Rate</SideTitle>
                             <SideValue>{`${returnRedRate()}%`}</SideValue>
                         </Side>
                     </Inner>
@@ -349,7 +347,7 @@ const InnerLeft = styled.div`
 const Inner = styled.div`
     background: ${(props) => props.theme.colors.colorPrimary};
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 4px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -369,8 +367,9 @@ const Left = styled.div`
     }
 `
 const Right = styled.div`
+    background: white;
+    border-radius: 4px;
     flex: 0 0 45%;
-    padding-left: 10px;
     margin-top: 20px;
     @media (max-width: 767px) {
         flex: 0 0 100%;
@@ -394,8 +393,7 @@ const Side = styled.div`
     &:last-child {
         margin-bottom: 0;
     }
-    border-bottom: 1px solid #00587e;
-    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(26, 116, 236, 0.3);
     @media (max-width: 767px) {
         padding-top: 4px;
     }
@@ -405,7 +403,8 @@ const Side = styled.div`
 `
 
 const SideTitle = styled.div`
-    color: ${(props) => props.theme.colors.secondary};
+    color: #475662;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     .sideNote {
         font-size: 12px;
@@ -422,17 +421,19 @@ const SideTitle = styled.div`
 const SideValue = styled.div`
     margin-left: auto;
     text-align: right;
-    color: ${(props) => props.theme.colors.customSecondary};
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    color: #475662;
     font-size: 16px;
 `
 
 const InfoIcon = styled.div`
     cursor: pointer;
     svg {
-        fill: ${(props) => props.theme.colors.secondary};
-        color: ${(props) => props.theme.colors.foreground};
+        border: none;
+        color: #475662;
         position: relative;
+        margin-left: 4px;
         top: 4px;
-        margin-right: 5px;
     }
 `

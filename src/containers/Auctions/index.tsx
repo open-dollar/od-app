@@ -323,7 +323,7 @@ const Tab = styled.div`
 const ReviewContainer = styled.div`
     padding: 20px;
     border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    background: ${(props) => props.theme.colors.primary};
 `
 
 const BtnContainer = styled.div`

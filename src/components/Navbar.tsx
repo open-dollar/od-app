@@ -232,7 +232,7 @@ const Navbar = () => {
                                             width={22}
                                             height={22}
                                         />
-                                        Test tokens
+                                        tokens
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>

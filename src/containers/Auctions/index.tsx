@@ -157,7 +157,11 @@ const Auctions = ({
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
-                <Button text={`Show ${type.toLowerCase()} Auctions FAQs`} onClick={() => setShowFaqs(!showFaqs)}>
+                <Button
+                    unstyled
+                    text={`Show ${type.toLowerCase()} Auctions FAQs`}
+                    onClick={() => setShowFaqs(!showFaqs)}
+                >
                     <ChevronRight color="#1C293A" size="20px" />
                 </Button>
             </Content>
@@ -257,6 +261,7 @@ const Title = styled.div`
     font-size: 34px;
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
+
     color: ${(props) => props.theme.colors.accent};
     min-width: 180px;
 `
@@ -301,6 +306,8 @@ const Tab = styled.div`
     border-radius: 3px;
     padding: 10px 20px;
     color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
     &.active {
         background: ${(props) => props.theme.colors.primary};
         color: white;

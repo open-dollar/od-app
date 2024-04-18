@@ -14,8 +14,7 @@ const VaultBlock = ({ ...props }) => {
                             <img
                                 src={getTokenLogo(props.collateralName)}
                                 alt={props.collateralName}
-                                width={'70px'}
-                                height={'70px'}
+                                width={'50px'}
                             />
                             <SafeData>
                                 <SafeTitle>
@@ -95,7 +94,7 @@ const Wrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
     color: #dadada;
-    font-size: 26px;
+    font-size: ${(props) => props.theme.font.default};
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -122,7 +121,7 @@ const SafeData = styled.div`
 `
 
 const SafeTitle = styled.div`
-    font-size: 32px;
+    font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
@@ -181,7 +180,7 @@ const Item = styled.div`
 `
 
 const Label = styled.div`
-    font-size: 18px;
+    font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
     @media (max-width: 767px) {
@@ -190,7 +189,7 @@ const Label = styled.div`
 `
 
 const Value = styled.div`
-    font-size: 26px;
+    font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
     @media (max-width: 767px) {

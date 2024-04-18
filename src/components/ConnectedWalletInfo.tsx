@@ -155,7 +155,6 @@ const Connection = styled.div`
     button {
         width: auto;
         min-width: auto;
-        font-size: ${(props) => props.theme.font.extraSmall};
         padding-top: 2px;
         padding-bottom: 2px;
     }

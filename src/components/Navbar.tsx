@@ -35,7 +35,7 @@ const Navbar = () => {
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
-    const { isActive, account, provider } = useWeb3React()
+    const { isActive, account, provider, chainId } = useWeb3React()
     const geb = useGeb()
     const odRef = useRef<HTMLDivElement | null>(null)
     const testTokenPopupRef = useRef<HTMLDivElement | null>(null)

@@ -132,7 +132,6 @@ const MaxBtn = styled.div`
     padding: 6px;
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
-    font-size: ${(props) => props.theme.font.extraSmall};
     border-radius: ${(props) => props.theme.global.borderRadius};
     margin-right: 20px;
     &:hover {

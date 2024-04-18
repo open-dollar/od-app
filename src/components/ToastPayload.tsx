@@ -50,7 +50,6 @@ const Container = styled.div`
     }
     a {
         ${ExternalLinkArrow}
-        font-size: ${(props) => props.theme.font.extraSmall};
     }
 `
 

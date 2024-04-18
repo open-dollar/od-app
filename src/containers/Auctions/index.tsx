@@ -13,6 +13,7 @@ import Button from '~/components/Button'
 import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
+import { ChevronRight } from 'react-feather'
 
 const Auctions = ({
     match: {
@@ -156,11 +157,9 @@ const Auctions = ({
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
-                <Button
-                    primary
-                    text={`Show ${type.toLowerCase()} Auctions FAQs`}
-                    onClick={() => setShowFaqs(!showFaqs)}
-                />
+                <Button text={`Show ${type.toLowerCase()} Auctions FAQs`} onClick={() => setShowFaqs(!showFaqs)}>
+                    <ChevronRight color="#1C293A" size="20px" />
+                </Button>
             </Content>
 
             <Switcher>
@@ -255,7 +254,7 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
-    font-size: 60px;
+    font-size: 34px;
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
@@ -263,14 +262,21 @@ const Title = styled.div`
 `
 const Content = styled.div`
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     button {
+        display: flex;
+        align-items: center;
+
         min-width: 100px;
         padding: 4px 12px;
-        font-size: 13px;
-        font-weight: normal;
-        text-transform: capitalize;
+
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        color: ${(props) => props.theme.colors.accent};
     }
 `
 

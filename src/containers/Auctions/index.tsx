@@ -352,4 +352,8 @@ const StartAuctionContainer = styled.div`
     padding: 10px 20px;
     border-radius: 15px;
     background: ${(props) => props.theme.colors.colorSecondary};
+
+    button {
+        width: 300px;
+    }
 `

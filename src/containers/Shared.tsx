@@ -42,6 +42,7 @@ import {
     ChainId,
     ETH_NETWORK,
     IS_IN_IFRAME,
+    timeout,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
@@ -198,6 +199,11 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
+        popupsActions.setWaitingPayload({
+            title: '',
+            status: 'loading',
+        })
+        popupsActions.setIsWaitingModalOpen(true)
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)
@@ -208,6 +214,7 @@ const Shared = ({ children, ...rest }: Props) => {
             if (txs) {
                 transactionsActions.setTransactions(JSON.parse(txs))
             }
+            await timeout(200)
             if (!connectWalletState.ctHash) {
                 connectWalletActions.setStep(2)
                 const { pathname } = location
@@ -229,6 +236,8 @@ const Shared = ({ children, ...rest }: Props) => {
             safeActions.setIsSafeCreated(false)
             connectWalletActions.setStep(1)
         }
+        await timeout(1000)
+        popupsActions.setIsWaitingModalOpen(false)
     }
 
     function accountChange() {

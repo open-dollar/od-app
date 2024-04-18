@@ -16,6 +16,21 @@ interface Props {
     data_test_id?: string
 }
 
+export function processInputValue(inputValue: string): string {
+    const decimalRegex = /^-?\d+(\.\d{1,4})?$/
+    let processedValue = inputValue
+    if (decimalRegex.test(inputValue)) {
+        if (inputValue.startsWith('0') && inputValue.charAt(1) !== '.') {
+            processedValue = inputValue.replace(/(\d)(?=(\d))/, '$1.')
+        } else if (inputValue.startsWith('.')) {
+            processedValue = '0' + inputValue
+        } else if (inputValue.length === 6 && Number(inputValue) === 0) {
+            processedValue = ''
+        }
+    }
+    return processedValue
+}
+
 const DecimalInput = ({
     label,
     placeholder,
@@ -35,21 +50,9 @@ const DecimalInput = ({
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value
-        if (/^-?\d*[.,]?\d*$/.test(val) && /^\d*(\.\d{0,4})?$/.test(val)) {
-            val.includes('.') ? setLength(17) : setLength(16)
-            if (val.startsWith('0') && val.charAt(1) !== '.') {
-                const returnedVal = val.replace(/(\d)(?=(\d))/, '$1.')
-                onChange(returnedVal)
-            } else if (val.startsWith('.')) {
-                onChange('0' + val)
-            } else if (val.replace(/[^.]/g, '').length > 1) {
-                onChange(value)
-            } else if (val.length === 6 && Number(val) === 0) {
-                onChange('')
-            } else {
-                onChange(val)
-            }
-        }
+        const processedValue = processInputValue(val)
+        setLength(val.includes('.') ? 17 : 16)
+        onChange(processedValue)
     }
 
     return (
@@ -129,7 +132,7 @@ const MaxBtn = styled.div`
     padding: 6px;
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     border-radius: ${(props) => props.theme.global.borderRadius};
     margin-right: 20px;
     &:hover {

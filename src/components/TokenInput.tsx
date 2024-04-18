@@ -93,15 +93,13 @@ const TokenInput = ({
                         data-test-id={data_test_id}
                         isAllowed={validateInput}
                     />
-                </Flex>
-                <Flex>
-                    <Label data-test-id={data_test_id + '_label'}>
-                        {label}{' '}
-                        {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
-                    </Label>
-                    {rightLabel ? <Label>{rightLabel}</Label> : null}
+                    {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
                 </Flex>
             </Content>
+            <Flex>
+                <Label data-test-id={data_test_id + '_label'}>{label}</Label>
+                {rightLabel ? <Label>{rightLabel}</Label> : null}
+            </Flex>
         </Container>
     )
 }
@@ -112,23 +110,24 @@ const Container = styled.div``
 
 const Label = styled.div`
     line-height: 21px;
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.small};
+    color: ${(props) => props.theme.colors.accent};
+    font-size: 13px;
     letter-spacing: -0.09px;
     text-transform: capitalize;
     display: flex;
     align-items: center;
     @media (max-width: 767px) {
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
     }
 `
 
 const Content = styled.div`
     background: ${(props) => props.theme.colors.placeholder};
-    border: 1px solid ${(props) => props.theme.colors.border};
-    border-radius: 10px;
+    border: 2px solid ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
     transition: all 0.3s ease;
-    padding: 10px 20px;
+    padding-right: 12px;
+    margin-bottom: 8px;
     &.disabled {
         cursor: not-allowed;
     }
@@ -140,19 +139,17 @@ export const Icon = styled.img`
 `
 
 const CustomInput = styled.input`
-    font-size: ${(props) => props.theme.font.large};
-    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
     transition: all 0.3s ease;
     width: 100%;
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     height: 36px;
     display: flex;
     align-items: center;
-    padding: 0 0 0 5px;
     text-align: right;
-    background: ${(props) => props.theme.colors.placeholder};
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.accent};
     line-height: 24px;
     outline: none;
 
@@ -164,14 +161,14 @@ const CustomInput = styled.input`
 const MaxBtn = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
-    background: transparent;
-    padding: 0px;
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.blueish};
-    font-size: ${(props) => props.theme.font.extraSmall};
-    border-radius: 0;
-    text-transform: capitalize;
-    margin-left: 3px;
+    background: ${(props) => props.theme.colors.background};
+    padding: 0px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.primary};
+    font-size: ${(props) => props.theme.font.default};
+    text-transform: uppercase;
+    margin-left: 16px;
 `
 
 const Flex = styled.div`
@@ -187,6 +184,11 @@ const Flex = styled.div`
 const TokenBox = styled.div`
     display: flex;
     align-items: center;
-    font-size: ${(props) => props.theme.font.medium};
-    flex: 0 0 40%;
+    font-size: 14px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
+    background: ${(props) => props.theme.colors.background};
+    padding: 15px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
 `

@@ -311,13 +311,13 @@ const InfoCol = styled.div`
 
 const InfoLabel = styled.div`
     color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 const InfoValue = styled.div`
     margin-top: 3px;
     color: ${(props) => props.theme.colors.primary};
     font-weight: normal;
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 
 const Content = styled.div`

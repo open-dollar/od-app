@@ -85,8 +85,8 @@ const Dropdown = (props: Props) => {
             <InnerContainer ref={wrapperRef}>
                 <DropdownBtn
                     style={{
-                        padding: padding || '20px',
-                        fontSize: fontSize || '16px',
+                        padding: padding || '15px',
+                        fontSize: fontSize || '14px',
                     }}
                     onClick={() => setIsOpen(!isOpen)}
                 >
@@ -114,7 +114,7 @@ const Dropdown = (props: Props) => {
                         )}
                     </span>
 
-                    {items.length > 0 ? <ChevronDown size="16" /> : null}
+                    {items.length > 0 ? <ChevronDown size="25" color="#0071E7" strokeWidth={3} /> : null}
                 </DropdownBtn>
                 {items.length > 0 ? (
                     <DropdownMenu
@@ -172,24 +172,24 @@ const InnerContainer = styled.div`
     z-index: 1;
 `
 const DropdownBtn = styled.button`
-    border: 1px solid ${(props) => props.theme.colors.border};
+    border: 2px solid ${(props) => props.theme.colors.primary};
     box-shadow: none;
     background: ${(props) => props.theme.colors.placeholder};
-    color: ${(props) => props.theme.colors.primary};
-    border-radius: 10px;
+    color: ${(props) => props.theme.colors.accent};
+    border-radius: 4px;
+    font-weight: 700;
+
     outline: none;
     text-align: left;
     cursor: pointer;
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     .text {
         display: inline-block;
         vertical-align: middle;
-    }
-    svg {
-        position: absolute;
-        top: 36%;
-        right: 20px;
     }
 `
 
@@ -199,7 +199,7 @@ const DropdownMenu = styled.div`
     left: 0;
     border-radius: ${(props) => props.theme.global.borderRadius};
     background: ${(props) => props.theme.colors.background};
-    border: 1px solid ${(props) => props.theme.colors.border};
+    border: 2px solid ${(props) => props.theme.colors.border};
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
     text-align: left;
     z-index: 5;

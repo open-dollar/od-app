@@ -16,11 +16,17 @@
 
 import invariant from 'tiny-invariant'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ConnectorUpdate } from 'web3-react-types'
 
 interface NetworkConnectorArguments {
     urls: { [chainId: number]: string }
     defaultChainId?: number
+}
+
+// Taken from v6 @web3-react since type has been removed in used version (v8) https://github.com/Uniswap/web3-react/blob/v6/packages/types/src/index.ts#L5
+interface ConnectorUpdate<T = number | string> {
+    provider?: any
+    chainId?: T
+    account?: null | string
 }
 
 // taken from ethers.js, compatible interface with web3 provider

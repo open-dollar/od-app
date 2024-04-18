@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useCallback } from 'react'
+import { ReactNode, useEffect, useCallback } from 'react'
 import { GebDeployment, getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
@@ -146,18 +146,19 @@ const Shared = ({ children, ...rest }: Props) => {
     }, [connectWalletState, setCoinBalances])
 
     useEffect(() => {
+        if (chainId !== NETWORK_ID) return
         if (account && coinTokenContract && protTokenContract && connectWalletState.proxyAddress) {
             protTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
+                const formattedAllowance = utils.formatEther(allowance ?? 0)
                 connectWalletActions.setProtAllowance(formattedAllowance)
             })
 
             coinTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
+                const formattedAllowance = utils.formatEther(allowance ?? 0)
                 connectWalletActions.setCoinAllowance(formattedAllowance)
             })
         }
-    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract])
+    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract, chainId])
 
     useEffect(() => {
         if (auctionsData) {
@@ -299,6 +300,51 @@ const Shared = ({ children, ...rest }: Props) => {
         }
         return true
     }
+    const address: string = account ?? ''
+    useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
+        if (
+            (!account && !address) ||
+            (address && !isAddress(address.toLowerCase())) ||
+            !provider ||
+            connectWalletState.isWrongNetwork
+        )
+            return
+
+        async function fetchSafes() {
+            await safeActions.fetchUserSafes({
+                address: address || (account as string),
+                geb,
+                tokensData: connectWalletState.tokensData,
+            })
+        }
+
+        if (geb && connectWalletState.tokensData) {
+            fetchSafes()
+        }
+
+        const ms = 3000
+        const interval = setInterval(() => {
+            if (
+                (!account && !address) ||
+                (address && !isAddress(address.toLowerCase())) ||
+                !provider ||
+                connectWalletState.isWrongNetwork
+            )
+                fetchSafes()
+        }, ms)
+
+        return () => clearInterval(interval)
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
     async function networkChecker() {
         accountChange()
@@ -337,7 +383,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         networkCheckerCallBack()
-    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [account, geb?.getProxyAction]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {

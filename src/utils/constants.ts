@@ -91,7 +91,7 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
 }
 
 const MEDIA_WIDTHS = {
-    upToExtraSmall: 576,
+    upToxSmall: 576,
     upToSmall: 768,
     upToMedium: 992,
     upToLarge: 1280,

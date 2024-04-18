@@ -124,7 +124,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     }
 
     &:disabled {
-        background: ${(props) => (props.isLoading ? props.theme.l.colors.placeholder : props.theme.colors.secondary)};
+        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
         cursor: not-allowed;
     }
 `

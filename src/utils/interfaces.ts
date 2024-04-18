@@ -75,7 +75,7 @@ interface IGlobal {
 }
 
 interface IMediaWidth {
-    upToExtraSmall: ThemedCssFunction<DefaultTheme>
+    upToxSmall: ThemedCssFunction<DefaultTheme>
     upToSmall: ThemedCssFunction<DefaultTheme>
     upToMedium: ThemedCssFunction<DefaultTheme>
     upToLarge: ThemedCssFunction<DefaultTheme>

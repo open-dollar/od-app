@@ -322,8 +322,15 @@ const Tab = styled.div`
 
 const ReviewContainer = styled.div`
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
+    background: ${(props) => props.theme.colors.gradientBg};
+
+    button {
+        border: 2px solid #e2f1ff;
+        background: transparent;
+        width: 100%;
+        font-family: ${(props) => props.theme.family.headers};
+    }
 `
 
 const BtnContainer = styled.div`

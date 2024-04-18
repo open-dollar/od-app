@@ -35,7 +35,7 @@ const VaultList = ({ address }: { address?: string }) => {
             return (
                 <Container>
                     <Header>
-                        <Col className="first-col" className="first-col">
+                        <Col className="first-col">
                             <Title>{'Vaults'}</Title>
                         </Col>
                         <CheckboxContainer>
@@ -46,7 +46,7 @@ const VaultList = ({ address }: { address?: string }) => {
                             <CheckBox checked={showEmpty} onChange={setShowEmpty} />
                             <span>Show empty vaults</span>
                         </CheckboxContainer>
-                        <Col className={'last-col'} className={'last-col'}>
+                        <Col className={'last-col'}>
                             {safeState.safeCreated && isOwner ? (
                                 <LinkBtnContainer>
                                     <LinkButton

@@ -77,12 +77,6 @@ export const TESTNET_CHAINS: ChainConfig = {
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
     },
-    420: {
-        urls: ['https://goerli.optimism.io'],
-        name: 'Optimism Goerli',
-        nativeCurrency: ETH,
-        blockExplorerUrls: ['https://goerli-optimism.etherscan.io/'],
-    },
 }
 
 const supportedChainId = parseInt(process.env.REACT_APP_NETWORK_ID || '', 10)

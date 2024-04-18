@@ -38,7 +38,7 @@ const WaitingModal = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [modalRef])
+    }, [modalRef]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const returnStatusIcon = (status: string) => {
         switch (status) {

@@ -129,6 +129,7 @@ const SideMenu = () => {
     }
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 try {
@@ -165,7 +166,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb])
+    }, [geb, chainId])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
@@ -318,10 +319,11 @@ const CamelotText = styled.div`
 `
 
 const TestTokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
+    color: ${(props) => props.theme.colors.neutral};
     text-align: left;
     font-weight: 600;
-    color: #0079ad;
+    color: white;
     word-wrap: break-word;
     max-width: 100%;
 `
@@ -329,7 +331,8 @@ const TestTokenPopup = styled.div`
     position: absolute;
     max-width: 150px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
 `
@@ -341,10 +344,10 @@ const PopupColumnWrapper = styled.div`
 `
 
 const TokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     text-align: left;
     font-weight: 600;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.neutral};
     margin-bottom: 8px;
 `
 
@@ -364,7 +367,9 @@ const OpenDollarInformationColumn = styled.div`
     }
 `
 
-const PopupColumn = styled.div``
+const PopupColumn = styled.div`
+    color: ${(props) => props.theme.colors.neutral};
+`
 
 const IconWrapper = styled.div`
     display: flex;
@@ -376,7 +381,7 @@ const PopupWrapperTokenLink = styled.a`
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${(props) => props.theme.colors.secondary};
     cursor: pointer;
 `
 
@@ -385,7 +390,7 @@ const PopupWrapperLink = styled.a`
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${(props) => props.theme.colors.primary};
 `
 
 const Price = styled.div`
@@ -398,7 +403,8 @@ const LiquidityPriceInfoPopup = styled.div`
     z-index: 500;
     min-width: 190px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
 `
@@ -408,7 +414,8 @@ const PriceInfoPopup = styled.div`
     z-index: 500;
     min-width: 160px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
 `
@@ -431,7 +438,7 @@ const OdButton = styled.button`
     line-height: 24px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${(props) => props.theme.colors.primary};
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 50px;
     transition: all 0.3s ease;
@@ -498,7 +505,7 @@ const Overlay = styled.div`
 const InnerContainer = styled.div`
     min-height: 100vh;
     width: calc(100% - 50px);
-    background: ${(props) => props.theme.colors.background};
+    background: ${(props) => props.theme.colors.neutral};
     padding-bottom: 1rem;
     position: relative;
     z-index: 2;

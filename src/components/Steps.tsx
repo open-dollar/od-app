@@ -28,7 +28,6 @@ const Steps = () => {
         if (!account || !provider || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
         const signer = provider.getSigner(account)
-
         try {
             connectWalletActions.setIsStepLoading(true)
             popupsActions.setIsWaitingModalOpen(true)
@@ -48,6 +47,7 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
+            connectWalletActions.setStep(2)
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }

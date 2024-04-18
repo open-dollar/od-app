@@ -9,6 +9,7 @@ import { BigNumber } from 'ethers'
 export declare enum ChainId {
     ARBITRUM_SEPOLIA = 421614,
     ARBITRUM = 42161,
+    OPTIMISM = 10,
 }
 
 export interface DynamicObject {
@@ -79,7 +80,7 @@ interface IFamily {
 }
 
 interface IMediaWidth {
-    upToExtraSmall: ThemedCssFunction<DefaultTheme>
+    upToxSmall: ThemedCssFunction<DefaultTheme>
     upToSmall: ThemedCssFunction<DefaultTheme>
     upToMedium: ThemedCssFunction<DefaultTheme>
     upToLarge: ThemedCssFunction<DefaultTheme>

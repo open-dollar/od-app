@@ -1,4 +1,5 @@
 import React from 'react'
+import { Check } from 'react-feather'
 import styled from 'styled-components'
 
 interface Props {
@@ -13,11 +14,7 @@ const CheckBox = ({ checked, onChange }: Props) => {
         <CheckboxContainer>
             <HiddenCheckbox checked={checked} onChange={getChecked} />
             <StyledCheckbox className={checked ? 'checked' : ''}>
-                <div>
-                    <Icon viewBox="0 0 24 24">
-                        <polyline points="20 6 9 17 4 12" />
-                    </Icon>
-                </div>
+                <div>{checked && <Check color="white" size={17} />}</div>
             </StyledCheckbox>
         </CheckboxContainer>
     )
@@ -28,14 +25,6 @@ export default CheckBox
 const CheckboxContainer = styled.label`
     display: flex;
     cursor: pointer;
-`
-
-const Icon = styled.svg`
-    fill: none;
-    stroke: ${(props) => props.theme.colors.blueish};
-    stroke-width: 2px;
-    visibility: hidden;
-    display: block;
 `
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -52,22 +41,16 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 `
 
 const StyledCheckbox = styled.div`
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 2.5px;
     transition: all 150ms;
     padding: 1px;
+
     div {
-        border-radius: 2.5px;
-        border: 1px solid ${(props) => props.theme.colors.blueish};
-    }
-    &.checked {
-        div {
-            border: 1px solid ${(props) => props.theme.colors.blueish};
-        }
-        svg {
-            visibility: visible;
-        }
+        border-radius: 4px;
+        background: ${(props) => props.theme.colors.primary};
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `

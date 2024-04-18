@@ -91,6 +91,7 @@ const Footer = styled.div`
 
 const Error = styled.p`
     color: ${(props) => props.theme.colors.dangerColor};
+    font-size: ${(props) => props.theme.font.xSmall};
     width: 100%;
     margin: 16px 0;
 `

@@ -74,8 +74,13 @@ interface IGlobal {
     modalWidth: string
 }
 
+interface IFamily {
+    default: string
+    headers: string
+}
+
 interface IMediaWidth {
-    upToExtraSmall: ThemedCssFunction<DefaultTheme>
+    upToxSmall: ThemedCssFunction<DefaultTheme>
     upToSmall: ThemedCssFunction<DefaultTheme>
     upToMedium: ThemedCssFunction<DefaultTheme>
     upToLarge: ThemedCssFunction<DefaultTheme>
@@ -84,6 +89,7 @@ interface IMediaWidth {
 export interface SharedTheme {
     font: IFonts
     global: IGlobal
+    family: IFamily
     mediaWidth: IMediaWidth
 }
 

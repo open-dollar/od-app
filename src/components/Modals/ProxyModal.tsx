@@ -195,6 +195,7 @@ const Confirmations = styled.div`
     justify-content: center;
     text-align: center;
     margin-top: 10px;
+    font-size: ${(props) => props.theme.font.xSmall};
     font-weight: 600;
     color: ${(props) => props.theme.colors.secondary};
 `

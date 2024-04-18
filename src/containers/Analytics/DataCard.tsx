@@ -17,16 +17,18 @@ export interface DataCardProps {
 
 const DataCard = ({ title, bg, image, value, description, children }: DataCardProps) => {
     return (
-        <Block bg={bg}>
-            {description && (
-                <InfoIcon data-tooltip-id="analitics" data-tooltip-content={description}>
-                    <Info size="20" />
-                </InfoIcon>
-            )}
-            {image && <img src={images[`${image}`]} alt={image} width="262px" height="50px" />}
-            <DataTitle bg={bg}>{title}</DataTitle>
-            <DataValue>{value}</DataValue>
-            {children}
+        <Block bg={bg!}>
+            <>
+                {description && (
+                    <InfoIcon data-tooltip-id="analitics" data-tooltip-content={description}>
+                        <Info size="20" />
+                    </InfoIcon>
+                )}
+                {image && <img src={images[`${image}`]} alt={image} width="262px" height="50px" />}
+                <DataTitle bg={bg!}>{title}</DataTitle>
+                <DataValue>{value}</DataValue>
+                {children}
+            </>
         </Block>
     )
 }

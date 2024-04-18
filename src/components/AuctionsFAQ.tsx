@@ -116,13 +116,14 @@ const Header = styled.div`
     cursor: pointer;
     button {
         margin-left: 10px;
+        font-size: ${(props) => props.theme.font.xSmall};
         min-width: auto !important;
         border-radius: 25px;
         padding: 2px 10px;
         background: linear-gradient(225deg, #4ce096 0%, #78d8ff 100%);
     }
 
-    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    ${({ theme }) => theme.mediaWidth.upToxSmall`
     flex-direction:column;
     margin-bottom:25px;
     button {

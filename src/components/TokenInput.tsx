@@ -118,6 +118,9 @@ const Label = styled.div`
     display: flex;
     align-items: center;
     padding-top: 4px;
+    @media (max-width: 767px) {
+        font-size: ${(props) => props.theme.font.xSmall};
+    }
 `
 
 const Content = styled.div`
@@ -142,7 +145,7 @@ const CustomInput = styled.input`
     transition: all 0.3s ease;
     width: 100%;
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     height: 36px;
     display: flex;
     align-items: center;
@@ -167,7 +170,7 @@ const MaxBtn = styled.div`
     font-family: 'Open Sans', sans-serif;
     color: ${(props) => props.theme.colors.blueish};
     border-radius: 4px;
-    text-transform: capitalize;
+    text-transform: uppercase;
     margin-left: 8px;
     margin-right: 8px;
 `

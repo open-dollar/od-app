@@ -75,6 +75,7 @@ const ListItemLabel = styled.div`
 const ListItem = styled.div`
     flex: 0 0 16.6%;
     color: ${(props) => props.theme.colors.customSecondary};
+    font-size: ${(props) => props.theme.font.xSmall};
     padding: 15px 10px;
     &:first-child {
         padding-left: 25px;
@@ -88,6 +89,7 @@ const ListItem = styled.div`
 
     flex: 0 0 50%;
     min-width:50%;
+    font-size: ${(props) => props.theme.font.xSmall};
     font-weight:900;
   `}
 `

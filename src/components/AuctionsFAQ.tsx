@@ -109,7 +109,7 @@ const HeroSection = styled.div`
 const Header = styled.div`
     font-size: ${(props) => props.theme.font.large};
     font-weight: 700;
-    font-family: ${props => props.theme.family.headers};
+    font-family: ${(props) => props.theme.family.headers};
     color: white;
     display: flex;
     align-items: center;
@@ -141,7 +141,7 @@ const Content = styled.div`
 const SectionHeading = styled.div`
     font-size: ${(props) => props.theme.font.default};
     font-weight: 700;
-    font-family: ${props => props.theme.family.headers};
+    font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
 `
 const SectionContent = styled.div`

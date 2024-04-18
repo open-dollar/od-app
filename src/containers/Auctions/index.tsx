@@ -334,9 +334,11 @@ const BtnContainer = styled.div`
 const Box = styled.div`
     display: flex;
     align-items: center;
+    color: ${(props) => props.theme.colors.tertiary};
     span {
         font-weight: bold;
     }
+
     @media (max-width: 767px) {
         flex-direction: column;
         margin-bottom: 15px;

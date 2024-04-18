@@ -283,9 +283,9 @@ const Content = styled.div`
 const Switcher = styled.div`
     display: flex;
     align-items: 'center';
-    border-radius: 20px;
-    background: ${(props) => props.theme.colors.colorSecondary};
-    width: fit-content;
+    border-radius: 4px;
+    background: white;
+    width: 100%;
     margin: 40px auto;
     padding: 10px;
     flex-wrap: wrap;

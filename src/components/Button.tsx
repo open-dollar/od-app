@@ -20,6 +20,7 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     isBordered?: boolean
     unstyled?: boolean
     arrowPlacement?: string
+    maxSize?: string
     children?: ReactNode
 }
 
@@ -38,6 +39,7 @@ const Button = ({
     unstyled,
     arrowPlacement = 'left',
     children,
+    maxSize,
     ...rest
 }: Props) => {
     const { t } = useTranslation()
@@ -96,7 +98,14 @@ const Button = ({
             )
         } else {
             return (
-                <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
+                <Container
+                    {...rest}
+                    className={classes}
+                    disabled={disabled}
+                    isLoading={isLoading}
+                    onClick={onClick}
+                    maxSize={maxSize}
+                >
                     {text && t(text)}
                     {children || null}
                     {isLoading && <Loader inlineButton />}
@@ -129,10 +138,10 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     }
 `
 
-const Container = styled.button<{ isLoading?: boolean }>`
+const Container = styled.button<{ isLoading?: boolean; maxSize?: string }>`
     outline: none;
     cursor: pointer;
-    width: 500px;
+    width: ${(props) => props.maxSize || '500px'};
     min-width: 134px;
     border: none;
     box-shadow: none;

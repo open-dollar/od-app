@@ -231,24 +231,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         />
                     </ButtonsRow>
                     <ContainerUnderBottonsRow>
-                        <Modal
-                            isModalOpen={showPreview}
-                            closeModal={() => setShowPreview(false)}
-                            maxWidth={'450px'}
-                            backDropClose
-                            hideHeader
-                            hideFooter
-                            handleModalContent
-                        >
-                            <ReviewContainer>
-                                <Review type={type} />
-                                <BtnContainer>
-                                    <Button id="confirm_tx" onClick={handleConfirm}>
-                                        {'Confirm Transaction'}
-                                    </Button>{' '}
-                                </BtnContainer>
-                            </ReviewContainer>
-                        </Modal>
                         <Inner>
                             <InputBlock>
                                 <SideLabel>
@@ -256,7 +238,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                         ? `Deposit ${singleSafe?.collateralName}`
                                         : `Withdraw ${singleSafe?.collateralName}`}
                                 </SideLabel>
-
                                 <TokenInput
                                     data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_left`}
                                     token={{
@@ -330,42 +311,18 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 />
                             </InputBlock>
                         </Inner>
-                        <ButtonContainer>
-                            {!isValid ? (
-                                <Button onClick={handleSubmit} disabled={!isValid}>
-                                    {error}
-                                </Button>
-                            ) : !isDeposit ? (
-                                unlockState === ApprovalState.PENDING || unlockState === ApprovalState.NOT_APPROVED ? (
-                                    <Button
-                                        disabled={!isValid || unlockState === ApprovalState.PENDING}
-                                        text={
-                                            unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Approve OD'
-                                        }
-                                        onClick={approveUnlock}
-                                    />
-                                ) : (
-                                    <Button onClick={handleSubmit} disabled={!isValid}>
-                                        {'Review Transaction'}
-                                    </Button>
-                                )
-                            ) : collateralUnlockState === ApprovalState.PENDING ||
-                              collateralUnlockState === ApprovalState.NOT_APPROVED ? (
-                                <Button
-                                    disabled={!isValid || collateralUnlockState === ApprovalState.PENDING}
-                                    text={
-                                        collateralUnlockState === ApprovalState.PENDING
-                                            ? 'Pending Approval..'
-                                            : `Unlock ${singleSafe?.collateralName}`
-                                    }
-                                    onClick={collateralApproveUnlock}
-                                />
-                            ) : (
-                                <Button onClick={handleSubmit} disabled={!isValid}>
+                        <Row>
+                            <ButtonContainer>
+                                <Button onClick={handleSubmit} disabled={!isValid} maxSize={'250px'}>
                                     {'Review Transaction'}
                                 </Button>
+                            </ButtonContainer>
+                            {error && (
+                                <ErrorContainer>
+                                    <p>Error: {error}</p>
+                                </ErrorContainer>
                             )}
-                        </ButtonContainer>
+                        </Row>
                     </ContainerUnderBottonsRow>
                 </Container>
             )}
@@ -374,6 +331,28 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 }
 
 export default ModifyVault
+
+const Row = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    justify-content: space-between;
+    @media (max-width: 767px) {
+        align-items: start;
+        flex-direction: column;
+    }
+`
+const ErrorContainer = styled.div`
+    background: rgba(26, 116, 236, 0.2);
+    color: #1a74ec;
+    border-left: 3px solid #1a74ec;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+`
 
 const ContainerUnderBottonsRow = styled.div`
     background: white;

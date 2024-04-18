@@ -11,11 +11,7 @@ const VaultBlock = ({ ...props }) => {
                 <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
-                            <img
-                                src={getTokenLogo(props.collateralName)}
-                                alt={props.collateralName}
-                                width={'50px'}
-                            />
+                            <img src={getTokenLogo(props.collateralName)} alt={props.collateralName} width={'50px'} />
                             <SafeData>
                                 <SafeTitle>
                                     Vault <span>#{props.id}</span>

@@ -47,7 +47,6 @@ const Button = ({
         secondary,
         dimmedNormal,
     })
-
     const returnType = () => {
         if (dimmed) {
             return (
@@ -133,6 +132,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
 const Container = styled.button<{ isLoading?: boolean }>`
     outline: none;
     cursor: pointer;
+    width: 500px;
     min-width: 134px;
     border: none;
     box-shadow: none;
@@ -141,7 +141,7 @@ const Container = styled.button<{ isLoading?: boolean }>`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
-    background: ${(props) => props.theme.colors.blueish};
+    background: ${(props) => props.theme.colors.gradientBg};
     border-radius: 3px;
     transition: all 0.3s ease;
     &.dimmedNormal {
@@ -159,6 +159,8 @@ const Container = styled.button<{ isLoading?: boolean }>`
 
     &:disabled {
         background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
+        background: #475662;
+        opacity: 40%;
         cursor: not-allowed;
     }
 `

@@ -41,7 +41,7 @@ export default function MetaMaskCard() {
             popupsActions.setIsConnectorsWalletOpen(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []) 
+    }, [])
 
     return (
         <Card

@@ -13,6 +13,7 @@ import Button from '~/components/Button'
 import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
+import { ChevronRight } from 'react-feather'
 
 const Auctions = ({
     match: {
@@ -157,10 +158,12 @@ const Auctions = ({
             <Content>
                 <Title>Auctions</Title>
                 <Button
-                    primary
+                    unstyled
                     text={`Show ${type.toLowerCase()} Auctions FAQs`}
                     onClick={() => setShowFaqs(!showFaqs)}
-                />
+                >
+                    <ChevronRight color="#1C293A" size="20px" />
+                </Button>
             </Content>
 
             <Switcher>
@@ -174,71 +177,72 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
+            <Wrapper>
+                {type === 'SURPLUS' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Surplus: </SurplusTitle>
+                                    <span>{formatNumber(systemSurplus, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
+                                </Box>
 
-            {type === 'SURPLUS' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Surplus: </SurplusTitle>
-                                <span>{formatNumber(systemSurplus, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
-                            </Box>
+                                {!surplusCooldownDone || allowStartSurplusAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
+                                )}
 
-                            {!surplusCooldownDone || allowStartSurplusAuction ? null : (
-                                <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
-                            )}
+                                {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
+                            </div>
+                            <Button
+                                text={'Start Surplus Auction'}
+                                onClick={handleStartSurplusAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartSurplusAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
 
-                            {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
-                        </div>
-                        <Button
-                            text={'Start Surplus Auction'}
-                            onClick={handleStartSurplusAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartSurplusAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
+                {type === 'DEBT' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Debt: </SurplusTitle>
+                                    <span>{formatNumber(systemDebt, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(debtAmountToSell, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
+                                    <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
+                                </Box>
 
-            {type === 'DEBT' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Debt: </SurplusTitle>
-                                <span>{formatNumber(systemDebt, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(debtAmountToSell, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
-                                <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
-                            </Box>
-
-                            {allowStartDebtAuction ? null : (
-                                <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
-                            )}
-                        </div>
-                        <Button
-                            text={'Start Debt Auction'}
-                            onClick={handleStartDebtAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartDebtAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
-            {type === 'COLLATERAL' ? (
-                <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            ) : (
-                <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            )}
+                                {allowStartDebtAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
+                                )}
+                            </div>
+                            <Button
+                                text={'Start Debt Auction'}
+                                onClick={handleStartDebtAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartDebtAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
+                {type === 'COLLATERAL' ? (
+                    <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                ) : (
+                    <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                )}
+            </Wrapper>
         </Container>
     )
 }
@@ -254,53 +258,79 @@ const Container = styled.div`
     }
 `
 
+const Wrapper = styled.div`
+    background: white;
+    border-radius: 4px;
+`
+
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
+    font-size: 34px;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+
+    color: ${(props) => props.theme.colors.accent};
     min-width: 180px;
 `
 const Content = styled.div`
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     button {
+        display: flex;
+        align-items: center;
+
         min-width: 100px;
         padding: 4px 12px;
-        font-size: 13px;
-        font-weight: normal;
-        text-transform: capitalize;
+
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        color: ${(props) => props.theme.colors.accent};
     }
 `
 
 const Switcher = styled.div`
     display: flex;
     align-items: 'center';
-    border-radius: 20px;
-    background: ${(props) => props.theme.colors.colorSecondary};
-    width: fit-content;
+    border-radius: 4px;
+    background: white;
+    width: 100%;
     margin: 40px auto;
     padding: 10px;
     flex-wrap: wrap;
+    gap: 25px;
 `
 
 const Tab = styled.div`
-    background: transparent;
+    background: white;
     flex: 1;
     text-align: center;
     min-width: fit-content;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 3px;
     padding: 10px 20px;
     color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
     &.active {
-        background: ${(props) => props.theme.colors.colorPrimary};
+        background: ${(props) => props.theme.colors.primary};
+        color: white;
     }
 `
 
 const ReviewContainer = styled.div`
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    border-radius: 4px;
+    background: ${(props) => props.theme.colors.gradientBg};
+
+    button {
+        border: 2px solid #e2f1ff;
+        background: transparent;
+        width: 100%;
+        font-family: ${(props) => props.theme.family.headers};
+    }
 `
 
 const BtnContainer = styled.div`
@@ -311,9 +341,11 @@ const BtnContainer = styled.div`
 const Box = styled.div`
     display: flex;
     align-items: center;
+    color: ${(props) => props.theme.colors.tertiary};
     span {
         font-weight: bold;
     }
+
     @media (max-width: 767px) {
         flex-direction: column;
         margin-bottom: 15px;
@@ -329,4 +361,8 @@ const StartAuctionContainer = styled.div`
     padding: 10px 20px;
     border-radius: 15px;
     background: ${(props) => props.theme.colors.colorSecondary};
+
+    button {
+        width: 300px;
+    }
 `

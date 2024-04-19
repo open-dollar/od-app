@@ -546,7 +546,7 @@ const DropDownContainer = styled.div``
 export const SideLabel = styled.div`
     font-weight: 400;
     font-size: ${(props) => props.theme.font.default};
-    color: ${(props) => props.theme.colors.accent};
+    color: ${(props) => props.theme.colors.tertiary};
     margin-bottom: 10px;
 `
 

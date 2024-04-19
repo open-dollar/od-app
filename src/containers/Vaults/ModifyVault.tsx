@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { DEFAULT_SAFE_STATE, formatWithCommas, getTokenLogo } from '~/utils'
+import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -51,12 +51,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const tokenBalances = connectWalletModel.tokensFetchedData
     const tokensData = connectWalletModel.tokensData
     const depositTokenBalance = singleSafe
-        ? ethers.utils.formatEther(tokenBalances[singleSafe.collateralName].balanceE18)
+        ? ethers.utils.formatEther(tokenBalances[singleSafe?.collateralName]?.balanceE18 ?? 0)
         : '-'
 
     const leftInputBalance = isDeposit ? depositTokenBalance : availableCollateral
 
-    const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe.collateralName].decimals : '18'
+    const [collateralInUSD, setCollateralInUSD] = useState('0')
+
+    const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe?.collateralName]?.decimals : '18'
 
     const isMaxRepayAmount = parsedAmounts.rightInput === availableHai && availableHai !== '0'
 
@@ -84,6 +86,23 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const collateralName = singleSafe?.collateralName || ''
+
+    const collateralUnitPriceUSD = formatNumber(
+        safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value
+    ).toString()
+
+    useEffect(() => {
+        const calculateCollateralInUSD = () => {
+            const unitPriceUSD = parseFloat(collateralUnitPriceUSD)
+            const collateralAmount = parseFloat(parsedAmounts.leftInput || '0')
+            const totalInUSD = unitPriceUSD * collateralAmount
+            setCollateralInUSD(formatWithCommas(totalInUSD.toFixed(2)))
+        }
+
+        calculateCollateralInUSD()
+    }, [parsedAmounts.leftInput, collateralUnitPriceUSD])
+
     const { leftInput, rightInput } = parsedAmounts
 
     const isValid = !error
@@ -91,12 +110,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const haiBalance = ethers.utils.formatEther(tokenBalances.OD?.balanceE18 || '0')
 
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
-
-    const collateralBalanceUSD = useTokenBalanceInUSD(
-        // @ts-ignore
-        singleSafe?.collateralName,
-        leftInput ? leftInput : 0
-    )
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
@@ -204,126 +217,113 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             id="deposit_borrow"
                             text={'Deposit & Borrow'}
                             url={`/vaults/${vaultId}/deposit`}
-                            color={isDeposit ? 'blueish' : 'colorPrimary'}
-                            border={isDeposit ? false : true}
+                            //@ts-ignore
+                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
+                            border={isDeposit}
                         />
                         <LinkButton
                             id="repay_withdraw"
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
-                            color={!isDeposit ? 'blueish' : 'colorPrimary'}
-                            border={!isDeposit ? false : true}
+                            //@ts-ignore
+                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
+                            border={!isDeposit}
                         />
                     </ButtonsRow>
-                    <Modal
-                        isModalOpen={showPreview}
-                        closeModal={() => setShowPreview(false)}
-                        maxWidth={'450px'}
-                        backDropClose
-                        hideHeader
-                        hideFooter
-                        handleModalContent
-                    >
-                        <ReviewContainer>
-                            <Review type={type} />
-                            <BtnContainer>
-                                <Button id="confirm_tx" onClick={handleConfirm}>
-                                    {'Confirm Transaction'}
-                                </Button>{' '}
-                            </BtnContainer>
-                        </ReviewContainer>
-                    </Modal>
-                    <Inner>
-                        <InputBlock>
-                            <SideLabel>
-                                {isDeposit
-                                    ? `Deposit ${singleSafe?.collateralName}`
-                                    : `Withdraw ${singleSafe?.collateralName}`}
-                            </SideLabel>
-
-                            <TokenInput
-                                data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_left`}
-                                token={{
-                                    name: singleSafe.collateralName,
-                                    icon: getTokenLogo(singleSafe.collateralName),
-                                }}
-                                label={
-                                    isDeposit
-                                        ? `Balance: ${formatWithCommas(leftInputBalance)} ${singleSafe.collateralName}`
-                                        : `Available: ${formatWithCommas(leftInputBalance)} ${
-                                              singleSafe.collateralName
-                                          }`
-                                }
-                                rightLabel={`~$${formatWithCommas(collateralBalanceUSD)}`}
-                                onChange={onLeftInput}
-                                value={leftInput}
-                                handleMaxClick={onMaxLeftInput}
-                                disabled={!isDeposit && !isOwner}
-                                decimals={Number(selectedTokenDecimals)}
-                            />
-                        </InputBlock>
-                        <InputBlock>
-                            <SideLabel>{isDeposit ? `Borrow OD` : 'Repay OD'}</SideLabel>
-                            <TokenInput
-                                data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_right`}
-                                token={
-                                    tokensData.OD && {
-                                        icon: getTokenLogo(tokensData.OD.symbol),
-                                        name: tokensData.OD.symbol,
+                    <ContainerUnderBottonsRow>
+                        <Inner>
+                            <InputBlock>
+                                <SideLabel>
+                                    {isDeposit
+                                        ? `Deposit ${singleSafe?.collateralName}`
+                                        : `Withdraw ${singleSafe?.collateralName}`}
+                                </SideLabel>
+                                <TokenInput
+                                    data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_left`}
+                                    token={{
+                                        name: singleSafe.collateralName,
+                                        icon: getTokenLogo(singleSafe.collateralName),
+                                    }}
+                                    label={
+                                        isDeposit ? (
+                                            <>
+                                                Balance:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(leftInputBalance)}{' '}
+                                                    {singleSafe.collateralName}
+                                                </Bold>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Available:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(leftInputBalance)}{' '}
+                                                    {singleSafe.collateralName}
+                                                </Bold>
+                                            </>
+                                        )
                                     }
-                                }
-                                label={
-                                    isDeposit
-                                        ? `Borrow OD: ${formatWithCommas(availableHai, 2)} ${tokensData.OD.symbol}`
-                                        : `Balance: ${formatWithCommas(haiBalance, 2)} ${tokensData.OD.symbol}`
-                                }
-                                rightLabel={
-                                    isDeposit
-                                        ? `~$${formatWithCommas(haiBalanceUSD, 2)}`
-                                        : `OD Owed: ${formatWithCommas(availableHai, 2)}`
-                                }
-                                onChange={onRightInput}
-                                value={rightInput}
-                                handleMaxClick={onMaxRightInput}
-                                disabled={isDeposit && !isOwner}
-                                decimals={5}
-                            />
-                        </InputBlock>
-                    </Inner>
-                    <ButtonContainer>
-                        {!isValid ? (
-                            <Button onClick={handleSubmit} disabled={!isValid}>
-                                {error}
-                            </Button>
-                        ) : !isDeposit ? (
-                            unlockState === ApprovalState.PENDING || unlockState === ApprovalState.NOT_APPROVED ? (
-                                <Button
-                                    disabled={!isValid || unlockState === ApprovalState.PENDING}
-                                    text={unlockState === ApprovalState.PENDING ? 'Pending Approval..' : 'Approve OD'}
-                                    onClick={approveUnlock}
+                                    rightLabel={`~$${collateralInUSD}`}
+                                    onChange={onLeftInput}
+                                    value={leftInput}
+                                    handleMaxClick={onMaxLeftInput}
+                                    disabled={!isDeposit && !isOwner}
+                                    decimals={Number(selectedTokenDecimals)}
                                 />
-                            ) : (
-                                <Button onClick={handleSubmit} disabled={!isValid}>
+                            </InputBlock>
+                            <InputBlock>
+                                <SideLabel>{isDeposit ? `Borrow OD` : 'Repay OD'}</SideLabel>
+                                <TokenInput
+                                    data_test_id={`${isDeposit ? 'deposit_borrow' : 'repay_withdraw'}_right`}
+                                    token={
+                                        tokensData.OD && {
+                                            icon: getTokenLogo(tokensData.OD.symbol),
+                                            name: tokensData.OD.symbol,
+                                        }
+                                    }
+                                    label={
+                                        isDeposit ? (
+                                            <>
+                                                Borrow OD:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(availableHai, 2)} {tokensData.OD.symbol}
+                                                </Bold>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Balance:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(haiBalance, 2)} {tokensData.OD.symbol}
+                                                </Bold>
+                                            </>
+                                        )
+                                    }
+                                    rightLabel={
+                                        isDeposit
+                                            ? `~$${formatWithCommas(haiBalanceUSD, 2)}`
+                                            : `OD Owed: ${formatWithCommas(availableHai, 2)}`
+                                    }
+                                    onChange={onRightInput}
+                                    value={rightInput}
+                                    handleMaxClick={onMaxRightInput}
+                                    disabled={isDeposit && !isOwner}
+                                    decimals={5}
+                                />
+                            </InputBlock>
+                        </Inner>
+                        <Row>
+                            <ButtonContainer>
+                                <Button onClick={handleSubmit} disabled={!isValid} maxSize={'250px'}>
                                     {'Review Transaction'}
                                 </Button>
-                            )
-                        ) : collateralUnlockState === ApprovalState.PENDING ||
-                          collateralUnlockState === ApprovalState.NOT_APPROVED ? (
-                            <Button
-                                disabled={!isValid || collateralUnlockState === ApprovalState.PENDING}
-                                text={
-                                    collateralUnlockState === ApprovalState.PENDING
-                                        ? 'Pending Approval..'
-                                        : `Unlock ${singleSafe?.collateralName}`
-                                }
-                                onClick={collateralApproveUnlock}
-                            />
-                        ) : (
-                            <Button onClick={handleSubmit} disabled={!isValid}>
-                                {'Review Transaction'}
-                            </Button>
-                        )}
-                    </ButtonContainer>
+                            </ButtonContainer>
+                            {error && (
+                                <ErrorContainer>
+                                    <p>Error: {error}</p>
+                                </ErrorContainer>
+                            )}
+                        </Row>
+                    </ContainerUnderBottonsRow>
                 </Container>
             )}
         </>
@@ -332,12 +332,40 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
 export default ModifyVault
 
+const Row = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    justify-content: space-between;
+    @media (max-width: 767px) {
+        align-items: start;
+        flex-direction: column;
+    }
+`
+const ErrorContainer = styled.div`
+    background: rgba(26, 116, 236, 0.2);
+    color: #1a74ec;
+    border-left: 3px solid #1a74ec;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+`
+
+const ContainerUnderBottonsRow = styled.div`
+    background: white;
+    padding: 20px;
+`
+
+const Bold = styled.span`
+    font-weight: bold;
+`
+
 const ButtonsRow = styled.div`
     display: flex;
     align-items: center;
-    margin-bottom: 24px;
-    margin-left: -4px;
-
     a {
         min-width: 100px;
         padding: 4px 12px;
@@ -373,7 +401,6 @@ const Container = styled.div`
     border-radius: 4px;
     padding: 20px;
     margin-top: 20px;
-    background: ${(props) => props.theme.colors.colorPrimary};
 `
 
 const Inner = styled.div`
@@ -396,7 +423,7 @@ const InputBlock = styled.div`
 const ReviewContainer = styled.div`
     padding: 20px;
     border-radius: 4px;
-    background: linear-gradient(to bottom, #1a74ec, #6396ff);
+    background: ${(props) => props.theme.colors.gradientBg};
 `
 
 const BtnContainer = styled.div`
@@ -411,7 +438,10 @@ const BtnContainer = styled.div`
 `
 
 const SideLabel = styled.div`
-    font-weight: 600;
-    font-size: ${(props) => props.theme.font.default};
+    font-weight: 700;
+    color: #1c293a;
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    line-height: 26.4px;
     margin-bottom: 10px;
 `

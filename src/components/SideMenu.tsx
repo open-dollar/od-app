@@ -129,6 +129,7 @@ const SideMenu = () => {
     }
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 try {
@@ -165,7 +166,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb])
+    }, [geb, chainId])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
@@ -318,7 +319,7 @@ const CamelotText = styled.div`
 `
 
 const TestTokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     color: ${(props) => props.theme.colors.neutral};
     text-align: left;
     font-weight: 600;
@@ -343,7 +344,7 @@ const PopupColumnWrapper = styled.div`
 `
 
 const TokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     text-align: left;
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};

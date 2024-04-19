@@ -23,7 +23,7 @@
     "theme_color": "#000000",
     "background_color": "#ffffff",
     "iconPath": "od-logo.png",
-    "description": "Volatility dampened synthetic instruments",
+    "description": "Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability.",
     "providedBy": {
         "name": "Open Dollar",
         "url": "https://app.opendollar.com/"

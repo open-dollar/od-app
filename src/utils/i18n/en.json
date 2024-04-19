@@ -116,7 +116,7 @@
     "surplus_auction_claim_tokens_desc": "In case someone outbids you in a surplus auction, your ODG bid will be reimbursed to your Open Dollar Account. Claim Tokens can be used to get back ODG (and OD) that is kept in your Account.",
     "migrate": "Migrate",
     "manage_other_safes": "View / Top-up Other Vaults",
-    "managed_safe_warning": "CAUTION: You are not the owner of this Vault. You can only deposit collateral or repay debt. Note that these operations are irreversible.",
+    "managed_safe_warning": "CAUTION: You are not the owner of this Vault. You can only repay debt. Note that these operations are irreversible.",
     "liquidate_safe_warning": "CAUTION: You are about to start the liquidation of this Vault. Note that this operation is irreversible.",
     "liquidate_confirmation": "I understand that I am about to liquidate this Vault.",
     "liquidate_button": "Liquidate Vault #",

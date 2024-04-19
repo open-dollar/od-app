@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ChevronLeft } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -20,13 +20,13 @@ const VaultHeader = ({ safeId }: { safeId: string }) => {
     return (
         <Container>
             <BackBtn id="back-btn" onClick={handleBack}>
-                <ArrowLeft size="16" /> Back
+                <ChevronLeft size={18} /> BACK
             </BackBtn>
             <HeaderContainer>
                 <LeftSide>
                     <SafeInfo>
                         <UpperInfo>
-                            {singleSafe?.collateralName} Vault <span>#{safeId}</span>
+                            {singleSafe?.collateralName} Vault <VaultNumberContainer>#{safeId}</VaultNumberContainer>
                         </UpperInfo>
                     </SafeInfo>
                 </LeftSide>
@@ -46,13 +46,26 @@ const VaultHeader = ({ safeId }: { safeId: string }) => {
 
 export default VaultHeader
 
-const Container = styled.div``
+const Container = styled.div`
+    padding-left: 18px;
+`
+
+const VaultNumberContainer = styled.span`
+    font-size: 30px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    color: #1a74ec;
+    margin-left: 10px;
+`
 
 const BackBtn = styled.div`
     margin-bottom: 20px;
+    font-size: 16px;
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.colors.secondary};
+    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
+    color: #1c293a;
     cursor: pointer;
     max-width: fit-content;
     svg {
@@ -129,9 +142,8 @@ const SafeInfo = styled.div``
 const UpperInfo = styled.div`
     font-size: 34px;
     font-weight: 700;
+    font-family: 'Barlow', sans-serif;
     min-width: 180px;
-    span {
-        color: ${(props) => props.theme.colors.blueish};
-    }
+    color: #1c293a;
     margin-bottom: 40px;
 `

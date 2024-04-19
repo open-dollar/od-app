@@ -30,7 +30,6 @@ const Steps = () => {
         const signer = provider.getSigner(account)
         try {
             connectWalletActions.setIsStepLoading(true)
-            popupsActions.setIsWaitingModalOpen(true)
             popupsActions.setWaitingPayload({
                 title: 'Waiting For Confirmation',
                 text: `Creating facilitator`,
@@ -51,6 +50,7 @@ const Steps = () => {
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }
+        connectWalletActions.setIsStepLoading(false)
     }
 
     const handleCreateSafe = () => {
@@ -79,7 +79,7 @@ const Steps = () => {
                         id="step1"
                         title={'create_account'}
                         text={'create_account_text'}
-                        btnText={'create_account'}
+                        btnText={'create_vault_facilitator'}
                         handleClick={handleCreateAccount}
                         isDisabled={isWrongNetwork}
                         isLoading={isStepLoading}

@@ -44,8 +44,8 @@ const Stepper: React.FC<StepperProps> = ({ step, steps }: { step: number; steps:
                     key={index}
                     title={item.title}
                     text={item.text}
-                    isCompleted={step > index + 1}
-                    isCurrent={index + 1 === step}
+                    isCompleted={step > index}
+                    isCurrent={index === step}
                     isLastStep={index === steps.length - 1}
                 ></Step>
             ))}

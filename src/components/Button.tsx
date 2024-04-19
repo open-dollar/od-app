@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import classNames from 'classnames'
 
 import Arrow from './Icons/Arrow'
-import Loader from './Loader'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     text?: string
@@ -93,7 +92,6 @@ const Button = ({
                 >
                     {text && t(text)}
                     {children || null}
-                    {isLoading && <Loader inlineButton />}
                 </UnstyledContainer>
             )
         } else {
@@ -108,7 +106,6 @@ const Button = ({
                 >
                     {text && t(text)}
                     {children || null}
-                    {isLoading && <Loader inlineButton />}
                 </Container>
             )
         }

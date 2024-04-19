@@ -14,8 +14,6 @@ import { generateSvg } from '@opendollar/svg-generator'
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
     const {
-        totalDebt: newDebt,
-        totalCollateral: newCollateral,
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
@@ -43,8 +41,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         safeState.liquidationData!.collateralLiquidationData[collateralName].currentPrice.value
     )
     const collateralInUSD = formatNumber((Number(collateralUnitPriceUSD) * Number(collateral)).toString())
-    const collateralRatio =
-        Number(safeState.liquidationData!.collateralLiquidationData[collateralName].safetyCRatio) * 100
 
     const liquidationPenalty = getRatePercentage(
         safeState.liquidationData!.collateralLiquidationData[collateralName].liquidationPenalty,
@@ -119,91 +115,47 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
                 <Right>
                     <Inner>
-                        <Side>
-                            <SideTitle>
-                                Debt Owed
-                                {modified ? (
-                                    <div className="sideNote">
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newDebt, 2)}
-                                        </span>
-                                    </div>
-                                ) : null}
-                            </SideTitle>
-                            <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
-                                <Info size="16" />
-                            </InfoIcon>
-                            <SideValue>
-                                {formatWithCommas(totalDebt)} OD
+                        <StatsGrid>
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>Debt Owed</StatTitle>
+                                    <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
                                 <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
-                            </SideValue>
-                        </Side>
-                        <Side>
-                            <SideTitle>
-                                Collateral Deposited
-                                {modified ? (
-                                    <div className="sideNote">
-                                        After:{' '}
-                                        <span className={isDeposit ? 'green' : 'yellow'}>
-                                            {formatWithCommas(newCollateral)}
-                                        </span>
-                                    </div>
-                                ) : (
-                                    <></>
-                                )}
-                            </SideTitle>
-                            <InfoIcon
-                                data-tooltip-id="vault-stats"
-                                data-tooltip-content={t('collateral_deposited_tip')}
-                            >
-                                <Info size="16" />
-                            </InfoIcon>
-                            <SideValue>
-                                {formatWithCommas(collateral)} {singleSafe?.collateralName}
+                            </StatSection>
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>Collateral Deposited</StatTitle>
+                                    <InfoIcon
+                                        data-tooltip-id="vault-stats"
+                                        data-tooltip-content={t('collateral_deposited_tip')}
+                                    >
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>
+                                    {formatWithCommas(collateral)} {singleSafe?.collateralName}
+                                </StatValue>
                                 <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
-                            </SideValue>
-                        </Side>
-                        <Side>
-                            <SideTitle>
-                                Collateral Ratio (min {collateralRatio}%)
-                                <div>
-                                    <span
-                                        style={{
-                                            color: '#FCBF3B',
-                                            fontSize: '12px',
-                                            fontWeight: '400',
-                                            lineHeight: '15.6px',
-                                            opacity: '60%',
-                                        }}
+                            </StatSection>
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>Collateral Ratio</StatTitle>
+                                    <InfoIcon
+                                        data-tooltip-id="vault-stats"
+                                        data-tooltip-content={t('collateral_ratio_tip')}
                                     >
-                                        Safety:{' '}
-                                        {Number(
-                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
-                                                .safetyCRatio
-                                        ) * 100}
-                                        %
-                                    </span>{' '}
-                                    &nbsp;
-                                    <span
-                                        style={{
-                                            color: '#E45200',
-                                            fontSize: '12px',
-                                            fontWeight: '400',
-                                            lineHeight: '15.6px',
-                                            opacity: '60%',
-                                        }}
-                                    >
-                                        Minimum:{' '}
-                                        {Number(
-                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
-                                                .liquidationCRatio
-                                        ) * 100}
-                                        %
-                                    </span>
-                                </div>
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>
+                                    {singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%
+                                </StatValue>
                                 {modified ? (
-                                    <div className="sideNote">
+                                    <DollarValue className="sideNote">
                                         After:{' '}
                                         <span
                                             className={
@@ -229,19 +181,45 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                         >
                                             {formatWithCommas(newCollateralRatio)}%
                                         </span>
-                                    </div>
+                                    </DollarValue>
                                 ) : (
                                     <></>
                                 )}
-                            </SideTitle>
-                            <InfoIcon
-                                data-tooltip-id="vault-stats"
-                                data-tooltip-content={t('collateral_deposited_tip')}
-                            >
-                                <Info size="16" />
-                            </InfoIcon>
-                            <SideValue>{singleSafe ? formatWithCommas(singleSafe?.collateralRatio) : '-'}%</SideValue>
-                        </Side>
+                                <div>
+                                    <span
+                                        style={{
+                                            color: '#FFAF1D',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                        }}
+                                    >
+                                        Safety:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .safetyCRatio
+                                        ) * 100}
+                                        %
+                                    </span>{' '}
+                                    &nbsp;
+                                    <span
+                                        style={{
+                                            color: '#E75966',
+                                            fontSize: '12px',
+                                            fontWeight: '400',
+                                            lineHeight: '15.6px',
+                                        }}
+                                    >
+                                        Minimum:{' '}
+                                        {Number(
+                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                .liquidationCRatio
+                                        ) * 100}
+                                        %
+                                    </span>
+                                </div>
+                            </StatSection>
+                        </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('eth_osm_tip')}>
@@ -249,7 +227,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             </InfoIcon>
                             <SideValue>${formatWithCommas(collateralUnitPriceUSD, 2, 2)}</SideValue>
                         </Side>
-
                         <Side>
                             <SideTitle>OD Redemption Price</SideTitle>
                             <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('hai_red_price_tip')}>
@@ -316,6 +293,54 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
 
 export default VaultStats
 
+const StatsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    width: 100%;
+    white-space: nowrap;
+    .sideNote {
+        font-size: 12px;
+        span {
+            &.green {
+                color: ${(props) => props.theme.colors.blueish};
+            }
+            &.yellow {
+                color: ${(props) => props.theme.colors.yellowish};
+            }
+        }
+    }
+`
+
+const StatHeader = styled.div`
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    white-space: nowrap;
+`
+
+const StatSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-height: 98px;
+    align-items: start;
+    justify-content: start;
+    text-align: start;
+`
+
+const StatTitle = styled.div`
+    font-size: 16px;
+    color: #475662;
+    margin-right: 10px;
+`
+
+const StatValue = styled.div`
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 5px;
+`
+
 const SVGContainer = styled.div`
     display: flex;
     align-items: center;
@@ -335,6 +360,8 @@ const Flex = styled.div`
     display: flex;
     @media (max-width: 767px) {
         flex-direction: column;
+        justify-items: center;
+        align-items: center;
     }
 `
 
@@ -371,9 +398,13 @@ const Right = styled.div`
     border-radius: 4px;
     flex: 0 0 45%;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 420px;
     @media (max-width: 767px) {
         flex: 0 0 100%;
-        padding-left: 0;
+        padding: 10px;
     }
 `
 
@@ -384,8 +415,8 @@ const Main = styled.div`
 `
 
 const DollarValue = styled.div`
-    font-size: 13px;
-    color: ${(props) => props.theme.colors.blueish};
+    font-size: 12px;
+    color: #475662;
 `
 
 const Side = styled.div`
@@ -406,6 +437,7 @@ const SideTitle = styled.div`
     color: #475662;
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
+    margin-right: 4px;
     .sideNote {
         font-size: 12px;
         span {
@@ -432,8 +464,6 @@ const InfoIcon = styled.div`
     svg {
         border: none;
         color: #475662;
-        position: relative;
-        margin-left: 4px;
-        top: 4px;
+        margin-top: 4px;
     }
 `

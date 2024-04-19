@@ -17,10 +17,11 @@ export default function useTokenData(account: string | undefined, geb: Geb | und
     const fetchData = useMemo(() => {
         return () => {
             if (account && geb) {
-                const payload = { geb, user: account }
+                const tokenList = geb.tokenList
+                const payload = { tokenList: tokenList, user: account }
                 const newPayloadString = JSON.stringify(payload)
                 if (newPayloadString !== lastFetchedData) {
-                    connectWalletActions.fetchTokenData(payload)
+                    connectWalletActions.fetchTokenData({ geb, user: account })
                     setLastFetchedData(newPayloadString as any)
                 }
             }

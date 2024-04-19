@@ -47,7 +47,7 @@ const Container = styled.div<{ inline?: boolean }>`
               `}
 
     svg {
-        stroke: ${(props) => props.theme.colors.inputBorderColor};
+        stroke: ${(props) => props.theme.colors.neutral};
         animation: ${rotating} 1.5s linear infinite;
         margin-right: 10px;
     }

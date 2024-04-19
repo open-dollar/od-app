@@ -34,7 +34,7 @@ export default function WalletConnectV2Card() {
 
     const provider = useProvider()
 
-    const [error, setError] = useState(undefined)
+    const [error, setError] = useState<Error | undefined>(undefined)
 
     // log URI when available
     useEffect(() => {
@@ -56,7 +56,6 @@ export default function WalletConnectV2Card() {
             isActivating={isActivating}
             isActive={isActive}
             error={error}
-            // @ts-ignore
             setError={setError}
             accounts={accounts}
             provider={provider}

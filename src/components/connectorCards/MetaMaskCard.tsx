@@ -33,25 +33,23 @@ export default function MetaMaskCard() {
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
-    const [error, setError] = useState(undefined)
+    const [error, setError] = useState<Error | undefined>(undefined)
 
     useEffect(() => {
-        void metaMask.connectEagerly().catch(() => {})
+        metaMask.connectEagerly().catch(() => {})
         if (provider?.provider.isMetaMask && accounts) {
             popupsActions.setIsConnectorsWalletOpen(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accounts])
+    }, []) 
 
     return (
         <Card
-            activate={false}
             connector={metaMask}
             activeChainId={chainId}
             isActivating={isActivating}
             isActive={isActive}
             error={error}
-            //@ts-ignore
             setError={setError}
             accounts={accounts}
             provider={provider}

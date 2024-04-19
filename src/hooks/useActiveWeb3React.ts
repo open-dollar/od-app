@@ -31,6 +31,7 @@ export function useEagerConnect() {
     const { isActive, connector } = useWeb3React() // specifically using useWeb3ReactCore because of what this hook does
 
     useEffect(() => {
+        if (!window?.ethereum) 
         if (!isActive) {
             injected.isAuthorized().then((isAuthorized) => {
                 if (isAuthorized) {
@@ -43,7 +44,7 @@ export function useEagerConnect() {
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isActive])
+    }, [isActive, window?.ethereum])
 
     return true
 }

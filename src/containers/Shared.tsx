@@ -48,6 +48,7 @@ import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
 import axios from 'axios'
+import useTokenData from '~/hooks/useTokenData'
 
 interface Props {
     children: ReactNode
@@ -81,6 +82,7 @@ const Shared = ({ children, ...rest }: Props) => {
         safeModel: safeActions,
         auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
+    useTokenData(account, geb, connectWalletState.forceUpdateTokens)
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
     const geoBlockToastId = 'geoBlockToastHash'
@@ -96,24 +98,6 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
     }
-    const forceUpdateTokens = connectWalletState.forceUpdateTokens
-
-    useEffect(() => {
-        if (account && geb && forceUpdateTokens) {
-            connectWalletActions.fetchTokenData({ geb, user: account })
-        }
-    }, [account, geb, forceUpdateTokens, connectWalletActions])
-
-    // Get latest token prices every 15 seconds
-    useEffect(() => {
-        const tokenDataInterval = setInterval(() => {
-            if (account && geb) {
-                connectWalletActions.fetchTokenData({ geb, user: account })
-            }
-        }, 15000)
-
-        return () => clearInterval(tokenDataInterval)
-    }, [account, geb, connectWalletActions])
 
     // Get latest vault data every 1 minute
     useEffect(() => {

@@ -12,7 +12,7 @@ export interface DataCardProps {
     description?: string
     bg?: 'light' | 'dark'
     image?: string
-    children?: React.ReactChildren | React.ReactChild
+    children?: ReactNode
 }
 
 const DataCard = ({ title, bg, image, value, description, children }: DataCardProps) => {
@@ -35,7 +35,7 @@ const DataCard = ({ title, bg, image, value, description, children }: DataCardPr
 
 export default DataCard
 
-const Block = styled.div<{ bg: 'light' | 'dark'; children: ReactNode }>`
+const Block = styled.div<{ bg?: 'light' | 'dark'; children: ReactNode }>`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,7 @@ export const InfoIcon = styled.div`
     }
 `
 
-const DataTitle = styled.div<{ bg: 'light' | 'dark' }>`
+const DataTitle = styled.div<{ bg?: 'light' | 'dark' }>`
     font-size: ${(props) => props.theme.font.small};
     text-transform: uppercase;
     font-weight: 600;

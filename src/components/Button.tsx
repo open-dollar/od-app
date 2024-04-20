@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import classNames from 'classnames'
 
 import Arrow from './Icons/Arrow'
-import Loader from './Loader'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     text?: string
@@ -20,6 +19,7 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     isBordered?: boolean
     unstyled?: boolean
     arrowPlacement?: string
+    maxSize?: string
     children?: ReactNode
 }
 
@@ -38,6 +38,7 @@ const Button = ({
     unstyled,
     arrowPlacement = 'left',
     children,
+    maxSize,
     ...rest
 }: Props) => {
     const { t } = useTranslation()
@@ -91,15 +92,20 @@ const Button = ({
                 >
                     {text && t(text)}
                     {children || null}
-                    {isLoading && <Loader inlineButton />}
                 </UnstyledContainer>
             )
         } else {
             return (
-                <Container {...rest} className={classes} disabled={disabled} isLoading={isLoading} onClick={onClick}>
+                <Container
+                    {...rest}
+                    className={classes}
+                    disabled={disabled}
+                    isLoading={isLoading}
+                    onClick={onClick}
+                    maxSize={maxSize}
+                >
                     {text && t(text)}
                     {children || null}
-                    {isLoading && <Loader inlineButton />}
                 </Container>
             )
         }
@@ -124,21 +130,22 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
     }
 
     &:disabled {
-        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
+        background: ${(props) => (props.isLoading ? props.theme.colors.secondary : props.theme.colors.secondary)};
         cursor: not-allowed;
     }
 `
 
-const Container = styled.button<{ isLoading?: boolean }>`
+const Container = styled.button<{ isLoading?: boolean; maxSize?: string }>`
     outline: none;
     cursor: pointer;
     width: 100%;
     min-width: 134px;
     border: none;
     box-shadow: none;
-    padding: 15px 45px;
-    line-height: 24px;
-    font-size: ${(props) => props.theme.font.small};
+    padding: 10px 30px 10px 30px;
+    line-height: 20px;
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
     background: ${(props) => props.theme.colors.gradientBg};
@@ -158,10 +165,9 @@ const Container = styled.button<{ isLoading?: boolean }>`
     }
 
     &:disabled {
-        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : props.theme.colors.secondary)};
-        background: #475662;
-        opacity: 40%;
+        background: ${(props) => (props.isLoading ? props.theme.colors.placeholder : 'rgb(71, 86, 98, 0.4)')};
         cursor: not-allowed;
+        color: #475662;
     }
 `
 

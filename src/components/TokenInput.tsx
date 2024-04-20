@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { NumericFormat, NumberFormatValues } from 'react-number-format'
 
 interface Props {
-    label: string
+    label: React.ReactNode
     rightLabel?: string
     token: { icon: string; name: string } | undefined
     iconSize?: string
@@ -15,7 +15,7 @@ interface Props {
     disableMax?: boolean
     handleMaxClick?: () => void
     disabled?: boolean
-    maxText?: 'max' | 'min'
+    maxText?: 'MAX' | 'MIN'
     data_test_id?: string
     decimals?: number
 }
@@ -31,7 +31,7 @@ const TokenInput = ({
     disableMax,
     handleMaxClick,
     disabled,
-    maxText = 'max',
+    maxText = 'MAX',
     data_test_id,
     decimals = 4,
 }: Props) => {
@@ -89,7 +89,7 @@ const TokenInput = ({
                         maxLength={length}
                         minLength={1}
                         disabled={disabled}
-                        customInput={CustomInput} // You use your styled component as the actual input
+                        customInput={CustomInput}
                         data-test-id={data_test_id}
                         isAllowed={validateInput}
                     />
@@ -97,7 +97,7 @@ const TokenInput = ({
                 </Flex>
             </Content>
             <Flex>
-                <Label data-test-id={data_test_id + '_label'}>{label}</Label>
+                <Label data-test-id={data_test_id + '_label'}>{label} </Label>
                 {rightLabel ? <Label>{rightLabel}</Label> : null}
             </Flex>
         </Container>
@@ -109,25 +109,25 @@ export default TokenInput
 const Container = styled.div``
 
 const Label = styled.div`
-    line-height: 21px;
-    color: ${(props) => props.theme.colors.accent};
+    line-height: 20px;
+    color: #1c293a;
     font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
     letter-spacing: -0.09px;
     text-transform: capitalize;
     display: flex;
     align-items: center;
+    padding-top: 4px;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.xSmall};
     }
 `
 
 const Content = styled.div`
-    background: ${(props) => props.theme.colors.placeholder};
-    border: 2px solid ${(props) => props.theme.colors.primary};
+    background: white;
+    border: 2px solid ${(props) => props.theme.colors.border};
     border-radius: 4px;
     transition: all 0.3s ease;
-    padding-right: 12px;
-    margin-bottom: 8px;
     &.disabled {
         cursor: not-allowed;
     }
@@ -140,6 +140,7 @@ export const Icon = styled.img`
 
 const CustomInput = styled.input`
     font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     transition: all 0.3s ease;
     width: 100%;
@@ -148,8 +149,10 @@ const CustomInput = styled.input`
     height: 36px;
     display: flex;
     align-items: center;
+    padding: 0 0 0 5px;
     text-align: right;
-    color: ${(props) => props.theme.colors.accent};
+    background: ${(props) => props.theme.colors.placeholder};
+    color: #1c293a;
     line-height: 24px;
     outline: none;
 
@@ -161,14 +164,15 @@ const CustomInput = styled.input`
 const MaxBtn = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
-    background: ${(props) => props.theme.colors.background};
-    padding: 0px 6px;
-    border-radius: 4px;
+    background: #e2f1ff;
+    padding: 0 6px 0 6px;
     font-weight: 700;
-    color: ${(props) => props.theme.colors.primary};
-    font-size: ${(props) => props.theme.font.default};
+    font-family: 'Open Sans', sans-serif;
+    color: ${(props) => props.theme.colors.blueish};
+    border-radius: 4px;
     text-transform: uppercase;
-    margin-left: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
 `
 
 const Flex = styled.div`
@@ -183,12 +187,12 @@ const Flex = styled.div`
 
 const TokenBox = styled.div`
     display: flex;
+    background: #e2f1ff;
     align-items: center;
+    padding: 10px 10px;
     font-size: 14px;
+    color: #1c293a;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 700;
-    color: ${(props) => props.theme.colors.accent};
-    background: ${(props) => props.theme.colors.background};
-    padding: 15px;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    flex: 0 0 30%;
 `

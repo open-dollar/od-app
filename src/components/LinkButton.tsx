@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { BtnStyle } from '../GlobalStyle'
+import { css } from 'styled-components'
 
 interface Props {
     url: string
@@ -29,6 +30,7 @@ const LinkButton = ({
     ...rest
 }: Props) => {
     return isExternal ? (
+        //@ts-ignore
         <ExtLink id={id} {...rest} href={url} target="_blank" rel="norefferer" disabled={disabled} color={color}>
             {children}
             <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}
@@ -50,8 +52,34 @@ const ExtLink = styled.a`
         opacity: 0.9;
     }
 `
+
+const RedesignedBtnStyle = css<{
+    disabled?: boolean
+    color?: string
+    border?: boolean
+}>`
+    pointer-events: ${({ theme, disabled }) => (disabled ? 'none' : 'inherit')};
+    outline: none;
+    cursor: ${({ theme, disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    min-width: 134px;
+    border: ${({ theme, border }) => (border ? `1px solid ${theme.colors.blueish}` : 'none')};
+    box-shadow: none;
+    line-height: 24px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 30px;
+    font-family: 'Barlow', sans-serif;
+    color: ${({ theme, border }) => (border ? 'white' : '#1A74EC')};
+    background: ${({ theme, disabled, color }) => (disabled ? theme.colors.dimmedBackground : color)};
+    border-radius: 4px 0px 0px 0px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
 const CustomLink = styled(Link)`
-    ${BtnStyle}
+    ${RedesignedBtnStyle}
     transition: opacity 0.3s ease;
     &:hover {
         opacity: 0.9;

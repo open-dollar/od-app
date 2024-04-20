@@ -130,8 +130,10 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.default};
-    font-weight: bold;
+    font-size: ${(props) => props.theme.font.large};
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
     text-transform: capitalize !important;
 `
 
@@ -143,14 +145,14 @@ const Box = styled.div`
 const InfoBox = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: 10px;
     button {
         min-width: 100px;
         padding: 4px 12px;
         margin-left: 30px;
     }
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     span {
         margin-right: 20px;
         font-size: 12px;
@@ -158,12 +160,11 @@ const InfoBox = styled.div`
 `
 
 const NoData = styled.div`
-    border-radius: 15px;
     margin-bottom: 15px;
-    background: ${(props) => props.theme.colors.background};
-    padding: 2rem 20px;
     text-align: center;
-    font-size: ${(props) => props.theme.font.small};
+    font-size: ${(props) => props.theme.font.default};
+    font-weight: 400;
+    color: ${(props) => props.theme.colors.accent};
 `
 const DropdownContainer = styled.div`
     margin-bottom: 20px;

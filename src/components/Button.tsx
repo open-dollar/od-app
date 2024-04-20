@@ -138,7 +138,7 @@ const UnstyledContainer = styled.button<{ isLoading?: boolean }>`
 const Container = styled.button<{ isLoading?: boolean; maxSize?: string }>`
     outline: none;
     cursor: pointer;
-    width: ${(props) => props.maxSize || '500px'};
+    width: 100%;
     min-width: 134px;
     border: none;
     box-shadow: none;

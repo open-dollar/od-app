@@ -434,6 +434,7 @@ const BtnContainer = styled.div`
     margin-top: 24px;
     text-align: center;
     border: 2px solid #e2f1ff;
+    width: 100%;
     border-radius: 4px;
     font-family: 'Barlow', sans-serif;
     font-size: 18px;

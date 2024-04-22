@@ -42,10 +42,6 @@ const VaultList = ({ address }: { address?: string }) => {
                             <CheckBox checked={showEmpty} onChange={setShowEmpty} />
                             <span>Show empty vaults</span>
                         </CheckboxContainer>
-                        <CheckboxContainer>
-                            <CheckBox checked={showEmpty} onChange={setShowEmpty} />
-                            <span>Show empty vaults</span>
-                        </CheckboxContainer>
                         <Col className={'last-col'}>
                             {safeState.safeCreated && isOwner ? (
                                 <LinkBtnContainer>

@@ -136,7 +136,6 @@ const VaultDetails = ({ ...props }) => {
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
             </Container>
-            <Stats />
         </>
     )
 }

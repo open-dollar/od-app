@@ -188,7 +188,6 @@ export default function WalletModal() {
     function getModalContent() {
         return (
             <UpperSection>
-                <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
                 {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>

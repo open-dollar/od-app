@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { Info } from 'react-feather'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 
@@ -26,8 +27,16 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
                             <HeadsContainer key={title + '-column-' + index} index={index}>
-                                <Head data-tooltip-content={description} data-tooltip-id="collaterals-table">
+                                <Head>
                                     {name}
+                                    {description && (
+                                        <InfoIcon
+                                            data-tooltip-id="collaterals-table"
+                                            data-tooltip-content={description}
+                                        >
+                                            <Info size="20" color="#1C293A" opacity={"50%"}/>
+                                        </InfoIcon>
+                                    )}
                                 </Head>
                             </HeadsContainer>
                         ))}
@@ -78,19 +87,8 @@ export const Header = styled.div`
 `
 
 export const InfoIcon = styled.div`
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 0;
-    top: -2px;
-
-    svg {
-        fill: ${(props) => props.theme.colors.foreground};
-        color: ${(props) => props.theme.colors.secondary};
-        position: relative;
-    }
+    z-index: 0!important;
+    margin-left: 10px;
 `
 
 export const Content = styled.div`
@@ -167,7 +165,7 @@ export const Heads = styled.div`
         z-index: 10;
     }
 
-    & div:first-child {
+    & div {
         background-color: ${(props) => props.theme.colors.background};
     }
 
@@ -190,6 +188,8 @@ export const ListContainer = styled.div`
 
 export const Head = styled.p`
     /* flex: 0 0 16.6%; */
+    display: flex;
+    align-items: center;
     font-size: 12px;
     width: 174px;
     font-weight: 400;
@@ -197,6 +197,7 @@ export const Head = styled.p`
     text-transform: uppercase;
     color: ${(props) => props.theme.colors.tertiary};
     padding-left: 10px;
+
     &:first-child {
         padding: 0 25px;
     }

@@ -90,11 +90,15 @@ const LinkBtnContainer = styled.div`
     min-width: 100px;
     padding: 8px 20px;
     font-weight: 700;
-    color: white;
     background: ${(props) => props.theme.colors.gradientBg};
     border-radius: 3px;
     transition: all 0.3s ease;
     font-family: ${(props) => props.theme.family.headers};
+
+    a {
+        color: white;
+    }
+    
     &:hover {
         opacity: 0.8;
     }

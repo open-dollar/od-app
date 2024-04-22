@@ -39,15 +39,14 @@ import {
     capitalizeName,
     EMPTY_ADDRESS,
     SYSTEM_STATUS,
-    timeout,
     ChainId,
     ETH_NETWORK,
     IS_IN_IFRAME,
+    timeout,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
-import Stats from '~/containers/Vaults/Stats'
 import axios from 'axios'
 
 interface Props {
@@ -63,7 +62,6 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    const { pathname } = location
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
     const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK as GebDeployment).OD.address)
@@ -234,7 +232,6 @@ const Shared = ({ children, ...rest }: Props) => {
             safeActions.setIsSafeCreated(false)
             connectWalletActions.setStep(1)
         }
-
         await timeout(1000)
         popupsActions.setIsWaitingModalOpen(false)
     }
@@ -357,6 +354,17 @@ const Shared = ({ children, ...rest }: Props) => {
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
+        } else {
+            if (document.querySelector('#networkToastHash') !== null) {
+                document.querySelector('#networkToastHash')?.remove()
+            }
+            settingsActions.setBlockBody(false)
+            connectWalletActions.setIsWrongNetwork(false)
+            if (account) {
+                sanctionsCheck()
+                geoBlockCheck()
+                accountChecker()
+            }
             checkAndSwitchMetamaskNetwork()
         }
     }, [chainId]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -395,7 +403,6 @@ const Shared = ({ children, ...rest }: Props) => {
             <EmptyDiv>
                 <CookieBanner />
             </EmptyDiv>
-            {pathname === '/' ? <Stats /> : <></>}
             <ImagePreloader />
             <EmptyDiv>
                 <Footer />

@@ -12,6 +12,7 @@ const CookieBanner = () => {
                     style={{
                         background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
                         alignItems: 'center',
+                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
                     }}
                 >
                     <CookiesText>
@@ -33,6 +34,9 @@ const CookieBanner = () => {
 export default CookieBanner
 
 const StyledConsentButton = styled.div`
+
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
     #cookies-consent button {
         border: 2px solid #e2f1ff !important;
         border-radius: 4px !important;

@@ -196,11 +196,7 @@ export const Head = styled.p`
 
     text-transform: uppercase;
     color: ${(props) => props.theme.colors.tertiary};
-    padding-left: 10px;
-
-    &:first-child {
-        padding: 0 25px;
-    }
+    padding-left: 18px;
 `
 
 export const ListItemLabel = styled.span`
@@ -242,7 +238,6 @@ export const List = styled.div`
 `
 
 export const ListItem = styled.div<ListItemProps>`
-    /* flex: 0 0 16.6%; */
     width: 174px;
     color: ${(props) => props.theme.colors.tertiary};
     font-size: ${(props) => props.theme.font.xSmall};
@@ -256,7 +251,7 @@ export const ListItem = styled.div<ListItemProps>`
         background-color: white;
     }
 
-    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
+    text-align: start;
 
     a {
         color: ${(props) => props.theme.colors.tertiary};

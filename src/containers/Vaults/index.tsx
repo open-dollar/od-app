@@ -34,11 +34,15 @@ const OnBoarding = ({ ...props }) => {
             return
 
         async function fetchSafes() {
-            await safeActions.fetchUserSafes({
-                address: address || (account as string),
-                geb,
-                tokensData: connectWalletState.tokensData,
-            })
+            try {
+                await safeActions.fetchUserSafes({
+                    address: address || (account as string),
+                    geb,
+                    tokensData: connectWalletState.tokensData,
+                })
+            } catch (error) {
+                console.debug('Error fetching safes:', error)
+            }
         }
 
         if (geb && connectWalletState.tokensData) {

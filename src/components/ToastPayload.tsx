@@ -44,7 +44,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    background-color: ${(props) => props.theme.colors.blueish};
+    background-color: #1a74ec;
     svg {
         margin-right: 15px;
     }

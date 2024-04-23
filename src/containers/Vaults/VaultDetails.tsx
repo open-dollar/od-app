@@ -12,7 +12,6 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
-import Stats from '~/containers/Vaults/Stats'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -136,7 +135,6 @@ const VaultDetails = ({ ...props }) => {
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
             </Container>
-            <Stats />
         </>
     )
 }

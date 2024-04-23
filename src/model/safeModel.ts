@@ -169,7 +169,12 @@ const safeModel: SafeModel = {
         const storeActions = getStoreActions()
         const state = getState()
         const { isSuccessfulTx } = state
-        const fetched = await fetchUserSafes(payload)
+        let fetched
+        try {
+            fetched = await fetchUserSafes(payload)
+        } catch (e) {
+            console.debug('Failed to fetch user safes', e)
+        }
         if (fetched) {
             actions.setList(fetched.userSafes)
             if (fetched.userSafes.length > 0) {

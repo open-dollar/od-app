@@ -1,36 +1,32 @@
-import { useEffect, useRef, useState, useMemo } from 'react'
-import { Geb } from '@opendollar/sdk'
-import { useStoreActions } from '~/store'
+import { useCallback, useEffect, useRef } from 'react'
+import { useStoreActions, useStoreState } from '~/store'
+import { useActiveWeb3React } from '~/hooks/useActiveWeb3React'
+import useGeb from '~/hooks/useGeb'
 
 /**
  * Fetches token data for the given account and geb instance. This hook will automatically fetch the data every 15 seconds and also fetch the data immediately on setup.
- * fetchTokenData is only called if the payload has changed or if forceUpdateTokens is true.
- * @param account
- * @param geb
- * @param forceUpdateTokens
+ * The data state is only updated if the fetched data is different from the last fetched data.
  */
-export default function useTokenData(account: string | undefined, geb: Geb | undefined, forceUpdateTokens: boolean) {
+export default function useTokenData() {
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
     const { connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
+    const { account } = useActiveWeb3React()
+    const geb = useGeb()
     const intervalRef = useRef<NodeJS.Timeout>()
-    const [lastFetchedData, setLastFetchedData] = useState(null)
 
-    const fetchData = useMemo(() => {
-        return () => {
-            if (account && geb) {
-                const tokenList = geb.tokenList
-                const payload = { tokenList: tokenList, user: account }
-                const newPayloadString = JSON.stringify(payload)
-                if (newPayloadString !== lastFetchedData) {
-                    connectWalletActions.fetchTokenData({ geb, user: account })
-                    setLastFetchedData(newPayloadString as any)
-                }
+    const fetchData = useCallback(async () => {
+        if (account && geb) {
+            try {
+                connectWalletActions.fetchTokenData({ geb, user: account })
+            } catch (error) {
+                console.debug('Failed to fetch token data', error)
             }
         }
-    }, [account, geb, lastFetchedData, connectWalletActions.fetchTokenData])
+    }, [account, geb, connectWalletActions])
 
     useEffect(() => {
-        intervalRef.current = setInterval(fetchData, 15000)
         fetchData()
+        intervalRef.current = setInterval(fetchData, 15000)
 
         return () => {
             clearInterval(intervalRef.current)
@@ -38,8 +34,8 @@ export default function useTokenData(account: string | undefined, geb: Geb | und
     }, [fetchData])
 
     useEffect(() => {
-        if (forceUpdateTokens) {
+        if (connectWalletState?.forceUpdateTokens) {
             fetchData()
         }
-    }, [forceUpdateTokens, fetchData])
+    }, [connectWalletState?.forceUpdateTokens, fetchData])
 }

@@ -28,8 +28,9 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props) => props.theme.colors.primary};
     background-color:${(props) => props.theme.colors.background};
-    background-size: contain;
-    background-position: center 100px;
+    background-image: url('grid.svg');
+    background-size: auto;
+    background-position: top left;
     background-repeat: no-repeat;
     overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 

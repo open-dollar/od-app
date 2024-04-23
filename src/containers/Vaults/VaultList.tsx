@@ -85,20 +85,19 @@ const Container = styled.div`
 `
 
 const LinkBtnContainer = styled.div`
-    outline: none;
-    cursor: pointer;
-    min-width: 100px;
-    padding: 8px 20px;
-    font-weight: 700;
-    background: ${(props) => props.theme.colors.gradientBg};
-    border-radius: 3px;
-    transition: all 0.3s ease;
-    font-family: ${(props) => props.theme.family.headers};
-
     a {
         color: white;
+        outline: none;
+        cursor: pointer;
+        min-width: 100px;
+        padding: 12px 40px;
+        font-weight: 700;
+        background: ${(props) => props.theme.colors.gradientBg};
+        border-radius: 3px;
+        transition: all 0.3s ease;
+        font-family: ${(props) => props.theme.family.headers};
     }
-    
+
     &:hover {
         opacity: 0.8;
     }
@@ -130,11 +129,6 @@ const Header = styled.div`
     }
 `
 const Col = styled.div`
-    a {
-        min-width: 100px;
-        padding: 4px 12px;
-    }
-
     &.first-col {
         margin-right: 33px;
     }

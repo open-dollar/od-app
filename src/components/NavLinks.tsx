@@ -29,7 +29,7 @@ const NavLinks = () => {
                 id="app-link"
                 to="/vaults"
                 onClick={(e) => handleLinkClick(e, false)}
-                className={location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
+                className={location.pathname.startsWith('/vaults') || location.pathname === '/' ? 'activeLink' : ''}
             >
                 {t('app')}
             </NavBarLink>

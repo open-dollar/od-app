@@ -172,7 +172,7 @@ const SListItem = styled.div<ListItemProps>`
     font-weight: 700;
     border-radius: 4px;
     & a {
-        color: ${(props) => props.theme.colors.tertiary};
+        color: ${(props) => props.theme.colors.primary};
         font-size: 16px;
         font-weight: 700;
     }

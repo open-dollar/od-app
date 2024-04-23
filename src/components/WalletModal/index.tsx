@@ -188,7 +188,6 @@ export default function WalletModal() {
     function getModalContent() {
         return (
             <UpperSection>
-                <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
                 {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>
@@ -216,19 +215,6 @@ export default function WalletModal() {
         </Modal>
     )
 }
-
-const CloseIcon = styled.div`
-    position: absolute;
-    left: 24rem;
-    top: -64px;
-    font-size: 30px;
-    z-index: 2;
-    color: black;
-    &:hover {
-        cursor: pointer;
-        opacity: 0.6;
-    }
-`
 
 const Wrapper = styled.div`
     background: linear-gradient(to bottom, #1a74ec, #6396ff);

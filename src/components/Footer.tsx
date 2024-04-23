@@ -95,6 +95,9 @@ const FooterContainer = styled.div`
     display: flex;
     padding-top: 60px;
     padding-bottom: 60px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding: 60px;
     width: 100%;
     flex-direction: row;
     background: linear-gradient(to bottom, #1a74ec, #6396ff);
@@ -103,6 +106,8 @@ const FooterContainer = styled.div`
     @media (max-width: 767px) {
         flex-direction: column;
         justify-content: start;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 `
 

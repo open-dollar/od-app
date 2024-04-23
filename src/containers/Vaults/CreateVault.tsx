@@ -212,8 +212,8 @@ const CreateVault = ({
                 <Content>
                     <Header>
                         <Btn>
-                            <FlexBtn>
-                                <ChevronLeft onClick={() => history.goBack()} />
+                            <FlexBtn onClick={() => history.goBack()}>
+                                <ChevronLeft />
                                 <span>Back</span>
                             </FlexBtn>
                         </Btn>

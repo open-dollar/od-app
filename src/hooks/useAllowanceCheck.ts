@@ -7,7 +7,7 @@ import { ETH_NETWORK } from '~/utils'
 import { GebDeployment } from '@opendollar/sdk'
 
 /**
- * Custom hook to fetch and set the allowance of coin and protocol tokens.
+ * Hook to fetch and set the allowance of coin and protocol tokens.
  */
 export default function useAllowanceCheck() {
     const { connectWalletModel: connectWalletActions } = useStoreActions((state) => state)

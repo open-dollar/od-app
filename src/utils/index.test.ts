@@ -8,23 +8,24 @@ import {
     returnTotalValue,
     safeIsSafe,
 } from './helper'
+import { ChainId } from './interfaces'
 
 describe('utils', () => {
     describe('#getEtherscanLink', () => {
         it('correct for tx', () => {
-            expect(getEtherscanLink(1, 'abc', 'transaction')).toEqual('https://etherscan.io/tx/abc')
+            expect(getEtherscanLink(1 as ChainId, 'abc', 'transaction')).toEqual('https://etherscan.io/tx/abc')
         })
         it('correct for token', () => {
-            expect(getEtherscanLink(1, 'abc', 'token')).toEqual('https://etherscan.io/token/abc')
+            expect(getEtherscanLink(1 as ChainId, 'abc', 'token')).toEqual('https://etherscan.io/token/abc')
         })
         it('correct for address', () => {
-            expect(getEtherscanLink(1, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
+            expect(getEtherscanLink(1 as ChainId, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
         })
         it('unrecognized chain id defaults to mainnet', () => {
-            expect(getEtherscanLink(2, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
+            expect(getEtherscanLink(2 as ChainId, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
         })
         it('goerli optimism', () => {
-            expect(getEtherscanLink(420, 'abc', 'address')).toEqual('https://goerli-optimism.etherscan.io/address/abc')
+            expect(getEtherscanLink(420 as ChainId, 'abc', 'address')).toEqual('https://goerli-optimism.etherscan.io/address/abc')
         })
     })
 

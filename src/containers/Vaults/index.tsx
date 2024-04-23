@@ -77,9 +77,8 @@ const OnBoarding = ({ ...props }) => {
     return (
         <Container id="app-page">
             <Content>
-                {safeState.safeCreated ? (
-                    <VaultList address={address} />
-                ) : popupsState.isWaitingModalOpen ? null : (
+                {safeState.safeCreated && <VaultList address={address} />}
+                {!popupsState.isWaitingModalOpen && (
                     <Accounts />
                 )}
             </Content>
@@ -89,8 +88,14 @@ const OnBoarding = ({ ...props }) => {
 
 export default OnBoarding
 
-const Container = styled.div``
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
 
 const Content = styled.div`
     position: relative;
+    max-width: 880px;
 `

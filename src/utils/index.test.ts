@@ -25,7 +25,9 @@ describe('utils', () => {
             expect(getEtherscanLink(2 as ChainId, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
         })
         it('goerli optimism', () => {
-            expect(getEtherscanLink(420 as ChainId, 'abc', 'address')).toEqual('https://goerli-optimism.etherscan.io/address/abc')
+            expect(getEtherscanLink(420 as ChainId, 'abc', 'address')).toEqual(
+                'https://goerli-optimism.etherscan.io/address/abc'
+            )
         })
     })
 

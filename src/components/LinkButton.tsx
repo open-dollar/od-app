@@ -15,7 +15,7 @@ interface Props {
     withArrow?: boolean
     children?: ReactNode
     color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
-    border?: boolean
+    border?: string
 }
 const LinkButton = ({
     id,
@@ -26,7 +26,7 @@ const LinkButton = ({
     withArrow,
     children,
     color = 'blueish',
-    border,
+    border = '',
     ...rest
 }: Props) => {
     return isExternal ? (
@@ -56,7 +56,7 @@ const ExtLink = styled.a`
 const RedesignedBtnStyle = css<{
     disabled?: boolean
     color?: string
-    border?: boolean
+    border?: string
 }>`
     pointer-events: ${({ theme, disabled }) => (disabled ? 'none' : 'inherit')};
     outline: none;

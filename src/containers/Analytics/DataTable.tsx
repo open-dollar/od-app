@@ -34,7 +34,7 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                                             data-tooltip-id="collaterals-table"
                                             data-tooltip-content={description}
                                         >
-                                            <Info size="20" color="#1C293A" opacity={"50%"}/>
+                                            <Info size="20" color="#1C293A" opacity={'50%'} />
                                         </InfoIcon>
                                     )}
                                 </Head>
@@ -87,7 +87,7 @@ export const Header = styled.div`
 `
 
 export const InfoIcon = styled.div`
-    z-index: 0!important;
+    z-index: 0 !important;
     margin-left: 10px;
 `
 

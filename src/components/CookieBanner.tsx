@@ -12,7 +12,7 @@ const CookieBanner = () => {
                     style={{
                         background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
                         alignItems: 'center',
-                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
+                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                     }}
                 >
                     <CookiesText>

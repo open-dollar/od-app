@@ -216,19 +216,6 @@ export default function WalletModal() {
     )
 }
 
-const CloseIcon = styled.div`
-    position: absolute;
-    left: 24rem;
-    top: -64px;
-    font-size: 30px;
-    z-index: 2;
-    color: black;
-    &:hover {
-        cursor: pointer;
-        opacity: 0.6;
-    }
-`
-
 const Wrapper = styled.div`
     background: linear-gradient(to bottom, #1a74ec, #6396ff);
     border-radius: 2.43px;

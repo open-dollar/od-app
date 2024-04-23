@@ -12,7 +12,6 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
-import Stats from '~/containers/Vaults/Stats'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()

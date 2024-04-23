@@ -122,6 +122,7 @@ export default WaitingModal
 const TextColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
     justify-content: center;
     gap: 10px;
 `
@@ -185,6 +186,7 @@ const BtnContainer = styled.div`
     border-radius: 4px;
     text-align: center;
     border: #e2f1ff 2px solid;
+    width: 100%;
 `
 
 const CreateNew = styled.div`

@@ -105,7 +105,7 @@ const CreateVault = ({
     )
 
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
-    const onMaxRightInput = () => onRightInput(availableHai.toString())
+    const onMaxRightInput = () => onRightInput(Math.trunc(+availableHai).toString())
 
     const onClearAll = useCallback(() => {
         clearAll()

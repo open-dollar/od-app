@@ -12,7 +12,6 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
-import Stats from '~/containers/Vaults/Stats'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -104,7 +103,7 @@ const VaultDetails = ({ ...props }) => {
             safeActions.setSingleSafe(null)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData])
+    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData, account])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -130,13 +129,12 @@ const VaultDetails = ({ ...props }) => {
                 )}
 
                 {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
-                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
+                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} key={account} />
                 ) : null}
 
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
             </Container>
-            <Stats />
         </>
     )
 }

@@ -1,21 +1,34 @@
 import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
-
-import { formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
+import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
+import useGeb from '~/hooks/useGeb'
+import Review from './Review'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Button from '~/components/Button'
+import Modal from '~/components/Modals/Modal'
 import LinkButton from '~/components/LinkButton'
-
-import { useTokenBalanceInUSD, useInputsHandlers, useSafeInfo } from '~/hooks'
+import {
+    handleTransactionError,
+    useTokenBalanceInUSD,
+    useActiveWeb3React,
+    useInputsHandlers,
+    useSafeInfo,
+} from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
     const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
-
+    const { provider, account } = useActiveWeb3React()
+    const geb = useGeb()
+    const [showPreview, setShowPreview] = useState(false)
     const { singleSafe } = safeState
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
-    const { safeModel: safeActions } = useStoreActions((state) => state)
+    const {
+        safeModel: safeActions,
+        connectWalletModel: connectWalletActions,
+        popupsModel: popupsActions,
+    } = useStoreActions((state) => state)
 
     const {
         error,
@@ -93,7 +106,9 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             onRightInput(isMoreDebt ? ethers.utils.formatEther(haiBalanceBN) : availableHai)
         }
     }
-
+    const handleWaitingTitle = () => {
+        return 'Modifying Vault'
+    }
     const handleSubmit = () => {
         safeActions.setSafeData({
             leftInput: parsedAmounts.leftInput ? parsedAmounts.leftInput : '0',
@@ -104,6 +119,66 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             liquidationPrice: liquidationPrice as number,
             collateral: singleSafe?.collateralName!,
         })
+
+        setShowPreview(true)
+    }
+
+    const reset = () => {
+        onClearAll()
+        safeActions.setSafeData(DEFAULT_SAFE_STATE)
+        connectWalletActions.setIsStepLoading(true)
+        safeActions.setIsSafeCreated(true)
+        safeActions.fetchUserSafes({
+            address: account as string,
+            geb,
+            tokensData: tokensData,
+        })
+    }
+
+    const handleConfirm = async () => {
+        if (account && provider) {
+            safeActions.setIsSuccessfulTx(false)
+            setShowPreview(false)
+            popupsActions.setIsWaitingModalOpen(true)
+            popupsActions.setWaitingPayload({
+                title: 'Waiting For Confirmation',
+                text: handleWaitingTitle(),
+                hint: 'Confirm this transaction in your wallet',
+                status: 'loading',
+            })
+
+            const signer = provider.getSigner(account)
+            try {
+                connectWalletActions.setIsStepLoading(true)
+                if (safeState.singleSafe && isDeposit) {
+                    await safeActions.depositAndBorrow({
+                        safeData: safeState.safeData,
+                        signer,
+                        safeId: safeState.singleSafe.id,
+                    })
+                }
+
+                if (safeState.singleSafe && !isDeposit) {
+                    await safeActions.repayAndWithdraw({
+                        safeData: {
+                            ...safeState.safeData,
+                            isGnosisSafe: false,
+                        },
+                        signer,
+                        safeId: safeState.singleSafe.id,
+                    })
+                }
+
+                safeActions.setIsSuccessfulTx(true)
+                popupsActions.setIsWaitingModalOpen(false)
+                reset()
+            } catch (e) {
+                safeActions.setIsSuccessfulTx(false)
+                handleTransactionError(e)
+            } finally {
+                reset()
+            }
+        }
     }
 
     return (
@@ -128,6 +203,24 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             border={!isDeposit}
                         />
                     </ButtonsRow>
+                    <Modal
+                        isModalOpen={showPreview}
+                        closeModal={() => setShowPreview(false)}
+                        maxWidth={'450px'}
+                        backDropClose
+                        hideHeader
+                        hideFooter
+                        handleModalContent
+                    >
+                        <ReviewContainer>
+                            <Review type={type} />
+                            <BtnContainer>
+                                <Button id="confirm_tx" onClick={handleConfirm}>
+                                    {'Confirm Transaction'}
+                                </Button>{' '}
+                            </BtnContainer>
+                        </ReviewContainer>
+                    </Modal>
                     <ContainerUnderBottonsRow>
                         <Inner>
                             <InputBlock>
@@ -259,6 +352,23 @@ const ContainerUnderBottonsRow = styled.div`
 
 const Bold = styled.span`
     font-weight: bold;
+`
+
+const ReviewContainer = styled.div`
+    padding: 20px;
+    border-radius: 4px;
+    background: ${(props) => props.theme.colors.gradientBg};
+`
+
+const BtnContainer = styled.div`
+    margin-top: 24px;
+    text-align: center;
+    border: 2px solid #e2f1ff;
+    border-radius: 4px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
 `
 
 const ButtonsRow = styled.div`

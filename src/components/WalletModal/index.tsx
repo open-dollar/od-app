@@ -36,8 +36,11 @@ export async function checkAndSwitchMetamaskNetwork() {
     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore
         const chainId = await window.ethereum.request({ method: 'net_version' })
+        console.log('in here', process.env.REACT_APP_NETWORK_ID, chainId)
+        if (chainId === process.env.REACT_APP_NETWORK_ID) return
         // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
         if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '42161') {
+            console.log('Switching to Arbitrum One', chainId, process.env.REACT_APP_NETWORK_ID)
             try {
                 // @ts-ignore
                 await window.ethereum.request({

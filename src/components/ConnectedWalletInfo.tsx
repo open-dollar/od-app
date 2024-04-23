@@ -67,7 +67,7 @@ const ConnectedWalletInfo = () => {
             <DataContainer>
                 <Connection>
                     {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    <Button text={'change'} onClick={handleChange} />
+                    <Button text={'change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
                 </Connection>
                 <Address id="web3-account-identifier-row">
                     <ConnectedWalletIcon size={20} />

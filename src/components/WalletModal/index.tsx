@@ -221,11 +221,15 @@ const Wrapper = styled.div`
     border-radius: 2.43px;
     padding: 1rem;
     width: 100%;
+    color: white;
+    font-family: 'Barlow', sans-serif;
 `
 
 const HeaderRow = styled.div`
     text-align: center;
     font-weight: 800;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
 `
 
 const ContentWrapper = styled.div`

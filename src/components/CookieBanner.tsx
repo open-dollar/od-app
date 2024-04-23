@@ -18,8 +18,8 @@ const CookieBanner = () => {
                     <CookiesText>
                         <p>
                             This website uses cookies to enhance the user experience. By continuing to browse the site
-                            you're agreeing to our &nbsp;
-                            <a target="_blank" href="https://opendollar.com/tos" rel="noreferrer">
+                            you're agreeing to our{' '}
+                            <a target="_blank" href="https://www.opendollar.com/terms" rel="noreferrer">
                                 use of cookies
                             </a>
                             .

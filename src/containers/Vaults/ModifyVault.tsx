@@ -117,7 +117,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/deposit`}
                             //@ts-ignore
                             color={isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
-                            border={isDeposit}
+                            border={isDeposit.toString()}
                         />
                         <LinkButton
                             id="repay_withdraw"
@@ -125,7 +125,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
                             color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
-                            border={!isDeposit}
+                            border={(!isDeposit).toString()}
                         />
                     </ButtonsRow>
                     <ContainerUnderBottonsRow>

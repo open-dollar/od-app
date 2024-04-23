@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { returnState, COIN_TICKER, getTokenLogo, formatWithCommas } from '~/utils'
 
 const VaultBlock = ({ ...props }) => {
-    console.log(props.riskState)
     return (
         <Container className={props.className}>
             <Link to={`/vaults/${props.id}/deposit`}>

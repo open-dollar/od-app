@@ -43,6 +43,7 @@ import {
     ETH_NETWORK,
     IS_IN_IFRAME,
     timeout,
+    SupportedChainId,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
@@ -100,7 +101,11 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         if (account && geb && forceUpdateTokens) {
-            connectWalletActions.fetchTokenData({ geb, user: account })
+            try {
+                connectWalletActions.fetchTokenData({ geb, user: account })
+            } catch (error) {
+                console.debug('Error fetching token data:', error)
+            }
         }
     }, [account, geb, forceUpdateTokens, connectWalletActions])
 
@@ -108,7 +113,11 @@ const Shared = ({ children, ...rest }: Props) => {
     useEffect(() => {
         const tokenDataInterval = setInterval(() => {
             if (account && geb) {
-                connectWalletActions.fetchTokenData({ geb, user: account })
+                try {
+                    connectWalletActions.fetchTokenData({ geb, user: account })
+                } catch (error) {
+                    console.debug('Error fetching token data:', error)
+                }
             }
         }, 15000)
 
@@ -118,12 +127,22 @@ const Shared = ({ children, ...rest }: Props) => {
     // Get latest vault data every 1 minute
     useEffect(() => {
         const statsInterval = setInterval(() => {
-            if (account && geb && connectWalletState.tokensData) {
-                safeActions.fetchUserSafes({
-                    address: account as string,
-                    geb,
-                    tokensData: connectWalletState.tokensData,
-                })
+            if (
+                account &&
+                geb &&
+                connectWalletState?.tokensData &&
+                chainId !== undefined &&
+                SupportedChainId[chainId]
+            ) {
+                try {
+                    safeActions.fetchUserSafes({
+                        address: account as string,
+                        geb,
+                        tokensData: connectWalletState.tokensData,
+                    })
+                } catch (error) {
+                    console.debug('Error fetching user safes:', error)
+                }
             }
         }, 60000)
 
@@ -145,15 +164,19 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         if (account && coinTokenContract && protTokenContract && connectWalletState.proxyAddress) {
-            protTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
-                connectWalletActions.setProtAllowance(formattedAllowance)
-            })
+            try {
+                protTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
+                    const formattedAllowance = utils.formatEther(allowance)
+                    connectWalletActions.setProtAllowance(formattedAllowance)
+                })
 
-            coinTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
-                connectWalletActions.setCoinAllowance(formattedAllowance)
-            })
+                coinTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
+                    const formattedAllowance = utils.formatEther(allowance)
+                    connectWalletActions.setCoinAllowance(formattedAllowance)
+                })
+            } catch (error) {
+                console.debug('Error fetching allowances:', error)
+            }
         }
     }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract])
 
@@ -338,7 +361,9 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {
-            toast.dismiss(toastId)
+            if (document.querySelector(toastId) !== null) {
+                toast.dismiss(toastId)
+            }
         }
         if (chainId && chainId !== NETWORK_ID) {
             const id: ChainId = NETWORK_ID
@@ -355,8 +380,8 @@ const Shared = ({ children, ...rest }: Props) => {
                 { autoClose: false, type: 'warning', toastId }
             )
         } else {
-            if (document.querySelector('#networkToastHash') !== null) {
-                document.querySelector('#networkToastHash')?.remove()
+            if (document.querySelector(toastId) !== null) {
+                document.querySelector(toastId)?.remove()
             }
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)

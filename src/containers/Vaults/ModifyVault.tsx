@@ -2,40 +2,20 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
+import { formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Button from '~/components/Button'
 import LinkButton from '~/components/LinkButton'
 
-import {
-    useTokenBalanceInUSD,
-    useInputsHandlers,
-    useSafeInfo,
-    useTokenApproval,
-    useActiveWeb3React,
-    useProxyAddress,
-    handleTransactionError,
-    ApprovalState,
-} from '~/hooks'
-import useGeb from '~/hooks/useGeb'
-import Modal from '~/components/Modals/Modal'
-import Review from '~/containers/Vaults/Review'
+import { useTokenBalanceInUSD, useInputsHandlers, useSafeInfo } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
-    const { provider, account } = useActiveWeb3React()
-    const geb = useGeb()
-    const proxyAddress = useProxyAddress()
-    const [showPreview, setShowPreview] = useState(false)
     const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
 
     const { singleSafe } = safeState
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
-    const {
-        safeModel: safeActions,
-        connectWalletModel: connectWalletActions,
-        popupsModel: popupsActions,
-    } = useStoreActions((state) => state)
+    const { safeModel: safeActions } = useStoreActions((state) => state)
 
     const {
         error,
@@ -59,25 +39,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const [collateralInUSD, setCollateralInUSD] = useState('0')
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe?.collateralName]?.decimals : '18'
-
-    const isMaxRepayAmount = parsedAmounts.rightInput === availableHai && availableHai !== '0'
-
-    const [unlockState] = useTokenApproval(
-        parsedAmounts.rightInput,
-        tokensData?.OD.address,
-        proxyAddress,
-        '18',
-        true,
-        isMaxRepayAmount
-    )
-
-    const [collateralUnlockState] = useTokenApproval(
-        parsedAmounts.leftInput,
-        singleSafe ? tokensData[singleSafe?.collateralName!].address : undefined,
-        proxyAddress,
-        selectedTokenDecimals,
-        true
-    )
 
     const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
 
@@ -133,10 +94,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         }
     }
 
-    const handleWaitingTitle = () => {
-        return 'Modifying Vault'
-    }
-
     const handleSubmit = () => {
         safeActions.setSafeData({
             leftInput: parsedAmounts.leftInput ? parsedAmounts.leftInput : '0',
@@ -147,66 +104,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             liquidationPrice: liquidationPrice as number,
             collateral: singleSafe?.collateralName!,
         })
-
-        setShowPreview(true)
-    }
-
-    const reset = () => {
-        onClearAll()
-        safeActions.setSafeData(DEFAULT_SAFE_STATE)
-        connectWalletActions.setIsStepLoading(true)
-        safeActions.setIsSafeCreated(true)
-        safeActions.fetchUserSafes({
-            address: account as string,
-            geb,
-            tokensData: tokensData,
-        })
-    }
-
-    const handleConfirm = async () => {
-        if (account && provider) {
-            safeActions.setIsSuccessfulTx(false)
-            setShowPreview(false)
-            popupsActions.setIsWaitingModalOpen(true)
-            popupsActions.setWaitingPayload({
-                title: 'Waiting For Confirmation',
-                text: handleWaitingTitle(),
-                hint: 'Confirm this transaction in your wallet',
-                status: 'loading',
-            })
-
-            const signer = provider.getSigner(account)
-            try {
-                connectWalletActions.setIsStepLoading(true)
-                if (safeState.singleSafe && isDeposit) {
-                    await safeActions.depositAndBorrow({
-                        safeData: safeState.safeData,
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
-                }
-
-                if (safeState.singleSafe && !isDeposit) {
-                    await safeActions.repayAndWithdraw({
-                        safeData: {
-                            ...safeState.safeData,
-                            isGnosisSafe: false,
-                        },
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
-                }
-
-                safeActions.setIsSuccessfulTx(true)
-                popupsActions.setIsWaitingModalOpen(false)
-                reset()
-            } catch (e) {
-                safeActions.setIsSuccessfulTx(false)
-                handleTransactionError(e)
-            } finally {
-                reset()
-            }
-        }
     }
 
     return (
@@ -231,23 +128,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             border={(!isDeposit).toString()}
                         />
                     </ButtonsRow>
-                    <Modal
-                        isModalOpen={showPreview}
-                        closeModal={() => setShowPreview(false)}
-                        maxWidth="450px"
-                        backDropClose
-                        hideHeader
-                        hideFooter
-                    >
-                        <ReviewContainer>
-                            <Review type={type} />
-                            <BtnContainer>
-                                <Button id="confirm_tx" onClick={handleConfirm}>
-                                    Confirm Transaction
-                                </Button>
-                            </BtnContainer>
-                        </ReviewContainer>
-                    </Modal>
                     <ContainerUnderBottonsRow>
                         <Inner>
                             <InputBlock>
@@ -263,13 +143,23 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                         icon: getTokenLogo(singleSafe.collateralName),
                                     }}
                                     label={
-                                        isDeposit
-                                            ? `Balance: ${formatWithCommas(leftInputBalance)} ${
-                                                  singleSafe.collateralName
-                                              }`
-                                            : `Available: ${formatWithCommas(leftInputBalance)} ${
-                                                  singleSafe.collateralName
-                                              }`
+                                        isDeposit ? (
+                                            <>
+                                                Balance:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(leftInputBalance)}{' '}
+                                                    {singleSafe.collateralName}
+                                                </Bold>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Available:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(leftInputBalance)}{' '}
+                                                    {singleSafe.collateralName}
+                                                </Bold>
+                                            </>
+                                        )
                                     }
                                     rightLabel={`~$${collateralInUSD}`}
                                     onChange={onLeftInput}
@@ -290,9 +180,21 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                         }
                                     }
                                     label={
-                                        isDeposit
-                                            ? `Borrow OD: ${formatWithCommas(availableHai, 2)} ${tokensData.OD.symbol}`
-                                            : `Balance: ${formatWithCommas(haiBalance, 2)} ${tokensData.OD.symbol}`
+                                        isDeposit ? (
+                                            <>
+                                                Borrow OD:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(availableHai, 2)} {tokensData.OD.symbol}
+                                                </Bold>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Balance:{' '}
+                                                <Bold>
+                                                    &nbsp;{formatWithCommas(haiBalance, 2)} {tokensData.OD.symbol}
+                                                </Bold>
+                                            </>
+                                        )
                                     }
                                     rightLabel={
                                         isDeposit
@@ -309,23 +211,9 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         </Inner>
                         <Row>
                             <ButtonContainer>
-                                {showPreview ? (
-                                    <Button onClick={handleConfirm} disabled={!isValid}>
-                                        Confirm Transaction
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        onClick={handleSubmit}
-                                        disabled={
-                                            !isValid ||
-                                            (isDeposit
-                                                ? collateralUnlockState !== ApprovalState.APPROVED
-                                                : unlockState !== ApprovalState.APPROVED)
-                                        }
-                                    >
-                                        Review Transaction
-                                    </Button>
-                                )}
+                                <Button onClick={handleSubmit} disabled={!isValid} maxSize={'250px'}>
+                                    {'Review Transaction'}
+                                </Button>
                             </ButtonContainer>
                             {error && (
                                 <ErrorContainer>
@@ -341,24 +229,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 }
 
 export default ModifyVault
-
-const ReviewContainer = styled.div`
-    padding: 20px;
-    border-radius: 4px;
-    background: linear-gradient(to bottom, #1a74ec, #6396ff);
-    background: ${(props) => props.theme.colors.gradientBg};
-`
-
-const BtnContainer = styled.div`
-    margin-top: 24px;
-    text-align: center;
-    border: 2px solid #e2f1ff;
-    border-radius: 4px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 22px;
-`
 
 const Row = styled.div`
     display: flex;
@@ -385,6 +255,10 @@ const ErrorContainer = styled.div`
 const ContainerUnderBottonsRow = styled.div`
     background: white;
     padding: 20px;
+`
+
+const Bold = styled.span`
+    font-weight: bold;
 `
 
 const ButtonsRow = styled.div`

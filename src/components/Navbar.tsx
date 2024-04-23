@@ -408,6 +408,12 @@ const PopupWrapperTokenLink = styled.a`
     color: ${(props) => props.theme.colors.neutral};
     cursor: pointer;
     align-items: center;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: #f2f2f2;
+    }
 `
 
 const screenWidth = '1073px'

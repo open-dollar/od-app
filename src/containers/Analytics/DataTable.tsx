@@ -254,7 +254,7 @@ export const ListItem = styled.div<ListItemProps>`
     text-align: start;
 
     a {
-        color: ${(props) => props.theme.colors.tertiary};
+        color: ${(props) => props.theme.colors.primary};
         font-weight: 700;
         font-size: ${(props) => props.theme.font.xSmall};
     }

@@ -32,7 +32,6 @@ const WALLET_VIEWS = {
 }
 
 export async function checkAndSwitchMetamaskNetwork() {
-
     // @ts-ignore
     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore

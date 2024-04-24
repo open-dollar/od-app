@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { gnosisSafe, hooks } from '../../connectors/gnosisSafe'
 import { Card } from '~/components/connectorCards/Card'
@@ -32,6 +32,12 @@ export default function GnosisSafeCard() {
     const ENSNames = useENSNames(provider)
 
     const [error, setError] = useState(undefined)
+
+    useEffect(() => {
+        void gnosisSafe.connectEagerly().catch(() => {
+            console.debug('Failed to connect eagerly to gnosis safe')
+        })
+    }, [])
 
     return (
         <Card

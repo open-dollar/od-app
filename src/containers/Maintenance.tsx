@@ -5,8 +5,8 @@ const Maintenance = () => {
     return (
         <Container>
             <CenterBox>
-                <Text>We'll be back shortly</Text>
-                <BigText>🛠️ Maintenance 🧑‍💻</BigText>
+                <Text>We're currently deploying to Arbitrum</Text>
+                <BigText>Standby for Launch 🚀</BigText>
             </CenterBox>
         </Container>
     )

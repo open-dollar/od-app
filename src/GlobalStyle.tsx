@@ -28,8 +28,9 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props) => props.theme.colors.primary};
     background-color:${(props) => props.theme.colors.background};
-    background-size: contain;
-    background-position: center 100px;
+    background-image: url('squares1x.png'), url('wavy-blue.png');
+    background-size: contain, 100%;
+    background-position: bottom left, top right;
     background-repeat: no-repeat;
     overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 

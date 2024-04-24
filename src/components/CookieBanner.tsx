@@ -12,13 +12,14 @@ const CookieBanner = () => {
                     style={{
                         background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
                         alignItems: 'center',
+                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                     }}
                 >
                     <CookiesText>
                         <p>
                             This website uses cookies to enhance the user experience. By continuing to browse the site
-                            you're agreeing to our &nbsp;
-                            <a target="_blank" href="https://opendollar.com/tos" rel="noreferrer">
+                            you're agreeing to our{' '}
+                            <a target="_blank" href="https://www.opendollar.com/terms" rel="noreferrer">
                                 use of cookies
                             </a>
                             .

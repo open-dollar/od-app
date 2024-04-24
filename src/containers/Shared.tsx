@@ -40,6 +40,7 @@ import {
     ChainId,
     IS_IN_IFRAME,
     timeout,
+    SupportedChainId,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
@@ -266,7 +267,9 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {
-            toast.dismiss(toastId)
+            if (document.querySelector(toastId) !== null) {
+                toast.dismiss(toastId)
+            }
         }
         if (chainId && chainId !== NETWORK_ID) {
             const id: ChainId = NETWORK_ID
@@ -283,8 +286,8 @@ const Shared = ({ children, ...rest }: Props) => {
                 { autoClose: false, type: 'warning', toastId }
             )
         } else {
-            if (document.querySelector('#networkToastHash') !== null) {
-                document.querySelector('#networkToastHash')?.remove()
+            if (document.querySelector(toastId) !== null) {
+                document.querySelector(toastId)?.remove()
             }
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)

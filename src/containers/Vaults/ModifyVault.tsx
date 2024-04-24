@@ -2,40 +2,20 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 
-import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
+import { formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
-import Modal from '~/components/Modals/Modal'
 import Button from '~/components/Button'
-import useGeb from '~/hooks/useGeb'
-import Review from './Review'
 import LinkButton from '~/components/LinkButton'
 
-import {
-    handleTransactionError,
-    useTokenBalanceInUSD,
-    useActiveWeb3React,
-    useInputsHandlers,
-    useTokenApproval,
-    useProxyAddress,
-    ApprovalState,
-    useSafeInfo,
-} from '~/hooks'
+import { useTokenBalanceInUSD, useInputsHandlers, useSafeInfo } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
-    const { provider, account } = useActiveWeb3React()
-    const geb = useGeb()
-    const proxyAddress = useProxyAddress()
-    const [showPreview, setShowPreview] = useState(false)
     const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
 
     const { singleSafe } = safeState
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
-    const {
-        safeModel: safeActions,
-        connectWalletModel: connectWalletActions,
-        popupsModel: popupsActions,
-    } = useStoreActions((state) => state)
+    const { safeModel: safeActions } = useStoreActions((state) => state)
 
     const {
         error,
@@ -59,25 +39,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const [collateralInUSD, setCollateralInUSD] = useState('0')
 
     const selectedTokenDecimals = singleSafe ? tokenBalances[singleSafe?.collateralName]?.decimals : '18'
-
-    const isMaxRepayAmount = parsedAmounts.rightInput === availableHai && availableHai !== '0'
-
-    const [unlockState, approveUnlock] = useTokenApproval(
-        parsedAmounts.rightInput,
-        tokensData?.OD.address,
-        proxyAddress,
-        '18',
-        true,
-        isMaxRepayAmount
-    )
-
-    const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(
-        parsedAmounts.leftInput,
-        singleSafe ? tokensData[singleSafe?.collateralName!].address : undefined,
-        proxyAddress,
-        selectedTokenDecimals,
-        true
-    )
 
     const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
 
@@ -133,10 +94,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         }
     }
 
-    const handleWaitingTitle = () => {
-        return 'Modifying Vault'
-    }
-
     const handleSubmit = () => {
         safeActions.setSafeData({
             leftInput: parsedAmounts.leftInput ? parsedAmounts.leftInput : '0',
@@ -147,67 +104,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             liquidationPrice: liquidationPrice as number,
             collateral: singleSafe?.collateralName!,
         })
-
-        setShowPreview(true)
     }
 
-    const reset = () => {
-        onClearAll()
-        safeActions.setSafeData(DEFAULT_SAFE_STATE)
-        connectWalletActions.setIsStepLoading(true)
-        safeActions.setIsSafeCreated(true)
-        safeActions.fetchUserSafes({
-            address: account as string,
-            geb,
-            tokensData: tokensData,
-        })
-    }
-
-    const handleConfirm = async () => {
-        if (account && provider) {
-            safeActions.setIsSuccessfulTx(false)
-            setShowPreview(false)
-            popupsActions.setIsWaitingModalOpen(true)
-            popupsActions.setWaitingPayload({
-                title: 'Waiting For Confirmation',
-                text: handleWaitingTitle(),
-                hint: 'Confirm this transaction in your wallet',
-                status: 'loading',
-            })
-
-            const signer = provider.getSigner(account)
-            try {
-                connectWalletActions.setIsStepLoading(true)
-                if (safeState.singleSafe && isDeposit) {
-                    await safeActions.depositAndBorrow({
-                        safeData: safeState.safeData,
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
-                }
-
-                if (safeState.singleSafe && !isDeposit) {
-                    await safeActions.repayAndWithdraw({
-                        safeData: {
-                            ...safeState.safeData,
-                            isGnosisSafe: false,
-                        },
-                        signer,
-                        safeId: safeState.singleSafe.id,
-                    })
-                }
-
-                safeActions.setIsSuccessfulTx(true)
-                popupsActions.setIsWaitingModalOpen(false)
-                reset()
-            } catch (e) {
-                safeActions.setIsSuccessfulTx(false)
-                handleTransactionError(e)
-            } finally {
-                reset()
-            }
-        }
-    }
     return (
         <>
             {singleSafe && (
@@ -219,7 +117,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/deposit`}
                             //@ts-ignore
                             color={isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
-                            border={isDeposit}
+                            border={isDeposit.toString()}
                         />
                         <LinkButton
                             id="repay_withdraw"
@@ -227,7 +125,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
                             color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
-                            border={!isDeposit}
+                            border={(!isDeposit).toString()}
                         />
                     </ButtonsRow>
                     <ContainerUnderBottonsRow>
@@ -418,23 +316,6 @@ const InputBlock = styled.div`
         margin-top: 20px;
         min-width: 100%;
     }
-`
-
-const ReviewContainer = styled.div`
-    padding: 20px;
-    border-radius: 4px;
-    background: ${(props) => props.theme.colors.gradientBg};
-`
-
-const BtnContainer = styled.div`
-    margin-top: 24px;
-    text-align: center;
-    border: 2px solid #e2f1ff;
-    border-radius: 4px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 22px;
 `
 
 const SideLabel = styled.div`

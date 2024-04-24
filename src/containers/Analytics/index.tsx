@@ -491,9 +491,16 @@ const AnaliticsBottom = styled.div`
     justify-content: space-between;
     gap: 24px;
 
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+    div {
+        height: 241px;
+        flex: 1;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    @media (max-width: 1250px) {
         flex-wrap: wrap;
-    `}
+    }
 `
 
 const RightColumn = styled.div``

@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
             console.error(req.nextUrl, 'req.nextUrl')
 
             // Rewrite to the url
-            return NextResponse.rewrite(req.nextUrl)
+            return NextResponse.redirect(req.nextUrl)
         }
     } catch (error) {
         // show the default page if EDGE_CONFIG env var is missing,

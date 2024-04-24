@@ -36,6 +36,7 @@ export async function checkAndSwitchMetamaskNetwork() {
     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore
         const chainId = await window.ethereum.request({ method: 'net_version' })
+        if (chainId === process.env.REACT_APP_NETWORK_ID) return
         // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
         if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '42161') {
             try {
@@ -136,6 +137,7 @@ export default function WalletModal() {
     // close modal when a connection is successful
     const activePrevious = usePrevious(isActive)
     const connectorPrevious = usePrevious(connector)
+
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
@@ -184,7 +186,6 @@ export default function WalletModal() {
             )
         }
     }
-
     function getModalContent() {
         return (
             <UpperSection>
@@ -202,7 +203,6 @@ export default function WalletModal() {
             </UpperSection>
         )
     }
-
     return (
         <Modal
             isModalOpen={isConnectorsWalletOpen}

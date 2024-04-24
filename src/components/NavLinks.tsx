@@ -74,8 +74,10 @@ const BtnStyle = css`
     transition: all 0.3s ease;
     padding: 10px 10px;
     width: 100%;
-    width: 5vw;
+    padding-left: 20px;
+    padding-right: 20px;
     justify-content: center;
+    font-weight: 700;
     height: 100%;
     display: flex;
     align-items: center;
@@ -124,7 +126,8 @@ const NavBarLink = styled(NavLink)`
         display: flex;
         align-items: center;
         padding: 10px 10px;
-        width: 5vw;
+        padding-left: 20px;
+        padding-right: 20px;
         height: 100%;
         font-weight: 700;
         border-bottom: 5px solid ${(props) => props.theme.colors.secondary};

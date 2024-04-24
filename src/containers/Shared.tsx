@@ -40,7 +40,6 @@ import {
     ChainId,
     IS_IN_IFRAME,
     timeout,
-    SupportedChainId,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'

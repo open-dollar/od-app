@@ -191,6 +191,7 @@ const Navbar = () => {
                                 <Icon src={getTokenLogo('OD')} width={22} height={22} />
                                 <span>{state.odPrice}</span>
                                 <ArrowWrapper>
+                                    {/* @ts-ignore */}
                                     <ArrowDown fill={theme.colors.primary} />
                                 </ArrowWrapper>
                             </DollarValue>
@@ -201,6 +202,7 @@ const Navbar = () => {
                                             <InfoPopUpText style={{ marginBottom: 6 }}>
                                                 {t('liquidity').toUpperCase()}
                                             </InfoPopUpText>
+                                            {/* @ts-ignore */}
                                             <InfoPopUpText style={{ fontSize: theme.font.default }}>
                                                 {state.totalLiquidity}
                                             </InfoPopUpText>

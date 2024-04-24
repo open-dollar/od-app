@@ -31,7 +31,7 @@ export default function CoinbaseWalletCard() {
     const provider = useProvider()
 
     const [error, setError] = useState(undefined)
-    
+
     useEffect(() => {
         void coinbaseWallet.connectEagerly().catch(() => {})
     }, [])

@@ -40,7 +40,7 @@ export default function WalletConnectV2Card() {
     useEffect(() => {
         walletConnectV2.connectEagerly().catch(() => {})
     }, [])
-        
+
     // log URI when available
     useEffect(() => {
         walletConnectV2.events.on(URI_AVAILABLE, (uri: string) => {

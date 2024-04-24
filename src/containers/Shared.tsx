@@ -367,7 +367,7 @@ const Shared = ({ children, ...rest }: Props) => {
             }
             checkAndSwitchMetamaskNetwork()
         }
-    }, [chainId]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [chainId, window.ethereum]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>

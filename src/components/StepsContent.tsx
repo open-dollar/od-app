@@ -94,7 +94,6 @@ const ContentContainer = styled.div<{ stepNumber: number }>`
     display: flex;
     flex-direction: ${(props) => (props.stepNumber === 0 ? 'column' : 'row')};
     justify-content: center;
-    max-width: 923px;
     align-items: center;
 
     @media (max-width: 960px) {

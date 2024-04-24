@@ -114,5 +114,5 @@ const Container = styled.div`
 
 const Content = styled.div`
     position: relative;
-    max-width: 100%;
+    max-width: 1362px;
 `

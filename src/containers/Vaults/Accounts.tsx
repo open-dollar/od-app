@@ -18,6 +18,6 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-    max-width: 1024px;
+    max-width: 100%;
     margin: 0 auto;
 `

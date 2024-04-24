@@ -43,11 +43,6 @@ export default function WalletConnectV2Card() {
         })
     }, [])
 
-    // attempt to connect eagerly on mount
-    useEffect(() => {
-        walletConnectV2.connectEagerly().catch(() => {})
-    }, [])
-
     return (
         <Card
             connector={walletConnectV2}

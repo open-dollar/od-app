@@ -137,6 +137,7 @@ export default function WalletModal() {
     // close modal when a connection is successful
     const activePrevious = usePrevious(isActive)
     const connectorPrevious = usePrevious(connector)
+
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
@@ -185,7 +186,6 @@ export default function WalletModal() {
             )
         }
     }
-
     function getModalContent() {
         return (
             <UpperSection>
@@ -204,7 +204,6 @@ export default function WalletModal() {
             </UpperSection>
         )
     }
-
     return (
         <Modal
             isModalOpen={isConnectorsWalletOpen}

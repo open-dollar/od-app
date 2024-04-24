@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { hooks, metaMask } from '../../connectors/metaMask'
 import { Card } from '~/components/connectorCards/Card'
-import { useStoreActions } from '~/store'
 
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
@@ -31,17 +30,7 @@ export default function MetaMaskCard() {
 
     const provider = useProvider()
 
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
     const [error, setError] = useState<Error | undefined>(undefined)
-
-    useEffect(() => {
-        metaMask.connectEagerly().catch(() => {})
-        if (provider?.provider.isMetaMask && accounts) {
-            popupsActions.setIsConnectorsWalletOpen(false)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider?.provider, accounts])
 
     return (
         <Card

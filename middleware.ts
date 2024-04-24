@@ -1,38 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { get } from '@vercel/edge-config'
+// Importing EdgeConfig if you are using it to get configurations
+import { get } from '@vercel/edge-config';
 
-const PUBLIC_FILE = /\.(.*)$/;
-
-export const config = {
-    matcher: '/((?!api|_next|static|public|favicon.ico).*)'
+// Type declarations for standard web APIs
+interface EdgeRequest extends Request {
+    nextUrl: URL;
 }
 
-export async function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl;
-    if (
-        PUBLIC_FILE.test(pathname) // Exclude public files
-    )
-        return NextResponse.next();
+const PUBLIC_FILE = /\.(png|jpe?g|gif|css|js|svg|ico|map|json)$/i;
 
+export default async function middleware(req: EdgeRequest) {
+    const url = new URL(req.url);
+
+    // Skip middleware for asset requests
+    if (PUBLIC_FILE.test(url.pathname)) {
+        return new Response(null, { headers: { 'x-middleware-next': '1' } });
+    }
+
+    // Check if EDGE_CONFIG is available
     if (!process.env.EDGE_CONFIG) {
-        req.nextUrl.pathname = `/missing-edge-config`
-        return NextResponse.redirect(req.nextUrl)
+        url.pathname = `/missing-edge-config`;
+        return Response.redirect(url, 307);
     }
 
     try {
         // Check whether the maintenance page should be shown
-        const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode')
+        const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
 
-        // If is in maintenance mode, point the url pathname to the maintenance page
         if (isInMaintenanceMode) {
-            req.nextUrl.pathname = `/maintenance`
-
-            // Rewrite to the url
-            return NextResponse.redirect(req.nextUrl)
+            // If in maintenance mode, point the url pathname to the maintenance page
+            url.pathname = `/maintenance`;
+            return Response.redirect(url, 307);
         }
     } catch (error) {
-        // show the default page if EDGE_CONFIG env var is missing,
-        // but log the error to the console
-        console.error(error)
+        console.error('Error processing middleware:', error);
+        // Continue to the default page but log the error
+        return new Response(null, { headers: { 'x-middleware-next': '1' } });
     }
+
+    // Continue with the normal flow if not in maintenance mode
+    return new Response(null, { headers: { 'x-middleware-next': '1' } });
 }

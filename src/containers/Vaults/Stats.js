@@ -180,7 +180,7 @@ const LinkWrapper = styled.div`
 `
 
 const ComponentContainer = styled.div`
-    max-width: 880px;
+    max-width: 100%;
     margin: 20px auto;
     padding: 0 15px;
 `

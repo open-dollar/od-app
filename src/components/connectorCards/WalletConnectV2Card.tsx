@@ -36,16 +36,16 @@ export default function WalletConnectV2Card() {
 
     const [error, setError] = useState<Error | undefined>(undefined)
 
+    // attempt to connect eagerly on mount
+    useEffect(() => {
+        walletConnectV2.connectEagerly().catch(() => {})
+    }, [])
+
     // log URI when available
     useEffect(() => {
         walletConnectV2.events.on(URI_AVAILABLE, (uri: string) => {
             console.log(`uri: ${uri}`)
         })
-    }, [])
-
-    // attempt to connect eagerly on mount
-    useEffect(() => {
-        walletConnectV2.connectEagerly().catch(() => {})
     }, [])
 
     return (

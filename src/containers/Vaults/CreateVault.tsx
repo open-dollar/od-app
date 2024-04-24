@@ -16,7 +16,6 @@ import Button from '~/components/Button'
 import Review from './Review'
 import {
     handleTransactionError,
-    useTokenBalanceInUSD,
     useActiveWeb3React,
     useInputsHandlers,
     useTokenApproval,
@@ -74,7 +73,6 @@ const CreateVault = ({
     const selectedCollateral = tokensData && tokensData[selectedItem]
     const selectedCollateralBalance = formattedCollateralBalances[selectedItem]
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
-    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const redirectToWrapEth = () => {
         const url = 'https://wrapeth.com/'
@@ -103,9 +101,10 @@ const CreateVault = ({
             )
         )
     )
-
+    const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
-    const onMaxRightInput = () => onRightInput(Math.trunc(+availableHai).toString())
+    //available hai - 5% of available hai, this is a buffer to prevent bugs.
+    const onMaxRightInput = () => onRightInput(maxHaiWithBuffer.toString())
 
     const onClearAll = useCallback(() => {
         clearAll()
@@ -275,7 +274,7 @@ const CreateVault = ({
                                             label={`Borrow OD: ${formatWithCommas(availableHai)} ${
                                                 tokensData.OD?.symbol
                                             }`}
-                                            rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
+                                            rightLabel={`~$${formatWithCommas(maxHaiWithBuffer)}`}
                                             onChange={onRightInput}
                                             value={rightInput}
                                             handleMaxClick={onMaxRightInput}

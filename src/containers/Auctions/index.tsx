@@ -250,7 +250,7 @@ const Auctions = ({
 export default Auctions
 
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1400px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {

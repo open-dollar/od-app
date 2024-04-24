@@ -73,7 +73,7 @@ export const Container = styled.div`
 export const Header = styled.div`
     width: 100%;
     border-radius: 15px 15px 0 0;
-    font-size: ${(props) => props.theme.font.small};
+    font-size: ${(props: any) => props.theme.font.small};
     font-weight: 600;
     padding: 20px;
     display: flex;
@@ -125,7 +125,7 @@ export const Content = styled.div`
 `
 
 export const SectionContent = styled.div`
-    font-size: ${(props) => props.theme.font.default};
+    font-size: ${(props: any) => props.theme.font.default};
     width: 100%;
 `
 
@@ -147,7 +147,7 @@ export const HeadsContainer = styled.div<HeadsContainerProps>`
     justify-content: start;
     width: max-content;
 
-    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
+    text-align: ${(props: any) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 `
 
 export const Heads = styled.div`
@@ -166,7 +166,7 @@ export const Heads = styled.div`
     }
 
     & div {
-        background-color: ${(props) => props.theme.colors.background};
+        background-color: ${(props: any) => props.theme.colors.background};
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -195,7 +195,7 @@ export const Head = styled.p`
     font-weight: 400;
 
     text-transform: uppercase;
-    color: ${(props) => props.theme.colors.tertiary};
+    color: ${(props: any) => props.theme.colors.tertiary};
     padding-left: 18px;
 `
 
@@ -206,7 +206,7 @@ export const ListItemLabel = styled.span`
     margin-bottom:5px;
     font-weight:normal;
     width: max-content;
-   color: ${(props) => props.theme.colors.customSecondary};
+   color: ${(props: any) => props.theme.colors.customSecondary};
   `}
 `
 
@@ -228,7 +228,7 @@ export const List = styled.div`
     ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-wrap:wrap;
     width: unset;
-    border:1px solid ${(props) => props.theme.colors.border};
+    border:1px solid ${(props: any) => props.theme.colors.border};
     margin-bottom:10px;
     &:last-child {
       margin-bottom:0;
@@ -239,8 +239,8 @@ export const List = styled.div`
 
 export const ListItem = styled.div<ListItemProps>`
     width: 174px;
-    color: ${(props) => props.theme.colors.tertiary};
-    font-size: ${(props) => props.theme.font.xSmall};
+    color: ${(props: any) => props.theme.colors.tertiary};
+    font-size: ${(props: any) => props.theme.font.xSmall};
     font-weight: 700;
     padding: 15px 10px;
     &:first-child {
@@ -254,9 +254,9 @@ export const ListItem = styled.div<ListItemProps>`
     text-align: start;
 
     a {
-        color: ${(props) => props.theme.colors.primary};
+        color: ${(props: any) => props.theme.colors.primary};
         font-weight: 700;
-        font-size: ${(props) => props.theme.font.xSmall};
+        font-size: ${(props: any) => props.theme.font.xSmall};
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -268,7 +268,7 @@ export const ListItem = styled.div<ListItemProps>`
 
     flex: 0 0 50%;
     min-width:50%;
-    font-size: ${(props) => props.theme.font.xSmall};
+    font-size: ${(props: any) => props.theme.font.xSmall};
     font-weight:900;
   `}
 `

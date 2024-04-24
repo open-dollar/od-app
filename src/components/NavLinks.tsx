@@ -82,14 +82,14 @@ const BtnStyle = css`
     display: flex;
     align-items: center;
     &:hover {
-        color: ${(props) => props.theme.colors.blueish};
+        color: ${(props: any) => props.theme.colors.blueish};
     }
 
     svg {
         display: none;
         &.fill {
-            fill: ${(props) => props.theme.colors.secondary};
-            color: ${(props) => props.theme.colors.secondary};
+            fill: ${(props: any) => props.theme.colors.secondary};
+            color: ${(props: any) => props.theme.colors.secondary};
         }
         &.opacity {
             opacity: 0.5;
@@ -99,7 +99,7 @@ const BtnStyle = css`
          height: 18px;
          display: inline !important;
          margin-right:10px;
-         color: ${(props) => props.theme.colors.neutral}
+         color: ${(props: any) => props.theme.colors.neutral}
         `}
     }
 
@@ -116,7 +116,7 @@ const BtnStyle = css`
       align-items:center;
       text-align: left;
       margin: 0;
-      color :${(props) => props.theme.colors.primary};
+      color :${(props: any) => props.theme.colors.primary};
     
   `}
 `
@@ -130,9 +130,9 @@ const NavBarLink = styled(NavLink)`
         padding-right: 20px;
         height: 100%;
         font-weight: 700;
-        border-bottom: 5px solid ${(props) => props.theme.colors.secondary};
-        background: ${(props) => props.theme.colors.primary};
-        color: ${(props) => props.theme.colors.neutral};
+        border-bottom: 5px solid ${(props: any) => props.theme.colors.secondary};
+        background: ${(props: any) => props.theme.colors.primary};
+        color: ${(props: any) => props.theme.colors.neutral};
         &:before {
             content: '';
             position: absolute;

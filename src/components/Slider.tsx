@@ -26,6 +26,7 @@ const Slider = ({
     ...rest
 }: InputSliderProps) => {
     const { t } = useTranslation()
+    //@ts-ignore
     const { colors } = useTheme()
 
     const changeCallback = useCallback(

@@ -15,6 +15,7 @@ import Button from '~/components/Button'
 
 const DepositFunds = ({ ...props }) => {
     const { t } = useTranslation()
+    //@ts-ignore
     const { colors } = useTheme()
     const history = useHistory()
     const proxyAddress = useProxyAddress()

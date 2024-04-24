@@ -1,3 +1,4 @@
+import React from 'react'
 import i18next from 'i18next'
 import { Suspense } from 'react'
 import { I18nextProvider } from 'react-i18next'
@@ -11,38 +12,21 @@ import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
 import { useStoreState } from './store'
-import { Theme } from './utils/interfaces'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
-
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/graph'
-
 import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
-
-// Toast css
 import Analytics from './containers/Analytics'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
-
-declare module 'styled-components' {
-    export interface DefaultTheme extends Theme {}
-}
-
-console.log(
-    `%c🧙 Join the Open Dollar Team! ⚔️`,
-    'color:blue;font-family:sans-serif;font-size:4rem;-webkit-text-stroke: 1px black;font-weight:bold'
-)
-console.log(
-    `%cInquire about your next adventure in our Discord`,
-    'font-family:sans-serif;font-size:1rem;font-weight:bold'
-)
+import Maintenance from '~/containers/Maintenance'
+import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
-
     const { bodyOverflow } = settingsState
 
     return (
@@ -57,10 +41,11 @@ const App = () => {
                                 <Suspense fallback={null}>
                                     <Route component={GoogleTagManager} />
                                     <Web3ReactManager>
-                                        <>
+                                        <MaintenanceRedirect>
                                             <Switch>
                                                 <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
+                                                <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
@@ -87,7 +72,7 @@ const App = () => {
                                                 />
                                                 <Redirect path="*" to="/404" />
                                             </Switch>
-                                        </>
+                                        </MaintenanceRedirect>
                                     </Web3ReactManager>
                                 </Suspense>
                             </StatsProvider>

@@ -3,6 +3,10 @@ import { get } from '@vercel/edge-config'
 
 const PUBLIC_FILE = /\.(.*)$/;
 
+export const config = {
+    matcher: '/((?!api|_next|static|public|favicon.ico).*)'
+}
+
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     if (
@@ -12,7 +16,7 @@ export async function middleware(req: NextRequest) {
 
     if (!process.env.EDGE_CONFIG) {
         req.nextUrl.pathname = `/missing-edge-config`
-        return NextResponse.rewrite(req.nextUrl)
+        return NextResponse.redirect(req.nextUrl)
     }
 
     try {

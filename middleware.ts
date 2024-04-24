@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { get } from '@vercel/edge-config'
 
-export const config = {
-    matcher: ['/src/:path*'],
-}
-
 export async function middleware(req: NextRequest) {
     if (!process.env.EDGE_CONFIG) {
         req.nextUrl.pathname = `/missing-edge-config`

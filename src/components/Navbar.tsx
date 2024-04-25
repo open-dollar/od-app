@@ -188,14 +188,14 @@ const Navbar = () => {
                     <Left>
                         <Brand />
                         <Price>
-                            <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                <Icon src={getTokenLogo('OD')} width={22} height={22} />
-                                <span>{state.odPrice}</span>
-                                <ArrowWrapper>
-                                    {/* @ts-ignore */}
-                                    <ArrowDown fill={theme.colors.primary} />
-                                </ArrowWrapper>
-                            </DollarValue>
+                            {/*<DollarValue ref={dollarRef} onClick={handleDollarClick}>*/}
+                            {/*    <Icon src={getTokenLogo('OD')} width={22} height={22} />*/}
+                            {/*    <span>{state.odPrice}</span>*/}
+                            {/*    <ArrowWrapper>*/}
+                            {/*        /!* @ts-ignore *!/*/}
+                            {/*        <ArrowDown fill={theme.colors.primary} />*/}
+                            {/*    </ArrowWrapper>*/}
+                            {/*</DollarValue>*/}
                             {isPopupVisible && (
                                 <InfoPopup ref={popupRef}>
                                     <PopupWrapperLink>

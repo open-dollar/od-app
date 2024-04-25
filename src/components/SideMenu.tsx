@@ -452,8 +452,6 @@ const OdButton = styled.button`
     }
 `
 
-const ClaimButton = styled(OdButton)``
-
 const DollarValue = styled(OdButton)`
     width: auto;
     white-space: nowrap;

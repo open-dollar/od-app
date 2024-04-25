@@ -70,25 +70,31 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                     </SHeads>
 
                     {reorderedRows?.map((item, index) => (
-                        <SList key={'row-' + index} className="s-list">
-                            {item?.map((value, valueIndex) => (
-                                <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
-                                    <SListItem className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}>
-                                        <ListItemLabel className="list-item-label">
-                                            {reorderedColumns[valueIndex]}
-                                        </ListItemLabel>
-                                        {valueIndex === 0 && <>{value}</>}
-                                        {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
-                                        {valueIndex === 2 && (
-                                            <AddressColumm>
-                                                <AddressLink address={value} chainId={chainId || 420} />
-                                            </AddressColumm>
-                                        )}
-                                    </SListItem>
-                                </SHeadsContainer>
-                            ))}
-                            <ReactTooltip variant="light" id={`${item[2]}`} openOnClick place="top" />
-                        </SList>
+                        <div key={'row-' + index}>
+                            {item[0] !== 'proxyFactory' && (
+                                <SList className="s-list">
+                                    {item?.map((value, valueIndex) => (
+                                        <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
+                                            <SListItem
+                                                className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}
+                                            >
+                                                <ListItemLabel className="list-item-label">
+                                                    {reorderedColumns[valueIndex]}
+                                                </ListItemLabel>
+                                                {valueIndex === 0 && <>{value}</>}
+                                                {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
+                                                {valueIndex === 2 && (
+                                                    <AddressColumm>
+                                                        <AddressLink address={value} chainId={chainId || 420} />
+                                                    </AddressColumm>
+                                                )}
+                                            </SListItem>
+                                        </SHeadsContainer>
+                                    ))}
+                                    <ReactTooltip variant="light" id={`${item[2]}`} openOnClick place="top" />
+                                </SList>
+                            )}
+                        </div>
                     ))}
                 </SectionContent>
             </Content>

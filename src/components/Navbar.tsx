@@ -90,7 +90,8 @@ const Navbar = () => {
     }
 
     const handleDollarClick = () => {
-        setPopupVisibility(!isPopupVisible)
+        // Disable temporarily
+        // setPopupVisibility(!isPopupVisible)
     }
 
     const handleClickOutsideOdRef = (event: MouseEvent) => {

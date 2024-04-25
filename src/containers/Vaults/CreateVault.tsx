@@ -351,7 +351,7 @@ const CreateVault = ({
                     </Box>
 
                     <ReactTooltip
-                        style={{ zIndex: 99 }}
+                        style={{ zIndex: 99, maxWidth: '400px' }}
                         id="tooltip-create-vault"
                         variant="light"
                         data-effect="solid"

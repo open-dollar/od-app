@@ -146,7 +146,7 @@ const Analytics = () => {
         image: 'lock',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
-        description: 'Mock dada for Total Collateral Locked',
+        description: 'Total Collateral Locked',
     }
 
     const vaultNFTs = {
@@ -156,7 +156,7 @@ const Analytics = () => {
         description: 'Vault NFTs',
     }
 
-    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulating supply of OD stablecoin' }
 
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
@@ -251,6 +251,7 @@ const Analytics = () => {
         // marketPriceODG,
     ]
 
+    //@to-do: Do not use GEB as a param in useEffect, it causes a lot of re-renders
     useEffect(() => {
         async function fetchData() {
             if (geb) {

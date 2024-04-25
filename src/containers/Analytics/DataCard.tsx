@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, memo } from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
 
@@ -15,7 +15,7 @@ export interface DataCardProps {
     children?: ReactNode
 }
 
-const DataCard = ({ title, bg, image, value, description, children }: DataCardProps) => {
+const DataCard = memo(({ title, bg, image, value, description, children }: DataCardProps) => {
     return (
         <Block bg={bg!}>
             <>
@@ -31,7 +31,7 @@ const DataCard = ({ title, bg, image, value, description, children }: DataCardPr
             </>
         </Block>
     )
-}
+})
 
 export default DataCard
 

@@ -85,6 +85,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
     const geoBlockToastId = 'geoBlockToastHash'
+    const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -118,7 +119,10 @@ const Shared = ({ children, ...rest }: Props) => {
         }
 
         const userCountry = await fetchUserCountry()
-        return userCountry === 'US'
+        if (userCountry && bannedCountryCodes.includes(userCountry)) {
+            return true
+        }
+        return false
     }
 
     async function accountChecker() {

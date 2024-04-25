@@ -46,13 +46,12 @@ export const network = new NetworkConnector({
 })
 
 export const injected = new InjectedConnector({
-    supportedChainIds: [420, 42161],
+    supportedChainIds: [420],
 })
 
 const TESTNET_CHAINS = {
     1: 'mainnet',
     3: 'ropsten',
-    42161: 'arbitrum',
 }
 
 const [testnet, ...optionalChains] = Object.keys(TESTNET_CHAINS).map(Number)

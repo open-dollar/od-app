@@ -110,6 +110,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         return 'Modifying Vault'
     }
     const handleSubmit = () => {
+        console.log('in submit')
         safeActions.setSafeData({
             leftInput: parsedAmounts.leftInput ? parsedAmounts.leftInput : '0',
             rightInput: parsedAmounts.rightInput ? parsedAmounts.rightInput : '0',

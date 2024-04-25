@@ -460,6 +460,7 @@ const ContentWrapper = styled(Flex)`
     justify-content: space-between;
     width: 100%;
     max-width: 1360px;
+    padding: 0 15px;
 `
 
 const MenuBtn = styled.div`

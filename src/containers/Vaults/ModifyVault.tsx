@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
 import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
-import useGeb from '~/hooks/useGeb'
+import useGeb, { useProxyAddress } from '~/hooks/useGeb'
 import Review from './Review'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
@@ -15,6 +15,8 @@ import {
     useActiveWeb3React,
     useInputsHandlers,
     useSafeInfo,
+    useTokenApproval,
+    ApprovalState,
 } from '~/hooks'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
@@ -85,11 +87,38 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
+    const proxyAddress = useProxyAddress()
+
+    const [collateralUnlockState, collateralApproveUnlock] = useTokenApproval(
+        parsedAmounts.leftInput,
+        singleSafe ? tokensData[singleSafe?.collateralName!].address : undefined,
+        proxyAddress,
+        selectedTokenDecimals,
+        true
+    )
+
+    const [unlockState, approveUnlock] = useTokenApproval(
+        parsedAmounts.rightInput,
+        tokensData?.OD.address,
+        proxyAddress,
+        '18',
+        true,
+        parsedAmounts.rightInput === availableHai && availableHai !== '0'
+    )
+
     const onMaxLeftInput = () => {
         if (isDeposit) {
-            onLeftInput(depositTokenBalance.toString())
+            const roundedDownBalance = ethers.utils.formatUnits(
+                ethers.utils.parseUnits(depositTokenBalance, selectedTokenDecimals),
+                selectedTokenDecimals
+            )
+            onLeftInput(Math.floor(parseFloat(roundedDownBalance)).toString())
         } else {
-            onLeftInput(availableCollateral as string)
+            const roundedDownCollateral = ethers.utils.formatUnits(
+                ethers.utils.parseUnits(availableCollateral.toString(), selectedTokenDecimals),
+                selectedTokenDecimals
+            )
+            onLeftInput(Math.floor(parseFloat(roundedDownCollateral)).toString())
         }
     }
 
@@ -110,7 +139,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         return 'Modifying Vault'
     }
     const handleSubmit = () => {
-        console.log('in submit')
         safeActions.setSafeData({
             leftInput: parsedAmounts.leftInput ? parsedAmounts.leftInput : '0',
             rightInput: parsedAmounts.rightInput ? parsedAmounts.rightInput : '0',
@@ -305,10 +333,34 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         </Inner>
                         <Row>
                             <ButtonContainer>
-                                <Button onClick={handleSubmit} disabled={!isValid} maxSize={'250px'}>
-                                    {'Review Transaction'}
-                                </Button>
+                                {isDeposit ? (
+                                    collateralUnlockState === ApprovalState.PENDING ||
+                                    collateralUnlockState === ApprovalState.NOT_APPROVED ? (
+                                        <Button
+                                            onClick={collateralApproveUnlock}
+                                            disabled={collateralUnlockState === ApprovalState.PENDING}
+                                        >
+                                            {collateralUnlockState === ApprovalState.PENDING
+                                                ? 'Unlocking...'
+                                                : `Unlock ${singleSafe?.collateralName}`}
+                                        </Button>
+                                    ) : (
+                                        <Button onClick={handleSubmit} disabled={!isValid}>
+                                            Review Transaction
+                                        </Button>
+                                    )
+                                ) : unlockState === ApprovalState.PENDING ||
+                                  unlockState === ApprovalState.NOT_APPROVED ? (
+                                    <Button onClick={approveUnlock} disabled={unlockState === ApprovalState.PENDING}>
+                                        {unlockState === ApprovalState.PENDING ? 'Approving...' : 'Approve OD'}
+                                    </Button>
+                                ) : (
+                                    <Button onClick={handleSubmit} disabled={!isValid}>
+                                        Review Transaction
+                                    </Button>
+                                )}
                             </ButtonContainer>
+
                             {error && (leftInput || rightInput) && (
                                 <ErrorContainer>
                                     <p>Error: {error}</p>

@@ -50,6 +50,7 @@ import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
+import GeoBlockContainer from '~/containers/GeoBlockContainer'
 
 interface Props {
     children: ReactNode
@@ -58,6 +59,7 @@ interface Props {
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
     const { chainId, account, provider, connector } = useActiveWeb3React()
+    const [isGeoblocked, setIsGeoblocked] = React.useState(false)
     const geb = useGeb()
     const history = useHistory()
 
@@ -205,6 +207,9 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
+                setIsGeoblocked(true)
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
                 toast(
@@ -219,6 +224,7 @@ const Shared = ({ children, ...rest }: Props) => {
                 )
                 return false
             } else {
+                setIsGeoblocked(false)
                 return true
             }
         }
@@ -298,6 +304,15 @@ const Shared = ({ children, ...rest }: Props) => {
             checkAndSwitchMetamaskNetwork()
         }
     }, [chainId, window.ethereum]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (isGeoblocked) {
+        return (
+            <Container>
+                <GeoBlockContainer />
+                {settingsState.blockBody ? <BlockBodyContainer /> : null}
+            </Container>
+        )
+    }
 
     return (
         <Container>

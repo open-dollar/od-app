@@ -131,7 +131,9 @@ export default Steps
 
 const StepsContainer = styled.div`
     margin-top: 20px;
-    width: 1024px;
+    max-width: 1024px;
+    margin: 0 auto;
+    
     .__react_component_tooltip {
         max-width: 250px;
         padding-top: 20px;

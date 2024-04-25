@@ -229,7 +229,7 @@ const Navbar = () => {
                         <BtnContainer ref={testTokenPopupRef}>
                             {signer && (
                                 <>
-                                    <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                    {/* <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
                                         <Icon
                                             src={require('../assets/parachute-icon.svg').default}
                                             width={22}
@@ -239,7 +239,7 @@ const Navbar = () => {
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
-                                    </ClaimButton>
+                                    </ClaimButton> */}
                                     {isTestTokenPopupVisible && (
                                         <InfoPopup className="group">
                                             <InfoPopupContentWrapper>

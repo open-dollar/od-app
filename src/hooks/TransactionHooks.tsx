@@ -70,6 +70,7 @@ export async function handlePreTxGasEstimate(
     try {
         gasLimit = await signer.estimateGas(tx)
     } catch (err: any) {
+        console.log(tx)
         let gebError: string | null
         try {
             const res = await signer.call(tx)

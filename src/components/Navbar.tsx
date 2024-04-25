@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 
-import { formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { formatDataNumber, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -87,11 +87,6 @@ const Navbar = () => {
         } catch (error) {
             console.log('Error adding ODG to the wallet:', error)
         }
-    }
-
-    const handleDollarClick = () => {
-        // Disable temporarily
-        // setPopupVisibility(!isPopupVisible)
     }
 
     const handleClickOutsideOdRef = (event: MouseEvent) => {

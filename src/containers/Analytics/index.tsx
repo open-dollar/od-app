@@ -146,7 +146,7 @@ const Analytics = () => {
         image: 'ETH',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
-        description: 'Mock dada for Total Collateral Locked',
+        description: 'Combined value of all locked collateral.',
     }
 
     const vaultNFTs = {

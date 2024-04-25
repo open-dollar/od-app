@@ -220,7 +220,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             text={'Deposit & Borrow'}
                             url={`/vaults/${vaultId}/deposit`}
                             //@ts-ignore
-                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
+                            color={isDeposit ? (props) => props.theme.colors.gradientBg : '#6396FF70'}
                             border={isDeposit.toString()}
                         />
                         <LinkButton
@@ -228,7 +228,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
-                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'blueish'}
+                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : '#6396FF70'}
                             border={(!isDeposit).toString()}
                         />
                     </ButtonsRow>
@@ -361,7 +361,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 )}
                             </ButtonContainer>
 
-                            {error && (
+                            {error && (leftInput || rightInput) && (
                                 <ErrorContainer>
                                     <p>Error: {error}</p>
                                 </ErrorContainer>

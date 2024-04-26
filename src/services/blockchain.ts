@@ -90,7 +90,7 @@ export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: IS
     if (!collateralToFree.isZero() && !haiToRepay.isZero() && totalCollateralBN.isZero() && totalDebtBN.isZero()) {
         txData = await proxy.repayAllDebtAndFreeTokenCollateral(safeData.collateral, safeId, collateralToFree)
     } else if (collateralToFree.isZero() && totalDebtBN.isZero() && !haiToRepay.isZero()) {
-        txData = await proxy.repayAllDebt(safeId)
+        txData = await proxy.repayAllDebtAndFreeTokenCollateral(safeData.collateral, safeId, BigNumber.from('0'))
     } else if (collateralToFree.isZero() && !haiToRepay.isZero()) {
         txData = await proxy.repayDebt(safeId, haiToRepay)
     } else if (!collateralToFree.isZero() && haiToRepay.isZero()) {

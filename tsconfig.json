@@ -21,7 +21,7 @@
         },
         "sourceMap": true,
         "inlineSources": true,
-        "sourceRoot": "/"
+        "sourceRoot": "/build"
     },
     "include": ["src"],
     "exclude": ["node_modules", "cypress"]

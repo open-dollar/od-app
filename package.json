@@ -15,7 +15,7 @@
     "lint:check": "yarn run lint --max-warnings=0",
     "format": "yarn run prettier:fix && yarn run lint:fix",
     "format:check": "yarn run prettier && yarn run lint",
-    "sentry-cli": "sentry-cli sourcemaps inject --org open-dollar --project open-dollar ./build"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org open-dollar --project open-dollar ./build"
   },
   "engines": {
     "node": ">=20.0.0"

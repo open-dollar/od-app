@@ -39,5 +39,4 @@ ReactDOM.render(
         </HelmetProvider>
     </React.StrictMode>,
     document.getElementById('root')
-    
 )

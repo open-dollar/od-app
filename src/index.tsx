@@ -40,3 +40,12 @@ ReactDOM.render(
     </React.StrictMode>,
     document.getElementById('root')
 )
+
+document.addEventListener('DOMContentLoaded', (event) => {
+const csp = document.createElement('meta');
+csp.httpEquiv = 'Content-Security-Policy';
+csp.content = `
+    default-src 'self' blob: ${process.env.REACT_APP_SENTRY_DSN} https://arbitrum-sepolia.blockpi.network https://arbitrum-sepolia.infura.io https://arbitrum.blockpi.network https://arbitrum-mainnet.infura.io https://optimism-mainnet.infura.io https://optimism.blockpi.network wss://relay.walletconnect.com/ https://verify.walletconnect.org wss://www.walletlink.org/rpc https://explorer-api.walletconnect.com https://chain-proxy.wallet.coinbase.com https://rpc.walletconnect.com https://api.studio.thegraph.com https://od-subgraph-node-image.onrender.com https://usekeyp.matomo.cloud https://opt-mainnet.g.alchemy.com https://arb-mainnet.g.alchemy.com https://bot.opendollar.com https://bot.dev.opendollar.com https://mainnet.optimism.io/  https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/rai https://api.country.is/;
+`;
+document.head.appendChild(csp);
+});

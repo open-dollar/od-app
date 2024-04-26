@@ -38,7 +38,7 @@ module.exports = {
                 project: process.env.SENTRY_PROJECT || 'open-dollar',
                 authToken: process.env.SENTRY_AUTH_TOKEN,
                 sourcemaps: {
-                    ignore: 'node_modules/**'
+                    ignore: ['node_modules'],
                 }
               }),
           ],

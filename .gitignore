@@ -36,5 +36,3 @@ install-state.gz
 # Sentry Config File
 .sentryclirc
 
-# Sentry Config File
-.sentryclirc

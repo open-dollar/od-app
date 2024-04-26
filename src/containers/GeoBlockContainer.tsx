@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const GeoBlockContainer = () => {
     const [letter, setLetter] = useState(
-        `Comments on H.R.4766 - Clarity for Payment Stablecoins Act of 2023\n\nDecentralized stablecoins which are fully backed by high-quality crypto-assets and fully overcollateralized should have a place in any stablecoin legislation. Organizations like Open Dollar, Liquity, and others are issuing stablecoins with protections for consumers that could be even safer than centrally backed stablecoins – as demonstrated by USDC depegging when Silicon Valley Bank went defunct. Please support innovation by American companies and legalize dollar-pegged stablecoins which are overcollateralized by more diverse assets. Thank you.`
+        `Comments on H.R.4766 - Clarity for Payment Stablecoins Act of 2023\n\nDecentralized stablecoins which are fully backed by high-quality crypto assets and fully overcollateralized should have a place in any stablecoin legislation. Organizations like Open Dollar, Liquity, and others are issuing stablecoins with protections for consumers which are even safer than centrally backed stablecoins – as demonstrated by USDC depegging when Silicon Valley Bank went defunct. Please support the innovation of American companies and legalize dollar-pegged stablecoins which are overcollateralized by more diverse assets. Thank you.`
     )
     const [copied, setCopied] = useState(false)
 
@@ -21,21 +21,23 @@ const GeoBlockContainer = () => {
                 <BigText>Location Blocked</BigText>
                 <Text>
                     It seems like you are trying to access this interface from a prohibited country or jurisdiction. As
-                    an interface, it has to adhere to certain rules and regulations. Please connect from a different
+                    a web interface, we must adhere to certain rules and regulations. Please connect from a different
                     location.
                 </Text>
                 <Text>
-                    As a protocol though, Open Dollar is decentralized: fully on-chain and open-source. No one person
-                    has access to your funds or keys, only you do. See the codebase on{' '}
+                    <b>The Open Dollar protocol is decentralized, fully on-chain, and open-source.</b> No one person has
+                    access to your funds or keys, only you do. You can view the code and run the app locally using our{' '}
                     <Link href="https://github.com/open-dollar/od-app" target="_blank">
                         GitHub
                     </Link>
                     .
                 </Text>
                 <Text>
-                    Want to be a force for good and support the development of secure and decentralized stablecoins?
-                    Consider sending a comment to your Congressional representatives about the Payment Stablecoins Act
-                    currently under debate.
+                    <b>
+                        You can be a force for good and support the development of secure and decentralized stablecoins
+                    </b>
+                    . Consider submitting a public comment to your Congressional representatives about the Payment
+                    Stablecoins Act currently under debate.
                 </Text>
                 <Textarea value={letter} onChange={(e) => setLetter(e.target.value)} />
                 <Button onClick={copyToClipboard}>{copied ? 'Copied' : 'Copy Text'}</Button>

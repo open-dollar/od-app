@@ -25,6 +25,7 @@ import {
     useSafeInfo,
     StatsType,
 } from '~/hooks'
+import ConnectWalletStep from '~/components/ConnectWalletStep'
 
 const CreateVault = ({
     selectedItem,
@@ -429,8 +430,10 @@ const CreateVaultContainer = () => {
 
     return (
         <Container>
-            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (
+            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] ? (
                 <CreateVault selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
+            ) : (
+                <ConnectWalletStep />
             )}
         </Container>
     )

@@ -320,8 +320,8 @@ const Analytics = () => {
 
                     setState((prevState) => ({
                         ...prevState,
-                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 0, true),
-                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 0, true),
+                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 2, true),
+                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 2, true),
                         globalDebtCeiling: formatDataNumber(analyticsData.globalDebtCeiling, 18, 0, true),
                         globalDebtUtilization: transformToWadPercentage(
                             analyticsData.globalDebt,

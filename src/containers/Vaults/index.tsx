@@ -82,13 +82,6 @@ const OnBoarding = ({ ...props }) => {
 
     return (
         <Container id="app-page">
-            <button
-                onClick={() => {
-                    throw new Error('Sentry Test Error')
-                }}
-            >
-                Break the world
-            </button>
             <Content>
                 {safeState.safeCreated ? (
                     <>

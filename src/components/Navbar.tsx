@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 
-import { formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { ETH_NETWORK, formatDataNumber, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -88,11 +88,9 @@ const Navbar = () => {
             console.log('Error adding ODG to the wallet:', error)
         }
     }
-
     const handleDollarClick = () => {
         setPopupVisibility(!isPopupVisible)
     }
-
     const handleClickOutsideOdRef = (event: MouseEvent) => {
         if (
             dollarRef.current &&
@@ -227,17 +225,21 @@ const Navbar = () => {
                         <BtnContainer ref={testTokenPopupRef}>
                             {signer && (
                                 <>
-                                    {/* <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
-                                        <Icon
-                                            src={require('../assets/parachute-icon.svg').default}
-                                            width={22}
-                                            height={22}
-                                        />
-                                        Tokens
-                                        <ArrowWrapper>
-                                            <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                                        </ArrowWrapper>
-                                    </ClaimButton> */}
+                                    {ETH_NETWORK === 'arbitrum-sepolia' && (
+                                        <ClaimButton
+                                            onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}
+                                        >
+                                            <Icon
+                                                src={require('../assets/parachute-icon.svg').default}
+                                                width={22}
+                                                height={22}
+                                            />
+                                            Tokens
+                                            <ArrowWrapper>
+                                                <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                            </ArrowWrapper>
+                                        </ClaimButton>
+                                    )}
                                     {isTestTokenPopupVisible && (
                                         <InfoPopup className="group">
                                             <InfoPopupContentWrapper>
@@ -459,6 +461,7 @@ const ContentWrapper = styled(Flex)`
     justify-content: space-between;
     width: 100%;
     max-width: 1360px;
+    padding: 0 15px;
 `
 
 const MenuBtn = styled.div`

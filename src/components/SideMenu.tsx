@@ -282,12 +282,12 @@ const SideMenu = () => {
                                 )}
                             </Price>
                             <Price ref={testTokenPopupRef}>
-                                {/* <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
                                     Test tokens 🪂
                                     <ArrowWrapper>
                                         <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                     </ArrowWrapper>
-                                </ClaimButton> */}
+                                </ClaimButton>
                                 {isTestTokenPopupVisible && (
                                     <TestTokenPopup className="group">
                                         <TestTokenTextWrapper>
@@ -362,6 +362,10 @@ const OpenDollarInformationColumn = styled.div`
         position: unset;
         transform: initial;
     }
+`
+
+const ClaimButton = styled.div`
+    display: flex;
 `
 
 const PopupColumn = styled.div`

@@ -187,10 +187,11 @@ const SideMenu = () => {
                 <Inner>
                     <Overlay onClick={() => popupsActions.setShowSideMenu(false)} />
                     <InnerContainer>
-                        
                         <CloseButtonContainer onClick={() => popupsActions.setShowSideMenu(false)}>
                             <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
+
+                        <NavLinks />
                         <AccountBalance>
                             {isActive && account ? (
                                 <Account
@@ -211,7 +212,6 @@ const SideMenu = () => {
                                 </ConnectBtnContainer>
                             )}
                         </AccountBalance>
-                        <NavLinks />
                         <OpenDollarInformationColumn>
                             <Price>
                                 <DollarValue ref={odRef} onClick={handleTokenClick}>
@@ -505,12 +505,17 @@ const InnerContainer = styled.div`
 `
 
 const ConnectBtnContainer = styled.div`
-    text-align: left;
+    text-align: center;
     width: 100%;
+    margin: 0 auto;
+
+    button {
+        border-radius: 3px;
+        width: fit-content;
+    }
 `
 
 const AccountBalance = styled.div`
-    padding: 30px 20px 20px 25px;
     margin-bottom: 15px;
 `
 

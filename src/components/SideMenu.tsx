@@ -15,6 +15,7 @@ import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
+import { X } from 'react-feather'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -186,13 +187,9 @@ const SideMenu = () => {
                 <Inner>
                     <Overlay onClick={() => popupsActions.setShowSideMenu(false)} />
                     <InnerContainer>
+                        
                         <CloseButtonContainer onClick={() => popupsActions.setShowSideMenu(false)}>
-                            <img
-                                src={require('../assets/close-icon.svg').default}
-                                height={'24px'}
-                                width={'24px'}
-                                alt="X"
-                            />
+                            <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
                         <AccountBalance>
                             {isActive && account ? (
@@ -459,13 +456,10 @@ const DollarValue = styled(OdButton)`
 
 // close button container should be button on right side of screen
 const CloseButtonContainer = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
     padding: 30px;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
+    display: flex;
+    justify-content: end;
 `
 
 const Container = styled.div`

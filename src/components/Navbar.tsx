@@ -211,7 +211,8 @@ const Navbar = () => {
                                                 <InfoPopUpSubText style={{ marginLeft: '10px' }}>
                                                     <a
                                                         href="https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657"
-                                                        target="_blank" rel="noreferrer"
+                                                        target="_blank"
+                                                        rel="noreferrer"
                                                     >
                                                         {t('view_on_camelot_exchange')}
                                                     </a>

@@ -16,6 +16,7 @@ import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalytics
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
+import LinkButton from './LinkButton'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -269,7 +270,11 @@ const SideMenu = () => {
                                 </DollarValue>
                                 {isPopupVisible && (
                                     <LiquidityPriceInfoPopup ref={popupRef} className="group">
-                                        <PopupWrapperLink className="group">
+                                        <PopupWrapperLink
+                                            href="https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
                                             <IconWrapper>
                                                 <Camelot />
                                             </IconWrapper>
@@ -410,6 +415,10 @@ const LiquidityPriceInfoPopup = styled.div`
     color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
+
+    a {
+        color: inherit;
+    }
 `
 
 const PriceInfoPopup = styled.div`

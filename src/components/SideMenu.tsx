@@ -16,7 +16,6 @@ import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalytics
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
-import LinkButton from './LinkButton'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -28,6 +27,7 @@ const SideMenu = () => {
         totalLiquidity: '',
     })
     const popupRef = useRef<HTMLDivElement | null>(null)
+    const priceRef = useRef<HTMLDivElement | null>(null)
     const { isActive, account, chainId } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const geb = useGeb()
@@ -68,8 +68,8 @@ const SideMenu = () => {
         }
     }
 
-    const handleClickOutsideOdWallet = (event: MouseEvent) => {
-        if (odRef.current && !odRef.current.contains(event.target as Node)) {
+    const handleClickOutsidePrice = (event: MouseEvent) => {
+        if (priceRef.current && !priceRef.current.contains(event.target as Node)) {
             setTokenPopupVisibility(false)
         }
     }
@@ -160,13 +160,13 @@ const SideMenu = () => {
         fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
-        document.addEventListener('mousedown', handleClickOutsideOdWallet)
+        document.addEventListener('mousedown', handleClickOutsidePrice)
 
         return () => {
             // Cleanup the event listener on component unmount
             document.removeEventListener('mousedown', handleClickOutsideOdRef)
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
-            document.removeEventListener('mousedown', handleClickOutsideOdWallet)
+            document.removeEventListener('mousedown', handleClickOutsidePrice)
         }
     }, [geb, chainId])
 
@@ -174,7 +174,6 @@ const SideMenu = () => {
         setIsOpen(popupsState.showSideMenu)
     }, [popupsState.showSideMenu])
 
-    console.log(account, ETH_NETWORK)
     return isOpen ? (
         <CSSTransition
             in={isOpen}
@@ -230,7 +229,7 @@ const SideMenu = () => {
                                     </DollarValue>
                                 )}
                                 {isTokenPopupVisible && (
-                                    <PriceInfoPopup className="group">
+                                    <PriceInfoPopup className="group" ref={priceRef}>
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">

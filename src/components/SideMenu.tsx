@@ -391,8 +391,15 @@ const PopupWrapperTokenLink = styled.a`
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.secondary};
+    
     cursor: pointer;
+    background-color: white;
+    border-radius: 4px;
+    padding: 3px;
+
+    div {
+        color: ${(props) => props.theme.colors.primary};
+    }
 `
 
 const PopupWrapperLink = styled.a`

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import classNames from 'classnames'
-
+import Loader from './Loader'
 import Arrow from './Icons/Arrow'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
@@ -104,7 +104,8 @@ const Button = ({
                     onClick={onClick}
                     maxSize={maxSize}
                 >
-                    {text && t(text)}
+                    {isLoading && <Loader />}
+                    {!isLoading && text && t(text)}
                     {children || null}
                 </Container>
             )
@@ -151,6 +152,9 @@ const Container = styled.button<{ isLoading?: boolean; maxSize?: string }>`
     background: ${(props) => props.theme.colors.gradientBg};
     border-radius: 3px;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &.dimmedNormal {
         background: ${(props) => props.theme.colors.secondary};
     }

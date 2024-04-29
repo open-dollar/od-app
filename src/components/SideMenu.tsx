@@ -174,6 +174,7 @@ const SideMenu = () => {
         setIsOpen(popupsState.showSideMenu)
     }, [popupsState.showSideMenu])
 
+    console.log(account)
     return isOpen ? (
         <CSSTransition
             in={isOpen}
@@ -215,17 +216,19 @@ const SideMenu = () => {
 
                         <OpenDollarInformationColumn>
                             <Price>
-                                <DollarValue ref={odRef} onClick={handleTokenClick}>
-                                    <Icon
-                                        src={require('../assets/wallet-icon.svg').default}
-                                        width={'16px'}
-                                        height={'16px'}
-                                    />
-                                    {odBalance + ' '} OD
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
-                                </DollarValue>
+                                {account && (
+                                    <DollarValue ref={odRef} onClick={handleTokenClick}>
+                                        <Icon
+                                            src={require('../assets/wallet-icon.svg').default}
+                                            width={'16px'}
+                                            height={'16px'}
+                                        />
+                                        {odBalance + ' '} OD
+                                        <ArrowWrapper>
+                                            <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                        </ArrowWrapper>
+                                    </DollarValue>
+                                )}
                                 {isTokenPopupVisible && (
                                     <PriceInfoPopup className="group">
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>

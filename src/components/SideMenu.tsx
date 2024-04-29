@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber } from '~/utils'
+import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -282,12 +282,14 @@ const SideMenu = () => {
                                 )}
                             </Price>
                             <Price ref={testTokenPopupRef}>
-                                <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
-                                    Test tokens 🪂
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
-                                </ClaimButton>
+                                {ETH_NETWORK === 'arbitrum-sepolia' && (
+                                    <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                        Test tokens 🪂
+                                        <ArrowWrapper>
+                                            <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                        </ArrowWrapper>
+                                    </ClaimButton>
+                                )}
                                 {isTestTokenPopupVisible && (
                                     <TestTokenPopup className="group">
                                         <TestTokenTextWrapper>

@@ -174,7 +174,7 @@ const SideMenu = () => {
         setIsOpen(popupsState.showSideMenu)
     }, [popupsState.showSideMenu])
 
-    console.log(account)
+    console.log(account, ETH_NETWORK)
     return isOpen ? (
         <CSSTransition
             in={isOpen}

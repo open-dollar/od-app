@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 
-import { ETH_NETWORK, formatDataNumber, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { ETH_NETWORK, formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -88,7 +88,9 @@ const Navbar = () => {
             console.log('Error adding ODG to the wallet:', error)
         }
     }
-
+    const handleDollarClick = () => {
+        setPopupVisibility(!isPopupVisible)
+    }
     const handleClickOutsideOdRef = (event: MouseEvent) => {
         if (
             dollarRef.current &&
@@ -183,14 +185,13 @@ const Navbar = () => {
                     <Left>
                         <Brand />
                         <Price>
-                            {/*<DollarValue ref={dollarRef} onClick={handleDollarClick}>*/}
-                            {/*    <Icon src={getTokenLogo('OD')} width={22} height={22} />*/}
-                            {/*    <span>{state.odPrice}</span>*/}
-                            {/*    <ArrowWrapper>*/}
-                            {/*        /!* @ts-ignore *!/*/}
-                            {/*        <ArrowDown fill={theme.colors.primary} />*/}
-                            {/*    </ArrowWrapper>*/}
-                            {/*</DollarValue>*/}
+                            <DollarValue ref={dollarRef} onClick={handleDollarClick}>
+                                <Icon src={getTokenLogo('OD')} width={22} height={22} />
+                                <span>{state.odPrice}</span>
+                                <ArrowWrapper>
+                                    <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
+                                </ArrowWrapper>
+                            </DollarValue>
                             {isPopupVisible && (
                                 <InfoPopup ref={popupRef}>
                                     <PopupWrapperLink>
@@ -208,7 +209,13 @@ const Navbar = () => {
                                             <Flex>
                                                 <Camelot />
                                                 <InfoPopUpSubText style={{ marginLeft: '10px' }}>
-                                                    {t('view_on_camelot_exchange')}
+                                                    <a
+                                                        href="https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657"
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        {t('view_on_camelot_exchange')}
+                                                    </a>
                                                 </InfoPopUpSubText>
                                             </Flex>
                                         </InfoPopupContentWrapper>

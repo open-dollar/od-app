@@ -33,3 +33,6 @@ src/artifacts
 
 # Yarn
 install-state.gz
+
+# Sentry
+.sentryclirc

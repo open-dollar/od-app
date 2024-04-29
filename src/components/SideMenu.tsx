@@ -190,8 +190,6 @@ const SideMenu = () => {
                         <CloseButtonContainer onClick={() => popupsActions.setShowSideMenu(false)}>
                             <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
-
-                        <NavLinks />
                         <AccountBalance>
                             {isActive && account ? (
                                 <Account
@@ -212,6 +210,8 @@ const SideMenu = () => {
                                 </ConnectBtnContainer>
                             )}
                         </AccountBalance>
+                        <NavLinks />
+
                         <OpenDollarInformationColumn>
                             <Price>
                                 <DollarValue ref={odRef} onClick={handleTokenClick}>
@@ -523,6 +523,7 @@ const ConnectBtnContainer = styled.div`
 
 const AccountBalance = styled.div`
     margin-bottom: 15px;
+    padding: 15px;
 `
 
 const Balance = styled.div`

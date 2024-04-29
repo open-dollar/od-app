@@ -476,6 +476,7 @@ const Container = styled.div`
     height: 100%;
     z-index: 997;
     overflow-y: auto;
+    font-size: ${(props) => props.theme.font.medium};
 
     &.fade-appear {
         opacity: 0;
@@ -518,6 +519,8 @@ const ConnectBtnContainer = styled.div`
     button {
         border-radius: 3px;
         width: fit-content;
+        padding: 15px 45px;
+        font-size: ${(props) => props.theme.font.medium};
     }
 `
 

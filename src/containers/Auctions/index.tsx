@@ -34,7 +34,7 @@ const Auctions = ({
     const history = useHistory()
 
     const getText = () => {
-        switch(type) {
+        switch (type) {
             case 'COLLATERAL':
                 return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
             case 'SURPLUS':
@@ -42,8 +42,6 @@ const Auctions = ({
             case 'DEBT':
                 return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
         }
-        
-
     }
 
     const {
@@ -151,32 +149,9 @@ const Auctions = ({
 
     return (
         <Container>
-            <Modal
-                isModalOpen={showFaqs}
-                closeModal={() => setShowFaqs(false)}
-                maxWidth={'650px'}
-                backDropClose
-                hideHeader
-                hideFooter
-                handleModalContent
-            >
-                <ReviewContainer>
-                    <AuctionsFAQ type={type} />
-                    <BtnContainer>
-                        <Button onClick={() => setShowFaqs(false)}>{'Close FAQs'}</Button>{' '}
-                    </BtnContainer>
-                </ReviewContainer>
-            </Modal>
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
-                <Button
-                    unstyled
-                    text={`Show ${type.toLowerCase()} Auctions FAQs`}
-                    onClick={() => setShowFaqs(!showFaqs)}
-                >
-                    <ChevronRight color="#1C293A" size="20px" />
-                </Button>
             </Content>
 
             <Switcher>
@@ -190,9 +165,7 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
-            <Description>
-                {getText()}
-            </Description>
+            <Description>{getText()}</Description>
             <Wrapper>
                 {type === 'SURPLUS' && account ? (
                     <StartAuctionContainer>
@@ -284,7 +257,7 @@ const Description = styled.div`
     padding: 20px;
     font-size: 20px;
     font-weight: 700;
-    color: ${props => props.theme.colors.accent};
+    color: ${(props) => props.theme.colors.accent};
     border: 5px solid red;
     text-align: center;
 `

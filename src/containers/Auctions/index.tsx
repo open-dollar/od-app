@@ -250,6 +250,7 @@ const Wrapper = styled.div`
 
 const Description = styled.div`
     background-color: white;
+    border-radius: 3px;
     padding: 20px;
     font-size: 20px;
     font-weight: 700;

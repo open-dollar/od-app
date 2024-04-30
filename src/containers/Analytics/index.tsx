@@ -492,11 +492,12 @@ const AnaliticsBottom = styled.div`
     justify-content: space-between;
     gap: 24px;
 
-    div {
+    > div {
         height: 241px;
         flex: 1;
         padding-left: 5px;
         padding-right: 5px;
+        min-width: 250px;
     }
 
     @media (max-width: 1250px) {

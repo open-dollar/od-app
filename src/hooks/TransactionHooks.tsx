@@ -77,6 +77,7 @@ export async function handlePreTxGasEstimate(
             gebError = gebUtils.getRequireString(res)
         } catch (err) {
             gebError = gebUtils.getRequireString(err)
+            throw Error(`Geb error: ${gebError}, signer: ${signer}, tx: ${tx}`)
         }
 
         let errorMessage: string
@@ -91,7 +92,7 @@ export async function handlePreTxGasEstimate(
             status: 'error',
         })
         console.error(errorMessage)
-        throw errorMessage
+        throw Error(`Geb error: ${gebError}, signer: ${signer}, tx: ${tx}`)
     }
 
     // Add 20% slack in the gas limit

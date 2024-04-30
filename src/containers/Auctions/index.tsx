@@ -33,6 +33,19 @@ const Auctions = ({
     const geb = useGeb()
     const history = useHistory()
 
+    const getText = () => {
+        switch(type) {
+            case 'COLLATERAL':
+                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
+            case 'SURPLUS':
+                return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
+            case 'DEBT':
+                return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
+        }
+        
+
+    }
+
     const {
         startSurplusAcution,
         startDebtAcution,
@@ -177,6 +190,9 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
+            <Description>
+                {getText()}
+            </Description>
             <Wrapper>
                 {type === 'SURPLUS' && account ? (
                     <StartAuctionContainer>
@@ -261,6 +277,16 @@ const Container = styled.div`
 const Wrapper = styled.div`
     background: white;
     border-radius: 4px;
+`
+
+const Description = styled.div`
+    background-color: white;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    color: ${props => props.theme.colors.accent};
+    border: 5px solid red;
+    text-align: center;
 `
 
 const Title = styled.div`

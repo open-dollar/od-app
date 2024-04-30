@@ -3,9 +3,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
-import AuctionsFAQ from '~/components/AuctionsFAQ'
 import AlertLabel from '~/components/AlertLabel'
-import Modal from '~/components/Modals/Modal'
 import { AuctionEventType } from '~/types'
 import { useStoreActions, useStoreState } from '~/store'
 import AuctionsList from './AuctionsList'
@@ -13,7 +11,6 @@ import Button from '~/components/Button'
 import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
-import { ChevronRight } from 'react-feather'
 
 const Auctions = ({
     match: {
@@ -23,7 +20,6 @@ const Auctions = ({
     const { account } = useActiveWeb3React()
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
     const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
-    const [showFaqs, setShowFaqs] = useState(false)
     const query = useQuery()
     const queryType = query.get('type') as AuctionEventType | null
     const [type, setType] = useState<AuctionEventType>(queryType || 'COLLATERAL')
@@ -32,6 +28,17 @@ const Auctions = ({
     const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
     const geb = useGeb()
     const history = useHistory()
+
+    const getText = () => {
+        switch (type) {
+            case 'COLLATERAL':
+                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
+            case 'SURPLUS':
+                return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
+            case 'DEBT':
+                return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
+        }
+    }
 
     const {
         startSurplusAcution,
@@ -138,32 +145,9 @@ const Auctions = ({
 
     return (
         <Container>
-            <Modal
-                isModalOpen={showFaqs}
-                closeModal={() => setShowFaqs(false)}
-                maxWidth={'650px'}
-                backDropClose
-                hideHeader
-                hideFooter
-                handleModalContent
-            >
-                <ReviewContainer>
-                    <AuctionsFAQ type={type} />
-                    <BtnContainer>
-                        <Button onClick={() => setShowFaqs(false)}>{'Close FAQs'}</Button>{' '}
-                    </BtnContainer>
-                </ReviewContainer>
-            </Modal>
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
-                <Button
-                    unstyled
-                    text={`Show ${type.toLowerCase()} Auctions FAQs`}
-                    onClick={() => setShowFaqs(!showFaqs)}
-                >
-                    <ChevronRight color="#1C293A" size="20px" />
-                </Button>
             </Content>
 
             <Switcher>
@@ -177,6 +161,7 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
+            <Description>{getText()}</Description>
             <Wrapper>
                 {type === 'SURPLUS' && account ? (
                     <StartAuctionContainer>
@@ -263,6 +248,16 @@ const Wrapper = styled.div`
     border-radius: 4px;
 `
 
+const Description = styled.div`
+    background-color: white;
+    border-radius: 3px;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
+    text-align: center;
+`
+
 const Title = styled.div`
     font-size: 34px;
     font-weight: 700;
@@ -318,24 +313,6 @@ const Tab = styled.div`
         background: ${(props) => props.theme.colors.primary};
         color: white;
     }
-`
-
-const ReviewContainer = styled.div`
-    padding: 20px;
-    border-radius: 4px;
-    background: ${(props) => props.theme.colors.gradientBg};
-
-    button {
-        border: 2px solid #e2f1ff;
-        background: transparent;
-        width: 100%;
-        font-family: ${(props) => props.theme.family.headers};
-    }
-`
-
-const BtnContainer = styled.div`
-    padding-top: 20px;
-    text-align: center;
 `
 
 const Box = styled.div`

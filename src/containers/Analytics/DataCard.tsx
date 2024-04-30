@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import Loader from '~/components/Loader'
 
 const images: { [key: string]: string } = {
-    lock: require('../../assets/stats-img-lock.png'),
-    vault: require('../../assets/stats-img-vault.png'),
+    lock: require('../../assets/stats-img-lock.webp'),
+    vault: require('../../assets/stats-img-vault.webp'),
 }
 export interface DataCardProps {
     title: string

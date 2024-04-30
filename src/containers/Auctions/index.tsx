@@ -3,9 +3,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
-import AuctionsFAQ from '~/components/AuctionsFAQ'
 import AlertLabel from '~/components/AlertLabel'
-import Modal from '~/components/Modals/Modal'
 import { AuctionEventType } from '~/types'
 import { useStoreActions, useStoreState } from '~/store'
 import AuctionsList from './AuctionsList'
@@ -13,7 +11,6 @@ import Button from '~/components/Button'
 import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
-import { ChevronRight } from 'react-feather'
 
 const Auctions = ({
     match: {
@@ -23,7 +20,6 @@ const Auctions = ({
     const { account } = useActiveWeb3React()
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
     const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
-    const [showFaqs, setShowFaqs] = useState(false)
     const query = useQuery()
     const queryType = query.get('type') as AuctionEventType | null
     const [type, setType] = useState<AuctionEventType>(queryType || 'COLLATERAL')
@@ -317,24 +313,6 @@ const Tab = styled.div`
         background: ${(props) => props.theme.colors.primary};
         color: white;
     }
-`
-
-const ReviewContainer = styled.div`
-    padding: 20px;
-    border-radius: 4px;
-    background: ${(props) => props.theme.colors.gradientBg};
-
-    button {
-        border: 2px solid #e2f1ff;
-        background: transparent;
-        width: 100%;
-        font-family: ${(props) => props.theme.family.headers};
-    }
-`
-
-const BtnContainer = styled.div`
-    padding-top: 20px;
-    text-align: center;
 `
 
 const Box = styled.div`

@@ -254,7 +254,6 @@ const Description = styled.div`
     font-size: 20px;
     font-weight: 700;
     color: ${(props) => props.theme.colors.accent};
-    border: 5px solid red;
     text-align: center;
 `
 

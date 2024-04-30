@@ -1,9 +1,7 @@
 import { ReactNode, memo } from 'react'
-import { Info, Loader } from 'react-feather'
+import { Info } from 'react-feather'
 import styled from 'styled-components'
-import LoadingDots from '~/components/Icons/LoadingDots'
-import LoadingIcon from '~/components/Icons/LoadingIcon'
-import LoadingModal from '~/components/Modals/LoadingModal'
+import Loader from '~/components/Loader'
 
 const images: { [key: string]: string } = {
     lock: require('../../assets/stats-img-lock.png'),
@@ -33,7 +31,7 @@ const DataCard = memo(({ title, bg, image, value, description, children }: DataC
                     </ImgContainer>
                 )}
                 <DataTitle bg={bg!}>{title}</DataTitle>
-                <DataValue>{value}</DataValue>
+                <DataValue>{value ? value : <Loader width="40px" />}</DataValue>
                 {children}
             </>
         </Block>
@@ -99,4 +97,7 @@ const DataValue = styled.div`
     min-height: 72px;
     font-weight: 700;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

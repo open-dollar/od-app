@@ -20,6 +20,7 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
+import Stake from './containers/Stake'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
@@ -59,7 +60,7 @@ const App = () => {
                                                 <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
-                                                {/* <Route exact strict component={Stake} path={'stake'}/> */}
+                                                <Route exact strict component={Stake} path={'/stake'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />

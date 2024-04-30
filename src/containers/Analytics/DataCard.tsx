@@ -1,6 +1,9 @@
 import { ReactNode, memo } from 'react'
-import { Info } from 'react-feather'
+import { Info, Loader } from 'react-feather'
 import styled from 'styled-components'
+import LoadingDots from '~/components/Icons/LoadingDots'
+import LoadingIcon from '~/components/Icons/LoadingIcon'
+import LoadingModal from '~/components/Modals/LoadingModal'
 
 const images: { [key: string]: string } = {
     lock: require('../../assets/stats-img-lock.png'),
@@ -24,7 +27,11 @@ const DataCard = memo(({ title, bg, image, value, description, children }: DataC
                         <Info size="20" />
                     </InfoIcon>
                 )}
-                {image && <img src={images[`${image}`]} alt={image} width="262px" height="50px" />}
+                {image && (
+                    <ImgContainer>
+                        <img src={images[`${image}`]} alt={image} width="262px" height="50px" />
+                    </ImgContainer>
+                )}
                 <DataTitle bg={bg!}>{title}</DataTitle>
                 <DataValue>{value}</DataValue>
                 {children}
@@ -58,10 +65,6 @@ const Block = styled.div<{ bg?: 'light' | 'dark'; children: ReactNode }>`
     ${({ theme }) => theme.mediaWidth.upToSmall`
         max-width: 100%;
     `}
-
-    & img {
-        margin-bottom: 32px;
-    }
 `
 
 export const InfoIcon = styled.div`
@@ -77,6 +80,11 @@ export const InfoIcon = styled.div`
     }
 `
 
+const ImgContainer = styled.div`
+    height: 270px;
+    margin-bottom: 32px;
+`
+
 const DataTitle = styled.div<{ bg?: 'light' | 'dark' }>`
     font-size: ${(props) => props.theme.font.small};
     text-transform: uppercase;
@@ -88,6 +96,7 @@ const DataTitle = styled.div<{ bg?: 'light' | 'dark' }>`
 
 const DataValue = styled.div`
     font-size: 48px;
+    min-height: 72px;
     font-weight: 700;
     text-align: center;
 `

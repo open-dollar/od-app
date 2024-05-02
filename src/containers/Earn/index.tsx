@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import PoolBlock from './PoolBlock'
 
-const pools = [{ name: 'one' }, {name: "two"}]
+const pools = [{ name: 'one' }, { name: 'two' }]
 
 const Earn = () => {
     return (
@@ -9,7 +9,7 @@ const Earn = () => {
             <Title>Earn</Title>
             <Pools>
                 {pools.map((pool) => (
-                    <PoolBlock key={pool.name}/>
+                    <PoolBlock key={pool.name} />
                 ))}
             </Pools>
         </Container>

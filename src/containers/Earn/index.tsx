@@ -3,7 +3,7 @@ import PoolBlock from './PoolBlock'
 
 const pools = [{ name: 'one' }, {name: "two"}]
 
-const Stake = () => {
+const Earn = () => {
     return (
         <Container>
             <Title>Earn</Title>
@@ -37,4 +37,4 @@ const Title = styled.h2`
 
 const Pools = styled.div``
 
-export default Stake
+export default Earn

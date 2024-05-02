@@ -20,12 +20,12 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
-import Stake from './containers/Stake'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
 import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import * as Sentry from '@sentry/react'
+import Earn from './containers/Earn'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -60,7 +60,7 @@ const App = () => {
                                                 <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
-                                                <Route exact strict component={Stake} path={'/stake'} />
+                                                <Route exact strict component={Earn} path={'/earn'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />

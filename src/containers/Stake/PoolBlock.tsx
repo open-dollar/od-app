@@ -66,6 +66,12 @@ const BlockHeader = styled.div`
     padding-top: 22px;
     padding-bottom: 11px;
     padding-right: 34px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    `}
 `
 
 const ExternalLink = styled.a`

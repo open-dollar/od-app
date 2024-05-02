@@ -25,7 +25,7 @@ const Stake = () => {
                     <Block>
                         <Item>
                             <Label>Status</Label>
-                            <Value>Active</Value>
+                            <Value className='status'><Dot></Dot>Active</Value>
                         </Item>
                         <Item>
                             <Label>TVL</Label>
@@ -155,11 +155,15 @@ const Block = styled.div`
 
 const Item = styled.div`
     min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
     @media (max-width: 767px) {
         display: flex;
+        flex-direction: row;
         width: auto;
         align-items: center;
-        justify-content: space-between;
         margin: 0 0 3px 0;
         &:last-child {
             margin-bottom: 0;
@@ -199,6 +203,26 @@ const Value = styled.div`
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
+
+    display: flex;
+    align-items: center;
+
+    &.status {
+        color: #459D00;
+        font-weight: 400;
+        border: 1px solid #459D00;
+        border-radius: 50px;
+        width: fit-content;
+        padding: 4px 15px;
+    }
+`
+
+const Dot = styled.div`
+    width: 6px;
+    height: 6px;
+    background-color: #459D00;
+    border-radius: 100%;
+    margin-right: 5px;
 `
 
 export default Stake

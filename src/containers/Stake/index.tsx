@@ -1,15 +1,16 @@
 import styled from 'styled-components'
-import Camelot from '~/components/Icons/Camelot'
-import LinkButton from '~/components/LinkButton'
-import { getTokenLogo } from '~/utils'
 import PoolBlock from './PoolBlock'
+
+const pools = [{ name: 'one' }, {name: "two"}]
 
 const Stake = () => {
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
-                <PoolBlock />
+                {pools.map((pool) => (
+                    <PoolBlock key={pool.name}/>
+                ))}
             </Pools>
         </Container>
     )

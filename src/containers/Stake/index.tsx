@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import PoolList from './PoolList'
+import Camelot from '~/components/Icons/Camelot'
+import LinkButton from '~/components/LinkButton'
 import { getTokenLogo } from '~/utils'
 
 const Stake = () => {
@@ -16,6 +17,10 @@ const Stake = () => {
                                 <img src={getTokenLogo('ETH')} alt={''} width={'50px'} />
                             </PoolData>
                         </PoolInfo>
+                        <ExternalLink href="" target="_blank">
+                            <Camelot />
+                            VIEW ON CAMELOT EXCHANGE
+                        </ExternalLink>
                     </BlockHeader>
                     <Block>
                         <Item>
@@ -31,7 +36,7 @@ const Stake = () => {
                             <Value>134.99%</Value>
                         </Item>
                         <Item>
-                            <Label>Revard</Label>
+                            <Label>Rewards</Label>
                             <Value>ST-OD-ARB</Value>
                         </Item>
                     </Block>
@@ -60,6 +65,16 @@ const Title = styled.h2`
     color: ${(props) => props.theme.colors.accent};
 `
 
+const ExternalLink = styled.a`
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 14px;
+    color: ${(props) => props.theme.colors.primary};
+`
+
 const Pools = styled.div``
 
 const BlockContainer = styled.div`
@@ -78,6 +93,7 @@ const BlockContainer = styled.div`
 const BlockHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #1c293a33;
     padding-left: 34px;
     padding-top: 22px;
@@ -92,9 +108,9 @@ const PoolInfo = styled.div`
         border-radius: ${(props) => props.theme.global.borderRadius};
         border: 1px solid ${(props) => props.theme.colors.border};
         ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 25px;
-    height: 25px;
-  `}
+            width: 25px;
+            height: 25px;
+        `}
     }
 `
 
@@ -111,7 +127,7 @@ const PoolTitle = styled.div`
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 10px;
+    margin-right: 22px;
 
     span {
         font-weight: 500;
@@ -121,24 +137,24 @@ const PoolTitle = styled.div`
 
 const Block = styled.div`
     display: flex;
-    justify-content: flex-start;
-    gap: 150px;
+    justify-content: space-between;
 
     padding-left: 34px;
     padding-top: 19px;
     padding-bottom: 22px;
     padding-right: 34px;
-    @media (max-width: 767px) {
-        display: block;
-        margin-top: 10px;
-        &:last-child {
-            border-bottom: 0;
-        }
-    }
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+           display: block;
+           margin-top: 10px;
+           &:last-child {
+                border-bottom: 0;
+           }
+    `}
 `
 
 const Item = styled.div`
-    min-width: 200px;
+    min-width: 150px;
     @media (max-width: 767px) {
         display: flex;
         width: auto;

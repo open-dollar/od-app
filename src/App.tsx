@@ -24,6 +24,7 @@ import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
 import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
+import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
 
@@ -62,6 +63,7 @@ const App = () => {
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Earn} path={'/earn'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
+                                                <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
                                                 <Route

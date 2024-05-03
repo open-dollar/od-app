@@ -1,13 +1,15 @@
 import styled from 'styled-components'
-
-const BlockBodyContainer = () => {
-    return <Container />
+interface Props {
+    header?: boolean
+}
+const BlockBodyContainer: React.FC<Props> = ({ header }) => {
+    return <Container header={!!header} />
 }
 
 export default BlockBodyContainer
 
-const Container = styled.div`
-    position: fixed;
+const Container = styled.div<{ header: boolean }>`
+    position: ${(props) => (props.header ? 'absolute' : 'fixed')};
     top: 0;
     left: 0;
     height: 100%;

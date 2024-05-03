@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
 import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
-import BlockBodyContainer from '~/components/BlockBodyContainer'
 import ApplicationUpdater from '~/services/ApplicationUpdater'
 import { useActiveWeb3React } from '~/hooks'
 import TransactionUpdater from '~/services/TransactionUpdater'
@@ -67,7 +66,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
 
-    const { settingsModel: settingsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -84,7 +83,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const geoBlockToastId = 'geoBlockToastHash'
     const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
@@ -209,18 +207,11 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
+                history.push('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
-                toast(
-                    <ToastPayload
-                        icon={'AlertTriangle'}
-                        iconSize={40}
-                        iconColor={'orange'}
-                        textColor={'#ffffff'}
-                        text={`${t('geoblocked_wallet')}`}
-                    />,
-                    { autoClose: false, type: 'warning', toastId: geoBlockToastId }
-                )
                 return false
             } else {
                 return true
@@ -350,7 +341,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     return (
         <Container>
-            {settingsState.blockBody ? <BlockBodyContainer /> : null}
             <SideMenu />
             <WalletModal />
             <MulticallUpdater />

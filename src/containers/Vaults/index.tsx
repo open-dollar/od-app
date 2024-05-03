@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { isAddress } from '@ethersproject/address'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
+import { useHistory } from 'react-router-dom'
 import useGeb from '~/hooks/useGeb'
-import Accounts from './Accounts'
+import CreateVaultStep from '~/components/CreateVaultStep'
 import VaultList from './VaultList'
+import { COIN_TICKER } from '~/utils'
+import { useTranslation } from 'react-i18next'
+import Accounts from './Accounts'
 
 const OnBoarding = ({ ...props }) => {
-    const { t } = useTranslation()
-    const [isOwner, setIsOwner] = useState(true)
-    const { account, provider } = useActiveWeb3React()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const history = useHistory()
+    const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
-
+    const { t } = useTranslation()
     const {
         connectWalletModel: connectWalletState,
         safeModel: safeState,
         popupsModel: popupsState,
     } = useStoreState((state) => state)
-    const { popupsModel: popupsActions, safeModel: safeActions } = useStoreActions((state) => state)
-
+    const { safeModel: safeActions } = useStoreActions((state) => state)
+    const { isWrongNetwork, isStepLoading } = connectWalletState
     const address: string = props.match.params.address ?? ''
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         if (
             (!account && !address) ||
             (address && !isAddress(address.toLowerCase())) ||
@@ -34,11 +38,15 @@ const OnBoarding = ({ ...props }) => {
             return
 
         async function fetchSafes() {
-            await safeActions.fetchUserSafes({
-                address: address || (account as string),
-                geb,
-                tokensData: connectWalletState.tokensData,
-            })
+            try {
+                await safeActions.fetchUserSafes({
+                    address: address || (account as string),
+                    geb,
+                    tokensData: connectWalletState.tokensData,
+                })
+            } catch (error) {
+                console.debug('Error fetching safes:', error)
+            }
         }
 
         if (geb && connectWalletState.tokensData) {
@@ -57,19 +65,40 @@ const OnBoarding = ({ ...props }) => {
         }, ms)
 
         return () => clearInterval(interval)
-    }, [account, address, connectWalletState.isWrongNetwork, connectWalletState.tokensData, geb, provider, safeActions])
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
-    useEffect(() => {
-        if (account && address) {
-            setIsOwner(account.toLowerCase() === address.toLowerCase())
-        }
-    }, [address, account])
+    const handleCreateSafe = () => {
+        history.push('/vaults/create')
+    }
 
     return (
         <Container id="app-page">
             <Content>
                 {safeState.safeCreated ? (
-                    <VaultList address={address} />
+                    <>
+                        <VaultList address={address} />
+                        <CreateVaultStep
+                            stepNumber={2}
+                            id="step2"
+                            title={'create_safe'}
+                            text={t('create_safe_text', {
+                                coin_ticker: COIN_TICKER,
+                            })}
+                            btnText={'create_safe'}
+                            handleClick={handleCreateSafe}
+                            isDisabled={isWrongNetwork}
+                            isLoading={isStepLoading}
+                        />
+                    </>
                 ) : popupsState.isWaitingModalOpen ? null : (
                     <Accounts />
                 )}
@@ -80,8 +109,15 @@ const OnBoarding = ({ ...props }) => {
 
 export default OnBoarding
 
-const Container = styled.div``
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
 
 const Content = styled.div`
     position: relative;
+    max-width: 1362px;
+    width: 100%;
 `

@@ -1,56 +1,67 @@
 import CookieConsent from 'react-cookie-consent'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const CookieBanner = () => {
     return (
-        <div id="cookies-consent">
-            <CookieConsent
-                location="bottom"
-                buttonText="✓ Accept"
-                cookieName="cookiesAccepted"
-                style={{
-                    background: '#191b1f',
-                    boxShadow: '0 0 6px rgba(0,0,0,0.16)',
-                }}
-            >
-                <CookiesText>
-                    <img src={require('../assets/cookie.svg').default} alt="" />
-                    This website uses cookies to enhance the user experience. By continuing to browse the site you're
-                    agreeing to our
-                    <a target="_blank" href="https://opendollar.com/tos" rel="noreferrer">
-                        &nbsp;use of cookies.
-                    </a>
-                </CookiesText>
-            </CookieConsent>
-        </div>
+        <StyledConsentButton>
+            <div id="cookies-consent">
+                <CookieConsent
+                    location="bottom"
+                    buttonText="Accept"
+                    cookieName="cookiesAccepted"
+                    style={{
+                        background: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%',
+                        alignItems: 'center',
+                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    <CookiesText>
+                        <p>
+                            This website uses cookies to enhance the user experience. By continuing to browse the site
+                            you're agreeing to our{' '}
+                            <a target="_blank" href="https://www.opendollar.com/terms" rel="noreferrer">
+                                use of cookies
+                            </a>
+                            .
+                        </p>
+                    </CookiesText>
+                </CookieConsent>
+            </div>
+        </StyledConsentButton>
     )
 }
 
 export default CookieBanner
 
-const CookiesText = styled.span`
-    color: ${(props) => props.theme.colors.primary};
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-
-    img {
-        width: 20px;
-        margin-right: 10px;
-    }
-
-    @media (max-width: 991px) {
-        font-size: 14px;
+const StyledConsentButton = styled.div`
+    #cookies-consent button {
+        border: 2px solid #e2f1ff !important;
+        border-radius: 4px !important;
+        background: transparent !important;
+        padding: 10px 30px !important;
+        font-size: 18px;
+        font-weight: 600;
+        width: 163px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 `
 
-const CustomLink = styled(Link)`
-    @media (min-width: 991px) {
-        font-size: 16px;
-        margin-left: 4px !important;
+const CookiesText = styled.span`
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-weight: 700;
+    font-size: 22px;
+
+    a {
+        text-decoration: underline;
+        color: white;
     }
-    color: ${(props) => props.theme.colors.blueish};
+
     @media (max-width: 991px) {
         font-size: 14px;
     }

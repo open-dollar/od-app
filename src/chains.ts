@@ -57,7 +57,7 @@ type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInf
 
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
-        urls: ['https://arb1.arbitrum.io/rpc'],
+        urls: ['https://arbitrum.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum One',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://arbiscan.io'],
@@ -76,12 +76,6 @@ export const TESTNET_CHAINS: ChainConfig = {
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
-    },
-    420: {
-        urls: ['https://goerli.optimism.io'],
-        name: 'Optimism Goerli',
-        nativeCurrency: ETH,
-        blockExplorerUrls: ['https://goerli-optimism.etherscan.io/'],
     },
 }
 

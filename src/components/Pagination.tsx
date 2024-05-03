@@ -11,7 +11,6 @@ interface Props {
 }
 
 const Pagination = ({ items, handlePagingMargin, perPage = 5 }: Props) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [total, setTotal] = useState(0)
 
     const setPagination = (itemsArray: Array<any>) => {

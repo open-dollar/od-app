@@ -94,7 +94,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const availableCollateral = useMemo(() => {
         if (singleSafe) {
             if (type === 'deposit_borrow' && singleSafe.collateralName !== '') {
-                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balanceE18)
+                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName]?.balanceE18 ?? 0)
                 return formatNumber(value, 2)
             } else {
                 return singleSafe.collateral
@@ -231,7 +231,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     }
 
     if (!proxyAddress) {
-        error = error ?? 'Create an Open Dollar Account to continue'
+        error = error ?? 'Create Account'
     }
 
     if (type === 'deposit_borrow') {

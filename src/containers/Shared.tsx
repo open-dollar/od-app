@@ -1,16 +1,13 @@
 import React, { ReactNode, useEffect, useCallback } from 'react'
-import { getTokenList } from '@opendollar/sdk/lib/contracts/addreses'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
-import { ethers, utils } from 'ethers'
 
 import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
-import BlockBodyContainer from '~/components/BlockBodyContainer'
 import ApplicationUpdater from '~/services/ApplicationUpdater'
-import { useActiveWeb3React, useTokenContract } from '~/hooks'
+import { useActiveWeb3React } from '~/hooks'
 import TransactionUpdater from '~/services/TransactionUpdater'
 import AuctionsModal from '~/components/Modals/AuctionsModal'
 import TopUpModal from '~/components/Modals/SafeManagerModal'
@@ -39,15 +36,19 @@ import {
     capitalizeName,
     EMPTY_ADDRESS,
     SYSTEM_STATUS,
-    timeout,
     ChainId,
-    ETH_NETWORK, IS_IN_IFRAME,
+    IS_IN_IFRAME,
+    timeout,
 } from '~/utils'
 import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
 import Footer from '~/components/Footer'
 import checkSanctions from '~/services/checkSanctions'
-import Stats from '~/containers/Vaults/Stats'
 import axios from 'axios'
+import useTokenData from '~/hooks/useTokenData'
+import useSafeData from '~/hooks/useSafeData'
+import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
+import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
+import useAllowanceCheck from '~/hooks/useAllowanceCheck'
 
 interface Props {
     children: ReactNode
@@ -62,17 +63,10 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    const { pathname } = location
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
-    const coinTokenContract = useTokenContract(getTokenList(ETH_NETWORK).OD.address)
-    const protTokenContract = useTokenContract(getTokenList(ETH_NETWORK).ODG.address)
 
-    const {
-        settingsModel: settingsState,
-        connectWalletModel: connectWalletState,
-        auctionModel: { auctionsData },
-    } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -80,11 +74,16 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsModel: popupsActions,
         transactionsModel: transactionsActions,
         safeModel: safeActions,
-        auctionModel: { setCoinBalances, setProtInternalBalance, setInternalBalance },
     } = useStoreActions((state) => state)
+    useTokenData()
+    useSafeData()
+    useCoinBalanceUpdate()
+    useAuctionDataUpdate()
+    useAllowanceCheck()
+
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const geoBlockToastId = 'geoBlockToastHash'
+    const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -97,86 +96,10 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
     }
-    const forceUpdateTokens = connectWalletState.forceUpdateTokens
-
-    useEffect(() => {
-        if (account && geb && forceUpdateTokens) {
-            connectWalletActions.fetchTokenData({ geb, user: account })
-        }
-    }, [account, geb, forceUpdateTokens, connectWalletActions])
-
-    // Get latest token prices every 15 seconds
-    useEffect(() => {
-        const tokenDataInterval = setInterval(() => {
-            if (account && geb) {
-                connectWalletActions.fetchTokenData({ geb, user: account })
-            }
-        }, 15000)
-
-        return () => clearInterval(tokenDataInterval)
-    }, [account, geb, connectWalletActions])
-
-    // Get latest vault data every 1 minute
-    useEffect(() => {
-        const statsInterval = setInterval(() => {
-            if (account && geb && connectWalletState.tokensData) {
-                safeActions.fetchUserSafes({
-                    address: account as string,
-                    geb,
-                    tokensData: connectWalletState.tokensData,
-                })
-            }
-        }, 60000)
-
-        return () => clearInterval(statsInterval)
-    }, [account, geb, connectWalletActions])
-
-    useEffect(() => {
-        const odBalance = connectWalletState?.tokensFetchedData.OD?.balanceE18
-        const odgBalance = connectWalletState?.tokensFetchedData.ODG?.balanceE18
-
-        if (odBalance && odgBalance) {
-            setCoinBalances({
-                od: utils.formatEther(odBalance),
-                odg: utils.formatEther(odgBalance),
-            })
-        }
-    }, [connectWalletState, setCoinBalances])
-
-    useEffect(() => {
-        if (account && coinTokenContract && protTokenContract && connectWalletState.proxyAddress) {
-            protTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
-                connectWalletActions.setProtAllowance(formattedAllowance)
-            })
-
-            coinTokenContract.allowance(account, connectWalletState.proxyAddress).then((allowance) => {
-                const formattedAllowance = utils.formatEther(allowance)
-                connectWalletActions.setCoinAllowance(formattedAllowance)
-            })
-        }
-    }, [account, coinTokenContract, connectWalletActions, connectWalletState.proxyAddress, protTokenContract])
-
-    useEffect(() => {
-        if (auctionsData) {
-            const protInternalBalance = auctionsData.protocolTokenProxyBalance
-            setProtInternalBalance(ethers.utils.formatEther(protInternalBalance))
-
-            // coinTokenSafeBalance has 45 decimals
-            const coinSafeBalance = auctionsData.coinTokenSafeBalance
-
-            // const coinInternalBalance = coinBalance.add(coinSafeBalance)
-            setInternalBalance(ethers.utils.formatUnits(coinSafeBalance, 45))
-        }
-    }, [auctionsData, setInternalBalance, setProtInternalBalance])
 
     useEffect(() => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
-
-    // useEffect(() => {
-    //     connectWalletActions.fetchFiatPrice()
-    // }, [connectWalletActions])
 
     const fetchUserCountry = async () => {
         try {
@@ -194,7 +117,10 @@ const Shared = ({ children, ...rest }: Props) => {
         }
 
         const userCountry = await fetchUserCountry()
-        return userCountry === 'US'
+        if (userCountry && bannedCountryCodes.includes(userCountry)) {
+            return true
+        }
+        return false
     }
 
     async function accountChecker() {
@@ -236,7 +162,6 @@ const Shared = ({ children, ...rest }: Props) => {
             safeActions.setIsSafeCreated(false)
             connectWalletActions.setStep(1)
         }
-
         await timeout(1000)
         popupsActions.setIsWaitingModalOpen(false)
     }
@@ -282,18 +207,11 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
+                history.push('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
-                toast(
-                    <ToastPayload
-                        icon={'AlertTriangle'}
-                        iconSize={40}
-                        iconColor={'orange'}
-                        textColor={'#ffffff'}
-                        text={`${t('geoblocked_wallet')}`}
-                    />,
-                    { autoClose: false, type: 'warning', toastId: geoBlockToastId }
-                )
                 return false
             } else {
                 return true
@@ -301,6 +219,51 @@ const Shared = ({ children, ...rest }: Props) => {
         }
         return true
     }
+    const address: string = account ?? ''
+    useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
+        if (
+            (!account && !address) ||
+            (address && !isAddress(address.toLowerCase())) ||
+            !provider ||
+            connectWalletState.isWrongNetwork
+        )
+            return
+
+        async function fetchSafes() {
+            await safeActions.fetchUserSafes({
+                address: address || (account as string),
+                geb,
+                tokensData: connectWalletState.tokensData,
+            })
+        }
+
+        if (geb && connectWalletState.tokensData) {
+            fetchSafes()
+        }
+
+        const ms = 3000
+        const interval = setInterval(() => {
+            if (
+                (!account && !address) ||
+                (address && !isAddress(address.toLowerCase())) ||
+                !provider ||
+                connectWalletState.isWrongNetwork
+            )
+                fetchSafes()
+        }, ms)
+
+        return () => clearInterval(interval)
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
     async function networkChecker() {
         accountChange()
@@ -321,7 +284,34 @@ const Shared = ({ children, ...rest }: Props) => {
             )
             return
         }
-        if (chainId && chainId !== id) {
+
+        if (document.querySelector('#networkToastHash') !== null) {
+            document.querySelector('#networkToastHash')?.remove()
+        }
+        settingsActions.setBlockBody(false)
+        connectWalletActions.setIsWrongNetwork(false)
+        if (account) {
+            sanctionsCheck()
+            geoBlockCheck()
+            connectWalletActions.setStep(1)
+            accountChecker()
+        }
+    }
+    /*eslint-disable-next-line*/
+    const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
+
+    useEffect(() => {
+        networkCheckerCallBack()
+    }, [account, geb?.getProxyAction]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (chainId && chainId === NETWORK_ID) {
+            if (document.querySelector(toastId) !== null) {
+                toast.dismiss(toastId)
+            }
+        }
+        if (chainId && chainId !== NETWORK_ID) {
+            const id: ChainId = NETWORK_ID
             const chainName = ETHERSCAN_PREFIXES[id]
             connectWalletActions.setIsWrongNetwork(true)
             toast(
@@ -334,31 +324,23 @@ const Shared = ({ children, ...rest }: Props) => {
                 />,
                 { autoClose: false, type: 'warning', toastId }
             )
-            await checkAndSwitchMetamaskNetwork()
         } else {
-            if (document.querySelector('#networkToastHash') !== null) {
-                document.querySelector('#networkToastHash')?.remove()
+            if (document.querySelector(toastId) !== null) {
+                document.querySelector(toastId)?.remove()
             }
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
                 sanctionsCheck()
                 geoBlockCheck()
-                connectWalletActions.setStep(1)
                 accountChecker()
             }
+            checkAndSwitchMetamaskNetwork()
         }
-    }
-    /*eslint-disable-next-line*/
-    const networkCheckerCallBack = useCallback(networkChecker, [account, chainId, geb])
-
-    useEffect(() => {
-        networkCheckerCallBack()
-    }, [networkCheckerCallBack])
+    }, [chainId, window.ethereum]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>
-            {settingsState.blockBody ? <BlockBodyContainer /> : null}
             <SideMenu />
             <WalletModal />
             <MulticallUpdater />
@@ -390,7 +372,6 @@ const Shared = ({ children, ...rest }: Props) => {
             <EmptyDiv>
                 <CookieBanner />
             </EmptyDiv>
-            {pathname === '/' ? <Stats /> : <></>}
             <ImagePreloader />
             <EmptyDiv>
                 <Footer />

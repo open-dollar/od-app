@@ -1,66 +1,68 @@
+import { ReactNode, memo } from 'react'
 import { Info } from 'react-feather'
 import styled from 'styled-components'
-
-import { getTokenLogo } from '~/utils'
+import Loader from '~/components/Loader'
 
 const images: { [key: string]: string } = {
-    ETH: require('../../assets/eth-icon.svg').default,
-    OD: getTokenLogo('OD'),
-    NFTS: require('../../assets/nfts-icon.svg').default,
+    lock: require('../../assets/stats-img-lock.webp'),
+    vault: require('../../assets/stats-img-vault.webp'),
 }
-
 export interface DataCardProps {
-    image?: string
     title: string
     value: string
     description?: string
-    children?: React.ReactChildren | React.ReactChild
+    bg?: 'light' | 'dark'
+    image?: string
+    children?: ReactNode
 }
 
-const el = () => {
-    return <>Hey hey</>
-}
-
-const DataCard = ({ title, image, value, description, children }: DataCardProps) => {
+const DataCard = memo(({ title, bg, image, value, description, children }: DataCardProps) => {
     return (
-        <Block>
-            {description && (
-                <InfoIcon data-tooltip-id="analitics" data-tooltip-content={description}>
-                    <Info size="20" />
-                </InfoIcon>
-            )}
-
-            {image && <img src={images[`${image}`]} alt={image} width="50px" height="50px" />}
-
-            <DataTitle>{title}</DataTitle>
-            <DataValue>{value}</DataValue>
-            {children}
+        <Block bg={bg!}>
+            <>
+                {description && (
+                    <InfoIcon data-tooltip-id="analitics" data-tooltip-content={description}>
+                        <Info size="20" />
+                    </InfoIcon>
+                )}
+                {image && (
+                    <ImgContainer>
+                        <img src={images[`${image}`]} alt={image} width="262px" height="50px" />
+                    </ImgContainer>
+                )}
+                <DataTitle bg={bg!}>{title}</DataTitle>
+                <DataValue>{value ? value : <Loader width="40px" />}</DataValue>
+                {children}
+            </>
         </Block>
     )
-}
+})
 
 export default DataCard
 
-const Block = styled.div`
+const Block = styled.div<{ bg?: 'light' | 'dark'; children: ReactNode }>`
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 48px 0px;
+    border: ${(props) => (props.bg === 'light' ? '3px solid #1A74EC' : '3px solid #ffffff')};
+    box-shadow: ${(props) =>
+        props.bg === 'light'
+            ? `6px 6px 0px 0px #1A74EC, 5px 5px 0px 0px #1A74EC, 4px 4px 0px 0px #1A74EC, 3px 3px 0px 0px #1A74EC, 2px 2px 0px 0px #1A74EC, 1px 1px 0px 0px #1A74EC`
+            : `6px 6px 0px 0px #ffffff, 5px 5px 0px 0px #ffffff, 4px 4px 0px 0px #ffffff, 3px 3px 0px 0px #ffffff,
+        2px 2px 0px 0px #ffffff, 1px 1px 0px 0px #ffffff`};
 
     width: 100%;
     height: 100%;
-    border-radius: 20px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    border-radius: 8px;
+    color: ${(props) => (props.bg === 'light' ? props.theme.colors.primary : 'white')};
+    background: ${(props) => (props.bg === 'light' ? 'white' : props.theme.colors.gradientBg)};
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         max-width: 100%;
     `}
-
-    & img {
-        margin-bottom: 32px;
-    }
 `
 
 export const InfoIcon = styled.div`
@@ -76,18 +78,26 @@ export const InfoIcon = styled.div`
     }
 `
 
-const DataTitle = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+const ImgContainer = styled.div`
+    height: 270px;
+    margin-bottom: 32px;
+`
+
+const DataTitle = styled.div<{ bg?: 'light' | 'dark' }>`
+    font-size: ${(props) => props.theme.font.small};
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 8px;
     text-align: center;
-    color: ${(props) => props.theme.colors.customSecondary};
+    color: ${(props) => (props.bg === 'light' ? props.theme.colors.accent : 'white')};
 `
 
 const DataValue = styled.div`
-    font-size: 24px;
+    font-size: 48px;
+    min-height: 72px;
     font-weight: 700;
     text-align: center;
-    line-height: 28.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

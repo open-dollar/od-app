@@ -26,10 +26,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    color: ${(props) => props.theme.colors.primary};
-    background-color:${(props) => props.theme.colors.background};
-    background-size: contain;
-    background-position: center 100px;
+    color: ${(props: any) => props.theme.colors.primary};
+    background-color:${(props: any) => props.theme.colors.background};
+    background-image: url('/squares1x.png'), url('/wavy-blue.png');
+    background-size: contain, 100%;
+    background-position: bottom left, top right;
     background-repeat: no-repeat;
     overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 
@@ -66,23 +67,23 @@ const GlobalStyle = createGlobalStyle`
 }
 .place-left {
     &:after{
-      border-left-color:${(props) => props.theme.colors.foreground} !important
+      border-left-color:${(props: any) => props.theme.colors.foreground} !important
     }
   }
 
   .place-top {
     &:after{
-      border-top-color:${(props) => props.theme.colors.foreground} !important
+      border-top-color:${(props: any) => props.theme.colors.foreground} !important
     }
   }
   .place-bottom {
     &:after{
-      border-bottom-color:${(props) => props.theme.colors.foreground} !important
+      border-bottom-color:${(props: any) => props.theme.colors.foreground} !important
     }
   }
   .place-right {
     &:after{
-      border-right-color:${(props) => props.theme.colors.foreground} !important
+      border-right-color:${(props: any) => props.theme.colors.foreground} !important
     }
   }
 .__react_component_tooltip {
@@ -90,10 +91,10 @@ const GlobalStyle = createGlobalStyle`
     padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 5px;
-    color:${(props) => props.theme.colors.primary};
+    color:${(props: any) => props.theme.colors.primary};
     opacity: 1 !important;
-    background: ${(props) => props.theme.colors.foreground};
-    border: ${(props) => props.theme.colors.border} !important;
+    background: ${(props: any) => props.theme.colors.foreground};
+    border: ${(props: any) => props.theme.colors.border} !important;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
    
   }
@@ -107,8 +108,8 @@ export const ExternalLinkArrow = css`
     outline: none;
     padding: 0;
     margin: 0;
-    color: ${(props) => props.theme.colors.blueish};
-    font-size: ${(props) => props.theme.font.small};
+    color: ${(props: any) => props.theme.colors.blueish};
+    font-size: ${(props: any) => props.theme.font.small};
     font-weight: 600;
     line-height: 24px;
     letter-spacing: -0.18px;
@@ -141,13 +142,13 @@ export const BtnStyle = css<{
     border: ${({ theme, border }) => (border ? `1px solid ${theme.colors.blueish}` : 'none')};
     box-shadow: none;
     line-height: 24px;
-    font-size: ${(props) => props.theme.font.small};
+    font-size: ${(props: any) => props.theme.font.small};
     font-weight: 600;
     padding: 8px 30px;
     color: ${({ theme, border }) => (border ? theme.colors.blueish : theme.colors.neutral)};
     background: ${({ theme, disabled, color }) =>
         disabled ? theme.colors.dimmedBackground : theme.colors[color ?? 'blueish']};
-    border-radius: ${(props) => props.theme.global.borderRadius};
+    border-radius: ${(props: any) => props.theme.global.borderRadius};
     transition: all 0.3s ease;
     display: flex;
     align-items: center;

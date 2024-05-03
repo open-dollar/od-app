@@ -1,16 +1,19 @@
 import styled from 'styled-components'
-import Logo from '../assets/od-full-logo.svg'
+import { useStoreState } from '~/store'
+import DarkFullLogo from '~/assets/od-full-logo-dark.svg'
+import LightFullLogo from '~/assets/od-full-logo-light.svg'
+import { Link } from 'react-router-dom'
 
-interface Props {
-    height?: number
-}
+const Brand = () => {
+    const isLightTheme = useStoreState((state) => state.settingsModel.isLightTheme)
 
-const Brand = ({ height }: Props) => {
+    const LogoComponent = isLightTheme ? LightFullLogo : DarkFullLogo
+
     return (
         <Container>
-            <a href={'/'}>
-                <img src={Logo} height={'27px'} width={'148px'} alt="OD" />
-            </a>
+            <Link to="/">
+                <img src={LogoComponent} alt="OD" />
+            </Link>
         </Container>
     )
 }

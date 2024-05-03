@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { BaseProvider, Web3Provider } from '@ethersproject/providers'
 import { getPriorityConnector, useWeb3React, Web3ReactPriorityHooks } from '@web3-react/core'
@@ -31,18 +31,20 @@ export function useEagerConnect() {
     const { isActive, connector } = useWeb3React() // specifically using useWeb3ReactCore because of what this hook does
 
     useEffect(() => {
-        if (!isActive) {
-            injected.isAuthorized().then((isAuthorized) => {
-                if (isAuthorized) {
-                    connector.activate(injected, undefined, true)
-                } else {
-                    if (isMobile && window.ethereum) {
+        if (!window?.ethereum)
+            if (!isActive) {
+                injected.isAuthorized().then((isAuthorized) => {
+                    if (isAuthorized) {
                         connector.activate(injected, undefined, true)
+                    } else {
+                        if (isMobile && window.ethereum) {
+                            connector.activate(injected, undefined, true)
+                        }
                     }
-                }
-            })
-        }
-    }, [isActive])
+                })
+            }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive, window?.ethereum])
 
     return true
 }
@@ -88,5 +90,6 @@ export function useInactiveListener(suppress = false) {
         }
 
         return undefined
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive, suppress])
 }

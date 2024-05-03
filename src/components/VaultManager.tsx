@@ -68,14 +68,29 @@ const VaultManager = () => {
             {error && <Error>{error}</Error>}
 
             <Footer>
-                <Button dimmed text={t('cancel')} onClick={handleCancel} />
-                <Button data-test-id="topup-manage" withArrow onClick={handleSubmit} text={t('manage_safe')} />
+                <WhiteButton dimmed text={t('cancel')} style={{ color: 'white' }} onClick={handleCancel} />
+                <ManageVaultButton>
+                    <span>{t('manage_safe')}</span>
+                    <WhiteButton data-test-id="topup-manage" withArrow onClick={handleSubmit} />
+                </ManageVaultButton>
             </Footer>
         </Body>
     )
 }
 
 export default VaultManager
+
+const ManageVaultButton = styled.div`
+    display: flex;
+    gap: 8px;
+    color: white;
+    font-size: ${(props) => props.theme.font.small};
+    font-weight: 600;
+`
+
+const WhiteButton = styled(Button)`
+    color: white;
+`
 
 const Body = styled.div`
     padding: 20px;
@@ -88,8 +103,8 @@ const Footer = styled.div`
 `
 
 const Error = styled.p`
-    color: ${(props) => props.theme.colors.dangerColor};
-    font-size: ${(props) => props.theme.font.extraSmall};
+    color: white;
+    font-size: ${(props) => props.theme.font.xSmall};
     width: 100%;
     margin: 16px 0;
 `
@@ -110,7 +125,7 @@ const CustomInput = styled.input`
 
 const Label = styled.div`
     line-height: 21px;
-    color: ${(props) => props.theme.colors.secondary};
+    color: white;
     font-size: ${(props) => props.theme.font.small};
     letter-spacing: -0.09px;
     margin-bottom: 4px;

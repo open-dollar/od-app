@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -12,7 +12,6 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
-import Stats from '~/containers/Vaults/Stats'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -103,7 +102,8 @@ const VaultDetails = ({ ...props }) => {
         return () => {
             safeActions.setSingleSafe(null)
         }
-    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData, account])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -122,17 +122,19 @@ const VaultDetails = ({ ...props }) => {
                         <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                     </LabelContainer>
                 ) : null}
-                <VaultHeader safeId={safeId} isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} />
+                <VaultHeader safeId={safeId} />
 
                 {!isLoading && (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
                 )}
 
-                {(isDeposit || isWithdraw) && !isLoading ? (
-                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
+                {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
+                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} key={account} />
                 ) : null}
+
+                {/* Users can only repay debt from a vault they don't own */}
+                {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
             </Container>
-            <Stats />
         </>
     )
 }
@@ -141,7 +143,7 @@ export default VaultDetails
 
 const Container = styled.div`
     max-width: 880px;
-    margin: 80px auto;
+    margin: 50px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
         margin: 50px auto;

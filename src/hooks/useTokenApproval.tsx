@@ -82,6 +82,7 @@ export function useTokenApproval(
                 ? ApprovalState.PENDING
                 : ApprovalState.NOT_APPROVED
             : ApprovalState.APPROVED
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount, tokenAddress, spender, geb, tokenDecimals, currentAllowance, pendingApproval, pendingAllowance])
 
     const tokenContract = useTokenContract(tokenAddress)
@@ -170,6 +171,7 @@ export function useTokenApproval(
                 console.debug('Failed to approve token', error)
                 handleTransactionError(error)
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [approvalState, tokenAddress, tokenContract, amount, spender, tokenDecimals, exactApproval, updateAllowance])
 
     return [approvalState, approve]

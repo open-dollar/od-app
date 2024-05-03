@@ -26,7 +26,7 @@ import { Status } from '~/components/connectorCards/Status'
 import styled from 'styled-components'
 import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
-import { GnosisSafe } from "@web3-react/gnosis-safe";
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 interface Props {
     connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
@@ -48,28 +48,6 @@ function getName(connector: Connector) {
     if (connector instanceof GnosisSafe) return 'Gnosis Safe'
     return 'Unknown'
 }
-
-const InfoCard = styled.button<{ active?: boolean }>`
-    background-color: ${(props) => props.theme.colors.background};
-    padding: 1rem;
-    outline: none;
-    border: 1px solid ${(props) => props.theme.colors.border};
-    border-radius: 12px;
-    width: 100% !important;
-    &:focus {
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-        background: ${(props) => props.theme.colors.placeholder};
-    }
-`
-
-const OptionCard = styled(InfoCard as any)`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 2rem;
-    padding: 1rem;
-`
 
 export function Card({ connector, activeChainId, isActivating, isActive, error, setError }: Props) {
     const [desiredChainId, setDesiredChainId] = useState<number>(parseInt(process.env.REACT_APP_NETWORK_ID || '-1', 10))
@@ -118,19 +96,6 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
 
     return (
         <OptionCard onClick={() => switchChain(desiredChainId)}>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    textAlign: 'left',
-                }}
-            >
-                <span style={{ fontSize: '20px' }}>{getName(connector)}</span>
-                <div>
-                    <Status isActivating={isActivating} isActive={isActive} error={error} />
-                </div>
-                <Chain chainId={activeChainId} />
-            </div>
             <ConnectWithSelect
                 connector={connector}
                 activeChainId={activeChainId}
@@ -139,6 +104,40 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
                 error={error}
                 setError={setError}
             />
+            <NetworkCard>
+                <NetworkHeader>{getName(connector)}</NetworkHeader>
+                <div>
+                    <Status isActivating={isActivating} isActive={isActive} error={error} />
+                </div>
+                <Chain chainId={activeChainId} />
+            </NetworkCard>
         </OptionCard>
     )
 }
+
+const InfoCard = styled.button<{ active?: boolean }>`
+    padding: 1rem;
+    width: 100% !important;
+`
+
+const OptionCard = styled(InfoCard as any)`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 1rem;
+`
+
+const NetworkCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 19.4px;
+`
+
+const NetworkHeader = styled.h3`
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: 32px;
+    line-height: 38.4px;
+`

@@ -7,9 +7,11 @@ import { formatDataNumber, multiplyWad } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { fetchPoolData } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
+import { useActiveWeb3React } from '~/hooks'
 
 const Stats = () => {
     const geb = useGeb()
+    const { chainId } = useActiveWeb3React()
     const [state, setState] = useState({
         totalVaults: '',
         wETHBalance: '',
@@ -18,12 +20,13 @@ const Stats = () => {
     })
 
     useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
             if (geb) {
                 let totalLockedValue = BigNumber.from('0')
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
-                    Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
+                    Object.entries(analyticsData?.tokenAnalyticsData).forEach(([_, value]) => {
                         const lockedAmountInUsd = multiplyWad(
                             value?.lockedAmount?.toString(),
                             value?.currentPrice?.toString()
@@ -44,7 +47,7 @@ const Stats = () => {
         }
 
         fetchData()
-    }, [geb])
+    }, [geb, chainId])
 
     return (
         <ComponentContainer>
@@ -177,7 +180,7 @@ const LinkWrapper = styled.div`
 `
 
 const ComponentContainer = styled.div`
-    max-width: 880px;
+    max-width: 100%;
     margin: 20px auto;
     padding: 0 15px;
 `

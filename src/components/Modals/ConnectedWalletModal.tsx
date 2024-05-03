@@ -1,4 +1,3 @@
-import React from 'react'
 import { useStoreActions, useStoreState } from '../../store'
 import ConnectedWalletInfo from '../ConnectedWalletInfo'
 import Modal from './Modal'

@@ -24,6 +24,7 @@ import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
 import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
+import GeoBlockContainer from './containers/GeoBlockContainer'
 
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
@@ -47,6 +48,7 @@ const App = () => {
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
+                                                <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
                                                 <Route

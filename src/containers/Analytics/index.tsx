@@ -320,8 +320,8 @@ const Analytics = () => {
 
                     setState((prevState) => ({
                         ...prevState,
-                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 0, true),
-                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 0, true),
+                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 2, true),
+                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 2, true),
                         globalDebtCeiling: formatDataNumber(analyticsData.globalDebtCeiling, 18, 0, true),
                         globalDebtUtilization: transformToWadPercentage(
                             analyticsData.globalDebt,
@@ -492,11 +492,12 @@ const AnaliticsBottom = styled.div`
     justify-content: space-between;
     gap: 24px;
 
-    div {
+    > div {
         height: 241px;
         flex: 1;
         padding-left: 5px;
         padding-right: 5px;
+        min-width: 250px;
     }
 
     @media (max-width: 1250px) {

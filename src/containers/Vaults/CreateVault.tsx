@@ -3,10 +3,11 @@ import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 import { ChevronLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
+import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
-
+import { useTransactionAdder } from '~/hooks'
 import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
@@ -23,6 +24,7 @@ import {
     useSafeInfo,
     StatsType,
 } from '~/hooks'
+import ConnectWalletStep from '~/components/ConnectWalletStep'
 
 const CreateVault = ({
     selectedItem,
@@ -33,9 +35,13 @@ const CreateVault = ({
     setSelectedItem: (item: string) => void
     collaterals: TokenData[]
 }) => {
+    const geb = useGeb()
+    const addTransaction = useTransactionAdder()
     const { stats, error, availableHai, parsedAmounts, totalCollateral, totalDebt, collateralRatio, liquidationPrice } =
         useSafeInfo('create')
-    const { provider, account } = useActiveWeb3React()
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { blockNumber } = connectWalletState
+    const { provider, account, chainId } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const {
         safeModel: safeState,
@@ -187,6 +193,35 @@ const CreateVault = ({
         true
     )
 
+    const handleCreateAccount = async () => {
+        if (!account || !provider || !chainId) return false
+        const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
+        const signer = provider.getSigner(account)
+        try {
+            connectWalletActions.setIsStepLoading(true)
+            popupsActions.setWaitingPayload({
+                title: 'Waiting For Confirmation',
+                text: `Creating facilitator`,
+                hint: 'Confirm this transaction in your wallet',
+                status: 'loading',
+            })
+            const txResponse = await signer.sendTransaction(txData)
+            connectWalletActions.setCtHash(txResponse.hash)
+            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
+            popupsActions.setWaitingPayload({
+                title: 'Transaction Submitted',
+                hash: txResponse.hash,
+                status: 'success',
+            })
+            await txResponse.wait()
+        } catch (e) {
+            connectWalletActions.setStep(2)
+            connectWalletActions.setIsStepLoading(false)
+            handleTransactionError(e)
+        }
+        connectWalletActions.setIsStepLoading(false)
+    }
+
     return (
         <>
             <Modal
@@ -335,6 +370,9 @@ const CreateVault = ({
                                 Clear All
                             </Btn>
                             <Flex className="hasBtn">
+                                {error === 'Create Account' && (
+                                    <Button onClick={handleCreateAccount}>{error ?? 'Create Account'}</Button>
+                                )}
                                 {approvalState === ApprovalState.APPROVED ? (
                                     <Button onClick={handleSubmit} disabled={!isValid}>
                                         {error ?? 'Review Transaction'}
@@ -342,9 +380,11 @@ const CreateVault = ({
                                 ) : approvalState === ApprovalState.PENDING ? (
                                     <Button disabled={true}>Pending Approval..</Button>
                                 ) : (
-                                    <Button onClick={approve} disabled={!isValid}>
-                                        {error ?? `Approve ${selectedItem}`}
-                                    </Button>
+                                    error !== 'Create Account' && (
+                                        <Button onClick={approve} disabled={!isValid}>
+                                            {error ?? `Approve ${selectedItem}`}
+                                        </Button>
+                                    )
                                 )}
                             </Flex>
                         </FooterWrapper>
@@ -389,8 +429,10 @@ const CreateVaultContainer = () => {
 
     return (
         <Container>
-            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (
+            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] ? (
                 <CreateVault selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
+            ) : (
+                <ConnectWalletStep />
             )}
         </Container>
     )

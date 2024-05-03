@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import classNames from 'classnames'
-
+import Loader from './Loader'
 import Arrow from './Icons/Arrow'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
@@ -90,7 +90,8 @@ const Button = ({
                     isLoading={isLoading}
                     onClick={onClick}
                 >
-                    {text && t(text)}
+                    {isLoading && <Loader />}
+                    {!isLoading && text && t(text)}
                     {children || null}
                 </UnstyledContainer>
             )
@@ -147,6 +148,9 @@ const Container = styled.button<{ isLoading?: boolean; maxSize?: string }>`
     font-size: 18px;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: ${(props) => props.theme.colors.neutral};
     background: ${(props) => props.theme.colors.gradientBg};
     border-radius: 3px;

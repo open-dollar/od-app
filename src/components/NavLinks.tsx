@@ -143,6 +143,9 @@ const NavBarLink = styled(NavLink)`
             border-radius: 2px;
         }
         ${({ theme }) => theme.mediaWidth.upToSmall`
+    
+        border-bottom: none;
+        
         &:before {
             display:none;
         }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Copy, ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 
 const GeoBlockContainer = () => {
@@ -40,13 +41,15 @@ const GeoBlockContainer = () => {
                     Stablecoins Act currently under debate.
                 </Text>
                 <Textarea value={letter} onChange={(e) => setLetter(e.target.value)} />
-                <Button onClick={copyToClipboard}>{copied ? 'Copied' : 'Copy Text'}</Button>
+                <Button onClick={copyToClipboard}>
+                    {copied ? 'Copied' : 'Copy Text'} <Copy />
+                </Button>
                 <Button
                     onClick={() =>
                         window.open('https://www.congress.gov/bill/118th-congress/house-bill/4766', '_blank')
                     }
                 >
-                    Send Comments to US Legislature
+                    Send Comments to US Legislature <ExternalLink />
                 </Button>
             </CenterBox>
         </Container>
@@ -125,7 +128,9 @@ const Textarea = styled.textarea`
 `
 
 const Button = styled.button`
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     padding: 10px;
     margin-top: 16px;
@@ -142,6 +147,10 @@ const Button = styled.button`
     &:focus {
         outline: none;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    svg {
+        margin-left: 10px;
     }
     @media (max-width: 767px) {
         padding: 12px 0;

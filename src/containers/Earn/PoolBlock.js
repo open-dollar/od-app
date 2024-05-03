@@ -2,20 +2,20 @@ import styled from 'styled-components'
 import Camelot from '~/components/Icons/Camelot'
 import { getTokenLogo } from '~/utils'
 
-const PoolBlock = () => {
+const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, link }) => {
     return (
         <BlockContainer>
             <BlockHeader>
                 <PoolInfo>
                     <PoolData>
-                        <PoolTitle>OD-ETH</PoolTitle>
-                        <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
-                        <img src={getTokenLogo('ETH')} alt={''} width={'50px'} />
+                        <PoolTitle>{title}</PoolTitle>
+                        <img src={getTokenLogo(tokenImg1)} alt={''} width={'50px'} />
+                        <img src={getTokenLogo(tokenImg2)} alt={''} width={'50px'} />
                     </PoolData>
                 </PoolInfo>
-                <ExternalLink href="" target="_blank">
+                <ExternalLink href={link} target="_blank">
                     <Camelot />
-                    VIEW ON CAMELOT EXCHANGE
+                    VIEW ON CAMELOT
                 </ExternalLink>
             </BlockHeader>
             <Block>
@@ -27,15 +27,15 @@ const PoolBlock = () => {
                 </Item>
                 <Item>
                     <Label>TVL</Label>
-                    <Value>$120,000</Value>
+                    <Value>{tvl}</Value>
                 </Item>
                 <Item>
                     <Label>APR</Label>
-                    <Value>134.99%</Value>
+                    <Value>{apr}</Value>
                 </Item>
                 <Item>
                     <Label>Rewards</Label>
-                    <Value>ST-OD-ARB</Value>
+                    <Value>{rewards}</Value>
                 </Item>
             </Block>
         </BlockContainer>

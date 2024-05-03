@@ -1,7 +1,18 @@
 import styled from 'styled-components'
-import PoolBlock from './PoolBlock'
+import PoolBlock from './PoolBlock.js'
 
-const pools = [{ name: 'one' }, { name: 'two' }]
+const pools = [
+    {
+        title: 'OD - ETH',
+        tokenImg1: 'OD',
+        tokenImg2: 'WETH',
+        status: 'Active',
+        tvl: '$3,000',
+        apr: '120%',
+        rewards: 'ODG, ARB',
+        link: 'https://app.camelot.exchange/nitro/0xb6d3AfA311B3677efEd1a1eA500e66469b057A6A',
+    },
+]
 
 const Earn = () => {
     return (
@@ -9,7 +20,7 @@ const Earn = () => {
             <Title>Earn</Title>
             <Pools>
                 {pools.map((pool) => (
-                    <PoolBlock key={pool.name} />
+                    <PoolBlock key={pool.title} {...pool} />
                 ))}
             </Pools>
         </Container>

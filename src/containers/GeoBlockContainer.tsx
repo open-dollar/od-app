@@ -77,11 +77,8 @@ const CenterBox = styled.div`
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    /* backdrop-filter: blur(10px); */
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* overflow-y: auto; */
-    /* max-height: 80vh; */
 `
 
 const Text = styled.p`

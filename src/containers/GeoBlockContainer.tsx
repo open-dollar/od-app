@@ -59,10 +59,11 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-size: cover;
+    padding: 20px;
+    /* background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+    background-repeat: no-repeat; */
+    /* height: 100vh; */
     width: 100%;
     position: relative;
     z-index: 1001;
@@ -72,17 +73,17 @@ const Container = styled.div`
 `
 
 const CenterBox = styled.div`
-    max-width: 600px;
+    max-width: 1000px;
     width: 100%;
-    background-color: ${(props) => props.theme.colors.background};
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    max-height: 80vh;
+    /* overflow-y: auto; */
+    /* max-height: 80vh; */
 `
 
 const Text = styled.p`

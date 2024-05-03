@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
 import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
-import BlockBodyContainer from '~/components/BlockBodyContainer'
 import ApplicationUpdater from '~/services/ApplicationUpdater'
 import { useActiveWeb3React } from '~/hooks'
 import TransactionUpdater from '~/services/TransactionUpdater'
@@ -50,7 +49,6 @@ import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
-import GeoBlockContainer from '~/containers/GeoBlockContainer'
 
 interface Props {
     children: ReactNode
@@ -208,19 +206,11 @@ const Shared = ({ children, ...rest }: Props) => {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
                 setIsGeoblocked(true)
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
                 history.push('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
-                toast(
-                    <ToastPayload
-                        icon={'AlertTriangle'}
-                        iconSize={40}
-                        iconColor={'orange'}
-                        textColor={'#ffffff'}
-                        text={`${t('geoblocked_wallet')}`}
-                    />,
-                    { autoClose: false, type: 'warning', toastId: geoBlockToastId }
-                )
                 return false
             } else {
                 setIsGeoblocked(false)
@@ -304,18 +294,8 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }, [chainId, window.ethereum]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (isGeoblocked) {
-        return (
-            <Container>
-                <GeoBlockContainer />
-                {settingsState.blockBody ? <BlockBodyContainer /> : null}
-            </Container>
-        )
-    }
-
     return (
         <Container>
-            {settingsState.blockBody ? <BlockBodyContainer /> : null}
             <SideMenu />
             <WalletModal />
             <MulticallUpdater />

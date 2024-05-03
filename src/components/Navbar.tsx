@@ -17,9 +17,11 @@ import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
+import BlockBodyContainer from './BlockBodyContainer'
 
 const Navbar = () => {
     const theme = useTheme()
+    const { settingsModel: settingsState } = useStoreState((state) => state)
 
     const [isPopupVisible, setPopupVisibility] = useState(false)
     const [state, setState] = useState({
@@ -180,6 +182,7 @@ const Navbar = () => {
         <ContainerShadowWrapper>
             <Container>
                 <ContentWrapper>
+                    {settingsState.blockBody && <BlockBodyContainer header />}
                     <Left>
                         <Brand />
                         <Price>

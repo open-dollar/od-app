@@ -63,13 +63,8 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     padding: 20px;
-    /* background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; */
-    /* height: 100vh; */
     width: 100%;
     position: relative;
-    z-index: 1001;
     @media (max-width: 767px) {
         padding: 20px;
     }

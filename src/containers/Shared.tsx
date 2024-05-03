@@ -57,7 +57,6 @@ interface Props {
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
     const { chainId, account, provider, connector } = useActiveWeb3React()
-    const [isGeoblocked, setIsGeoblocked] = React.useState(false)
     const geb = useGeb()
     const history = useHistory()
 
@@ -67,7 +66,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
 
-    const { settingsModel: settingsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -84,7 +83,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const geoBlockToastId = 'geoBlockToastHash'
     const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
@@ -209,7 +207,6 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
-                setIsGeoblocked(true)
                 popupsActions.setIsConnectedWalletModalOpen(false)
                 popupsActions.setIsConnectorsWalletOpen(false)
                 history.push('/geoblock')
@@ -217,7 +214,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 settingsActions.setBlockBody(true)
                 return false
             } else {
-                setIsGeoblocked(false)
                 return true
             }
         }

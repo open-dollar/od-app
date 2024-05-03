@@ -208,8 +208,7 @@ const Shared = ({ children, ...rest }: Props) => {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
                 setIsGeoblocked(true)
-                popupsActions.setIsConnectedWalletModalOpen(false)
-                popupsActions.setIsConnectorsWalletOpen(false)
+                history.push('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
                 toast(

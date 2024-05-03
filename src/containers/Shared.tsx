@@ -228,6 +228,51 @@ const Shared = ({ children, ...rest }: Props) => {
         }
         return true
     }
+    const address: string = account ?? ''
+    useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
+        if (
+            (!account && !address) ||
+            (address && !isAddress(address.toLowerCase())) ||
+            !provider ||
+            connectWalletState.isWrongNetwork
+        )
+            return
+
+        async function fetchSafes() {
+            await safeActions.fetchUserSafes({
+                address: address || (account as string),
+                geb,
+                tokensData: connectWalletState.tokensData,
+            })
+        }
+
+        if (geb && connectWalletState.tokensData) {
+            fetchSafes()
+        }
+
+        const ms = 3000
+        const interval = setInterval(() => {
+            if (
+                (!account && !address) ||
+                (address && !isAddress(address.toLowerCase())) ||
+                !provider ||
+                connectWalletState.isWrongNetwork
+            )
+                fetchSafes()
+        }, ms)
+
+        return () => clearInterval(interval)
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
     async function networkChecker() {
         accountChange()
@@ -266,7 +311,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         networkCheckerCallBack()
-    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [account, geb?.getProxyAction]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {

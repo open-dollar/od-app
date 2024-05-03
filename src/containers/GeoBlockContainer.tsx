@@ -19,15 +19,15 @@ const GeoBlockContainer = () => {
     return (
         <Container>
             <CenterBox>
-                <BigText>Location Blocked</BigText>
+                <BigText>Location Unavailable</BigText>
                 <Text>
                     It seems like you are trying to access this interface from a prohibited country or jurisdiction. As
                     a web interface, we must adhere to certain rules and regulations. Please connect from a different
                     location.
                 </Text>
                 <Text>
-                    <b>The Open Dollar protocol is decentralized, fully on-chain, and open-source.</b> No one person has
-                    access to your funds or keys, only you do. You can view the code and run the app locally using our{' '}
+                    The Open Dollar protocol is decentralized, fully on-chain, and open-source. No one person has access
+                    to your funds or keys, only you do. You can view the code and run the app locally using our{' '}
                     <Link href="https://github.com/open-dollar/od-app" target="_blank">
                         GitHub
                     </Link>
@@ -41,16 +41,18 @@ const GeoBlockContainer = () => {
                     Stablecoins Act currently under debate.
                 </Text>
                 <Textarea value={letter} onChange={(e) => setLetter(e.target.value)} />
-                <Button onClick={copyToClipboard}>
-                    {copied ? 'Copied' : 'Copy Text'} <Copy />
-                </Button>
-                <Button
-                    onClick={() =>
-                        window.open('https://www.congress.gov/bill/118th-congress/house-bill/4766', '_blank')
-                    }
-                >
-                    Send Comments to US Legislature <ExternalLink />
-                </Button>
+                <RightAlign>
+                    <Button onClick={copyToClipboard}>
+                        {copied ? 'Copied' : 'Copy Text'} <Copy />
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            window.open('https://www.congress.gov/bill/118th-congress/house-bill/4766', '_blank')
+                        }
+                    >
+                        Send Comments to US Legislature <ExternalLink />
+                    </Button>
+                </RightAlign>
             </CenterBox>
         </Container>
     )
@@ -76,12 +78,19 @@ const CenterBox = styled.div`
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `
 
+const RightAlign = styled.div`
+    width: 100%;
+    display: grid;
+    justify-items: end;
+`
+
 const Text = styled.p`
+    color: ${(props: any) => props.theme.colors.tertiary};
     margin-bottom: 16px;
     font-size: 18px;
     line-height: 1.6;
@@ -100,6 +109,7 @@ const Link = styled.a`
 `
 
 const Textarea = styled.textarea`
+    color: ${(props: any) => props.theme.colors.tertiary};
     width: 100%;
     min-height: 150px;
     margin-top: 16px;
@@ -123,7 +133,7 @@ const Button = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    // width: 100%;
     padding: 10px;
     margin-top: 16px;
     font-size: 18px;
@@ -151,6 +161,7 @@ const Button = styled.button`
 `
 
 const BigText = styled(Text)`
+    color: ${(props: any) => props.theme.colors.primary};
     margin-bottom: 20px;
     font-size: 36px;
     font-weight: 900;

@@ -342,6 +342,15 @@ export interface ISafeQuery extends ILiquidationResponse {
     ]
 }
 
+export interface IFetchNitroPool {
+    geb: Geb
+    poolAddress: string
+}
+
+export interface INitroPool {
+    
+}
+
 export interface IFetchTokensDataPayload {
     geb: Geb
     user: string

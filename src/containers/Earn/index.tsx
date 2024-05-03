@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 import PoolBlock from './PoolBlock.js'
+import { useStoreState } from 'easy-peasy'
+import { useStoreActions } from 'easy-peasy'
+import { useEffect } from 'react'
+import useGeb from '~/hooks/useGeb'
 
 const pools = [
     {
@@ -15,11 +19,20 @@ const pools = [
 ]
 
 const Earn = () => {
+    const geb = useGeb()
+    const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
+    const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((actions) => actions) 
+    const { nitroPools } = nitroPoolsState
+
+    useEffect(() => {
+        nitroPoolsActions.fetchNitroPool({ geb, poolAddress: '0x4391D56A8E56BE1fB30a45bAa0E5B7a4b488FbAa' })
+    }, [])
+
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
-                {pools.map((pool) => (
+                {nitroPools || pools.map((pool) => (
                     <PoolBlock key={pool.title} {...pool} />
                 ))}
             </Pools>

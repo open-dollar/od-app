@@ -3,9 +3,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
-import AuctionsFAQ from '~/components/AuctionsFAQ'
 import AlertLabel from '~/components/AlertLabel'
-import Modal from '~/components/Modals/Modal'
 import { AuctionEventType } from '~/types'
 import { useStoreActions, useStoreState } from '~/store'
 import AuctionsList from './AuctionsList'
@@ -22,7 +20,6 @@ const Auctions = ({
     const { account } = useActiveWeb3React()
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
     const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
-    const [showFaqs, setShowFaqs] = useState(false)
     const query = useQuery()
     const queryType = query.get('type') as AuctionEventType | null
     const [type, setType] = useState<AuctionEventType>(queryType || 'COLLATERAL')
@@ -31,6 +28,17 @@ const Auctions = ({
     const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
     const geb = useGeb()
     const history = useHistory()
+
+    const getText = () => {
+        switch (type) {
+            case 'COLLATERAL':
+                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
+            case 'SURPLUS':
+                return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
+            case 'DEBT':
+                return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
+        }
+    }
 
     const {
         startSurplusAcution,
@@ -137,30 +145,9 @@ const Auctions = ({
 
     return (
         <Container>
-            <Modal
-                isModalOpen={showFaqs}
-                closeModal={() => setShowFaqs(false)}
-                maxWidth={'650px'}
-                backDropClose
-                hideHeader
-                hideFooter
-                handleModalContent
-            >
-                <ReviewContainer>
-                    <AuctionsFAQ type={type} />
-                    <BtnContainer>
-                        <Button onClick={() => setShowFaqs(false)}>{'Close FAQs'}</Button>{' '}
-                    </BtnContainer>
-                </ReviewContainer>
-            </Modal>
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
-                <Button
-                    primary
-                    text={`Show ${type.toLowerCase()} Auctions FAQs`}
-                    onClick={() => setShowFaqs(!showFaqs)}
-                />
             </Content>
 
             <Switcher>
@@ -174,71 +161,73 @@ const Auctions = ({
                     Debt Auctions
                 </Tab>
             </Switcher>
+            <Description>{getText()}</Description>
+            <Wrapper>
+                {type === 'SURPLUS' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Surplus: </SurplusTitle>
+                                    <span>{formatNumber(systemSurplus, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
+                                </Box>
 
-            {type === 'SURPLUS' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Surplus: </SurplusTitle>
-                                <span>{formatNumber(systemSurplus, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Surplus Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(surplusAmountToSell, 2)} OD</span>
-                            </Box>
+                                {!surplusCooldownDone || allowStartSurplusAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
+                                )}
 
-                            {!surplusCooldownDone || allowStartSurplusAuction ? null : (
-                                <Box>({formatNumber(deltaToStartSurplusAuction, 2)} OD) to start an auction</Box>
-                            )}
+                                {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
+                            </div>
+                            <Button
+                                text={'Start Surplus Auction'}
+                                onClick={handleStartSurplusAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartSurplusAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
 
-                            {!surplusCooldownDone && <Box>Cooldown period is active</Box>}
-                        </div>
-                        <Button
-                            text={'Start Surplus Auction'}
-                            onClick={handleStartSurplusAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartSurplusAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
+                {type === 'DEBT' && account ? (
+                    <StartAuctionContainer>
+                        <Box style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <Box>
+                                    <SurplusTitle>System Debt: </SurplusTitle>
+                                    <span>{formatNumber(systemDebt, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
+                                    <span>{formatNumber(debtAmountToSell, 2)} OD</span>
+                                </Box>
+                                <Box>
+                                    <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
+                                    <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
+                                </Box>
 
-            {type === 'DEBT' && account ? (
-                <StartAuctionContainer>
-                    <Box style={{ justifyContent: 'space-between' }}>
-                        <div>
-                            <Box>
-                                <SurplusTitle>System Debt: </SurplusTitle>
-                                <span>{formatNumber(systemDebt, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Debt Amount to Sell: </SurplusTitle>
-                                <span>{formatNumber(debtAmountToSell, 2)} OD</span>
-                            </Box>
-                            <Box>
-                                <SurplusTitle>Protocol Tokens to be Offered: </SurplusTitle>
-                                <span>{formatNumber(protocolTokensOffered, 2)} ODG</span>
-                            </Box>
-
-                            {allowStartDebtAuction ? null : (
-                                <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
-                            )}
-                        </div>
-                        <Button
-                            text={'Start Debt Auction'}
-                            onClick={handleStartDebtAuction}
-                            isLoading={isLoading}
-                            disabled={isLoading || !allowStartDebtAuction}
-                        />
-                    </Box>
-                </StartAuctionContainer>
-            ) : null}
-            {type === 'COLLATERAL' ? (
-                <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            ) : (
-                <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            )}
+                                {allowStartDebtAuction ? null : (
+                                    <Box>({formatNumber(deltaToStartDebtAuction, 2)} OD) to start an auction</Box>
+                                )}
+                            </div>
+                            <Button
+                                text={'Start Debt Auction'}
+                                onClick={handleStartDebtAuction}
+                                isLoading={isLoading}
+                                disabled={isLoading || !allowStartDebtAuction}
+                            />
+                        </Box>
+                    </StartAuctionContainer>
+                ) : null}
+                {type === 'COLLATERAL' ? (
+                    <CollateralAuctionsList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                ) : (
+                    <AuctionsList type={type} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                )}
+            </Wrapper>
         </Container>
     )
 }
@@ -246,7 +235,7 @@ const Auctions = ({
 export default Auctions
 
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1362px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
@@ -254,66 +243,86 @@ const Container = styled.div`
     }
 `
 
+const Wrapper = styled.div`
+    background: white;
+    border-radius: 4px;
+`
+
+const Description = styled.div`
+    background-color: white;
+    border-radius: 3px;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
+    text-align: center;
+`
+
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
-    font-weight: 600;
+    font-size: 34px;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+
+    color: ${(props) => props.theme.colors.accent};
     min-width: 180px;
 `
 const Content = styled.div`
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     button {
+        display: flex;
+        align-items: center;
+
         min-width: 100px;
         padding: 4px 12px;
-        font-size: 13px;
-        font-weight: normal;
-        text-transform: capitalize;
+
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        color: ${(props) => props.theme.colors.accent};
     }
 `
 
 const Switcher = styled.div`
     display: flex;
     align-items: 'center';
-    border-radius: 20px;
-    background: ${(props) => props.theme.colors.colorSecondary};
-    width: fit-content;
+    border-radius: 4px;
+    background: white;
+    width: 100%;
     margin: 40px auto;
     padding: 10px;
     flex-wrap: wrap;
+    gap: 25px;
 `
 
 const Tab = styled.div`
-    background: transparent;
+    background: white;
     flex: 1;
     text-align: center;
     min-width: fit-content;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 3px;
     padding: 10px 20px;
     color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
     &.active {
-        background: ${(props) => props.theme.colors.colorPrimary};
+        background: ${(props) => props.theme.colors.primary};
+        color: white;
     }
-`
-
-const ReviewContainer = styled.div`
-    padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
-`
-
-const BtnContainer = styled.div`
-    padding-top: 20px;
-    text-align: center;
 `
 
 const Box = styled.div`
     display: flex;
     align-items: center;
+    color: ${(props) => props.theme.colors.tertiary};
     span {
         font-weight: bold;
     }
+
     @media (max-width: 767px) {
         flex-direction: column;
         margin-bottom: 15px;
@@ -329,4 +338,8 @@ const StartAuctionContainer = styled.div`
     padding: 10px 20px;
     border-radius: 15px;
     background: ${(props) => props.theme.colors.colorSecondary};
+
+    button {
+        width: 300px;
+    }
 `

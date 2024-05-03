@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+import { Info } from 'react-feather'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
 
@@ -9,6 +11,8 @@ export interface TableProps {
 
 interface HeadsContainerProps {
     index?: number
+    key?: string
+    children: ReactNode
 }
 
 interface ListItemProps {
@@ -23,8 +27,16 @@ export const DataTable = ({ title, colums, rows }: TableProps) => {
                     <Heads>
                         {colums?.map(({ name, description }, index) => (
                             <HeadsContainer key={title + '-column-' + index} index={index}>
-                                <Head data-tooltip-content={description} data-tooltip-id="collaterals-table">
+                                <Head>
                                     {name}
+                                    {description && (
+                                        <InfoIcon
+                                            data-tooltip-id="collaterals-table"
+                                            data-tooltip-content={description}
+                                        >
+                                            <Info size="20" color="#1C293A" opacity={'50%'} />
+                                        </InfoIcon>
+                                    )}
                                 </Head>
                             </HeadsContainer>
                         ))}
@@ -61,7 +73,7 @@ export const Container = styled.div`
 export const Header = styled.div`
     width: 100%;
     border-radius: 15px 15px 0 0;
-    font-size: ${(props) => props.theme.font.small};
+    font-size: ${(props: any) => props.theme.font.small};
     font-weight: 600;
     padding: 20px;
     display: flex;
@@ -75,19 +87,8 @@ export const Header = styled.div`
 `
 
 export const InfoIcon = styled.div`
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 0;
-    top: -2px;
-
-    svg {
-        fill: ${(props) => props.theme.colors.foreground};
-        color: ${(props) => props.theme.colors.secondary};
-        position: relative;
-    }
+    z-index: 0 !important;
+    margin-left: 10px;
 `
 
 export const Content = styled.div`
@@ -124,7 +125,7 @@ export const Content = styled.div`
 `
 
 export const SectionContent = styled.div`
-    font-size: ${(props) => props.theme.font.default};
+    font-size: ${(props: any) => props.theme.font.default};
     width: 100%;
 `
 
@@ -146,7 +147,7 @@ export const HeadsContainer = styled.div<HeadsContainerProps>`
     justify-content: start;
     width: max-content;
 
-    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
+    text-align: ${(props: any) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
 `
 
 export const Heads = styled.div`
@@ -164,8 +165,8 @@ export const Heads = styled.div`
         z-index: 10;
     }
 
-    & div:first-child {
-        background-color: #001828;
+    & div {
+        background-color: ${(props: any) => props.theme.colors.background};
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -187,15 +188,15 @@ export const ListContainer = styled.div`
 
 export const Head = styled.p`
     /* flex: 0 0 16.6%; */
+    display: flex;
+    align-items: center;
     font-size: 12px;
     width: 174px;
-    font-weight: 600;
+    font-weight: 400;
+
     text-transform: uppercase;
-    color: #4a4d53;
-    padding-left: 10px;
-    &:first-child {
-        padding: 0 25px;
-    }
+    color: ${(props: any) => props.theme.colors.tertiary};
+    padding-left: 18px;
 `
 
 export const ListItemLabel = styled.span`
@@ -205,18 +206,18 @@ export const ListItemLabel = styled.span`
     margin-bottom:5px;
     font-weight:normal;
     width: max-content;
-   color: ${(props) => props.theme.colors.customSecondary};
+   color: ${(props: any) => props.theme.colors.customSecondary};
   `}
 `
 
 export const List = styled.div`
     display: flex;
-    border-radius: 4px;
+    border-radius: 0px;
     width: max-content;
 
     align-items: start;
     justify-content: space-between;
-    background: #002b40;
+    background: white;
     margin-bottom: 24px;
 
     & div:nth-child(1) div {
@@ -227,7 +228,7 @@ export const List = styled.div`
     ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-wrap:wrap;
     width: unset;
-    border:1px solid ${(props) => props.theme.colors.border};
+    border:1px solid ${(props: any) => props.theme.colors.border};
     margin-bottom:10px;
     &:last-child {
       margin-bottom:0;
@@ -237,20 +238,26 @@ export const List = styled.div`
 `
 
 export const ListItem = styled.div<ListItemProps>`
-    /* flex: 0 0 16.6%; */
     width: 174px;
-    color: ${(props) => props.theme.colors.customSecondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
+    color: ${(props: any) => props.theme.colors.tertiary};
+    font-size: ${(props: any) => props.theme.font.xSmall};
+    font-weight: 700;
     padding: 15px 10px;
     &:first-child {
-        padding: 15px 25px;
+        padding: 15px 19px;
     }
 
     &:nth-child(1) {
-        background-color: #002b40;
+        background-color: white;
     }
 
-    text-align: ${(props) => (props.index !== undefined && props.index <= 2 ? 'start' : 'end')};
+    text-align: start;
+
+    a {
+        color: ${(props: any) => props.theme.colors.primary};
+        font-weight: 700;
+        font-size: ${(props: any) => props.theme.font.xSmall};
+    }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
       &:first-child {
@@ -261,7 +268,7 @@ export const ListItem = styled.div<ListItemProps>`
 
     flex: 0 0 50%;
     min-width:50%;
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props: any) => props.theme.font.xSmall};
     font-weight:900;
   `}
 `

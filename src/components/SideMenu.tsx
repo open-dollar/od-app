@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber } from '~/utils'
+import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -15,6 +15,7 @@ import { fetchPoolData } from '@opendollar/sdk'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
+import { X } from 'react-feather'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -26,6 +27,7 @@ const SideMenu = () => {
         totalLiquidity: '',
     })
     const popupRef = useRef<HTMLDivElement | null>(null)
+    const priceRef = useRef<HTMLDivElement | null>(null)
     const { isActive, account, chainId } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const geb = useGeb()
@@ -66,8 +68,8 @@ const SideMenu = () => {
         }
     }
 
-    const handleClickOutsideOdWallet = (event: MouseEvent) => {
-        if (odRef.current && !odRef.current.contains(event.target as Node)) {
+    const handleClickOutsidePrice = (event: MouseEvent) => {
+        if (priceRef.current && !priceRef.current.contains(event.target as Node)) {
             setTokenPopupVisibility(false)
         }
     }
@@ -158,13 +160,13 @@ const SideMenu = () => {
         fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
-        document.addEventListener('mousedown', handleClickOutsideOdWallet)
+        document.addEventListener('mousedown', handleClickOutsidePrice)
 
         return () => {
             // Cleanup the event listener on component unmount
             document.removeEventListener('mousedown', handleClickOutsideOdRef)
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
-            document.removeEventListener('mousedown', handleClickOutsideOdWallet)
+            document.removeEventListener('mousedown', handleClickOutsidePrice)
         }
     }, [geb, chainId])
 
@@ -187,12 +189,7 @@ const SideMenu = () => {
                     <Overlay onClick={() => popupsActions.setShowSideMenu(false)} />
                     <InnerContainer>
                         <CloseButtonContainer onClick={() => popupsActions.setShowSideMenu(false)}>
-                            <img
-                                src={require('../assets/close-icon.svg').default}
-                                height={'24px'}
-                                width={'24px'}
-                                alt="X"
-                            />
+                            <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
                         <AccountBalance>
                             {isActive && account ? (
@@ -215,21 +212,24 @@ const SideMenu = () => {
                             )}
                         </AccountBalance>
                         <NavLinks />
+
                         <OpenDollarInformationColumn>
                             <Price>
-                                <DollarValue ref={odRef} onClick={handleTokenClick}>
-                                    <Icon
-                                        src={require('../assets/od-wallet-icon.svg').default}
-                                        width={'16px'}
-                                        height={'16px'}
-                                    />
-                                    {odBalance + ' '} OD
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
-                                </DollarValue>
+                                {account && (
+                                    <DollarValue ref={odRef} onClick={handleTokenClick}>
+                                        <Icon
+                                            src={require('../assets/wallet-icon.svg').default}
+                                            width={'16px'}
+                                            height={'16px'}
+                                        />
+                                        {odBalance + ' '} OD
+                                        <ArrowWrapper>
+                                            <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                        </ArrowWrapper>
+                                    </DollarValue>
+                                )}
                                 {isTokenPopupVisible && (
-                                    <PriceInfoPopup className="group">
+                                    <PriceInfoPopup className="group" ref={priceRef}>
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
@@ -272,7 +272,11 @@ const SideMenu = () => {
                                 </DollarValue>
                                 {isPopupVisible && (
                                     <LiquidityPriceInfoPopup ref={popupRef} className="group">
-                                        <PopupWrapperLink className="group">
+                                        <PopupWrapperLink
+                                            href="https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
                                             <IconWrapper>
                                                 <Camelot />
                                             </IconWrapper>
@@ -285,12 +289,14 @@ const SideMenu = () => {
                                 )}
                             </Price>
                             <Price ref={testTokenPopupRef}>
-                                <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
-                                    Test tokens 🪂
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
-                                </ClaimButton>
+                                {ETH_NETWORK === 'arbitrum-sepolia' && (
+                                    <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
+                                        Test tokens 🪂
+                                        <ArrowWrapper>
+                                            <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
+                                        </ArrowWrapper>
+                                    </ClaimButton>
+                                )}
                                 {isTestTokenPopupVisible && (
                                     <TestTokenPopup className="group">
                                         <TestTokenTextWrapper>
@@ -319,10 +325,11 @@ const CamelotText = styled.div`
 `
 
 const TestTokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
+    color: ${(props) => props.theme.colors.neutral};
     text-align: left;
     font-weight: 600;
-    color: #0079ad;
+    color: white;
     word-wrap: break-word;
     max-width: 100%;
 `
@@ -330,7 +337,8 @@ const TestTokenPopup = styled.div`
     position: absolute;
     max-width: 150px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
 `
@@ -342,10 +350,10 @@ const PopupColumnWrapper = styled.div`
 `
 
 const TokenTextWrapper = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     text-align: left;
     font-weight: 600;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.neutral};
     margin-bottom: 8px;
 `
 
@@ -365,7 +373,13 @@ const OpenDollarInformationColumn = styled.div`
     }
 `
 
-const PopupColumn = styled.div``
+const ClaimButton = styled.div`
+    display: flex;
+`
+
+const PopupColumn = styled.div`
+    color: ${(props) => props.theme.colors.neutral};
+`
 
 const IconWrapper = styled.div`
     display: flex;
@@ -377,8 +391,15 @@ const PopupWrapperTokenLink = styled.a`
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+
     cursor: pointer;
+    background-color: white;
+    border-radius: 4px;
+    padding: 3px;
+
+    div {
+        color: ${(props) => props.theme.colors.primary};
+    }
 `
 
 const PopupWrapperLink = styled.a`
@@ -386,7 +407,7 @@ const PopupWrapperLink = styled.a`
     gap: 8px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${(props) => props.theme.colors.primary};
 `
 
 const Price = styled.div`
@@ -399,9 +420,14 @@ const LiquidityPriceInfoPopup = styled.div`
     z-index: 500;
     min-width: 190px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
+
+    a {
+        color: inherit;
+    }
 `
 
 const PriceInfoPopup = styled.div`
@@ -409,7 +435,8 @@ const PriceInfoPopup = styled.div`
     z-index: 500;
     min-width: 160px;
     padding: 8px;
-    background: ${(props) => props.theme.colors.colorPrimary};
+    background: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.neutral};
     border-radius: 8px;
     top: 45px;
 `
@@ -432,7 +459,7 @@ const OdButton = styled.button`
     line-height: 24px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
-    color: ${(props) => props.theme.colors.neutral};
+    color: ${(props) => props.theme.colors.primary};
     background: ${(props) => props.theme.colors.colorPrimary};
     border-radius: 50px;
     transition: all 0.3s ease;
@@ -446,8 +473,6 @@ const OdButton = styled.button`
     }
 `
 
-const ClaimButton = styled(OdButton)``
-
 const DollarValue = styled(OdButton)`
     width: auto;
     white-space: nowrap;
@@ -455,13 +480,10 @@ const DollarValue = styled(OdButton)`
 
 // close button container should be button on right side of screen
 const CloseButtonContainer = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
     padding: 30px;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
+    display: flex;
+    justify-content: end;
 `
 
 const Container = styled.div`
@@ -472,6 +494,7 @@ const Container = styled.div`
     height: 100%;
     z-index: 997;
     overflow-y: auto;
+    font-size: ${(props) => props.theme.font.medium};
 
     &.fade-appear {
         opacity: 0;
@@ -499,7 +522,7 @@ const Overlay = styled.div`
 const InnerContainer = styled.div`
     min-height: 100vh;
     width: calc(100% - 50px);
-    background: ${(props) => props.theme.colors.background};
+    background: ${(props) => props.theme.colors.neutral};
     padding-bottom: 1rem;
     position: relative;
     z-index: 2;
@@ -507,13 +530,21 @@ const InnerContainer = styled.div`
 `
 
 const ConnectBtnContainer = styled.div`
-    text-align: left;
+    text-align: center;
     width: 100%;
+    margin: 0 auto;
+
+    button {
+        border-radius: 3px;
+        width: fit-content;
+        padding: 15px 45px;
+        font-size: ${(props) => props.theme.font.medium};
+    }
 `
 
 const AccountBalance = styled.div`
-    padding: 30px 20px 20px 25px;
     margin-bottom: 15px;
+    padding: 15px;
 `
 
 const Balance = styled.div`

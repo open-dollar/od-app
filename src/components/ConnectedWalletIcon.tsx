@@ -46,7 +46,7 @@ const ConnectedWalletIcon = ({ size }: Props) => {
 
 export default ConnectedWalletIcon
 
-export const IconWrapper = styled.div<{ size?: number }>`
+export const IconWrapper = styled.div<{ size?: number; children?: React.ReactNode; className?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;

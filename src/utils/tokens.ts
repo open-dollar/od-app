@@ -13,7 +13,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     WETH: require('../assets/eth-img.svg').default,
     OD: require('../assets/od-logo.svg').default,
     ODG: require('../assets/odg.svg').default,
-    WSTETH: require('../assets/stETH.svg').default,
+    WSTETH: require('../assets/wsteth.svg').default,
     CBETH: require('../assets/cbETH.svg').default,
     RETH: require('../assets/rETH.svg').default,
     ARB: require('../assets/arb.svg').default,

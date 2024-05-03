@@ -24,6 +24,7 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                 }
             />
             <Stats>
+                <span className="Overview">Overview</span>
                 {Object.keys(stats).map((key) => {
                     const isPrimary = key === 'data'
                     return (
@@ -38,15 +39,15 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
                                 return (
                                     <Flex key={item.label}>
                                         <Label color={isPrimary ? 'primary' : 'secondary'}>
+                                            {item.label}
                                             {item.tip ? (
                                                 <InfoIcon
                                                     data-tooltip-id="tooltip-review"
                                                     data-tooltip-content={item.tip}
                                                 >
-                                                    <Info size="13" />
+                                                    <Info color="#1C293A" size="20" />
                                                 </InfoIcon>
                                             ) : null}
-                                            {item.label}
                                         </Label>
                                         <Value>{item.value}</Value>
                                     </Flex>
@@ -63,9 +64,15 @@ const ReviewTransaction = ({ type }: { type: SafeTypes }) => {
 export default ReviewTransaction
 const Box = styled.div``
 const Stats = styled.div`
+    .Overview {
+        font-size: 22px;
+        color: #1c293a;
+        line-height: 26.4px;
+        font-weight: 700;
+    }
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.placeholder};
+    border-radius: 4px;
+    background: #e2f1ff;
     .blockie {
         border-bottom: 1px solid ${(props) => props.theme.colors.border};
         &:last-child {
@@ -98,8 +105,9 @@ const Flex = styled.div`
     }
 `
 const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.primary)};
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
+    color: #1c293a;
     display: flex;
     align-items: center;
     svg {
@@ -108,16 +116,18 @@ const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
 `
 
 const Value = styled.div`
-    font-size: ${(props) => props.theme.font.small};
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    line-height: 26.4px;
     color: ${(props) => props.theme.colors.primary};
 `
 
 const InfoIcon = styled.div`
     cursor: pointer;
     svg {
-        fill: ${(props) => props.theme.colors.secondary};
-        color: ${(props) => props.theme.colors.placeholder};
-        position: relative;
-        top: 2px;
+        opacity: 0.5;
+        margin-left: 4px;
+        color: #1c293a;
     }
 `

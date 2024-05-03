@@ -43,6 +43,7 @@ const Container = styled.div`
 
 const Text = styled.div`
     display: flex;
+    color: white;
     align-items: center;
     ${ExternalLinkArrow}
     svg {

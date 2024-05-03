@@ -70,12 +70,14 @@ export async function handlePreTxGasEstimate(
     try {
         gasLimit = await signer.estimateGas(tx)
     } catch (err: any) {
+        console.log(tx)
         let gebError: string | null
         try {
             const res = await signer.call(tx)
             gebError = gebUtils.getRequireString(res)
         } catch (err) {
             gebError = gebUtils.getRequireString(err)
+            throw Error(`Geb error: ${gebError}, signer: ${signer}, tx: ${tx}`)
         }
 
         let errorMessage: string
@@ -90,7 +92,7 @@ export async function handlePreTxGasEstimate(
             status: 'error',
         })
         console.error(errorMessage)
-        throw errorMessage
+        throw Error(`Geb error: ${gebError}, signer: ${signer}, tx: ${tx}`)
     }
 
     // Add 20% slack in the gas limit

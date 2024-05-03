@@ -108,22 +108,24 @@ const HeroSection = styled.div`
 `
 const Header = styled.div`
     font-size: ${(props) => props.theme.font.large};
-    font-weight: 900;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     cursor: pointer;
     button {
         margin-left: 10px;
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
         min-width: auto !important;
         border-radius: 25px;
         padding: 2px 10px;
         background: linear-gradient(225deg, #4ce096 0%, #78d8ff 100%);
     }
 
-    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    ${({ theme }) => theme.mediaWidth.upToxSmall`
     flex-direction:column;
     margin-bottom:25px;
     button {
@@ -138,13 +140,14 @@ const Content = styled.div`
 `
 const SectionHeading = styled.div`
     font-size: ${(props) => props.theme.font.default};
-    font-weight: bold;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
 `
 const SectionContent = styled.div`
     margin-top: 10px;
-    font-size: ${(props) => props.theme.font.small};
-    line-height: 23px;
-    color: ${(props) => props.theme.colors.secondary};
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.accent};
     text-align: left;
 `
 
@@ -157,7 +160,7 @@ const Col = styled.div`
 
 const InnerCol = styled.div`
     background: ${(props) => props.theme.colors.background};
-    border-radius: 20px;
+    border-radius: 3px;
     padding: 20px;
     text-align: center;
 `

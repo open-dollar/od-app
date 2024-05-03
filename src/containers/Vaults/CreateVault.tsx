@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
-import { ArrowLeft, Info, Loader } from 'react-feather'
+import { ChevronLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
+import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
-
+import { useTransactionAdder } from '~/hooks'
 import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
@@ -16,7 +17,6 @@ import Button from '~/components/Button'
 import Review from './Review'
 import {
     handleTransactionError,
-    useTokenBalanceInUSD,
     useActiveWeb3React,
     useInputsHandlers,
     useTokenApproval,
@@ -24,6 +24,7 @@ import {
     useSafeInfo,
     StatsType,
 } from '~/hooks'
+import ConnectWalletStep from '~/components/ConnectWalletStep'
 
 const CreateVault = ({
     selectedItem,
@@ -34,9 +35,13 @@ const CreateVault = ({
     setSelectedItem: (item: string) => void
     collaterals: TokenData[]
 }) => {
+    const geb = useGeb()
+    const addTransaction = useTransactionAdder()
     const { stats, error, availableHai, parsedAmounts, totalCollateral, totalDebt, collateralRatio, liquidationPrice } =
         useSafeInfo('create')
-    const { provider, account } = useActiveWeb3React()
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { blockNumber } = connectWalletState
+    const { provider, account, chainId } = useActiveWeb3React()
     const [showPreview, setShowPreview] = useState(false)
     const {
         safeModel: safeState,
@@ -74,7 +79,6 @@ const CreateVault = ({
     const selectedCollateral = tokensData && tokensData[selectedItem]
     const selectedCollateralBalance = formattedCollateralBalances[selectedItem]
     const selectedCollateralDecimals = tokensFetchedData[selectedItem].decimals
-    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
 
     const redirectToWrapEth = () => {
         const url = 'https://wrapeth.com/'
@@ -103,9 +107,10 @@ const CreateVault = ({
             )
         )
     )
-
+    const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
-    const onMaxRightInput = () => onRightInput(availableHai.toString())
+    //available hai - 5% of available hai, this is a buffer to prevent bugs.
+    const onMaxRightInput = () => onRightInput(maxHaiWithBuffer.toString())
 
     const onClearAll = useCallback(() => {
         clearAll()
@@ -188,6 +193,35 @@ const CreateVault = ({
         true
     )
 
+    const handleCreateAccount = async () => {
+        if (!account || !provider || !chainId) return false
+        const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
+        const signer = provider.getSigner(account)
+        try {
+            connectWalletActions.setIsStepLoading(true)
+            popupsActions.setWaitingPayload({
+                title: 'Waiting For Confirmation',
+                text: `Creating facilitator`,
+                hint: 'Confirm this transaction in your wallet',
+                status: 'loading',
+            })
+            const txResponse = await signer.sendTransaction(txData)
+            connectWalletActions.setCtHash(txResponse.hash)
+            addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
+            popupsActions.setWaitingPayload({
+                title: 'Transaction Submitted',
+                hash: txResponse.hash,
+                status: 'success',
+            })
+            await txResponse.wait()
+        } catch (e) {
+            connectWalletActions.setStep(2)
+            connectWalletActions.setIsStepLoading(false)
+            handleTransactionError(e)
+        }
+        connectWalletActions.setIsStepLoading(false)
+    }
+
     return (
         <>
             <Modal
@@ -212,135 +246,152 @@ const CreateVault = ({
                 <Content>
                     <Header>
                         <Btn>
-                            <ArrowLeft onClick={() => history.goBack()} />
+                            <FlexBtn onClick={() => history.goBack()}>
+                                <ChevronLeft />
+                                <span>Back</span>
+                            </FlexBtn>
                         </Btn>
                         <span className="title"> {t('create_safe')}</span>
-                        <Btn className="clear" onClick={reset}>
-                            Clear All
-                        </Btn>
                     </Header>
                     <Box>
-                        {selectedCollateral ? (
-                            <Col>
-                                <DropDownContainer>
-                                    <SideLabel>{`Select Collateral Type`}</SideLabel>
-                                    <Dropdown
-                                        items={collateralsDropdown}
-                                        itemSelected={dropdownSelected}
-                                        getSelectedItem={setSelectedItem}
-                                    />
-                                    {dropdownSelected.name === 'WETH' && (
-                                        <WrapBox>
-                                            Don't have WETH?{' '}
-                                            <WrapBtn onClick={wrapEth} color="secondary">
-                                                Wrap ETH
-                                            </WrapBtn>
-                                        </WrapBox>
-                                    )}
-                                </DropDownContainer>
+                        <ColWrapper>
+                            {selectedCollateral ? (
+                                <Col>
+                                    <DropDownContainer>
+                                        <SideLabel>{`Select Collateral Type`}</SideLabel>
+                                        <Dropdown
+                                            items={collateralsDropdown}
+                                            itemSelected={dropdownSelected}
+                                            getSelectedItem={setSelectedItem}
+                                            fontSize="14px"
+                                        />
+                                        {dropdownSelected.name === 'WETH' && (
+                                            <WrapBox>
+                                                Don't have WETH?{' '}
+                                                <WrapBtn onClick={wrapEth} color="secondary">
+                                                    Wrap ETH
+                                                </WrapBtn>
+                                            </WrapBox>
+                                        )}
+                                    </DropDownContainer>
 
-                                <Inputs>
-                                    <SideLabel>{`Deposit ${selectedItem} and Borrow OD`}</SideLabel>
+                                    <Inputs>
+                                        <SideLabel>{`Deposit ${selectedItem} and Borrow OD`}</SideLabel>
 
-                                    <TokenInput
-                                        token={
-                                            selectedCollateral?.symbol
-                                                ? {
-                                                      name: selectedCollateral?.symbol || '-',
-                                                      icon: getTokenLogo(selectedCollateral?.symbol),
-                                                  }
-                                                : undefined
-                                        }
-                                        label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
-                                            selectedCollateral?.symbol
-                                        }`}
-                                        rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
-                                        onChange={onLeftInput}
-                                        value={leftInput}
-                                        handleMaxClick={onMaxLeftInput}
-                                        data_test_id="deposit_borrow"
-                                        decimals={Number(selectedCollateralDecimals)}
-                                    />
-
-                                    <br />
-                                    <TokenInput
-                                        token={
-                                            tokensData.OD && {
-                                                icon: getTokenLogo(tokensData.OD.symbol),
-                                                name: tokensData.OD.symbol,
+                                        <TokenInput
+                                            token={
+                                                selectedCollateral?.symbol
+                                                    ? {
+                                                          name: selectedCollateral?.symbol || '-',
+                                                          icon: getTokenLogo(selectedCollateral?.symbol),
+                                                      }
+                                                    : undefined
                                             }
-                                        }
-                                        label={`Borrow OD: ${formatWithCommas(availableHai)} ${tokensData.OD?.symbol}`}
-                                        rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
-                                        onChange={onRightInput}
-                                        value={rightInput}
-                                        handleMaxClick={onMaxRightInput}
-                                        data_test_id="repay_withdraw"
-                                    />
-                                </Inputs>
-                            </Col>
-                        ) : (
-                            <Col>
-                                <Loader width={'100%'} />
-                            </Col>
-                        )}
+                                            label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
+                                                selectedCollateral?.symbol
+                                            }`}
+                                            rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
+                                            onChange={onLeftInput}
+                                            value={leftInput}
+                                            handleMaxClick={onMaxLeftInput}
+                                            data_test_id="deposit_borrow"
+                                            decimals={Number(selectedCollateralDecimals)}
+                                        />
 
-                        <Col>
-                            <Stats>
-                                {Object.keys(stats).map((key) => {
-                                    const isPrimary = key === 'data'
-                                    return (
-                                        <div key={key} className="blockie">
-                                            {stats[key as StatsType].map((item) => {
-                                                return (
-                                                    <Flex key={item.label}>
-                                                        <Label color={isPrimary ? 'primary' : 'secondary'}>
-                                                            {item.tip ? (
-                                                                <InfoIcon
-                                                                    data-tooltip-id="tooltip-create-vault"
-                                                                    data-tooltip-content={item.tip}
-                                                                >
-                                                                    <Info size="13" />
-                                                                </InfoIcon>
-                                                            ) : null}
-                                                            {item.label}
-                                                        </Label>
-                                                        <Value>
-                                                            {item.value !== '-' &&
-                                                            item.label.toLowerCase().includes('collateral') &&
-                                                            item.label.toLowerCase().includes('total')
-                                                                ? formatWithCommas(item.value)
-                                                                : item.value}
-                                                        </Value>
-                                                    </Flex>
-                                                )
-                                            })}
-                                        </div>
+                                        <br />
+                                        <TokenInput
+                                            token={
+                                                tokensData.OD && {
+                                                    icon: getTokenLogo(tokensData.OD.symbol),
+                                                    name: tokensData.OD.symbol,
+                                                }
+                                            }
+                                            label={`Borrow OD: ${formatWithCommas(availableHai)} ${
+                                                tokensData.OD?.symbol
+                                            }`}
+                                            rightLabel={`~$${formatWithCommas(maxHaiWithBuffer)}`}
+                                            onChange={onRightInput}
+                                            value={rightInput}
+                                            handleMaxClick={onMaxRightInput}
+                                            data_test_id="repay_withdraw"
+                                        />
+                                    </Inputs>
+                                    <Note data-test-id="debt_floor_note">
+                                        {` The minimum amount to mint per vault is ${debtFloor} OD`}
+                                    </Note>
+                                </Col>
+                            ) : (
+                                <Col>
+                                    <Loader width={'100%'} />
+                                </Col>
+                            )}
+
+                            <Col>
+                                <Stats>
+                                    <SubTitle>Overview</SubTitle>
+                                    {Object.keys(stats).map((key) => {
+                                        const isPrimary = key === 'data'
+                                        return (
+                                            <div key={key} className="blockie">
+                                                {stats[key as StatsType].map((item) => {
+                                                    return (
+                                                        <StatItemWrapper key={item.label}>
+                                                            <Flex>
+                                                                <Label color={isPrimary ? 'primary' : 'secondary'}>
+                                                                    {item.label}
+                                                                    {item.tip ? (
+                                                                        <InfoIcon
+                                                                            data-tooltip-id="tooltip-create-vault"
+                                                                            data-tooltip-content={item.tip}
+                                                                        >
+                                                                            <Info size="13" color="#1C293A" />
+                                                                        </InfoIcon>
+                                                                    ) : null}
+                                                                </Label>
+                                                                <Value>
+                                                                    {item.value !== '-' &&
+                                                                    item.label.toLowerCase().includes('collateral') &&
+                                                                    item.label.toLowerCase().includes('total')
+                                                                        ? formatWithCommas(item.value)
+                                                                        : item.value}
+                                                                </Value>
+                                                            </Flex>
+                                                        </StatItemWrapper>
+                                                    )
+                                                })}
+                                            </div>
+                                        )
+                                    })}
+                                </Stats>
+                            </Col>
+                        </ColWrapper>
+                        <FooterWrapper>
+                            <Btn className="clear" onClick={reset}>
+                                Clear All
+                            </Btn>
+                            <Flex className="hasBtn">
+                                {error === 'Create Account' && (
+                                    <Button onClick={handleCreateAccount}>{error ?? 'Create Account'}</Button>
+                                )}
+                                {approvalState === ApprovalState.APPROVED ? (
+                                    <Button onClick={handleSubmit} disabled={!isValid}>
+                                        {error ?? 'Review Transaction'}
+                                    </Button>
+                                ) : approvalState === ApprovalState.PENDING ? (
+                                    <Button disabled={true}>Pending Approval..</Button>
+                                ) : (
+                                    error !== 'Create Account' && (
+                                        <Button onClick={approve} disabled={!isValid}>
+                                            {error ?? `Approve ${selectedItem}`}
+                                        </Button>
                                     )
-                                })}
-                            </Stats>
-                        </Col>
+                                )}
+                            </Flex>
+                        </FooterWrapper>
                     </Box>
 
-                    <Flex className="hasBtn">
-                        <Note data-test-id="debt_floor_note">
-                            <span>Note:</span>
-                            {` The minimum amount to mint per vault is ${debtFloor} OD`}
-                        </Note>
-                        {approvalState === ApprovalState.APPROVED ? (
-                            <Button onClick={handleSubmit} disabled={!isValid}>
-                                {error ?? 'Review Transaction'}
-                            </Button>
-                        ) : approvalState === ApprovalState.PENDING ? (
-                            <Button disabled={true}>Pending Approval..</Button>
-                        ) : (
-                            <Button onClick={approve} disabled={!isValid}>
-                                {error ?? `Approve ${selectedItem}`}
-                            </Button>
-                        )}
-                    </Flex>
                     <ReactTooltip
-                        style={{ zIndex: 99 }}
+                        style={{ zIndex: 99, maxWidth: '400px' }}
                         id="tooltip-create-vault"
                         variant="light"
                         data-effect="solid"
@@ -378,8 +429,10 @@ const CreateVaultContainer = () => {
 
     return (
         <Container>
-            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] && (
+            {liquidationData && tokensData && collateral && collateral !== '' && tokensFetchedData[selectedItem] ? (
                 <CreateVault selectedItem={selectedItem} setSelectedItem={setSelectedItem} collaterals={collaterals} />
+            ) : (
+                <ConnectWalletStep />
             )}
         </Container>
     )
@@ -389,11 +442,11 @@ export default CreateVaultContainer
 
 const ReviewContainer = styled.div`
     padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.colorSecondary};
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
 `
 const Container = styled.div`
-    max-width: 880px;
+    max-width: 1362px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
@@ -403,25 +456,38 @@ const Container = styled.div`
 const InnerContent = styled.div`
     border-radius: 20px;
     background: ${(props) => props.theme.colors.colorSecondary};
+    font-family: 'Open Sans', sans-serif;
 `
 
 const Content = styled.div`
     padding: 20px;
 `
+
+const StatItemWrapper = styled.div`
+    border-bottom: 1px solid #1a74ec4d;
+
+    &:last-child {
+        border: 0;
+    }
+`
+
 const BtnContainer = styled.div`
-    padding-top: 20px;
+    margin-top: 24px;
     text-align: center;
+    border: 2px solid #e2f1ff;
+    width: 100%;
+    border-radius: 4px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
 `
 const Header = styled.div`
-    border-bottom: 1px solid ${(props) => props.theme.colors.border};
     display: flex;
-    align-items: center;
-    padding: 10px 0 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 55px;
 
-    .clear {
-        cursor: pointer;
-        color: ${(props) => props.theme.colors.blueish};
-    }
     span {
         flex: 0 0 55px;
         font-size: 14px;
@@ -429,9 +495,11 @@ const Header = styled.div`
         &.title {
             display: block;
             flex: 1;
+            font-family: 'Barlow', sans-serif;
             text-align: center;
             font-weight: bold;
-            font-size: ${(props) => props.theme.font.medium};
+            font-size: ${(props) => props.theme.font.xxLarge};
+            color: #1c293a;
         }
     }
 `
@@ -442,14 +510,27 @@ const Btn = styled.button`
     box-shadow: none;
     outline: none;
     background: transparent;
+`
+
+const FlexBtn = styled.div`
+    display: flex;
+    align-items: center;
+
+    span {
+        color: ${(props) => props.theme.colors.accent};
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
     svg {
-        color: ${(props) => props.theme.colors.customSecondary};
+        color: ${(props) => props.theme.colors.accent};
         cursor: pointer;
+        width: 50px;
     }
 `
 
 const WrapBtn = styled(Btn)`
-    color: ${(props) => props.theme.colors.blueish};
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const WrapBox = styled.div`
@@ -459,8 +540,38 @@ const WrapBox = styled.div`
 
 const Box = styled.div`
     display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 6px 0px #0d4b9d33;
+
+    padding: 22px;
+    border-radius: 8px;
+    background: white;
+`
+
+const FooterWrapper = styled.div`
+    display: flex;
     justify-content: space-between;
-    padding: 30px 0;
+
+    .clear {
+        cursor: pointer;
+        color: ${(props) => props.theme.colors.accent};
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+        padding: 15px 0;
+    }
+`
+
+const ColWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
     @media (max-width: 767px) {
         flex-direction: column;
         padding: 15px 0;
@@ -475,8 +586,9 @@ const Col = styled.div`
 const DropDownContainer = styled.div``
 
 export const SideLabel = styled.div`
-    font-weight: 600;
+    font-weight: 400;
     font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.tertiary};
     margin-bottom: 10px;
 `
 
@@ -485,11 +597,11 @@ const Inputs = styled.div`
 `
 
 const Stats = styled.div`
-    padding: 20px;
-    border-radius: 10px;
-    background: ${(props) => props.theme.colors.placeholder};
+    background: ${(props) => props.theme.colors.background};
+    padding: 24px;
+    border-radius: 4px;
     .blockie {
-        border-bottom: 1px solid ${(props) => props.theme.colors.border};
+        border-bottom: 1px solid #1a74ec4d;
         &:last-child {
             border: 0;
         }
@@ -497,6 +609,12 @@ const Stats = styled.div`
     @media (max-width: 767px) {
         margin-top: 20px;
     }
+`
+const SubTitle = styled.div`
+    color: ${(props) => props.theme.colors.accent};
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
 `
 
 const Flex = styled.div`
@@ -509,7 +627,6 @@ const Flex = styled.div`
         button {
             width: 100%;
             text-align: center;
-            flex: 0 0 48%;
         }
         @media (max-width: 767px) {
             flex-direction: column;
@@ -520,34 +637,41 @@ const Flex = styled.div`
     }
 `
 const Label = styled.div<{ color?: 'primary' | 'secondary' }>`
-    font-size: ${(props) => props.theme.font.small};
-    color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.primary)};
+    font-size: ${(props) => props.theme.font.default};
+    font-weight: 400;
+    color: ${(props) => props.theme.colors.accent};
     display: flex;
     align-items: center;
-    svg {
-        margin-right: 5px;
-    }
 `
 
 const Value = styled.div`
     font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const InfoIcon = styled.div`
     cursor: pointer;
     svg {
-        fill: ${(props) => props.theme.colors.secondary};
+        /* fill: ${(props) => props.theme.colors.secondary}; */
         color: ${(props) => props.theme.colors.placeholder};
         position: relative;
-        top: 2px;
+        width: 20px;
+        height: 20px;
+        margin-left: 8px;
     }
 `
 
 const Note = styled.div`
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.extraSmall};
-    span {
-        color: ${(props) => props.theme.colors.yellowish};
-    }
+    color: ${(props) => props.theme.colors.accent};
+    background-color: ${(props) => props.theme.colors.background};
+    padding-left: 18px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    border-left: 3px solid ${(props) => props.theme.colors.primary};
+    font-size: 15px;
+    font-weight: 600;
+    color: ${(props) => props.theme.colors.primary};
 `

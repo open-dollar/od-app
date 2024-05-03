@@ -143,20 +143,20 @@ const Analytics = () => {
     }, [geb])
 
     const totalCollateralLocked = {
-        image: 'ETH',
+        image: 'lock',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
-        description: 'Mock dada for Total Collateral Locked',
+        description: 'Total Collateral Locked',
     }
 
     const vaultNFTs = {
-        image: 'NFTS',
+        image: 'vault',
         title: 'Vault NFTs',
         value: totalVaults,
         description: 'Vault NFTs',
     }
 
-    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulating supply of OD stablecoin' }
 
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
@@ -251,6 +251,7 @@ const Analytics = () => {
         // marketPriceODG,
     ]
 
+    //@to-do: Do not use GEB as a param in useEffect, it causes a lot of re-renders
     useEffect(() => {
         async function fetchData() {
             if (geb) {
@@ -319,8 +320,8 @@ const Analytics = () => {
 
                     setState((prevState) => ({
                         ...prevState,
-                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 0, true),
-                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 0, true),
+                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 2, true),
+                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 2, true),
                         globalDebtCeiling: formatDataNumber(analyticsData.globalDebtCeiling, 18, 0, true),
                         globalDebtUtilization: transformToWadPercentage(
                             analyticsData.globalDebt,
@@ -403,6 +404,7 @@ const Analytics = () => {
                             title={val.title}
                             value={val.value}
                             description={val.description}
+                            bg={'light'}
                         />
                     ))}
                 </AnaliticsBottom>
@@ -448,6 +450,7 @@ const TooltipWrapper = styled.div`
 `
 
 const Container = styled.div`
+    font-family: 'Open Sans', sans-serif;
     max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
@@ -464,10 +467,6 @@ const AnaliticsTop = styled.div`
     display: flex;
     gap: 24px;
     margin-bottom: 64px;
-
-    & div {
-        height: 231px;
-    }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         flex-wrap: wrap;
@@ -493,9 +492,17 @@ const AnaliticsBottom = styled.div`
     justify-content: space-between;
     gap: 24px;
 
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+    > div {
+        height: 241px;
+        flex: 1;
+        padding-left: 5px;
+        padding-right: 5px;
+        min-width: 250px;
+    }
+
+    @media (max-width: 1250px) {
         flex-wrap: wrap;
-    `}
+    }
 `
 
 const RightColumn = styled.div``
@@ -517,13 +524,15 @@ const FlexMultipleRow = styled.div`
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
+    font-family: 'Barlow', sans-serif;
     margin-bottom: 40px;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const SubTitle = styled.h3`
     font-size: 34px;
     font-weight: 700;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.accent};
     margin-bottom: 16px;
 `
 

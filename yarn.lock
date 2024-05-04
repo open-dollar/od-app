@@ -2546,7 +2546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/contracts@npm:5.7.0, @ethersproject/contracts@npm:^5.7.0":
+"@ethersproject/contracts@npm:5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/contracts@npm:5.7.0"
   dependencies:
@@ -2807,7 +2807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5, @ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -3914,25 +3914,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.0-rc.3":
-  version: 1.7.0-rc.3
-  resolution: "@opendollar/sdk@npm:1.7.0-rc.3"
+"@opendollar/sdk@npm:1.7.0-rc.5":
+  version: 1.7.0-rc.5
+  resolution: "@opendollar/sdk@npm:1.7.0-rc.5"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 3536d3c509c7d716887337187a377844648d1bfdaf463b4543f34c4c073b3b0f6dd043e9febf290d8248faf6b71e50f6d811e1e163773fc46024614ec660bbd2
+  checksum: 7075c66469af09d3a3abd05cdd567e62d7fbee0f694d732a9051a8279ef011da653c3fd98b4a05c62c50b63bda3761aadd00d385171d2f54315d206c9bd0b115
   languageName: node
   linkType: hard
 
-"@opendollar/svg-generator@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@opendollar/svg-generator@npm:1.0.3"
-  dependencies:
-    "@ethersproject/contracts": ^5.7.0
-    "@ethersproject/providers": ^5.7.2
-  checksum: c91bd776e93b5309225d34a6d6467ea019b2ef149c49c716a95a0e79cb4bc5d6a4c08f82136ec6f3009c86b319c48b05bcae36527e3b01504d78b39d87281064
+"@opendollar/svg-generator@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@opendollar/svg-generator@npm:1.0.4"
+  checksum: 616a81cb75b9c11fc0a9d2d285b71e5f68dc72ad5779764f28d90d40979f7a440c0e9a708d156218713ecd157c7341674c5ea79523fd5a5fcca153062c9bbf41
   languageName: node
   linkType: hard
 
@@ -15226,8 +15223,8 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": 1.7.0-rc.3
-    "@opendollar/svg-generator": 1.0.3
+    "@opendollar/sdk": 1.7.0-rc.5
+    "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0
     "@sentry/integrations": ^7.112.2

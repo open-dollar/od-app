@@ -53,12 +53,10 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         () => ({
             vaultID: singleSafe?.id,
             stabilityFee:
-                Math.floor(
-                    Number(
-                        getRatePercentage(
-                            singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
-                            2
-                        )
+                Number(
+                    getRatePercentage(
+                        singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
+                        4
                     )
                 ).toString() + '%',
             debtAmount: formatWithCommas(totalDebt) + ' OD',
@@ -270,7 +268,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                             </InfoIcon>
                             <SideValue>{`${
                                 singleSafe?.totalAnnualizedStabilityFee
-                                    ? getRatePercentage(singleSafe?.totalAnnualizedStabilityFee, 2)
+                                    ? getRatePercentage(singleSafe?.totalAnnualizedStabilityFee, 3)
                                     : 0
                             }%`}</SideValue>
                         </Side>

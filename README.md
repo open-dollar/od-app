@@ -34,13 +34,13 @@ https://app.dev.opendollar.com/ Testnet `dev` branch
 For security and resiliency we publish the app as a self-contained Docker image 
 
 1. Install [Docker](https://docs.docker.com/desktop/)
-2. Get the latest [Release](https://github.com/open-dollar/od-app/releases), eg. `1.5.9`
+2. Get the latest [Release](https://github.com/open-dollar/od-app/releases), eg. `1.7.0`
 3. Run the start command, replacing `<VERSION_NUMBER>` with the release
 
 ```bash
 docker run -p 3000:3000 ghcr.io/open-dollar/od-app:<VERSION_NUMBER>
 # For example:
-docker run -p 3000:3000 ghcr.io/open-dollar/od-app:1.6.5-rc.2
+docker run -p 3000:3000 ghcr.io/open-dollar/od-app:1.7.0
 ```
 
 The application will be available on http://localhost:3000

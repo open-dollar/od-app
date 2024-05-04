@@ -76,9 +76,13 @@ function parseTokenLiquidationData(redemptionPrice: BigNumber, tokenLiquidationD
         liquidationCRatio: parseRay(tokenLiquidationData.liquidationCRatio),
         liquidationPenalty: parseWad(tokenLiquidationData.liquidationPenalty),
         safetyCRatio: parseRay(tokenLiquidationData.safetyCRatio),
-        totalAnnualizedStabilityFee: Math.pow(
-            Number(parseRay(tokenLiquidationData.stabilityFee)),
-            3600 * 24 * 365 // Second per year
+        totalAnnualizedStabilityFee: (
+            Math.round(
+                Math.pow(
+                    Number(parseRay(tokenLiquidationData.stabilityFee)),
+                    3600 * 24 * 365 // Second per year
+                ) * 10000
+            ) / 10000
         ).toString(),
     }
 }

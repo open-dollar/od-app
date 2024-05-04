@@ -1,6 +1,6 @@
 {
     "name": "od-app",
-    "version": "1.6.5-rc.2",
+    "version": "1.7.0",
     "private": true,
     "scripts": {
         "start": "craco start",
@@ -31,8 +31,8 @@
         "@ethersproject/address": "^5.0.10",
         "@ethersproject/experimental": "5.4.0",
         "@ethersproject/providers": "5.4.5",
-        "@opendollar/sdk": "1.7.0-rc.3",
-        "@opendollar/svg-generator": "1.0.3",
+        "@opendollar/sdk": "1.7.0-rc.5",
+        "@opendollar/svg-generator": "1.0.4",
         "@react-spring/web": "^9.7.3",
         "@sentry/cli": "^2.31.0",
         "@sentry/integrations": "^7.112.2",

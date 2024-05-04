@@ -25,13 +25,9 @@ Frontend application for Open Dollar
 
 # Deployments
 
-http://app.opendollar.com/ Production `main` branch
+https://app.opendollar.com/ Production `main` branch
 
-http://app.dev.opendollar.com/ Testnet `dev` branch
-
-## Deployment Diagram of open-dollar-app on Vercel
-
-<img alt="vercel deployment diagram of open-dollar-app" width="439" height="183.5"  src='public/od-app-vercel-architecture.png' />
+https://app.dev.opendollar.com/ Testnet `dev` branch
 
 # ⚡️ Run the app locally
 
@@ -44,7 +40,7 @@ For security and resiliency we publish the app as a self-contained Docker image
 ```bash
 docker run -p 3000:3000 ghcr.io/open-dollar/od-app:<VERSION_NUMBER>
 # For example:
-docker run -p 3000:3000 ghcr.io/open-dollar/od-app:1.5.9
+docker run -p 3000:3000 ghcr.io/open-dollar/od-app:1.6.5-rc.2
 ```
 
 The application will be available on http://localhost:3000

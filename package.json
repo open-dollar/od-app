@@ -1,6 +1,6 @@
 {
     "name": "od-app",
-    "version": "1.6.5-rc.2",
+    "version": "1.7.0",
     "private": true,
     "scripts": {
         "start": "craco start",

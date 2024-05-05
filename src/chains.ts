@@ -57,7 +57,11 @@ type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInf
 
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
-        urls: ['https://arbitrum.blockpi.network/v1/rpc/public'],
+        urls: [
+            process.env.REACT_APP_NETWORK_URL
+                ? process.env.REACT_APP_NETWORK_URL
+                : 'https://arbitrum.blockpi.network/v1/rpc/public',
+        ],
         name: 'Arbitrum One',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://arbiscan.io'],
@@ -72,7 +76,11 @@ export const MAINNET_CHAINS: ChainConfig = {
 
 export const TESTNET_CHAINS: ChainConfig = {
     421614: {
-        urls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
+        urls: [
+            process.env.REACT_APP_NETWORK_URL
+                ? process.env.REACT_APP_NETWORK_URL
+                : 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public',
+        ],
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],

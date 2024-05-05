@@ -54,7 +54,6 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 }
 
 type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInformation }
-console.log('foo')
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
         urls: [

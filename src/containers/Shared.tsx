@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
 import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
-import BlockBodyContainer from '~/components/BlockBodyContainer'
 import ApplicationUpdater from '~/services/ApplicationUpdater'
 import { useActiveWeb3React } from '~/hooks'
 import TransactionUpdater from '~/services/TransactionUpdater'
@@ -67,7 +66,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
     const tokensData = geb?.tokenList
 
-    const { settingsModel: settingsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const {
         settingsModel: settingsActions,
@@ -84,7 +83,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const geoBlockToastId = 'geoBlockToastHash'
     const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
@@ -209,18 +207,11 @@ const Shared = ({ children, ...rest }: Props) => {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
             if (isBlocked) {
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
+                history.push('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
-                toast(
-                    <ToastPayload
-                        icon={'AlertTriangle'}
-                        iconSize={40}
-                        iconColor={'orange'}
-                        textColor={'#ffffff'}
-                        text={`${t('geoblocked_wallet')}`}
-                    />,
-                    { autoClose: false, type: 'warning', toastId: geoBlockToastId }
-                )
                 return false
             } else {
                 return true
@@ -228,6 +219,51 @@ const Shared = ({ children, ...rest }: Props) => {
         }
         return true
     }
+    const address: string = account ?? ''
+    useEffect(() => {
+        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
+        if (
+            (!account && !address) ||
+            (address && !isAddress(address.toLowerCase())) ||
+            !provider ||
+            connectWalletState.isWrongNetwork
+        )
+            return
+
+        async function fetchSafes() {
+            await safeActions.fetchUserSafes({
+                address: address || (account as string),
+                geb,
+                tokensData: connectWalletState.tokensData,
+            })
+        }
+
+        if (geb && connectWalletState.tokensData) {
+            fetchSafes()
+        }
+
+        const ms = 3000
+        const interval = setInterval(() => {
+            if (
+                (!account && !address) ||
+                (address && !isAddress(address.toLowerCase())) ||
+                !provider ||
+                connectWalletState.isWrongNetwork
+            )
+                fetchSafes()
+        }, ms)
+
+        return () => clearInterval(interval)
+    }, [
+        account,
+        address,
+        connectWalletState.isWrongNetwork,
+        connectWalletState.tokensData,
+        geb,
+        provider,
+        safeActions,
+        chainId,
+    ])
 
     async function networkChecker() {
         accountChange()
@@ -266,7 +302,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     useEffect(() => {
         networkCheckerCallBack()
-    }, [account]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [account, geb?.getProxyAction]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (chainId && chainId === NETWORK_ID) {
@@ -305,7 +341,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     return (
         <Container>
-            {settingsState.blockBody ? <BlockBodyContainer /> : null}
             <SideMenu />
             <WalletModal />
             <MulticallUpdater />

@@ -46,7 +46,6 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
-            connectWalletActions.setStep(2)
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }

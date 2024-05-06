@@ -102,6 +102,7 @@ const FooterContainer = styled.div`
     flex-direction: row;
     background: linear-gradient(to bottom, #1a74ec, #6396ff);
     color: ${(props) => props.theme.colors.blueish};
+    margin-top: 80px;
 
     @media (max-width: 767px) {
         flex-direction: column;

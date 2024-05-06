@@ -70,7 +70,7 @@ const RedesignedBtnStyle = css<{
     padding: 8px 30px;
     font-family: 'Barlow', sans-serif;
     color: ${({ theme, border }) => (border ? 'white' : '#1A74EC')};
-    background: ${({ theme, disabled, color }) => (disabled ? theme.colors.dimmedBackground : color)};
+    background: ${({ theme, disabled, color }) => (disabled ? 'rgb(71, 86, 98, 0.4)' : color)};
     border-radius: 4px 0px 0px 0px;
     transition: all 0.3s ease;
     display: flex;

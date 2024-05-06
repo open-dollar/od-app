@@ -2546,7 +2546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/contracts@npm:5.7.0, @ethersproject/contracts@npm:^5.7.0":
+"@ethersproject/contracts@npm:5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/contracts@npm:5.7.0"
   dependencies:
@@ -2807,7 +2807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5, @ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -3925,13 +3925,10 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@opendollar/svg-generator@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@opendollar/svg-generator@npm:1.0.3"
-  dependencies:
-    "@ethersproject/contracts": ^5.7.0
-    "@ethersproject/providers": ^5.7.2
-  checksum: c91bd776e93b5309225d34a6d6467ea019b2ef149c49c716a95a0e79cb4bc5d6a4c08f82136ec6f3009c86b319c48b05bcae36527e3b01504d78b39d87281064
+"@opendollar/svg-generator@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@opendollar/svg-generator@npm:1.0.4"
+  checksum: 616a81cb75b9c11fc0a9d2d285b71e5f68dc72ad5779764f28d90d40979f7a440c0e9a708d156218713ecd157c7341674c5ea79523fd5a5fcca153062c9bbf41
   languageName: node
   linkType: hard
 
@@ -11158,8 +11155,8 @@ __metadata:
 
 "forge-std@git+https://github.com/foundry-rs/forge-std.git":
   version: 1.7.6
-  resolution: "forge-std@https://github.com/foundry-rs/forge-std.git#commit=1d0766bc5d814f117c7b1e643828f7d85024fb51"
-  checksum: b8881fdb0f70b5723c0cc80454fb074be62dff459bebebbde041d675c3b0f2b71f1394328e504b7e6ad4ffd9058f70f3c73317f814b50258be7c0b87415bf699
+  resolution: "forge-std@https://github.com/foundry-rs/forge-std.git#commit=5475f852e3f530d7e25dfb4596aa1f9baa8ffdfc"
+  checksum: 669f6b8d716a05945661fa2a04ffd3a74833d722766b9a002c8a13115e5cd9fe65b95c6ea3869522982ad1a76d6c1d923d0b37ed9666b96b2952a4b7e3ec3d8f
   languageName: node
   linkType: hard
 
@@ -15226,7 +15223,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@opendollar/sdk": 1.7.0-rc.5
-    "@opendollar/svg-generator": 1.0.3
+    "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0
     "@sentry/integrations": ^7.112.2

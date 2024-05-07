@@ -12,6 +12,7 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
+import Loader from '~/components/Loader'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -124,7 +125,11 @@ const VaultDetails = ({ ...props }) => {
                 ) : null}
                 <VaultHeader safeId={safeId} />
 
-                {!isLoading && (
+                {isLoading ? (
+                    <LoaderContainer>
+                        <Loader width="300px" />
+                    </LoaderContainer>
+                ) : (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
                 )}
 
@@ -148,6 +153,12 @@ const Container = styled.div`
     @media (max-width: 767px) {
         margin: 50px auto;
     }
+`
+
+const LoaderContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const LabelContainer = styled.div`

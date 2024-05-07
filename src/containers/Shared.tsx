@@ -63,7 +63,9 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    const isGeofenceEnabled = process.env.REACT_APP_GEOFENCE_ENABLED ?? false
+    
+    const isGeofenceEnabled: boolean = process.env.REACT_APP_GEOFENCE_ENABLED === "true"
+
     const tokensData = geb?.tokenList
 
     const { connectWalletModel: connectWalletState } = useStoreState((state) => state)

@@ -108,17 +108,9 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
-            const roundedDownBalance = ethers.utils.formatUnits(
-                ethers.utils.parseUnits(depositTokenBalance, selectedTokenDecimals),
-                selectedTokenDecimals
-            )
-            onLeftInput(Math.floor(parseFloat(roundedDownBalance)).toString())
+            onLeftInput(depositTokenBalance.toString())
         } else {
-            const roundedDownCollateral = ethers.utils.formatUnits(
-                ethers.utils.parseUnits(availableCollateral.toString(), selectedTokenDecimals),
-                selectedTokenDecimals
-            )
-            onLeftInput(Math.floor(parseFloat(roundedDownCollateral)).toString())
+            onLeftInput(availableCollateral as string)
         }
     }
 

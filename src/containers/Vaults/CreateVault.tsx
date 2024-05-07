@@ -109,7 +109,7 @@ const CreateVault = ({
         )
     )
     const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
-    
+
     //const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     //available hai - 5% of available hai, this is a buffer to prevent bugs.

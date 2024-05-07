@@ -63,8 +63,8 @@ const Shared = ({ children, ...rest }: Props) => {
     const previousAccount = usePrevious(account)
 
     const location = useLocation()
-    
-    const isGeofenceEnabled: boolean = process.env.REACT_APP_GEOFENCE_ENABLED === "true"
+
+    const isGeofenceEnabled: boolean = process.env.REACT_APP_GEOFENCE_ENABLED === 'true'
 
     const tokensData = geb?.tokenList
 

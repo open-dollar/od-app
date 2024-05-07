@@ -1,18 +1,29 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Info } from 'react-feather'
+import { ExternalLink, Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState, returnTotalDebt } from '~/utils'
+import {
+    formatNumber,
+    formatWithCommas,
+    getEtherscanLink,
+    getRatePercentage,
+    ratioChecker,
+    returnState,
+    returnTotalDebt,
+    returnWalletAddress,
+} from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
+import { useWeb3React } from '@web3-react/core'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
+    const { chainId, account } = useWeb3React()
     const {
         collateralRatio: newCollateralRatio,
         parsedAmounts,
@@ -116,15 +127,13 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         <StatsGrid>
                             <StatSection>
                                 <StatHeader>
-                                    <StatTitle>NFV Owner</StatTitle>
-                                    <InfoIcon
-                                        data-tooltip-id="vault-stats"
-                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
-                                    >
+                                    <StatTitle>Debt Owed</StatTitle>
+                                    <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
                                         <Info size="16" />
                                     </InfoIcon>
                                 </StatHeader>
-                                <StatValue>0xabc...123</StatValue>
+                                <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
+                                <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
                             </StatSection>
                             <StatSection>
                                 <StatHeader>
@@ -141,16 +150,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 </StatValue>
                                 <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
                             </StatSection>
-                            <StatSection>
-                                <StatHeader>
-                                    <StatTitle>Debt Owed</StatTitle>
-                                    <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
-                                        <Info size="16" />
-                                    </InfoIcon>
-                                </StatHeader>
-                                <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
-                                <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
-                            </StatSection>
+
                             <StatSection>
                                 <StatHeader>
                                     <StatTitle>Collateral Ratio</StatTitle>
@@ -228,6 +228,27 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                         %
                                     </span>
                                 </div>
+                            </StatSection>
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>NFV Owner</StatTitle>
+                                    <InfoIcon
+                                        data-tooltip-id="vault-stats"
+                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
+                                    >
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>
+                                    {chainId && account && (
+                                        <AccountLink
+                                            href={getEtherscanLink(chainId, account, 'address')}
+                                            target="_blank"
+                                        >
+                                            {returnWalletAddress(account)} <ExternalLink />
+                                        </AccountLink>
+                                    )}
+                                </StatValue>
                             </StatSection>
                         </StatsGrid>
                         <Side>
@@ -309,6 +330,7 @@ const StatsGrid = styled.div`
     grid-template-rows: repeat(2, 1fr);
     width: 100%;
     white-space: nowrap;
+
     .sideNote {
         font-size: 12px;
         span {
@@ -349,6 +371,12 @@ const StatValue = styled.div`
     font-size: 18px;
     font-weight: 700;
     margin-top: 5px;
+`
+
+const AccountLink = styled.a`
+    display: flex;
+    gap: 5px;
+    color: ${(props) => props.theme.colors.primary};
 `
 
 const SVGContainer = styled.div`

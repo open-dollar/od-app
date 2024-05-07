@@ -127,7 +127,7 @@ const VaultDetails = ({ ...props }) => {
 
                 {isLoading ? (
                     <LoaderContainer>
-                        <Loader width="150px" color="#1A74EC"/>
+                        <Loader width="150px" color="#1A74EC" />
                     </LoaderContainer>
                 ) : (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />

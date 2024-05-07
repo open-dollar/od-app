@@ -119,7 +119,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     <StatTitle>NFV Owner</StatTitle>
                                     <InfoIcon
                                         data-tooltip-id="vault-stats"
-                                        data-tooltip-content={t('collateral_deposited_tip')}
+                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
                                     >
                                         <Info size="16" />
                                     </InfoIcon>

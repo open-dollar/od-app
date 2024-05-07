@@ -38,8 +38,6 @@ const Earn = () => {
         if (!account || !geb) return
         nitroPoolsActions.fetchNitroPool({
             geb,
-            tokenAddress: pools[0].tokenAddress,
-            collateralAddress: pools[0].collateralAddress,
             poolAddress: pools[0].poolAddress,
             userAddress: account,
         })

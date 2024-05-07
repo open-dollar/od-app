@@ -21,8 +21,6 @@ const nitroPoolsModel: NitroPoolsModel = {
                 geb,
                 payload.poolAddress,
                 payload.userAddress,
-                payload.tokenAddress,
-                payload.collateralAddress
             )
         } catch (e) {
             console.debug('Error fetching nitropools data', e)

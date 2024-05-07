@@ -25,6 +25,7 @@ import {
     StatsType,
 } from '~/hooks'
 import ConnectWalletStep from '~/components/ConnectWalletStep'
+import { useCollateralBalances } from '~/hooks/useCollateralBalances'
 
 const CreateVault = ({
     selectedItem,
@@ -85,12 +86,7 @@ const CreateVault = ({
         window.open(url, '_blank')
     }
 
-    const selectedTokenBalance = useMemo(() => {
-        if (selectedCollateralBalance) {
-            return formatNumber(selectedCollateralBalance, 2)
-        }
-        return formatNumber('0', 2)
-    }, [selectedCollateralBalance])
+    const selectedTokenBalance = useCollateralBalances(tokensData, tokensFetchedData, selectedItem)
 
     const collateralUnitPriceUSD = formatNumber(
         safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0'

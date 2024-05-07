@@ -36,7 +36,7 @@ if (!window.util) {
     window.util = util
 }
 
-export const NETWORK_URL = REACT_APP_NETWORK_URL as string
+export const NETWORK_URL = 'https://arbitrum.llamarpc.com' as string
 
 export const NETWORK_ID = parseInt(REACT_APP_NETWORK_ID ?? '1')
 

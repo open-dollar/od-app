@@ -242,7 +242,6 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     if (Number(totalCollateral) < 0) return false
     const totalCollateralBN = BigNumber.from(toFixedString(totalCollateral, 'WAD'))
     const safetyPriceBN = BigNumber.from(toFixedString(safetyPrice, 'RAY'))
-    console.log(totalDebtBN, 'totalDebtBN')
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
 }
 

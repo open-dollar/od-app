@@ -116,13 +116,15 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                         <StatsGrid>
                             <StatSection>
                                 <StatHeader>
-                                    <StatTitle>Debt Owed</StatTitle>
-                                    <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                    <StatTitle>NFV Owner</StatTitle>
+                                    <InfoIcon
+                                        data-tooltip-id="vault-stats"
+                                        data-tooltip-content={t('collateral_deposited_tip')}
+                                    >
                                         <Info size="16" />
                                     </InfoIcon>
                                 </StatHeader>
-                                <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
-                                <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
+                                <StatValue>0xabc...123</StatValue>
                             </StatSection>
                             <StatSection>
                                 <StatHeader>
@@ -138,6 +140,16 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     {formatWithCommas(collateral)} {singleSafe?.collateralName}
                                 </StatValue>
                                 <DollarValue>${formatWithCommas(collateralInUSD, 2, 2)}</DollarValue>
+                            </StatSection>
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>Debt Owed</StatTitle>
+                                    <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={t('debt_owed_tip')}>
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
+                                <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
                             </StatSection>
                             <StatSection>
                                 <StatHeader>

@@ -192,7 +192,7 @@ export const network_name = () => {
     else return 'arbitrum-sepolia'
 }
 
-const provider = new ethers.providers.JsonRpcProvider('https://arbitrum.llamarpc.com')
+const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 //TODO: Need to add OP goerli/sepolia to GebDeployment type in SDK
 // @ts-ignore
 export const geb = new Geb(network_name(), provider)

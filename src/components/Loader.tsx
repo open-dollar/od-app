@@ -5,13 +5,16 @@ interface Props {
     text?: string
     width?: string
     fontSize?: string
+    color?: string
     hideSpinner?: boolean | null
     inlineButton?: boolean
 }
-const Loader = ({ text, width, fontSize, hideSpinner, inlineButton }: Props) => {
+const Loader = ({ text, width, fontSize, hideSpinner, inlineButton, color }: Props) => {
     return (
         <Container inline={inlineButton}>
-            {hideSpinner ? null : <TransactionSpinner style={{ width: width || '14px', height: width || '14px' }} />}
+            {hideSpinner ? null : (
+                <TransactionSpinner color={color} style={{ width: width || '14px', height: width || '14px' }} />
+            )}
             <span style={{ fontSize: fontSize }}>{text}</span>
         </Container>
     )
@@ -47,7 +50,7 @@ const Container = styled.div<{ inline?: boolean }>`
               `}
 
     svg {
-        filter: brightness(0) invert(1);
+        /* filter: brightness(0) invert(1); */
         animation: ${rotating} 1.5s linear infinite;
         margin-right: 10px;
     }

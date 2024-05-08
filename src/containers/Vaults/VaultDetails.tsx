@@ -118,11 +118,6 @@ const VaultDetails = ({ ...props }) => {
     return (
         <>
             <Container>
-                {!isOwner ? (
-                    <LabelContainer>
-                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
-                    </LabelContainer>
-                ) : null}
                 <VaultHeader safeId={safeId} />
 
                 {isLoading ? (
@@ -139,6 +134,11 @@ const VaultDetails = ({ ...props }) => {
 
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
+                {!isOwner ? (
+                    <LabelContainer>
+                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
+                    </LabelContainer>
+                ) : null}
             </Container>
         </>
     )
@@ -162,6 +162,6 @@ const LoaderContainer = styled.div`
 `
 
 const LabelContainer = styled.div`
-    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    max-width: 810px;
     margin: 0 auto 20px auto;
 `

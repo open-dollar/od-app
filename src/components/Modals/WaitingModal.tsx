@@ -90,7 +90,7 @@ const WaitingModal = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {t('view_etherscan')}
+                                    {t('view_arbiscan')}
                                 </a>
                             ) : status === 'success' && isCreate ? (
                                 <CreateNew>

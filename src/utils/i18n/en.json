@@ -143,5 +143,5 @@
     "view_on_camelot_exchange": "View on Camelot Exchange",
     "claim_on_discord": "Use the /CLAIM command in our Discord",
     "add_token_to_wallet": "Add token to wallet",
-    "browser_wallet_disconnect_not_supported": "Browser wallets must be disconnected manually rather than from the UI."
+    "browser_wallet_disconnect_not_supported": "You must disconnect from your browser wallet manually."
 }

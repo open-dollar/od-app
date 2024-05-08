@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                         </SmallText>
                     </Column>
                 </Row>
-                <Row>
+                <Row className="linksContainer">
                     <Column>
                         <Header>PROJECT</Header>
                         <Link target="_blank" href="https://app.opendollar.com/">
@@ -116,14 +116,21 @@ const Row = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
-    @media (max-width: 767px) {
-        justify-content: space-between;
-    }
+
     &.logoContainerAndText {
         display: flex;
         flex-direction: column;
+        
         @media (max-width: 767px) {
             margin-bottom: 20px;
+        }
+    }
+
+    &.linksContainer {
+        justify-content: flex-end;
+
+        @media (max-width: 767px) {
+            justify-content: space-between;
         }
     }
 `
@@ -135,16 +142,16 @@ const Column = styled.div`
     padding-left: 20px;
     padding-right: 20px;
 
-    @media (max-width: 767px) {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
     &.logoRow {
         @media (max-width: 767px) {
             width: 100%;
         }
         gap: 10.78px;
+    }
+
+    @media (max-width: 767px) {
+        padding-left: 20px;
+        padding-right: 20px;
     }
 `
 

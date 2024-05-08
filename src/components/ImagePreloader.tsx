@@ -5,17 +5,17 @@ const INITIAL_STATE = [
     require('../assets/connectors/walletConnectIcon.svg').default,
     require('../assets/connectors/coinbaseWalletIcon.svg').default,
     require('../assets/cookie.svg').default,
-    require('../assets/caret.png').default,
+    require('../assets/caret.webp').default,
     require('../assets/caret-up.svg').default,
     require('../assets/arrow-up.svg').default,
     require('../assets/od-logo.svg').default,
     require('../assets/arrow.svg').default,
     require('../assets/uniswap-icon.svg').default,
-    require('../assets/logo192.png').default,
-    require('../assets/connectors/metamask.png').default,
-    require('../assets/od-land.png').default,
-    require('../assets/od-colorloop.png').default,
-    require('../assets/od-vault.png').default,
+    require('../assets/logo192.webp').default,
+    require('../assets/connectors/metamask.webp').default,
+    require('../assets/od-land.webp').default,
+    require('../assets/od-colorloop.webp').default,
+    require('../assets/od-vault.webp').default,
 ]
 
 const ImagePreloader = () => {

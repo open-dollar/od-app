@@ -18,7 +18,7 @@ const CreateVaultStep = ({ stepNumber, title, text, isDisabled, isLoading, btnTe
     return (
         <ContentContainer stepNumber={stepNumber}>
             <ImageContainer stepNumber={stepNumber}>
-                <img src={require('../assets/vault-facilitator.png')} alt="" />
+                <img src={require('../assets/vault-facilitator.webp')} alt="" />
             </ImageContainer>
             <ContentWrapper stepNumber={stepNumber}>
                 <Title>{t(title)}</Title>

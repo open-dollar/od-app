@@ -25,15 +25,15 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
     const returnLottie = (step: number) => {
         switch (step) {
             case 0:
-                return <img src={require('../assets/closed-vault.png')} alt="" />
+                return <img src={require('../assets/closed-vault.webp')} alt="" />
             case 1:
-                return <img src={require('../assets/wallet.png')} alt="" />
+                return <img src={require('../assets/wallet.webp')} alt="" />
             case 2:
-                return <img src={require('../assets/vault-facilitator.png')} alt="" />
+                return <img src={require('../assets/vault-facilitator.webp')} alt="" />
             case 3:
-                return <img src={require('../assets/opened-vault.png')} alt="" />
+                return <img src={require('../assets/opened-vault.webp')} alt="" />
             default:
-                return <img src={require('../assets/od-land.png')} alt="" />
+                return <img src={require('../assets/od-land.webp')} alt="" />
         }
     }
     return (

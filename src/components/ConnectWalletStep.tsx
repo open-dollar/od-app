@@ -11,7 +11,7 @@ const ConnectWalletStep = () => {
     return (
         <ContentContainer stepNumber={0}>
             <ImageContainer stepNumber={0}>
-                <img src={require('../assets/closed-vault.png')} alt="" />
+                <img src={require('../assets/closed-vault.webp')} alt="" />
             </ImageContainer>
             <ContentWrapper stepNumber={0}>
                 <Title>{t('getting_started')}</Title>

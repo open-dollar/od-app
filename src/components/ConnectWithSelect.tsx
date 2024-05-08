@@ -27,7 +27,7 @@ function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | 
     if (connector instanceof MetaMask) {
         return (
             <IconWrapper size={38}>
-                <img src={require('../assets/connectors/metamask.png')} alt={'metamask logo'} />
+                <img src={require('../assets/connectors/metamask.webp')} alt={'metamask logo'} />
             </IconWrapper>
         )
     } else if (connector instanceof WalletConnectV2) {

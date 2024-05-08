@@ -112,13 +112,21 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                 ethers.utils.parseUnits(depositTokenBalance, selectedTokenDecimals),
                 selectedTokenDecimals
             )
-            onLeftInput(Math.floor(parseFloat(roundedDownBalance)).toString())
+            if (parseFloat(roundedDownBalance) > 1) {
+                onLeftInput(Math.floor(parseFloat(roundedDownBalance)).toString())
+            } else {
+                onLeftInput(depositTokenBalance.toString())
+            }
         } else {
             const roundedDownCollateral = ethers.utils.formatUnits(
                 ethers.utils.parseUnits(availableCollateral.toString(), selectedTokenDecimals),
                 selectedTokenDecimals
             )
-            onLeftInput(Math.floor(parseFloat(roundedDownCollateral)).toString())
+            if (parseFloat(roundedDownCollateral) > 1) {
+                onLeftInput(Math.floor(parseFloat(roundedDownCollateral)).toString())
+            } else {
+                onLeftInput(availableCollateral.toString())
+            }
         }
     }
 

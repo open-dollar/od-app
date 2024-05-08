@@ -135,7 +135,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
 
     const stabilityFeePercentage = useMemo(() => {
         return collateralLiquidationData
-            ? getRatePercentage(collateralLiquidationData.totalAnnualizedStabilityFee, 2)
+            ? getRatePercentage(collateralLiquidationData.totalAnnualizedStabilityFee, 3)
             : '-'
     }, [collateralLiquidationData])
 

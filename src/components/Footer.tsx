@@ -120,7 +120,7 @@ const Row = styled.div`
     &.logoContainerAndText {
         display: flex;
         flex-direction: column;
-        
+
         @media (max-width: 767px) {
             margin-bottom: 20px;
         }

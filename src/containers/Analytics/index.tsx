@@ -83,6 +83,8 @@ const Analytics = () => {
         colums: [
             { name: 'Collateral' },
             { name: 'ERC-20', description: 'Address of the ERC20 collateral token.' },
+            { name: 'Collateral Join', description: 'Address of the collateral join contract.' },
+            { name: 'Auction House', description: 'Address of the collateral auction house.' },
             { name: 'Oracle', description: 'Delayed oracle address for the collateral.' },
             {
                 name: 'Delayed Price',
@@ -280,6 +282,14 @@ const Analytics = () => {
                                 [
                                     key,
                                     <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />,
+                                    <AddressLink
+                                        address={geb.tokenList[key]?.collateralJoin}
+                                        chainId={chainId || 420}
+                                    />,
+                                    <AddressLink
+                                        address={geb.tokenList[key]?.collateralAuctionHouse}
+                                        chainId={chainId || 420}
+                                    />,
                                     <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
                                     formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
                                     formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),

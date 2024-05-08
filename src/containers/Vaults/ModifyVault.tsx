@@ -219,8 +219,9 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             id="deposit_borrow"
                             text={'Deposit & Borrow'}
                             url={`/vaults/${vaultId}/deposit`}
+                            disabled={!isOwner}
                             //@ts-ignore
-                            color={isDeposit ? (props) => props.theme.colors.gradientBg : '#6396FF70'}
+                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
                             border={isDeposit.toString()}
                         />
                         <LinkButton
@@ -228,7 +229,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
-                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : '#6396FF70'}
+                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
                             border={(!isDeposit).toString()}
                         />
                     </ButtonsRow>

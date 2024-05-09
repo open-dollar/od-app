@@ -68,28 +68,29 @@ const ConnectedWalletInfo = () => {
         <>
             <DataContainer>
                 <Row>
-                    <Connection>
-                        {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
+                    <LeftContainer>
+                        <Address id="web3-account-identifier-row">
+                            <ConnectedWalletIcon size={18} />
+                            {account && isActive ? returnWalletAddress(account) : 'N/A'}
+                        </Address>
+                        <Connection>{connector ? formatConnectorName() : 'N/A'}</Connection>
+                    </LeftContainer>
+
+                    <RightContainer>
                         <Button text={'Change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
-                    </Connection>
-                    {connector instanceof MetaMask ? (
-                        <>
-                            <ReactTooltip id="browserWalletDisconnectTooltip" variant="light" data-effect="solid" />
-                            <Info
-                                data-tooltip-id="browserWalletDisconnectTooltip"
-                                data-tooltip-content={t('browser_wallet_disconnect_not_supported')}
-                                color="white"
-                                size="20"
-                            />
-                        </>
-                    ) : (
-                        <></>
-                    )}
+                        {connector instanceof MetaMask && (
+                            <>
+                                <ReactTooltip id="browserWalletDisconnectTooltip" variant="light" data-effect="solid" />
+                                <Info
+                                    data-tooltip-id="browserWalletDisconnectTooltip"
+                                    data-tooltip-content={t('browser_wallet_disconnect_not_supported')}
+                                    color="white"
+                                    size="20"
+                                />
+                            </>
+                        )}
+                    </RightContainer>
                 </Row>
-                <Address id="web3-account-identifier-row">
-                    <ConnectedWalletIcon size={18} />
-                    {account && isActive ? returnWalletAddress(account) : 'N/A'}
-                </Address>
                 {account && isActive ? (
                     <WalletData>
                         {copied ? (
@@ -140,10 +141,22 @@ const ConnectedWalletInfo = () => {
 
 export default ConnectedWalletInfo
 
+const LeftContainer = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const RightContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 4px;
+`
+
 const Row = styled.div`
     align-items: center;
     display: flex;
-    gap: 4px;
+    width: 100%;
+    justify-content: space-between;
 `
 
 const BtnContainer = styled.div`
@@ -158,7 +171,6 @@ const Connection = styled.div`
     justify-content: space-between;
     font-size: ${(props) => props.theme.font.small};
     color: ${(props) => props.theme.colors.neutral};
-    width: 100%;
     button {
         width: auto;
         min-width: auto;

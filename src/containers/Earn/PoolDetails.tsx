@@ -1,7 +1,9 @@
 import { useCallback } from 'react'
-import { ChevronLeft } from 'react-feather'
+import { ChevronLeft, Plus } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import LinkButton from '~/components/LinkButton'
+import { getTokenLogo } from '~/utils'
 
 const PoolDetails = ({
     poolAddress,
@@ -29,8 +31,17 @@ const PoolDetails = ({
                     <ChevronLeft size={18} /> BACK
                 </BackBtn>
                 <PoolHeader>
-                    <Title>Tokens Icon and Name</Title>
-                    <div>Deposit Btn with plus icon</div>
+                    <Title>
+                        <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
+                        <img src={getTokenLogo('ETH')} alt={''} width={'50px'} />
+                        <PoolTitle>OD-ETH</PoolTitle>
+                    </Title>
+                    <LinkBtnContainer>
+                        <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
+                            <Plus />
+                            Deposit funds
+                        </LinkButton>
+                    </LinkBtnContainer>
                 </PoolHeader>
                 <Body>
                     <Wrapper>
@@ -104,6 +115,20 @@ const Container = styled.div`
     }
 `
 
+const PoolTitle = styled.div`
+    font-size: 34px;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
+
+    margin-left: 5px;
+
+    span {
+        font-weight: 500;
+        color: ${(props) => props.theme.colors.primary};
+    }
+`
+
 const BackBtn = styled.div`
     font-size: 16px;
     display: flex;
@@ -122,12 +147,38 @@ const BackBtn = styled.div`
         opacity: 0.8;
     }
 `
+
+const LinkBtnContainer = styled.div`
+    a {
+        color: white;
+        outline: none;
+        cursor: pointer;
+        min-width: 100px;
+        padding: 12px 40px;
+        font-weight: 700;
+        background: ${(props) => props.theme.colors.gradientBg};
+        border-radius: 3px;
+        transition: all 0.3s ease;
+        font-family: ${(props) => props.theme.family.headers};
+    }
+
+    svg {
+        margin-right: 10px;
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+`
+
 const PoolHeader = styled.div`
     display: flex;
     justify-content: space-between;
 `
 
-const Title = styled.h2``
+const Title = styled.h2`
+    display: flex;
+`
 
 const Body = styled.div`
     display: flex;

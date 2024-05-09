@@ -15312,7 +15312,7 @@ __metadata:
     "@opendollar/sdk": 1.7.0-rc.5
     "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
-    "@sentry/cli": ^2.31.0
+    "@sentry/cli": ^2.31.2
     "@sentry/integrations": ^7.112.2
     "@sentry/react": ^7.112.2
     "@sentry/webpack-plugin": ^2.16.1
@@ -15380,6 +15380,7 @@ __metadata:
     react-transition-group: ^4.4.1
     serve: ^14.2.3
     styled-components: ^5.2.0
+    terser-webpack-plugin: ^5.3.10
     typescript: ^4.4.3
   peerDependencies:
     react: ^18.2.0

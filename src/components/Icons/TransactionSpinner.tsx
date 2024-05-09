@@ -1,4 +1,4 @@
-export default function TransactionSpinner({ ...rest }) {
+export default function TransactionSpinner({ color = '#FFFFFF', ...rest }) {
     return (
         <svg
             id="transaction-pending"
@@ -40,7 +40,7 @@ export default function TransactionSpinner({ ...rest }) {
                         id="transaction-pending-u-05"
                         d="M3.94,13.05c-2.27-2.78-1.85-6.87,.93-9.13c1.85-1.51,4.29-1.83,6.38-1.05"
                         fill="none"
-                        stroke="#1499DA"
+                        stroke={color}
                         strokeWidth="0.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -52,7 +52,7 @@ export default function TransactionSpinner({ ...rest }) {
                         d="M13.05,14c-1.28,1.06-2.96,1.64-4.74,1.47-.89-.08-1.72-.34-2.47-.74"
                         opacity="0.8"
                         fill="none"
-                        stroke="#1499DA"
+                        stroke={color}
                         strokeWidth="0.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -64,7 +64,7 @@ export default function TransactionSpinner({ ...rest }) {
                         d="M15.43,8.5c.08,1.31-.24,2.59-.88,3.68"
                         opacity="0.7"
                         fill="none"
-                        stroke="#1499DA"
+                        stroke={color}
                         strokeWidth="0.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -76,7 +76,7 @@ export default function TransactionSpinner({ ...rest }) {
                         d="M14.63,5.93c.1.19.19.39.27.59"
                         opacity="0.6"
                         fill="none"
-                        stroke="#1499DA"
+                        stroke={color}
                         strokeWidth="0.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -88,7 +88,7 @@ export default function TransactionSpinner({ ...rest }) {
                         d="M13.2,4.09c0,0,.01,0,0-.02s0-.01-.02,0"
                         opacity="0"
                         fill="none"
-                        stroke="#1499DA"
+                        stroke={color}
                         strokeWidth="0.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"

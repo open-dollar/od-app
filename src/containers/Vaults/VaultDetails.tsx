@@ -12,6 +12,7 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
+import Loader from '~/components/Loader'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -117,14 +118,13 @@ const VaultDetails = ({ ...props }) => {
     return (
         <>
             <Container>
-                {!isOwner ? (
-                    <LabelContainer>
-                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
-                    </LabelContainer>
-                ) : null}
                 <VaultHeader safeId={safeId} />
 
-                {!isLoading && (
+                {isLoading ? (
+                    <LoaderContainer>
+                        <Loader width="150px" color="#1A74EC" />
+                    </LoaderContainer>
+                ) : (
                     <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
                 )}
 
@@ -134,6 +134,11 @@ const VaultDetails = ({ ...props }) => {
 
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
+                {!isOwner ? (
+                    <LabelContainer>
+                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
+                    </LabelContainer>
+                ) : null}
             </Container>
         </>
     )
@@ -150,7 +155,13 @@ const Container = styled.div`
     }
 `
 
+const LoaderContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
 const LabelContainer = styled.div`
-    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    max-width: 810px;
     margin: 0 auto 20px auto;
 `

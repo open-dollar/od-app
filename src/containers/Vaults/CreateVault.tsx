@@ -19,12 +19,14 @@ import {
     handleTransactionError,
     useActiveWeb3React,
     useInputsHandlers,
+    useTokenBalanceInUSD,
     useTokenApproval,
     ApprovalState,
     useSafeInfo,
     StatsType,
 } from '~/hooks'
 import ConnectWalletStep from '~/components/ConnectWalletStep'
+import { useCollateralBalances } from '~/hooks/useCollateralBalances'
 
 const CreateVault = ({
     selectedItem,
@@ -85,12 +87,7 @@ const CreateVault = ({
         window.open(url, '_blank')
     }
 
-    const selectedTokenBalance = useMemo(() => {
-        if (selectedCollateralBalance) {
-            return formatNumber(selectedCollateralBalance, 2)
-        }
-        return formatNumber('0', 2)
-    }, [selectedCollateralBalance])
+    const selectedTokenBalance = useCollateralBalances(tokensData, tokensFetchedData, selectedItem)
 
     const collateralUnitPriceUSD = formatNumber(
         safeState.liquidationData?.collateralLiquidationData[selectedCollateral.symbol]?.currentPrice?.value || '0'
@@ -107,10 +104,12 @@ const CreateVault = ({
             )
         )
     )
-    const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
+    const haiBalanceUSD = useTokenBalanceInUSD('OD', rightInput ? rightInput : availableHai)
+
+    //const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     //available hai - 5% of available hai, this is a buffer to prevent bugs.
-    const onMaxRightInput = () => onRightInput(maxHaiWithBuffer.toString())
+    const onMaxRightInput = () => onRightInput(haiBalanceUSD.toString())
 
     const onClearAll = useCallback(() => {
         clearAll()
@@ -309,7 +308,7 @@ const CreateVault = ({
                                             label={`Borrow OD: ${formatWithCommas(availableHai)} ${
                                                 tokensData.OD?.symbol
                                             }`}
-                                            rightLabel={`~$${formatWithCommas(maxHaiWithBuffer)}`}
+                                            rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
                                             onChange={onRightInput}
                                             value={rightInput}
                                             handleMaxClick={onMaxRightInput}

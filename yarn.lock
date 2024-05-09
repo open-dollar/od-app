@@ -3664,16 +3664,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@portal:/Users/sero/work/od-sdk::locator=od-app%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@opendollar/sdk@portal:/Users/sero/work/od-sdk::locator=od-app%40workspace%3A."
+"@opendollar/sdk@npm:1.7.0-rc.5":
+  version: 1.7.0-rc.5
+  resolution: "@opendollar/sdk@npm:1.7.0-rc.5"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
+  checksum: 7075c66469af09d3a3abd05cdd567e62d7fbee0f694d732a9051a8279ef011da653c3fd98b4a05c62c50b63bda3761aadd00d385171d2f54315d206c9bd0b115
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@opendollar/svg-generator@npm:1.0.4":
   version: 1.0.4
@@ -14947,7 +14948,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": ../od-sdk
+    "@opendollar/sdk": 1.7.0-rc.5
     "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0

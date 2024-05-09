@@ -1,29 +1,24 @@
 import styled from 'styled-components'
-import PoolBlock from './PoolBlock.js'
+import PoolBlock from './PoolBlock'
 import { useStoreState } from 'easy-peasy'
 import { useStoreActions } from 'easy-peasy'
 import { useActiveWeb3React } from '~/hooks'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
+import { Loader } from 'react-feather'
 
 const pools = [
     {
-        title: 'Silo - WSTETH',
-        tokenImg1: 'OD',
-        tokenImg2: 'WETH',
-        tokenAddress: '0x0341c0c0ec423328621788d4854119b97f44e391',
-        collateralAddress: '0x5979D7b546E38E414F7E9822514be443A4800529',
-        poolAddress: '0xE430b35583385638411BcbcC198a8733434901Dc',
+        poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
         status: 'Active',
-        tvl: '$3,000',
-        apr: '120%',
-        rewards: 'ARB',
-        link: 'https://app.camelot.exchange/nitro/0xE430b35583385638411BcbcC198a8733434901Dc',
+        apy: '2.90%',
+        link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
     },
 ]
 
 const Earn = () => {
     const geb = useGeb()
+    const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
@@ -31,25 +26,36 @@ const Earn = () => {
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
-
-    console.log('nitroPools', nitroPools)
-
+    
     useEffect(() => {
-        if (!account || !geb) return
-        nitroPoolsActions.fetchNitroPool({
-            geb,
-            poolAddress: pools[0].poolAddress,
-            userAddress: account,
-        })
+        setLoading(true)
+        if (!geb) return
+        async function fetchPools() {
+            for (const pool of pools) {
+                try {
+                await nitroPoolsActions.fetchNitroPool({
+                    geb,
+                    poolAddress: pool.poolAddress,
+                    userAddress: account ?? undefined,
+                })
+                setLoading(false)
+                } catch (e) {
+                    setLoading(false)
+                    throw new Error(`Error fetching nitropools data ${e}`)
+                }
+            }
+        }
+        fetchPools()
     }, [account, geb, nitroPoolsActions])
 
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
-                {pools.map((pool) => (
-                    <PoolBlock key={pool.title} {...pool} />
+                {nitroPools.length > 0 && pools?.map((pool, i) => (
+                    <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />
                 ))}
+                {loading && <Loader />}
             </Pools>
         </Container>
     )

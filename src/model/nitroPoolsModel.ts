@@ -20,7 +20,7 @@ const nitroPoolsModel: NitroPoolsModel = {
             fetched = await fetchNitroPool(
                 geb,
                 payload.poolAddress,
-                payload.userAddress,
+                payload.userAddress ?? '0x0000000000000000000000000000000000000000',
             )
         } catch (e) {
             console.debug('Error fetching nitropools data', e)

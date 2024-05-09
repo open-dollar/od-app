@@ -2,15 +2,23 @@ import styled from 'styled-components'
 import Camelot from '~/components/Icons/Camelot'
 import { getTokenLogo } from '~/utils'
 
-const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, link }) => {
+const PoolBlock = ({
+    poolAddress,
+    status,
+    apy,
+    link,
+    nitroPoolData
+}: { poolAddress: string, status: string, apy: string, link: string, nitroPoolData: any }) => {
+ 
+    const { collateralTokens, rewardTokens, tvl } = nitroPoolData
     return (
-        <BlockContainer>
+        <BlockContainer id={`${poolAddress}`}>
             <BlockHeader>
                 <PoolInfo>
                     <PoolData>
-                        <PoolTitle>{title}</PoolTitle>
-                        <img src={getTokenLogo(tokenImg1)} alt={''} width={'50px'} />
-                        <img src={getTokenLogo(tokenImg2)} alt={''} width={'50px'} />
+                        <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
+                        <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                        <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
                     </PoolData>
                 </PoolInfo>
                 <ExternalLink href={link} target="_blank">
@@ -22,20 +30,27 @@ const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, lin
                 <Item>
                     <Label>Status</Label>
                     <Value className="status">
-                        <Dot></Dot>Active
+                        <Dot></Dot>{status}
                     </Value>
                 </Item>
                 <Item>
                     <Label>TVL</Label>
-                    <Value>{tvl}</Value>
+                    <Value>${tvl?.toFixed(2) || 0}</Value>
                 </Item>
                 <Item>
-                    <Label>APR</Label>
-                    <Value>{apr}</Value>
+                    <Label>APY</Label>
+                    <Value>{apy}</Value>
                 </Item>
                 <Item>
                     <Label>Rewards</Label>
-                    <Value>{rewards}</Value>
+                    <Value>
+                        {rewardTokens?.map((token: { symbol: string }, i: number) => {
+                            if (i === rewardTokens.length - 1) {
+                                return token.symbol
+                            }
+                            return `${token.symbol}, `
+                        })}
+                    </Value>
                 </Item>
             </Block>
         </BlockContainer>

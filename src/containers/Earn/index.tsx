@@ -26,19 +26,19 @@ const Earn = () => {
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
-    
+
     useEffect(() => {
         setLoading(true)
         if (!geb) return
         async function fetchPools() {
             for (const pool of pools) {
                 try {
-                await nitroPoolsActions.fetchNitroPool({
-                    geb,
-                    poolAddress: pool.poolAddress,
-                    userAddress: account ?? undefined,
-                })
-                setLoading(false)
+                    await nitroPoolsActions.fetchNitroPool({
+                        geb,
+                        poolAddress: pool.poolAddress,
+                        userAddress: account ?? undefined,
+                    })
+                    setLoading(false)
                 } catch (e) {
                     setLoading(false)
                     throw new Error(`Error fetching nitropools data ${e}`)
@@ -52,9 +52,8 @@ const Earn = () => {
         <Container>
             <Title>Earn</Title>
             <Pools>
-                {nitroPools.length > 0 && pools?.map((pool, i) => (
-                    <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />
-                ))}
+                {nitroPools.length > 0 &&
+                    pools?.map((pool, i) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />)}
                 {loading && <Loader />}
             </Pools>
         </Container>

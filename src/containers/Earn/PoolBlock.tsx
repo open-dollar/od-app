@@ -7,9 +7,14 @@ const PoolBlock = ({
     status,
     apy,
     link,
-    nitroPoolData
-}: { poolAddress: string, status: string, apy: string, link: string, nitroPoolData: any }) => {
- 
+    nitroPoolData,
+}: {
+    poolAddress: string
+    status: string
+    apy: string
+    link: string
+    nitroPoolData: any
+}) => {
     const { collateralTokens, rewardTokens, tvl } = nitroPoolData
     return (
         <BlockContainer id={`${poolAddress}`}>
@@ -30,7 +35,8 @@ const PoolBlock = ({
                 <Item>
                     <Label>Status</Label>
                     <Value className="status">
-                        <Dot></Dot>{status}
+                        <Dot></Dot>
+                        {status}
                     </Value>
                 </Item>
                 <Item>

@@ -21,7 +21,7 @@ const PoolDetails = ({
     const history = useHistory()
 
     const handleBack = useCallback(() => {
-        history.push(`/pools`)
+        history.push(`/earn`)
     }, [history])
 
     return (

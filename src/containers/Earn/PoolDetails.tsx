@@ -33,12 +33,57 @@ const PoolDetails = ({
                     <div>Deposit Btn with plus icon</div>
                 </PoolHeader>
                 <Body>
-                    <Wrapper>First col</Wrapper>
-                    <Wrapper>Second col</Wrapper>
+                    <Wrapper>
+                        <ColWrapper>
+                            <Item>
+                                <Label>Total value locked</Label>
+                                <Value>$813.6k</Value>
+                            </Item>
+                            <Item>
+                                <Label>APR</Label>
+                                <Value>3.53%</Value>
+                            </Item>
+                            <Item>
+                                <Label>Pending Rewards</Label>
+                                <Value>0.3213 ODG</Value>
+                            </Item>
+                        </ColWrapper>
+                    </Wrapper>
+                    <Wrapper>
+                        <ColWrapper>
+                            <Item>
+                                <Label>Status</Label>
+                                <Value>Active</Value>
+                            </Item>
+                            <Item>
+                                <Label>Duration</Label>
+                                <Value>12 months 6 days</Value>
+                            </Item>
+                            <Item>
+                                <Label>End in</Label>
+                                <Value>57 D 1h 27min 13 sec</Value>
+                            </Item>
+                        </ColWrapper>
+                    </Wrapper>
                 </Body>
                 <Footer>
-                    <FooterHeader>Footer Header</FooterHeader>
-                    <Wrapper>Footer body</Wrapper>
+                    <FooterHeader>My deposit</FooterHeader>
+                    <Wrapper>
+                        <FooterWrapper>
+                            <Item>
+                                <Label>Average APR</Label>
+                                <Value>0.00%</Value>
+                            </Item>
+                            <Item>
+                                <Label>Total in Deposit</Label>
+                                <Value>0.0 OD-ETH</Value>
+                            </Item>
+                            <Item>
+                                <Label>Pending rewards</Label>
+                                <Value>0.0 ODG</Value>
+                            </Item>
+                        </FooterWrapper>
+                    </Wrapper>
                 </Footer>
             </Container>
         </>
@@ -99,6 +144,35 @@ const Wrapper = styled.div`
 
 const Footer = styled.div``
 
+const Label = styled.div`
+    font-size: 16px;
+    color: ${(props) => props.theme.colors.accent};
+`
+
+const Value = styled.div`
+    font-size: 18px;
+    color: ${(props) => props.theme.colors.primary};
+    font-weight: 700;
+`
+
+const ColWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+`
+
+const Item = styled.div``
+
+const FooterWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
 const FooterHeader = styled.div`
     margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
 `

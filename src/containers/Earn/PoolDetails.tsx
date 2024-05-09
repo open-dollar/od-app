@@ -78,7 +78,14 @@ const PoolDetails = ({
                     </Wrapper>
                 </Body>
                 <Footer>
-                    <FooterHeader>My deposit</FooterHeader>
+                    <FooterHeader>
+                        My deposit
+                        <LinkBtnContainer>
+                            <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
+                                Manage Position
+                            </LinkButton>
+                        </LinkBtnContainer>
+                    </FooterHeader>
                     <Wrapper>
                         <FooterWrapper>
                             <Item>
@@ -149,6 +156,7 @@ const BackBtn = styled.div`
 `
 
 const LinkBtnContainer = styled.div`
+    max-width: 230px;
     a {
         color: white;
         outline: none;
@@ -174,6 +182,13 @@ const LinkBtnContainer = styled.div`
 const PoolHeader = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: center;
+
+        gap: 30px;
+    }
 `
 
 const Title = styled.h2`
@@ -184,6 +199,10 @@ const Body = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 20px;
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
 `
 
 const Wrapper = styled.div`
@@ -218,6 +237,11 @@ const Item = styled.div``
 const FooterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+        gap: 30px;
+    }
 `
 
 const FooterHeader = styled.div`
@@ -226,4 +250,14 @@ const FooterHeader = styled.div`
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
 `

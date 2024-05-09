@@ -51,13 +51,15 @@ const Container = styled.div`
     max-width: 880px;
     margin: 50px auto;
     padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
     @media (max-width: 767px) {
         margin: 50px auto;
     }
 `
 
 const BackBtn = styled.div`
-    margin-bottom: 20px;
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -75,14 +77,28 @@ const BackBtn = styled.div`
         opacity: 0.8;
     }
 `
-const PoolHeader = styled.div``
+const PoolHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
 
 const Title = styled.h2``
 
-const Body = styled.div``
+const Body = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+`
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 4px;
+    flex: 1;
+`
 
 const Footer = styled.div``
 
-const FooterHeader = styled.div``
+const FooterHeader = styled.div`
+    margin-bottom: 15px;
+`

@@ -27,6 +27,7 @@ import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
+import PoolDetails from './containers/Earn/PoolDetails'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -80,6 +81,7 @@ const App = () => {
                                                     path={'/vaults/:id/withdraw'}
                                                 />
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
+                                                <Route exact component={PoolDetails} path={'/pools/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
                                                 <Route

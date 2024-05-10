@@ -5,7 +5,7 @@ import { useStoreActions } from 'easy-peasy'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
-import { Loader } from 'react-feather'
+import Loader from '~/components/Loader'
 
 const pools = [
     {
@@ -46,7 +46,7 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-    
+
     console.log(nitroPools)
     return (
         <Container>
@@ -54,7 +54,7 @@ const Earn = () => {
             <Pools>
                 {nitroPools.length > 0 &&
                     pools?.map((pool, i) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />)}
-                {loading && <Loader />}
+                {loading && <Loader color="#1A74EC" width="60px" />}
             </Pools>
         </Container>
     )

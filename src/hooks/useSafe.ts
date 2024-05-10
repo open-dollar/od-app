@@ -19,7 +19,6 @@ import {
     toFixedString,
 } from '~/utils/helper'
 import { useCollateralBalances } from '~/hooks/useCollateralBalances'
-import { get } from 'http'
 
 export const LIQUIDATION_RATIO = 135 // percent
 export const ONE_DAY_WORTH_SF = ethers.utils.parseEther('0.00001')
@@ -217,7 +216,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             info: [
                 {
                     label: 'Total Liquidation Penalty',
-                    value: (getLiquidationPenalty(collateralName) ||  '?') + '%',
+                    value: (getLiquidationPenalty(collateralName) || '?') + '%',
                     tip: t('liquidation_penalty_tip'),
                 },
                 {
@@ -227,6 +226,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                 },
             ],
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         collateralLiquidationData,
         collateralName,

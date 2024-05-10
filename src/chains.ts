@@ -16,6 +16,9 @@
 
 import type { AddEthereumChainParameter } from '@web3-react/types'
 
+const RPC_URL = process.env.REACT_APP_NETWORK_URL as string
+const NETWORK_ID = process.env.REACT_APP_NETWORK_ID as string
+
 const ETH: AddEthereumChainParameter['nativeCurrency'] = {
     name: 'Ether',
     symbol: 'ETH',
@@ -57,7 +60,7 @@ type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInf
 
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
-        urls: ['https://arbitrum.blockpi.network/v1/rpc/public'],
+        urls: [RPC_URL, 'https://arbitrum.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum One',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://arbiscan.io'],
@@ -79,7 +82,7 @@ export const TESTNET_CHAINS: ChainConfig = {
     },
 }
 
-const supportedChainId = parseInt(process.env.REACT_APP_NETWORK_ID || '', 10)
+const supportedChainId = parseInt(NETWORK_ID || '', 10)
 
 if (isNaN(supportedChainId)) {
     throw new Error('REACT_APP_NETWORK_ID must be a valid number')

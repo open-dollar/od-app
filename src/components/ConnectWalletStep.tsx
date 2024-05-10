@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useStoreActions } from '~/store'
 import Button from './Button'
+import closedVault from '../assets/closed-vault.webp'
 
 const ConnectWalletStep = () => {
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -11,7 +12,7 @@ const ConnectWalletStep = () => {
     return (
         <ContentContainer stepNumber={0}>
             <ImageContainer stepNumber={0}>
-                <img src={require('../assets/closed-vault.webp')} alt="" />
+                <img src={closedVault} alt="" />
             </ImageContainer>
             <ContentWrapper stepNumber={0}>
                 <Title>{t('getting_started')}</Title>

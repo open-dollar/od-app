@@ -1,19 +1,35 @@
+import odFullLogoDark from '../assets/od-full-logo-dark.svg'
+import odFullLogoLight from '../assets/od-full-logo-light.svg'
+import darkArrow from '../assets/dark-arrow.svg'
+import walletConnectIcon from '../assets/connectors/walletConnectIcon.svg'
+import coinbaseWalletIcon from '../assets/connectors/coinbaseWalletIcon.svg'
+import cookie from '../assets/cookie.svg'
+import caret from '../assets/caret.webp'
+import caretUp from '../assets/caret-up.svg'
+import arrowUp from '../assets/arrow-up.svg'
+import odLogo from '../assets/od-logo.svg'
+import arrow from '../assets/arrow.svg'
+import uniswapIcon from '../assets/uniswap-icon.svg'
+import metamask from '../assets/connectors/metamask.webp'
+import odColorLoop from '../assets/od-colorloop.webp'
+import closedVault from '../assets/closed-vault.webp'
+
 const INITIAL_STATE = [
-    require('../assets/od-full-logo-dark.svg').default,
-    require('../assets/od-full-logo-light.svg').default,
-    require('../assets/dark-arrow.svg').default,
-    require('../assets/connectors/walletConnectIcon.svg').default,
-    require('../assets/connectors/coinbaseWalletIcon.svg').default,
-    require('../assets/cookie.svg').default,
-    require('../assets/caret.webp').default,
-    require('../assets/caret-up.svg').default,
-    require('../assets/arrow-up.svg').default,
-    require('../assets/od-logo.svg').default,
-    require('../assets/arrow.svg').default,
-    require('../assets/uniswap-icon.svg').default,
-    require('../assets/connectors/metamask.webp').default,
-    require('../assets/od-colorloop.webp').default,
-    require('../assets/closed-vault.webp'),
+    odFullLogoDark,
+    odFullLogoLight,
+    darkArrow,
+    walletConnectIcon,
+    coinbaseWalletIcon,
+    cookie,
+    caret,
+    caretUp,
+    arrowUp,
+    odLogo,
+    arrow,
+    uniswapIcon,
+    metamask,
+    odColorLoop,
+    closedVault,
 ]
 
 const ImagePreloader = () => {

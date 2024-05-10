@@ -2,6 +2,9 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Button from './Button'
 import closedVault from '../assets/closed-vault.webp'
+import wallet from '../assets/wallet.webp'
+import vaultFacilitator from '../assets/vault-facilitator.webp'
+import openedVault from '../assets/opened-vault.webp'
 import Stepper from './Stepper'
 
 interface Props {
@@ -28,13 +31,13 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
             case 0:
                 return <img src={closedVault} alt="" />
             case 1:
-                return <img src={require('../assets/wallet.webp')} alt="" />
+                return <img src={wallet} alt="" />
             case 2:
-                return <img src={require('../assets/vault-facilitator.webp')} alt="" />
+                return <img src={vaultFacilitator} alt="" />
             case 3:
-                return <img src={require('../assets/opened-vault.webp')} alt="" />
+                return <img src={openedVault} alt="" />
             default:
-                return <img src={require('../assets/closed-vault.webp')} alt="" />
+                return <img src={closedVault} alt="" />
         }
     }
     return (

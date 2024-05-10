@@ -9,6 +9,7 @@ import useGeb from '~/hooks/useGeb'
 import { useStoreActions } from 'easy-peasy'
 
 import { formatWithCommas, getTokenLogo } from '~/utils'
+import Loader from '~/components/Loader'
 
 const pools = [
     {
@@ -18,11 +19,10 @@ const pools = [
     },
 ]
 
-const PoolDetails = () => {
+const EarnDetails = () => {
     const history = useHistory()
 
     const geb = useGeb()
-    const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
@@ -32,7 +32,6 @@ const PoolDetails = () => {
     const { nitroPools } = nitroPoolsState
 
     useEffect(() => {
-        setLoading(true)
         if (!geb) return
         console.log()
         async function fetchPool() {
@@ -42,9 +41,7 @@ const PoolDetails = () => {
                     poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
                     userAddress: account ?? undefined,
                 })
-                setLoading(false)
             } catch (e) {
-                setLoading(false)
                 throw new Error(`Error fetching nitropools data ${e}`)
             }
         }
@@ -57,15 +54,23 @@ const PoolDetails = () => {
 
     return (
         <>
-            {nitroPools.length > 0 && (
+            {nitroPools.length > 0 ? (
                 <Container>
                     <BackBtn id="back-btn" onClick={handleBack}>
                         <ChevronLeft size={18} /> BACK
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img src={getTokenLogo(nitroPools[0].collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(nitroPools[0].collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                            <img
+                                src={getTokenLogo(nitroPools[0].collateralTokens[0]?.symbol)}
+                                alt={''}
+                                width={'50px'}
+                            />
+                            <img
+                                src={getTokenLogo(nitroPools[0].collateralTokens[1]?.symbol)}
+                                alt={''}
+                                width={'50px'}
+                            />
                             <PoolTitle>{`${nitroPools[0].collateralTokens[0]?.symbol} - ${nitroPools[0].collateralTokens[1]?.symbol}`}</PoolTitle>
                         </Title>
                         <LinkBtnContainer>
@@ -136,12 +141,16 @@ const PoolDetails = () => {
                         </Wrapper>
                     </Footer>
                 </Container>
+            ) : (
+                <LoaderContainer>
+                    <Loader color="#1A74EC" width="150px" />
+                </LoaderContainer>
             )}
         </>
     )
 }
 
-export default PoolDetails
+export default EarnDetails
 
 const Container = styled.div`
     max-width: 880px;
@@ -153,6 +162,13 @@ const Container = styled.div`
     @media (max-width: 767px) {
         margin: 50px auto;
     }
+`
+
+const LoaderContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
 `
 
 const PoolTitle = styled.div`

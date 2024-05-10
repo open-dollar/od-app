@@ -11,11 +11,8 @@ const INITIAL_STATE = [
     require('../assets/od-logo.svg').default,
     require('../assets/arrow.svg').default,
     require('../assets/uniswap-icon.svg').default,
-    require('../assets/logo192.webp').default,
     require('../assets/connectors/metamask.webp').default,
-    require('../assets/od-land.webp').default,
     require('../assets/od-colorloop.webp').default,
-    require('../assets/od-vault.webp').default,
 ]
 
 const ImagePreloader = () => {

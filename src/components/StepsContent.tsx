@@ -33,7 +33,7 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
             case 3:
                 return <img src={require('../assets/opened-vault.webp')} alt="" />
             default:
-                return <img src={require('../assets/od-land.webp')} alt="" />
+                return <img src={require('../assets/closed-vault.webp')} alt="" />
         }
     }
     return (

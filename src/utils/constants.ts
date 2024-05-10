@@ -171,7 +171,7 @@ export const INITIAL_INCENTIVE_STATE = [
 
 const INIT_VALUES = {
     name: 'FLX',
-    img: require('../assets/logo192.webp').default,
+    img: require('../assets/logo4x.webp').default,
     amount: 0,
     price: 0,
     diff: 0,

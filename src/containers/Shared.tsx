@@ -244,7 +244,7 @@ const Shared = ({ children, ...rest }: Props) => {
             fetchSafes()
         }
         //@to-do: find a better way to fetch safes
-        const ms = 6000
+        const ms = 3000
         const interval = setInterval(() => {
             if (
                 (!account && !address) ||

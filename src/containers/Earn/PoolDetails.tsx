@@ -8,7 +8,7 @@ import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import { useStoreActions } from 'easy-peasy'
 
-import { getTokenLogo } from '~/utils'
+import { formatWithCommas, getTokenLogo } from '~/utils'
 
 const pools = [
     {
@@ -55,8 +55,6 @@ const PoolDetails = () => {
         history.push(`/earn`)
     }, [history])
 
-    console.log({ nitroPools })
-
     return (
         <>
             {nitroPools.length > 0 && (
@@ -66,17 +64,9 @@ const PoolDetails = () => {
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img
-                                src={getTokenLogo(nitroPools[0]?.collateralTokens[0]?.symbol)}
-                                alt={''}
-                                width={'50px'}
-                            />
-                            <img
-                                src={getTokenLogo(nitroPools[0]?.collateralTokens[1]?.symbol)}
-                                alt={''}
-                                width={'50px'}
-                            />
-                            <PoolTitle>{`${nitroPools[0]?.collateralTokens[0]?.symbol} - ${nitroPools[0].collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(nitroPools[0].collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(nitroPools[0].collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${nitroPools[0].collateralTokens[0]?.symbol} - ${nitroPools[0].collateralTokens[1]?.symbol}`}</PoolTitle>
                         </Title>
                         <LinkBtnContainer>
                             <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
@@ -90,15 +80,15 @@ const PoolDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>$813.6k</Value>
+                                    <Value>${formatWithCommas(nitroPools[0].tvl?.toFixed(2) || 0)}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>APR</Label>
-                                    <Value>3.53%</Value>
+                                    <Label>APY</Label>
+                                    <Value>{pools[0].apy}</Value>
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>
-                                    <Value>0.3213 ODG</Value>
+                                    <Value>{nitroPools[0].rewardTokens[0].symbol}</Value>
                                 </Item>
                             </ColWrapper>
                         </Wrapper>
@@ -136,11 +126,11 @@ const PoolDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>Total in Deposit</Label>
-                                    <Value>0.0 OD-ETH</Value>
+                                    <Value>0.0 OD-ETH: </Value>
                                 </Item>
                                 <Item>
                                     <Label>Pending rewards</Label>
-                                    <Value>0.0 ODG</Value>
+                                    <Value>0.0 ODG: </Value>
                                 </Item>
                             </FooterWrapper>
                         </Wrapper>

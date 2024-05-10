@@ -4562,7 +4562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli@npm:^2.31.0":
+"@sentry/cli@npm:^2.31.2":
   version: 2.31.2
   resolution: "@sentry/cli@npm:2.31.2"
   dependencies:

@@ -21,13 +21,11 @@ import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { Network } from '@web3-react/network'
 import { Web3ReactHooks } from '@web3-react/core'
-import { Chain } from '~/components/connectorCards/Chain'
 import { Status } from '~/components/connectorCards/Status'
 import styled from 'styled-components'
 import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
 import { GnosisSafe } from '@web3-react/gnosis-safe'
-import { useStoreActions, useStoreState } from '~/store'
 
 interface Props {
     connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
@@ -52,8 +50,6 @@ function getName(connector: Connector) {
 
 export function Card({ connector, activeChainId, isActivating, isActive, error, setError }: Props) {
     const [desiredChainId, setDesiredChainId] = useState<number>(parseInt(process.env.REACT_APP_NETWORK_ID || '-1', 10))
-    useStoreState((state) => state)
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const switchChain = useCallback(
         async (desiredChainId: number) => {
@@ -72,21 +68,18 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
 
                 if (desiredChainId === -1) {
                     await connector.activate()
-                    popupsActions.setIsConnectorsWalletOpen(false)
                 } else if (connector instanceof WalletConnectV2 || connector instanceof Network) {
                     await connector.activate(desiredChainId)
-                    popupsActions.setIsConnectorsWalletOpen(false)
                 } else {
                     await connector.activate(getAddChainParameters(desiredChainId))
-                    popupsActions.setIsConnectorsWalletOpen(false)
                 }
+
                 setError(undefined)
             } catch (error) {
                 // @ts-ignore
                 setError(error)
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [connector, activeChainId, setError]
     )
 
@@ -113,24 +106,23 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
             <NetworkCard>
                 <NetworkHeader>{getName(connector)}</NetworkHeader>
                 <div>
-                    <Status connector={connector} isActivating={isActivating} isActive={isActive} error={error} />
+                    <Status isActivating={isActivating} isActive={isActive} error={error} />
                 </div>
-                <Chain chainId={activeChainId} />
             </NetworkCard>
         </OptionCard>
     )
 }
 
 const InfoCard = styled.button<{ active?: boolean }>`
-    padding: 1rem;
+    padding: 1.25rem;
     width: 100% !important;
 `
 
 const OptionCard = styled(InfoCard as any)`
     display: flex;
     flex-direction: row;
-    align-items: center;
-    padding-top: 1rem;
+    border: 2px solid white;
+    border-radius: 4px;
 `
 
 const NetworkCard = styled.div`
@@ -144,6 +136,6 @@ const NetworkHeader = styled.h3`
     font-family: 'Barlow', sans-serif;
     font-weight: 700;
     color: white;
-    font-size: 32px;
+    font-size: ${(props: any) => props.theme.font.large};
     line-height: 38.4px;
 `

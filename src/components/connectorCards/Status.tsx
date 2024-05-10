@@ -16,48 +16,22 @@
 
 import type { Web3ReactHooks } from '@web3-react/core'
 import styled from 'styled-components'
-import { MetaMask } from '@web3-react/metamask'
-import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
-import { Network } from '@web3-react/network'
-import { GnosisSafe } from '@web3-react/gnosis-safe'
-
-class WalletConnectV2 {}
 
 export function Status({
-    connector,
     isActivating,
     isActive,
     error,
 }: {
-    connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
     isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
     isActive: ReturnType<Web3ReactHooks['useIsActive']>
     error?: Error
 }) {
     return (
         <StatusText>
-            {error ? (
-                <ErrorText>
-                    {'Error: '}
-                    {error.message && connector instanceof MetaMask
-                        ? `Either Metamask is not installed, or you have multiple plugin wallets. Please refresh page and try again`
-                        : null}
-                    {error.message ? `${error.message}` : null}
-                </ErrorText>
-            ) : isActivating ? (
-                <>Connecting</>
-            ) : isActive ? (
-                <>Connected</>
-            ) : (
-                <>Disconnected</>
-            )}
+            {error ? <></> : isActivating ? <>Awaiting Connection...</> : isActive ? <>Connected</> : <></>}
         </StatusText>
     )
 }
-
-const ErrorText = styled.div`
-    color: ${(props) => `${props.theme.colors.tertiary}`};
-`
 
 const StatusText = styled.div`
     font-weight: 400;

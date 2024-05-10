@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { URI_AVAILABLE } from '@web3-react/walletconnect-v2'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { MAINNET_CHAINS } from '../../chains'
 import { hooks, walletConnectV2 } from '../../connectors/walletConnectV2'
@@ -25,7 +25,12 @@ const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
 
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
-export default function WalletConnectV2Card() {
+interface WalletConnectV2CardProps {
+    error: Error | undefined
+    setError: (error: Error | undefined) => void
+}
+
+export default function WalletConnectV2Card({ error, setError }: WalletConnectV2CardProps) {
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
@@ -33,8 +38,6 @@ export default function WalletConnectV2Card() {
     const isActive = useIsActive()
 
     const provider = useProvider()
-
-    const [error, setError] = useState<Error | undefined>(undefined)
 
     // attempt to connect eagerly on mount
     useEffect(() => {

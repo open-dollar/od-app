@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { hooks, metaMask } from '../../connectors/metaMask'
 import { Card } from '~/components/connectorCards/Card'
@@ -22,7 +22,12 @@ import { useStoreActions } from '~/store'
 
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
-export default function MetaMaskCard() {
+interface MetaMaskCardProps {
+    error: Error | undefined
+    setError: (error: Error | undefined) => void
+}
+
+export default function MetaMaskCard({ error, setError }: MetaMaskCardProps) {
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
@@ -31,7 +36,6 @@ export default function MetaMaskCard() {
 
     const provider = useProvider()
 
-    const [error, setError] = useState<Error | undefined>(undefined)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     useEffect(() => {

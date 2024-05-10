@@ -22,6 +22,7 @@ import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { IconWrapper } from '~/components/ConnectedWalletIcon'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { GnosisSafe } from '@web3-react/gnosis-safe'
+import styled from 'styled-components'
 
 function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe) {
     if (connector instanceof MetaMask) {
@@ -68,11 +69,10 @@ export function ConnectWithSelect({
     setError: (error: Error | undefined) => void
 }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', color: 'white' }}>
-            <div style={{ marginBottom: '1rem' }} />
+        <div style={{ display: 'flex', flexDirection: 'row', color: 'white', alignItems: 'center' }}>
             {isActive ? (
                 error ? (
-                    <div>Try again?</div>
+                    <></>
                 ) : (
                     <div
                         onClick={() => {
@@ -83,12 +83,23 @@ export function ConnectWithSelect({
                             }
                         }}
                     >
-                        {connector instanceof MetaMask || connector instanceof GnosisSafe ? '' : <>{'Disconnect'}</>}
+                        {connector instanceof MetaMask || connector instanceof GnosisSafe ? (
+                            ''
+                        ) : (
+                            <DisconnectText>{'Disconnect'}</DisconnectText>
+                        )}
                     </div>
                 )
             ) : (
-                <div>{error ? 'Try again?' : getStatusIcon(connector)}</div>
+                <div>{getStatusIcon(connector)}</div>
             )}
         </div>
     )
 }
+
+const DisconnectText = styled.div`
+    font-family: 'Barlow', sans-serif;
+    font-size: ${(props: any) => props.theme.font.xSmall};
+    justify-content: start;
+    text-align: center;
+`

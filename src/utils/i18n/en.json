@@ -12,7 +12,7 @@
     "create_safe_text": "Deposit collateral and borrow {{coin_ticker}} using a Vault.",
     "cancel": "Cancel",
     "language": "Language",
-    "connect_wallet_title": "CONNECT TO A WALLET",
+    "connect_wallet_title": "SELECT WALLET",
     "metamask": "MetaMask",
     "create_safe_title": "Create Vault",
     "max": "Max",

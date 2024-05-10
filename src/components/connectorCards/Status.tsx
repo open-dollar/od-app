@@ -28,20 +28,7 @@ export function Status({
 }) {
     return (
         <StatusText>
-            {error ? (
-                <>
-                    {'Error: '}
-                    {error.message
-                        ? `Either Metamask is not installed, or you have multiple plugin wallets. Please refresh page and try again`
-                        : null}
-                </>
-            ) : isActivating ? (
-                <>Connecting</>
-            ) : isActive ? (
-                <>Connected</>
-            ) : (
-                <>Disconnected</>
-            )}
+            {error ? <></> : isActivating ? <>Awaiting Connection...</> : isActive ? <>Connected</> : <></>}
         </StatusText>
     )
 }

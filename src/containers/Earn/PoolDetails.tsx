@@ -1,109 +1,152 @@
-import { useCallback } from 'react'
+import { useStoreState } from 'easy-peasy'
+import { useCallback, useEffect, useState } from 'react'
 import { ChevronLeft, Plus } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import LinkButton from '~/components/LinkButton'
+import { useActiveWeb3React } from '~/hooks'
+import useGeb from '~/hooks/useGeb'
+import { useStoreActions } from 'easy-peasy'
+
 import { getTokenLogo } from '~/utils'
 
-const PoolDetails = ({
-    poolAddress,
-    status,
-    apy,
-    link,
-    nitroPoolData,
-}: {
-    poolAddress: string
-    status: string
-    apy: string
-    link: string
-    nitroPoolData: any
-}) => {
+const pools = [
+    {
+        poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
+        apy: '2.90%',
+        link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
+    },
+]
+
+const PoolDetails = () => {
     const history = useHistory()
+
+    const geb = useGeb()
+    const [loading, setLoading] = useState(false)
+    const { account } = useActiveWeb3React()
+    // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
+    //  @ts-ignore
+    const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
+    // @ts-ignore
+    const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
+    const { nitroPools } = nitroPoolsState
+
+    useEffect(() => {
+        setLoading(true)
+        if (!geb) return
+        console.log()
+        async function fetchPool() {
+            try {
+                await nitroPoolsActions.fetchNitroPool({
+                    geb,
+                    poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
+                    userAddress: account ?? undefined,
+                })
+                setLoading(false)
+            } catch (e) {
+                setLoading(false)
+                throw new Error(`Error fetching nitropools data ${e}`)
+            }
+        }
+        fetchPool()
+    }, [account, geb, nitroPoolsActions])
 
     const handleBack = useCallback(() => {
         history.push(`/earn`)
     }, [history])
 
+    console.log({ nitroPools })
+
     return (
         <>
-            <Container>
-                <BackBtn id="back-btn" onClick={handleBack}>
-                    <ChevronLeft size={18} /> BACK
-                </BackBtn>
-                <PoolHeader>
-                    <Title>
-                        <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
-                        <img src={getTokenLogo('ETH')} alt={''} width={'50px'} />
-                        <PoolTitle>OD-ETH</PoolTitle>
-                    </Title>
-                    <LinkBtnContainer>
-                        <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
-                            <Plus />
-                            Deposit funds
-                        </LinkButton>
-                    </LinkBtnContainer>
-                </PoolHeader>
-                <Body>
-                    <Wrapper>
-                        <ColWrapper>
-                            <Item>
-                                <Label>Total value locked</Label>
-                                <Value>$813.6k</Value>
-                            </Item>
-                            <Item>
-                                <Label>APR</Label>
-                                <Value>3.53%</Value>
-                            </Item>
-                            <Item>
-                                <Label>Pending Rewards</Label>
-                                <Value>0.3213 ODG</Value>
-                            </Item>
-                        </ColWrapper>
-                    </Wrapper>
-                    <Wrapper>
-                        <ColWrapper>
-                            <Item>
-                                <Label>Status</Label>
-                                <Value>Active</Value>
-                            </Item>
-                            <Item>
-                                <Label>Duration</Label>
-                                <Value>12 months 6 days</Value>
-                            </Item>
-                            <Item>
-                                <Label>End in</Label>
-                                <Value>57 D 1h 27min 13 sec</Value>
-                            </Item>
-                        </ColWrapper>
-                    </Wrapper>
-                </Body>
-                <Footer>
-                    <FooterHeader>
-                        My deposit
+            {nitroPools.length > 0 && (
+                <Container>
+                    <BackBtn id="back-btn" onClick={handleBack}>
+                        <ChevronLeft size={18} /> BACK
+                    </BackBtn>
+                    <PoolHeader>
+                        <Title>
+                            <img
+                                src={getTokenLogo(nitroPools[0]?.collateralTokens[0]?.symbol)}
+                                alt={''}
+                                width={'50px'}
+                            />
+                            <img
+                                src={getTokenLogo(nitroPools[0]?.collateralTokens[1]?.symbol)}
+                                alt={''}
+                                width={'50px'}
+                            />
+                            <PoolTitle>{`${nitroPools[0]?.collateralTokens[0]?.symbol} - ${nitroPools[0].collateralTokens[1]?.symbol}`}</PoolTitle>
+                        </Title>
                         <LinkBtnContainer>
                             <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
-                                Manage Position
+                                <Plus />
+                                Deposit funds
                             </LinkButton>
                         </LinkBtnContainer>
-                    </FooterHeader>
-                    <Wrapper>
-                        <FooterWrapper>
-                            <Item>
-                                <Label>Average APR</Label>
-                                <Value>0.00%</Value>
-                            </Item>
-                            <Item>
-                                <Label>Total in Deposit</Label>
-                                <Value>0.0 OD-ETH</Value>
-                            </Item>
-                            <Item>
-                                <Label>Pending rewards</Label>
-                                <Value>0.0 ODG</Value>
-                            </Item>
-                        </FooterWrapper>
-                    </Wrapper>
-                </Footer>
-            </Container>
+                    </PoolHeader>
+                    <Body>
+                        <Wrapper>
+                            <ColWrapper>
+                                <Item>
+                                    <Label>Total value locked</Label>
+                                    <Value>$813.6k</Value>
+                                </Item>
+                                <Item>
+                                    <Label>APR</Label>
+                                    <Value>3.53%</Value>
+                                </Item>
+                                <Item>
+                                    <Label>Pending Rewards</Label>
+                                    <Value>0.3213 ODG</Value>
+                                </Item>
+                            </ColWrapper>
+                        </Wrapper>
+                        <Wrapper>
+                            <ColWrapper>
+                                <Item>
+                                    <Label>Status</Label>
+                                    <Value>Active</Value>
+                                </Item>
+                                <Item>
+                                    <Label>Duration</Label>
+                                    <Value>12 months 6 days</Value>
+                                </Item>
+                                <Item>
+                                    <Label>End in</Label>
+                                    <Value>57 D 1h 27min 13 sec</Value>
+                                </Item>
+                            </ColWrapper>
+                        </Wrapper>
+                    </Body>
+                    <Footer>
+                        <FooterHeader>
+                            My deposit
+                            <LinkBtnContainer>
+                                <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
+                                    Manage Position
+                                </LinkButton>
+                            </LinkBtnContainer>
+                        </FooterHeader>
+                        <Wrapper>
+                            <FooterWrapper>
+                                <Item>
+                                    <Label>Average APR</Label>
+                                    <Value>0.00%</Value>
+                                </Item>
+                                <Item>
+                                    <Label>Total in Deposit</Label>
+                                    <Value>0.0 OD-ETH</Value>
+                                </Item>
+                                <Item>
+                                    <Label>Pending rewards</Label>
+                                    <Value>0.0 ODG</Value>
+                                </Item>
+                            </FooterWrapper>
+                        </Wrapper>
+                    </Footer>
+                </Container>
+            )}
         </>
     )
 }

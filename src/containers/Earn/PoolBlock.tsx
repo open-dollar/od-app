@@ -22,6 +22,7 @@ const PoolBlock = ({
         return now > start && now < end ? 'Active' : 'Inactive'
     }
 
+    console.log({poolAddress}, {apy}, {link}, {nitroPoolData})
     return (
         <BlockContainer id={`${poolAddress}`}>
             <BlockHeader>

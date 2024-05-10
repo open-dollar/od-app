@@ -46,6 +46,7 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
+    
     console.log(nitroPools)
     return (
         <Container>

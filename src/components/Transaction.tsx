@@ -45,6 +45,7 @@ const Text = styled.div`
     display: flex;
     color: white;
     align-items: center;
+    font-size: ${(props) => props.theme.font.default} !important;
     ${ExternalLinkArrow}
     svg {
         width: 14px;

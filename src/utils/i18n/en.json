@@ -23,7 +23,7 @@
     "back": "Back",
     "confirm_transaction_details": "Confirm Transaction Details",
     "confirm_details_text": "Please review and click on the Confirm Transaction button to submit and sign the transaction ",
-    "view_etherscan": "View on Etherscan",
+    "view_arbiscan": "View on Arbiscan",
     "wrong_network": "Heads up, you’re on the wrong network! Please switch to ",
     "gnosis_safe_mainnet_only": "Gnosis Safe isn't compatible with Arbitrum testnets. Please switch to a different wallet outside the Gnosis Safe App Viewer.",
     "account_details": "Account",
@@ -31,7 +31,7 @@
     "disconnect": "Disconnect",
     "copy_address": "Copy Address",
     "copied": "Copied!",
-    "transaction_msg": "Your transactions will appear here...",
+    "transaction_msg": "Transaction History",
     "welcome_open_dollar": "Welcome to Open Dollar",
     "connect_text": "Connect an Ethereum wallet to manage your {{coin_ticker}} positions.",
     "try_again": "Try Again",
@@ -70,7 +70,6 @@
     "dismiss": "Dismiss",
     "close": "Close",
     "pending": "Pending",
-    "recent_transactions": "Recent Transactions",
     "clear_all": "Clear All",
     "deposit_borrow": "Deposit & Borrow",
     "repay_withdraw": "Repay & Withdraw",
@@ -116,7 +115,7 @@
     "surplus_auction_claim_tokens": "What does the Claim Tokens button do?",
     "surplus_auction_claim_tokens_desc": "In case someone outbids you in a surplus auction, your ODG bid will be reimbursed to your Open Dollar Account. Claim Tokens can be used to get back ODG (and OD) that is kept in your Account.",
     "migrate": "Migrate",
-    "manage_other_safes": "View / Top-up Other Vaults",
+    "manage_other_safes": "View app as another wallet",
     "managed_safe_warning": "CAUTION: You are not the owner of this Vault. You can only repay debt. Note that these operations are irreversible.",
     "liquidate_safe_warning": "CAUTION: You are about to start the liquidation of this Vault. Note that this operation is irreversible.",
     "liquidate_confirmation": "I understand that I am about to liquidate this Vault.",
@@ -142,5 +141,6 @@
     "liquidity": "Liquidity",
     "view_on_camelot_exchange": "View on Camelot Exchange",
     "claim_on_discord": "Use the /CLAIM command in our Discord",
-    "add_token_to_wallet": "Add token to wallet"
+    "add_token_to_wallet": "Add token to wallet",
+    "browser_wallet_disconnect_not_supported": "You must disconnect from your browser wallet manually."
 }

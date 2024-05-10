@@ -13,7 +13,7 @@ const INITIAL_STATE = [
     require('../assets/uniswap-icon.svg').default,
     require('../assets/connectors/metamask.webp').default,
     require('../assets/od-colorloop.webp').default,
-    require('../assets/closed-vault.webp')
+    require('../assets/closed-vault.webp'),
 ]
 
 const ImagePreloader = () => {

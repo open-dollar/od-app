@@ -10,7 +10,6 @@ import { Loader } from 'react-feather'
 const pools = [
     {
         poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
-        status: 'Active',
         apy: '2.90%',
         link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
     },
@@ -23,7 +22,7 @@ const Earn = () => {
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
-    //  @ts-ignore
+    // @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
 
@@ -47,7 +46,7 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-
+    console.log(nitroPools)
     return (
         <Container>
             <Title>Earn</Title>

@@ -1,21 +1,27 @@
 import styled from 'styled-components'
 import Camelot from '~/components/Icons/Camelot'
-import { getTokenLogo } from '~/utils'
+import { formatWithCommas, getTokenLogo } from '~/utils'
 
 const PoolBlock = ({
     poolAddress,
-    status,
     apy,
     link,
     nitroPoolData,
 }: {
     poolAddress: string
-    status: string
     apy: string
     link: string
     nitroPoolData: any
 }) => {
-    const { collateralTokens, rewardTokens, tvl } = nitroPoolData
+    const { collateralTokens, rewardTokens, tvl, settings } = nitroPoolData
+
+    const getTimePeriod = () => {
+        const start = new Date(Number(settings.startTime) * 1000)
+        const end = new Date(Number(settings.endTime) * 1000)
+        const now = new Date()
+        return now > start && now < end ? 'Active' : 'Inactive'
+    }
+
     return (
         <BlockContainer id={`${poolAddress}`}>
             <BlockHeader>
@@ -36,15 +42,15 @@ const PoolBlock = ({
                     <Label>Status</Label>
                     <Value className="status">
                         <Dot></Dot>
-                        {status}
+                        {getTimePeriod()}
                     </Value>
                 </Item>
                 <Item>
                     <Label>TVL</Label>
-                    <Value>${tvl?.toFixed(2) || 0}</Value>
+                    <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
                 </Item>
                 <Item>
-                    <Label>APY</Label>
+                    <Label>APR</Label>
                     <Value>{apy}</Value>
                 </Item>
                 <Item>

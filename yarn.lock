@@ -4562,7 +4562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli@npm:^2.31.2":
+"@sentry/cli@npm:^2.31.0":
   version: 2.31.2
   resolution: "@sentry/cli@npm:2.31.2"
   dependencies:
@@ -15312,7 +15312,7 @@ __metadata:
     "@opendollar/sdk": 1.7.0-rc.5
     "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
-    "@sentry/cli": ^2.31.2
+    "@sentry/cli": ^2.31.0
     "@sentry/integrations": ^7.112.2
     "@sentry/react": ^7.112.2
     "@sentry/webpack-plugin": ^2.16.1

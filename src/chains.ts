@@ -57,7 +57,6 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 }
 
 type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInformation }
-
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
         urls: [RPC_URL, 'https://arbitrum.blockpi.network/v1/rpc/public'],
@@ -75,7 +74,7 @@ export const MAINNET_CHAINS: ChainConfig = {
 
 export const TESTNET_CHAINS: ChainConfig = {
     421614: {
-        urls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
+        urls: [RPC_URL, 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],

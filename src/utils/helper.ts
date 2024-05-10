@@ -104,21 +104,25 @@ export const getRatePercentage = (value: string, digits = 4, returnRate = false)
     return formatNumber(String(ratePercentage * 100), digits)
 }
 
-export const toFixedString = (value: string, type?: keyof typeof floatsTypes): string => {
+export const toFixedString = (value: string, type: keyof typeof floatsTypes = 'WAD'): string => {
     try {
-        const n = Number(value)
-        const nOfDecimals = Number.isInteger(n) ? value.length : value.split('.')[1].length
-
-        if (type === 'WAD' || nOfDecimals === floatsTypes.WAD) {
-            return FixedNumber.fromString(value, 'fixed256x18').toHexString()
-        } else if (type === 'RAY' || (nOfDecimals > floatsTypes.WAD && nOfDecimals <= floatsTypes.RAY)) {
-            return FixedNumber.fromString(value, 'fixed256x27').toHexString()
-        } else if (type === 'RAD' || (nOfDecimals > floatsTypes.RAY && nOfDecimals <= floatsTypes.RAD)) {
-            return FixedNumber.fromString(value, 'fixed256x45').toHexString()
+        let scale
+        switch (type) {
+            case 'WAD':
+                scale = 'fixed256x18'
+                break
+            case 'RAY':
+                scale = 'fixed256x27'
+                break
+            case 'RAD':
+                scale = 'fixed256x45'
+                break
+            default:
+                scale = 'fixed256x18'
         }
-        return FixedNumber.fromString(value, 'fixed256x18').toHexString()
+        return FixedNumber.fromString(value, scale).toHexString()
     } catch (error) {
-        console.error('toFixedString error:', error)
+        console.debug('toFixedString error:', error)
         return '0'
     }
 }

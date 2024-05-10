@@ -125,7 +125,7 @@ const ConnectedWalletInfo = () => {
                 {!!pendingTransactions.length || !!confirmedTransactions.length ? (
                     <>
                         <Heading>
-                            {t('recent_transactions')}
+                            {t('transaction_msg')}
                             <Button text={'clear_all'} withArrow onClick={handleClearTransactions} />
                         </Heading>
                         {renderTransactions(pendingTransactions)}

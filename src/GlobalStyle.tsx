@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props: any) => props.theme.colors.primary};
     background-color:${(props: any) => props.theme.colors.background};
-    background-image: url('/squares1x.png'), url('/wavy-blue.png');
+    background-image: url('squares1x.png'), url('wavy-blue.png');
     background-size: contain, 100%;
     background-position: bottom left, top right;
     background-repeat: no-repeat;

@@ -18,6 +18,11 @@ import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalytics
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
+import parachuteIcon from '../assets/parachute-icon.svg'
+import discordIcon from '../assets/discord.svg'
+import walletIcon from '../assets/wallet-icon.svg'
+import od from '../assets/od-logo.svg'
+import odg from '../assets/odg.svg'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -238,11 +243,7 @@ const Navbar = () => {
                                         <ClaimButton
                                             onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}
                                         >
-                                            <Icon
-                                                src={require('../assets/parachute-icon.svg').default}
-                                                width={22}
-                                                height={22}
-                                            />
+                                            <Icon src={parachuteIcon} width={22} height={22} />
                                             Tokens
                                             <ArrowWrapper>
                                                 <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
@@ -256,7 +257,7 @@ const Navbar = () => {
                                                     style={{ alignItems: 'flex-start', cursor: 'pointer' }}
                                                     onClick={handleLinkToDiscord}
                                                 >
-                                                    <img src={require('../assets/discord.svg').default} alt="Discord" />
+                                                    <img src={discordIcon} alt="Discord" />
                                                     <InfoPopUpSubText style={{ marginLeft: 10 }}>
                                                         {t('claim_on_discord')}
                                                     </InfoPopUpSubText>
@@ -271,11 +272,7 @@ const Navbar = () => {
                             {account ? (
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
                                     <DollarValue onClick={handleTokenClick}>
-                                        <Icon
-                                            src={require('../assets/wallet-icon.svg').default}
-                                            width={22}
-                                            height={22}
-                                        />
+                                        <Icon src={walletIcon} width={22} height={22} />
                                         {odBalance + ' '} OD
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
@@ -318,12 +315,7 @@ const Navbar = () => {
                                                         style={{ marginRight: 10 }}
                                                     >
                                                         <IconWrapper>
-                                                            <img
-                                                                src={require('../assets/od-logo.svg').default}
-                                                                height={'24px'}
-                                                                width={'24px'}
-                                                                alt="X"
-                                                            />
+                                                            <img src={od} height={'24px'} width={'24px'} alt="X" />
                                                         </IconWrapper>
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>OD</InfoPopUpSubText>
@@ -334,12 +326,7 @@ const Navbar = () => {
                                                         className="group"
                                                     >
                                                         <IconWrapper>
-                                                            <img
-                                                                src={require('../assets/odg.svg').default}
-                                                                height={'24px'}
-                                                                width={'24px'}
-                                                                alt="X"
-                                                            />
+                                                            <img src={odg} height={'24px'} width={'24px'} alt="X" />
                                                         </IconWrapper>
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>ODG</InfoPopUpSubText>

@@ -2,6 +2,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { AuctionEventType } from '~/types'
+import mine from '../assets/mine.svg'
+import bid from '../assets/bid.svg'
+import claim from '../assets/claim.svg'
+import sellOd from '../assets/sell-od.svg'
 
 interface Props {
     type: AuctionEventType
@@ -28,51 +32,51 @@ const AuctionsFAQ = ({ type }: Props) => {
             {
                 title: t('debt_auction_minting_flx_header'),
                 desc: t('debt_auction_minting_flx_desc'),
-                image: require('../assets/mine.svg').default,
+                image: mine,
             },
             {
                 title: t('debt_auction_how_to_bid'),
                 desc: t('debt_auction_how_to_bid_desc'),
-                image: require('../assets/bid.svg').default,
+                image: bid,
             },
             {
                 title: t('debt_auction_claim_tokens'),
                 desc: t('debt_auction_claim_tokens_desc'),
-                image: require('../assets/claim.svg').default,
+                image: claim,
             },
         ],
         surplus: [
             {
                 title: t('surplus_auction_minting_flx_header'),
                 desc: t('surplus_auction_minting_flx_desc'),
-                image: require('../assets/sell-od.svg').default,
+                image: sellOd,
             },
             {
                 title: t('surplus_auction_how_to_bid'),
                 desc: t('surplus_auction_how_to_bid_desc'),
-                image: require('../assets/bid.svg').default,
+                image: bid,
             },
             {
                 title: t('surplus_auction_claim_tokens'),
                 desc: t('surplus_auction_claim_tokens_desc'),
-                image: require('../assets/claim.svg').default,
+                image: claim,
             },
         ],
         collateral: [
             {
                 title: t('collateral_auction_minting_flx_header'),
                 desc: t('collateral_auction_minting_flx_desc'),
-                image: require('../assets/sell-od.svg').default,
+                image: sellOd,
             },
             {
                 title: t('collateral_auction_increasing_discount_header'),
                 desc: t('collateral_auction_increasing_discount_desc'),
-                image: require('../assets/bid.svg').default,
+                image: bid,
             },
             {
                 title: t('collateral_auction_settlement_header'),
                 desc: t('collateral_auction_settlement_desc'),
-                image: require('../assets/claim.svg').default,
+                image: claim,
             },
         ],
     }

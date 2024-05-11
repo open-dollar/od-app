@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import classNames from 'classnames'
 import Loader from './Loader'
 import Arrow from './Icons/Arrow'
+import darkArrow from '../assets/dark-arrow.svg'
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     text?: string
@@ -60,13 +61,9 @@ const Button = ({
         if (dimmedWithArrow) {
             return (
                 <DimmedBtn {...rest} disabled={disabled} onClick={onClick}>
-                    {arrowPlacement === 'left' ? (
-                        <img src={require('../assets/dark-arrow.svg').default} alt={''} />
-                    ) : null}
+                    {arrowPlacement === 'left' ? <img src={darkArrow} alt={''} /> : null}
                     {text && t(text)}
-                    {arrowPlacement === 'right' ? (
-                        <img className="rotate" src={require('../assets/dark-arrow.svg').default} alt={''} />
-                    ) : null}
+                    {arrowPlacement === 'right' ? <img className="rotate" src={darkArrow} alt={''} /> : null}
                 </DimmedBtn>
             )
         } else if (withArrow) {

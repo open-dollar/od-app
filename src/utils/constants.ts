@@ -49,7 +49,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     METAMASK: {
         connector: injected,
         name: 'MetaMask',
-        iconName: 'metamask.png',
+        iconName: 'metamask.webp',
         description: 'Easy-to-use browser extension.',
         href: null,
         color: '#E8831D',
@@ -171,7 +171,7 @@ export const INITIAL_INCENTIVE_STATE = [
 
 const INIT_VALUES = {
     name: 'FLX',
-    img: require('../assets/logo192.png').default,
+    img: require('../assets/logo4x.webp').default,
     amount: 0,
     price: 0,
     diff: 0,

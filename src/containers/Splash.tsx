@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import kite from '~/assets/splash/kite.png'
+import kite from '~/assets/splash/kite.webp'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 

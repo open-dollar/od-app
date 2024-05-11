@@ -243,7 +243,7 @@ const Shared = ({ children, ...rest }: Props) => {
         if (geb && connectWalletState.tokensData) {
             fetchSafes()
         }
-
+        //@to-do: find a better way to fetch safes
         const ms = 3000
         const interval = setInterval(() => {
             if (

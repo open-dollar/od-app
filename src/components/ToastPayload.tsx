@@ -30,7 +30,7 @@ const ToastPayload = ({ icon, iconColor, text, textColor, iconSize, payload }: P
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t('view_etherscan')}
+                        {t('view_arbiscan')}
                     </a>
                 ) : null}
             </div>

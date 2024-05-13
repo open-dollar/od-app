@@ -28,15 +28,7 @@ export function Status({
 }) {
     return (
         <StatusText>
-            {isActive ? (
-                <>Connected</>
-            ) : error && isActive ? (
-                <>Error</>
-            ) : isActivating ? (
-                <>Awaiting Connection...</>
-            ) : (
-                <></>
-            )}
+            {isActive ? <>Connected</> : error ? <></> : isActivating ? <>Awaiting Connection...</> : <></>}
         </StatusText>
     )
 }

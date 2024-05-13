@@ -4,8 +4,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { Container, Content, Head, Heads, HeadsContainer, List, ListItemLabel, SectionContent } from './DataTable'
 import { AddressLink } from '~/components/AddressLink'
-import CopyIconBlue from '~/components/Icons/CopyIconBlue'
-import { useState } from 'react'
 
 interface ContractsTableProps {
     title: string
@@ -54,27 +52,10 @@ const reorderRows = (rows: string[][]) => {
 }
 
 export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => {
-    const [tooltips, setTooltips] = useState<{ [key: string]: string }>({})
     const { chainId } = useWeb3React()
 
     const reorderedColumns = reorderColumns(colums)
     const reorderedRows = reorderRows(rows)
-
-    const handleCopyAddress = (address: string) => {
-        navigator.clipboard.writeText(address || '')
-
-        setTooltips((prevTooltips) => ({
-            ...prevTooltips,
-            [address]: 'Copied',
-        }))
-
-        setTimeout(() => {
-            setTooltips((prevTooltips) => ({
-                ...prevTooltips,
-                [address]: 'Copy',
-            }))
-        }, 2000)
-    }
 
     return (
         <Container>
@@ -89,32 +70,31 @@ export const ContractsTable = ({ title, colums, rows }: ContractsTableProps) => 
                     </SHeads>
 
                     {reorderedRows?.map((item, index) => (
-                        <SList key={'row-' + index} className="s-list">
-                            {item?.map((value, valueIndex) => (
-                                <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
-                                    <SListItem className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}>
-                                        <ListItemLabel className="list-item-label">
-                                            {reorderedColumns[valueIndex]}
-                                        </ListItemLabel>
-                                        {valueIndex === 0 && <>{value}</>}
-                                        {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
-                                        {valueIndex === 2 && (
-                                            <AddressColumm>
-                                                <AddressLink address={value} chainId={chainId || 420} />
-                                                <WrapperIcon
-                                                    data-tooltip-content={tooltips[value] || 'Copy'}
-                                                    data-tooltip-id={value}
-                                                    onClick={() => handleCopyAddress(value)}
-                                                >
-                                                    <CopyIconBlue />
-                                                </WrapperIcon>
-                                            </AddressColumm>
-                                        )}
-                                    </SListItem>
-                                </SHeadsContainer>
-                            ))}
-                            <ReactTooltip variant="light" id={`${item[2]}`} openOnClick place="top" />
-                        </SList>
+                        <div key={'row-' + index}>
+                            {item[0] !== 'proxyFactory' && (
+                                <SList className="s-list">
+                                    {item?.map((value, valueIndex) => (
+                                        <SHeadsContainer key={'row-item-' + valueIndex} className="s-heads-container">
+                                            <SListItem
+                                                className={valueIndex === 0 ? 's-list-item-first' : 's-list-item'}
+                                            >
+                                                <ListItemLabel className="list-item-label">
+                                                    {reorderedColumns[valueIndex]}
+                                                </ListItemLabel>
+                                                {valueIndex === 0 && <>{value}</>}
+                                                {valueIndex === 1 && <SecondColumnValue>{value}</SecondColumnValue>}
+                                                {valueIndex === 2 && (
+                                                    <AddressColumm>
+                                                        <AddressLink address={value} chainId={chainId || 420} />
+                                                    </AddressColumm>
+                                                )}
+                                            </SListItem>
+                                        </SHeadsContainer>
+                                    ))}
+                                    <ReactTooltip variant="light" id={`${item[2]}`} openOnClick place="top" />
+                                </SList>
+                            )}
+                        </div>
                     ))}
                 </SectionContent>
             </Content>
@@ -159,6 +139,7 @@ const SList = styled(List)`
     @media (min-width: 783px) {
         div:nth-child(2) div {
             width: 100%;
+            font-weight: 500;
         }
 
         div:nth-child(2) {
@@ -194,23 +175,20 @@ const SListItem = styled.div<ListItemProps>`
     text-align: start;
     text-overflow: ellipsis;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
     border-radius: 4px;
     & a {
-        color: white;
+        color: ${(props) => props.theme.colors.primary};
         font-size: 16px;
-        font-weight: 400;
+        font-weight: 700;
     }
     width: 174px;
-    color: ${(props) => props.theme.colors.customSecondary};
+    color: ${(props) => props.theme.colors.tertiary};
     padding: 15px 10px;
     &:first-child {
         padding: 15px 25px;
     }
 
-    &:nth-child(1) {
-        background-color: #002b40;
-    }
     ${({ theme }) => theme.mediaWidth.upToSmall`
       &:first-child {
         padding: 15px 20px;
@@ -220,12 +198,4 @@ const SListItem = styled.div<ListItemProps>`
     flex: 0 0 100%;
     min-width:50%;
   `}
-`
-
-const WrapperIcon = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-left: 16px;
-    width: 20px;
-    height: 20px;
 `

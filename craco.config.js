@@ -1,4 +1,5 @@
 const cracoAlias = require('craco-alias')
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 
 module.exports = {
     content: ['./src/**/*.{html,js}'],
@@ -31,5 +32,15 @@ module.exports = {
                 },
             },
         },
+        plugins: [
+            sentryWebpackPlugin({
+                org: process.env.SENTRY_ORG || 'open-dollar',
+                project: process.env.SENTRY_PROJECT || 'open-dollar',
+                authToken: process.env.SENTRY_AUTH_TOKEN,
+                sourcemaps: {
+                    ignore: ['node_modules'],
+                }
+              }),
+          ],
     },
 }

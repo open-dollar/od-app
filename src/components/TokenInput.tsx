@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { NumericFormat, NumberFormatValues } from 'react-number-format'
 
 interface Props {
-    label: string
+    label: React.ReactNode
     rightLabel?: string
     token: { icon: string; name: string } | undefined
     iconSize?: string
@@ -15,7 +15,7 @@ interface Props {
     disableMax?: boolean
     handleMaxClick?: () => void
     disabled?: boolean
-    maxText?: 'max' | 'min'
+    maxText?: 'MAX' | 'MIN'
     data_test_id?: string
     decimals?: number
 }
@@ -31,7 +31,7 @@ const TokenInput = ({
     disableMax,
     handleMaxClick,
     disabled,
-    maxText = 'max',
+    maxText = 'MAX',
     data_test_id,
     decimals = 4,
 }: Props) => {
@@ -89,19 +89,17 @@ const TokenInput = ({
                         maxLength={length}
                         minLength={1}
                         disabled={disabled}
-                        customInput={CustomInput} // You use your styled component as the actual input
+                        customInput={CustomInput}
                         data-test-id={data_test_id}
                         isAllowed={validateInput}
                     />
-                </Flex>
-                <Flex>
-                    <Label data-test-id={data_test_id + '_label'}>
-                        {label}{' '}
-                        {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>({t(maxText)})</MaxBtn>}
-                    </Label>
-                    {rightLabel ? <Label>{rightLabel}</Label> : null}
+                    {disableMax || disabled ? null : <MaxBtn onClick={handleMaxClick}>{t(maxText)}</MaxBtn>}
                 </Flex>
             </Content>
+            <Flex>
+                <Label data-test-id={data_test_id + '_label'}>{label} </Label>
+                {rightLabel ? <Label>{rightLabel}</Label> : null}
+            </Flex>
         </Container>
     )
 }
@@ -111,24 +109,25 @@ export default TokenInput
 const Container = styled.div``
 
 const Label = styled.div`
-    line-height: 21px;
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.small};
+    line-height: 20px;
+    color: #1c293a;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
     letter-spacing: -0.09px;
     text-transform: capitalize;
     display: flex;
     align-items: center;
+    padding-top: 4px;
     @media (max-width: 767px) {
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
     }
 `
 
 const Content = styled.div`
-    background: ${(props) => props.theme.colors.placeholder};
-    border: 1px solid ${(props) => props.theme.colors.border};
-    border-radius: 10px;
+    background: white;
+    border: 2px solid ${(props) => props.theme.colors.border};
+    border-radius: 4px;
     transition: all 0.3s ease;
-    padding: 10px 20px;
     &.disabled {
         cursor: not-allowed;
     }
@@ -140,19 +139,20 @@ export const Icon = styled.img`
 `
 
 const CustomInput = styled.input`
-    font-size: ${(props) => props.theme.font.large};
-    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
     transition: all 0.3s ease;
     width: 100%;
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     height: 36px;
     display: flex;
     align-items: center;
     padding: 0 0 0 5px;
     text-align: right;
     background: ${(props) => props.theme.colors.placeholder};
-    color: ${(props) => props.theme.colors.primary};
+    color: #1c293a;
     line-height: 24px;
     outline: none;
 
@@ -164,14 +164,15 @@ const CustomInput = styled.input`
 const MaxBtn = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
-    background: transparent;
-    padding: 0px;
-    font-weight: 600;
+    background: #e2f1ff;
+    padding: 0 6px 0 6px;
+    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
     color: ${(props) => props.theme.colors.blueish};
-    font-size: ${(props) => props.theme.font.extraSmall};
-    border-radius: 0;
-    text-transform: capitalize;
-    margin-left: 3px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-left: 8px;
+    margin-right: 8px;
 `
 
 const Flex = styled.div`
@@ -186,7 +187,12 @@ const Flex = styled.div`
 
 const TokenBox = styled.div`
     display: flex;
+    background: #e2f1ff;
     align-items: center;
-    font-size: ${(props) => props.theme.font.medium};
-    flex: 0 0 40%;
+    padding: 10px 10px;
+    font-size: 14px;
+    color: #1c293a;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    flex: 0 0 30%;
 `

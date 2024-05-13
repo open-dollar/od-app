@@ -83,6 +83,8 @@ const Analytics = () => {
         colums: [
             { name: 'Collateral' },
             { name: 'ERC-20', description: 'Address of the ERC20 collateral token.' },
+            { name: 'Collateral Join', description: 'Address of the collateral join contract.' },
+            { name: 'Auction House', description: 'Address of the collateral auction house.' },
             { name: 'Oracle', description: 'Delayed oracle address for the collateral.' },
             {
                 name: 'Delayed Price',
@@ -95,11 +97,6 @@ const Analytics = () => {
                     'Next system price of the collateral, this value is already quoted, and will impact the system on the next price update.',
             },
             { name: 'Stability Fee', description: 'Annual interest rate paid by Safe owners on their debt.' },
-            {
-                name: 'Borrow Rate',
-                description:
-                    'Total annual interest paid by Safe owners on their debt, includes "Stability Fee" and "Annual Redemption Rate".',
-            },
             { name: 'Total Debt', description: 'Total amount of OD minted per collateral.' },
             {
                 name: 'Debt Utilization',
@@ -148,26 +145,20 @@ const Analytics = () => {
     }, [geb])
 
     const totalCollateralLocked = {
-        image: 'ETH',
+        image: 'lock',
         title: 'Total Collateral Locked',
         value: totalCollateralSum,
-        description: 'Mock dada for Total Collateral Locked',
+        description: 'Total Collateral Locked',
     }
 
     const vaultNFTs = {
-        image: 'NFTS',
+        image: 'vault',
         title: 'Vault NFTs',
         value: totalVaults,
         description: 'Vault NFTs',
     }
 
-    const annualStabilityFee = {
-        title: 'Annual Stability fee',
-        value: '2.0%',
-        description: 'Mock dada for Annual Stability fee',
-    }
-
-    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulation' }
+    const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulating supply of OD stablecoin' }
 
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
@@ -245,8 +236,6 @@ const Analytics = () => {
         vaultNFTs,
     ]
 
-    const systemRatesData = [annualStabilityFee, annualRedemptionRate, eightHourlyRedemptionRate]
-
     const systemInfoData: DataCardProps[] = [
         circulation,
         // feesPendingAuction,
@@ -259,9 +248,12 @@ const Analytics = () => {
         marketPriceData, // check for market price OD not OD
         redemptionPriceData,
         liquidityUniswap,
+        annualRedemptionRate,
+        eightHourlyRedemptionRate,
         // marketPriceODG,
     ]
 
+    //@to-do: Do not use GEB as a param in useEffect, it causes a lot of re-renders
     useEffect(() => {
         async function fetchData() {
             if (geb) {
@@ -284,15 +276,23 @@ const Analytics = () => {
                                 value?.currentPrice?.toString()
                             )
                             totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+
                             return [
                                 key,
                                 [
                                     key,
                                     <AddressLink address={geb.tokenList[key].address} chainId={chainId || 420} />,
+                                    <AddressLink
+                                        address={geb.tokenList[key]?.collateralJoin}
+                                        chainId={chainId || 420}
+                                    />,
+                                    <AddressLink
+                                        address={geb.tokenList[key]?.collateralAuctionHouse}
+                                        chainId={chainId || 420}
+                                    />,
                                     <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
                                     formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
                                     formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
-                                    transformToAnnualRate(value?.stabilityFee?.toString() || '0', 27),
                                     transformToAnnualRate(
                                         multiplyRates(
                                             value?.stabilityFee?.toString(),
@@ -330,8 +330,8 @@ const Analytics = () => {
 
                     setState((prevState) => ({
                         ...prevState,
-                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 0, true),
-                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 0, true),
+                        erc20Supply: formatDataNumber(analyticsData.erc20Supply, 18, 2, true),
+                        globalDebt: formatDataNumber(analyticsData.globalDebt, 18, 2, true),
                         globalDebtCeiling: formatDataNumber(analyticsData.globalDebtCeiling, 18, 0, true),
                         globalDebtUtilization: transformToWadPercentage(
                             analyticsData.globalDebt,
@@ -376,30 +376,6 @@ const Analytics = () => {
                         ))}
                 </AnaliticsTop>
                 <AnaliticsMiddle>
-                    {systemRatesData && (
-                        <LeftColumn>
-                            <SubTitle>System Rates</SubTitle>
-                            <LeftTopRow>
-                                <DataCard
-                                    title={systemRatesData[0].title}
-                                    value={systemRatesData[0].value}
-                                    description={systemRatesData[0].description}
-                                />
-                            </LeftTopRow>
-                            <FlexMultipleRow>
-                                <DataCard
-                                    title={systemRatesData[1].title}
-                                    value={systemRatesData[1].value}
-                                    description={systemRatesData[1].description}
-                                />
-                                <DataCard
-                                    title={systemRatesData[2].title}
-                                    value={systemRatesData[2].value}
-                                    description={systemRatesData[2].description}
-                                />
-                            </FlexMultipleRow>
-                        </LeftColumn>
-                    )}
                     {systemInfoData && (
                         <RightColumn>
                             <SubTitle>System Info</SubTitle>
@@ -438,6 +414,7 @@ const Analytics = () => {
                             title={val.title}
                             value={val.value}
                             description={val.description}
+                            bg={'light'}
                         />
                     ))}
                 </AnaliticsBottom>
@@ -483,6 +460,7 @@ const TooltipWrapper = styled.div`
 `
 
 const Container = styled.div`
+    font-family: 'Open Sans', sans-serif;
     max-width: 1380px;
     margin: 80px auto;
     padding: 0 15px;
@@ -499,10 +477,6 @@ const AnaliticsTop = styled.div`
     display: flex;
     gap: 24px;
     margin-bottom: 64px;
-
-    & div {
-        height: 231px;
-    }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
         flex-wrap: wrap;
@@ -528,18 +502,20 @@ const AnaliticsBottom = styled.div`
     justify-content: space-between;
     gap: 24px;
 
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        flex-wrap: wrap;
-    `}
-`
+    > div {
+        height: 241px;
+        flex: 1;
+        padding-left: 5px;
+        padding-right: 5px;
+        min-width: 250px;
+    }
 
-const LeftColumn = styled.div``
+    @media (max-width: 1250px) {
+        flex-wrap: wrap;
+    }
+`
 
 const RightColumn = styled.div``
-
-const LeftTopRow = styled.div`
-    margin-bottom: 24px;
-`
 
 const FlexMultipleRow = styled.div`
     display: flex;
@@ -558,13 +534,15 @@ const FlexMultipleRow = styled.div`
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
+    font-family: 'Barlow', sans-serif;
     margin-bottom: 40px;
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const SubTitle = styled.h3`
     font-size: 34px;
     font-weight: 700;
-    color: #0079ad;
+    color: ${(props) => props.theme.colors.accent};
     margin-bottom: 16px;
 `
 

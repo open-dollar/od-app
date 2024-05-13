@@ -1,3 +1,14 @@
+import WETH from '../assets/eth-img.svg'
+import OP from '../assets/op-img.svg'
+import OD from '../assets/od-logo.svg'
+import ODG from '../assets/odg.svg'
+import WSTETH from '../assets/wsteth.svg'
+import CBETH from '../assets/cbETH.svg'
+import RETH from '../assets/rETH.svg'
+import ARB from '../assets/arb.svg'
+import MAGIC from '../assets/magic.svg'
+import PUFETH from '../assets/pufeth.svg'
+
 export type Tokens = {
     [key: string]: {
         name: string
@@ -9,19 +20,16 @@ export type Tokens = {
 }
 
 export const TOKEN_LOGOS: { [key: string]: string } = {
-    OP: require('../assets/op-img.svg').default,
-    WBTC: require('../assets/wbtc-img.svg').default,
-    TOTEM: require('../assets/ttm-img.png'),
-    WETH: require('../assets/eth-img.svg').default,
-    OD: require('../assets/od-logo.svg').default,
-    ODG: require('../assets/odg.svg').default,
-    STN: require('../assets/stn-img.png'),
-    FTRG: require('../assets/stETH.svg').default,
-    WSTETH: require('../assets/stETH.svg').default,
-    CBETH: require('../assets/cbETH.svg').default,
-    RETH: require('../assets/rETH.svg').default,
-    ARB: require('../assets/arb.svg').default,
-    MAGIC: require('../assets/magic.svg').default,
+    WETH: WETH,
+    OP: OP,
+    OD: OD,
+    ODG: ODG,
+    WSTETH: WSTETH,
+    CBETH: CBETH,
+    RETH: RETH,
+    ARB: ARB,
+    MAGIC: MAGIC,
+    PUFETH: PUFETH,
 }
 
 export function getTokenLogo(token: string): string {

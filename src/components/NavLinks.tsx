@@ -25,6 +25,7 @@ const NavLinks = () => {
 
     const links = [
         { name: 'app', to: '/vaults' },
+        { name: 'earn', to: '/earn' },
         { name: 'auctions', to: '/auctions' },
         { name: 'stats', to: '/stats' },
         { name: 'bridge', to: '/bridge' },
@@ -55,28 +56,37 @@ const Nav = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
+    height: 100%;
     @media (max-width: 767px) {
         position: unset;
         transform: initial;
+        flex-direction: column;
     }
     ${({ theme }) => theme.mediaWidth.upToSmall``}
 `
 
 const BtnStyle = css`
     font-family: 'Barlow', sans-serif;
-    color: ${(props) => props.theme.colors.accent};
+    color: black;
     transition: all 0.3s ease;
-
+    padding: 10px 10px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: center;
+    font-weight: 700;
+    height: 100%;
+    display: flex;
+    align-items: center;
     &:hover {
-        color: ${(props) => props.theme.colors.blueish};
+        color: ${(props: any) => props.theme.colors.blueish};
     }
 
     svg {
         display: none;
         &.fill {
-            fill: ${(props) => props.theme.colors.secondary};
-            color: ${(props) => props.theme.colors.secondary};
+            fill: ${(props: any) => props.theme.colors.secondary};
+            color: ${(props: any) => props.theme.colors.secondary};
         }
         &.opacity {
             opacity: 0.5;
@@ -86,20 +96,15 @@ const BtnStyle = css`
          height: 18px;
          display: inline !important;
          margin-right:10px;
-         color: ${(props) => props.theme.colors.neutral}
+         color: ${(props: any) => props.theme.colors.neutral}
         `}
     }
 
-    margin-right: 20px;
     &:last-child {
         margin-right: 0;
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
-  border-bottom: 1px solid ${(props) => props.theme.colors.border};
-  &:first-child {
-    border-top: 1px solid ${(props) => props.theme.colors.border};
-  }
       flex: 0 0 100%;
       min-width: 100%;
       font-weight: normal;
@@ -108,15 +113,23 @@ const BtnStyle = css`
       align-items:center;
       text-align: left;
       margin: 0;
-      color :${(props) => props.theme.colors.primary};
+      color :${(props: any) => props.theme.colors.primary};
     
   `}
 `
 const NavBarLink = styled(NavLink)`
     ${BtnStyle}
     &.activeLink {
+        display: flex;
+        align-items: center;
+        padding: 10px 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        height: 100%;
         font-weight: 700;
-        color: ${(props) => props.theme.colors.primary};
+        border-bottom: 5px solid ${(props: any) => props.theme.colors.secondary};
+        background: ${(props: any) => props.theme.colors.primary};
+        color: ${(props: any) => props.theme.colors.neutral};
         &:before {
             content: '';
             position: absolute;
@@ -125,9 +138,11 @@ const NavBarLink = styled(NavLink)`
             width: 100%;
             height: 3px;
             border-radius: 2px;
-            background: ${(props) => props.theme.colors.blueish};
         }
         ${({ theme }) => theme.mediaWidth.upToSmall`
+    
+        border-bottom: none;
+        
         &:before {
             display:none;
         }

@@ -30,7 +30,7 @@ const ToastPayload = ({ icon, iconColor, text, textColor, iconSize, payload }: P
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t('view_etherscan')}
+                        {t('view_arbiscan')}
                     </a>
                 ) : null}
             </div>
@@ -44,13 +44,13 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    background-color: ${(props) => props.theme.colors.blueish};
+    background-color: #1a74ec;
     svg {
         margin-right: 15px;
     }
     a {
         ${ExternalLinkArrow}
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
     }
 `
 

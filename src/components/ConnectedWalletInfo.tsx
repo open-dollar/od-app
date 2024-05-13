@@ -13,14 +13,13 @@ import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
 import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
 import { MetaMask } from '@web3-react/metamask'
+import { Info } from 'react-feather'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
-
     const { isActive, account, connector, chainId } = useWeb3React()
-
     const [copied, setCopied] = useState(false)
-
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
     const { popupsModel: popupsActions, transactionsModel: transactionsActions } = useStoreActions((state) => state)
 
@@ -68,15 +67,30 @@ const ConnectedWalletInfo = () => {
     return (
         <>
             <DataContainer>
-                <Connection>
-                    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    <Button text={'change'} onClick={handleChange} />
-                </Connection>
+                <Row>
+                    <LeftContainer>
+                        <Address id="web3-account-identifier-row">
+                            <ConnectedWalletIcon size={18} />
+                            {account && isActive ? returnWalletAddress(account) : 'N/A'}
+                        </Address>
+                        <Connection>{connector ? formatConnectorName() : 'N/A'}</Connection>
+                    </LeftContainer>
 
-                <Address id="web3-account-identifier-row">
-                    <ConnectedWalletIcon size={20} />
-                    {account && isActive ? returnWalletAddress(account) : 'N/A'}
-                </Address>
+                    <RightContainer>
+                        <Button text={'Change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
+                        {connector instanceof MetaMask && (
+                            <>
+                                <ReactTooltip id="browserWalletDisconnectTooltip" variant="light" data-effect="solid" />
+                                <Info
+                                    data-tooltip-id="browserWalletDisconnectTooltip"
+                                    data-tooltip-content={t('browser_wallet_disconnect_not_supported')}
+                                    color="white"
+                                    size="20"
+                                />
+                            </>
+                        )}
+                    </RightContainer>
+                </Row>
                 {account && isActive ? (
                     <WalletData>
                         {copied ? (
@@ -96,7 +110,7 @@ const ConnectedWalletInfo = () => {
                         )}
                         {chainId && account ? (
                             <LinkBtn href={getEtherscanLink(chainId, account, 'address')} target="_blank">
-                                <ExpandIcon /> {t('view_etherscan')}
+                                <ExpandIcon /> {t('view_arbiscan')}
                             </LinkBtn>
                         ) : null}
                     </WalletData>
@@ -104,14 +118,14 @@ const ConnectedWalletInfo = () => {
             </DataContainer>
             <BtnContainer className="top-up">
                 <Button data-test-id="topup-btn" onClick={() => popupsActions.setIsSafeManagerOpen(true)}>
-                    <BtnInner>{t('manage_other_safes')}</BtnInner>
+                    <>{t('manage_other_safes')}</>
                 </Button>
             </BtnContainer>
             <TransactionsContainer>
                 {!!pendingTransactions.length || !!confirmedTransactions.length ? (
                     <>
                         <Heading>
-                            {t('recent_transactions')}
+                            {t('transaction_msg')}
                             <Button text={'clear_all'} withArrow onClick={handleClearTransactions} />
                         </Heading>
                         {renderTransactions(pendingTransactions)}
@@ -127,32 +141,28 @@ const ConnectedWalletInfo = () => {
 
 export default ConnectedWalletInfo
 
-const BtnContainer = styled.div`
-    displat: flex;
-    justify-content: center;
-    margin-top: 24px;
-    button {
-        min-width: 100px;
-        padding: 4px 12px;
-    }
-    &.top-up {
-        right: auto;
-        left: 50px;
-        top: 50px;
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      position: static;
-      margin-bottom:20px;
-      &.top-up {
-         display:none;
-        }
-    `}
-`
-
-const BtnInner = styled.div`
+const LeftContainer = styled.div`
     display: flex;
     align-items: center;
-    gap: 5px;
+`
+
+const RightContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 4px;
+`
+
+const Row = styled.div`
+    align-items: center;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`
+
+const BtnContainer = styled.div`
+    button {
+        border: #e2f1ff 1px solid;
+    }
 `
 
 const Connection = styled.div`
@@ -164,7 +174,7 @@ const Connection = styled.div`
     button {
         width: auto;
         min-width: auto;
-        font-size: ${(props) => props.theme.font.extraSmall};
+        font-size: ${(props) => props.theme.font.xSmall};
         padding-top: 2px;
         padding-bottom: 2px;
     }
@@ -174,87 +184,60 @@ const Address = styled.div`
     display: flex;
     margin: 20px 0;
     align-items: center;
+    line-height: 20px;
     color: ${(props) => props.theme.colors.neutral};
     img {
         width: 20px;
         margin-right: 10px;
     }
-    font-size: ${(props) => props.theme.font.large};
+    font-size: ${(props) => props.theme.font.medium};
 `
 
 const WalletData = styled.div`
     display: flex;
     align-items: center;
-    align-items: center;
 `
 
-const CopyBtn = styled.div`
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.small};
-    transition: all 0.3s ease;
+const CopyBtn = styled.button`
+    background-color: transparent;
+    color: #ffffff;
+    font-size: ${(props) => props.theme.font.xxSmall};
     cursor: pointer;
     display: flex;
     align-items: center;
-    svg {
-        color: ${(props) => props.theme.colors.secondary};
-        width: 15px;
-        height: 15px;
-        margin-right: 5px;
-    }
-    &:hover {
-        text-decoration: underline;
-        color: ${(props) => props.theme.colors.customSecondary};
-        svg {
-            color: ${(props) => props.theme.colors.customSecondary};
-        }
-    }
-
-    &.greenish {
-        background: ${(props) => props.theme.colors.gradient};
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: ${(props) => props.theme.colors.inputBorderColor};
-    }
-
     margin-right: 20px;
+    transition: all 0.3s ease;
+    gap: 4px;
+
+    &:hover {
+        color: #b3ceff;
+    }
 `
 
 const LinkBtn = styled.a`
-    color: ${(props) => props.theme.colors.secondary};
-    font-size: ${(props) => props.theme.font.small};
-    transition: all 0.3s ease;
+    color: #ffffff;
+    font-size: ${(props) => props.theme.font.xxSmall};
+    transition: color 0.3s ease;
     display: flex;
     align-items: center;
-    svg {
-        color: ${(props) => props.theme.colors.secondary};
-        width: 15px;
-        height: 15px;
-        margin-right: 5px;
-    }
+    gap: 4px;
 
     &:hover {
-        text-decoration: underline;
-        color: ${(props) => props.theme.colors.customSecondary};
-        svg {
-            color: ${(props) => props.theme.colors.customSecondary};
-        }
+        color: #b3ceff;
     }
 `
 
 const DataContainer = styled.div`
-    border-radius: 20px;
-    padding: 15px;
-    border: 1px solid ${(props) => props.theme.colors.border};
+    border-radius: 4px;
+    padding: 0 0 15px 0;
 `
 
 const TransactionsContainer = styled.div`
-    background-color: ${(props) => props.theme.colors.background};
     padding: 20px;
-    margin: 20px -20px -20px -20px;
+    color: white;
+    margin: 0px -20px -20px -20px;
     border-radius: 0 0 25px 25px;
-    font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.customSecondary};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 
 const Heading = styled.div`

@@ -18,6 +18,7 @@ import {
     safeIsSafe,
     toFixedString,
 } from '~/utils/helper'
+import { useCollateralBalances } from '~/hooks/useCollateralBalances'
 
 export const LIQUIDATION_RATIO = 135 // percent
 export const ONE_DAY_WORTH_SF = ethers.utils.parseEther('0.00001')
@@ -45,8 +46,20 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const { t } = useTranslation()
     const {
         safeModel: { safeData, singleSafe, liquidationData },
-        connectWalletModel: { tokensFetchedData },
+        connectWalletModel: { tokensFetchedData, tokensData },
     } = useStoreState((state) => state)
+
+    const getLiquidationPenalty = (collateralName: string) => {
+        const penalty = liquidationData?.collateralLiquidationData[collateralName]?.liquidationPenalty?.split('.')[1]
+        if (penalty) {
+            if (penalty[0] === '0') {
+                return penalty[1]
+            } else if (penalty.length === 1 && penalty[0] !== '0') {
+                return penalty + '0'
+            }
+        }
+        return undefined
+    }
 
     // parsed amounts of deposit/repay withdraw/borrow as in left input and right input, they get switched based on if its Deposit & Borrow or Repay & Withdraw
     const parsedAmounts = useMemo(() => {
@@ -89,13 +102,16 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     // returns liquidation price
     const liquidationPrice = useLiquidationPrice(totalCollateral, totalDebt, currentRedemptionPrice, liquidationCRatio)
 
+    const selectedTokenBalance = useCollateralBalances(tokensData, tokensFetchedData, collateralName)
+
+    const selectedTokenBalanceBN = BigNumber.from(toFixedString(selectedTokenBalance.toString(), 'WAD'))
+
     // returns available ETH (collateral)
     // singleSafe means already a deployed safe
     const availableCollateral = useMemo(() => {
         if (singleSafe) {
             if (type === 'deposit_borrow' && singleSafe.collateralName !== '') {
-                const value = ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName].balanceE18)
-                return formatNumber(value, 2)
+                return ethers.utils.formatEther(tokensFetchedData[singleSafe.collateralName]?.balanceE18 ?? 0)
             } else {
                 return singleSafe.collateral
             }
@@ -131,11 +147,9 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         return '0.00'
     }, [collateralLiquidationData, leftInput, singleSafe, type])
 
-    const liquidationPenaltyPercentage = '18-20'
-
     const stabilityFeePercentage = useMemo(() => {
         return collateralLiquidationData
-            ? getRatePercentage(collateralLiquidationData.totalAnnualizedStabilityFee, 2)
+            ? getRatePercentage(collateralLiquidationData.totalAnnualizedStabilityFee, 3)
             : '-'
     }, [collateralLiquidationData])
 
@@ -202,7 +216,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
             info: [
                 {
                     label: 'Total Liquidation Penalty',
-                    value: liquidationPenaltyPercentage + '%',
+                    value: (getLiquidationPenalty(collateralName) || '?') + '%',
                     tip: t('liquidation_penalty_tip'),
                 },
                 {
@@ -212,6 +226,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
                 },
             ],
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         collateralLiquidationData,
         collateralName,
@@ -231,7 +246,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     }
 
     if (!proxyAddress) {
-        error = error ?? 'Create an Open Dollar Account to continue'
+        error = error ?? 'Create Account'
     }
 
     if (type === 'deposit_borrow') {
@@ -298,6 +313,9 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         if (leftInputBN.isZero()) {
             error = error ?? `Enter ${collateralName} Amount`
         }
+        if (leftInputBN.gt(selectedTokenBalanceBN)) {
+            error = error ?? 'Insufficient balance'
+        }
     }
 
     if (type !== 'create') {
@@ -318,7 +336,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         availableCollateral,
         availableHai,
         liquidationData,
-        liquidationPenaltyPercentage,
+        liquidationPenaltyPercentage: getLiquidationPenalty(collateralName),
         stats,
         balances,
     }

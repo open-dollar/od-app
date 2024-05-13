@@ -36,6 +36,7 @@ export async function checkAndSwitchMetamaskNetwork() {
     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore
         const chainId = await window.ethereum.request({ method: 'net_version' })
+        if (chainId === process.env.REACT_APP_NETWORK_ID) return
         // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
         if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '42161') {
             try {
@@ -53,6 +54,28 @@ export async function checkAndSwitchMetamaskNetwork() {
                             },
                             rpcUrls: ['https://arbitrum-one.publicnode.com'],
                             blockExplorerUrls: ['https://arbiscan.io/'],
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Failed to switch network', error)
+            }
+        } else if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '10') {
+            try {
+                // @ts-ignore
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: `0xA`,
+                            chainName: 'OP Mainnet',
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            rpcUrls: ['https://optimism-rpc.publicnode.com'],
+                            blockExplorerUrls: ['https://optimistic.etherscan.io/'],
                         },
                     ],
                 })
@@ -114,6 +137,7 @@ export default function WalletModal() {
     // close modal when a connection is successful
     const activePrevious = usePrevious(isActive)
     const connectorPrevious = usePrevious(connector)
+
     useEffect(() => {
         if (
             isConnectorsWalletOpen &&
@@ -123,30 +147,52 @@ export default function WalletModal() {
         }
     }, [setWalletView, isActive, connector, isConnectorsWalletOpen, activePrevious, connectorPrevious])
 
+    function getHeaderContent() {
+        if (process.env.REACT_APP_NETWORK_ID === '42161') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
+                        Arbitrum One
+                    </a>
+                </h5>
+            )
+        } else if (process.env.REACT_APP_NETWORK_ID === '10') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/10">
+                        OP Mainnet
+                    </a>
+                </h5>
+            )
+        } else if (process.env.REACT_APP_NETWORK_ID === '420') {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/420">
+                        OP Goerli
+                    </a>
+                </h5>
+            )
+        } else {
+            return (
+                <h5>
+                    {t('not_supported')}{' '}
+                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
+                        Arbitrum Sepolia
+                    </a>
+                </h5>
+            )
+        }
+    }
     function getModalContent() {
         return (
             <UpperSection>
-                <CloseIcon onClick={toggleWalletModal}>&times;</CloseIcon>
                 {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
                     <>
                         <HeaderRow>{'Wrong Network'}</HeaderRow>
-                        <ContentWrapper>
-                            {process.env.REACT_APP_NETWORK_ID === '42161' ? (
-                                <h5>
-                                    {t('not_supported')}{' '}
-                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/42161">
-                                        Arbitrum One
-                                    </a>
-                                </h5>
-                            ) : (
-                                <h5>
-                                    {t('not_supported')}{' '}
-                                    <a target="_blank" rel="noreferrer" href="//chainlist.org/chain/421614">
-                                        Arbitrum Sepolia
-                                    </a>
-                                </h5>
-                            )}
-                        </ContentWrapper>
+                        <ContentWrapper>{getHeaderContent()}</ContentWrapper>
                     </>
                 ) : (
                     <HeaderRow>
@@ -157,7 +203,6 @@ export default function WalletModal() {
             </UpperSection>
         )
     }
-
     return (
         <Modal
             isModalOpen={isConnectorsWalletOpen}
@@ -171,30 +216,20 @@ export default function WalletModal() {
     )
 }
 
-const CloseIcon = styled.div`
-    position: absolute;
-    right: 1rem;
-    top: 14px;
-    font-size: 30px;
-    z-index: 2;
-    color: ${(props) => props.theme.colors.neutral};
-    &:hover {
-        cursor: pointer;
-        opacity: 0.6;
-    }
-`
-
 const Wrapper = styled.div`
-    margin: 0;
-    padding: 0;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
+    border-radius: 2.43px;
+    padding: 1rem;
     width: 100%;
-    background: ${(props) => props.theme.colors.background};
-    border-radius: 20px;
+    color: white;
+    font-family: 'Barlow', sans-serif;
 `
 
 const HeaderRow = styled.div`
-    padding: 1rem 1rem;
+    text-align: center;
     font-weight: 800;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
 `
 
 const ContentWrapper = styled.div`
@@ -226,8 +261,14 @@ const UpperSection = styled.div`
 const HoverText = styled.div`
     color: ${(props) => props.theme.colors.neutral};
     position: relative;
+    font-size: 19.04px;
+    line-height: 25.93px;
+    font-weight: 700;
     top: 10px;
     :hover {
         cursor: pointer;
     }
+    padding-bottom: 24.89px;
+    margin-bottom: 24.89px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `

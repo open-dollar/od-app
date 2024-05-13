@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { coinbaseWallet, hooks } from '../../connectors/coinbaseWallet'
 import { Card } from './Card'
@@ -32,7 +32,6 @@ export default function CoinbaseWalletCard() {
 
     const [error, setError] = useState(undefined)
 
-    // attempt to connect eagerly on mount
     useEffect(() => {
         void coinbaseWallet.connectEagerly().catch(() => {})
     }, [])

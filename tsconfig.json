@@ -16,10 +16,15 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true,
-        "noOverloadMatchesThisCall": false,
+
         "paths": {
             "~/*": ["./src/*"]
-        }
+        },
+
+        "sourceMap": true,
+        "inlineSources": true,
+
+        "sourceRoot": "/"
     },
     "include": ["src"],
     "exclude": ["node_modules", "cypress"]

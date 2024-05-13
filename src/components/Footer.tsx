@@ -1,31 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/od-full-logo-grey.svg'
-import { useStoreActions } from '~/store'
-import { Link as RouterLink } from 'react-router-dom'
-import FooterBackgroundImage from '~/assets/footer-bg-art.svg'
 
 const Footer: React.FC = () => {
-    const { popupsModel: popupsActions } = useStoreActions((state) => state)
-
-    const handleLinkClick = async (e: React.MouseEvent<HTMLElement>, disable = false, externalLink = '') => {
-        if (disable) {
-            e.preventDefault()
-        }
-        popupsActions.setShowSideMenu(false)
-        if (externalLink) {
-            window.open(externalLink, '_blank')
-            e.preventDefault()
-        }
-    }
     return (
         <FooterAndImageContainer>
             <FooterContainer>
-                <Row className="logoRow">
-                    <Column>
+                <Row className="logoContainerAndText">
+                    <Column className="logoRow">
                         <LogoContainer>
                             <a href={'/'}>
-                                <img src={Logo} height={'13px'} width={'89px'} alt="OD" />
+                                <img src={Logo} height={'34px'} width={'168px'} alt="OD" />
                             </a>
                         </LogoContainer>
                         <SmallText>
@@ -33,9 +18,12 @@ const Footer: React.FC = () => {
                         </SmallText>
                     </Column>
                 </Row>
-                <Row className="linksRow">
+                <Row className="linksContainer">
                     <Column>
                         <Header>PROJECT</Header>
+                        <Link target="_blank" href="https://app.opendollar.com/">
+                            Join Testnet
+                        </Link>
                         <Link target="_blank" href="https://docs.opendollar.com/">
                             Docs
                         </Link>
@@ -47,28 +35,19 @@ const Footer: React.FC = () => {
                         </Link>
                     </Column>
                     <Column>
-                        <Header>TESTNET</Header>
-                        <InnerLink
-                            to="/vaults"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={window.location.pathname.startsWith('/vaults') ? 'activeLink' : ''}
-                        >
-                            App
-                        </InnerLink>
-                        <InnerLink
-                            to="/auctions"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={window.location.pathname.startsWith('/auctions') ? 'activeLink' : ''}
-                        >
-                            Auctions
-                        </InnerLink>
-                        <InnerLink
-                            to="/stats"
-                            onClick={(e) => handleLinkClick(e, false)}
-                            className={window.location.pathname.startsWith('/stats') ? 'activeLink' : ''}
-                        >
-                            Stats
-                        </InnerLink>
+                        <Header>RESOURCES</Header>
+                        <Link target="_blank" href="https://www.opendollar.com/lite-paper">
+                            Litepaper
+                        </Link>
+                        <Link target="_blank" href="https://mirror.xyz/0x8a81CEeb0a12998616F1aB932cDbc941F0d539E9">
+                            Blog
+                        </Link>
+                        <Link target="_blank" href="https://www.opendollar.com/privacy">
+                            Privacy Policy
+                        </Link>
+                        <Link target="_blank" href="https://www.opendollar.com/terms">
+                            Terms of Service
+                        </Link>
                     </Column>
                     <Column>
                         <Header>SOCIALS</Header>
@@ -81,25 +60,15 @@ const Footer: React.FC = () => {
                         <Link target="_blank" href="https://t.me/open_dollar">
                             Telegram
                         </Link>
+                        <Link target="_blank" href="https://warpcast.com/open-dollar">
+                            Farcaster
+                        </Link>
                         <Link target="_blank" href="https://debank.com/official/Open_Dollar">
                             DeBank
                         </Link>
                     </Column>
                 </Row>
-                <Row className="privacyRow">
-                    <Column>
-                        <SmallerLink target="_blank" href="https://www.opendollar.com/privacy">
-                            Privacy Policy
-                        </SmallerLink>
-                        <SmallerLink target="_blank" href="https://www.opendollar.com/terms">
-                            Terms of Service
-                        </SmallerLink>
-                    </Column>
-                </Row>
             </FooterContainer>
-            <FooterImage>
-                <img src={FooterBackgroundImage} alt="" />
-            </FooterImage>
         </FooterAndImageContainer>
     )
 }
@@ -107,65 +76,61 @@ const Footer: React.FC = () => {
 export default Footer
 
 const Header = styled.div`
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
     margin-bottom: 5px;
-    color: #58a6ff;
+    color: white;
 `
 
 const FooterAndImageContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     position: relative;
-`
-
-const FooterImage = styled.div`
-    display: flex;
-    width: 100%;
-    z-index: -1;
-    img {
-        width: 100%;
-    }
 `
 
 const FooterContainer = styled.div`
     display: flex;
-    padding-top: 80px;
-    bottom: 170px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding: 60px;
     width: 100%;
     flex-direction: row;
-    justify-content: space-around;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     color: ${(props) => props.theme.colors.blueish};
+    margin-top: 80px;
 
     @media (max-width: 767px) {
-        bottom: 117px;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 `
 
 const Row = styled.div`
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
     width: 100%;
+    justify-content: space-between;
 
-    &.logoRow,
-    &.privacyRow {
-        font-size: 12px;
+    &.logoContainerAndText {
+        display: flex;
+        flex-direction: column;
+
         @media (max-width: 767px) {
-            justify-content: space-between;
-            font-size: 12px;
+            margin-bottom: 20px;
         }
     }
 
-    &.linksRow {
+    &.linksContainer {
+        justify-content: flex-end;
+
         @media (max-width: 767px) {
             justify-content: space-between;
-            font-size: 16px;
-            margin: 24px 0;
         }
     }
 `
@@ -174,8 +139,15 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    &.logoRow {
+        @media (max-width: 767px) {
+            width: 100%;
+        }
+        gap: 10.78px;
+    }
 
     @media (max-width: 767px) {
         padding-left: 20px;
@@ -184,6 +156,7 @@ const Column = styled.div`
 `
 
 const LogoContainer = styled.div`
+    display: flex;
     a {
         color: inherit;
         text-decoration: none;
@@ -196,36 +169,12 @@ const LogoContainer = styled.div`
     }
 `
 
-const SmallerLink = styled.a`
-    cursor: pointer;
-    color: #00587e;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
-`
-
-const InnerLink = styled(RouterLink)`
-    cursor: pointer;
-    color: inherit;
-    text-decoration: none;
-    margin-bottom: 5px;
-
-    &:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 767px) {
-        margin: 5px 0;
-    }
-`
-
 const SmallText = styled.div`
-    font-size: 12px;
-    line-height: 21px;
+    font-size: 16px;
+    line-height: 24px;
     max-width: 300px;
-    color: ${(props) => props.theme.colors.secondary};
+    color: background;
+    font-weight: 400;
     button {
         img {
             display: none;
@@ -235,9 +184,12 @@ const SmallText = styled.div`
 
 const Link = styled.a`
     cursor: pointer;
-    color: inherit;
+    color: white;
     text-decoration: none;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
 
     &:hover {
         text-decoration: underline;

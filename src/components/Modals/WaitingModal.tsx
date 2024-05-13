@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { AlertTriangle, CheckCircle } from 'react-feather'
+import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '../../GlobalStyle'
@@ -12,6 +11,7 @@ import Modal from './Modal'
 
 const WaitingModal = () => {
     const { t } = useTranslation()
+    const modalRef = useRef<HTMLDivElement>(null)
 
     const { popupsModel: popupsState, safeModel: safeState } = useStoreState((state) => state)
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
@@ -27,55 +27,91 @@ const WaitingModal = () => {
         // eslint-disable-next-line
     }, [list.length])
 
+    useEffect(() => {
+        const handleClickOutside = (event: { target: any }) => {
+            if (modalRef?.current && !modalRef?.current?.contains(event.target)) {
+                popupsActions.setIsWaitingModalOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [modalRef]) // eslint-disable-line react-hooks/exhaustive-deps
+
     const returnStatusIcon = (status: string) => {
         switch (status) {
             case 'success':
-                return <CheckCircle width={'60px'} className={status} />
+                return (
+                    <img
+                        src={require('../../assets/tx-submitted-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
             case 'error':
-                return <AlertTriangle width={'60px'} className={status} />
+                return (
+                    <img
+                        src={require('../../assets/tx-failed-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
             default:
-                return <Loader width={'60px'} />
+                return (
+                    <img
+                        src={require('../../assets/tx-waiting-for-confirmation-icon.svg').default}
+                        width={106}
+                        height={165}
+                        alt="error"
+                    />
+                )
         }
     }
     return (
-        <Modal width={'350px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
-            <InnerContainer data-test-id="waiting-modal">
+        <Modal width={'445px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
+            <InnerContainer data-test-id="waiting-modal" ref={modalRef}>
                 {returnStatusIcon(status)}
-                {
-                    <Title data-test-id="waiting-modal-title" className={status}>
-                        {title ? title : t('initializing')}
-                    </Title>
-                }
+                <TextColumnContainer>
+                    {
+                        <Title data-test-id="waiting-modal-title" className={status}>
+                            {title ? title : t('initializing')}
+                        </Title>
+                    }
 
-                {text || (status === 'success' && !isCreate) ? (
-                    <Text className={status}>
-                        {status === 'success' && chainId && hash ? (
-                            <a
-                                href={getEtherscanLink(chainId, hash, 'transaction')}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {t('view_etherscan')}
-                            </a>
-                        ) : status === 'success' && isCreate ? (
-                            <CreateNew>
-                                <Loader width={'14px'} /> {text}
-                            </CreateNew>
-                        ) : (
-                            text
-                        )}
-                    </Text>
-                ) : null}
-                {hint && <Hint>{hint}</Hint>}
+                    {text || (status === 'success' && !isCreate) ? (
+                        <Text className={status}>
+                            {status === 'success' && chainId && hash ? (
+                                <a
+                                    href={getEtherscanLink(chainId, hash, 'transaction')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {t('view_arbiscan')}
+                                </a>
+                            ) : status === 'success' && isCreate ? (
+                                <CreateNew>
+                                    <Loader width={'14px'} /> {text}
+                                </CreateNew>
+                            ) : (
+                                text
+                            )}
+                        </Text>
+                    ) : null}
+                    {hint && <Hint>{hint}</Hint>}
 
-                {status !== 'loading' && !isCreate ? (
-                    <BtnContainer>
-                        <Button
-                            text={status === 'success' ? 'close' : 'dismiss'}
-                            onClick={() => popupsActions.setIsWaitingModalOpen(false)}
-                        />
-                    </BtnContainer>
-                ) : null}
+                    {status !== 'loading' && !isCreate ? (
+                        <BtnContainer>
+                            <Button
+                                text={status === 'success' ? 'close' : 'dismiss'}
+                                onClick={() => popupsActions.setIsWaitingModalOpen(false)}
+                            />
+                        </BtnContainer>
+                    ) : null}
+                </TextColumnContainer>
             </InnerContainer>
         </Modal>
     )
@@ -83,11 +119,21 @@ const WaitingModal = () => {
 
 export default WaitingModal
 
+const TextColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+`
+
 const InnerContainer = styled.div`
-    background: ${(props) => props.theme.colors.foreground};
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     text-align: center;
-    border-radius: 20px;
-    padding: 20px 20px 35px 20px;
+    border-radius: 4px;
+    padding: 20px 50px 35px 50px;
     svg {
         margin: 25px auto;
         stroke: #4ac6b2;
@@ -105,35 +151,42 @@ const InnerContainer = styled.div`
 `
 
 const Title = styled.div`
-    font-size: ${(props) => props.theme.font.medium};
     color: ${(props) => props.theme.colors.neutral};
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 23px;
+    font-family: 'Barlow', serif;
     &.error {
-        color: rgb(255, 104, 113);
-        font-weight: normal;
+        color: white;
+        font-weight: 700;
+        font-size: 23px;
+        font-family: 'Barlow', serif;
     }
 `
 
 const Text = styled.div`
-    font-size: ${(props) => props.theme.font.small};
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
     color: ${(props) => props.theme.colors.neutral};
     margin: 10px 0;
     a {
+        color: white;
         ${ExternalLinkArrow}
     }
 `
 
 const Hint = styled.div`
-    font-size: ${(props) => props.theme.font.extraSmall};
-    color: ${(props) => props.theme.colors.secondary};
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
 `
 
 const BtnContainer = styled.div`
-    padding: 20px;
-    margin: 20px -20px -38px;
-    background-color: ${(props) => props.theme.colors.border};
-    border-radius: 0 0 20px 20px;
+    border-radius: 4px;
     text-align: center;
+    border: #e2f1ff 2px solid;
+    width: 100%;
 `
 
 const CreateNew = styled.div`

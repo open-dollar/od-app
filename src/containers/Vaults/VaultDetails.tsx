@@ -12,7 +12,7 @@ import VaultHeader from './VaultHeader'
 import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
-import Stats from '~/containers/Vaults/Stats'
+import Loader from '~/components/Loader'
 
 const VaultDetails = ({ ...props }) => {
     const geb = useGeb()
@@ -104,7 +104,7 @@ const VaultDetails = ({ ...props }) => {
             safeActions.setSingleSafe(null)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe, safeActions, geb, liquidationData, safeActions.liquidationData])
+    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData, account])
 
     useEffect(() => {
         if (!account || !provider) return
@@ -118,22 +118,28 @@ const VaultDetails = ({ ...props }) => {
     return (
         <>
             <Container>
+                <VaultHeader safeId={safeId} />
+
+                {isLoading ? (
+                    <LoaderContainer>
+                        <Loader width="150px" color="#1A74EC" />
+                    </LoaderContainer>
+                ) : (
+                    <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
+                )}
+
+                {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
+                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} key={account} />
+                ) : null}
+
+                {/* Users can only repay debt from a vault they don't own */}
+                {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
                 {!isOwner ? (
                     <LabelContainer>
                         <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
                     </LabelContainer>
                 ) : null}
-                <VaultHeader safeId={safeId} />
-
-                {!isLoading && (
-                    <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
-                )}
-
-                {(isDeposit || isWithdraw) && !isLoading ? (
-                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} />
-                ) : null}
             </Container>
-            <Stats />
         </>
     )
 }
@@ -142,14 +148,20 @@ export default VaultDetails
 
 const Container = styled.div`
     max-width: 880px;
-    margin: 80px auto;
+    margin: 50px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
         margin: 50px auto;
     }
 `
 
+const LoaderContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
 const LabelContainer = styled.div`
-    max-width: ${(props) => props.theme.global.gridMaxWidth};
+    max-width: 810px;
     margin: 0 auto 20px auto;
 `

@@ -10,7 +10,7 @@ const TransactionOverview = ({ title, description, isChecked }: Props) => {
     return (
         <>
             <IconsHolder>
-                <img width="50" height="50" src={require('../assets/od-logo.svg').default} alt="" />
+                <img width="75" height="75" src={require('../assets/od-logo-grey.svg').default} alt="" />
                 {isChecked ? (
                     <>
                         <img className="sep" src={require('../assets/arrow.svg').default} alt="" />
@@ -41,20 +41,22 @@ const IconsHolder = styled.div`
 `
 
 const Title = styled.div`
-    line-height: 24px;
-    font-weight: 600;
-    text-align: center;
-    color: ${(props) => props.theme.colors.primary};
-    font-size: 14px;
+    line-height: 38.4px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    text-align: left;
+    color: white;
+    font-size: 28px;
     letter-spacing: -0.18px;
     margin-top: 20px;
 `
 const Description = styled.div`
-    line-height: 21px;
+    line-height: 27px;
     letter-spacing: -0.09px;
-    font-size: ${(props) => props.theme.font.extraSmall};
-    color: ${(props) => props.theme.colors.secondary};
-    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: white;
+    text-align: left;
     margin-top: 4px;
     margin-bottom: 20px;
 `

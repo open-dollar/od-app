@@ -11,14 +11,25 @@ const { REACT_APP_SYSTEM_STATUS, REACT_APP_NETWORK_URL } = process.env
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
     [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.ARBITRUM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.OPTIMISM]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    [SupportedChainId.OPTIMISM_GOERLI]: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export enum Network {
     ARBITRUM = 'arbitrum',
     ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
+    OPTIMISM = 'optimism',
 }
 
-export const ETH_NETWORK = Network.ARBITRUM_SEPOLIA
+const getNetwork = (): Network => {
+    if (process.env.REACT_APP_NETWORK_ID === '42161') return Network.ARBITRUM
+    if (process.env.REACT_APP_NETWORK_ID === '421614') return Network.ARBITRUM_SEPOLIA
+    if (process.env.REACT_APP_NETWORK_ID === '10') return Network.OPTIMISM
+    return Network.ARBITRUM_SEPOLIA
+}
+
+export const ETH_NETWORK: Network = getNetwork()
 
 export const COIN_TICKER = 'OD'
 
@@ -38,7 +49,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     METAMASK: {
         connector: injected,
         name: 'MetaMask',
-        iconName: 'metamask.png',
+        iconName: 'metamask.webp',
         description: 'Easy-to-use browser extension.',
         href: null,
         color: '#E8831D',
@@ -76,10 +87,11 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
     42161: 'Arbitrum One',
     421614: 'Arbitrum Sepolia.',
+    10: 'Optimism',
 }
 
 const MEDIA_WIDTHS = {
-    upToExtraSmall: 576,
+    upToxSmall: 576,
     upToSmall: 768,
     upToMedium: 992,
     upToLarge: 1280,
@@ -159,7 +171,7 @@ export const INITIAL_INCENTIVE_STATE = [
 
 const INIT_VALUES = {
     name: 'FLX',
-    img: require('../assets/logo192.png').default,
+    img: require('../assets/logo4x.webp').default,
     amount: 0,
     price: 0,
     diff: 0,
@@ -173,7 +185,14 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     flx: INIT_VALUES,
 }
 
-export const network_name = process.env.REACT_APP_NETWORK_ID === '42161' ? 'arbitrum' : 'arbitrum-sepolia'
+export const network_name = () => {
+    if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
+    if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
+    if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
+    else return 'arbitrum-sepolia'
+}
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
-export const geb = new Geb(network_name, provider)
+//TODO: Need to add OP goerli/sepolia to GebDeployment type in SDK
+// @ts-ignore
+export const geb = new Geb(network_name(), provider)

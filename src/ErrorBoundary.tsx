@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import splashImage from '~/assets/404.png'
+import splashImage from '~/assets/404.webp'
 import Brand from '~/components/Brand'
 
 interface State {

@@ -16,6 +16,9 @@
 
 import type { AddEthereumChainParameter } from '@web3-react/types'
 
+const RPC_URL = process.env.REACT_APP_NETWORK_URL as string
+const NETWORK_ID = process.env.REACT_APP_NETWORK_ID as string
+
 const ETH: AddEthereumChainParameter['nativeCurrency'] = {
     name: 'Ether',
     symbol: 'ETH',
@@ -54,10 +57,9 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 }
 
 type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInformation }
-
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
-        urls: ['https://arb1.arbitrum.io/rpc'],
+        urls: [RPC_URL, 'https://arbitrum.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum One',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://arbiscan.io'],
@@ -72,20 +74,14 @@ export const MAINNET_CHAINS: ChainConfig = {
 
 export const TESTNET_CHAINS: ChainConfig = {
     421614: {
-        urls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
+        urls: [RPC_URL, 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
         name: 'Arbitrum Sepolia',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
     },
-    420: {
-        urls: ['https://goerli.optimism.io'],
-        name: 'Optimism Goerli',
-        nativeCurrency: ETH,
-        blockExplorerUrls: ['https://goerli-optimism.etherscan.io/'],
-    },
 }
 
-const supportedChainId = parseInt(process.env.REACT_APP_NETWORK_ID || '', 10)
+const supportedChainId = parseInt(NETWORK_ID || '', 10)
 
 if (isNaN(supportedChainId)) {
     throw new Error('REACT_APP_NETWORK_ID must be a valid number')

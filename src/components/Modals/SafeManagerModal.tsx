@@ -33,7 +33,7 @@ const SafeManagerModal = () => {
 export default SafeManagerModal
 
 const ModalContent = styled.div`
-    background: ${(props) => props.theme.colors.background};
+    background: linear-gradient(to bottom, #1a74ec, #6396ff);
     border-radius: ${(props) => props.theme.global.borderRadius};
     border: 1px solid ${(props) => props.theme.colors.border};
 `

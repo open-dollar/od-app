@@ -9,6 +9,7 @@ import { BigNumber } from 'ethers'
 export declare enum ChainId {
     ARBITRUM_SEPOLIA = 421614,
     ARBITRUM = 42161,
+    OPTIMISM = 10,
 }
 
 export interface DynamicObject {
@@ -22,6 +23,7 @@ interface IColors {
     neutral: string
     background: string
     accent: string
+    gradientBg: string
     // deprecated colors
     gradient: string
     overlay: string
@@ -72,8 +74,13 @@ interface IGlobal {
     modalWidth: string
 }
 
+interface IFamily {
+    default: string
+    headers: string
+}
+
 interface IMediaWidth {
-    upToExtraSmall: ThemedCssFunction<DefaultTheme>
+    upToxSmall: ThemedCssFunction<DefaultTheme>
     upToSmall: ThemedCssFunction<DefaultTheme>
     upToMedium: ThemedCssFunction<DefaultTheme>
     upToLarge: ThemedCssFunction<DefaultTheme>
@@ -82,6 +89,7 @@ interface IMediaWidth {
 export interface SharedTheme {
     font: IFonts
     global: IGlobal
+    family: IFamily
     mediaWidth: IMediaWidth
 }
 

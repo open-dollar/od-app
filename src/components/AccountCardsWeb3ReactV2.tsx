@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { Chain } from '~/components/connectorCards/Chain'
 import { useActiveWeb3React } from '~/hooks'
 import { MetaMask } from '@web3-react/metamask'
+import { Network } from '@web3-react/network'
 
 export default function AccountCardsWeb3ReactV2() {
     const [error, setError] = useState<Error | undefined>(undefined)
@@ -18,18 +19,20 @@ export default function AccountCardsWeb3ReactV2() {
             <div
                 style={{ display: 'flex', flexFlow: 'wrap', fontFamily: 'Barlow', textAlign: 'start', rowGap: '12px' }}
             >
-                {error && connector instanceof MetaMask ? (
-                    <ErrorText>{`Either Metamask is not installed, or you have multiple plugin wallets. Please refresh page and try again`}</ErrorText>
-                ) : (
-                    <></>
-                )}
-                {error && !(connector instanceof MetaMask) ? <ErrorText>Error: {error?.message}</ErrorText> : <></>}
-                {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
-                    <ErrorText>{'Wrong Network'}</ErrorText>
-                ) : (
-                    <></>
-                )}
-                <Chain chainId={chainId} />
+                <ErrorContainer>
+                    {error && connector instanceof MetaMask ? (
+                        <ErrorText>{`Either Metamask is not installed, or you have multiple plugin wallets. Please refresh page and try again`}</ErrorText>
+                    ) : (
+                        <></>
+                    )}
+                    {error && !(connector instanceof MetaMask) ? <ErrorText>Error: {error?.message}</ErrorText> : <></>}
+                    {String(chainId) !== process.env.REACT_APP_NETWORK_ID && chainId !== undefined ? (
+                        <ErrorText>{'Wrong Network'}</ErrorText>
+                    ) : (
+                        <></>
+                    )}
+                </ErrorContainer>
+                {connector instanceof Network ? <></> : <Chain chainId={chainId} />}
                 <WalletConnectV2Card error={error} setError={setError} />
                 <MetaMaskCard error={error} setError={setError} />
                 <CoinbaseWalletCard error={error} setError={setError} />
@@ -38,6 +41,16 @@ export default function AccountCardsWeb3ReactV2() {
         </>
     )
 }
+
+const ErrorContainer = styled.div`
+    display: flex;
+    text-align: start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    min-height: 63px;
+`
 
 const ErrorText = styled.div`
     font-family: 'Barlow', sans-serif;

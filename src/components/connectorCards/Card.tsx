@@ -26,6 +26,7 @@ import styled from 'styled-components'
 import { useCallback, useEffect, useState } from 'react'
 import { getAddChainParameters } from '~/chains'
 import { GnosisSafe } from '@web3-react/gnosis-safe'
+import { useStoreActions } from '~/store'
 
 interface Props {
     connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
@@ -50,6 +51,7 @@ function getName(connector: Connector) {
 
 export function Card({ connector, activeChainId, isActivating, isActive, error, setError }: Props) {
     const [desiredChainId, setDesiredChainId] = useState<number>(parseInt(process.env.REACT_APP_NETWORK_ID || '-1', 10))
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const switchChain = useCallback(
         async (desiredChainId: number) => {
@@ -67,11 +69,15 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
                 }
 
                 if (desiredChainId === -1) {
+                    // Disconnect from any existing connections
                     await connector.activate()
+                    popupsActions.setIsConnectorsWalletOpen(false)
                 } else if (connector instanceof WalletConnectV2 || connector instanceof Network) {
                     await connector.activate(desiredChainId)
+                    popupsActions.setIsConnectorsWalletOpen(false)
                 } else {
                     await connector.activate(getAddChainParameters(desiredChainId))
+                    popupsActions.setIsConnectorsWalletOpen(false)
                 }
 
                 setError(undefined)
@@ -80,6 +86,7 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
                 setError(error)
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [connector, activeChainId, setError]
     )
 
@@ -123,6 +130,8 @@ const OptionCard = styled(InfoCard as any)`
     flex-direction: row;
     border: 2px solid white;
     border-radius: 4px;
+    min-height: 107px;
+    align-items: center;
 `
 
 const NetworkCard = styled.div`

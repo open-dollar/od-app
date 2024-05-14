@@ -23,6 +23,7 @@ import discordIcon from '../assets/discord.svg'
 import walletIcon from '../assets/wallet-icon.svg'
 import od from '../assets/od-logo.svg'
 import odg from '../assets/odg.svg'
+import Loader from './Loader'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -195,7 +196,7 @@ const Navbar = () => {
                         <Price>
                             <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                                 <Icon src={getTokenLogo('OD')} width={22} height={22} />
-                                <span>{state.odPrice}</span>
+                                {state.odPrice ? <span>{state.odPrice}</span> : <Loader color="#0071E7" width="20px" />}
                                 <ArrowWrapper>
                                     <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                                 </ArrowWrapper>

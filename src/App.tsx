@@ -11,7 +11,6 @@ import Safes from './containers/Vaults'
 import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
-import { useStoreState } from './store'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 import { ApolloProvider } from '@apollo/client'
@@ -42,13 +41,10 @@ Sentry.init({
 })
 
 const App = () => {
-    const { settingsModel: settingsState } = useStoreState((state) => state)
-    const { bodyOverflow } = settingsState
-
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={lightTheme}>
-                <GlobalStyle bodyOverflow={bodyOverflow} />
+                <GlobalStyle />
                 <ErrorBoundary>
                     <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />
                     <Shared>

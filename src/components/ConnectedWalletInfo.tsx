@@ -25,6 +25,7 @@ const ConnectedWalletInfo = () => {
 
     const handleChange = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
+        popupsActions.setChangeWalletActive(true)
         popupsActions.setIsConnectorsWalletOpen(true)
     }
 

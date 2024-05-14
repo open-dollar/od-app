@@ -1,9 +1,5 @@
 import { createGlobalStyle, css } from 'styled-components'
 
-interface Props {
-    bodyOverflow?: boolean
-}
-
 const GlobalStyle = createGlobalStyle`
 
   body::-webkit-scrollbar {
@@ -32,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
     background-size: contain, 100%;
     background-position: bottom left, top right;
     background-repeat: no-repeat;
-    overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 
     .web3modal-modal-lightbox {
     z-index: 999;

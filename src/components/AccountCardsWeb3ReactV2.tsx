@@ -4,10 +4,8 @@ import CoinbaseWalletCard from '~/components/connectorCards/CoinbaseWalletCard'
 import WalletConnectV2Card from '~/components/connectorCards/WalletConnectV2Card'
 import GnosisSafeCard from '~/components/connectorCards/GnosisCard'
 import styled from 'styled-components'
-import { Chain } from '~/components/connectorCards/Chain'
 import { useActiveWeb3React } from '~/hooks'
 import { MetaMask } from '@web3-react/metamask'
-import { Network } from '@web3-react/network'
 
 export default function AccountCardsWeb3ReactV2() {
     const [error, setError] = useState<Error | undefined>(undefined)
@@ -32,7 +30,6 @@ export default function AccountCardsWeb3ReactV2() {
                         <></>
                     )}
                 </ErrorContainer>
-                {connector instanceof Network ? <></> : <Chain chainId={chainId} />}
                 <WalletConnectV2Card error={error} setError={setError} />
                 <MetaMaskCard error={error} setError={setError} />
                 <CoinbaseWalletCard error={error} setError={setError} />

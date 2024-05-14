@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Camelot from '~/components/Icons/Camelot'
 import { formatWithCommas, getTokenLogo } from '~/utils'
@@ -22,7 +23,6 @@ const PoolBlock = ({
         return now > start && now < end ? 'Active' : 'Inactive'
     }
 
-    console.log({poolAddress}, {apy}, {link}, {nitroPoolData})
     return (
         <BlockContainer id={`${poolAddress}`}>
             <BlockHeader>
@@ -38,34 +38,36 @@ const PoolBlock = ({
                     VIEW ON CAMELOT
                 </ExternalLink>
             </BlockHeader>
-            <Block>
-                <Item>
-                    <Label>Status</Label>
-                    <Value className="status">
-                        <Dot></Dot>
-                        {getTimePeriod()}
-                    </Value>
-                </Item>
-                <Item>
-                    <Label>TVL</Label>
-                    <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
-                </Item>
-                <Item>
-                    <Label>APR</Label>
-                    <Value>{apy}</Value>
-                </Item>
-                <Item>
-                    <Label>Rewards</Label>
-                    <Value>
-                        {rewardTokens?.map((token: { symbol: string }, i: number) => {
-                            if (i === rewardTokens.length - 1) {
-                                return token.symbol
-                            }
-                            return `${token.symbol}, `
-                        })}
-                    </Value>
-                </Item>
-            </Block>
+            <Link to={`/earn/1`}>
+                <Block>
+                    <Item>
+                        <Label>Status</Label>
+                        <Value className="status">
+                            <Dot></Dot>
+                            {getTimePeriod()}
+                        </Value>
+                    </Item>
+                    <Item>
+                        <Label>TVL</Label>
+                        <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
+                    </Item>
+                    <Item>
+                        <Label>APR</Label>
+                        <Value>{apy}</Value>
+                    </Item>
+                    <Item>
+                        <Label>Rewards</Label>
+                        <Value>
+                            {rewardTokens?.map((token: { symbol: string }, i: number) => {
+                                if (i === rewardTokens.length - 1) {
+                                    return token.symbol
+                                }
+                                return `${token.symbol}, `
+                            })}
+                        </Value>
+                    </Item>
+                </Block>
+            </Link>
         </BlockContainer>
     )
 }

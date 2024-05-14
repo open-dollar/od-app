@@ -1,28 +1,12 @@
-// Copyright (C) 2023  Uniswap
-// https://github.com/Uniswap/web3-react
-
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 import { URI_AVAILABLE } from '@web3-react/walletconnect-v2'
-import { useEffect } from 'react'
-
+import { useEffect, useState } from 'react'
 import { MAINNET_CHAINS } from '../../chains'
 import { hooks, walletConnectV2 } from '../../connectors/walletConnectV2'
 import { Card } from './Card'
+import { useActiveWeb3React } from '~/hooks'
+import { Network } from '@web3-react/network'
 
 const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
-
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
 interface WalletConnectV2CardProps {
@@ -31,18 +15,21 @@ interface WalletConnectV2CardProps {
 }
 
 export default function WalletConnectV2Card({ error, setError }: WalletConnectV2CardProps) {
+    const [userInitiatedConnection, setUserInitiatedConnection] = useState(false)
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
-
     const isActive = useIsActive()
-
     const provider = useProvider()
+    const { connector } = useActiveWeb3React()
 
     // attempt to connect eagerly on mount
     useEffect(() => {
+        if (!(connector instanceof Network) && connector) {
+            walletConnectV2.deactivate().catch(() => {})
+        }
         walletConnectV2.connectEagerly().catch(() => {})
-    }, [])
+    }, [connector])
 
     // log URI when available
     useEffect(() => {
@@ -51,8 +38,14 @@ export default function WalletConnectV2Card({ error, setError }: WalletConnectV2
         })
     }, [])
 
+    const handleUserInitiatedConnection = () => {
+        setUserInitiatedConnection(true)
+    }
+
     return (
         <Card
+            userInitiatedConnection={userInitiatedConnection}
+            onUserInitiatedConnection={handleUserInitiatedConnection}
             connector={walletConnectV2}
             activeChainId={chainId}
             chainIds={CHAIN_IDS}

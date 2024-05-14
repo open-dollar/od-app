@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { coinbaseWallet, hooks } from '../../connectors/coinbaseWallet'
 import { Card } from './Card'
@@ -27,6 +27,7 @@ interface CoinbaseCardProps {
 }
 
 export default function CoinbaseWalletCard({ error, setError }: CoinbaseCardProps) {
+    const [userInitiatedConnection, setUserInitiatedConnection] = useState(false)
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
@@ -39,8 +40,14 @@ export default function CoinbaseWalletCard({ error, setError }: CoinbaseCardProp
         void coinbaseWallet.connectEagerly().catch(() => {})
     }, [])
 
+    const handleUserInitiatedConnection = () => {
+        setUserInitiatedConnection(true)
+    }
+
     return (
         <Card
+            userInitiatedConnection={userInitiatedConnection}
+            onUserInitiatedConnection={handleUserInitiatedConnection}
             connector={coinbaseWallet}
             activeChainId={chainId}
             isActivating={isActivating}

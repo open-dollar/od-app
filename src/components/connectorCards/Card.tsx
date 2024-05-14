@@ -1,19 +1,3 @@
-// Copyright (C) 2023  Uniswap
-// https://github.com/Uniswap/web3-react
-
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 import { ConnectWithSelect } from '../ConnectWithSelect'
 import type { Connector } from '@web3-react/types'
 import { MetaMask } from '@web3-react/metamask'
@@ -29,6 +13,8 @@ import { GnosisSafe } from '@web3-react/gnosis-safe'
 import { useStoreActions } from '~/store'
 
 interface Props {
+    userInitiatedConnection: boolean
+    onUserInitiatedConnection: () => void
     connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
     activeChainId: ReturnType<Web3ReactHooks['useChainId']>
     chainIds?: ReturnType<Web3ReactHooks['useChainId']>[]
@@ -49,13 +35,23 @@ function getName(connector: Connector) {
     return 'Unknown'
 }
 
-export function Card({ connector, activeChainId, isActivating, isActive, error, setError }: Props) {
+export function Card({
+    userInitiatedConnection,
+    onUserInitiatedConnection,
+    connector,
+    activeChainId,
+    isActivating,
+    isActive,
+    error,
+    setError,
+}: Props) {
     const [desiredChainId, setDesiredChainId] = useState<number>(parseInt(process.env.REACT_APP_NETWORK_ID || '-1', 10))
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const switchChain = useCallback(
         async (desiredChainId: number) => {
             setDesiredChainId(desiredChainId)
+            onUserInitiatedConnection()
 
             try {
                 if (
@@ -82,12 +78,13 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
 
                 setError(undefined)
             } catch (error) {
-                // @ts-ignore
-                setError(error)
+                if (error instanceof Error) {
+                    setError(error)
+                }
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [connector, activeChainId, setError]
+        [connector, activeChainId, setError, onUserInitiatedConnection]
     )
 
     /**
@@ -113,7 +110,12 @@ export function Card({ connector, activeChainId, isActivating, isActive, error, 
             <NetworkCard>
                 <NetworkHeader>{getName(connector)}</NetworkHeader>
                 <div>
-                    <Status isActivating={isActivating} isActive={isActive} error={error} />
+                    <Status
+                        userInitiatedConnection={userInitiatedConnection}
+                        isActivating={isActivating}
+                        isActive={isActive}
+                        error={error}
+                    />
                 </div>
             </NetworkCard>
         </OptionCard>

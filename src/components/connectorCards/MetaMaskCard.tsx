@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { hooks, metaMask } from '../../connectors/metaMask'
 import { Card } from '~/components/connectorCards/Card'
@@ -28,6 +28,7 @@ interface MetaMaskCardProps {
 }
 
 export default function MetaMaskCard({ error, setError }: MetaMaskCardProps) {
+    const [userInitiatedConnection, setUserInitiatedConnection] = useState(false)
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
@@ -46,8 +47,14 @@ export default function MetaMaskCard({ error, setError }: MetaMaskCardProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const handleUserInitiatedConnection = () => {
+        setUserInitiatedConnection(true)
+    }
+
     return (
         <Card
+            userInitiatedConnection={userInitiatedConnection}
+            onUserInitiatedConnection={handleUserInitiatedConnection}
             connector={metaMask}
             activeChainId={chainId}
             isActivating={isActivating}

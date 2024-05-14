@@ -52,6 +52,16 @@ const EarnDetails = () => {
         history.push(`/earn`)
     }, [history])
 
+    const nitroPool = nitroPools[0]
+
+    const getTimePeriod = () => {
+        if (!nitroPool) return 'Inactive'
+        const start = new Date(Number(nitroPool.startTime) * 1000)
+        const end = new Date(Number(nitroPool.endTime) * 1000)
+        const now = new Date()
+        return now > start && now < end ? 'Active' : 'Inactive'
+    }
+
     return (
         <>
             {nitroPools.length > 0 ? (
@@ -61,17 +71,9 @@ const EarnDetails = () => {
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img
-                                src={getTokenLogo(nitroPools[0].collateralTokens[0]?.symbol)}
-                                alt={''}
-                                width={'50px'}
-                            />
-                            <img
-                                src={getTokenLogo(nitroPools[0].collateralTokens[1]?.symbol)}
-                                alt={''}
-                                width={'50px'}
-                            />
-                            <PoolTitle>{`${nitroPools[0].collateralTokens[0]?.symbol} - ${nitroPools[0].collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(nitroPool.collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(nitroPool.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${nitroPool.collateralTokens[0]?.symbol} - ${nitroPool.collateralTokens[1]?.symbol}`}</PoolTitle>
                         </Title>
                         <LinkBtnContainer>
                             <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
@@ -85,7 +87,7 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>${formatWithCommas(nitroPools[0].tvl?.toFixed(2) || 0)}</Value>
+                                    <Value>${formatWithCommas(nitroPool.tvl?.toFixed(2) || 0)}</Value>
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
@@ -93,7 +95,7 @@ const EarnDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>
-                                    <Value>{nitroPools[0].rewardTokens[0].symbol}</Value>
+                                    <Value>{nitroPool.rewardTokens[0].symbol}</Value>
                                 </Item>
                             </ColWrapper>
                         </Wrapper>

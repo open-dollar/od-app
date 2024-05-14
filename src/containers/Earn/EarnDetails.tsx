@@ -111,16 +111,17 @@ const EarnDetails = () => {
         const diffHrs = Math.floor(diffMin / 60)
         const diffDays = Math.floor(diffHrs / 24)
 
-        diffSec = diffSec % 60
         const remainingMin = diffMin % 60
         const remainingHrs = diffHrs % 24
 
-        return `${diffDays} D ${remainingHrs}h ${remainingMin}min ${diffSec} sec`
+        return `${diffDays} D ${remainingHrs}h ${remainingMin}min`
     }
+
+    const userPools = [{ first: 'first' }, { second: 'second' }]
 
     return (
         <>
-            {nitroPools.length > 0 ? (
+            {nitroPool ? (
                 <Container>
                     <BackBtn id="back-btn" onClick={handleBack}>
                         <ChevronLeft size={18} /> BACK
@@ -181,22 +182,27 @@ const EarnDetails = () => {
                                 </LinkButton>
                             </LinkBtnContainer>
                         </FooterHeader>
-                        <Wrapper>
-                            <FooterWrapper>
-                                <Item>
-                                    <Label>Average APR</Label>
-                                    <Value>0.00%</Value>
-                                </Item>
-                                <Item>
-                                    <Label>Total in Deposit</Label>
-                                    <Value>0.0 OD-ETH: </Value>
-                                </Item>
-                                <Item>
-                                    <Label>Pending rewards</Label>
-                                    <Value>0.0 ODG: </Value>
-                                </Item>
-                            </FooterWrapper>
-                        </Wrapper>
+                        {/* list of user pools */}
+                        {userPools.map((pool) => {
+                            return (
+                                <Wrapper>
+                                    <FooterWrapper>
+                                        <Item>
+                                            <Label>Average APR</Label>
+                                            <Value>0.00%</Value>
+                                        </Item>
+                                        <Item>
+                                            <Label>Total in Deposit</Label>
+                                            <Value>0.0 OD-ETH: </Value>
+                                        </Item>
+                                        <Item>
+                                            <Label>Pending rewards</Label>
+                                            <Value>0.0 ODG: </Value>
+                                        </Item>
+                                    </FooterWrapper>
+                                </Wrapper>
+                            )
+                        })}
                     </Footer>
                 </Container>
             ) : (
@@ -317,6 +323,7 @@ const Wrapper = styled.div`
     padding: 20px;
     border-radius: 4px;
     flex: 1;
+    margin-bottom: 15px;
 `
 
 const Footer = styled.div``

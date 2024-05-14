@@ -614,6 +614,7 @@ const DollarValue = styled(OdButton)`
     align-items: center;
     justify-content: space-between;
     white-space: nowrap;
+    width: 150px;
 `
 
 const InfoPopUpHorizontalSeparator = styled.div`

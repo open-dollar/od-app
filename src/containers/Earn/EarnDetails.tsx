@@ -10,6 +10,7 @@ import { useStoreActions } from 'easy-peasy'
 
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import Loader from '~/components/Loader'
+import { BigNumber } from 'ethers'
 
 const pools = [
     {
@@ -19,7 +20,21 @@ const pools = [
     },
 ]
 
+interface PoolSettings {
+    [key: string]: {
+        startDate: BigNumber
+        endDate: BigNumber
+    }
+}
+
+interface Pool {
+    apy: string
+    settings: PoolSettings
+    [key: string]: any
+}
+
 const EarnDetails = () => {
+    const [nitroPool, setNitroPool] = useState<Pool | null>(null)
     const history = useHistory()
 
     const geb = useGeb()
@@ -41,6 +56,7 @@ const EarnDetails = () => {
                     poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
                     userAddress: account ?? undefined,
                 })
+                setNitroPool(nitroPools[0])
             } catch (e) {
                 throw new Error(`Error fetching nitropools data ${e}`)
             }
@@ -52,14 +68,15 @@ const EarnDetails = () => {
         history.push(`/earn`)
     }, [history])
 
-    const nitroPool = nitroPools[0]
-
     const getTimePeriod = () => {
-        if (!nitroPool) return 'Inactive'
-        const start = new Date(Number(nitroPool.startTime) * 1000)
-        const end = new Date(Number(nitroPool.endTime) * 1000)
+        const start = new Date(Number(nitroPool?.settings.startTime) * 1000)
+        const end = new Date(Number(nitroPool?.settings.endTime) * 1000)
         const now = new Date()
         return now > start && now < end ? 'Active' : 'Inactive'
+    }
+
+    const getDuration = () => {
+        
     }
 
     return (
@@ -71,9 +88,9 @@ const EarnDetails = () => {
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img src={getTokenLogo(nitroPool.collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(nitroPool.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
-                            <PoolTitle>{`${nitroPool.collateralTokens[0]?.symbol} - ${nitroPool.collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(nitroPool?.collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(nitroPool?.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${nitroPool?.collateralTokens[0]?.symbol} - ${nitroPool?.collateralTokens[1]?.symbol}`}</PoolTitle>
                         </Title>
                         <LinkBtnContainer>
                             <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
@@ -87,7 +104,7 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>${formatWithCommas(nitroPool.tvl?.toFixed(2) || 0)}</Value>
+                                    <Value>${formatWithCommas(nitroPool?.tvl?.toFixed(2) || 0)}</Value>
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
@@ -95,7 +112,7 @@ const EarnDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>
-                                    <Value>{nitroPool.rewardTokens[0].symbol}</Value>
+                                    <Value>{nitroPool?.rewardTokens[0].symbol}</Value>
                                 </Item>
                             </ColWrapper>
                         </Wrapper>
@@ -103,7 +120,7 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Status</Label>
-                                    <Value>Active</Value>
+                                    <Value>{getTimePeriod()}</Value>
                                 </Item>
                                 <Item>
                                     <Label>Duration</Label>

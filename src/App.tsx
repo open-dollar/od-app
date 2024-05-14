@@ -27,6 +27,7 @@ import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
+import { Fuul } from '@fuul/sdk'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -39,6 +40,10 @@ Sentry.init({
     replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
     replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
     environment: process.env.NODE_ENV,
+})
+
+Fuul.init({
+    apiKey: process.env.REACT_APP_FUUL_API_KEY!,
 })
 
 const App = () => {

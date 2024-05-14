@@ -57,7 +57,7 @@ const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
                 <DropDownContainer>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
                     <Dropdown
-                        items={['Mainnet', 'Optimism', 'Polygon']}
+                        items={[{ name: 'Mainnet', value: 1, icon: '' }, {name: 'Optimism', value: 10, icon: ''}, {name: 'Polygon', value: 137, icon: ''}]}
                         itemSelected={'Mainnet'}
                         getSelectedItem={setSelectedItem}
                         fontSize="14px"

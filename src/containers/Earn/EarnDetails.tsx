@@ -148,7 +148,7 @@ const EarnDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
-                                    <Value>{pools[0].apy}</Value>
+                                    <Value>{nitroPool.apy}</Value>
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>

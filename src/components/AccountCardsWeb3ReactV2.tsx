@@ -43,16 +43,17 @@ const ErrorContainer = styled.div`
     display: flex;
     text-align: start;
     flex-direction: column;
-    justify-content: center;
+    justify-content: end;
     align-items: start;
     width: 100%;
-    min-height: 63px;
+    min-height: 21px;
 `
 
 const ErrorText = styled.div`
-    font-family: 'Barlow', sans-serif;
-    font-size: ${(props: any) => props.theme.font.small};
-    color: ${(props: any) => props.theme.colors.tertiary};
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: ${(props: any) => props.theme.font.xxSmall};
+    color: #ddf08b;
     justify-content: start;
     text-align: center;
 `

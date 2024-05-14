@@ -20,7 +20,6 @@ import { MAINNET_CHAINS } from '../../chains'
 import { hooks, walletConnectV2 } from '../../connectors/walletConnectV2'
 import { Card } from './Card'
 import { useActiveWeb3React } from '~/hooks'
-import { Network } from '@web3-react/network'
 import { useStoreActions } from '~/store'
 
 const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
@@ -43,9 +42,6 @@ export default function WalletConnectV2Card({ error, setError }: WalletConnectV2
 
     // attempt to connect eagerly on mount
     useEffect(() => {
-        if (!(connector instanceof Network) && connector) {
-            walletConnectV2.deactivate().catch(() => {})
-        }
         walletConnectV2
             .connectEagerly()
             .then(() => userInitiatedConnection && popupsActions.setIsConnectorsWalletOpen(false))

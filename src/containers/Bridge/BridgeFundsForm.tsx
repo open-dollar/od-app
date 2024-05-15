@@ -43,11 +43,11 @@ const BridgeFundsForm = () => {
 
     return (
         <Container>
-            <Header>
-                <span className="title">Bridge Funds</span>
-            </Header>
             <Content>
                 <DropDownContainer>
+                    <Header>
+                        <span className="title">Bridge Funds</span>
+                    </Header>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
                     <Dropdown
                         items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
@@ -92,7 +92,7 @@ const Container = styled.div`
 
 const Content = styled.div`
     position: relative;
-    width: 1362px;
+    width: 100%;
 `
 
 const SideLabel = styled.div`

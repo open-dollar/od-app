@@ -7,6 +7,7 @@ import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import BridgeModal from './Modals/BridgeModal'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -46,6 +47,8 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
+            console.log('sheesh')
+            popupsActions.setIsBridgeModalOpen(true)
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }
@@ -106,6 +109,7 @@ const Steps = () => {
 
     return (
         <StepsContainer>
+            <BridgeModal />
             {returnSteps(step)}
             {step === 1 && ctHash ? (
                 <>

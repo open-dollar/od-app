@@ -144,7 +144,7 @@ const Navbar = () => {
 
     const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false)
+        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false, true)
     }, [connectWalletModel.tokensFetchedData])
 
     useEffect(() => {

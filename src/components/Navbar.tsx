@@ -557,6 +557,7 @@ const OdButton = styled.button`
     box-sizing: border-box;
     min-width: max-content;
     width: auto;
+    height: 44px;
 
     &:hover {
         transform: translateY(-0.5px);

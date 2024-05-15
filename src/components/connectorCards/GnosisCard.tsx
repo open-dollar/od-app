@@ -14,14 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { gnosisSafe, hooks } from '../../connectors/gnosisSafe'
 import { Card } from '~/components/connectorCards/Card'
 
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
-export default function GnosisSafeCard() {
+interface GnosisSafeCardProps {
+    error: Error | undefined
+    setError: (error: Error | undefined) => void
+}
+
+export default function GnosisSafeCard({ error, setError }: GnosisSafeCardProps) {
+    const [userInitiatedConnection, setUserInitiatedConnection] = useState(false)
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
@@ -29,9 +35,6 @@ export default function GnosisSafeCard() {
     const isActive = useIsActive()
 
     const provider = useProvider()
-    const ENSNames = useENSNames(provider)
-
-    const [error, setError] = useState(undefined)
 
     useEffect(() => {
         void gnosisSafe.connectEagerly().catch(() => {
@@ -39,18 +42,22 @@ export default function GnosisSafeCard() {
         })
     }, [])
 
+    const handleUserInitiatedConnection = () => {
+        setUserInitiatedConnection(true)
+    }
+
     return (
         <Card
+            userInitiatedConnection={userInitiatedConnection}
+            onUserInitiatedConnection={handleUserInitiatedConnection}
             connector={gnosisSafe}
             activeChainId={chainId}
             isActivating={isActivating}
             isActive={isActive}
             error={error}
-            //@ts-ignore
             setError={setError}
             accounts={accounts}
             provider={provider}
-            ENSNames={ENSNames}
         />
     )
 }

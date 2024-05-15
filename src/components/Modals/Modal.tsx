@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components'
-import { useStoreActions } from '../../store'
 import Button from '../Button'
 import Confetti from '../Confetti'
+import { useStoreActions } from '~/store'
 
 interface Props {
     title?: string
@@ -43,22 +43,18 @@ const Modal = ({
 }: Props) => {
     const { t } = useTranslation()
     const nodeRef = React.useRef(null)
-    const { settingsModel: settingsActions } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
-        if (isModalOpen) {
-            settingsActions.setBodyOverFlow(true)
-        } else {
-            settingsActions.setBodyOverFlow(false)
-        }
         setIsOpen(isModalOpen)
         // eslint-disable-next-line
     }, [isModalOpen])
 
     const handleBackdrop = () => {
         if (backDropClose && closeModal) {
+            popupsActions.setChangeWalletActive(false)
             return closeModal()
         }
     }

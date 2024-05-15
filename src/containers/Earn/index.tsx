@@ -9,9 +9,9 @@ import { Loader } from 'react-feather'
 
 const pools = [
     {
-        poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
+        poolAddress: '0x626a551E910EcCA62e61DCeB37e3726C7d423185',
         apy: '2.9%',
-        link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
+        link: 'https://app.camelot.exchange/nitro/0x626a551E910EcCA62e61DCeB37e3726C7d423185',
     },
 ]
 

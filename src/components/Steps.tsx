@@ -7,7 +7,7 @@ import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-import { Fuul } from '@fuul/sdk'
+import useFuulSDK from '~/hooks/useFuulSDK'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -20,21 +20,11 @@ const Steps = () => {
     const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
+    const { sendConnectWalletEvent } = useFuulSDK()
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
-
-    const sendConnectWalletEvent = async (walletAddress: string): Promise<void> => {
-        const time = new Date().toDateString()
-        const message = `Sign to verify your address and access our points rewards program ${time}`
-        const signature = await provider?.getSigner().signMessage(message)
-        await Fuul.sendConnectWallet({
-            address: walletAddress,
-            signature,
-            message,
-        })
-    }
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false

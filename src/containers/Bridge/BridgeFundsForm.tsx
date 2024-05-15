@@ -1,33 +1,27 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
+import { getTokenLogo, formatWithCommas, getChainId } from '~/utils'
 import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
+import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 
-interface BridgeFundsFormProps {
-    // Add any props you need here
-}
-
-const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
+const BridgeFundsForm = () => {
     const {
-        safeModel: safeState,
-        connectWalletModel: { proxyAddress, tokensData, tokensFetchedData },
+        connectWalletModel: { tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
-    const [selectedItem, setSelectedItem] = useState<string>('')
 
+    const [selectedToken, setSelectedToken] = useState<string>('')
+    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
 
-    const [loading, setLoading] = useState(false)
-    const collaterals = tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
-    const { bridgeModel: bridgeModelState } = useStoreState((state) => state)
-    const { setFromTokenAddress, setToTokenAddress, setToChain, setOriginChain, setAmount, bridge } = useStoreActions(
-        (state) => state.bridgeModel
-    )
-    const { fromTokenAddress, toTokenAddress, toChain, originChain, amount } = bridgeModelState
+    const collaterals = useMemo(() => {
+        return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
+    }, [tokensData])
+    const { bridge } = useStoreActions((state) => state.bridgeModel)
 
     useEffect(() => {
-        if (collaterals.length > 0 && selectedItem === '') setSelectedItem(collaterals[0].symbol)
+        if (collaterals.length > 0 && selectedToken === '') setSelectedToken(collaterals[0].symbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
 
@@ -47,7 +41,6 @@ const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
         }
     })
 
-
     return (
         <Container>
             <Header>
@@ -57,19 +50,30 @@ const BridgeFundsForm: React.FC<BridgeFundsFormProps> = () => {
                 <DropDownContainer>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
                     <Dropdown
-                        items={[{ name: 'Mainnet', value: 1, icon: '' }, {name: 'Optimism', value: 10, icon: ''}, {name: 'Polygon', value: 137, icon: ''}]}
+                        items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
                         itemSelected={'Mainnet'}
-                        getSelectedItem={setSelectedItem}
+                        getSelectedItem={setSelectedChain}
                         fontSize="14px"
                     />
                     <SideLabel>{`Select Token to Bridge`}</SideLabel>
                     <Dropdown
                         items={collateralsDropdown}
-                        itemSelected={selectedItem}
-                        getSelectedItem={setSelectedItem}
+                        itemSelected={selectedToken}
+                        getSelectedItem={setSelectedToken}
                         fontSize="14px"
                     />
-                    <Button onClick={() => console.log('Bridge')} style={{ marginTop: '1em' }}>Bridge</Button>
+                    <Button
+                        onClick={() =>
+                            bridge({
+                                originChain: getChainId(selectedChain),
+                                toTokenAddress: selectedToken,
+                                fromTokenAddress: getGasToken(selectedChain),
+                            })
+                        }
+                        style={{ marginTop: '1em' }}
+                    >
+                        Bridge
+                    </Button>
                 </DropDownContainer>
             </Content>
         </Container>

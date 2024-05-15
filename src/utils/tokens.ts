@@ -35,3 +35,14 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
 export function getTokenLogo(token: string): string {
     return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default
 }
+
+export const gasTokenMapping: { [key: string]: string } = {
+    Mainnet: '0x0000000000000000000000000000000000000000',
+    Polygon: '0x0000000000000000000000000000000000001010',
+    Optimism: '0x4200000000000000000000000000000000000042',
+    Base: '0x0000000000000000000000000000000000000000',
+}
+
+export const getGasToken = (chain: string): string => {
+    return gasTokenMapping[chain]
+}

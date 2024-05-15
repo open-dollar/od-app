@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import PoolBlock from './PoolBlock.js'
+import { Link } from 'react-router-dom'
 
 const pools = [
     {
@@ -18,7 +19,16 @@ const Earn = () => {
     return (
         <Container>
             <Title>Earn</Title>
+            <SubHeader>incentivized pools and strategies</SubHeader>
+            <Text>
+                <p>Earn additional yield by staking your LP position in Camelot Nitro.</p>
+                <p>
+                    When creating a OD-ETH position, use the "Auto" mode provided by Gamma. See full instructions{' '}
+                    <Link to="">here</Link>.
+                </p>
+            </Text>
             <Pools>
+                <PoolsHeader>Strategies</PoolsHeader>
                 {pools.map((pool) => (
                     <PoolBlock key={pool.title} {...pool} />
                 ))}
@@ -46,6 +56,12 @@ const Title = styled.h2`
     color: ${(props) => props.theme.colors.accent};
 `
 
+const SubHeader = styled.h3`
+    text-transform: uppercase;
+`
+
+const Text = styled.div``
+const PoolsHeader = styled.h3``
 const Pools = styled.div``
 
 export default Earn

@@ -44,7 +44,7 @@ const Container = styled.div`
     @media (max-width: 767px) {
         margin: 50px auto;
     }
-    color: ${(props) => props.theme.colors.tertiary};
+    color: ${(props) => props.theme.colors.accent};
 `
 
 const Title = styled.h2`

@@ -546,7 +546,7 @@ const OdButton = styled.button`
     color: ${(props) => props.theme.colors.accent};
     width: 15vw;
     max-width: 210px;
-    padding: 10px 12px 8px 12px;
+    padding: 10px 18px 8px;
     box-shadow: 0 4px ${(props) => props.theme.colors.primary};
     font-size: ${(props) => props.theme.font.xxSmall};
     font-weight: 700;

@@ -23,8 +23,8 @@ const Earn = () => {
             <Text>
                 <p>Earn additional yield by staking your LP position in Camelot Nitro.</p>
                 <p>
-                    When creating a OD-ETH position, use the "Auto" mode provided by Gamma. See full instructions{' '}
-                    <Link to="">here</Link>.
+                    When creating a OD-ETH position, use the "Auto" mode provided by Gamma. <br></br>See full
+                    instructions <Link to="">here</Link>.
                 </p>
             </Text>
             <Pools>

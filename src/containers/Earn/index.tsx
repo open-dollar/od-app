@@ -44,6 +44,7 @@ const Container = styled.div`
     @media (max-width: 767px) {
         margin: 50px auto;
     }
+    color: ${(props) => props.theme.colors.tertiary};
 `
 
 const Title = styled.h2`
@@ -51,17 +52,40 @@ const Title = styled.h2`
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
 
-    margin-bottom: 30px;
-
     color: ${(props) => props.theme.colors.accent};
 `
 
 const SubHeader = styled.h3`
     text-transform: uppercase;
+    font-family: ${(props) => props.theme.family.headers};
+    font-size: 22px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.tertiary};
+    margin-bottom: 20px;
 `
 
-const Text = styled.div``
-const PoolsHeader = styled.h3``
+const Text = styled.div`
+    background-color: #6396ff26;
+    padding: 20px;
+    font-size: ${(props) => props.theme.font.default};
+    border-radius: 3px;
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    a {
+        text-decoration: underline;
+        color: ${(props) => props.theme.colors.tertiary};
+    }
+    margin-bottom: 30px;
+`
+const PoolsHeader = styled.h2`
+    font-size: 34px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.accent};
+    margin-bottom: 20px;
+`
 const Pools = styled.div``
 
 export default Earn

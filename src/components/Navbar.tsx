@@ -434,7 +434,7 @@ const Container = styled.div`
         top: 0 !important;
     }
 
-    $:after {
+    &:after {
         content: '';
         display: block;
         position: absolute;

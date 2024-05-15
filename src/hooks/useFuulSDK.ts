@@ -40,10 +40,30 @@ function useFuulSDK() {
         })
     }
 
+    const createAffiliateCode = async (walletAddress: string, affiliateCode: string): Promise<void> => {
+        const message = `I confirm that I am creating the ${affiliateCode} code on Fuul`
+        const signature = await provider?.getSigner().signMessage(message)
+        if (!signature) {
+            throw new Error('Failed to sign message')
+        }
+        return await Fuul.createAffiliateCode(walletAddress, affiliateCode, signature)
+    }
+
+    const getAffiliateCode = async (walletAddress: string): Promise<string | null> => {
+        try {
+            return await Fuul.getAffiliateCode(walletAddress)
+        } catch (error) {
+            console.debug('No affiliate code found:', error)
+            return null
+        }
+    }
+
     return {
         Fuul,
         fuulSendPageViewEvent,
         sendConnectWalletEvent,
+        createAffiliateCode,
+        getAffiliateCode,
     }
 }
 

@@ -272,13 +272,13 @@ const Navbar = () => {
                         <BtnContainer>
                             {account ? (
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
-                                    <DollarValue onClick={handleTokenClick}>
+                                    <TotalValue onClick={handleTokenClick}>
                                         <Icon src={walletIcon} width={22} height={22} />
                                         {odBalance + ' '} OD
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
-                                    </DollarValue>
+                                    </TotalValue>
                                     {isTokenPopupVisible && (
                                         <InfoPopup className="group">
                                             <InfoPopupContentWrapper>
@@ -615,6 +615,11 @@ const DollarValue = styled(OdButton)`
     justify-content: space-between;
     white-space: nowrap;
     width: 150px;
+`
+
+const TotalValue = styled(OdButton)`
+    min-width: max-content;
+    width: auto;
 `
 
 const InfoPopUpHorizontalSeparator = styled.div`

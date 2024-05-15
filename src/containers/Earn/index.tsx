@@ -1,18 +1,19 @@
 import styled from 'styled-components'
 import PoolBlock from './PoolBlock.js'
 import { Link } from 'react-router-dom'
+import Loader from '~/components/Loader'
 
-const pools = [
-    {
-        title: 'OD - ETH',
-        tokenImg1: 'OD',
-        tokenImg2: 'WETH',
-        status: 'Active',
-        tvl: '$3,000',
-        apr: '120%',
-        rewards: 'ODG, ARB',
-        link: 'https://app.camelot.exchange/nitro/0xb6d3AfA311B3677efEd1a1eA500e66469b057A6A',
-    },
+const pools: any = [
+    // {
+    //     title: 'OD - ETH',
+    //     tokenImg1: 'OD',
+    //     tokenImg2: 'WETH',
+    //     status: 'Active',
+    //     tvl: '$3,000',
+    //     apr: '120%',
+    //     rewards: 'ODG, ARB',
+    //     link: 'https://app.camelot.exchange/nitro/0xb6d3AfA311B3677efEd1a1eA500e66469b057A6A',
+    // },
 ]
 
 const Earn = () => {
@@ -29,9 +30,11 @@ const Earn = () => {
             </Text>
             <Pools>
                 <PoolsHeader>Strategies</PoolsHeader>
-                {pools.map((pool) => (
-                    <PoolBlock key={pool.title} {...pool} />
-                ))}
+                {pools.length > 0 ? (
+                    pools.map((pool: any) => <PoolBlock key={pool.title} {...pool} />)
+                ) : (
+                    <Loader width='50px' color="#1A74EC" />
+                )}
             </Pools>
         </Container>
     )

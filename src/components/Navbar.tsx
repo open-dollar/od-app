@@ -555,6 +555,8 @@ const OdButton = styled.button`
     border-radius: 50px;
     transition: all 0.15s ease;
     box-sizing: border-box;
+    min-width: max-content;
+    width: auto;
 
     &:hover {
         transform: translateY(-0.5px);
@@ -614,13 +616,9 @@ const DollarValue = styled(OdButton)`
     align-items: center;
     justify-content: space-between;
     white-space: nowrap;
-    width: 150px;
 `
 
-const TotalValue = styled(OdButton)`
-    min-width: max-content;
-    width: auto;
-`
+const TotalValue = styled(OdButton)``
 
 const InfoPopUpHorizontalSeparator = styled.div`
     width: 100%;

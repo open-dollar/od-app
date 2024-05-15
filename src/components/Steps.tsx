@@ -30,7 +30,14 @@ const Steps = () => {
         if (!account || !provider || !chainId) return false
 
         try {
-            await sendConnectWalletEvent(account)
+            const referralProgram = localStorage.getItem('referralProgram') === 'true'
+            if (referralProgram) {
+                try {
+                    await sendConnectWalletEvent(account)
+                } catch (e) {
+                    console.debug('User declined Fuul program ', e)
+                }
+            }
             const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
             const signer = provider.getSigner(account)
             connectWalletActions.setIsStepLoading(true)

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import i18next from 'i18next'
 import { Suspense } from 'react'
 import { I18nextProvider } from 'react-i18next'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import ErrorBoundary from './ErrorBoundary'
 import GlobalStyle from './GlobalStyle'
@@ -49,6 +49,17 @@ Fuul.init({
 const App = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
     const { bodyOverflow } = settingsState
+    const location = useLocation()
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const referrer = params.get('referrer')
+        const af = params.get('af')
+
+        if (referrer || af) {
+            localStorage.setItem('referralProgram', 'true')
+        }
+    }, [location.search])
 
     return (
         <I18nextProvider i18n={i18next}>

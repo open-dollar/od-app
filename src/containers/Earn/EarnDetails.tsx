@@ -141,7 +141,14 @@ const EarnDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>
-                                    <Value>{nitroPool?.rewardTokens[0].symbol}</Value>
+                                    <Value>
+                                        {nitroPool.rewardTokens?.map((token: { symbol: string }, i: number) => {
+                                            if (i === nitroPool.rewardTokens.length - 1) {
+                                                return token.symbol
+                                            }
+                                            return `${token.symbol}, `
+                                        })}
+                                    </Value>
                                 </Item>
                             </ColWrapper>
                         </Wrapper>

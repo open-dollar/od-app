@@ -344,7 +344,7 @@ const Navbar = () => {
                                         marginLeft: '20px',
                                         textAlign: 'center',
                                         justifyContent: 'center',
-                                        fontSize: 13,
+                                        fontSize: 14,
                                     }}
                                     onClick={handleWalletConnect}
                                 >
@@ -610,7 +610,10 @@ const ArrowWrapper = styled.div`
     margin-left: 8px;
 `
 
-const ClaimButton = styled(OdButton)``
+const ClaimButton = styled(OdButton)`
+    padding-left: 30px;
+    padding-right: 30px;
+`
 
 const DollarValue = styled(OdButton)`
     display: flex;

@@ -72,7 +72,13 @@ const PoolBlock = ({
                     </Value>
                 </Item>
             </Block>
-            <ReactTooltip id={`apy`} variant="dark" data-effect="solid" place="top" />
+            <ReactTooltip
+                style={{ backgroundColor: '#1A74EC' }}
+                id={`apy`}
+                variant="dark"
+                data-effect="solid"
+                place="top"
+            />
         </BlockContainer>
     )
 }

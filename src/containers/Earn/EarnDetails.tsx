@@ -1,7 +1,7 @@
 import { useStoreState } from 'easy-peasy'
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronLeft, Plus } from 'react-feather'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import LinkButton from '~/components/LinkButton'
 import { useActiveWeb3React } from '~/hooks'
@@ -12,14 +12,6 @@ import { formatWithCommas, getTokenLogo } from '~/utils'
 import Loader from '~/components/Loader'
 import { BigNumber } from 'ethers'
 
-const pools = [
-    {
-        poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
-        apy: '2.90%',
-        link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
-    },
-]
-
 interface PoolSettings {
     [key: string]: {
         startDate: BigNumber
@@ -28,7 +20,7 @@ interface PoolSettings {
 }
 
 interface Pool {
-    apy: string
+    apy: number
     settings: PoolSettings
     [key: string]: any
 }
@@ -36,6 +28,7 @@ interface Pool {
 const EarnDetails = () => {
     const [nitroPool, setNitroPool] = useState<Pool | null>(null)
     const history = useHistory()
+    const location = useLocation()
 
     const geb = useGeb()
     const { account } = useActiveWeb3React()
@@ -48,12 +41,14 @@ const EarnDetails = () => {
 
     useEffect(() => {
         if (!geb) return
-        console.log()
+
+        const address = location.pathname.split('/').pop()
+
         async function fetchPool() {
             try {
                 await nitroPoolsActions.fetchNitroPool({
                     geb,
-                    poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
+                    poolAddress: address,
                     userAddress: account ?? undefined,
                 })
                 setNitroPool(nitroPools[0])

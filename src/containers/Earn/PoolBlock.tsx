@@ -22,7 +22,6 @@ const PoolBlock = ({
         const now = new Date()
         return now > start && now < end ? 'Active' : 'Inactive'
     }
-    console.log({apy})
 
     return (
         <BlockContainer id={`${poolAddress}`}>
@@ -39,7 +38,7 @@ const PoolBlock = ({
                     VIEW ON CAMELOT
                 </ExternalLink>
             </BlockHeader>
-            <Link to={`/earn/1`}>
+            <Link to={`/earn/${poolAddress}`}>
                 <Block>
                     <Item>
                         <Label>Status</Label>

@@ -3914,15 +3914,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.0-rc.5":
-  version: 1.7.0-rc.5
-  resolution: "@opendollar/sdk@npm:1.7.0-rc.5"
+"@opendollar/sdk@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@opendollar/sdk@npm:1.7.1"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 7075c66469af09d3a3abd05cdd567e62d7fbee0f694d732a9051a8279ef011da653c3fd98b4a05c62c50b63bda3761aadd00d385171d2f54315d206c9bd0b115
+  checksum: 7aaa7791673c53180bf5d8a8231479368de94485401f578390e120a07af2c352222646470a6cefa21a29c25098d47369f3a8fb1c1a848cf3a693b59231eb270e
   languageName: node
   linkType: hard
 
@@ -4562,7 +4562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/cli@npm:^2.31.2":
+"@sentry/cli@npm:^2.31.0":
   version: 2.31.2
   resolution: "@sentry/cli@npm:2.31.2"
   dependencies:
@@ -15309,10 +15309,10 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": 1.7.0-rc.5
+    "@opendollar/sdk": 1.7.1
     "@opendollar/svg-generator": 1.0.4
     "@react-spring/web": ^9.7.3
-    "@sentry/cli": ^2.31.2
+    "@sentry/cli": ^2.31.0
     "@sentry/integrations": ^7.112.2
     "@sentry/react": ^7.112.2
     "@sentry/webpack-plugin": ^2.16.1

@@ -24,21 +24,18 @@ const PoolBlock = ({
     }
 
     return (
-        <BlockContainer id={`${poolAddress}`}>
-            <BlockHeader>
-                <PoolInfo>
-                    <PoolData>
-                        <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
-                        <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                        <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
-                    </PoolData>
-                </PoolInfo>
-                <ExternalLink href={link} target="_blank">
-                    <Camelot />
-                    VIEW ON CAMELOT
-                </ExternalLink>
-            </BlockHeader>
-            <Link to={`/earn/${poolAddress}`}>
+        <Link to={`/earn/${poolAddress}`}>
+            <BlockContainer id={`${poolAddress}`}>
+                <BlockHeader>
+                    <PoolInfo>
+                        <PoolData>
+                            <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                        </PoolData>
+                    </PoolInfo>
+                </BlockHeader>
+
                 <Block>
                     <Item>
                         <Label>Status</Label>
@@ -67,8 +64,8 @@ const PoolBlock = ({
                         </Value>
                     </Item>
                 </Block>
-            </Link>
-        </BlockContainer>
+            </BlockContainer>
+        </Link>
     )
 }
 

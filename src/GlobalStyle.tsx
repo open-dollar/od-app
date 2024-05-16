@@ -1,9 +1,5 @@
 import { createGlobalStyle, css } from 'styled-components'
 
-interface Props {
-    bodyOverflow?: boolean
-}
-
 const GlobalStyle = createGlobalStyle`
 
   body::-webkit-scrollbar {
@@ -28,11 +24,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${(props: any) => props.theme.colors.primary};
     background-color:${(props: any) => props.theme.colors.background};
-    background-image: url('/squares1x.png'), url('/wavy-blue.png');
+    background-image: url('squares1x.png'), url('wavy-blue.png');
     background-size: contain, 100%;
     background-position: bottom left, top right;
     background-repeat: no-repeat;
-    overflow: ${(props: Props) => (props.bodyOverflow ? 'hidden' : 'visible')};
 
     .web3modal-modal-lightbox {
     z-index: 999;

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Button from './Button'
+import vaultFacilitator from '../assets/vault-facilitator.webp'
 
 interface Props {
     title: string
@@ -18,7 +19,7 @@ const CreateVaultStep = ({ stepNumber, title, text, isDisabled, isLoading, btnTe
     return (
         <ContentContainer stepNumber={stepNumber}>
             <ImageContainer stepNumber={stepNumber}>
-                <img src={require('../assets/vault-facilitator.png')} alt="" />
+                <img src={vaultFacilitator} alt="" />
             </ImageContainer>
             <ContentWrapper stepNumber={stepNumber}>
                 <Title>{t(title)}</Title>

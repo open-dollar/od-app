@@ -80,6 +80,7 @@ export const TESTNET_CHAINS: ChainConfig = {
         blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
     },
 }
+
 const supportedChainId = parseInt(NETWORK_ID || '', 10)
 
 if (isNaN(supportedChainId)) {

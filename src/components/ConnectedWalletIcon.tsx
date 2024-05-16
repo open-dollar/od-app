@@ -5,6 +5,8 @@ import Identicon from './Icons/Identicon'
 import { MetaMask } from '@web3-react/metamask'
 import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
+import walletConnectIcon from '../assets/connectors/walletConnectIcon.svg'
+import coinbaseWalletIcon from '../assets/connectors/coinbaseWalletIcon.svg'
 
 interface Props {
     size?: number
@@ -23,19 +25,13 @@ const ConnectedWalletIcon = ({ size }: Props) => {
         } else if (connector instanceof WalletConnectV2) {
             return (
                 <IconWrapper size={size || 16}>
-                    <img
-                        src={require('../assets/connectors/walletConnectIcon.svg').default}
-                        alt={'wallet connect logo'}
-                    />
+                    <img src={walletConnectIcon} alt={'wallet connect logo'} />
                 </IconWrapper>
             )
         } else if (connector instanceof CoinbaseWallet) {
             return (
                 <IconWrapper size={size || 16}>
-                    <img
-                        src={require('../assets/connectors/coinbaseWalletIcon.svg').default}
-                        alt={'coinbase wallet logo'}
-                    />
+                    <img src={coinbaseWalletIcon} alt={'coinbase wallet logo'} />
                 </IconWrapper>
             )
         }

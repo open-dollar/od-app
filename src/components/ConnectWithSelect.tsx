@@ -22,33 +22,34 @@ import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { IconWrapper } from '~/components/ConnectedWalletIcon'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { GnosisSafe } from '@web3-react/gnosis-safe'
+import metamask from '../assets/connectors/metamask.webp'
+import walletConnectIcon from '../assets/connectors/walletConnectIcon.svg'
+import coinbaseWalletIcon from '../assets/connectors/coinbaseWalletIcon.svg'
+import gnosisWalletIcon from '../assets/connectors/gnosisWalletIcon.svg'
 
 function getStatusIcon(connector: MetaMask | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe) {
     if (connector instanceof MetaMask) {
         return (
             <IconWrapper size={38}>
-                <img src={require('../assets/connectors/metamask.png')} alt={'metamask logo'} />
+                <img src={metamask} alt={'metamask logo'} />
             </IconWrapper>
         )
     } else if (connector instanceof WalletConnectV2) {
         return (
             <IconWrapper size={38}>
-                <img src={require('../assets/connectors/walletConnectIcon.svg').default} alt={'wallet connect logo'} />
+                <img src={walletConnectIcon} alt={'wallet connect logo'} />
             </IconWrapper>
         )
     } else if (connector instanceof CoinbaseWallet) {
         return (
             <IconWrapper size={38}>
-                <img
-                    src={require('../assets/connectors/coinbaseWalletIcon.svg').default}
-                    alt={'coinbase wallet logo'}
-                />
+                <img src={coinbaseWalletIcon} alt={'coinbase wallet logo'} />
             </IconWrapper>
         )
     } else if (connector instanceof GnosisSafe) {
         return (
             <IconWrapper size={38}>
-                <img src={require('../assets/connectors/gnosisWalletIcon.svg').default} alt={'gnosis safe logo'} />
+                <img src={gnosisWalletIcon} alt={'gnosis safe logo'} />
             </IconWrapper>
         )
     }
@@ -68,11 +69,10 @@ export function ConnectWithSelect({
     setError: (error: Error | undefined) => void
 }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', color: 'white' }}>
-            <div style={{ marginBottom: '1rem' }} />
+        <div style={{ display: 'flex', flexDirection: 'row', color: 'white', alignItems: 'center' }}>
             {isActive ? (
                 error ? (
-                    <div>Try again?</div>
+                    <div>{getStatusIcon(connector)}</div>
                 ) : (
                     <div
                         onClick={() => {
@@ -83,11 +83,11 @@ export function ConnectWithSelect({
                             }
                         }}
                     >
-                        {connector instanceof MetaMask || connector instanceof GnosisSafe ? '' : <>{'Disconnect'}</>}
+                        <div>{getStatusIcon(connector)}</div>
                     </div>
                 )
             ) : (
-                <div>{error ? 'Try again?' : getStatusIcon(connector)}</div>
+                <div>{getStatusIcon(connector)}</div>
             )}
         </div>
     )

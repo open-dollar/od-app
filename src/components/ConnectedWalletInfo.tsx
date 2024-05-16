@@ -13,6 +13,8 @@ import CopyIcon from './Icons/CopyIcon'
 import Button from './Button'
 import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
 import { MetaMask } from '@web3-react/metamask'
+import { Info } from 'react-feather'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
@@ -23,6 +25,7 @@ const ConnectedWalletInfo = () => {
 
     const handleChange = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
+        popupsActions.setChangeWalletActive(true)
         popupsActions.setIsConnectorsWalletOpen(true)
     }
 
@@ -65,14 +68,30 @@ const ConnectedWalletInfo = () => {
     return (
         <>
             <DataContainer>
-                <Connection>
-                    {t('connected_with')} {connector ? formatConnectorName() : 'N/A'}
-                    <Button text={'change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
-                </Connection>
-                <Address id="web3-account-identifier-row">
-                    <ConnectedWalletIcon size={20} />
-                    {account && isActive ? returnWalletAddress(account) : 'N/A'}
-                </Address>
+                <Row>
+                    <LeftContainer>
+                        <Address id="web3-account-identifier-row">
+                            <ConnectedWalletIcon size={18} />
+                            {account && isActive ? returnWalletAddress(account) : 'N/A'}
+                        </Address>
+                        <Connection>{connector ? formatConnectorName() : 'N/A'}</Connection>
+                    </LeftContainer>
+
+                    <RightContainer>
+                        <Button text={'Change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
+                        {connector instanceof MetaMask && (
+                            <>
+                                <ReactTooltip id="browserWalletDisconnectTooltip" variant="light" data-effect="solid" />
+                                <Info
+                                    data-tooltip-id="browserWalletDisconnectTooltip"
+                                    data-tooltip-content={t('browser_wallet_disconnect_not_supported')}
+                                    color="white"
+                                    size="20"
+                                />
+                            </>
+                        )}
+                    </RightContainer>
+                </Row>
                 {account && isActive ? (
                     <WalletData>
                         {copied ? (
@@ -92,7 +111,7 @@ const ConnectedWalletInfo = () => {
                         )}
                         {chainId && account ? (
                             <LinkBtn href={getEtherscanLink(chainId, account, 'address')} target="_blank">
-                                <ExpandIcon /> {t('view_etherscan')}
+                                <ExpandIcon /> {t('view_arbiscan')}
                             </LinkBtn>
                         ) : null}
                     </WalletData>
@@ -107,7 +126,7 @@ const ConnectedWalletInfo = () => {
                 {!!pendingTransactions.length || !!confirmedTransactions.length ? (
                     <>
                         <Heading>
-                            {t('recent_transactions')}
+                            {t('transaction_msg')}
                             <Button text={'clear_all'} withArrow onClick={handleClearTransactions} />
                         </Heading>
                         {renderTransactions(pendingTransactions)}
@@ -123,27 +142,28 @@ const ConnectedWalletInfo = () => {
 
 export default ConnectedWalletInfo
 
-const BtnContainer = styled.div`
+const LeftContainer = styled.div`
     display: flex;
-    justify-content: center;
-    margin-top: 24px;
+    align-items: center;
+`
+
+const RightContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 4px;
+`
+
+const Row = styled.div`
+    align-items: center;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`
+
+const BtnContainer = styled.div`
     button {
-        min-width: 100px;
-        padding: 20px;
         border: #e2f1ff 1px solid;
     }
-    &.top-up {
-        right: auto;
-        left: 50px;
-        top: 50px;
-    }
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      position: static;
-      margin-bottom: 20px;
-      &.top-up {
-         display: none;
-      }
-    `}
 `
 
 const Connection = styled.div`
@@ -171,7 +191,7 @@ const Address = styled.div`
         width: 20px;
         margin-right: 10px;
     }
-    font-size: ${(props) => props.theme.font.large};
+    font-size: ${(props) => props.theme.font.medium};
 `
 
 const WalletData = styled.div`
@@ -182,13 +202,13 @@ const WalletData = styled.div`
 const CopyBtn = styled.button`
     background-color: transparent;
     color: #ffffff;
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.xxSmall};
     cursor: pointer;
     display: flex;
     align-items: center;
     margin-right: 20px;
     transition: all 0.3s ease;
-    gap: 2px;
+    gap: 4px;
 
     &:hover {
         color: #b3ceff;
@@ -197,11 +217,11 @@ const CopyBtn = styled.button`
 
 const LinkBtn = styled.a`
     color: #ffffff;
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.xxSmall};
     transition: color 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
 
     &:hover {
         color: #b3ceff;
@@ -210,16 +230,15 @@ const LinkBtn = styled.a`
 
 const DataContainer = styled.div`
     border-radius: 4px;
-    padding: 15px;
-    border: 1px solid white;
+    padding: 0 0 15px 0;
 `
 
 const TransactionsContainer = styled.div`
     padding: 20px;
     color: white;
-    margin: 20px -20px -20px -20px;
+    margin: 0px -20px -20px -20px;
     border-radius: 0 0 25px 25px;
-    font-size: ${(props) => props.theme.font.small};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 
 const Heading = styled.div`

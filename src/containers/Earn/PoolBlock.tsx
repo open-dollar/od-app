@@ -22,6 +22,7 @@ const PoolBlock = ({
         const now = new Date()
         return now > start && now < end ? 'Active' : 'Inactive'
     }
+    console.log({apy})
 
     return (
         <BlockContainer id={`${poolAddress}`}>

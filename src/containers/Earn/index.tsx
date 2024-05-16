@@ -5,13 +5,14 @@ import { useStoreActions } from 'easy-peasy'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
-import Loader from '~/components/Loader'
+import { Loader } from 'react-feather'
+
+const NITRO_POOL = '0x70b4274c3f5A855c9f6f77E314D8a87CE310d03c'
 
 const pools = [
     {
-        poolAddress: '0x64ca43A1C1c38b06757152fdf0CC02d0F84407CF',
-        apy: '2.90%',
-        link: 'https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657',
+        poolAddress: NITRO_POOL,
+        link: `https://app.camelot.exchange/nitro/${NITRO_POOL}`,
     },
 ]
 
@@ -19,6 +20,7 @@ const Earn = () => {
     const geb = useGeb()
     const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
+    const [apr, setApr] = useState('0')
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
@@ -32,6 +34,11 @@ const Earn = () => {
         async function fetchPools() {
             for (const pool of pools) {
                 try {
+                    const response = await fetch('https://api.camelot.exchange/nitros')
+                    const res = await response.json()
+                    if (res.data.nitros[pool.poolAddress]?.incentivesApr) {
+                        setApr(res.data.nitros[pool.poolAddress]?.incentivesApr)
+                    }
                     await nitroPoolsActions.fetchNitroPool({
                         geb,
                         poolAddress: pool.poolAddress,
@@ -46,15 +53,15 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-
     console.log(nitroPools)
+
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
                 {nitroPools.length > 0 &&
-                    pools?.map((pool, i) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />)}
-                {loading && <Loader color="#1A74EC" width="60px" />}
+                    pools?.map((pool, i) => <PoolBlock {...pool} apy={apr} nitroPoolData={nitroPools[i]} />)}
+                {loading && <Loader />}
             </Pools>
         </Container>
     )

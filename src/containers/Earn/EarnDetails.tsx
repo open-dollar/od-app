@@ -169,27 +169,23 @@ const EarnDetails = () => {
                     </Body>
                     <Footer>
                         <FooterHeader>My deposit</FooterHeader>
-                        {/* list of user pools */}
-                        {userPools.map((pool) => {
-                            return (
-                                <Wrapper>
-                                    <FooterWrapper>
-                                        <Item>
-                                            <Label>Average APR</Label>
-                                            <Value>0.00%</Value>
-                                        </Item>
-                                        <Item>
-                                            <Label>Total in Deposit</Label>
-                                            <Value>0.0 OD-ETH: </Value>
-                                        </Item>
-                                        <Item>
-                                            <Label>Pending rewards</Label>
-                                            <Value>0.0 ODG: </Value>
-                                        </Item>
-                                    </FooterWrapper>
-                                </Wrapper>
-                            )
-                        })}
+
+                        <Wrapper>
+                            <FooterWrapper>
+                                <Item>
+                                    <Label>Average APR</Label>
+                                    <Value>0.00%</Value>
+                                </Item>
+                                <Item>
+                                    <Label>Total in Deposit</Label>
+                                    <Value>0.0 OD-ETH: </Value>
+                                </Item>
+                                <Item>
+                                    <Label>Pending rewards</Label>
+                                    <Value>0.0 ODG: </Value>
+                                </Item>
+                            </FooterWrapper>
+                        </Wrapper>
                     </Footer>
                 </Container>
             ) : (

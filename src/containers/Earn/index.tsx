@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
 import { Loader } from 'react-feather'
 
+const NITRO_POOL = '0x70b4274c3f5A855c9f6f77E314D8a87CE310d03c'
+
 const pools = [
     {
-        poolAddress: '0x626a551E910EcCA62e61DCeB37e3726C7d423185',
-        link: 'https://app.camelot.exchange/nitro/0x626a551E910EcCA62e61DCeB37e3726C7d423185',
+        poolAddress: NITRO_POOL,
+        link: `https://app.camelot.exchange/nitro/${NITRO_POOL}`,
     },
 ]
 

@@ -478,9 +478,9 @@ export interface CallResults {
 }
 
 export interface BridgeTransaction {
-    fromTokenAddress: string
+    toTokenAddress: string
     originChain: number
+    fromTokenAddress?: string
     toChain?: number
-    toTokenAddress?: string
     amount?: string
 }

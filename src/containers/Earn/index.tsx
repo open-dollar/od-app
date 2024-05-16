@@ -8,6 +8,8 @@ import { useActiveWeb3React } from '~/hooks'
 import { useEffect, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
 import Loader from '~/components/Loader'
+import Button from '~/components/Button'
+import { ExternalLink } from 'react-feather'
 
 const NITRO_POOL = '0x70b4274c3f5A855c9f6f77E314D8a87CE310d03c'
 
@@ -57,6 +59,10 @@ const Earn = () => {
     }, [account, geb, nitroPoolsActions])
     console.log(nitroPools)
 
+    const handleClick = () => {
+        window.open('https://discord.opendollar.com/', '_blank')
+    }
+
     return (
         <Container>
             <Title>Earn</Title>
@@ -69,12 +75,26 @@ const Earn = () => {
                 </p>
             </Text>
             <Pools>
-                {nitroPools.length > 0 &&
+                <PoolsHeader>Strategies</PoolsHeader>
+                {nitroPools.length > 0 ? (
                     pools?.map((pool: any, i: number) => (
                         <PoolBlock {...pool} apr={apr} nitroPoolData={nitroPools[i]} />
-                    ))}
-                {loading && <Loader width="50px" color="#1A74EC" />}
+                    ))
+                ) : (
+                    <Loader width="50px" color="#1A74EC" />
+                )}
             </Pools>
+            <BtnWrapper>
+                <Button
+                    data-test-id="steps-btn"
+                    id={'suggest-pool-btn'}
+                    // text={'suggest a new pool'}
+                    secondary
+                    onClick={handleClick}
+                >
+                    suggest a new pool <ExternalLink />
+                </Button>
+            </BtnWrapper>
         </Container>
     )
 }
@@ -129,5 +149,21 @@ const PoolsHeader = styled.h2`
     margin-bottom: 20px;
 `
 const Pools = styled.div``
+
+const BtnWrapper = styled.div`
+    width: max-content;
+    margin-right: auto;
+    margin-left: auto;
+    button {
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 18px;
+        padding: 17px 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+`
 
 export default Earn

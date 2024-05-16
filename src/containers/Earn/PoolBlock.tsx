@@ -1,16 +1,35 @@
 import styled from 'styled-components'
 import Camelot from '~/components/Icons/Camelot'
-import { getTokenLogo } from '~/utils'
+import { formatWithCommas, getTokenLogo } from '~/utils'
 
-const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, link }) => {
+const PoolBlock = ({
+    poolAddress,
+    apr,
+    link,
+    nitroPoolData,
+}: {
+    poolAddress: string
+    apr: number
+    link: string
+    nitroPoolData: any
+}) => {
+    const { collateralTokens, rewardTokens, tvl, settings } = nitroPoolData
+
+    const getTimePeriod = () => {
+        const start = new Date(Number(settings.startTime) * 1000)
+        const end = new Date(Number(settings.endTime) * 1000)
+        const now = new Date()
+        return now > start && now < end ? 'Active' : 'Inactive'
+    }
+
     return (
-        <BlockContainer>
+        <BlockContainer id={`${poolAddress}`}>
             <BlockHeader>
                 <PoolInfo>
                     <PoolData>
-                        <PoolTitle>{title}</PoolTitle>
-                        <img src={getTokenLogo(tokenImg1)} alt={''} width={'50px'} />
-                        <img src={getTokenLogo(tokenImg2)} alt={''} width={'50px'} />
+                        <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
+                        <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                        <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
                     </PoolData>
                 </PoolInfo>
                 <ExternalLink href={link} target="_blank">
@@ -22,12 +41,13 @@ const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, lin
                 <Item>
                     <Label>Status</Label>
                     <Value className="status">
-                        <Dot></Dot>Active
+                        <Dot></Dot>
+                        {getTimePeriod()}
                     </Value>
                 </Item>
                 <Item>
                     <Label>TVL</Label>
-                    <Value>{tvl}</Value>
+                    <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
                 </Item>
                 <Item>
                     <Label>APR</Label>
@@ -35,7 +55,14 @@ const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, lin
                 </Item>
                 <Item>
                     <Label>Rewards</Label>
-                    <Value>{rewards}</Value>
+                    <Value>
+                        {rewardTokens?.map((token: { symbol: string }, i: number) => {
+                            if (i === rewardTokens.length - 1) {
+                                return token.symbol
+                            }
+                            return `${token.symbol}, `
+                        })}
+                    </Value>
                 </Item>
             </Block>
         </BlockContainer>

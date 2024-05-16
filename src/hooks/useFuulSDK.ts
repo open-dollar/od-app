@@ -30,7 +30,7 @@ function useFuulSDK() {
     const sendConnectWalletEvent = async (walletAddress: string): Promise<void> => {
         const message = await createSiweMessage(
             walletAddress,
-            `Sign to verify your address and access our points rewards program`
+            `Sign in with Ethereum to Open Dollar and agree to the Terms of Service at opendollar.com/terms`
         )
         const signature = await provider?.getSigner().signMessage(message)
         return await Fuul.sendConnectWallet({

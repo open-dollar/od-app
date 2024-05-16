@@ -11,6 +11,7 @@ import { useStoreActions } from 'easy-peasy'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import Loader from '~/components/Loader'
 import { BigNumber } from 'ethers'
+import Camelot from '~/components/Icons/Camelot'
 
 interface PoolSettings {
     [key: string]: {
@@ -38,11 +39,11 @@ const EarnDetails = () => {
     // @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
-
+    const address = location.pathname.split('/').pop()
     useEffect(() => {
         if (!geb) return
 
-        const address = location.pathname.split('/').pop()
+        // const address = location.pathname.split('/').pop()
 
         async function fetchPool() {
             try {
@@ -127,12 +128,10 @@ const EarnDetails = () => {
                             <img src={getTokenLogo(nitroPool?.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
                             <PoolTitle>{`${nitroPool?.collateralTokens[0]?.symbol} - ${nitroPool?.collateralTokens[1]?.symbol}`}</PoolTitle>
                         </Title>
-                        <LinkBtnContainer>
-                            <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
-                                <Plus />
-                                Deposit funds
-                            </LinkButton>
-                        </LinkBtnContainer>
+                        <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">
+                            <Camelot />
+                            VIEW ON CAMELOT
+                        </ExternalLink>
                     </PoolHeader>
                     <Body>
                         <Wrapper>
@@ -169,14 +168,7 @@ const EarnDetails = () => {
                         </Wrapper>
                     </Body>
                     <Footer>
-                        <FooterHeader>
-                            My deposit
-                            <LinkBtnContainer>
-                                <LinkButton id="create-safe" disabled={false} url={'/vaults/create'}>
-                                    Manage Position
-                                </LinkButton>
-                            </LinkBtnContainer>
-                        </FooterHeader>
+                        <FooterHeader>My deposit</FooterHeader>
                         {/* list of user pools */}
                         {userPools.map((pool) => {
                             return (
@@ -210,6 +202,16 @@ const EarnDetails = () => {
 }
 
 export default EarnDetails
+
+const ExternalLink = styled.a`
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 14px;
+    color: ${(props) => props.theme.colors.primary};
+`
 
 const Container = styled.div`
     max-width: 880px;

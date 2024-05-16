@@ -41,8 +41,8 @@ function useFuulSDK() {
     }
 
     const createAffiliateCode = async (walletAddress: string, affiliateCode: string): Promise<void> => {
-        // This message must match this format exactly or the signature will fail
-        const message = `I am claiming the affiliate code "${affiliateCode}" for the Fuul points program. I agree to the Terms of Service at opendollar.com/terms and fuul.xyz/terms/affiliates`
+        // DO NOT CHANGE THIS MESSAGE - THIS MESSAGE MUST MATCH EXACTLY OR THE SIGNATURE WILL FAIL
+        const message = `I confirm that I am creating the ${affiliateCode} code on Fuul`
         const signature = await provider?.getSigner().signMessage(message)
         if (!signature) {
             throw new Error('Failed to sign message')

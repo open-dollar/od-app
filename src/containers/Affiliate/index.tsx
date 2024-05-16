@@ -74,12 +74,15 @@ const Affiliate = () => {
                     </>
                 ) : (
                     <>
-                        <input
-                            type="text"
-                            placeholder="Enter new affiliate code"
-                            value={newAffiliateCode}
-                            onChange={(e) => setNewAffiliateCode(e.target.value)}
-                        />
+                        <FlexContainer>
+                            <UrlText>https://app.opendollar.com?af=</UrlText>
+                            <input
+                                type="text"
+                                placeholder="Enter new affiliate code"
+                                value={newAffiliateCode}
+                                onChange={(e) => setNewAffiliateCode(e.target.value)}
+                            />
+                        </FlexContainer>
                         <Button onClick={handleCreateAffiliateCode} disabled={!account || !newAffiliateCode}>
                             {account ? 'Create Affiliate Code' : 'Wallet Disconnected'}
                         </Button>
@@ -133,6 +136,23 @@ const Content = styled.div`
         border-radius: 5px;
         width: 100%;
     }
+`
+
+const FlexContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    input {
+        flex-grow: 1;
+    }
+`
+
+const UrlText = styled.div`
+    text-wrap: nowrap;
+    font-size: ${(props) => props.theme.font.small};
 `
 
 const ErrorMessage = styled.div`

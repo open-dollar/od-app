@@ -10,7 +10,6 @@ import { Loader } from 'react-feather'
 const pools = [
     {
         poolAddress: '0x626a551E910EcCA62e61DCeB37e3726C7d423185',
-        apy: '2.9%',
         link: 'https://app.camelot.exchange/nitro/0x626a551E910EcCA62e61DCeB37e3726C7d423185',
     },
 ]
@@ -19,6 +18,7 @@ const Earn = () => {
     const geb = useGeb()
     const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
+    const [apr, setApr] = useState(0)
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
@@ -32,6 +32,11 @@ const Earn = () => {
         async function fetchPools() {
             for (const pool of pools) {
                 try {
+                    const response = await fetch('https://api.camelot.exchange/nitros')
+                    const res = await response.json()
+                    if (res.data.nitros[pool.poolAddress]?.incentivesApr) {
+                        setApr(res.data.nitros[pool.poolAddress]?.incentivesApr)
+                    }
                     await nitroPoolsActions.fetchNitroPool({
                         geb,
                         poolAddress: pool.poolAddress,
@@ -47,12 +52,13 @@ const Earn = () => {
         fetchPools()
     }, [account, geb, nitroPoolsActions])
     console.log(nitroPools)
+
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
                 {nitroPools.length > 0 &&
-                    pools?.map((pool, i) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />)}
+                    pools?.map((pool, i) => <PoolBlock {...pool} apr={apr} nitroPoolData={nitroPools[i]} />)}
                 {loading && <Loader />}
             </Pools>
         </Container>

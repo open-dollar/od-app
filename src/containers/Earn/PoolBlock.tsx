@@ -4,12 +4,12 @@ import { formatWithCommas, getTokenLogo } from '~/utils'
 
 const PoolBlock = ({
     poolAddress,
-    apy,
+    apr,
     link,
     nitroPoolData,
 }: {
     poolAddress: string
-    apy: string
+    apr: number
     link: string
     nitroPoolData: any
 }) => {
@@ -51,7 +51,7 @@ const PoolBlock = ({
                 </Item>
                 <Item>
                     <Label>APR</Label>
-                    <Value>{apy}</Value>
+                    <Value>{apr}</Value>
                 </Item>
                 <Item>
                     <Label>Rewards</Label>

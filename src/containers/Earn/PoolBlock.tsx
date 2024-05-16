@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Camelot from '~/components/Icons/Camelot'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 
 const PoolBlock = ({
@@ -99,16 +98,6 @@ const BlockHeader = styled.div`
         flex-direction: column;
         align-items: flex-end;
     `}
-`
-
-const ExternalLink = styled.a`
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.primary};
 `
 
 const PoolInfo = styled.div`

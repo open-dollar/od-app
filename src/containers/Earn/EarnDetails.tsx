@@ -1,9 +1,8 @@
 import { useStoreState } from 'easy-peasy'
 import { useCallback, useEffect, useState } from 'react'
-import { ChevronLeft, Plus } from 'react-feather'
+import { ChevronLeft } from 'react-feather'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import LinkButton from '~/components/LinkButton'
 import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import { useStoreActions } from 'easy-peasy'
@@ -43,8 +42,6 @@ const EarnDetails = () => {
     useEffect(() => {
         if (!geb) return
 
-        // const address = location.pathname.split('/').pop()
-
         async function fetchPool() {
             try {
                 await nitroPoolsActions.fetchNitroPool({
@@ -58,7 +55,7 @@ const EarnDetails = () => {
             }
         }
         fetchPool()
-    }, [account, geb, nitroPoolsActions])
+    }, [account, geb, nitroPoolsActions, address, nitroPools])
 
     const handleBack = useCallback(() => {
         history.push(`/earn`)
@@ -112,8 +109,6 @@ const EarnDetails = () => {
 
         return `${diffDays} D ${remainingHrs}h ${remainingMin}min`
     }
-
-    const userPools = [{ first: 'first' }, { second: 'second' }]
 
     return (
         <>
@@ -256,30 +251,6 @@ const BackBtn = styled.div`
     }
 
     transition: opacity 0.3s ease;
-    &:hover {
-        opacity: 0.8;
-    }
-`
-
-const LinkBtnContainer = styled.div`
-    max-width: 230px;
-    a {
-        color: white;
-        outline: none;
-        cursor: pointer;
-        min-width: 100px;
-        padding: 12px 40px;
-        font-weight: 700;
-        background: ${(props) => props.theme.colors.gradientBg};
-        border-radius: 3px;
-        transition: all 0.3s ease;
-        font-family: ${(props) => props.theme.family.headers};
-    }
-
-    svg {
-        margin-right: 10px;
-    }
-
     &:hover {
         opacity: 0.8;
     }

@@ -11,6 +11,7 @@ import { formatWithCommas, getTokenLogo } from '~/utils'
 import Loader from '~/components/Loader'
 import { BigNumber } from 'ethers'
 import Camelot from '~/components/Icons/Camelot'
+import { POOLS } from '~/utils'
 
 interface PoolSettings {
     [key: string]: {
@@ -41,29 +42,33 @@ const EarnDetails = () => {
     const address = location.pathname.split('/').pop()
     useEffect(() => {
         if (!geb) return
+        async function fetchPools() {
+            const pool = POOLS.find((pool: { nitroPoolAddress: string }) => pool.nitroPoolAddress === address)
 
-        async function fetchPool() {
             try {
                 await nitroPoolsActions.fetchNitroPool({
-                    geb,
-                    poolAddress: address,
                     userAddress: account ?? undefined,
+                    camelotPoolAddress: pool.camelotPoolAddress,
+                    nitroPoolAddress: pool.nitroPoolAddress,
+                    geb,
                 })
-                setNitroPool(nitroPools[0])
             } catch (e) {
                 throw new Error(`Error fetching nitropools data ${e}`)
             }
         }
-        fetchPool()
-    }, [account, geb, nitroPoolsActions, address, nitroPools])
+        fetchPools()
+    }, [account, geb, nitroPoolsActions])
+    console.log(nitroPools)
+    const startTime = nitroPools[0]?.nitroData.startTime
+    const endTime = nitroPools[0]?.nitroData.endTime
 
     const handleBack = useCallback(() => {
         history.push(`/earn`)
     }, [history])
 
     const getDates = () => {
-        const start = new Date(Number(nitroPool?.settings.startTime) * 1000)
-        const end = new Date(Number(nitroPool?.settings.endTime) * 1000)
+        const start = new Date(Number(startTime) * 1000)
+        const end = new Date(Number(endTime) * 1000)
         const now = new Date()
         return { start, end, now }
     }
@@ -109,19 +114,19 @@ const EarnDetails = () => {
 
         return `${diffDays}D ${remainingHrs}h ${remainingMin}min`
     }
-
+    const totalApy = +nitroPools[0]?.nitroData.apy.toFixed(2) + +nitroPools[0]?.spNftData.apy.toFixed(2)
     return (
         <>
-            {nitroPool ? (
+            {!!nitroPools.length && nitroPools[0]?.nitroData ? (
                 <Container>
                     <BackBtn id="back-btn" onClick={handleBack}>
                         <ChevronLeft size={18} /> BACK
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img src={getTokenLogo(nitroPool?.collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(nitroPool?.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
-                            <PoolTitle>{`${nitroPool?.collateralTokens[0]?.symbol} - ${nitroPool?.collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(nitroPools[0].collateral0TokenSymbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(nitroPools[0].collateral1TokenSymbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${nitroPools[0].collateral0TokenSymbol} - ${nitroPools[0].collateral1TokenSymbol}`}</PoolTitle>
                         </Title>
                         <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">
                             <Camelot />
@@ -133,21 +138,16 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>${formatWithCommas(nitroPool?.tvl?.toFixed(2) || 0)}</Value>
+                                    <Value>${formatWithCommas(nitroPools[0].nitroData.tvlUSD || 0)}</Value>
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
-                                    <Value>{nitroPool.apy}</Value>
+                                    <Value>{totalApy}</Value>
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>
                                     <Value>
-                                        {nitroPool.rewardTokens?.map((token: { symbol: string }, i: number) => {
-                                            if (i === nitroPool.rewardTokens.length - 1) {
-                                                return token.symbol
-                                            }
-                                            return `${token.symbol}, `
-                                        })}
+                                        {`${nitroPools[0].rewardToken1Symbol}, ${nitroPools[0].rewardToken2Symbol}`}
                                     </Value>
                                 </Item>
                             </ColWrapper>
@@ -169,7 +169,7 @@ const EarnDetails = () => {
                             </ColWrapper>
                         </Wrapper>
                     </Body>
-                    <Footer>
+                    {/* <Footer>
                         <FooterHeader>My deposit</FooterHeader>
 
                         <Wrapper>
@@ -188,7 +188,7 @@ const EarnDetails = () => {
                                 </Item>
                             </FooterWrapper>
                         </Wrapper>
-                    </Footer>
+                    </Footer> */}
                 </Container>
             ) : (
                 <LoaderContainer>

@@ -10,16 +10,7 @@ import useGeb from '~/hooks/useGeb'
 import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
-
-const NITRO_POOL = '0x626a551E910EcCA62e61DCeB37e3726C7d423185'
-
-const pools: any = [
-    {
-        camelotPoolAddress: '0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B',
-        nitroPoolAddress: NITRO_POOL,
-        link: `https://app.camelot.exchange/nitro/${NITRO_POOL}`,
-    },
-]
+import { POOLS } from '~/utils'
 
 const Earn = () => {
     const geb = useGeb()
@@ -34,14 +25,14 @@ const Earn = () => {
     useEffect(() => {
         if (!geb) return
         async function fetchPools() {
-            for (const pool of pools) {
+            for (const pool of POOLS) {
                 try {
-                await nitroPoolsActions.fetchNitroPool({
-                    userAddress: account ?? undefined,
-                    camelotPoolAddress: pool.camelotPoolAddress,
-                    nitroPoolAddress: pool.nitroPoolAddress,
-                    geb,
-                })
+                    await nitroPoolsActions.fetchNitroPool({
+                        userAddress: account ?? undefined,
+                        camelotPoolAddress: pool.camelotPoolAddress,
+                        nitroPoolAddress: pool.nitroPoolAddress,
+                        geb,
+                    })
                 } catch (e) {
                     throw new Error(`Error fetching nitropools data ${e}`)
                 }
@@ -69,8 +60,8 @@ const Earn = () => {
             <Pools>
                 <PoolsHeader>Strategies</PoolsHeader>
                 {nitroPools.length > 0 ? (
-                    pools?.map((pool: any, i: number) => (
-                        <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />
+                    POOLS?.map((pool: any, i: number) => (
+                        <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     ))
                 ) : (
                     <Loader width="50px" color="#1A74EC" />

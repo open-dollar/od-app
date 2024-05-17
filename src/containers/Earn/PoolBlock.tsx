@@ -4,13 +4,7 @@ import styled from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-const PoolBlock = ({
-    poolAddress,
-    nitroPoolData,
-}: {
-    poolAddress: string
-    nitroPoolData: any
-}) => {
+const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: any }) => {
     const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
 
     const getTimePeriod = () => {
@@ -21,8 +15,8 @@ const PoolBlock = ({
     }
     const totalApy = +nitroPoolData.nitroData.apy.toFixed(2) + +nitroPoolData.spNftData.apy.toFixed(2)
     return (
-        <Link to={`/earn/${poolAddress}`}>
-            <BlockContainer id={`${poolAddress}`}>
+        <Link to={`/earn/${nitroPoolAddress}`}>
+            <BlockContainer id={`${nitroPoolAddress}`}>
                 <BlockHeader>
                     <PoolInfo>
                         <PoolData>
@@ -55,9 +49,7 @@ const PoolBlock = ({
                     </Item>
                     <Item>
                         <Label>Rewards</Label>
-                        <Value>
-                            {`${rewardToken1Symbol}, ${rewardToken2Symbol}`}
-                        </Value>
+                        <Value>{`${rewardToken1Symbol}, ${rewardToken2Symbol}`}</Value>
                     </Item>
                 </Block>
                 <ReactTooltip

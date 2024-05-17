@@ -21,7 +21,7 @@ const nitroPoolsModel: NitroPoolsModel = {
                 payload.userAddress ?? '0x0000000000000000000000000000000000000000',
                 payload.camelotPoolAddress,
                 payload.nitroPoolAddress,
-                geb.provider,
+                geb.provider
             )
         } catch (e) {
             console.debug('Error fetching nitropools data', e)

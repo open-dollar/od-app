@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { Info } from 'react-feather'
 import styled from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const PoolBlock = ({
     poolAddress,
@@ -34,7 +36,6 @@ const PoolBlock = ({
                         </PoolData>
                     </PoolInfo>
                 </BlockHeader>
-
                 <Block>
                     <Item>
                         <Label>Status</Label>
@@ -47,8 +48,13 @@ const PoolBlock = ({
                         <Label>TVL</Label>
                         <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
                     </Item>
-                    <Item>
-                        <Label>APR</Label>
+                    <Item className="apy">
+                        <Label>
+                            APR{' '}
+                            <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
+                                <Info size={'20px'} />
+                            </InfoIcon>
+                        </Label>
                         <Value>{apy}</Value>
                     </Item>
                     <Item>
@@ -63,6 +69,13 @@ const PoolBlock = ({
                         </Value>
                     </Item>
                 </Block>
+                <ReactTooltip
+                    style={{ backgroundColor: '#1A74EC' }}
+                    id={`apy`}
+                    variant="dark"
+                    data-effect="solid"
+                    place="top"
+                />
             </BlockContainer>
         </Link>
     )
@@ -195,6 +208,9 @@ const Label = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
+    display: flex;
+    gap: 10px;
+    align-items: center;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
@@ -227,4 +243,8 @@ const Dot = styled.div`
     background-color: #459d00;
     border-radius: 100%;
     margin-right: 5px;
+`
+
+const InfoIcon = styled.div`
+    cursor: pointer;
 `

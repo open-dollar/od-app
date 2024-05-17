@@ -1,5 +1,5 @@
 import { useStoreState } from 'easy-peasy'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { ChevronLeft } from 'react-feather'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,25 +9,10 @@ import { useStoreActions } from 'easy-peasy'
 
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import Loader from '~/components/Loader'
-import { BigNumber } from 'ethers'
 import Camelot from '~/components/Icons/Camelot'
 import { POOLS } from '~/utils'
 
-interface PoolSettings {
-    [key: string]: {
-        startDate: BigNumber
-        endDate: BigNumber
-    }
-}
-
-interface Pool {
-    apy: number
-    settings: PoolSettings
-    [key: string]: any
-}
-
 const EarnDetails = () => {
-    const [nitroPool, setNitroPool] = useState<Pool | null>(null)
     const history = useHistory()
     const location = useLocation()
 
@@ -57,7 +42,7 @@ const EarnDetails = () => {
             }
         }
         fetchPools()
-    }, [account, geb, nitroPoolsActions])
+    }, [account, geb, nitroPoolsActions, address])
     console.log(nitroPools)
     const startTime = nitroPools[0]?.nitroData.startTime
     const endTime = nitroPools[0]?.nitroData.endTime
@@ -297,7 +282,7 @@ const Wrapper = styled.div`
     margin-bottom: 15px;
 `
 
-const Footer = styled.div``
+// const Footer = styled.div``
 
 const Label = styled.div`
     font-size: 16px;
@@ -319,30 +304,30 @@ const ColWrapper = styled.div`
 
 const Item = styled.div``
 
-const FooterWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
+// const FooterWrapper = styled.div`
+//     display: flex;
+//     justify-content: space-between;
 
-    @media (max-width: 767px) {
-        flex-direction: column;
-        gap: 30px;
-    }
-`
+//     @media (max-width: 767px) {
+//         flex-direction: column;
+//         gap: 30px;
+//     }
+// `
 
-const FooterHeader = styled.div`
-    margin-bottom: 15px;
-    font-size: 32px;
-    font-weight: 700;
-    font-family: ${(props) => props.theme.family.headers};
-    color: ${(props) => props.theme.colors.accent};
+// const FooterHeader = styled.div`
+//     margin-bottom: 15px;
+//     font-size: 32px;
+//     font-weight: 700;
+//     font-family: ${(props) => props.theme.family.headers};
+//     color: ${(props) => props.theme.colors.accent};
 
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+//     display: flex;
+//     justify-content: space-between;
+//     flex-wrap: wrap;
 
-    @media (max-width: 767px) {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-`
+//     @media (max-width: 767px) {
+//         flex-direction: column;
+//         align-items: center;
+//         gap: 10px;
+//     }
+// `

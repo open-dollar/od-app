@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Info } from 'react-feather'
 import styled from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
@@ -40,10 +39,7 @@ const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: stri
                     </Item>
                     <Item className="apy">
                         <Label>
-                            APY{' '}
-                            {/* <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
-                                <Info size={'20px'} />
-                            </InfoIcon> */}
+                            APY
                         </Label>
                         <Value>{totalApy}</Value>
                     </Item>
@@ -226,8 +222,4 @@ const Dot = styled.div`
     background-color: #459d00;
     border-radius: 100%;
     margin-right: 5px;
-`
-
-const InfoIcon = styled.div`
-    cursor: pointer;
 `

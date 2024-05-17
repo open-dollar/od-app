@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import i18next from 'i18next'
 import { Suspense } from 'react'
 import { I18nextProvider } from 'react-i18next'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import ErrorBoundary from './ErrorBoundary'
 import GlobalStyle from './GlobalStyle'
@@ -11,7 +11,6 @@ import Safes from './containers/Vaults'
 import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
-import { useStoreState } from './store'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 import { ApolloProvider } from '@apollo/client'
@@ -20,6 +19,7 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
+import Affiliate from './containers/Affiliate'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
@@ -27,6 +27,8 @@ import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
+import { Fuul } from '@fuul/sdk'
+import EarnDetails from './containers/Earn/EarnDetails'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -41,14 +43,27 @@ Sentry.init({
     environment: process.env.NODE_ENV,
 })
 
+Fuul.init({
+    apiKey: process.env.REACT_APP_FUUL_API_KEY!,
+})
+
 const App = () => {
-    const { settingsModel: settingsState } = useStoreState((state) => state)
-    const { bodyOverflow } = settingsState
+    const location = useLocation()
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const referrer = params.get('referrer')
+        const af = params.get('af')
+
+        if (referrer || af) {
+            localStorage.setItem('referralProgram', 'true')
+        }
+    }, [location.search])
 
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={lightTheme}>
-                <GlobalStyle bodyOverflow={bodyOverflow} />
+                <GlobalStyle />
                 <ErrorBoundary>
                     <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />
                     <Shared>
@@ -61,6 +76,7 @@ const App = () => {
                                             <Switch>
                                                 <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
+                                                <Route exact strict component={Affiliate} path={'/affiliate'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Earn} path={'/earn'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
@@ -80,6 +96,7 @@ const App = () => {
                                                     path={'/vaults/:id/withdraw'}
                                                 />
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
+                                                <Route exact component={EarnDetails} path={'/earn/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
                                                 <Route

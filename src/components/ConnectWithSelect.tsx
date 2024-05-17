@@ -69,11 +69,10 @@ export function ConnectWithSelect({
     setError: (error: Error | undefined) => void
 }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', color: 'white' }}>
-            <div style={{ marginBottom: '1rem' }} />
+        <div style={{ display: 'flex', flexDirection: 'row', color: 'white', alignItems: 'center' }}>
             {isActive ? (
                 error ? (
-                    <div>Try again?</div>
+                    <div>{getStatusIcon(connector)}</div>
                 ) : (
                     <div
                         onClick={() => {
@@ -84,11 +83,11 @@ export function ConnectWithSelect({
                             }
                         }}
                     >
-                        {connector instanceof MetaMask || connector instanceof GnosisSafe ? '' : <>{'Disconnect'}</>}
+                        <div>{getStatusIcon(connector)}</div>
                     </div>
                 )
             ) : (
-                <div>{error ? 'Try again?' : getStatusIcon(connector)}</div>
+                <div>{getStatusIcon(connector)}</div>
             )}
         </div>
     )

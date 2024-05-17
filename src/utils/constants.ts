@@ -197,13 +197,17 @@ const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
 // @ts-ignore
 export const geb = new Geb(network_name(), provider)
 
-export const NITRO_POOL = '0x626a551E910EcCA62e61DCeB37e3726C7d423185'
-export const CAMELOT_POOL = '0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B'
-
 export const POOLS: any = [
     {
-        camelotPoolAddress: CAMELOT_POOL,
-        nitroPoolAddress: NITRO_POOL,
-        link: `https://app.camelot.exchange/nitro/${NITRO_POOL}`,
+        // VELA-ETH
+        camelotPoolAddress: '0x626a551E910EcCA62e61DCeB37e3726C7d423185',
+        nitroPoolAddress: '0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B',
+        link: `https://app.camelot.exchange/nitro/0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B`,
+    },
+    {
+        // OD-ETH
+        camelotPoolAddress: '0x824959a55907d5350e73e151Ff48DabC5A37a657',
+        nitroPoolAddress: '0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E',
+        link: `https://app.camelot.exchange/nitro/0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E`,
     },
 ]

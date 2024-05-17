@@ -128,8 +128,7 @@
         ]
     },
     "resolutions": {
-        "react-error-overlay": "6.0.9",
-        "@opendollar/sdk": "portal:/Users/sero/work/od-sdk"
+        "react-error-overlay": "6.0.9"
     },
     "husky": {
         "hooks": {

@@ -107,7 +107,7 @@ const EarnDetails = () => {
         const remainingMin = diffMin % 60
         const remainingHrs = diffHrs % 24
 
-        return `${diffDays} D ${remainingHrs}h ${remainingMin}min`
+        return `${diffDays}D ${remainingHrs}h ${remainingMin}min`
     }
 
     return (
@@ -175,7 +175,7 @@ const EarnDetails = () => {
                         <Wrapper>
                             <FooterWrapper>
                                 <Item>
-                                    <Label>Average APR</Label>
+                                    <Label>Average APY</Label>
                                     <Value>0.00%</Value>
                                 </Item>
                                 <Item>

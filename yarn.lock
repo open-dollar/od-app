@@ -3926,10 +3926,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/svg-generator@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@opendollar/svg-generator@npm:1.0.4"
-  checksum: 616a81cb75b9c11fc0a9d2d285b71e5f68dc72ad5779764f28d90d40979f7a440c0e9a708d156218713ecd157c7341674c5ea79523fd5a5fcca153062c9bbf41
+"@opendollar/svg-generator@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@opendollar/svg-generator@npm:1.0.5"
+  checksum: c1c15213ab9722b947d5e9c79b5beb512604708e003f4e52a8e487e0a4fb8fdc6b4dd4b39b1168440454bfdb83654c514c51bec07ac565394b9a87a5f2882d55
   languageName: node
   linkType: hard
 
@@ -15310,7 +15310,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@opendollar/sdk": 1.7.1
-    "@opendollar/svg-generator": 1.0.4
+    "@opendollar/svg-generator": 1.0.5
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0
     "@sentry/integrations": ^7.112.2

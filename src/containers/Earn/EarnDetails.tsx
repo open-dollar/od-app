@@ -7,7 +7,7 @@ import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import { useStoreActions } from 'easy-peasy'
 
-import { formatWithCommas, getTokenLogo } from '~/utils'
+import { formatDataNumber, formatWithCommas, getTokenLogo, toPercentage } from '~/utils'
 import Loader from '~/components/Loader'
 import Camelot from '~/components/Icons/Camelot'
 import { POOLS } from '~/utils'
@@ -123,16 +123,24 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>${formatWithCommas(nitroPools[0].nitroData.tvlUSD || 0)}</Value>
+                                    <Value>${formatWithCommas(nitroPools[0].nitroData.tvlUSD || 0, 0)}</Value>
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
-                                    <Value>{`${formatWithCommas(totalApy)}%`}</Value>
+                                    <Value>{`${formatWithCommas(totalApy, 0)}%`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Pending Rewards</Label>
+                                    <Label>Awailable Rewards</Label>
                                     <Value>
-                                        {`${nitroPools[0].rewardToken1Symbol}, ${nitroPools[0].rewardToken2Symbol}`}
+                                        {`${formatDataNumber(
+                                            nitroPools[0].nitroData.rewardsToken1RemainingAmount,
+                                            18,
+                                            0
+                                        )} ${nitroPools[0].rewardToken1Symbol}, ${formatDataNumber(
+                                            nitroPools[0].nitroData.rewardsToken2RemainingAmount,
+                                            18,
+                                            0
+                                        )} ${nitroPools[0].rewardToken2Symbol}`}
                                     </Value>
                                 </Item>
                             </ColWrapper>
@@ -154,26 +162,26 @@ const EarnDetails = () => {
                             </ColWrapper>
                         </Wrapper>
                     </Body>
-                    {/* <Footer>
+                    <Footer>
                         <FooterHeader>My deposit</FooterHeader>
 
-                        <Wrapper>
+                        <Wrapper className="footer">
                             <FooterWrapper>
                                 <Item>
-                                    <Label>Average APY</Label>
-                                    <Value>0.00%</Value>
+                                    <Label>Amout</Label>
+                                    <Value>{`$${formatWithCommas(nitroPools[0].userDollarValue, 2)}`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Total in Deposit</Label>
-                                    <Value>0.0 OD-ETH: </Value>
+                                    <Label>Share of Pool</Label>
+                                    <Value>{toPercentage(nitroPools[0].nitroData.userPoolPercentage, 1)}</Value>
                                 </Item>
-                                <Item>
-                                    <Label>Pending rewards</Label>
-                                    <Value>0.0 ODG: </Value>
-                                </Item>
+                                <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">
+                                    <Camelot />
+                                    VIEW ON CAMELOT
+                                </ExternalLink>
                             </FooterWrapper>
                         </Wrapper>
-                    </Footer> */}
+                    </Footer>
                 </Container>
             ) : (
                 <LoaderContainer>
@@ -280,9 +288,13 @@ const Wrapper = styled.div`
     border-radius: 4px;
     flex: 1;
     margin-bottom: 15px;
+
+    .footer {
+        width: 80%;
+    }
 `
 
-// const Footer = styled.div``
+const Footer = styled.div``
 
 const Label = styled.div`
     font-size: 16px;
@@ -304,30 +316,31 @@ const ColWrapper = styled.div`
 
 const Item = styled.div``
 
-// const FooterWrapper = styled.div`
-//     display: flex;
-//     justify-content: space-between;
+const FooterWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 80px;
 
-//     @media (max-width: 767px) {
-//         flex-direction: column;
-//         gap: 30px;
-//     }
-// `
+    @media (max-width: 767px) {
+        flex-direction: column;
+        gap: 30px;
+    }
+`
 
-// const FooterHeader = styled.div`
-//     margin-bottom: 15px;
-//     font-size: 32px;
-//     font-weight: 700;
-//     font-family: ${(props) => props.theme.family.headers};
-//     color: ${(props) => props.theme.colors.accent};
+const FooterHeader = styled.div`
+    margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
 
-//     display: flex;
-//     justify-content: space-between;
-//     flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
-//     @media (max-width: 767px) {
-//         flex-direction: column;
-//         align-items: center;
-//         gap: 10px;
-//     }
-// `
+    @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+`

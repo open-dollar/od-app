@@ -1,5 +1,5 @@
 import { useStoreState } from 'easy-peasy'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { ChevronLeft } from 'react-feather'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -7,26 +7,12 @@ import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
 import { useStoreActions } from 'easy-peasy'
 
-import { formatWithCommas, getTokenLogo } from '~/utils'
+import { formatDataNumber, formatWithCommas, getTokenLogo, toPercentage } from '~/utils'
 import Loader from '~/components/Loader'
-import { BigNumber } from 'ethers'
 import Camelot from '~/components/Icons/Camelot'
-
-interface PoolSettings {
-    [key: string]: {
-        startDate: BigNumber
-        endDate: BigNumber
-    }
-}
-
-interface Pool {
-    apy: number
-    settings: PoolSettings
-    [key: string]: any
-}
+import { POOLS } from '~/utils'
 
 const EarnDetails = () => {
-    const [nitroPool, setNitroPool] = useState<Pool | null>(null)
     const history = useHistory()
     const location = useLocation()
 
@@ -41,29 +27,33 @@ const EarnDetails = () => {
     const address = location.pathname.split('/').pop()
     useEffect(() => {
         if (!geb) return
+        async function fetchPools() {
+            const pool = POOLS.find((pool: { nitroPoolAddress: string }) => pool.nitroPoolAddress === address)
 
-        async function fetchPool() {
             try {
                 await nitroPoolsActions.fetchNitroPool({
-                    geb,
-                    poolAddress: address,
                     userAddress: account ?? undefined,
+                    camelotPoolAddress: pool.camelotPoolAddress,
+                    nitroPoolAddress: pool.nitroPoolAddress,
+                    geb,
                 })
-                setNitroPool(nitroPools[0])
             } catch (e) {
                 throw new Error(`Error fetching nitropools data ${e}`)
             }
         }
-        fetchPool()
-    }, [account, geb, nitroPoolsActions, address, nitroPools])
+        fetchPools()
+    }, [account, geb, nitroPoolsActions, address])
+    console.log(nitroPools)
+    const startTime = nitroPools[0]?.nitroData.startTime
+    const endTime = nitroPools[0]?.nitroData.endTime
 
     const handleBack = useCallback(() => {
         history.push(`/earn`)
     }, [history])
 
     const getDates = () => {
-        const start = new Date(Number(nitroPool?.settings.startTime) * 1000)
-        const end = new Date(Number(nitroPool?.settings.endTime) * 1000)
+        const start = new Date(Number(startTime) * 1000)
+        const end = new Date(Number(endTime) * 1000)
         const now = new Date()
         return { start, end, now }
     }
@@ -109,19 +99,19 @@ const EarnDetails = () => {
 
         return `${diffDays}D ${remainingHrs}h ${remainingMin}min`
     }
-
+    const totalApy = +nitroPools[0]?.nitroData.apy.toFixed(2) + +nitroPools[0]?.spNftData.apy.toFixed(2)
     return (
         <>
-            {nitroPool ? (
+            {!!nitroPools.length && nitroPools[0]?.nitroData ? (
                 <Container>
                     <BackBtn id="back-btn" onClick={handleBack}>
                         <ChevronLeft size={18} /> BACK
                     </BackBtn>
                     <PoolHeader>
                         <Title>
-                            <img src={getTokenLogo(nitroPool?.collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(nitroPool?.collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
-                            <PoolTitle>{`${nitroPool?.collateralTokens[0]?.symbol} - ${nitroPool?.collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(nitroPools[0].collateral0TokenSymbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(nitroPools[0].collateral1TokenSymbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${nitroPools[0].collateral0TokenSymbol} - ${nitroPools[0].collateral1TokenSymbol}`}</PoolTitle>
                         </Title>
                         <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">
                             <Camelot />
@@ -133,21 +123,24 @@ const EarnDetails = () => {
                             <ColWrapper>
                                 <Item>
                                     <Label>Total value locked</Label>
-                                    <Value>${formatWithCommas(nitroPool?.tvl?.toFixed(2) || 0)}</Value>
+                                    <Value>${formatWithCommas(nitroPools[0].nitroData.tvlUSD || 0, 0)}</Value>
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
-                                    <Value>{nitroPool.apy}</Value>
+                                    <Value>{`${formatWithCommas(totalApy, 0)}%`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Pending Rewards</Label>
+                                    <Label>Awailable Rewards</Label>
                                     <Value>
-                                        {nitroPool.rewardTokens?.map((token: { symbol: string }, i: number) => {
-                                            if (i === nitroPool.rewardTokens.length - 1) {
-                                                return token.symbol
-                                            }
-                                            return `${token.symbol}, `
-                                        })}
+                                        {`${formatDataNumber(
+                                            nitroPools[0].nitroData.rewardsToken1RemainingAmount,
+                                            18,
+                                            0
+                                        )} ${nitroPools[0].rewardToken1Symbol}, ${formatDataNumber(
+                                            nitroPools[0].nitroData.rewardsToken2RemainingAmount,
+                                            18,
+                                            0
+                                        )} ${nitroPools[0].rewardToken2Symbol}`}
                                     </Value>
                                 </Item>
                             </ColWrapper>
@@ -172,20 +165,20 @@ const EarnDetails = () => {
                     <Footer>
                         <FooterHeader>My deposit</FooterHeader>
 
-                        <Wrapper>
+                        <Wrapper className="footer">
                             <FooterWrapper>
                                 <Item>
-                                    <Label>Average APY</Label>
-                                    <Value>0.00%</Value>
+                                    <Label>Amout</Label>
+                                    <Value>{`$${formatWithCommas(nitroPools[0].userDollarValue, 2)}`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Total in Deposit</Label>
-                                    <Value>0.0 OD-ETH: </Value>
+                                    <Label>Share of Pool</Label>
+                                    <Value>{toPercentage(nitroPools[0].nitroData.userPoolPercentage, 1)}</Value>
                                 </Item>
-                                <Item>
-                                    <Label>Pending rewards</Label>
-                                    <Value>0.0 ODG: </Value>
-                                </Item>
+                                <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">
+                                    <Camelot />
+                                    VIEW ON CAMELOT
+                                </ExternalLink>
                             </FooterWrapper>
                         </Wrapper>
                     </Footer>
@@ -227,7 +220,7 @@ const LoaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    height: 100vh;
 `
 
 const PoolTitle = styled.div`
@@ -295,6 +288,10 @@ const Wrapper = styled.div`
     border-radius: 4px;
     flex: 1;
     margin-bottom: 15px;
+
+    .footer {
+        width: 80%;
+    }
 `
 
 const Footer = styled.div``
@@ -322,6 +319,7 @@ const Item = styled.div``
 const FooterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    gap: 80px;
 
     @media (max-width: 767px) {
         flex-direction: column;

@@ -31,7 +31,7 @@
         "@ethersproject/address": "^5.0.10",
         "@ethersproject/experimental": "5.4.0",
         "@ethersproject/providers": "5.4.5",
-        "@opendollar/sdk": "1.7.1",
+        "@opendollar/sdk": "1.7.2",
         "@opendollar/svg-generator": "1.0.5",
         "@react-spring/web": "^9.7.3",
         "@sentry/cli": "^2.31.0",

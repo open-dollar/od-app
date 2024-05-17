@@ -220,7 +220,7 @@ const LoaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    height: 100vh;
 `
 
 const PoolTitle = styled.div`

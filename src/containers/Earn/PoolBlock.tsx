@@ -38,10 +38,8 @@ const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: stri
                         <Value>${formatWithCommas(nitroPoolData.nitroData.tvlUSD?.toFixed(2) || 0)}</Value>
                     </Item>
                     <Item className="apy">
-                        <Label>
-                            APY
-                        </Label>
-                        <Value>{totalApy}</Value>
+                        <Label>APY</Label>
+                        <Value>{`${formatWithCommas(totalApy)}%`}</Value>
                     </Item>
                     <Item>
                         <Label>Rewards</Label>

@@ -8,6 +8,8 @@ export interface BridgeModel {
     fromTokenAddress: string
     toTokenAddress: string
     amount: string
+    reason: string
+    setReason: Action<BridgeModel, string>
     setOriginChain: Action<BridgeModel, number>
     setToChain: Action<BridgeModel, number>
     setFromTokenAddress: Action<BridgeModel, string>
@@ -22,6 +24,10 @@ const bridgeModel: BridgeModel = {
     fromTokenAddress: '0x0000000000000000000000000000000000000000', // DAI ETH
     toTokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529', // WSETH ARB
     amount: '100',
+    reason:'',
+    setReason: action((state, payload) => {
+        state.reason = payload
+    }),
     setOriginChain: action((state, payload) => {
         state.originChain = payload
     }),

@@ -43,7 +43,6 @@ const EarnDetails = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions, address])
-    console.log(nitroPools)
     const startTime = nitroPools[0]?.nitroData.startTime
     const endTime = nitroPools[0]?.nitroData.endTime
 

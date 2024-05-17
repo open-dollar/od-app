@@ -229,7 +229,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            <StatSection>
+                            {/* <StatSection>
                                 <StatHeader>
                                     <StatTitle>NFV Owner</StatTitle>
                                     <InfoIcon
@@ -249,7 +249,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                         </AccountLink>
                                     )}
                                 </StatValue>
-                            </StatSection>
+                            </StatSection> */}
                         </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>

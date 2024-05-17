@@ -127,7 +127,7 @@ const EarnDetails = () => {
                                 </Item>
                                 <Item>
                                     <Label>APY</Label>
-                                    <Value>{totalApy}</Value>
+                                    <Value>{`${formatWithCommas(totalApy)}%`}</Value>
                                 </Item>
                                 <Item>
                                     <Label>Pending Rewards</Label>

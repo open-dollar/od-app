@@ -3914,17 +3914,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@opendollar/sdk@npm:1.7.1"
+"@opendollar/sdk@portal:/Users/sero/work/od-sdk::locator=od-app%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@opendollar/sdk@portal:/Users/sero/work/od-sdk::locator=od-app%40workspace%3A."
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 7aaa7791673c53180bf5d8a8231479368de94485401f578390e120a07af2c352222646470a6cefa21a29c25098d47369f3a8fb1c1a848cf3a693b59231eb270e
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@opendollar/svg-generator@npm:1.0.5":
   version: 1.0.5

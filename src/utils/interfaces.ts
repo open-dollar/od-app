@@ -346,7 +346,8 @@ export interface IFetchNitroPool {
     geb: Geb
     tokenAddress: string
     collateralAddress: string
-    poolAddress: string
+    camelotPoolAddress: string
+    nitroPoolAddress: string
     userAddress: string
 }
 

@@ -11,11 +11,12 @@ import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 
-const NITRO_POOL = '0x70b4274c3f5A855c9f6f77E314D8a87CE310d03c'
+const NITRO_POOL = '0x626a551E910EcCA62e61DCeB37e3726C7d423185'
 
 const pools: any = [
     {
-        poolAddress: NITRO_POOL,
+        camelotPoolAddress: '0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B',
+        nitroPoolAddress: NITRO_POOL,
         link: `https://app.camelot.exchange/nitro/${NITRO_POOL}`,
     },
 ]
@@ -23,7 +24,6 @@ const pools: any = [
 const Earn = () => {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
-    const [apr, setApr] = useState(0)
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
@@ -36,16 +36,12 @@ const Earn = () => {
         async function fetchPools() {
             for (const pool of pools) {
                 try {
-                    const response = await fetch('https://api.camelot.exchange/nitros')
-                    const res = await response.json()
-                    if (res.data.nitros[pool.poolAddress]?.incentivesApr) {
-                        setApr(res.data.nitros[pool.poolAddress]?.incentivesApr)
-                    }
-                    await nitroPoolsActions.fetchNitroPool({
-                        geb,
-                        poolAddress: pool.poolAddress,
-                        userAddress: account ?? undefined,
-                    })
+                await nitroPoolsActions.fetchNitroPool({
+                    userAddress: account ?? undefined,
+                    camelotPoolAddress: pool.camelotPoolAddress,
+                    nitroPoolAddress: pool.nitroPoolAddress,
+                    geb,
+                })
                 } catch (e) {
                     throw new Error(`Error fetching nitropools data ${e}`)
                 }
@@ -74,7 +70,7 @@ const Earn = () => {
                 <PoolsHeader>Strategies</PoolsHeader>
                 {nitroPools.length > 0 ? (
                     pools?.map((pool: any, i: number) => (
-                        <PoolBlock {...pool} apr={apr} nitroPoolData={nitroPools[i]} />
+                        <PoolBlock {...pool} nitroPoolData={nitroPools[i]} />
                     ))
                 ) : (
                     <Loader width="50px" color="#1A74EC" />

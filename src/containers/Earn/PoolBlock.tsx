@@ -6,33 +6,29 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const PoolBlock = ({
     poolAddress,
-    apy,
-    link,
     nitroPoolData,
 }: {
     poolAddress: string
-    apy: string
-    link: string
     nitroPoolData: any
 }) => {
-    const { collateralTokens, rewardTokens, tvl, settings } = nitroPoolData
+    const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
 
     const getTimePeriod = () => {
-        const start = new Date(Number(settings.startTime) * 1000)
-        const end = new Date(Number(settings.endTime) * 1000)
+        const start = new Date(Number(nitroPoolData.nitroData.startTime) * 1000)
+        const end = new Date(Number(nitroPoolData.nitroData.endTime) * 1000)
         const now = new Date()
         return now > start && now < end ? 'Active' : 'Inactive'
     }
-
+    const totalApy = +nitroPoolData.nitroData.apy.toFixed(2) + +nitroPoolData.spNftData.apy.toFixed(2)
     return (
         <Link to={`/earn/${poolAddress}`}>
             <BlockContainer id={`${poolAddress}`}>
                 <BlockHeader>
                     <PoolInfo>
                         <PoolData>
-                            <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
-                            <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                            <PoolTitle>{`${collateral0TokenSymbol} - ${collateral1TokenSymbol}`}</PoolTitle>
+                            <img src={getTokenLogo(collateral0TokenSymbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(collateral1TokenSymbol)} alt={''} width={'50px'} />
                         </PoolData>
                     </PoolInfo>
                 </BlockHeader>
@@ -46,26 +42,21 @@ const PoolBlock = ({
                     </Item>
                     <Item>
                         <Label>TVL</Label>
-                        <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
+                        <Value>${formatWithCommas(nitroPoolData.nitroData.tvlUSD?.toFixed(2) || 0)}</Value>
                     </Item>
                     <Item className="apy">
                         <Label>
-                            APR{' '}
+                            APY{' '}
                             <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
                                 <Info size={'20px'} />
                             </InfoIcon>
                         </Label>
-                        <Value>{apy}</Value>
+                        <Value>{totalApy}</Value>
                     </Item>
                     <Item>
                         <Label>Rewards</Label>
                         <Value>
-                            {rewardTokens?.map((token: { symbol: string }, i: number) => {
-                                if (i === rewardTokens.length - 1) {
-                                    return token.symbol
-                                }
-                                return `${token.symbol}, `
-                            })}
+                            {`${rewardToken1Symbol}, ${rewardToken2Symbol}`}
                         </Value>
                     </Item>
                 </Block>

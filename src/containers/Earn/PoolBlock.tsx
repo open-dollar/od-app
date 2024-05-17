@@ -41,9 +41,9 @@ const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: stri
                     <Item className="apy">
                         <Label>
                             APY{' '}
-                            <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
+                            {/* <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
                                 <Info size={'20px'} />
-                            </InfoIcon>
+                            </InfoIcon> */}
                         </Label>
                         <Value>{totalApy}</Value>
                     </Item>

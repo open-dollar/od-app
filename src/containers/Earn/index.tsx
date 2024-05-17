@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import { Link } from 'react-router-dom'
 import PoolBlock from './PoolBlock'
 import { useStoreState } from 'easy-peasy'
 import { useStoreActions } from 'easy-peasy'
@@ -55,7 +54,7 @@ const Earn = () => {
                 <p>
                     When creating a OD-ETH position, use the "Auto" mode provided by Gamma. <br></br>See full
                     instructions{' '}
-                    <Link to="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool">here</Link>.
+                    <Link href="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool" target="_blank">here</Link>.
                 </p>
             </Text>
             <Pools>
@@ -149,5 +148,7 @@ const BtnWrapper = styled.div`
         gap: 10px;
     }
 `
+
+const Link = styled.a``
 
 export default Earn

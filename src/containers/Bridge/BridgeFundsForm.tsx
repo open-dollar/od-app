@@ -10,7 +10,7 @@ import Button from '~/components/Button'
 const BridgeFundsForm = () => {
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
-        bridgeModel: { reason }
+        bridgeModel: { reason },
     } = useStoreState((state) => state)
 
     const [selectedToken, setSelectedToken] = useState<string>('')
@@ -50,9 +50,7 @@ const BridgeFundsForm = () => {
                     <Header>
                         <span className="title">Bridge Funds</span>
                     </Header>
-                    <Text>
-                        {reason ?? ''}
-                    </Text>
+                    <Text>{reason ?? ''}</Text>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
                     <Dropdown
                         items={['Mainnet', 'Optimism', 'Polygon', 'Base']}

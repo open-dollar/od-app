@@ -8,8 +8,8 @@ import RETH from '../assets/rETH.svg'
 import ARB from '../assets/arb.svg'
 import MAGIC from '../assets/magic.svg'
 import PUFETH from '../assets/pufeth.svg'
-import { ethers } from 'ethers'
 import { Provider } from '@ethersproject/providers'
+import { ethers } from 'ethers'
 
 export type Tokens = {
     [key: string]: {
@@ -54,15 +54,7 @@ export const getGasToken = (chain: string | number): string => {
     return gasTokenMapping[chain]
 }
 
-export const checkUserBalance = (tokenAddress: string, userAddress: string, provider: Provider): boolean => {
-    console.log('bal tokenAddress', tokenAddress, 'userAddress', userAddress, 'provider', provider)
-    const tokenContract = new ethers.Contract(
-        tokenAddress,
-        ['function balanceOf(address) view returns (uint256)'],
-        provider
-    )
-    console.log('bal tokenContract', tokenContract)
-    const balance = tokenContract.balanceOf(userAddress)
-    console.log('balance', balance)
-    return balance > 0
+export const checkUserBalance = async (userAddress: string, provider: Provider) => {
+    const balance = await provider.getBalance(userAddress)
+    return ethers.utils.formatUnits(balance) > '0'
 }

@@ -10,7 +10,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import BridgeModal from './Modals/BridgeModal'
 import { useEffect } from 'react'
 import { checkUserBalance } from '~/utils'
-import { getGasToken } from '~/utils'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -20,7 +19,11 @@ const Steps = () => {
     const history = useHistory()
     const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
-    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions, bridgeModel: bridgeModelActions } = useStoreActions((state) => state)
+    const {
+        popupsModel: popupsActions,
+        connectWalletModel: connectWalletActions,
+        bridgeModel: bridgeModelActions,
+    } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
 
@@ -111,21 +114,20 @@ const Steps = () => {
     }
 
     useEffect(() => {
-        if (!account || !provider || !chainId) return
-        
+        if (!account || !geb?.provider || !chainId) return
+
         const getUserGasBalance = async () => {
-            const hasGasToken = await checkUserBalance(getGasToken(`${chainId}`), account, provider)
+            const hasGasToken = await checkUserBalance(account, geb.provider)
             if (!hasGasToken) {
                 bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
                 popupsActions.setIsBridgeModalOpen(true)
             }
         }
 
-        if (step === 1 || step ===2) {
+        if (step === 1 || step === 2) {
             getUserGasBalance()
         }
-        
-    }, [account, chainId, step])
+    }, [account, chainId, step, geb?.provider])
 
     return (
         <StepsContainer>

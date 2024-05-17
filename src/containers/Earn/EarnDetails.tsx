@@ -167,11 +167,11 @@ const EarnDetails = () => {
                         <Wrapper className="footer">
                             <FooterWrapper>
                                 <Item>
-                                    <Label>Amout</Label>
+                                    <Label>LP Amount</Label>
                                     <Value>{`$${formatWithCommas(nitroPools[0].userDollarValue, 2)}`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Share of Pool</Label>
+                                    <Label>Share of Nitro Pool</Label>
                                     <Value>{toPercentage(nitroPools[0].nitroData.userPoolPercentage, 1)}</Value>
                                 </Item>
                                 <ExternalLink href={`https://app.camelot.exchange/nitro/${address}`} target="_blank">

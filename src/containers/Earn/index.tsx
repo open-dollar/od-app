@@ -22,7 +22,6 @@ const pools: any = [
 
 const Earn = () => {
     const geb = useGeb()
-    const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
     const [apr, setApr] = useState(0)
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
@@ -33,7 +32,6 @@ const Earn = () => {
     const { nitroPools } = nitroPoolsState
 
     useEffect(() => {
-        setLoading(true)
         if (!geb) return
         async function fetchPools() {
             for (const pool of pools) {
@@ -48,9 +46,7 @@ const Earn = () => {
                         poolAddress: pool.poolAddress,
                         userAddress: account ?? undefined,
                     })
-                    setLoading(false)
                 } catch (e) {
-                    setLoading(false)
                     throw new Error(`Error fetching nitropools data ${e}`)
                 }
             }

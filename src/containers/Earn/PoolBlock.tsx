@@ -1,15 +1,17 @@
+import { Link } from 'react-router-dom'
+import { Info } from 'react-feather'
 import styled from 'styled-components'
-import Camelot from '~/components/Icons/Camelot'
 import { formatWithCommas, getTokenLogo } from '~/utils'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const PoolBlock = ({
     poolAddress,
-    apr,
+    apy,
     link,
     nitroPoolData,
 }: {
     poolAddress: string
-    apr: number
+    apy: string
     link: string
     nitroPoolData: any
 }) => {
@@ -23,49 +25,59 @@ const PoolBlock = ({
     }
 
     return (
-        <BlockContainer id={`${poolAddress}`}>
-            <BlockHeader>
-                <PoolInfo>
-                    <PoolData>
-                        <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
-                        <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
-                        <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
-                    </PoolData>
-                </PoolInfo>
-                <ExternalLink href={link} target="_blank">
-                    <Camelot />
-                    VIEW ON CAMELOT
-                </ExternalLink>
-            </BlockHeader>
-            <Block>
-                <Item>
-                    <Label>Status</Label>
-                    <Value className="status">
-                        <Dot></Dot>
-                        {getTimePeriod()}
-                    </Value>
-                </Item>
-                <Item>
-                    <Label>TVL</Label>
-                    <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
-                </Item>
-                <Item>
-                    <Label>APR</Label>
-                    <Value>{apr}</Value>
-                </Item>
-                <Item>
-                    <Label>Rewards</Label>
-                    <Value>
-                        {rewardTokens?.map((token: { symbol: string }, i: number) => {
-                            if (i === rewardTokens.length - 1) {
-                                return token.symbol
-                            }
-                            return `${token.symbol}, `
-                        })}
-                    </Value>
-                </Item>
-            </Block>
-        </BlockContainer>
+        <Link to={`/earn/${poolAddress}`}>
+            <BlockContainer id={`${poolAddress}`}>
+                <BlockHeader>
+                    <PoolInfo>
+                        <PoolData>
+                            <PoolTitle>{`${collateralTokens[0]?.symbol} - ${collateralTokens[1]?.symbol}`}</PoolTitle>
+                            <img src={getTokenLogo(collateralTokens[0]?.symbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(collateralTokens[1]?.symbol)} alt={''} width={'50px'} />
+                        </PoolData>
+                    </PoolInfo>
+                </BlockHeader>
+                <Block>
+                    <Item>
+                        <Label>Status</Label>
+                        <Value className="status">
+                            <Dot></Dot>
+                            {getTimePeriod()}
+                        </Value>
+                    </Item>
+                    <Item>
+                        <Label>TVL</Label>
+                        <Value>${formatWithCommas(tvl?.toFixed(2) || 0)}</Value>
+                    </Item>
+                    <Item className="apy">
+                        <Label>
+                            APR{' '}
+                            <InfoIcon data-tooltip-id="apy" data-tooltip-content={'APY is updated every 24 hours'}>
+                                <Info size={'20px'} />
+                            </InfoIcon>
+                        </Label>
+                        <Value>{apy}</Value>
+                    </Item>
+                    <Item>
+                        <Label>Rewards</Label>
+                        <Value>
+                            {rewardTokens?.map((token: { symbol: string }, i: number) => {
+                                if (i === rewardTokens.length - 1) {
+                                    return token.symbol
+                                }
+                                return `${token.symbol}, `
+                            })}
+                        </Value>
+                    </Item>
+                </Block>
+                <ReactTooltip
+                    style={{ backgroundColor: '#1A74EC' }}
+                    id={`apy`}
+                    variant="dark"
+                    data-effect="solid"
+                    place="top"
+                />
+            </BlockContainer>
+        </Link>
     )
 }
 
@@ -99,16 +111,6 @@ const BlockHeader = styled.div`
         flex-direction: column;
         align-items: flex-end;
     `}
-`
-
-const ExternalLink = styled.a`
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.primary};
 `
 
 const PoolInfo = styled.div`
@@ -206,6 +208,9 @@ const Label = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
+    display: flex;
+    gap: 10px;
+    align-items: center;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
@@ -238,4 +243,8 @@ const Dot = styled.div`
     background-color: #459d00;
     border-radius: 100%;
     margin-right: 5px;
+`
+
+const InfoIcon = styled.div`
+    cursor: pointer;
 `

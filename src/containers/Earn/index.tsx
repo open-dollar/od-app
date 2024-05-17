@@ -20,7 +20,7 @@ const Earn = () => {
     const geb = useGeb()
     const [loading, setLoading] = useState(false)
     const { account } = useActiveWeb3React()
-    const [apr, setApr] = useState(0)
+    const [apr, setApr] = useState('0')
     // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
     //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
@@ -53,14 +53,13 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-    console.log(nitroPools)
 
     return (
         <Container>
             <Title>Earn</Title>
             <Pools>
                 {nitroPools.length > 0 &&
-                    pools?.map((pool, i) => <PoolBlock {...pool} apr={apr} nitroPoolData={nitroPools[i]} />)}
+                    pools?.map((pool, i) => <PoolBlock {...pool} apy={apr} nitroPoolData={nitroPools[i]} />)}
                 {loading && <Loader />}
             </Pools>
         </Container>

@@ -31,6 +31,7 @@
         "@ethersproject/address": "^5.0.10",
         "@ethersproject/experimental": "5.4.0",
         "@ethersproject/providers": "5.4.5",
+        "@fuul/sdk": "^4.7.1",
         "@opendollar/sdk": "1.7.2",
         "@opendollar/svg-generator": "1.0.5",
         "@react-spring/web": "^9.7.3",
@@ -77,6 +78,7 @@
         "react-toastify": "^6.0.9",
         "react-tooltip": "^5.21.1",
         "react-transition-group": "^4.4.1",
+        "siwe": "^2.3.2",
         "styled-components": "^5.2.0",
         "terser-webpack-plugin": "^5.3.10",
         "typescript": "^4.4.3"

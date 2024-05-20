@@ -8,6 +8,8 @@ import RETH from '../assets/rETH.svg'
 import ARB from '../assets/arb.svg'
 import MAGIC from '../assets/magic.svg'
 import PUFETH from '../assets/pufeth.svg'
+import { Provider } from '@ethersproject/providers'
+import { ethers } from 'ethers'
 
 export type Tokens = {
     [key: string]: {
@@ -36,13 +38,38 @@ export function getTokenLogo(token: string): string {
     return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default
 }
 
-export const gasTokenMapping: { [key: string]: string } = {
+export const gasTokenMapping: { [key: string | number]: string } = {
     Mainnet: '0x0000000000000000000000000000000000000000',
     Polygon: '0x0000000000000000000000000000000000001010',
     Optimism: '0x4200000000000000000000000000000000000042',
     Base: '0x0000000000000000000000000000000000000000',
+    Arbitrum: '0x0000000000000000000000000000000000000000',
+    1: '0x0000000000000000000000000000000000000000',
+    137: '0x0000000000000000000000000000000000001010',
+    10: '0x4200000000000000000000000000000000000042',
+    42161: '0x0000000000000000000000000000000000000000',
 }
 
-export const getGasToken = (chain: string): string => {
+export const getGasToken = (chain: string | number): string => {
     return gasTokenMapping[chain]
+}
+
+export const checkUserGasBalance = async (userAddress: string, provider: Provider) => {
+    const balance = await provider.getBalance(userAddress)
+    return +ethers.utils.formatUnits(balance) === +'0'
+}
+
+export const checkUserBalance = async (
+    tokenAddress: string,
+    userAddress: string,
+    provider: Provider,
+    amount?: string
+) => {
+    const tokenContract = new ethers.Contract(
+        tokenAddress,
+        ['function balanceOf(address) view returns (uint256)'],
+        provider
+    )
+    const balance = await tokenContract.balanceOf(userAddress)
+    return +ethers.utils.formatUnits(balance) <= +(amount || '0')
 }

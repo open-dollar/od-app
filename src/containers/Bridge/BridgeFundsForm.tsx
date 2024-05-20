@@ -10,6 +10,7 @@ import Button from '~/components/Button'
 const BridgeFundsForm = () => {
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
+        bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
 
     const [selectedToken, setSelectedToken] = useState<string>('')
@@ -18,10 +19,11 @@ const BridgeFundsForm = () => {
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
     }, [tokensData])
+
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
     useEffect(() => {
-        if (collaterals.length > 0 && selectedToken === '') setSelectedToken(collaterals[0].symbol)
+        if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
 
@@ -48,6 +50,7 @@ const BridgeFundsForm = () => {
                     <Header>
                         <span className="title">Bridge Funds</span>
                     </Header>
+                    <Text>{reason ?? ''}</Text>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
                     <Dropdown
                         items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
@@ -113,6 +116,10 @@ const DropDownContainer = styled.div`
     padding: 22px;
     border-radius: 8px;
     background: white;
+`
+
+const Text = styled.p`
+    text-size: 14px;
 `
 
 const Header = styled.div`

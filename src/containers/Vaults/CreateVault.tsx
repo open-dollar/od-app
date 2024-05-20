@@ -8,7 +8,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { useTransactionAdder } from '~/hooks'
-import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
+import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas, checkUserBalance } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -27,6 +27,7 @@ import {
 } from '~/hooks'
 import ConnectWalletStep from '~/components/ConnectWalletStep'
 import { useCollateralBalances } from '~/hooks/useCollateralBalances'
+import BridgeModal from '~/components/Modals/BridgeModal'
 
 const CreateVault = ({
     selectedItem,
@@ -54,12 +55,13 @@ const CreateVault = ({
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
+        bridgeModel: bridgeModelActions,
     } = useStoreActions((state) => state)
     const { leftInput, rightInput } = parsedAmounts
     const { onLeftInput, onRightInput, onClearAll: clearAll } = useInputsHandlers()
     const { t } = useTranslation()
     const isValid = !error
-
+    const [needsBridge, setNeedsBridge] = useState(false)
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {
             const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
@@ -221,6 +223,23 @@ const CreateVault = ({
         connectWalletActions.setIsStepLoading(false)
     }
 
+    useEffect(() => {
+        if (!account || !provider || !selectedCollateral) return
+        const checkNeedsBridge = async () => {
+            setNeedsBridge(
+                await checkUserBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
+            )
+        }
+        checkNeedsBridge()
+    }, [account, provider, selectedCollateral, parsedAmounts.leftInput])
+
+    const setBridge = (reason: string) => {
+        bridgeModelActions.setReason(reason)
+        bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
+        bridgeModelActions.setToTokenSymbol(selectedCollateral?.symbol)
+        popupsActions.setIsBridgeModalOpen(true)
+    }
+
     return (
         <>
             <Modal
@@ -241,6 +260,7 @@ const CreateVault = ({
                     </BtnContainer>
                 </ReviewContainer>
             </Modal>
+            <BridgeModal />
             <InnerContent>
                 <Content>
                     <Header>
@@ -272,6 +292,20 @@ const CreateVault = ({
                                                 </WrapBtn>
                                             </WrapBox>
                                         )}
+                                        {needsBridge && !parsedAmounts.leftInput && (
+                                            <BridgeLabel>
+                                                {`You don't have enough funds. To use this collateral bridge your assets to Arbitrum. `}
+                                                <BridgeButton
+                                                    onClick={() => {
+                                                        setBridge(
+                                                            `Insufficient Collateral Balance: ${selectedCollateral.symbol}`
+                                                        )
+                                                    }}
+                                                >
+                                                    Bridge
+                                                </BridgeButton>
+                                            </BridgeLabel>
+                                        )}
                                     </DropDownContainer>
 
                                     <Inputs>
@@ -296,7 +330,20 @@ const CreateVault = ({
                                             data_test_id="deposit_borrow"
                                             decimals={Number(selectedCollateralDecimals)}
                                         />
-
+                                        {needsBridge && parsedAmounts.leftInput && (
+                                            <BridgeLabel>
+                                                {`You don't have enough funds. To use this collateral bridge your assets to Arbitrum. `}
+                                                <BridgeButton
+                                                    onClick={() => {
+                                                        setBridge(
+                                                            `Insufficient Collateral Balance: ${selectedCollateral.symbol}`
+                                                        )
+                                                    }}
+                                                >
+                                                    Bridge
+                                                </BridgeButton>
+                                            </BridgeLabel>
+                                        )}
                                         <br />
                                         <TokenInput
                                             token={
@@ -673,4 +720,15 @@ const Note = styled.div`
     font-size: 15px;
     font-weight: 600;
     color: ${(props) => props.theme.colors.primary};
+`
+
+const BridgeLabel = styled.div`
+    color: #e39806;
+    font-size: 14px;
+    margin-top: 10px;
+`
+
+const BridgeButton = styled.span`
+    color: ${(props) => props.theme.colors.primary};
+    cursor: pointer;
 `

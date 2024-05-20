@@ -8,6 +8,8 @@ import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import BridgeModal from './Modals/BridgeModal'
+import { useEffect } from 'react'
+import { checkUserGasBalance } from '~/utils'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -17,11 +19,28 @@ const Steps = () => {
     const history = useHistory()
     const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
-    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
+    const {
+        popupsModel: popupsActions,
+        connectWalletModel: connectWalletActions,
+        bridgeModel: bridgeModelActions,
+    } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
+
+    useEffect(() => {
+        const checkGasBalance = async () => {
+            const hasGasToken = await checkUserGasBalance(account!, provider!)
+            if (!hasGasToken) {
+                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsBridgeModalOpen(true)
+            }
+        }
+        if (account && (step === 1 || step === 2) && provider) {
+            checkGasBalance()
+        }
+    }, [step, account, provider, bridgeModelActions, popupsActions])
 
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -47,8 +66,11 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
-            console.log('sheesh')
-            popupsActions.setIsBridgeModalOpen(true)
+            const hasGasToken = await checkUserGasBalance(account, provider)
+            if (!hasGasToken) {
+                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsBridgeModalOpen(true)
+            }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }

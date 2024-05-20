@@ -54,7 +54,22 @@ export const getGasToken = (chain: string | number): string => {
     return gasTokenMapping[chain]
 }
 
-export const checkUserBalance = async (userAddress: string, provider: Provider) => {
+export const checkUserGasBalance = async (userAddress: string, provider: Provider) => {
     const balance = await provider.getBalance(userAddress)
-    return ethers.utils.formatUnits(balance) > '0'
+    return +ethers.utils.formatUnits(balance) === +'0'
+}
+
+export const checkUserBalance = async (
+    tokenAddress: string,
+    userAddress: string,
+    provider: Provider,
+    amount?: string
+) => {
+    const tokenContract = new ethers.Contract(
+        tokenAddress,
+        ['function balanceOf(address) view returns (uint256)'],
+        provider
+    )
+    const balance = await tokenContract.balanceOf(userAddress)
+    return +ethers.utils.formatUnits(balance) <= +(amount || '0')
 }

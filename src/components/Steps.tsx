@@ -9,7 +9,7 @@ import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import BridgeModal from './Modals/BridgeModal'
 import { useEffect } from 'react'
-import { checkUserBalance } from '~/utils'
+import { checkUserGasBalance } from '~/utils'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -28,6 +28,19 @@ const Steps = () => {
     const addTransaction = useTransactionAdder()
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
+
+    useEffect(() => {
+        const checkGasBalance = async () => {
+            const hasGasToken = await checkUserGasBalance(account!, provider!)
+            if (!hasGasToken) {
+                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsBridgeModalOpen(true)
+            }
+        }
+        if (account && (step === 1 || step === 2) && provider) {
+            checkGasBalance()
+        }
+    }, [step, account, provider, bridgeModelActions, popupsActions])
 
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -53,8 +66,11 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
-            console.log('sheesh')
-            popupsActions.setIsBridgeModalOpen(true)
+            const hasGasToken = await checkUserGasBalance(account, provider)
+            if (!hasGasToken) {
+                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsBridgeModalOpen(true)
+            }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }
@@ -112,22 +128,6 @@ const Steps = () => {
                 break
         }
     }
-
-    useEffect(() => {
-        if (!account || !geb?.provider || !chainId) return
-
-        const getUserGasBalance = async () => {
-            const hasGasToken = await checkUserBalance(account, geb.provider)
-            if (!hasGasToken) {
-                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
-                popupsActions.setIsBridgeModalOpen(true)
-            }
-        }
-
-        if (step === 1 || step === 2) {
-            getUserGasBalance()
-        }
-    }, [account, chainId, step, geb?.provider])
 
     return (
         <StepsContainer>

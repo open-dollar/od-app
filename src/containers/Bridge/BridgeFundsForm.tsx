@@ -10,7 +10,7 @@ import Button from '~/components/Button'
 const BridgeFundsForm = () => {
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
-        bridgeModel: { reason },
+        bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
 
     const [selectedToken, setSelectedToken] = useState<string>('')
@@ -23,7 +23,7 @@ const BridgeFundsForm = () => {
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
     useEffect(() => {
-        if (collaterals.length > 0 && selectedToken === '') setSelectedToken(collaterals[0].symbol)
+        if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
 

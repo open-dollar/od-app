@@ -28,6 +28,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
+        account: safeAccount,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
@@ -229,27 +230,29 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            <StatSection>
-                                <StatHeader>
-                                    <StatTitle>NFV Owner</StatTitle>
-                                    <InfoIcon
-                                        data-tooltip-id="vault-stats"
-                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
-                                    >
-                                        <Info size="16" />
-                                    </InfoIcon>
-                                </StatHeader>
-                                <StatValue>
-                                    {chainId && account && (
-                                        <AccountLink
-                                            href={getEtherscanLink(chainId, account, 'address')}
-                                            target="_blank"
+                            {safeAccount && (
+                                <StatSection>
+                                    <StatHeader>
+                                        <StatTitle>NFV Owner</StatTitle>
+                                        <InfoIcon
+                                            data-tooltip-id="vault-stats"
+                                            data-tooltip-content={'Owner address for this Non Fungible Vault'}
                                         >
-                                            {returnWalletAddress(account)} <ExternalLink />
-                                        </AccountLink>
-                                    )}
-                                </StatValue>
-                            </StatSection>
+                                            <Info size="16" />
+                                        </InfoIcon>
+                                    </StatHeader>
+                                    <StatValue>
+                                        {chainId && account && (
+                                            <AccountLink
+                                                href={getEtherscanLink(chainId, safeAccount, 'address')}
+                                                target="_blank"
+                                            >
+                                                {returnWalletAddress(safeAccount)} <ExternalLink />
+                                            </AccountLink>
+                                        )}
+                                    </StatValue>
+                                </StatSection>
+                            )}
                         </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>

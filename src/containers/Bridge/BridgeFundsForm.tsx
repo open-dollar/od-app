@@ -48,7 +48,8 @@ const BridgeFundsForm = () => {
             <Content>
                 <DropDownContainer>
                     <Header>
-                        <span className="title">Bridge Funds</span>
+                        <Title>Bridge</Title>
+                        <SubTitle>Select the asset you want to bridge to the Arbitrum network to use as a collateral of your vault.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
                     <SideLabel>{`Select Source Chain`}</SideLabel>
@@ -91,6 +92,8 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
+    max-width: 800px;
+    width: 100%;
 `
 
 const Content = styled.div`
@@ -119,27 +122,18 @@ const DropDownContainer = styled.div`
 `
 
 const Text = styled.p`
-    text-size: 14px;
+    font-size: 14px;
 `
 
-const Header = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 55px;
+const Header = styled.div``
 
-    span {
-        flex: 0 0 55px;
-        font-size: 14px;
-
-        &.title {
-            display: block;
-            flex: 1;
-            font-family: 'Barlow', sans-serif;
-            text-align: center;
-            font-weight: bold;
-            font-size: ${(props) => props.theme.font.xxLarge};
-            color: #1c293a;
-        }
-    }
+const Title = styled.h2`
+    font-family: ${(props) => props.theme.family.headers};
+    font-size: 34px;
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
+`
+const SubTitle = styled.p`
+    font-size: ${(props) => props.theme.font.medium};
+    color: ${(props) => props.theme.colors.accent};
 `

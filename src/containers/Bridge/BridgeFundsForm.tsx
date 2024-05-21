@@ -49,23 +49,31 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>Select the asset you want to bridge to the Arbitrum network to use as a collateral of your vault.</SubTitle>
+                        <SubTitle>
+                            Select the asset you want to bridge to the Arbitrum network to use as a collateral of your
+                            vault.
+                        </SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <SideLabel>{`Select Source Chain`}</SideLabel>
-                    <Dropdown
-                        items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
-                        itemSelected={'Mainnet'}
-                        getSelectedItem={setSelectedChain}
-                        fontSize="14px"
-                    />
-                    <SideLabel>{`Select Token to Bridge`}</SideLabel>
-                    <Dropdown
-                        items={collateralsDropdown}
-                        itemSelected={selectedToken}
-                        getSelectedItem={setSelectedToken}
-                        fontSize="14px"
-                    />
+                    <Description>Assets on Network</Description>
+                    <Row>
+                        <SideLabel>{`Select Source Chain`}</SideLabel>
+                        <Dropdown
+                            items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
+                            itemSelected={'Mainnet'}
+                            getSelectedItem={setSelectedChain}
+                            fontSize="14px"
+                        />
+                    </Row>
+                    <Row>
+                        <SideLabel>{`Select Token to Bridge`}</SideLabel>
+                        <Dropdown
+                            items={collateralsDropdown}
+                            itemSelected={selectedToken}
+                            getSelectedItem={setSelectedToken}
+                            fontSize="14px"
+                        />
+                    </Row>
                     <Button
                         onClick={() =>
                             bridge({
@@ -102,13 +110,11 @@ const Content = styled.div`
 `
 
 const SideLabel = styled.div`
-    font-weight: 700;
     color: #1c293a;
     font-family: 'Barlow', sans-serif;
     font-size: 18px;
     line-height: 26.4px;
-    margin-bottom: 10px;
-    margin-top: 1em;
+    margin-bottom: 5px;
 `
 
 const DropDownContainer = styled.div`
@@ -125,7 +131,9 @@ const Text = styled.p`
     font-size: 14px;
 `
 
-const Header = styled.div``
+const Header = styled.div`
+    margin-bottom: 20px;
+`
 
 const Title = styled.h2`
     font-family: ${(props) => props.theme.family.headers};
@@ -134,6 +142,16 @@ const Title = styled.h2`
     font-weight: 700;
 `
 const SubTitle = styled.p`
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.tertiary};
+`
+
+const Description = styled.div`
+    color: ${(props) => props.theme.colors.tertiary};
     font-size: ${(props) => props.theme.font.medium};
-    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
+`
+
+const Row = styled.div`
+    margin-bottom: 10px;
 `

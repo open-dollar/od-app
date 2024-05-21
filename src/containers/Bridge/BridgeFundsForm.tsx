@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from '~/store'
 import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
+import { ExternalLink } from 'react-feather'
 
 const BridgeFundsForm = () => {
     const {
@@ -82,9 +83,10 @@ const BridgeFundsForm = () => {
                                 fromTokenAddress: getGasToken(selectedChain),
                             })
                         }
-                        style={{ marginTop: '1em' }}
+                        style={{ marginTop: '1em', padding: '20px'}}
                     >
                         Bridge
+                        <ExternalLink size={20} style={{ marginLeft: '10px' }} />
                     </Button>
                 </DropDownContainer>
             </Content>
@@ -101,7 +103,7 @@ const Container = styled.div`
     align-items: center;
     min-height: 80vh;
     max-width: 800px;
-    width: 100%;
+    padding: 0 10px;
 `
 
 const Content = styled.div`
@@ -112,18 +114,16 @@ const Content = styled.div`
 const SideLabel = styled.div`
     color: #1c293a;
     font-family: 'Barlow', sans-serif;
-    font-size: 18px;
+    font-size: ${(props) => props.theme.font.default};
     line-height: 26.4px;
     margin-bottom: 5px;
 `
 
 const DropDownContainer = styled.div`
-    display: flex;
-    flex-direction: column;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
 
     padding: 22px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: white;
 `
 
@@ -147,7 +147,7 @@ const SubTitle = styled.p`
 `
 
 const Description = styled.div`
-    color: ${(props) => props.theme.colors.tertiary};
+    color: ${(props) => props.theme.colors.accent};
     font-size: ${(props) => props.theme.font.medium};
     font-weight: 700;
 `

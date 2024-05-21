@@ -38,6 +38,90 @@ export function getTokenLogo(token: string): string {
     return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default
 }
 
+export const bridgeTokens: any = {
+    1: {
+        tokens: [
+            {
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
+                balance: '0',
+                address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+            },
+            {
+                name: 'WSTETH',
+                icon: WSTETH,
+                gebName: 'Wrapped Staked Ether',
+                balance: '0',
+                address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+            },
+            {
+                name: 'rETH',
+                icon: RETH,
+                gebName: 'Rocket Ether',
+                balance: '0',
+                address: '0xae78736cd615f374d3085123a210448e74fc6393',
+            },
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '0xB50721BCf8d664c30412Cfbc6cf7a15145234ad1'
+            },
+            {
+                name: 'ETH',
+                icon: WETH,
+                gebName: 'Ether',
+                balance: '0',
+                address: '0x0000000000000000000000000000000000000000',
+            }
+        ],
+        chainId: 1,
+        publicRPC: 'https://eth-pokt.nodies.app'
+    },
+    10: {
+        tokens: [
+            {
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
+                balance: '0',
+                address: '0x4200000000000000000000000000000000000006'
+            },
+            {
+                name: 'ETH',
+                icon: WSTETH,
+                gebName: 'Ether',
+                balance: '0',
+                address: '0x4200000000000000000000000000000000000042'
+            },
+            {
+                name: 'WSTETH',
+                icon: WSTETH,
+                gebName: 'Wrapped Staked Ether',
+                balance: '0',
+                address: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb'
+            },
+            {
+                name: 'RETH',
+                icon: RETH,
+                gebName: 'Rocket Ether',
+                balance: '0',
+                address: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D'
+            },
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '0x420000000',
+            }
+        ]
+
+    }
+}
+
 export const gasTokenMapping: { [key: string | number]: string } = {
     Mainnet: '0x0000000000000000000000000000000000000000',
     Polygon: '0x0000000000000000000000000000000000001010',
@@ -48,6 +132,7 @@ export const gasTokenMapping: { [key: string | number]: string } = {
     137: '0x0000000000000000000000000000000000001010',
     10: '0x4200000000000000000000000000000000000042',
     42161: '0x0000000000000000000000000000000000000000',
+    8453: '0x0000000000000000000000000000000000000000'
 }
 
 export const getGasToken = (chain: string | number): string => {

@@ -110,18 +110,50 @@ export const bridgeTokens: any = {
                 balance: '0',
                 address: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D'
             },
+        ],
+        chainId: 10,
+        publicRPC: 'https://eth-pokt.nodies.app'
+    },
+    137: {
+        tokens: [
             {
-                name: 'ARB',
-                icon: ARB,
-                gebName: 'Arbitrum',
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
                 balance: '0',
-                address: '0x420000000',
-            }
-        ]
-
+                address: '0x420'
+            },
+        ],
+        chainId: 137,
+        publicRPC: 'https://polygon-pokt.nodies.app',
+    },
+    42161: {
+        tokens: [
+            {
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
+                balance: '0',
+                address: '0x420'
+            },
+        ],
+        chainId: 42161,
+        publicRPC: 'https://arbitrum-pokt.nodies.app',
+    },
+    8453: {
+        tokens: [
+            {
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
+                balance: '0',
+                address: '0x420'
+            },
+        ],
+        chainId: 8453,
+        publicRPC: 'https://base-pokt.nodies.app',
     }
 }
-
 export const gasTokenMapping: { [key: string | number]: string } = {
     Mainnet: '0x0000000000000000000000000000000000000000',
     Polygon: '0x0000000000000000000000000000000000001010',

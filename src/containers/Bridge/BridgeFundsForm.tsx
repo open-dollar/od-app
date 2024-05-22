@@ -1,17 +1,19 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getTokenLogo, formatWithCommas, getChainId } from '~/utils'
+import { getTokenLogo, formatWithCommas, getChainId, getUserBalance, bridgeTokens } from '~/utils'
 import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
 import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
+import { useWeb3React } from '@web3-react/core'
 
 const BridgeFundsForm = () => {
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
         bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
+    const { account } = useWeb3React()
 
     const [selectedToken, setSelectedToken] = useState<string>('')
     const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
@@ -26,6 +28,15 @@ const BridgeFundsForm = () => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
+
+    useEffect(() => {
+        if (!account) return
+        Object.values(bridgeTokens).forEach((value: any) => {
+            console.log(value.publicRPC)
+            const balances = getUserBalance(value.chainId, value.tokens, account!, value.publicRPC)
+            console.log(balances)
+        })
+    }, [account])
 
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {

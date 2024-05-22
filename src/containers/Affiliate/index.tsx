@@ -49,7 +49,10 @@ const Affiliate = () => {
         <Container>
             <Content>
                 <Title>Affiliate Program</Title>
-                <Text>Create your own affiliate link to share here by signing in with your wallet and entering a code. Earn 10% of the Bolts that users who signed up with your link earn.</Text>
+                <Text>
+                    Create your own affiliate link to share here by signing in with your wallet and entering a code.
+                    Earn 10% of the Bolts that users who signed up with your link earn.
+                </Text>
                 {affiliateCode ? (
                     <>
                         <AffiliateText>
@@ -148,6 +151,18 @@ const FlexContainer = styled.div`
 
     input {
         flex-grow: 1;
+    }
+`
+
+const Text = styled.p`
+    font-weight: 400;
+    font-size: 18px;
+    color: #475662;
+    display: none;
+
+    @media (min-width: 960px) {
+        /* Display on screens wider than 900px */
+        display: block;
     }
 `
 

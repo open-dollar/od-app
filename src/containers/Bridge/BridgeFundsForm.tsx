@@ -72,7 +72,7 @@ const BridgeFundsForm = () => {
                             fontSize="14px"
                         />
                     </Row>
-                    <StyledButton
+                    <Button
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(selectedChain),
@@ -90,7 +90,7 @@ const BridgeFundsForm = () => {
                     >
                         Bridge
                         <ExternalLink size={20} style={{ marginLeft: '10px' }} />
-                    </StyledButton>
+                    </Button>
                 </DropDownContainer>
             </Content>
         </Container>
@@ -157,10 +157,4 @@ const Description = styled.div`
 
 const Row = styled.div`
     margin-bottom: 10px;
-`
-
-const StyledButton = styled(Button)`
-    width: 300px;
-    padding: 20px;
-    margin-top: 1em;
 `

@@ -51,8 +51,7 @@ const BridgeFundsForm = () => {
                     <Header>
                         <Title>Bridge</Title>
                         <SubTitle>
-                            Select the asset you want to bridge to the Arbitrum network to use as a collateral of your
-                            vault.
+                            Select an asset to bridge to the Arbitrum network.
                         </SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>

@@ -43,9 +43,13 @@ Sentry.init({
     environment: process.env.NODE_ENV,
 })
 
-Fuul.init({
-    apiKey: process.env.REACT_APP_FUUL_API_KEY!,
-})
+try {
+    Fuul.init({
+        apiKey: process.env.REACT_APP_FUUL_API_KEY!,
+    })
+} catch (e) {
+    console.log(e)
+}
 
 const App = () => {
     const location = useLocation()

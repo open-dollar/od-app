@@ -123,7 +123,7 @@ export const bridgeTokens: any = {
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0x92834c37dF982A13bb0f8C3F6608E26F0546538e',
+                address: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
                 comingSoon: false
             },
             {

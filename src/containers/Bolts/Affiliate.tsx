@@ -141,6 +141,11 @@ const FlexContainer = styled.div`
     input {
         flex-grow: 1;
     }
+
+    @media (max-width: 767px) {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start;
+    }
 `
 
 const UrlText = styled.div`

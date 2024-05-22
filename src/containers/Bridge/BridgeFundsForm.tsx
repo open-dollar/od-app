@@ -50,10 +50,7 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>
-                            Select the asset you want to bridge to the Arbitrum network to use as a collateral of your
-                            vault.
-                        </SubTitle>
+                        <SubTitle>Select the asset you want to bridge to the Arbitrum network.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on Network</Description>
@@ -75,7 +72,7 @@ const BridgeFundsForm = () => {
                             fontSize="14px"
                         />
                     </Row>
-                    <Button
+                    <StyledButton
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(selectedChain),
@@ -83,11 +80,17 @@ const BridgeFundsForm = () => {
                                 fromTokenAddress: getGasToken(selectedChain),
                             })
                         }
-                        style={{ marginTop: '1em', padding: '20px'}}
+                        style={{
+                            marginTop: '1em',
+                            padding: '20px',
+                            width: '300px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                        }}
                     >
                         Bridge
                         <ExternalLink size={20} style={{ marginLeft: '10px' }} />
-                    </Button>
+                    </StyledButton>
                 </DropDownContainer>
             </Content>
         </Container>
@@ -102,7 +105,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
-    max-width: 800px;
+    width: 100%;
     padding: 0 10px;
 `
 
@@ -154,4 +157,10 @@ const Description = styled.div`
 
 const Row = styled.div`
     margin-bottom: 10px;
+`
+
+const StyledButton = styled(Button)`
+    width: 300px;
+    padding: 20px;
+    margin-top: 1em;
 `

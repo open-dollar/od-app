@@ -49,6 +49,7 @@ const Affiliate = () => {
         <Container>
             <Content>
                 <Title>Affiliate Program</Title>
+                <Text>Create your own affiliate link to share here by signing in with your wallet and entering a code. Earn 10% of the Bolts that users who signed up with your link earn.</Text>
                 {affiliateCode ? (
                     <>
                         <AffiliateText>

@@ -3,18 +3,18 @@
     "name": "Open Dollar",
     "icons": [
         {
-            "src": "od-logo256w.webp",
+            "src": "od-logo256w.png",
             "sizes": "256x256",
-            "type": "image/webp"
+            "type": "image/png"
         },
         {
-            "src": "od-logo192w.webp",
-            "type": "image/webp",
+            "src": "od-logo192w.png",
+            "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "od-logo.webp",
-            "type": "image/webp",
+            "src": "od-logo.png",
+            "type": "image/png",
             "sizes": "512x512"
         }
     ],
@@ -22,7 +22,7 @@
     "display": "standalone",
     "theme_color": "#000000",
     "background_color": "#ffffff",
-    "iconPath": "od-logo.webp",
+    "iconPath": "od-logo.png",
     "description": "Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability.",
     "providedBy": {
         "name": "Open Dollar",

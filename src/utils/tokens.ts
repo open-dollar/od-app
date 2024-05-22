@@ -35,7 +35,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
 }
 
 export function getTokenLogo(token: string): string {
-    return TOKEN_LOGOS[token] || require('../assets/stETH.svg').default
+    return TOKEN_LOGOS[token] || require('../assets/unknown-token.svg').default
 }
 
 export const gasTokenMapping: { [key: string | number]: string } = {

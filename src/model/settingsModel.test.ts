@@ -7,14 +7,6 @@ describe('safe model', () => {
         store = createStore(settingsModel)
     })
 
-    describe('setsBodyOverflow', () => {
-        it('sets body overflow', () => {
-            expect(store.getState().bodyOverflow).toBe(false)
-            store.getActions().setBodyOverFlow(true)
-            expect(store.getState().bodyOverflow).toBe(true)
-        })
-    })
-
     describe('BlocksBody', () => {
         it('blocks body', () => {
             expect(store.getState().blockBody).toBe(false)

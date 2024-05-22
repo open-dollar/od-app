@@ -1,44 +1,60 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Camelot from '~/components/Icons/Camelot'
-import { getTokenLogo } from '~/utils'
+import { formatWithCommas, getTokenLogo } from '~/utils'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-const PoolBlock = ({ title, tokenImg1, tokenImg2, status, tvl, apr, rewards, link }) => {
+const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: any }) => {
+    const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
+
+    const getTimePeriod = () => {
+        const start = new Date(Number(nitroPoolData.nitroData.startTime) * 1000)
+        const end = new Date(Number(nitroPoolData.nitroData.endTime) * 1000)
+        const now = new Date()
+        return now > start && now < end ? 'Active' : 'Inactive'
+    }
+    const totalApy = +nitroPoolData.nitroData.apy.toFixed(2) + +nitroPoolData.spNftData.apy.toFixed(2)
     return (
-        <BlockContainer>
-            <BlockHeader>
-                <PoolInfo>
-                    <PoolData>
-                        <PoolTitle>{title}</PoolTitle>
-                        <img src={getTokenLogo(tokenImg1)} alt={''} width={'50px'} />
-                        <img src={getTokenLogo(tokenImg2)} alt={''} width={'50px'} />
-                    </PoolData>
-                </PoolInfo>
-                <ExternalLink href={link} target="_blank">
-                    <Camelot />
-                    VIEW ON CAMELOT
-                </ExternalLink>
-            </BlockHeader>
-            <Block>
-                <Item>
-                    <Label>Status</Label>
-                    <Value className="status">
-                        <Dot></Dot>Active
-                    </Value>
-                </Item>
-                <Item>
-                    <Label>TVL</Label>
-                    <Value>{tvl}</Value>
-                </Item>
-                <Item>
-                    <Label>APR</Label>
-                    <Value>{apr}</Value>
-                </Item>
-                <Item>
-                    <Label>Rewards</Label>
-                    <Value>{rewards}</Value>
-                </Item>
-            </Block>
-        </BlockContainer>
+        <Link to={`/earn/${nitroPoolAddress}`}>
+            <BlockContainer id={`${nitroPoolAddress}`}>
+                <BlockHeader>
+                    <PoolInfo>
+                        <PoolData>
+                            <PoolTitle>{`${collateral0TokenSymbol} - ${collateral1TokenSymbol}`}</PoolTitle>
+                            <img src={getTokenLogo(collateral0TokenSymbol)} alt={''} width={'50px'} />
+                            <img src={getTokenLogo(collateral1TokenSymbol)} alt={''} width={'50px'} />
+                        </PoolData>
+                    </PoolInfo>
+                </BlockHeader>
+                <Block>
+                    <Item>
+                        <Label>Status</Label>
+                        <Value className="status">
+                            <Dot></Dot>
+                            {getTimePeriod()}
+                        </Value>
+                    </Item>
+                    <Item>
+                        <Label>TVL</Label>
+                        <Value>${formatWithCommas(nitroPoolData.nitroData.tvlUSD?.toFixed(2) || 0)}</Value>
+                    </Item>
+                    <Item className="apy">
+                        <Label>APY</Label>
+                        <Value>{`${formatWithCommas(totalApy)}%`}</Value>
+                    </Item>
+                    <Item>
+                        <Label>Rewards</Label>
+                        <Value>{`${rewardToken1Symbol}, ${rewardToken2Symbol}`}</Value>
+                    </Item>
+                </Block>
+                <ReactTooltip
+                    style={{ backgroundColor: '#1A74EC' }}
+                    id={`apy`}
+                    variant="dark"
+                    data-effect="solid"
+                    place="top"
+                />
+            </BlockContainer>
+        </Link>
     )
 }
 
@@ -72,16 +88,6 @@ const BlockHeader = styled.div`
         flex-direction: column;
         align-items: flex-end;
     `}
-`
-
-const ExternalLink = styled.a`
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.primary};
 `
 
 const PoolInfo = styled.div`
@@ -179,6 +185,9 @@ const Label = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
+    display: flex;
+    gap: 10px;
+    align-items: center;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }

@@ -140,30 +140,6 @@ export const QUESTS = [
     {
         title: (
             <TitleContainer>
-                <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
-            </TitleContainer>
-        ),
-        button: (
-            <CtaButton
-                secondary
-                onClick={() =>
-                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
-                }
-            >
-                Go <LinkIcon />
-            </CtaButton>
-        ),
-        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
-        items: [
-            { title: 'Source', status: <CamelotLogo /> },
-            { title: 'Bolts', status: '3,000 per ETH' },
-        ],
-    },
-    {
-        title: (
-            <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
                 <img src={getTokenLogo('ODG')} alt={'ODG'} width={'50px'} />
                 <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
@@ -183,6 +159,30 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
+        ],
+    },
+    {
+        title: (
+            <TitleContainer>
+                <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
+                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
+                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
+            </TitleContainer>
+        ),
+        button: (
+            <CtaButton
+                secondary
+                onClick={() =>
+                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
+                }
+            >
+                Go <LinkIcon />
+            </CtaButton>
+        ),
+        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
+        items: [
+            { title: 'Source', status: <CamelotLogo /> },
+            { title: 'Bolts', status: '3,000 per ETH' },
         ],
     },
     {

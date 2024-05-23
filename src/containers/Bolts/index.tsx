@@ -1,23 +1,39 @@
-import styled from 'styled-components'
+import { useState, useEffect } from 'react'
+import { ExternalLink } from 'react-feather'
 
-import { useStoreState } from 'easy-peasy'
-import { useStoreActions } from 'easy-peasy'
 import { useActiveWeb3React } from '~/hooks'
-import { useEffect } from 'react'
-import useGeb from '~/hooks/useGeb'
 import Loader from '~/components/Loader'
 import Button from '~/components/Button'
-import { ExternalLink } from 'react-feather'
-import { POOLS } from '~/utils'
 import Affiliate from './Affiliate'
+import useFuulSDK from '~/hooks/useFuulSDK'
+import { QUESTS } from './quests'
+import QuestBlock from './QuestBlock'
+
+import styled from 'styled-components'
 
 const Bolts = () => {
-    const geb = useGeb()
     const { account } = useActiveWeb3React()
+    const { getUserData } = useFuulSDK()
 
-    const handleClick = () => {
-        window.open('https://discord.opendollar.com/', '_blank')
-    }
+    const [userFuulData, setUserFuulData] = useState<any>('')
+    const [hasFetched, setHasFetched] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (account && !hasFetched) {
+            setHasFetched(true)
+            ;(async () => {
+                try {
+                    const data = await getUserData(account)
+                    console.log('data', data)
+                    if (data) {
+                        setUserFuulData(data)
+                    }
+                } catch (err) {
+                    console.error('Error fetching user fuul data:', err)
+                }
+            })()
+        }
+    }, [account, getUserData, hasFetched])
 
     return (
         <Container>
@@ -38,7 +54,7 @@ const Bolts = () => {
                 </p>
             </Text>
             <BoltsDetails>
-                <div>Your Bolts: 1,278</div>
+                <div>Your Bolts:</div>
                 <div>Rank:</div>
             </BoltsDetails>
             <Section>
@@ -47,14 +63,18 @@ const Bolts = () => {
             </Section>
             <Section>
                 <SectionHeader>Earn Bolts 🔩</SectionHeader>
+                {QUESTS.map((quest, index) => (
+                    <QuestBlock key={index} {...quest} />
+                ))}
             </Section>
             <BtnWrapper>
                 <Button
                     data-test-id="steps-btn"
                     id={'suggest-pool-btn'}
-                    // text={'suggest a new pool'}
                     secondary
-                    onClick={handleClick}
+                    onClick={() => {
+                        window.open('https://discord.opendollar.com/', '_blank')
+                    }}
                 >
                     suggest a new program <ExternalLink />
                 </Button>

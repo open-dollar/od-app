@@ -59,12 +59,24 @@ function useFuulSDK() {
         }
     }
 
+    const getUserData = async (user_address: string): Promise<any | null> => {
+        try {
+            const data = await Fuul.getUserPointsByConversion({ user_address })
+            console.log('data', data)
+            return data
+        } catch (error) {
+            console.debug('No user data found:', error)
+            return null
+        }
+    }
+
     return {
         Fuul,
         fuulSendPageViewEvent,
         sendConnectWalletEvent,
         createAffiliateCode,
         getAffiliateCode,
+        getUserData,
     }
 }
 

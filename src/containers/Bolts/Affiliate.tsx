@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '~/hooks/useActiveWeb3React'
+import { useStoreActions } from '~/store'
+
 import useFuulSDK from '~/hooks/useFuulSDK'
 import Button from '~/components/Button'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -14,6 +16,9 @@ const Affiliate = () => {
     const [error, setError] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
     const [hasFetched, setHasFetched] = useState<boolean>(false)
+
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     useEffect(() => {
         if (account && !hasFetched) {
@@ -50,12 +55,11 @@ const Affiliate = () => {
             <Content>
                 {affiliateCode ? (
                     <>
-                        <AffiliateText>
-                            Your Affiliate Code: <BoldText>{affiliateCode}</BoldText>
-                        </AffiliateText>
-                        <AffiliateText>
-                            Your Affiliate Link: <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
-                        </AffiliateText>
+                        <FlexContainer>
+                            <AffiliateText>
+                                Your Link: <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
+                            </AffiliateText>
+                        </FlexContainer>
                         <CopyToClipboard
                             text={`https://app.opendollar.com?af=${affiliateCode}`}
                             onCopy={() => {
@@ -63,12 +67,14 @@ const Affiliate = () => {
                                 setTimeout(() => setCopied(false), 1500)
                             }}
                         >
-                            <Button>
-                                {copied ? 'Copied!' : 'Copy Affiliate Link'}
-                                <CopyIconContainer>
-                                    <CopyIcon />
-                                </CopyIconContainer>
-                            </Button>
+                            <BtnWrapper>
+                                <Button secondary>
+                                    {copied ? 'Copied!' : 'Copy'}
+                                    <CopyIconContainer>
+                                        <CopyIcon />
+                                    </CopyIconContainer>
+                                </Button>
+                            </BtnWrapper>
                         </CopyToClipboard>
                     </>
                 ) : (
@@ -82,9 +88,18 @@ const Affiliate = () => {
                                 onChange={(e) => setNewAffiliateCode(e.target.value)}
                             />
                         </FlexContainer>
-                        <Button onClick={handleCreateAffiliateCode} disabled={!account || !newAffiliateCode}>
-                            {account ? 'Create Affiliate Code' : 'Connect Wallet'}
-                        </Button>
+                        <BtnWrapper>
+                            {account ? (
+                                <Button secondary onClick={handleCreateAffiliateCode} disabled={!newAffiliateCode}>
+                                    Create Affiliate Code
+                                </Button>
+                            ) : (
+                                <Button secondary onClick={handleConnectWallet}>
+                                    Connect Wallet
+                                </Button>
+                            )}
+                        </BtnWrapper>
+
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                     </>
                 )}
@@ -104,19 +119,17 @@ const AffiliateText = styled.div`
     margin-bottom: 20px;
 `
 
-const BoldText = styled.span`
-    font-weight: bold;
-`
-
 const Container = styled.div`
     padding: 0px 20px 30px 0px;
     display: flex;
     justify-content: flex-start;
+    @media (max-width: 767px) {
+        justify-content: center;
+    }
 `
 
 const Content = styled.div`
     justify-content: flex-start;
-    text-align: left;
 
     h2 {
         margin-bottom: 20px;
@@ -136,7 +149,7 @@ const FlexContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 10px;
+    min-height: 59px;
 
     input {
         flex-grow: 1;
@@ -152,8 +165,28 @@ const UrlText = styled.div`
     text-wrap: nowrap;
     font-size: ${(props) => props.theme.font.small};
 `
+const BoldText = styled.span`
+    font-weight: bold;
+    font-size: ${(props) => props.theme.font.small};
+`
 
 const ErrorMessage = styled.div`
     color: red;
     margin-top: 10px;
+`
+
+const BtnWrapper = styled.div`
+    width: max-content;
+    margin-right: auto;
+    margin-left: auto;
+    button {
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 18px;
+        padding: 17px 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
 `

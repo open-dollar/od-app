@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from '~/store'
 import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
+import { ExternalLink } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 
 const BridgeFundsForm = () => {
@@ -61,23 +62,29 @@ const BridgeFundsForm = () => {
             <Content>
                 <DropDownContainer>
                     <Header>
-                        <span className="title">Bridge Funds</span>
+                        <Title>Bridge</Title>
+                        <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <SideLabel>{`Select Source Chain`}</SideLabel>
-                    <Dropdown
-                        items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
-                        itemSelected={'Mainnet'}
-                        getSelectedItem={setSelectedChain}
-                        fontSize="14px"
-                    />
-                    <SideLabel>{`Select Token to Bridge`}</SideLabel>
-                    <Dropdown
-                        items={collateralsDropdown}
-                        itemSelected={selectedToken}
-                        getSelectedItem={setSelectedToken}
-                        fontSize="14px"
-                    />
+                    <Description>Assets on Network</Description>
+                    <Row>
+                        <SideLabel>{`Select Source Chain`}</SideLabel>
+                        <Dropdown
+                            items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
+                            itemSelected={'Mainnet'}
+                            getSelectedItem={setSelectedChain}
+                            fontSize="14px"
+                        />
+                    </Row>
+                    <Row>
+                        <SideLabel>{`Select Token to Bridge`}</SideLabel>
+                        <Dropdown
+                            items={collateralsDropdown}
+                            itemSelected={selectedToken}
+                            getSelectedItem={setSelectedToken}
+                            fontSize="14px"
+                        />
+                    </Row>
                     <Button
                         onClick={() =>
                             bridge({
@@ -86,9 +93,17 @@ const BridgeFundsForm = () => {
                                 fromTokenAddress: getGasToken(selectedChain),
                             })
                         }
-                        style={{ marginTop: '1em' }}
+                        style={{
+                            marginTop: '1em',
+                            padding: '20px',
+                            width: '100%',
+                            maxWidth: '311px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                        }}
                     >
                         Bridge
+                        <ExternalLink size={20} style={{ marginLeft: '10px' }} />
                     </Button>
                 </DropDownContainer>
             </Content>
@@ -104,6 +119,8 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
+    width: 100%;
+    padding: 0 10px;
 `
 
 const Content = styled.div`
@@ -112,47 +129,46 @@ const Content = styled.div`
 `
 
 const SideLabel = styled.div`
-    font-weight: 700;
     color: #1c293a;
     font-family: 'Barlow', sans-serif;
-    font-size: 18px;
+    font-size: ${(props) => props.theme.font.default};
     line-height: 26.4px;
-    margin-bottom: 10px;
-    margin-top: 1em;
+    margin-bottom: 5px;
 `
 
 const DropDownContainer = styled.div`
-    display: flex;
-    flex-direction: column;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
 
     padding: 22px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: white;
 `
 
 const Text = styled.p`
-    text-size: 14px;
+    font-size: 14px;
 `
 
 const Header = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 55px;
+    margin-bottom: 20px;
+`
 
-    span {
-        flex: 0 0 55px;
-        font-size: 14px;
+const Title = styled.h2`
+    font-family: ${(props) => props.theme.family.headers};
+    font-size: 34px;
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
+`
+const SubTitle = styled.p`
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.tertiary};
+`
 
-        &.title {
-            display: block;
-            flex: 1;
-            font-family: 'Barlow', sans-serif;
-            text-align: center;
-            font-weight: bold;
-            font-size: ${(props) => props.theme.font.xxLarge};
-            color: #1c293a;
-        }
-    }
+const Description = styled.div`
+    color: ${(props) => props.theme.colors.accent};
+    font-size: ${(props) => props.theme.font.medium};
+    font-weight: 700;
+`
+
+const Row = styled.div`
+    margin-bottom: 10px;
 `

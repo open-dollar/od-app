@@ -39,7 +39,6 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-    console.log(nitroPools)
 
     const handleClick = () => {
         window.open('https://discord.opendollar.com/', '_blank')
@@ -54,7 +53,13 @@ const Earn = () => {
                 <p>
                     When creating a OD-ETH position, use the "Auto" mode provided by Gamma. <br></br>See full
                     instructions{' '}
-                    <Link href="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool" target="_blank">here</Link>.
+                    <Link
+                        href="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool"
+                        target="_blank"
+                    >
+                        here
+                    </Link>
+                    .
                 </p>
             </Text>
             <Pools>

@@ -4,7 +4,6 @@ import { ExternalLink } from 'react-feather'
 import { useActiveWeb3React } from '~/hooks'
 import Loader from '~/components/Loader'
 import Button from '~/components/Button'
-import Affiliate from './Affiliate'
 import useFuulSDK from '~/hooks/useFuulSDK'
 import { QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
@@ -53,13 +52,12 @@ const Bolts = () => {
                     .
                 </p>
             </Text>
-            <BoltsDetails>
-                <div>Your Bolts:</div>
-                <div>Rank:</div>
-            </BoltsDetails>
             <Section>
-                <SectionHeader>Referral Link</SectionHeader>
-                <Affiliate />
+                <SectionHeader>Status</SectionHeader>
+                <BoltsDetails>
+                    <div>Your Bolts:</div>
+                    <div>Rank:</div>
+                </BoltsDetails>
             </Section>
             <Section>
                 <SectionHeader>Earn Bolts 🔩</SectionHeader>
@@ -76,7 +74,7 @@ const Bolts = () => {
                         window.open('https://discord.opendollar.com/', '_blank')
                     }}
                 >
-                    suggest a new program <ExternalLink />
+                    suggest a new quest <ExternalLink />
                 </Button>
             </BtnWrapper>
         </Container>

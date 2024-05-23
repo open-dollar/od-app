@@ -57,7 +57,8 @@ const Affiliate = () => {
                     <>
                         <FlexContainer>
                             <AffiliateText>
-                                Your Link: <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
+                                Your Affiliate Link:{' '}
+                                <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
                             </AffiliateText>
                         </FlexContainer>
                         <CopyToClipboard
@@ -116,11 +117,9 @@ const CopyIconContainer = styled.div`
 
 const AffiliateText = styled.div`
     font-size: ${(props) => props.theme.font.small};
-    margin-bottom: 20px;
 `
 
 const Container = styled.div`
-    padding: 0px 20px 30px 0px;
     display: flex;
     justify-content: flex-start;
     @media (max-width: 767px) {
@@ -129,15 +128,11 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-    justify-content: flex-start;
-
-    h2 {
-        margin-bottom: 20px;
-    }
+    display: flex;
+    align-items: center;
 
     input {
         padding: 10px;
-        margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         width: 100%;
@@ -148,7 +143,6 @@ const FlexContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
     min-height: 59px;
 
     input {
@@ -178,8 +172,9 @@ const ErrorMessage = styled.div`
 const BtnWrapper = styled.div`
     width: max-content;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: 10px;
     button {
+        height: 42px;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 18px;

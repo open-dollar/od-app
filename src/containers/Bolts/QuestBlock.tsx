@@ -7,12 +7,11 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
     return (
         <BlockContainer>
             <BlockHeader>
-                <QuestInfo>
-                    <QuestData>
-                        <QuestTitle>{title}</QuestTitle>
-                    </QuestData>
-                </QuestInfo>
-                <div style={{ display: 'flex', gap: '10px' }}>{button}</div>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
+                    <QuestTitle>{title}</QuestTitle>
+                    <div style={{ display: 'flex', gap: '10px' }}>{button}</div>
+                </div>
+                <BlockDescription>{text}</BlockDescription>
             </BlockHeader>
             <Block>
                 {items.map((item: any, index: string) => (
@@ -35,19 +34,9 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
 
 export default QuestBlock
 
-const ExternalLink = styled.a`
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.primary};
-`
-
 const BlockContainer = styled.div`
     border-radius: 4px;
-    margin-bottom: 29px;
+    margin-bottom: 30px;
     background: white;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
@@ -59,13 +48,10 @@ const BlockContainer = styled.div`
 `
 
 const BlockHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #1c293a33;
     padding-left: 34px;
     padding-top: 22px;
-    padding-bottom: 11px;
     padding-right: 34px;
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -75,9 +61,29 @@ const BlockHeader = styled.div`
     `}
 `
 
-const QuestInfo = styled.div`
+const BlockDescription = styled.div`
+    font-size: ${(props) => props.theme.font.default};
+    color: ${(props) => props.theme.colors.tertiary};
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin-top: 10px;
+    `}
+`
+
+const QuestTitle = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    font-size: ${(props) => props.theme.font.large};
+    font-family: ${(props) => props.theme.family.headers};
+    color: ${(props) => props.theme.colors.accent};
+    font-weight: 700;
+
+    margin-right: 22px;
+
     svg {
         border-radius: ${(props) => props.theme.global.borderRadius};
         border: 1px solid ${(props) => props.theme.colors.border};
@@ -88,35 +94,16 @@ const QuestInfo = styled.div`
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
-        display: flex;
-        flex-direction: column;
-    `}
-`
-
-const QuestData = styled.div`
     display: flex;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        margin-left: 10px;
-    `}
-`
+    flex-direction: column;
+    margin-left: 10px;
 
-const QuestTitle = styled.div`
-    font-size: ${(props) => props.theme.font.large};
-    font-family: ${(props) => props.theme.family.headers};
-    color: ${(props) => props.theme.colors.accent};
-    font-weight: 700;
-
-    margin-right: 22px;
-
-    span {
-        font-weight: 500;
-        color: ${(props) => props.theme.colors.primary};
-    }
+`}
 `
 
 const Block = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
 
     padding-left: 34px;
     padding-top: 19px;
@@ -133,7 +120,7 @@ const Block = styled.div`
 `
 
 const Item = styled.div`
-    min-width: 150px;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -147,22 +134,6 @@ const Item = styled.div`
         &:last-child {
             margin-bottom: 0;
         }
-    }
-
-    &.low div:last-child {
-        color: #459d00;
-    }
-
-    &.elevated div:last-child {
-        color: #ffaf1d;
-    }
-
-    &.high div:last-child {
-        color: #e75966;
-    }
-
-    &.liquidation div:last-child {
-        color: #e75966;
     }
 `
 
@@ -182,12 +153,15 @@ const Value = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
+    display: flex;
+    gap: 10px;
+    min-height: 37px;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
     }
 
     display: flex;
-    align-items: center;
+    align-items: end;
 
     &.status {
         color: #459d00;

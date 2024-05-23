@@ -4,25 +4,29 @@ import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import Camelot from '~/components/Icons/Camelot'
+import Affiliate from './Affiliate'
+// import GalxeLogo from '~/assets/galxe.svg'
+// import ZealyLogo from '~/assets/zealy.svg'
 
 const onClick = (url: string) => {
     window.open(url, '_blank')
 }
 
-const CamelotAnchor = styled.a`
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    font-size: 14px;
+const StyledAnchor = styled.a`
+    padding: 5px 5px;
     color: ${(props) => props.theme.colors.primary};
 `
 
-const CamelotLink = ({ url }: { url: string }) => (
-    <CamelotAnchor href={url} target="_blank">
-        <Camelot /> VIEW ON CAMELOT
-    </CamelotAnchor>
+const LogoText = styled.p`
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+`
+
+const CamelotLogo = () => (
+    <LogoText>
+        <Camelot /> CAMELOT
+    </LogoText>
 )
 
 const BtnStyle = css`
@@ -119,9 +123,13 @@ const NavButton = styled(NavLink)`
 
 const TitleContainer = styled.div`
     display: flex;
+    align-items: center;
 `
 
 const QuestTitle = styled.div`
+    display: flex;
+    align-items: center;
+
     font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
@@ -138,12 +146,16 @@ const QuestTitle = styled.div`
 export const QUESTS = [
     {
         title: 'Refer Friends',
-        text: 'Invite friends with your referral link to earn 10% of their earned Bolts. They will receive a welcome bonus of 250 Bolts per ETH deposited for 30 days.',
-        button: <Button secondary text={'Copy Link'} />,
+        text: 'Create your own affiliate link to share here by signing in with your wallet and entering a code. Invite friends with your referral link to earn 10% of their earned Bolts. They will receive a welcome bonus of 250 Bolts per ETH deposited for 30 days.',
+        button: <Affiliate />,
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            {
+                title: 'Source',
+                status: (
+                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
+                ),
+            },
             { title: 'Bolts', status: '10% of referrals' },
-            { title: 'Protocol', status: 'Open Dollar' },
         ],
     },
     {
@@ -159,9 +171,13 @@ export const QUESTS = [
         button: <NavButton to="/vaults">Go</NavButton>,
         text: 'Deposit collateral to earn Bolts daily. Minimum 0.2 ETH equivalent.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            {
+                title: 'Source',
+                status: (
+                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
+                ),
+            },
             { title: 'Bolts', status: '500 per ETH' },
-            { title: 'Protocol', status: 'Open Dollar' },
         ],
     },
     {
@@ -174,41 +190,61 @@ export const QUESTS = [
         button: <NavButton to="/vaults">Go</NavButton>,
         text: 'Borrow OD from your NFV to earn Bolts daily.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            {
+                title: 'Source',
+                status: (
+                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
+                ),
+            },
             { title: 'Bolts', status: '1000 per ETH' },
-            { title: 'Protocol', status: 'Open Dollar' },
         ],
     },
     {
         title: (
             <TitleContainer>
-                <QuestTitle>Provide Liquidity</QuestTitle>
+                <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
                 <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
                 <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
             </TitleContainer>
         ),
-        button: <CamelotLink url="https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657" />,
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
+                }
+            >
+                Go <LinkIcon />
+            </Button>
+        ),
         text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3000 per ETH' },
-            { title: 'Protocol', status: 'Camelot' },
         ],
     },
     {
         title: (
             <TitleContainer>
-                <QuestTitle>Provide Liquidity</QuestTitle>
+                <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
                 <img src={getTokenLogo('ODG')} alt={'ODG'} width={'50px'} />
                 <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
             </TitleContainer>
         ),
-        button: <CamelotLink url="https://info.camelot.exchange/pair/v3/0xf935263c9950eb2881ff58bd6a76c3d2564a78d5" />,
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick('https://info.camelot.exchange/pair/v3/0xf935263c9950eb2881ff58bd6a76c3d2564a78d5')
+                }
+            >
+                Go <LinkIcon />
+            </Button>
+        ),
         text: 'Provide liquidity to the ODG/ETH pair on Camelot to earn Bolts daily.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2000 per ETH' },
-            { title: 'Protocol', status: 'Camelot' },
         ],
     },
     {
@@ -220,9 +256,8 @@ export const QUESTS = [
         ),
         text: 'Complete tasks on Galxe to earn Bolts.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: '<GalxeLogo />' },
             { title: 'Bolts', status: 'Varies' },
-            { title: 'Protocol', status: 'Galxe' },
         ],
     },
     {
@@ -234,9 +269,8 @@ export const QUESTS = [
         ),
         text: 'Complete tasks on Zealy to earn Bolts.',
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: 'Zealy' },
             { title: 'Bolts', status: 'Varies' },
-            { title: 'Protocol', status: 'Zealy' },
         ],
     },
     {
@@ -253,11 +287,22 @@ export const QUESTS = [
                 Get yours <LinkIcon />
             </Button>
         ),
-        text: `Holders of the ODOG <a href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7" >NFT</a> receive a 3% bonus for all points earned.`,
+        text: (
+            <div>
+                Holders of the
+                <StyledAnchor
+                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
+                    target="_blank"
+                >
+                    ODOG NFT
+                </StyledAnchor>
+                receive a 3% bonus for all points earned.
+            </div>
+        ),
+
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: 'Guild.xyz' },
             { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Protocol', status: 'Guild.xyz' },
         ],
     },
     {
@@ -274,11 +319,21 @@ export const QUESTS = [
                 Learn more <LinkIcon />
             </Button>
         ),
-        text: `Holders of the Genesis <a href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8" >NFT</a> receive a 7% bonus for all points earned.`,
+        text: (
+            <div>
+                Holders of the
+                <StyledAnchor
+                    href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
+                    target="_blank"
+                >
+                    Genesis NFT
+                </StyledAnchor>
+                receive a 7% bonus for all points earned.
+            </div>
+        ),
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            { title: 'Source', status: 'NFTs2Me' },
             { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Protocol', status: 'Nfts2me' },
         ],
     },
     {
@@ -290,9 +345,13 @@ export const QUESTS = [
         ),
         text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            {
+                title: 'Source',
+                status: (
+                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
+                ),
+            },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Protocol', status: 'Open Dollar' },
         ],
     },
     {
@@ -300,9 +359,13 @@ export const QUESTS = [
         button: <NavButton to="/vaults">View TVL</NavButton>,
         text: `All existing point totals will receive a 30% bonus at the time of the snapshot when the Open Dollar TVL reaches 20k ETH.`,
         items: [
-            { title: 'Status', status: 'Incomplete' },
+            {
+                title: 'Source',
+                status: (
+                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
+                ),
+            },
             { title: 'Bolts', status: '+30%' },
-            { title: 'Protocol', status: 'Open Dollar' },
         ],
     },
 ]

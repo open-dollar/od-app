@@ -14,7 +14,6 @@ export const useOpenSeaListings = () => {
         const collectionListings = await getCollectionListingsData()
 
         const listingData = collectionListings?.listings?.map((listing: any) => {
-            console.log(listing)
             const collectionAddress = listing.protocol_data.parameters.offer[0].token
             const safeId = listing.protocol_data.parameters.offer[0].identifierOrCriteria
             const owner = listing.protocol_data.parameters.offerer

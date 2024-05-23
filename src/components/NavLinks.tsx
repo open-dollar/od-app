@@ -50,6 +50,14 @@ const NavLinks = () => {
                 {t('auctions')}
             </NavBarLink>
             <NavBarLink
+                id="bolts-link"
+                to="/bolts"
+                onClick={(e) => handleLinkClick(e, false)}
+                className={location.pathname.startsWith('/bolts') ? 'activeLink' : ''}
+            >
+                Bolts
+            </NavBarLink>
+            <NavBarLink
                 id="stats-link"
                 to="/stats"
                 onClick={(e) => handleLinkClick(e, false)}

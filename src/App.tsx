@@ -19,7 +19,6 @@ import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
-import Affiliate from './containers/Affiliate'
 import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
@@ -27,6 +26,7 @@ import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
+import Bolts from './containers/Bolts'
 import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 
@@ -80,9 +80,9 @@ const App = () => {
                                             <Switch>
                                                 <Route exact strict component={PageNotFound} path="/404" />
                                                 <Route exact strict component={Safes} path={'/'} />
-                                                <Route exact strict component={Affiliate} path={'/affiliate'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Earn} path={'/earn'} />
+                                                <Route exact strict component={Bolts} path={'/bolts'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />

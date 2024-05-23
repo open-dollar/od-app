@@ -1,20 +1,23 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getTokenLogo, formatWithCommas, getChainId } from '~/utils'
+import { getTokenLogo, formatWithCommas, getChainId, getUserBalance, bridgeTokens } from '~/utils'
 import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
 import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
+import { useWeb3React } from '@web3-react/core'
 
 const BridgeFundsForm = () => {
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
         bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
+    const { account } = useWeb3React()
 
     const [selectedToken, setSelectedToken] = useState<string>('')
     const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [balances, setBalances] = useState<any[]>([])
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -26,6 +29,16 @@ const BridgeFundsForm = () => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collaterals])
+
+    useEffect(() => {
+        if (!account) return
+        async function fetchBalances() {
+            const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
+            const balances = await getUserBalance(tokens, account!, publicRPC)
+            setBalances(balances!)
+        }
+        fetchBalances()
+    }, [account, selectedChain])
 
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {
@@ -42,7 +55,7 @@ const BridgeFundsForm = () => {
             value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
         }
     })
-
+    console.log('balances', balances)
     return (
         <Container>
             <Content>

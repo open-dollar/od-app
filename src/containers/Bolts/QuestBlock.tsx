@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const QuestBlock = ({ title, text, items, button }: { title: any; text: any; items: any; button: any }) => {
@@ -170,12 +169,4 @@ const Value = styled.div`
         width: fit-content;
         padding: 4px 15px;
     }
-`
-
-const Dot = styled.div`
-    width: 6px;
-    height: 6px;
-    background-color: #459d00;
-    border-radius: 100%;
-    margin-right: 5px;
 `

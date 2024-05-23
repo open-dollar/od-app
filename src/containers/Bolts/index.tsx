@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { ExternalLink } from 'react-feather'
 
 import { useActiveWeb3React } from '~/hooks'
-import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import useFuulSDK from '~/hooks/useFuulSDK'
 import { QUESTS } from './quests'
@@ -36,13 +35,12 @@ const Bolts = () => {
 
     return (
         <Container>
-            <Title>Bolts</Title>
+            <Title>Bolts 🔩</Title>
             <SubHeader>Welcome Vault Keepers!</SubHeader>
             <Text>
                 <p>
-                    Complete the quests below to earn Bolts.
-                    <br />
-                    Deposits, borrows, and LPs are awarded points based on their ETH equivalents in value.
+                    Complete the quests below to earn Bolts. Deposits, borrows, and LPs are awarded Bolts based on their
+                    equivalent value in ETH.
                 </p>
                 <p>
                     For program details, see our{' '}
@@ -60,7 +58,7 @@ const Bolts = () => {
                 </BoltsDetails>
             </Section>
             <Section>
-                <SectionHeader>Earn Bolts 🔩</SectionHeader>
+                <SectionHeader>Quests</SectionHeader>
                 {QUESTS.map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
@@ -74,7 +72,7 @@ const Bolts = () => {
                         window.open('https://discord.opendollar.com/', '_blank')
                     }}
                 >
-                    suggest a new quest <ExternalLink />
+                    Suggest a Quest <ExternalLink />
                 </Button>
             </BtnWrapper>
         </Container>

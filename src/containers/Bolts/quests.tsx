@@ -2,11 +2,11 @@ import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import { getTokenLogo } from '~/utils'
-import Camelot from '~/components/Icons/Camelot'
 import Affiliate from './Affiliate'
 import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
-import { Link } from 'react-router-dom'
+import camelotLogo from '~/assets/camelot.svg'
+import odLogo from '~/assets/od-full-logo-light.svg'
 
 const onClick = (url: string) => {
     window.open(url, '_blank')
@@ -25,20 +25,26 @@ const LogoText = styled.p`
 
 const CamelotLogo = () => (
     <LogoText>
-        <Camelot /> CAMELOT
+        <img alt="Camelot" src={camelotLogo} style={{ height: '27px' }} />
     </LogoText>
 )
 
 const ZealyLogo = () => (
     <LogoText>
-        <img src={zealyLogo} style={{ marginRight: '8px' }} />
+        <img alt="Zealy" src={zealyLogo} style={{ marginRight: '8px' }} />
         ZEALY
     </LogoText>
 )
 
 const GalxeLogo = () => (
     <LogoText>
-        <img src={galxeLogo} />
+        <img alt="Galxe" src={galxeLogo} style={{ height: '17px' }} />
+    </LogoText>
+)
+
+const OpenDollarLogo = () => (
+    <LogoText>
+        <img alt="Open Dollar" src={odLogo} style={{ height: '27px' }}></img>
     </LogoText>
 )
 
@@ -74,10 +80,6 @@ const CtaButton = styled(Button)`
     max-height: 42px;
 `
 
-const InternalLinkButton = styled(Link)`
-    max-height: 42px;
-`
-
 export const QUESTS = [
     {
         title: 'Invite a Friend',
@@ -91,9 +93,7 @@ export const QUESTS = [
         items: [
             {
                 title: 'Source',
-                status: (
-                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
-                ),
+                status: <OpenDollarLogo />,
             },
             {
                 title: 'Bolts',
@@ -115,9 +115,7 @@ export const QUESTS = [
         items: [
             {
                 title: 'Source',
-                status: (
-                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
-                ),
+                status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
         ],
@@ -126,7 +124,7 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
+                <img src={getTokenLogo('OD')} alt={'OD'} height={'50px'} />
             </TitleContainer>
         ),
         button: '',
@@ -134,9 +132,7 @@ export const QUESTS = [
         items: [
             {
                 title: 'Source',
-                status: (
-                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
-                ),
+                status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
         ],
@@ -292,9 +288,7 @@ export const QUESTS = [
         items: [
             {
                 title: 'Source',
-                status: (
-                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
-                ),
+                status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
         ],
@@ -306,9 +300,7 @@ export const QUESTS = [
         items: [
             {
                 title: 'Source',
-                status: (
-                    <img src="/static/media/od-full-logo-light.a42429383b25790663d6e182b4f91a30.svg" alt="OD"></img>
-                ),
+                status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+30%' },
         ],

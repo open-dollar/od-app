@@ -12,14 +12,15 @@ export const useOpenSeaListings = () => {
 
     useEffect(() => {
         if (!safes.length || !account) return
-
         const getListingData = async () => {
             const collectionListings = await getCollectionListingsData()
-
             const listingData = collectionListings?.listings?.map((listing: any) => {
+                console.log('listing', listing)
+
                 const collectionAddress = listing.protocol_data.parameters.offer[0].token
                 const safeId = listing.protocol_data.parameters.offer[0].identifierOrCriteria
                 const owner = listing.protocol_data.parameters.offerer
+                // @ts-ignore
                 const { id, collateral, debt, safeHandler } = safes?.find((safe: any) => safe?.id === safeId)
                 const totalDollarValue = +collateral - +debt
                 const startTime = listing.protocol_data.parameters.startTime

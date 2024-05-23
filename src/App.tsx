@@ -29,6 +29,7 @@ import Earn from './containers/Earn'
 import Bolts from './containers/Bolts'
 import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
+import Marketplace from './containers/Marketplace'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -86,6 +87,7 @@ const App = () => {
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
+                                                <Route exact strict component={Marketplace} path={'/marketplace'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
                                                 <Route
                                                     exact

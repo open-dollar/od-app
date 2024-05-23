@@ -234,9 +234,10 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 8453,
-        publicRPC: 'https://base.drpc.org',
+        publicRPC: 'https://base.llamarpc.com',
     },
 }
+
 export const gasTokenMapping: { [key: string | number]: string } = {
     Mainnet: '0x0000000000000000000000000000000000000000',
     Polygon: '0x0000000000000000000000000000000000001010',
@@ -274,26 +275,35 @@ export const checkUserHasBalance = async (
     return +ethers.utils.formatUnits(balance) <= +(amount || '0')
 }
 
-export const getUserBalance = async (chainId: number, tokens: any[], userAddress: string, rpcUrl: string) => {
+export const getUserBalance = async (tokens: any[], userAddress: string, rpcUrl: string) => {
     const user = ethers.utils.getAddress(userAddress)
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
+    const balances = []
     for await (const token of tokens) {
         if (gasTokenArray.includes(token.address)) {
-            const balance = await provider.getBalance(user)
-            const bridgeToken = bridgeTokens[chainId].tokens.filter(
-                (bridgeToken: any) => bridgeToken.address === token.address
-            )
-            bridgeToken.balance = ethers.utils.formatUnits(balance)
+            try {
+                const balance = await provider.getBalance(user)
+                balances.push({
+                    ...token,
+                    balance: ethers.utils.formatUnits(balance),
+                })
+            } catch (e) {
+                console.log(e)
+                return
+            }
         } else {
-            const tokenContract = new ethers.Contract(token.address, ERC20__factory.abi, provider)
-            console.log(tokenContract)
-            const balance = await tokenContract.balanceOf(user)
-            const bridgeToken = bridgeTokens[chainId].tokens.filter(
-                (bridgeToken: any) => bridgeToken.address === token.address
-            )
-            bridgeToken.balance = ethers.utils.formatUnits(balance)
+            try {
+                const tokenContract = new ethers.Contract(token.address, ERC20__factory.abi, provider)
+                const balance = await tokenContract.balanceOf(user)
+                balances.push({
+                    ...token,
+                    balance: ethers.utils.formatUnits(balance),
+                })
+            } catch (e) {
+                console.log(e)
+                return
+            }
         }
     }
-
-    return bridgeTokens[chainId]
+    return balances
 }

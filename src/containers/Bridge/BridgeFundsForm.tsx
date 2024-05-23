@@ -17,6 +17,7 @@ const BridgeFundsForm = () => {
 
     const [selectedToken, setSelectedToken] = useState<string>('')
     const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [balances, setBalances] = useState<any[]>([])
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -31,12 +32,13 @@ const BridgeFundsForm = () => {
 
     useEffect(() => {
         if (!account) return
-        Object.values(bridgeTokens).forEach((value: any) => {
-            console.log(value.publicRPC)
-            const balances = getUserBalance(value.chainId, value.tokens, account!, value.publicRPC)
-            console.log(balances)
-        })
-    }, [account])
+        async function fetchBalances() {
+            const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
+            const balances = await getUserBalance(tokens, account!, publicRPC)
+            setBalances(balances!)
+        }
+        fetchBalances()
+    }, [account, selectedChain])
 
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {
@@ -53,7 +55,7 @@ const BridgeFundsForm = () => {
             value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
         }
     })
-
+    console.log('balances', balances)
     return (
         <Container>
             <Content>

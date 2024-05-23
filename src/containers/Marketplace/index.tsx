@@ -26,6 +26,9 @@ const Marketplace = () => {
                     </Button>
                 </BtnWrapper>
             </Header>
+            <CardsList>
+                <Card></Card>
+            </CardsList>
         </Container>
     )
 }
@@ -69,3 +72,11 @@ const BtnWrapper = styled.div`
         gap: 10px;
     }
 `
+
+const CardsList = styled.div``
+    
+const Card = styled.div`
+    background-color: white;
+    border-radius: 3px;
+`
+

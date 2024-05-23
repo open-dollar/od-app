@@ -85,7 +85,8 @@ const BridgeFundsForm = () => {
                         style={{
                             marginTop: '1em',
                             padding: '20px',
-                            width: '300px',
+                            width: '100%',
+                            maxWidth: '311px',
                             marginLeft: 'auto',
                             marginRight: 'auto',
                         }}

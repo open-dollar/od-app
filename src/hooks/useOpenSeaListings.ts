@@ -14,11 +14,13 @@ export const useOpenSeaListings = () => {
         const getListingData = async () => {
             const collectionListings = await getCollectionListingsData()
             const listingData = collectionListings.listings.map((listing: any, i: number) => {
+                const collectionAddress = listing.protocol_data.parameters.offer[0].token
                 const id = listing.protocol_data.parameters.offer[0].identifierOrCriteria
                 const safe = safes.find((safe: any) => safe.id === id)
                 const startTime = listing.protocol_data.parameters.startTime
                 const endTime = listing.protocol_data.parameters.endTime
-                return { id, safe, startTime, endTime }
+                const price = listing.price
+                return { id, safe, startTime, endTime, collectionAddress, price }
             })
             setListings(listingData)
         }

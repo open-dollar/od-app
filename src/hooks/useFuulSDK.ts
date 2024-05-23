@@ -61,9 +61,18 @@ function useFuulSDK() {
 
     const getUserData = async (user_address: string): Promise<any | null> => {
         try {
-            const data = await Fuul.getUserPointsByConversion({ user_address })
-            console.log('data', data)
-            return data
+            const data = await Fuul.getPointsLeaderboard({ user_address })
+            console.log(data.results)
+            if (data.results.length === 0) {
+                return {
+                    points: 0,
+                    rank: 0,
+                }
+            }
+            return {
+                points: data.results[0].total_amount,
+                rank: `#${data.results[0].rank}`,
+            }
         } catch (error) {
             console.debug('No user data found:', error)
             return null

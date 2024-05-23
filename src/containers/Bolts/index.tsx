@@ -22,7 +22,8 @@ const Bolts = () => {
             setHasFetched(true)
             ;(async () => {
                 try {
-                    const data = await getUserData(account)
+                    // const data = await getUserData(account)
+                    const data = await getUserData('0x000000000000000000000000000000000000dead')
                     console.log('data', data)
                     if (data) {
                         setUserFuulData(data)
@@ -55,8 +56,8 @@ const Bolts = () => {
             <Section>
                 <SectionHeader>Status</SectionHeader>
                 <BoltsDetails>
-                    <div>Your Bolts:</div>
-                    <div>Rank:</div>
+                    <div>Bolts: {userFuulData.points}</div>
+                    <div>Rank: {userFuulData.rank}</div>
                 </BoltsDetails>
             </Section>
             <Section>
@@ -110,6 +111,8 @@ const SubHeader = styled.h3`
 
 const Text = styled.div`
     background-color: #6396ff26;
+    backdrop-filter: blur(10px);
+
     padding: 20px;
     font-size: ${(props) => props.theme.font.default};
     border-radius: 3px;
@@ -125,19 +128,25 @@ const Text = styled.div`
     margin-bottom: 30px;
 `
 const BoltsDetails = styled.div`
-    background-color: #475662;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
+    margin-bottom: 30px;
+
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
     text-transform: uppercase;
-    color: #fff;
     font-weight: 700;
     font-size: ${(props) => props.theme.font.default};
-    border-radius: 3px;
-    p {
+
+    div {
+        display: flex;
+        justify-content: space-between;
         margin-bottom: 10px;
     }
-    margin-bottom: 30px;
 `
 
 const SectionHeader = styled.h2`

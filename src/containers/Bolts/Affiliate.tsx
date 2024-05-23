@@ -122,6 +122,7 @@ const AffiliateText = styled.div`
 const Container = styled.div`
     display: flex;
     justify-content: flex-start;
+    margin-top: 20px;
     @media (max-width: 767px) {
         justify-content: center;
     }

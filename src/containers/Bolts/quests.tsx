@@ -300,9 +300,9 @@ export const QUESTS = [
         ],
     },
     {
-        title: 'Community Goal - 20k ETH TVL',
+        title: 'Community Goal: 20k ETH TVL',
         button: '',
-        text: `All existing point totals will receive a 30% bonus at the time of the snapshot when the Open Dollar TVL reaches 20k ETH.`,
+        text: `All existing point totals will receive a 30% bonus at the time of the snapshot when the Open Dollar TVL reaches 20,000 ETH.`,
         items: [
             {
                 title: 'Source',

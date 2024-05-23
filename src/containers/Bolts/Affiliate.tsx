@@ -84,7 +84,7 @@ const Affiliate = () => {
                             <UrlText>https://app.opendollar.com?af=</UrlText>
                             <input
                                 type="text"
-                                placeholder="Enter new affiliate code"
+                                placeholder="Your new affiliate code"
                                 value={newAffiliateCode}
                                 onChange={(e) => setNewAffiliateCode(e.target.value)}
                             />
@@ -116,6 +116,9 @@ const CopyIconContainer = styled.div`
 `
 
 const AffiliateText = styled.div`
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
     font-size: ${(props) => props.theme.font.small};
 `
 
@@ -158,6 +161,7 @@ const FlexContainer = styled.div`
 
 const UrlText = styled.div`
     text-wrap: nowrap;
+    font-style: italic;
     font-size: ${(props) => props.theme.font.small};
 `
 const BoldText = styled.span`

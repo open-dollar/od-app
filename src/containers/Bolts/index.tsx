@@ -14,7 +14,7 @@ const Bolts = () => {
     const { account } = useActiveWeb3React()
     const { getUserData } = useFuulSDK()
 
-    const [userFuulData, setUserFuulData] = useState<any>('')
+    const [userFuulData, setUserFuulData] = useState<any>({ rank: '', points: '' })
     const [hasFetched, setHasFetched] = useState<boolean>(false)
 
     useEffect(() => {
@@ -22,9 +22,8 @@ const Bolts = () => {
             setHasFetched(true)
             ;(async () => {
                 try {
-                    // const data = await getUserData(account)
-                    const data = await getUserData('0x000000000000000000000000000000000000dead')
-                    console.log('data', data)
+                    const data = await getUserData(account)
+                    // const data = await getUserData('0x000000000000000000000000000000000000dead')
                     if (data) {
                         setUserFuulData(data)
                     }
@@ -56,8 +55,8 @@ const Bolts = () => {
             <Section>
                 <SectionHeader>Status</SectionHeader>
                 <BoltsDetails>
-                    <div>Bolts: {userFuulData.points}</div>
-                    <div>Rank: {userFuulData.rank}</div>
+                    <BoltsDetailsRow>EARNED: {userFuulData.points}</BoltsDetailsRow>
+                    <BoltsDetailsRow>RANK: {userFuulData.rank}</BoltsDetailsRow>
                 </BoltsDetails>
             </Section>
             <Section>
@@ -138,7 +137,6 @@ const BoltsDetails = styled.div`
     border-radius: 3px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-    text-transform: uppercase;
     font-weight: 700;
     font-size: ${(props) => props.theme.font.default};
 
@@ -147,6 +145,11 @@ const BoltsDetails = styled.div`
         justify-content: space-between;
         margin-bottom: 10px;
     }
+`
+const BoltsDetailsRow = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
 `
 
 const SectionHeader = styled.h2`

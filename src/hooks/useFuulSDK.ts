@@ -65,12 +65,12 @@ function useFuulSDK() {
             console.log(data.results)
             if (data.results.length === 0) {
                 return {
-                    points: 0,
+                    points: '0 🔩',
                     rank: 0,
                 }
             }
             return {
-                points: data.results[0].total_amount,
+                points: `${data.results[0].total_amount} 🔩`,
                 rank: `#${data.results[0].rank}`,
             }
         } catch (error) {

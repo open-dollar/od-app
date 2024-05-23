@@ -12,15 +12,18 @@ const Marketplace = () => {
     const listings = useOpenSeaListings()
     console.log('listings: ', listings)
 
+    const vaultId = (listings?.[0] as any)?.id
+    const debtAmount = (listings?.[0] as any)?.debt
+
     const handleClick = () => {
-        window.open('https://discord.opendollar.com/', '_blank')
+        window.open('https://opensea.io/collection/open-dollar-vaults', '_blank')
     }
 
     const statsForSVG = useMemo(
         () => ({
-            vaultID: 1,
+            vaultId,
             stabilityFee: 2,
-            debtAmount: (listings?.[0] as any)?.debt,
+            debtAmount,
             collateralAmount: (listings?.[0] as any)?.collateral,
             collateralizationRatio: '5%',
             safetyRatio: '6%',
@@ -38,13 +41,7 @@ const Marketplace = () => {
             <Header>
                 <Title>Open Sea Listings</Title>
                 <BtnWrapper>
-                    <Button
-                        data-test-id="steps-btn"
-                        id={'suggest-pool-btn'}
-                        // text={'suggest a new pool'}
-                        secondary
-                        onClick={handleClick}
-                    >
+                    <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
                         View On OpenSea <ExternalLink />
                     </Button>
                 </BtnWrapper>
@@ -121,6 +118,7 @@ const Title = styled.h2`
 const Header = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 40px;
 `
 
 const BtnWrapper = styled.div`
@@ -172,6 +170,7 @@ const Col = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex: 1;
 `
 
 const Label = styled.div`
@@ -182,17 +181,35 @@ const Label = styled.div`
     font-size: ${(props) => props.theme.font.default};
 `
 
-const Value = styled.div``
+const Value = styled.div`
+    color: ${(props) => props.theme.colors.primary};
+    font-size: 22px;
+    font-weight: 700;
+`
 
-const DollarValue = styled.div``
+const DollarValue = styled.div`
+    font-size: 16px;
+    color: #5d707f;
+`
 
-const ColItem = styled.div``
+const ColItem = styled.div`
+    margin-bottom: 10px;
+`
 
 const RowItem = styled.div`
     display: flex;
     justify-content: space-between;
+    padding: 10px 0px;
+
+    :first-child {
+        border-bottom: 1px solid #e0e0e0;
+    }
 `
 
-const RowValue = styled.div``
+const RowValue = styled.div`
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.tertiary};
+    font-size: 20px;
+`
 
 const Block = styled.div``

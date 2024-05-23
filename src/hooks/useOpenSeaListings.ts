@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { getCollectionListingsData } from '~/services/opensea'
 import { useStoreState } from 'easy-peasy'
+import { useWeb3React } from '@web3-react/core'
 
 export const useOpenSeaListings = () => {
     const [listings, setListings] = useState()
-
+    const { account } = useWeb3React()
     //@ts-ignore
     const { safeModel: safeState } = useStoreState((state) => state)
     const safes = safeState.list
 
     useEffect(() => {
-        if (!safes) return
+        if (!safes || !account) return
 
         const getListingData = async () => {
             const collectionListings = await getCollectionListingsData()
@@ -40,7 +41,7 @@ export const useOpenSeaListings = () => {
             setListings(listingData)
         }
         getListingData()
-    }, [safes])
+    }, [safes, account])
 
     return listings
 }

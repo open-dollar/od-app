@@ -66,13 +66,13 @@ const Nav = styled.div`
 `
 
 const BtnStyle = css`
-    font-family: 'Barlow', sans-serif;
     color: black;
     transition: all 0.3s ease;
     padding: 10px 10px;
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
+    font-size: 14px;
     justify-content: center;
     font-weight: 700;
     height: 100%;

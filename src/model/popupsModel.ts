@@ -48,6 +48,8 @@ export interface PopupsModel {
     setIsClaimPopupOpen: Action<PopupsModel, boolean>
     setHasFLXClaim: Action<PopupsModel, boolean>
     setReturnProxyFunction: Action<PopupsModel, (storeActions: any) => void | null>
+    setChangeWalletActive: Action<PopupsModel, boolean>
+    isChangeWalletActive: boolean
 }
 
 const popupsModel: PopupsModel = {
@@ -97,6 +99,7 @@ const popupsModel: PopupsModel = {
         type: '',
         auctionType: '',
     },
+    isChangeWalletActive: false,
 
     setIsSettingModalOpen: action((state, payload) => {
         state.isSettingsModalOpen = payload
@@ -178,6 +181,9 @@ const popupsModel: PopupsModel = {
     }),
     setHasFLXClaim: action((state, payload) => {
         state.hasFLXClaim = payload
+    }),
+    setChangeWalletActive: action((state, payload) => {
+        state.isChangeWalletActive = payload
     }),
 }
 

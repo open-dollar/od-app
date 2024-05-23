@@ -16,30 +16,38 @@
 
 import { URI_AVAILABLE } from '@web3-react/walletconnect-v2'
 import { useEffect, useState } from 'react'
-
 import { MAINNET_CHAINS } from '../../chains'
 import { hooks, walletConnectV2 } from '../../connectors/walletConnectV2'
 import { Card } from './Card'
+import { useActiveWeb3React } from '~/hooks'
+import { useStoreActions } from '~/store'
 
 const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
-
 const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks
 
-export default function WalletConnectV2Card() {
+interface WalletConnectV2CardProps {
+    error: Error | undefined
+    setError: (error: Error | undefined) => void
+}
+
+export default function WalletConnectV2Card({ error, setError }: WalletConnectV2CardProps) {
+    const [userInitiatedConnection, setUserInitiatedConnection] = useState(false)
     const chainId = useChainId()
     const accounts = useAccounts()
     const isActivating = useIsActivating()
-
     const isActive = useIsActive()
-
     const provider = useProvider()
-
-    const [error, setError] = useState<Error | undefined>(undefined)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const { connector } = useActiveWeb3React()
 
     // attempt to connect eagerly on mount
     useEffect(() => {
-        walletConnectV2.connectEagerly().catch(() => {})
-    }, [])
+        walletConnectV2
+            .connectEagerly()
+            .then(() => userInitiatedConnection && popupsActions.setIsConnectorsWalletOpen(false))
+            .catch(() => {})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [connector])
 
     // log URI when available
     useEffect(() => {
@@ -48,8 +56,14 @@ export default function WalletConnectV2Card() {
         })
     }, [])
 
+    const handleUserInitiatedConnection = () => {
+        setUserInitiatedConnection(true)
+    }
+
     return (
         <Card
+            userInitiatedConnection={userInitiatedConnection}
+            onUserInitiatedConnection={handleUserInitiatedConnection}
             connector={walletConnectV2}
             activeChainId={chainId}
             chainIds={CHAIN_IDS}

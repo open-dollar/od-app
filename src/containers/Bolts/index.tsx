@@ -107,8 +107,11 @@ const SubHeader = styled.h3`
 `
 
 const Text = styled.div`
-    background-color: #6396ff26;
+    background-color: rgba(202, 234, 255, 0.3);
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
     padding: 20px;
     font-size: ${(props) => props.theme.font.default};
@@ -128,7 +131,7 @@ const BoltsDetails = styled.div`
     padding: 20px;
     margin-bottom: 30px;
 
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(202, 234, 255, 0.3);
     backdrop-filter: blur(10px);
 
     border: 1px solid rgba(255, 255, 255, 0);
@@ -138,10 +141,13 @@ const BoltsDetails = styled.div`
     font-weight: 700;
     font-size: ${(props) => props.theme.font.default};
 
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+
     div {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
     }
 `
 const BoltsDetailsRow = styled.div`

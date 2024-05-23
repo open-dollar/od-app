@@ -7,7 +7,7 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
             <BlockHeader>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
                     <QuestTitle>{title}</QuestTitle>
-                    <div style={{ display: 'flex', gap: '10px' }}>{button}</div>
+                    <div style={{ display: 'flex', gap: '10px', height: '42px' }}>{button}</div>
                 </div>
                 <BlockDescription>{text}</BlockDescription>
             </BlockHeader>

@@ -110,7 +110,15 @@ export const QUESTS = [
                 <img src={getTokenLogo('ARB')} alt={'ARB'} width={'50px'} />
             </TitleContainer>
         ),
-        button: '',
+        button: (
+            <CtaButton
+                secondary
+                onClick={() =>
+                    onClick('https://app.opendollar.com/vaults')
+                }
+            >
+                Go <LinkIcon />
+            </CtaButton>),
         text: 'Deposit collateral to earn Bolts daily. Minimum 0.2 ETH equivalent.',
         items: [
             {
@@ -127,7 +135,15 @@ export const QUESTS = [
                 <img src={getTokenLogo('OD')} alt={'OD'} height={'50px'} />
             </TitleContainer>
         ),
-        button: '',
+        button: (
+        <CtaButton
+            secondary
+            onClick={() =>
+                onClick('https://app.opendollar.com/vaults')
+            }
+        >
+            Go <LinkIcon />
+        </CtaButton>),
         text: 'Borrow OD from your NFV to earn Bolts daily.',
         items: [
             {

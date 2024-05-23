@@ -39,7 +39,6 @@ const Earn = () => {
         }
         fetchPools()
     }, [account, geb, nitroPoolsActions])
-    console.log(nitroPools)
 
     const handleClick = () => {
         window.open('https://discord.opendollar.com/', '_blank')

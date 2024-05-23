@@ -3,7 +3,7 @@ import React from 'react'
 const Metamask = () => {
     return (
         <svg fill="none" height="33" viewBox="0 0 35 33" width="35" xmlns="http://www.w3.org/2000/svg">
-            <g stroke-linecap="round" stroke-linejoin="round" stroke-width=".25">
+            <g stroke-linecap="round" stroke-linejoin="round" strokeWidth=".25">
                 <path d="m32.9582 1-13.1341 9.7183 2.4424-5.72731z" fill="#e17726" stroke="#e17726" />
                 <g fill="#e27625" stroke="#e27625">
                     <path d="m2.66296 1 13.01714 9.809-2.3254-5.81802z" />

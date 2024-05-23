@@ -63,6 +63,7 @@ const Container = styled.div`
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    color: #fff;
     height: 100vh;
     width: 100%;
     position: relative;
@@ -77,7 +78,7 @@ const CenterBox = styled.div`
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(100px);
     border: 1px solid rgba(255, 255, 255, 0);
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 `

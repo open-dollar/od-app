@@ -10,6 +10,7 @@ export const chainMapping: { [key: string]: number } = {
     Optimism: 10,
     Polygon: 137,
     Base: 8453,
+    Arbitrum: 42161,
 }
 
 export const getChainId = (chain: string): number => {

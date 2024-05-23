@@ -23,6 +23,7 @@ import discordIcon from '../assets/discord.svg'
 import walletIcon from '../assets/wallet-icon.svg'
 import od from '../assets/od-logo.svg'
 import odg from '../assets/odg.svg'
+import Loader from './Loader'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -143,7 +144,7 @@ const Navbar = () => {
 
     const odBalance = useMemo(() => {
         const balances = connectWalletModel.tokensFetchedData
-        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false)
+        return formatDataNumber(balances.OD ? balances.OD.balanceE18.toString() : '0', 18, 2, false, true)
     }, [connectWalletModel.tokensFetchedData])
 
     useEffect(() => {
@@ -195,7 +196,7 @@ const Navbar = () => {
                         <Price>
                             <DollarValue ref={dollarRef} onClick={handleDollarClick}>
                                 <Icon src={getTokenLogo('OD')} width={22} height={22} />
-                                <span>{state.odPrice}</span>
+                                {state.odPrice ? <span>{state.odPrice}</span> : <Loader color="#0071E7" width="20px" />}
                                 <ArrowWrapper>
                                     <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
                                 </ArrowWrapper>
@@ -271,13 +272,13 @@ const Navbar = () => {
                         <BtnContainer>
                             {account ? (
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
-                                    <DollarValue onClick={handleTokenClick}>
+                                    <TotalValue onClick={handleTokenClick}>
                                         <Icon src={walletIcon} width={22} height={22} />
                                         {odBalance + ' '} OD
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
-                                    </DollarValue>
+                                    </TotalValue>
                                     {isTokenPopupVisible && (
                                         <InfoPopup className="group">
                                             <InfoPopupContentWrapper>
@@ -343,7 +344,7 @@ const Navbar = () => {
                                         marginLeft: '20px',
                                         textAlign: 'center',
                                         justifyContent: 'center',
-                                        fontSize: 13,
+                                        fontSize: 14,
                                     }}
                                     onClick={handleWalletConnect}
                                 >
@@ -433,7 +434,7 @@ const Container = styled.div`
         top: 0 !important;
     }
 
-    $:after {
+    &:after {
         content: '';
         display: block;
         position: absolute;
@@ -545,7 +546,7 @@ const OdButton = styled.button`
     color: ${(props) => props.theme.colors.accent};
     width: 15vw;
     max-width: 210px;
-    padding: 10px 12px 8px 12px;
+    padding: 10px 18px 8px;
     box-shadow: 0 4px ${(props) => props.theme.colors.primary};
     font-size: ${(props) => props.theme.font.xxSmall};
     font-weight: 700;
@@ -554,6 +555,9 @@ const OdButton = styled.button`
     border-radius: 50px;
     transition: all 0.15s ease;
     box-sizing: border-box;
+    min-width: max-content;
+    width: auto;
+    height: 44px;
 
     &:hover {
         transform: translateY(-0.5px);
@@ -606,7 +610,10 @@ const ArrowWrapper = styled.div`
     margin-left: 8px;
 `
 
-const ClaimButton = styled(OdButton)``
+const ClaimButton = styled(OdButton)`
+    padding-left: 30px;
+    padding-right: 30px;
+`
 
 const DollarValue = styled(OdButton)`
     display: flex;
@@ -614,6 +621,8 @@ const DollarValue = styled(OdButton)`
     justify-content: space-between;
     white-space: nowrap;
 `
+
+const TotalValue = styled(OdButton)``
 
 const InfoPopUpHorizontalSeparator = styled.div`
     width: 100%;

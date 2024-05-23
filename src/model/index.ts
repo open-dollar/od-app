@@ -6,6 +6,7 @@ import transactionsModel, { TransactionsModel } from './transactionsModel'
 import multicallModel, { MulticallModel } from './multicallModel'
 import auctionModel, { AuctionModel } from './auctionModel'
 import bridgeModel, { BridgeModel } from './bridgeModel'
+import nitroPoolsModel, { NitroPoolsModel } from './nitroPoolsModel'
 
 export interface StoreModel {
     settingsModel: SettingsModel
@@ -16,6 +17,7 @@ export interface StoreModel {
     multicallModel: MulticallModel
     auctionModel: AuctionModel
     bridgeModel: BridgeModel
+    nitroPoolsModel: NitroPoolsModel
 }
 
 const model: StoreModel = {
@@ -27,6 +29,7 @@ const model: StoreModel = {
     multicallModel,
     auctionModel,
     bridgeModel,
+    nitroPoolsModel,
 }
 
 export default model

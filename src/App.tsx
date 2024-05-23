@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import i18next from 'i18next'
 import { Suspense } from 'react'
 import { I18nextProvider } from 'react-i18next'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import ErrorBoundary from './ErrorBoundary'
 import GlobalStyle from './GlobalStyle'
@@ -12,7 +12,6 @@ import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
 import Bridge from './containers/Bridge'
-import { useStoreState } from './store'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 import { ApolloProvider } from '@apollo/client'
@@ -28,6 +27,9 @@ import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
 import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
+import Bolts from './containers/Bolts'
+import { Fuul } from '@fuul/sdk'
+import EarnDetails from './containers/Earn/EarnDetails'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -42,14 +44,31 @@ Sentry.init({
     environment: process.env.NODE_ENV,
 })
 
+try {
+    Fuul.init({
+        apiKey: process.env.REACT_APP_FUUL_API_KEY!,
+    })
+} catch (e) {
+    console.log(e)
+}
+
 const App = () => {
-    const { settingsModel: settingsState } = useStoreState((state) => state)
-    const { bodyOverflow } = settingsState
+    const location = useLocation()
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const referrer = params.get('referrer')
+        const af = params.get('af')
+
+        if (referrer || af) {
+            localStorage.setItem('referralProgram', 'true')
+        }
+    }, [location.search])
 
     return (
         <I18nextProvider i18n={i18next}>
             <ThemeProvider theme={lightTheme}>
-                <GlobalStyle bodyOverflow={bodyOverflow} />
+                <GlobalStyle />
                 <ErrorBoundary>
                     <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />
                     <Shared>
@@ -64,6 +83,7 @@ const App = () => {
                                                 <Route exact strict component={Safes} path={'/'} />
                                                 <Route exact strict component={Maintenance} path={'/maintenance'} />
                                                 <Route exact strict component={Earn} path={'/earn'} />
+                                                <Route exact strict component={Bolts} path={'/bolts'} />
                                                 <Route exact strict component={Analytics} path={'/stats'} />
                                                 <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
@@ -82,6 +102,7 @@ const App = () => {
                                                     path={'/vaults/:id/withdraw'}
                                                 />
                                                 <Route exact component={VaultDetails} path={'/vaults/:id'} />
+                                                <Route exact component={EarnDetails} path={'/earn/:id'} />
                                                 <Route exact strict component={Safes} path={'/vaults'} />
                                                 <Route exact strict component={Safes} path={'/:address'} />
                                                 <Route

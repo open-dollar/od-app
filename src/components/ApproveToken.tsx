@@ -176,7 +176,7 @@ const ImgContainer = styled.div`
         height: 40px;
         stroke: #4ac6b2;
         path {
-            stroke-width: 1 !important;
+            strokewidth: 1 !important;
         }
         &.stateless {
             stroke: orange;
@@ -186,7 +186,7 @@ const ImgContainer = styled.div`
         }
         &.error {
             stroke: rgb(255, 104, 113);
-            stroke-width: 2;
+            strokewidth: 2;
             width: 60px !important;
             height: 60px !important;
             margin-bottom: 20px;

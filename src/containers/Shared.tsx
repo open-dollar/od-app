@@ -57,6 +57,7 @@ interface Props {
 const Shared = ({ children, ...rest }: Props) => {
     const { t } = useTranslation()
     const { chainId, account, provider, connector } = useActiveWeb3React()
+
     const geb = useGeb()
     const history = useHistory()
 

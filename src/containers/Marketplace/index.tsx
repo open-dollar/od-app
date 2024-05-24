@@ -5,6 +5,7 @@ import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
 //@ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import { useEffect, useMemo, useState } from 'react'
+import Table from '~/components/Table/Table'
 
 const Marketplace = () => {
     const [svg, setSvg] = useState('')
@@ -48,51 +49,7 @@ const Marketplace = () => {
                     </Button>
                 </BtnWrapper>
             </Header>
-            <CardsList>
-                <Card>
-                    <Wrapper>
-                        <Col>
-                            {/* <SVGContainer>
-                                <div
-                                    style={{
-                                        maxWidth: '300px',
-                                        height: 'auto',
-                                    }}
-                                    dangerouslySetInnerHTML={{ __html: svg }}
-                                ></div>
-                            </SVGContainer> */}
-                            image
-                        </Col>
-                        <Col>
-                            <Block>
-                                <ColItem>
-                                    <Label>
-                                        Current Price <Info />
-                                    </Label>
-                                    <Value>1 ETH</Value>
-                                    <DollarValue>$10,001</DollarValue>
-                                </ColItem>
-                                <ColItem>
-                                    <Label>
-                                        Estimated Value <Info />
-                                    </Label>
-                                    <Value>$3000</Value>
-                                </ColItem>
-                            </Block>
-                            <Block>
-                                <RowItem>
-                                    <Label>Sale ends</Label>
-                                    <RowValue>6/22/24</RowValue>
-                                </RowItem>
-                                <RowItem>
-                                    <Label>Another value</Label>
-                                    <RowValue>0%</RowValue>
-                                </RowItem>
-                            </Block>
-                        </Col>
-                    </Wrapper>
-                </Card>
-            </CardsList>
+            <Table />
         </Container>
     )
 }

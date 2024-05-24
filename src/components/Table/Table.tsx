@@ -1,9 +1,8 @@
 import * as React from 'react'
-
 import './index.css'
-
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
+import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
 
 type Listing = {
     id: string
@@ -15,34 +14,6 @@ type Listing = {
     image?: string
 }
 
-const defaultListings: Listing[] = [
-    {
-        id: '1',
-        assetName: 'RETH',
-        price: '1 ETH ($3,000)',
-        estimatedValue: '$2,990',
-        saleEnd: 'In 2 days',
-        saleStart: '10h ago',
-        image: 'https://via.placeholder.com/150',
-    },
-    {
-        id: '2',
-        assetName: 'WSTETH',
-        price: '1 ETH ($3,000)',
-        estimatedValue: '$2,990',
-        saleEnd: 'In 2 days',
-        saleStart: '10h ago',
-    },
-    {
-        id: '3',
-        assetName: 'ARB',
-        price: '1 ETH ($3,000)',
-        estimatedValue: '$2,990',
-        saleEnd: 'In 2 days',
-        saleStart: '10h ago',
-    },
-]
-
 const columnHelper = createColumnHelper<Listing>()
 
 const columns = [
@@ -50,10 +21,11 @@ const columns = [
         header: () => 'NFV Listed',
         cell: (info) => {
             const imageUrl = info.row.original.image
-            return imageUrl ? <img src={imageUrl} alt="img" /> : <Box></Box>
+            return imageUrl ? <img height={240} width={240} src={imageUrl} alt="img" /> : <Box></Box>
         },
     }),
     columnHelper.accessor('assetName', {
+        header: () => 'Asset Name',
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor((row) => row.price, {
@@ -62,22 +34,22 @@ const columns = [
         header: () => <span>Price</span>,
     }),
     columnHelper.accessor('estimatedValue', {
-        header: () => 'estimated Value',
+        header: () => 'Estimated Value',
         cell: (info) => info.renderValue(),
     }),
     columnHelper.accessor('saleEnd', {
-        header: () => <span>sale End</span>,
+        header: () => <span>Sale End</span>,
     }),
     columnHelper.accessor('saleStart', {
-        header: 'sale Start',
+        header: 'Sale Start',
     }),
 ]
 
 const Table = () => {
-    const [data, _setData] = React.useState(() => [...defaultListings])
+    const listings = useOpenSeaListings()
 
     const table = useReactTable({
-        data,
+        data: listings,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })

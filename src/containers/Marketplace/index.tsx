@@ -1,22 +1,9 @@
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import Button from '~/components/Button'
-import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
-//@ts-ignore
-import { generateSvg } from '@opendollar/svg-generator'
-import { useEffect, useMemo, useState } from 'react'
 import Table from '~/components/Table/Table'
 
 const Marketplace = () => {
-    const listings = useOpenSeaListings()
-    console.log('listings: ', listings)
-    // data we need to display
-    // for svg: vaultId, stabilityFee, debtAmount, collateralAmount, collateralizationRatio, safetyRatio, liqRatio
-    // for card: current price -> listings.price.currancy and value, estimated value -> totalDollarValue, startTime, endTime, another value ?
-
-    const vaultId = (listings?.[0] as any)?.id
-    const debtAmount = (listings?.[0] as any)?.debt
-
     const handleClick = () => {
         window.open('https://opensea.io/collection/open-dollar-vaults', '_blank')
     }

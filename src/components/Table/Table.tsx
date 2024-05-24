@@ -40,40 +40,73 @@ const defaultData: Person[] = [
     },
 ]
 
-const columnHelper = createColumnHelper<Person>()
+type Listing = {
+    id: string
+    assetName: string
+    price: string
+    estimatedValue: string
+    saleEnd: string
+    saleStart: string
+    image?: string
+}
+
+const defaultListings: Listing[] = [
+    {
+        id: '1',
+        assetName: 'RETH',
+        price: '1 ETH ($3,000)',
+        estimatedValue: '$2,990',
+        saleEnd: 'In 2 days',
+        saleStart: '10h ago',
+    },
+    {
+        id: '2',
+        assetName: 'WSTETH',
+        price: '1 ETH ($3,000)',
+        estimatedValue: '$2,990',
+        saleEnd: 'In 2 days',
+        saleStart: '10h ago',
+    },
+    {
+        id: '3',
+        assetName: 'ARB',
+        price: '1 ETH ($3,000)',
+        estimatedValue: '$2,990',
+        saleEnd: 'In 2 days',
+        saleStart: '10h ago',
+    },
+]
+
+const columnHelper = createColumnHelper<Listing>()
 
 const columns = [
-    columnHelper.accessor('firstName', {
+    columnHelper.accessor('assetName', {
         cell: (info) => info.getValue(),
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor((row) => row.lastName, {
-        id: 'lastName',
+    columnHelper.accessor((row) => row.price, {
+        id: 'price',
         cell: (info) => info.getValue(),
-        header: () => <span>Last Name</span>,
+        header: () => <span>Price</span>,
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('age', {
-        header: () => 'Age',
+    columnHelper.accessor('estimatedValue', {
+        header: () => 'estimated Value',
         cell: (info) => info.renderValue(),
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('visits', {
-        header: () => <span>Visits</span>,
+    columnHelper.accessor('saleEnd', {
+        header: () => <span>sale End</span>,
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor('status', {
-        header: 'Status',
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('progress', {
-        header: 'Profile Progress',
+    columnHelper.accessor('saleStart', {
+        header: 'sale Start',
         footer: (info) => info.column.id,
     }),
 ]
 
 const Table = () => {
-    const [data, _setData] = React.useState(() => [...defaultData])
+    const [data, _setData] = React.useState(() => [...defaultListings])
 
     const table = useReactTable({
         data,

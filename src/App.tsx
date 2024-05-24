@@ -48,6 +48,7 @@ try {
     Fuul.init({
         apiKey: process.env.REACT_APP_FUUL_API_KEY!,
     })
+    Fuul.sendPageview()
 } catch (e) {
     console.log(e)
 }

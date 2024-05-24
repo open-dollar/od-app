@@ -145,12 +145,17 @@ const Container = styled.div`
 const Content = styled.div`
     display: flex;
     align-items: center;
+    column-gap: 10px;
 
     input {
         padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 4px;
         width: 100%;
+    }
+    @media (max-width: 767px) {
+        flex-direction: column;
+        row-gap: 20px;
     }
 `
 
@@ -190,16 +195,12 @@ const ErrorMessage = styled.div`
 const BtnWrapper = styled.div`
     width: max-content;
     margin-right: auto;
-    margin-left: 10px;
     button {
-        height: 42px;
+        height: 49px;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 18px;
-        padding: 17px 30px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
+        width: 280px;
     }
 `

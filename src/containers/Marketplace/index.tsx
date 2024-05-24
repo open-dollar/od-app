@@ -1,4 +1,4 @@
-import { ExternalLink, Info } from 'react-feather'
+import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import Button from '~/components/Button'
 import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
@@ -8,7 +8,6 @@ import { useEffect, useMemo, useState } from 'react'
 import Table from '~/components/Table/Table'
 
 const Marketplace = () => {
-    const [svg, setSvg] = useState('')
     const listings = useOpenSeaListings()
     console.log('listings: ', listings)
     // data we need to display
@@ -94,81 +93,3 @@ const BtnWrapper = styled.div`
         gap: 10px;
     }
 `
-
-const CardsList = styled.div``
-
-const Card = styled.div`
-    background-color: white;
-    border-radius: 3px;
-    padding: 20px;
-    width: 600px;
-`
-
-const SVGContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 300px;
-    position: relative;
-    overflow: auto;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        width: 0;
-        background: transparent;
-    }
-`
-
-const Wrapper = styled.div`
-    display: flex;
-    gap: 20px;
-    align-items: center;
-`
-
-const Col = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-`
-
-const Label = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: ${(props) => props.theme.colors.tertiary};
-    font-size: ${(props) => props.theme.font.default};
-`
-
-const Value = styled.div`
-    color: ${(props) => props.theme.colors.primary};
-    font-size: 22px;
-    font-weight: 700;
-`
-
-const DollarValue = styled.div`
-    font-size: 16px;
-    color: #5d707f;
-`
-
-const ColItem = styled.div`
-    margin-bottom: 10px;
-`
-
-const RowItem = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0px;
-
-    :first-child {
-        border-bottom: 1px solid #e0e0e0;
-    }
-`
-
-const RowValue = styled.div`
-    font-weight: 700;
-    color: ${(props) => props.theme.colors.tertiary};
-    font-size: 20px;
-`
-
-const Block = styled.div``

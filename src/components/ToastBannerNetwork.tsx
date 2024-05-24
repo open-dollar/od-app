@@ -17,9 +17,7 @@ const Container = styled.div`
     align-items: center;
     padding: 10px 15px;
     background-color: #1a74ec;
-    svg {
-        margin-right: 15px;
-    }
+    border-bottom: 3px solid white;
 `
 
 const Text = styled.div<{ color?: string }>`

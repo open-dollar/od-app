@@ -81,6 +81,12 @@ const GlobalStyle = createGlobalStyle`
       border-right-color:${(props: any) => props.theme.colors.foreground} !important
     }
   }
+
+  .Toastify__toast-container {
+    padding: 0;
+    margin: 0;
+    height: 50px;
+  }
 .__react_component_tooltip {
     max-width: 250px;
     padding-top: 20px;

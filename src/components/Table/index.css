@@ -5,6 +5,8 @@ html {
 
 table {
     width: 100%;
+    background-color: #fff;
+    border-radius: 4px;
 }
 
 th {
@@ -13,11 +15,6 @@ th {
     font-family: 'Barlow', sans-serif;
     text-transform: uppercase;
     border-bottom: 1px solid #b6c7d3cc;
-    border-top: 1px solid #b6c7d3cc;
-
-    &:first-child {
-        padding-left: 0;
-    }
 
     &:not(:first-child) {
         text-align: right;
@@ -28,9 +25,6 @@ td {
     padding: 20px;
     text-transform: capitalize;
     text-decoration: none;
-    &:first-child {
-        padding-left: 0;
-    }
 
     &:not(:first-child) {
         text-align: right;

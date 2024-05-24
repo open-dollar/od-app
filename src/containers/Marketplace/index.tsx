@@ -21,23 +21,6 @@ const Marketplace = () => {
         window.open('https://opensea.io/collection/open-dollar-vaults', '_blank')
     }
 
-    const statsForSVG = useMemo(
-        () => ({
-            vaultId,
-            stabilityFee: 2,
-            debtAmount,
-            collateralAmount: (listings?.[0] as any)?.collateral,
-            collateralizationRatio: '5%',
-            safetyRatio: '6%',
-            liqRatio: '7%',
-        }),
-        []
-    )
-
-    useEffect(() => {
-        setSvg(generateSvg(statsForSVG))
-    }, [statsForSVG])
-
     return (
         <Container>
             <Header>

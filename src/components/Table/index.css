@@ -1,27 +1,28 @@
 html {
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-  }
-  
-  table {
-    border: 1px solid lightgray;
-  }
-  
-  tbody {
-    border-bottom: 1px solid lightgray;
-  }
-  
-  th {
-    border-bottom: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    padding: 2px 4px;
-  }
-  
-  tfoot {
-    color: gray;
-  }
-  
-  tfoot th {
-    font-weight: normal;
-  }
-  
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    padding: 20px;
+    text-align: left;
+    font-family: 'Barlow', sans-serif;
+    text-transform: uppercase;
+    border-bottom: 1px solid #B6C7D3CC;
+    border-top: 1px solid #B6C7D3CC;
+
+    &:first-child {
+        padding-left: 0;
+    }
+}
+
+td {
+    padding: 20px;
+    &:first-child {
+        padding-left: 0;
+    }
+}

@@ -49,7 +49,7 @@ const columns = [
     }),
     columnHelper.accessor((row) => row.lastName, {
         id: 'lastName',
-        cell: (info) => <i>{info.getValue()}</i>,
+        cell: (info) => info.getValue(),
         header: () => <span>Last Name</span>,
         footer: (info) => info.column.id,
     }),
@@ -74,7 +74,6 @@ const columns = [
 
 const Table = () => {
     const [data, _setData] = React.useState(() => [...defaultData])
-    const rerender = React.useReducer(() => ({}), {})[1]
 
     const table = useReactTable({
         data,
@@ -83,7 +82,7 @@ const Table = () => {
     })
 
     return (
-        <div className="p-2">
+        <div>
             <table>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -108,10 +107,6 @@ const Table = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="h-4" />
-            <button onClick={() => rerender()} className="border p-2">
-                Rerender
-            </button>
         </div>
     )
 }

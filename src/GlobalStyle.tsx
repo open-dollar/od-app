@@ -85,7 +85,7 @@ const GlobalStyle = createGlobalStyle`
   .Toastify__toast-container {
     padding: 0;
     margin: 0;
-    height: 50px;
+    height: 60px;
   }
 .__react_component_tooltip {
     max-width: 250px;

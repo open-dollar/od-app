@@ -18,6 +18,7 @@ const Container = styled.div`
     padding: 10px 15px;
     background-color: #1a74ec;
     border-bottom: 3px solid white;
+    height: 60px;
 `
 
 const Text = styled.div<{ color?: string }>`

@@ -16,6 +16,10 @@ th {
     text-transform: uppercase;
     border-bottom: 1px solid #b6c7d3cc;
 
+    &:first-child {
+        width: 150px;
+    }
+
     &:not(:first-child) {
         text-align: right;
     }

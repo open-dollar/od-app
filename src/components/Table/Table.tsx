@@ -3,6 +3,7 @@ import * as React from 'react'
 import './index.css'
 
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import styled from 'styled-components'
 
 type Person = {
     firstName: string
@@ -58,6 +59,7 @@ const defaultListings: Listing[] = [
         estimatedValue: '$2,990',
         saleEnd: 'In 2 days',
         saleStart: '10h ago',
+        image: 'https://via.placeholder.com/150',
     },
     {
         id: '2',
@@ -80,28 +82,30 @@ const defaultListings: Listing[] = [
 const columnHelper = createColumnHelper<Listing>()
 
 const columns = [
+    columnHelper.accessor('image', {
+        header: () => 'NFV Listed',
+        cell: (info) => {
+            const imageUrl = info.row.original.image
+            return imageUrl ? <img src={imageUrl} alt="img" /> : <Box></Box>
+        },
+    }),
     columnHelper.accessor('assetName', {
         cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
     }),
     columnHelper.accessor((row) => row.price, {
         id: 'price',
         cell: (info) => info.getValue(),
         header: () => <span>Price</span>,
-        footer: (info) => info.column.id,
     }),
     columnHelper.accessor('estimatedValue', {
         header: () => 'estimated Value',
         cell: (info) => info.renderValue(),
-        footer: (info) => info.column.id,
     }),
     columnHelper.accessor('saleEnd', {
         header: () => <span>sale End</span>,
-        footer: (info) => info.column.id,
     }),
     columnHelper.accessor('saleStart', {
         header: 'sale Start',
-        footer: (info) => info.column.id,
     }),
 ]
 
@@ -145,3 +149,9 @@ const Table = () => {
 }
 
 export default Table
+
+const Box = styled.div`
+    width: 50px;
+    height: 50px;
+    background-color: green;
+`

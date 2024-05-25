@@ -21,7 +21,7 @@ const columns = [
         header: () => 'NFV Listed',
         cell: (info) => {
             const imageUrl = info.row.original.image
-            return imageUrl ? <img height={240} width={240} src={imageUrl} alt="img" /> : <Box></Box>
+            return imageUrl ? <StyledImage height={240} width={240} src={imageUrl} alt="img" /> : <Box></Box>
         },
     }),
     columnHelper.accessor('assetName', {
@@ -90,4 +90,12 @@ const Box = styled.div`
     width: 50px;
     height: 50px;
     background-color: green;
+`
+
+const StyledImage = styled.img`
+    width: 240px !important;
+    height: 240px !important;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
 `

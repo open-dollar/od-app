@@ -3,7 +3,8 @@ import { getCollectionListingsData, getNftMetadata } from '~/services/opensea'
 import { useStoreState } from '~/store'
 import { useWeb3React } from '@web3-react/core'
 import { getDuration, getEndDuration } from '~/utils/datesAndTimes'
-import api from '~/services/api'
+import { BigNumber, ethers } from 'ethers'
+import { formatDataNumber, formatNumber } from '~/utils'
 
 type Listing = {
     id: string
@@ -35,10 +36,42 @@ export const useOpenSeaListings = () => {
                 const endTime = listing.protocol_data.parameters.endTime
                 const priceInEth = listing.price.current.value / 10 ** listing.price.current.decimals
                 const price = `${priceInEth} ETH`
-                const estimatedValue = `$${(priceInEth * fiatPrice).toFixed(2)}`
                 const metadata = await getNftMetadata(listing.protocol_data.parameters.offer[0].token, vaultId)
                 const assetName =
                     metadata.nft.traits.find((trait: any) => trait.trait_type === 'Collateral Type')?.value || ''
+                const collateralAmount =
+                    metadata.nft.traits.find((trait: any) => trait.trait_type === 'Collateral')?.value || '0'
+                const debt = metadata.nft.traits.find((trait: any) => trait.trait_type === 'Debt')?.value || '0'
+                const collateralAmountBN = BigNumber.from(collateralAmount)
+                const debtBN = BigNumber.from(debt)
+
+                let estimatedValue = '0'
+                let collateralPriceUSD = '0'
+                let odPriceUSD = '0'
+
+                if (
+                    safeState?.liquidationData &&
+                    safeState?.liquidationData.collateralLiquidationData &&
+                    safeState.liquidationData.collateralLiquidationData[assetName]
+                ) {
+                    const currentRedemptionPrice = safeState.liquidationData.currentRedemptionPrice
+                    const collateralLiquidationPrice =
+                        safeState.liquidationData.collateralLiquidationData[assetName].currentPrice.value
+
+                    //TODO: Need to debug calculating estimated value
+                    odPriceUSD = formatNumber(currentRedemptionPrice).toString()
+                    collateralPriceUSD = formatNumber(collateralLiquidationPrice).toString()
+
+                    const odPriceUSDBN = ethers.utils.parseUnits(odPriceUSD, 18)
+                    const collateralPriceUSDBN = ethers.utils.parseUnits(collateralPriceUSD, 18)
+
+                    const odValue = debtBN.mul(odPriceUSDBN).div(BigNumber.from(10).pow(18))
+                    const collateralValue = collateralAmountBN.mul(collateralPriceUSDBN).div(BigNumber.from(10).pow(18))
+
+                    const estimatedValueBN = collateralValue.sub(odValue)
+                    estimatedValue = formatDataNumber(estimatedValueBN.toString(), 18, 2, true)
+                }
+
                 const image = metadata.nft.image_url || ''
 
                 return {
@@ -58,7 +91,6 @@ export const useOpenSeaListings = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await api.fetchFiatPrice('ethereum')
             getListingData()
         }
 

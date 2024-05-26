@@ -2,7 +2,7 @@ import * as React from 'react'
 import './index.css'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
-import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
+
 
 type Listing = {
     id: string
@@ -11,17 +11,30 @@ type Listing = {
     estimatedValue: string
     saleEnd: string
     saleStart: string
-    image?: string
+    image?: string | any
 }
 
 const columnHelper = createColumnHelper<Listing>()
 
 const columns = [
+    columnHelper.accessor('id', {
+        header: () => 'ID',
+        cell: (info) => info.getValue(),
+    
+    }),
     columnHelper.accessor('image', {
         header: () => 'NFV Listed',
         cell: (info) => {
             const imageUrl = info.row.original.image
-            return imageUrl ? <StyledImage height={240} width={240} src={imageUrl} alt="img" /> : <Box></Box>
+            return imageUrl ?  <SVGContainer>
+                    <div
+                        style={{
+                            maxWidth: '100%',
+                            height: 'auto',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: imageUrl }}
+                    ></div>
+                </SVGContainer> : null
         },
     }),
     columnHelper.accessor('assetName', {
@@ -45,17 +58,16 @@ const columns = [
     }),
 ]
 
-const Table = () => {
-    const listings = useOpenSeaListings()
+const Table = ({ data }: { data: Listing[] }) => {
 
     const table = useReactTable({
-        data: listings,
+        data: data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
 
     return (
-        <div>
+        <div key={`table-${data}`}>
             <table>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -86,16 +98,17 @@ const Table = () => {
 
 export default Table
 
-const Box = styled.div`
-    width: 50px;
-    height: 50px;
-    background-color: green;
-`
-
-const StyledImage = styled.img`
-    width: 240px !important;
-    height: 240px !important;
-    max-width: none !important;
-    max-height: none !important;
-    display: block;
+const SVGContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 420px;
+    position: relative;
+    overflow: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+    }
 `

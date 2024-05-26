@@ -1,18 +1,13 @@
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import Button from '~/components/Button'
-import Table from '~/components/Table/Table'
+import Table from './Table'
 import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
-import { useStoreActions, useStoreState } from '~/store'
 import useGeb from '~/hooks/useGeb'
-import {ethers} from 'ethers'
-import { formatUserSafe, ILiquidationData } from '~/utils'
-import gebManager from '~/utils/gebManager'
-import { formatWithCommas, getRatePercentage } from '~/utils'
 // @ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import * as React from 'react'
-import { table } from 'console'
+import { useVaultSubgraph, VaultDetails } from '~/hooks/useVaultSubgraph'
 
 type Listing = {
     id: string
@@ -25,117 +20,116 @@ type Listing = {
 }
 
 const Marketplace = () => {
-    const handleClick = () => {
-        window.open('https://opensea.io/collection/open-dollar-vaults', '_blank')
-    }
-    const [fetching, setFetching] = React.useState<boolean>(true)
+    const [isLoading, setIsLoading] = React.useState<boolean>(true)
     const [tableData, setTableData] = React.useState<Listing[]>([])
+
     const listings = useOpenSeaListings()
-    const { safeModel: safeState } = useStoreState((state) => state)
+    const allVaults = useVaultSubgraph()
+
     const geb = useGeb()
-    const { safeModel: safeActions } = useStoreActions((state) => state)
+
+    const getSafeData = async () => {
+        if (!geb) return
+        if (!allVaults?.vaults) return
+        console.log('allVaults', allVaults)
+        setIsLoading(true)
+        const tableRows: Listing[] = []
+        for (const listing of listings) {
+            try {
+                const index = allVaults.vaults.findIndex((vault: VaultDetails) => vault.id === listing.id)
+                const vault = allVaults.vaults[index] as VaultDetails
+                if (!vault) throw new Error('Listed vault not found in allVaults query')
+                // TODO: Get protocol liqudation data
+                // const userSafes = await gebManager.getUserSafesRpc({
+                //     address: ownerAddress,
+                //     geb,
+                //     tokensData: geb.tokenList,
+                // })
+
+                // const { collateralLiquidationData } = userSafes
+                // const constructedLiquidationData: ILiquidationData = {
+                //     currentRedemptionPrice: userSafes.systemState.currentRedemptionPrice.value,
+                //     currentRedemptionRate: userSafes.systemState.currentRedemptionRate.annualizedRate,
+                //     globalDebt: userSafes.systemState.globalDebt,
+                //     perSafeDebtCeiling: userSafes.systemState.perSafeDebtCeiling,
+                //     globalDebtCeiling: userSafes.systemState.globalDebtCeiling,
+                //     collateralLiquidationData: collateralLiquidationData,
+                // }
+                // safeActions.setLiquidationData(constructedLiquidationData)
+
+                // const svgData = {
+                //     vaultID: singleSafe?.id,
+                //     stabilityFee:
+                //         Number(
+                //             getRatePercentage(
+                //                 singleSafe?.totalAnnualizedStabilityFee
+                //                     ? singleSafe?.totalAnnualizedStabilityFee
+                //                     : '0',
+                //                 4
+                //             )
+                //         ).toString() + '%',
+                //     debtAmount: formatWithCommas(singleSafe.totalDebt) + ' OD',
+                //     collateralAmount: formatWithCommas(singleSafe.collateral) + ' ' + singleSafe.collateralName,
+                //     collateralizationRatio:
+                //         singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
+                //     safetyRatio: singleSafe?.safetyCRatio,
+                //     liqRatio: singleSafe?.liquidationCRatio,
+                // }
+
+                let svg = null
+                // try {
+                //     svg = await generateSvg(svgData)
+                // } catch (e) {
+                //     console.error(e)
+                // }
+
+                // TODO: calculate estimated value
+                const estimatedValue = '0' // toUSD(vault.collateral,vault.collateralType) - vault.debt * redemptionPrice
+
+                const TableListing: Listing = {
+                    id: listing.id,
+                    assetName: vault.collateralType,
+                    price: listing.price,
+                    estimatedValue,
+                    saleEnd: listing.saleEnd,
+                    saleStart: listing.saleStart,
+                    image: svg ? svg : null,
+                }
+
+                tableRows.push(TableListing)
+            } catch (e) {
+                console.error(e)
+                return
+            }
+        }
+        setTableData(tableRows)
+        setIsLoading(false)
+    }
 
     React.useEffect(() => {
-        const getSafeData = async () => {
-
-            if (!geb) return
-            
-            if (!listings) return
-            setFetching(true)
-            const tableInfo = []
-            for (const listing of listings) {
-                try {
-                    const safeDataResponse = await geb.contracts.safeManager.connect(geb.provider).safeData(listing.id)
-                    const ODProxyAddress = safeDataResponse[1]
-                    const ODProxyContract = new ethers.Contract(
-                        ODProxyAddress,
-                        '[{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"OnlyOwner","type":"error"},{"inputs":[],"name":"TargetAddressRequired","type":"error"},{"inputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"name":"TargetCallFailed","type":"error"},{"inputs":[],"name":"OWNER","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_target","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"execute","outputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"stateMutability":"payable","type":"function"}]',
-                        geb.provider
-                    )
-                    const ownerAddress = await ODProxyContract.OWNER()
-                    const userSafes = await gebManager.getUserSafesRpc({
-                        address: ownerAddress,
-                        geb,
-                        tokensData: geb.tokenList,
-                    })
-                    const safeById = userSafes.safes.find((safe) => safe.safeId === listing.id)
-                    if (!safeById) {
-                        return
-                    }
-                    const { collateralLiquidationData } = userSafes
-                    const constructedLiquidationData: ILiquidationData = {
-                        currentRedemptionPrice: userSafes.systemState.currentRedemptionPrice.value,
-                        currentRedemptionRate: userSafes.systemState.currentRedemptionRate.annualizedRate,
-                        globalDebt: userSafes.systemState.globalDebt,
-                        perSafeDebtCeiling: userSafes.systemState.perSafeDebtCeiling,
-                        globalDebtCeiling: userSafes.systemState.globalDebtCeiling,
-                        collateralLiquidationData: collateralLiquidationData,
-                    }
-                    safeActions.setLiquidationData(constructedLiquidationData)
-        
-                    const formattedSafe = formatUserSafe(
-                        [safeById],
-                        constructedLiquidationData as ILiquidationData,
-                        geb.tokenList
-                    )
-                    const statsForSVG = (singleSafe: any) => ({
-                        vaultID: singleSafe?.id,
-                        stabilityFee:
-                            Number(
-                                getRatePercentage(
-                                    singleSafe?.totalAnnualizedStabilityFee ? singleSafe?.totalAnnualizedStabilityFee : '0',
-                                    4
-                                )
-                            ).toString() + '%',
-                        debtAmount: formatWithCommas(singleSafe.totalDebt) + ' OD',
-                        collateralAmount: formatWithCommas(singleSafe.collateral) + ' ' + singleSafe.collateralName,
-                        collateralizationRatio: singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
-                        safetyRatio: Number(constructedLiquidationData.collateralLiquidationData[singleSafe.collateralName].safetyCRatio),
-                        liqRatio: Number(constructedLiquidationData.collateralLiquidationData[singleSafe.collateralName].liquidationCRatio),
-                   })
-                   
-                    if (formattedSafe[0] ) {
-                        let svg = null
-                        try {
-                            svg = await generateSvg(statsForSVG(formattedSafe[0]))
-                        } catch (e) {
-                            console.error(e)
-                        }
-                        
-                        tableInfo.push({
-                            id: listing.id,
-                            assetName: formattedSafe[0].collateralName,
-                            price: listing.price,
-                            estimatedValue: (+formattedSafe[0].collateral - +formattedSafe[0].debt).toString(),
-                            saleEnd: listing.saleEnd,
-                            saleStart: listing.saleStart,
-                            image: svg ? svg : null,
-                        })
-                    }
-                } catch (e) {
-                    console.error(e)
-                    return
-                }
-            }
-            setTableData(tableInfo)
-            setFetching(false)
-        }
         getSafeData()
-    }, [listings, geb])
+    }, [listings, allVaults, geb])
 
     return (
         <Container>
             <Header>
                 <Title>Loan Marketplace</Title>
                 <BtnWrapper>
-                    <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
+                    <Button
+                        data-test-id="steps-btn"
+                        id={'suggest-pool-btn'}
+                        secondary
+                        onClick={() => {
+                            window.open('https://opensea.io/collection/open-dollar-vaults', '_blank')
+                        }}
+                    >
                         View On OpenSea <ExternalLink />
                     </Button>
                 </BtnWrapper>
             </Header>
-            { tableData.length !== 0 && <Table data={tableData} /> }
-            { tableData.length === 0 && fetching && <p>Loading...</p> }
-            { tableData.length === 0 && !fetching && <p>No listings available</p> }
+            {tableData.length !== 0 && <Table data={tableData} />}
+            {tableData.length === 0 && isLoading && <p>Loading...</p>}
+            {tableData.length === 0 && !isLoading && <p>No vaults listed available</p>}
         </Container>
     )
 }

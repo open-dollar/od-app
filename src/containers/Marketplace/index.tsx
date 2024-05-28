@@ -5,17 +5,12 @@ import Table from './Table'
 import { ethers } from 'ethers'
 import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
 import useGeb from '~/hooks/useGeb'
-import { useStoreState } from '~/store'
 import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 // @ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import * as React from 'react'
 import { useVaultSubgraph, VaultDetails } from '~/hooks/useVaultSubgraph'
-import {
-    formatDataNumber,
-    multiplyRates,
-    transformToAnnualRate,
-} from '~/utils'
+import { formatDataNumber, multiplyRates, transformToAnnualRate } from '~/utils'
 
 type Listing = {
     id: string
@@ -33,7 +28,6 @@ const Marketplace = () => {
 
     const listings = useOpenSeaListings()
     const allVaults = useVaultSubgraph()
-    const { safeModel: safeState } = useStoreState((state) => state)
     const geb = useGeb()
 
     const getSafeData = async () => {
@@ -49,8 +43,14 @@ const Marketplace = () => {
                 const vault = allVaults.vaults[index] as VaultDetails
                 if (!vault) throw new Error('Listed vault not found in allVaults query')
 
-                const estimatedValue = `${(+ethers.utils.formatUnits(vault.collateral) * +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)).toFixed(2)}`
-                
+                const estimatedValue = `${(
+                    +ethers.utils.formatUnits(vault.collateral) *
+                    +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)
+                ).toFixed(2)}`
+                //@to-do: calculate premium which is the value of vault value - listing price
+                // const listingPrice = listing.price.split(' ')[0]
+                // const listingPriceToken = listing.price.split(' ')[1]
+
                 const stabilityFee = transformToAnnualRate(
                     multiplyRates(
                         analyticsData.tokenAnalyticsData[vault.collateralType].stabilityFee.toString(),
@@ -59,16 +59,22 @@ const Marketplace = () => {
                     27
                 )
                 const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
-                console.log((ethers.utils.formatEther(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio)), analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
-                
+
+                //@to-do calculate safety ratio and liquidation ratio
+                //console.log((ethers.utils.formatEther(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio)), analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
+
                 const svgData = {
                     vaultID: listing.id,
                     stabilityFee,
                     debtAmount: formatDataNumber(vault.debt) + ' OD',
                     collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
                     collateralizationRatio: cratio ?? '∞',
-                    safetyRatio: ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio),
-                    liqRatio: ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio),
+                    safetyRatio: ethers.utils.formatUnits(
+                        analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio
+                    ),
+                    liqRatio: ethers.utils.formatUnits(
+                        analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio
+                    ),
                 }
 
                 let svg = null
@@ -77,12 +83,12 @@ const Marketplace = () => {
                 } catch (e) {
                     console.error(e)
                 }
-       
+
                 const TableListing: Listing = {
                     id: listing.id,
                     assetName: vault.collateralType,
                     price: listing.price,
-                    estimatedValue,
+                    estimatedValue: `$${estimatedValue}`,
                     saleEnd: listing.saleEnd,
                     saleStart: listing.saleStart,
                     image: svg ? svg : null,
@@ -100,6 +106,7 @@ const Marketplace = () => {
 
     React.useEffect(() => {
         getSafeData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listings, allVaults, geb])
 
     return (

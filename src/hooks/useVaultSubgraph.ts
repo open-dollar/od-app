@@ -52,6 +52,7 @@ export const fetchAllVaults = async () => {
         vaultsByOwner[vault.owner].push(vault.id)
         if (!vaultsByCollateral[vault.collateralType]) vaultsByCollateral[vault.collateralType] = []
         vaultsByCollateral[vault.collateralType].push(vault.id)
+        return vault
     })
     const details = {
         vaults: data.data.vaults,

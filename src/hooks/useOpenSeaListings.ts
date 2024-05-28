@@ -19,12 +19,8 @@ type Listing = {
 export const useOpenSeaListings = () => {
     const [listings, setListings] = useState<Listing[]>([])
     const { account } = useWeb3React()
-    const {
-        safeModel: safeState,
-        connectWalletModel: { fiatPrice },
-    } = useStoreState((state) => state)
+    const { safeModel: safeState } = useStoreState((state) => state)
     const safes = safeState.list
-
     const getListingData = async () => {
         const collectionListings = await getCollectionListingsData()
 

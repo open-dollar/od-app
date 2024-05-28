@@ -80,7 +80,6 @@ const VaultDetails = ({ ...props }) => {
                 globalDebtCeiling: userSafes.systemState.globalDebtCeiling,
                 collateralLiquidationData: collateralLiquidationData,
             }
-     
 
             const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
             if (!safeById) {

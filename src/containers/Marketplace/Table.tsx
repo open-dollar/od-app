@@ -3,7 +3,6 @@ import './index.css'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
 
-
 type Listing = {
     id: string
     assetName: string
@@ -20,21 +19,24 @@ const columns = [
     columnHelper.accessor('id', {
         header: () => 'ID',
         cell: (info) => info.getValue(),
-    
     }),
     columnHelper.accessor('image', {
         header: () => 'NFV Listed',
         cell: (info) => {
             const image = info.row.original.image
-            return image ?  <SVGContainer>
+            return image ? (
+                <SVGContainer>
                     <div
                         style={{
-                            maxWidth: '100%',
-                            height: 'auto',
+                            width: '200px',
+                            height: '200px',
+                            transform: 'scale(0.25)',
                         }}
                         dangerouslySetInnerHTML={{ __html: image }}
                     ></div>
-                </SVGContainer> : null
+                </SVGContainer>
+            ) : null
+            // return image ? <SVGCol img={image} /> : null
         },
     }),
     columnHelper.accessor('assetName', {
@@ -59,7 +61,6 @@ const columns = [
 ]
 
 const Table = ({ data }: { data: Listing[] }) => {
-
     const table = useReactTable({
         data: data,
         columns,
@@ -102,8 +103,7 @@ const SVGContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 420px;
+
     position: relative;
     overflow: auto;
     scrollbar-width: none;

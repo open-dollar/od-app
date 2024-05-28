@@ -2,12 +2,20 @@ import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import Button from '~/components/Button'
 import Table from './Table'
+import { ethers } from 'ethers'
 import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
 import useGeb from '~/hooks/useGeb'
+import { useStoreState } from '~/store'
+import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 // @ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import * as React from 'react'
 import { useVaultSubgraph, VaultDetails } from '~/hooks/useVaultSubgraph'
+import {
+    formatDataNumber,
+    multiplyRates,
+    transformToAnnualRate,
+} from '~/utils'
 
 type Listing = {
     id: string
@@ -25,13 +33,14 @@ const Marketplace = () => {
 
     const listings = useOpenSeaListings()
     const allVaults = useVaultSubgraph()
-
+    const { safeModel: safeState } = useStoreState((state) => state)
     const geb = useGeb()
 
     const getSafeData = async () => {
         if (!geb) return
         if (!allVaults?.vaults) return
-        console.log('allVaults', allVaults)
+        const [analyticsData] = await Promise.all([fetchAnalyticsData(geb)])
+
         setIsLoading(true)
         const tableRows: Listing[] = []
         for (const listing of listings) {
@@ -39,53 +48,36 @@ const Marketplace = () => {
                 const index = allVaults.vaults.findIndex((vault: VaultDetails) => vault.id === listing.id)
                 const vault = allVaults.vaults[index] as VaultDetails
                 if (!vault) throw new Error('Listed vault not found in allVaults query')
-                // TODO: Get protocol liqudation data
-                // const userSafes = await gebManager.getUserSafesRpc({
-                //     address: ownerAddress,
-                //     geb,
-                //     tokensData: geb.tokenList,
-                // })
 
-                // const { collateralLiquidationData } = userSafes
-                // const constructedLiquidationData: ILiquidationData = {
-                //     currentRedemptionPrice: userSafes.systemState.currentRedemptionPrice.value,
-                //     currentRedemptionRate: userSafes.systemState.currentRedemptionRate.annualizedRate,
-                //     globalDebt: userSafes.systemState.globalDebt,
-                //     perSafeDebtCeiling: userSafes.systemState.perSafeDebtCeiling,
-                //     globalDebtCeiling: userSafes.systemState.globalDebtCeiling,
-                //     collateralLiquidationData: collateralLiquidationData,
-                // }
-                // safeActions.setLiquidationData(constructedLiquidationData)
-
-                // const svgData = {
-                //     vaultID: singleSafe?.id,
-                //     stabilityFee:
-                //         Number(
-                //             getRatePercentage(
-                //                 singleSafe?.totalAnnualizedStabilityFee
-                //                     ? singleSafe?.totalAnnualizedStabilityFee
-                //                     : '0',
-                //                 4
-                //             )
-                //         ).toString() + '%',
-                //     debtAmount: formatWithCommas(singleSafe.totalDebt) + ' OD',
-                //     collateralAmount: formatWithCommas(singleSafe.collateral) + ' ' + singleSafe.collateralName,
-                //     collateralizationRatio:
-                //         singleSafe?.collateralRatio === '∞' ? '∞' : Number(singleSafe?.collateralRatio),
-                //     safetyRatio: singleSafe?.safetyCRatio,
-                //     liqRatio: singleSafe?.liquidationCRatio,
-                // }
+                const estimatedValue = `${(+ethers.utils.formatUnits(vault.collateral) * +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)).toFixed(2)}`
+                
+                const stabilityFee = transformToAnnualRate(
+                    multiplyRates(
+                        analyticsData.tokenAnalyticsData[vault.collateralType].stabilityFee.toString(),
+                        analyticsData.redemptionRate?.toString()
+                    ) || '0',
+                    27
+                )
+                const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
+                console.log((ethers.utils.formatEther(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio)), analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
+                
+                const svgData = {
+                    vaultID: listing.id,
+                    stabilityFee,
+                    debtAmount: formatDataNumber(vault.debt) + ' OD',
+                    collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
+                    collateralizationRatio: cratio ?? '∞',
+                    safetyRatio: ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio),
+                    liqRatio: ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio),
+                }
 
                 let svg = null
-                // try {
-                //     svg = await generateSvg(svgData)
-                // } catch (e) {
-                //     console.error(e)
-                // }
-
-                // TODO: calculate estimated value
-                const estimatedValue = '0' // toUSD(vault.collateral,vault.collateralType) - vault.debt * redemptionPrice
-
+                try {
+                    svg = await generateSvg(svgData)
+                } catch (e) {
+                    console.error(e)
+                }
+       
                 const TableListing: Listing = {
                     id: listing.id,
                     assetName: vault.collateralType,

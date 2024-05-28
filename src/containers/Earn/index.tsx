@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import PoolBlock from './PoolBlock'
-import { useStoreState } from 'easy-peasy'
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect } from 'react'
 import useGeb from '~/hooks/useGeb'
@@ -14,10 +13,7 @@ import { POOLS } from '~/utils'
 const Earn = () => {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
-    // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
-    //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
-    // @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
 

@@ -25,14 +25,14 @@ const columns = [
     columnHelper.accessor('image', {
         header: () => 'NFV Listed',
         cell: (info) => {
-            const imageUrl = info.row.original.image
-            return imageUrl ?  <SVGContainer>
+            const image = info.row.original.image
+            return image ?  <SVGContainer>
                     <div
                         style={{
                             maxWidth: '100%',
                             height: 'auto',
                         }}
-                        dangerouslySetInnerHTML={{ __html: imageUrl }}
+                        dangerouslySetInnerHTML={{ __html: image }}
                     ></div>
                 </SVGContainer> : null
         },

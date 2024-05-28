@@ -81,7 +81,7 @@ const Marketplace = () => {
                 }
 
                 const TableListing: Listing = {
-                    listingPrice: `${estimatedETH}`,
+                    listingPrice: `$${estimatedETH}`,
                     premium,
                     id: listing.id,
                     assetName: vault.collateralType,

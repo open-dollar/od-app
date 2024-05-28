@@ -28,14 +28,7 @@ const columns = [
             const image = info.row.original.image
             return image ? (
                 <SVGContainer>
-                    <div
-                        // style={{
-                        //     width: '200px',
-                        //     height: '200px',
-                        //     transform: 'scale(0.25)',
-                        // }}
-                        dangerouslySetInnerHTML={{ __html: image }}
-                    ></div>
+                    <div style={{ transform: 'scale(0.33)' }} dangerouslySetInnerHTML={{ __html: image }}></div>
                 </SVGContainer>
             ) : null
             // return image ? <SVGCol img={image} /> : null
@@ -145,14 +138,16 @@ const SVGContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 150px;
+    height: 150px;
 
     position: relative;
-    overflow: auto;
+    /* overflow: auto;
     scrollbar-width: none;
     &::-webkit-scrollbar {
         width: 0;
         background: transparent;
-    }
+    } */
 `
 
 const ButtonFloat = styled.div`
@@ -172,10 +167,4 @@ const ButtonFloat = styled.div`
         margin: 5px;
         padding: 5px;
     }
-`
-
-const TableContainer = styled.div`
-    display: block;
-    overflow-x: auto;
-    max-width: 100%;
 `

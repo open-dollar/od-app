@@ -16,13 +16,14 @@ th {
     font-family: 'Barlow', sans-serif;
     text-transform: uppercase;
     border-bottom: 1px solid #b6c7d3cc;
+    white-space: nowrap;
 
     &:first-child {
-        width: 150px;
+        /* width: 150px; */
     }
 
     &:not(:first-child) {
-        text-align: right;
+        /* text-align: right; */
     }
 }
 
@@ -32,6 +33,6 @@ td {
     text-decoration: none;
 
     &:not(:first-child) {
-        text-align: right;
+        /* text-align: right; */
     }
 }

@@ -10,9 +10,11 @@ import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalytics
 import { generateSvg } from '@opendollar/svg-generator'
 import * as React from 'react'
 import { useVaultSubgraph, VaultDetails } from '~/hooks/useVaultSubgraph'
-import { formatDataNumber, multiplyRates, transformToAnnualRate } from '~/utils'
+import { formatDataNumber, multiplyRates, parseRay, transformToAnnualRate } from '~/utils'
 
 type Listing = {
+    listingPrice: string
+    premium: string
     id: string
     assetName: string
     price: string
@@ -48,9 +50,10 @@ const Marketplace = () => {
                     +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)
                 ).toFixed(2)}`
                 //@to-do: calculate premium which is the value of vault value - listing price
-                // const listingPrice = listing.price.split(' ')[0]
-                // const listingPriceToken = listing.price.split(' ')[1]
-
+                const listingPrice = listing.price.split(' ')[0]
+                //const listingPriceToken = listing.price.split(' ')[1]
+                const estimatedETH = +listingPrice * 3854.86
+                const premium = `$${(+estimatedValue - +estimatedETH).toFixed(2)}`
                 const stabilityFee = transformToAnnualRate(
                     multiplyRates(
                         analyticsData.tokenAnalyticsData[vault.collateralType].stabilityFee.toString(),
@@ -60,21 +63,14 @@ const Marketplace = () => {
                 )
                 const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
 
-                //@to-do calculate safety ratio and liquidation ratio
-                //console.log((ethers.utils.formatEther(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio)), analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
-
                 const svgData = {
                     vaultID: listing.id,
                     stabilityFee,
                     debtAmount: formatDataNumber(vault.debt) + ' OD',
                     collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
                     collateralizationRatio: cratio ?? '∞',
-                    safetyRatio: ethers.utils.formatUnits(
-                        analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio
-                    ),
-                    liqRatio: ethers.utils.formatUnits(
-                        analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio
-                    ),
+                    safetyRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio),
+                    liqRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio),
                 }
 
                 let svg = null
@@ -85,6 +81,8 @@ const Marketplace = () => {
                 }
 
                 const TableListing: Listing = {
+                    listingPrice: `${estimatedETH}`,
+                    premium,
                     id: listing.id,
                     assetName: vault.collateralType,
                     price: listing.price,

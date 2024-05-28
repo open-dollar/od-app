@@ -1,10 +1,11 @@
-import * as React from 'react'
 import './index.css'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
 import Button from '~/components/Button'
 
 type Listing = {
+    listingPrice: string
+    premium: string
     id: string
     assetName: string
     price: string
@@ -12,6 +13,7 @@ type Listing = {
     saleEnd: string
     saleStart: string
     image?: string | any
+    actions?: any
 }
 
 const columnHelper = createColumnHelper<Listing>()
@@ -28,11 +30,11 @@ const columns = [
             return image ? (
                 <SVGContainer>
                     <div
-                        style={{
-                            width: '200px',
-                            height: '200px',
-                            transform: 'scale(0.25)',
-                        }}
+                        // style={{
+                        //     width: '200px',
+                        //     height: '200px',
+                        //     transform: 'scale(0.25)',
+                        // }}
                         dangerouslySetInnerHTML={{ __html: image }}
                     ></div>
                 </SVGContainer>
@@ -44,21 +46,60 @@ const columns = [
         header: () => 'Asset Name',
         cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor((row) => row.price, {
+    columnHelper.accessor((row) => row.listingPrice, {
         id: 'price',
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+            return (
+                <>
+                    <span>{info.row.original.price} ETH</span>
+                    <br />
+                    <span>{info.getValue()}</span>
+                </>
+            )
+        },
         header: () => <span>Price</span>,
     }),
     columnHelper.accessor('estimatedValue', {
         header: () => 'Estimated Value',
         cell: (info) => info.renderValue(),
     }),
-    columnHelper.accessor('saleEnd', {
-        header: () => <span>Sale End</span>,
+    columnHelper.accessor('premium', {
+        header: 'Premium',
+        cell: (info) => info.renderValue(),
     }),
     columnHelper.accessor('saleStart', {
         header: 'Sale Start',
     }),
+    columnHelper.accessor('saleEnd', {
+        header: () => <span>Sale End</span>,
+    }),
+    columnHelper.accessor('actions', {
+        header: 'Actions',
+        cell: (info) => {
+            return (
+                <ButtonFloat>
+                    <Button
+                        onClick={() =>
+                            window.open(`https://app.opendollar.com/vaults/${info.row.original.id}`, '_blank')
+                        }
+                    >
+                        View
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            window.open(
+                                `https://opensea.io/assets/arbitrum/0x0005afe00ff7e7ff83667bfe4f2996720baf0b36/${info.row.original.id}`,
+                                '_blank'
+                            )
+                        }
+                    >
+                        Buy
+                    </Button>
+                </ButtonFloat>
+            )
+        },
+    }),
+    //columnHelper.accessor('actions', { header: 'Actions' }),
 ]
 
 const Table = ({ data }: { data: Listing[] }) => {
@@ -67,8 +108,6 @@ const Table = ({ data }: { data: Listing[] }) => {
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
-    const [rowVisible, setRowVisible] = React.useState(false)
-    const [rowIndex, setRowIndex] = React.useState(-1)
     return (
         <div key={`table-${data}`}>
             <table>
@@ -88,41 +127,10 @@ const Table = ({ data }: { data: Listing[] }) => {
                 <tbody>
                     {table.getRowModel().rows.map((row, i) => (
                         <>
-                            <tr
-                                key={row.id}
-                                onMouseEnter={() => {
-                                    setRowIndex(i)
-                                    setRowVisible(true)
-                                }}
-                                onMouseLeave={() => {
-                                    setRowVisible(false)
-                                    setRowIndex(-1)
-                                }}
-                            >
+                            <tr key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
                                     <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                                 ))}
-                                {rowVisible && rowIndex === i && (
-                                    <ButtonFloat>
-                                        <Button
-                                            onClick={() =>
-                                                window.open(`https://app.opendollar.com/vaults/${data[i].id}`, '_blank')
-                                            }
-                                        >
-                                            View
-                                        </Button>
-                                        <Button
-                                            onClick={() =>
-                                                window.open(
-                                                    `https://opensea.io/assets/arbitrum/0x0005afe00ff7e7ff83667bfe4f2996720baf0b36/${data[i].id}`,
-                                                    '_blank'
-                                                )
-                                            }
-                                        >
-                                            Buy
-                                        </Button>
-                                    </ButtonFloat>
-                                )}
                             </tr>
                         </>
                     ))}
@@ -153,7 +161,7 @@ const ButtonFloat = styled.div`
     top: 0;
     right: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     gap: 10px;

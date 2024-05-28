@@ -17,7 +17,6 @@ type Listing = {
 }
 
 const columnHelper = createColumnHelper<Listing>()
-
 const columns = [
     columnHelper.accessor('id', {
         header: () => 'ID',
@@ -109,8 +108,8 @@ const Table = ({ data }: { data: Listing[] }) => {
         getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div key={`table-${data}`}>
-            <table>
+        <div key={`table-${data}`} style={{ overflowX: 'auto' }}>
+            <table style={{ minWidth: '350px' }}>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
@@ -173,4 +172,10 @@ const ButtonFloat = styled.div`
         margin: 5px;
         padding: 5px;
     }
+`
+
+const TableContainer = styled.div`
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
 `

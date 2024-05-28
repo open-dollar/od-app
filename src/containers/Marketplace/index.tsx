@@ -21,6 +21,8 @@ type Listing = {
     estimatedValue: string
     saleEnd: string
     saleStart: string
+    saleStartMinutes: number
+    saleEndMinutes: number
     image?: string | any
 }
 
@@ -89,6 +91,8 @@ const Marketplace = () => {
                     estimatedValue: `$${estimatedValue}`,
                     saleEnd: listing.saleEnd,
                     saleStart: listing.saleStart,
+                    saleStartMinutes: listing.saleStartMinutes,
+                    saleEndMinutes: listing.saleEndMinutes,
                     image: svg ? svg : null,
                 }
 

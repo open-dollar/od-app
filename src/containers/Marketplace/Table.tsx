@@ -1,8 +1,18 @@
 import './index.css'
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getSortedRowModel,
+    getFilteredRowModel,
+    SortingState,
+} from '@tanstack/react-table'
 import styled from 'styled-components'
 import Button from '~/components/Button'
-import { formatDataNumber } from '~/utils'
+import { useState } from 'react'
+import { ArrowDown } from 'react-feather'
+import { ArrowUp } from 'react-feather'
 
 type Listing = {
     listingPrice: string
@@ -12,7 +22,9 @@ type Listing = {
     price: string
     estimatedValue: string
     saleEnd: string
+    saleEndMinutes: number
     saleStart: string
+    saleStartMinutes: number
     image?: string | any
     actions?: any
 }
@@ -22,6 +34,7 @@ const columns = [
     columnHelper.accessor('id', {
         header: () => 'NFV',
         cell: (info) => info.getValue(),
+        sortingFn: 'alphanumeric',
     }),
     columnHelper.accessor('image', {
         header: () => '',
@@ -38,6 +51,7 @@ const columns = [
                 </SVGContainer>
             ) : null
         },
+        enableSorting: false,
     }),
     columnHelper.accessor('assetName', {
         header: () => 'Collateral',
@@ -57,6 +71,13 @@ const columns = [
             )
         },
         header: () => 'Price',
+        sortingFn: (a, b, columnId) => {
+            // @ts-ignore
+            const priceA = parseFloat(a.getValue(columnId).replace('$', ''))
+            // @ts-ignore
+            const priceB = parseFloat(b.getValue(columnId).replace('$', ''))
+            return priceA > priceB ? 1 : priceA < priceB ? -1 : 0
+        },
     }),
     columnHelper.accessor('estimatedValue', {
         header: () => 'Est. Value',
@@ -64,6 +85,13 @@ const columns = [
             const value = info.renderValue()
             const convertedValue = `$${Number(value?.replace('$', '')).toFixed(2)}`
             return <>{convertedValue}</>
+        },
+        sortingFn: (a, b, columnId) => {
+            // @ts-ignore
+            const valueA = parseFloat(a.getValue(columnId).replace('$', ''))
+            // @ts-ignore
+            const valueB = parseFloat(b.getValue(columnId).replace('$', ''))
+            return valueA > valueB ? 1 : valueA < valueB ? -1 : 0
         },
     }),
     columnHelper.accessor('premium', {
@@ -75,10 +103,23 @@ const columns = [
             const justNumber = valueNumber > 0 ? `$${valueNumber.toFixed(2)}` : `($${(valueNumber * -1).toFixed(2)})`
             return <span style={{ color }}>{justNumber}</span>
         },
+        sortingFn: (a, b, columnId) => {
+            // @ts-ignore
+            const premiumA = parseFloat(a.getValue(columnId).replace('$', ''))
+            // @ts-ignore
+            const premiumB = parseFloat(b.getValue(columnId).replace('$', ''))
+            return premiumA > premiumB ? 1 : premiumA < premiumB ? -1 : 0
+        },
     }),
-
-    columnHelper.accessor('saleEnd', {
+    columnHelper.accessor('saleStartMinutes', {
+        header: 'Start',
+        cell: (info) => info.row.original.saleStart,
+        sortingFn: 'basic',
+    }),
+    columnHelper.accessor('saleEndMinutes', {
         header: () => 'End',
+        cell: (info) => info.row.original.saleEnd,
+        sortingFn: 'basic',
     }),
     columnHelper.accessor('actions', {
         header: '',
@@ -107,26 +148,65 @@ const columns = [
                 </ButtonFloat>
             )
         },
+        enableSorting: false,
     }),
 ]
 
 const Table = ({ data }: { data: Listing[] }) => {
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [globalFilter, setGlobalFilter] = useState<string>('')
+
     const table = useReactTable({
         data: data,
         columns,
+        state: {
+            sorting,
+            globalFilter,
+        },
+        onSortingChange: setSorting,
+        onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
     })
+
     return (
         <TableContainer key={`table-${data}`}>
+            <input
+                value={globalFilter ?? ''}
+                onChange={(e) => setGlobalFilter(String(e.target.value))}
+                placeholder="Search all columns..."
+                style={{ marginBottom: '10px', padding: '8px', width: '100%', fontFamily: 'Barlow' }}
+            />
             <table>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
                                 <th key={header.id}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(header.column.columnDef.header, header.getContext())}
+                                    {header.isPlaceholder ? null : (
+                                        <SortableHeader
+                                            onClick={header.column.getToggleSortingHandler()}
+                                            style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default' }}
+                                        >
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                            {header.column.getCanSort() ? (
+                                                header.column.getIsSorted() ? (
+                                                    header.column.getIsSorted() === 'asc' ? (
+                                                        <StyledArrow>
+                                                            <ArrowUp size={16} />
+                                                        </StyledArrow>
+                                                    ) : (
+                                                        <StyledArrow>
+                                                            <ArrowDown size={16} />
+                                                        </StyledArrow>
+                                                    )
+                                                ) : (
+                                                    <ArrowUpAndDownIcon>&nbsp;⇅</ArrowUpAndDownIcon>
+                                                )
+                                            ) : null}
+                                        </SortableHeader>
+                                    )}
                                 </th>
                             ))}
                         </tr>
@@ -170,6 +250,24 @@ const Table = ({ data }: { data: Listing[] }) => {
 }
 
 export default Table
+
+const ArrowUpAndDownIcon = styled.span`
+    font-size: 15px;
+    padding-bottom: 4px;
+`
+
+const StyledArrow = styled.div`
+    padding-left: 4px;
+`
+
+const SortableHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: ${(props) => props.theme.font.xSmall};
+`
 
 const TableContainer = styled.div`
     overflow-x: auto;
@@ -215,7 +313,6 @@ const TableContainer = styled.div`
             position: relative;
             padding-left: 40%;
             text-align: left;
-
             &:nth-child(2),
             &:last-child {
                 padding-left: 0;
@@ -242,7 +339,6 @@ const SVGContainer = styled.div`
     justify-content: center;
     width: 150px;
     height: 150px;
-
     position: relative;
 `
 

@@ -12,7 +12,9 @@ type Listing = {
     price: string
     estimatedValue: string
     saleEnd: string
+    saleEndMinutes: number
     saleStart: string
+    saleStartMinutes: number
     image?: string
 }
 
@@ -70,13 +72,18 @@ export const useOpenSeaListings = () => {
 
                 const image = metadata.nft.image_url || ''
 
+                const { formatted: saleStart, totalMinutes: saleStartMinutes } = getDuration(startTime, endTime)
+                const { formatted: saleEnd, totalMinutes: saleEndMinutes } = getEndDuration(currentTime, endTime)
+
                 return {
                     id: vaultId,
                     assetName,
                     price,
                     estimatedValue,
-                    saleEnd: getEndDuration(currentTime, endTime),
-                    saleStart: getDuration(startTime, endTime),
+                    saleEnd,
+                    saleEndMinutes,
+                    saleStart,
+                    saleStartMinutes,
                     image,
                 }
             }) || []

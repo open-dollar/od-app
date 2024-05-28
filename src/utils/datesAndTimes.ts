@@ -23,10 +23,15 @@ export const getDuration = (startTime: Date, endTime: Date) => {
         remainingDays = (end.getTime() - startCopy.getTime()) / (1000 * 60 * 60 * 24)
     }
 
-    return `${totalMonths} months ${Math.floor(remainingDays)} days`
+    const totalMinutes = totalMonths * 30 * 24 * 60 + remainingDays * 24 * 60
+
+    return {
+        formatted: `${totalMonths} months ${Math.floor(remainingDays)} days`,
+        totalMinutes: totalMinutes,
+    }
 }
 
-export const getEndDuration = (startTime: Date, endTime: Date): string => {
+export const getEndDuration = (startTime: Date, endTime: Date) => {
     const { end, now } = getDates(startTime, endTime)
 
     const diffMs = end.getTime() - now.getTime()
@@ -39,5 +44,10 @@ export const getEndDuration = (startTime: Date, endTime: Date): string => {
     const remainingMin = diffMin % 60
     const remainingHrs = diffHrs % 24
 
-    return `${diffDays}D ${remainingHrs}h ${remainingMin}min`
+    const totalMinutes = diffDays * 24 * 60 + remainingHrs * 60 + remainingMin
+
+    return {
+        formatted: `${diffDays}D ${remainingHrs}h ${remainingMin}min`,
+        totalMinutes: totalMinutes,
+    }
 }

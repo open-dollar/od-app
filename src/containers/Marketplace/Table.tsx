@@ -19,11 +19,11 @@ type Listing = {
 const columnHelper = createColumnHelper<Listing>()
 const columns = [
     columnHelper.accessor('id', {
-        header: () => 'ID',
+        header: () => 'NFV',
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor('image', {
-        header: () => 'NFV Listed',
+        header: () => '',
         cell: (info) => {
             const image = info.row.original.image
             return image ? (
@@ -34,7 +34,7 @@ const columns = [
         },
     }),
     columnHelper.accessor('assetName', {
-        header: () => 'Asset Name',
+        header: () => 'Collateral',
         cell: (info) => info.getValue(),
     }),
     columnHelper.accessor((row) => row.listingPrice, {
@@ -59,17 +59,18 @@ const columns = [
         cell: (info) => info.renderValue(),
     }),
     columnHelper.accessor('saleStart', {
-        header: 'Sale Start',
+        header: 'Start',
     }),
     columnHelper.accessor('saleEnd', {
-        header: () => 'Sale End',
+        header: () => 'End',
     }),
     columnHelper.accessor('actions', {
-        header: 'Actions',
+        header: '',
         cell: (info) => {
             return (
                 <ButtonFloat>
                     <Button
+                        secondary
                         onClick={() =>
                             window.open(`https://app.opendollar.com/vaults/${info.row.original.id}`, '_blank')
                         }
@@ -77,6 +78,7 @@ const columns = [
                         View
                     </Button>
                     <Button
+                        secondary
                         onClick={() =>
                             window.open(
                                 `https://opensea.io/assets/arbitrum/0x0005afe00ff7e7ff83667bfe4f2996720baf0b36/${info.row.original.id}`,

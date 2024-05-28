@@ -31,27 +31,27 @@ type Listing = {
 
 const columnHelper = createColumnHelper<Listing>()
 const columns = [
-    columnHelper.accessor('id', {
-        header: () => 'NFV',
-        cell: (info) => info.getValue(),
-        sortingFn: 'alphanumeric',
-    }),
     columnHelper.accessor('image', {
         header: () => '',
         cell: (info) => {
             const image = info.row.original.image
             return image ? (
                 <SVGContainer>
-                    <div
-                        style={{
-                            transform: 'scale(0.33)',
-                        }}
+                    <SvgWrapper
+                        // style={{
+                        //     transform: 'scale(0.33)',
+                        // }}
                         dangerouslySetInnerHTML={{ __html: image }}
-                    ></div>
+                    ></SvgWrapper>
                 </SVGContainer>
             ) : null
         },
         enableSorting: false,
+    }),
+    columnHelper.accessor('id', {
+        header: () => 'NFV',
+        cell: (info) => info.getValue(),
+        sortingFn: 'alphanumeric',
     }),
     columnHelper.accessor('assetName', {
         header: () => 'Collateral',
@@ -313,7 +313,7 @@ const TableContainer = styled.div`
             position: relative;
             padding-left: 40%;
             text-align: left;
-            &:nth-child(2),
+            &:nth-child(1),
             &:last-child {
                 padding-left: 0;
                 display: flex;
@@ -340,6 +340,18 @@ const SVGContainer = styled.div`
     width: 150px;
     height: 150px;
     position: relative;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: auto;
+    }
+`
+
+const SvgWrapper = styled.div`
+    transform: scale(0.33);
+    @media (max-width: 768px) {
+        transform: scale(1);
+    }
 `
 
 const ButtonFloat = styled.div`

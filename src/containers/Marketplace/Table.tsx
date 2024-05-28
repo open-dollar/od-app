@@ -2,6 +2,7 @@ import * as React from 'react'
 import './index.css'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
+import Button from '~/components/Button'
 
 type Listing = {
     id: string
@@ -66,7 +67,8 @@ const Table = ({ data }: { data: Listing[] }) => {
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
-
+    const [rowVisible, setRowVisible] = React.useState(false)
+    const [rowIndex, setRowIndex] = React.useState(-1)
     return (
         <div key={`table-${data}`}>
             <table>
@@ -84,12 +86,45 @@ const Table = ({ data }: { data: Listing[] }) => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row) => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                            ))}
-                        </tr>
+                    {table.getRowModel().rows.map((row, i) => (
+                        <>
+                            <tr
+                                key={row.id}
+                                onMouseEnter={() => {
+                                    setRowIndex(i)
+                                    setRowVisible(true)
+                                }}
+                                onMouseLeave={() => {
+                                    setRowVisible(false)
+                                    setRowIndex(-1)
+                                }}
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                                ))}
+                                {rowVisible && rowIndex === i && (
+                                    <ButtonFloat>
+                                        <Button
+                                            onClick={() =>
+                                                window.open(`https://app.opendollar.com/vaults/${data[i].id}`, '_blank')
+                                            }
+                                        >
+                                            View
+                                        </Button>
+                                        <Button
+                                            onClick={() =>
+                                                window.open(
+                                                    `https://opensea.io/assets/arbitrum/0x0005afe00ff7e7ff83667bfe4f2996720baf0b36/${data[i].id}`,
+                                                    '_blank'
+                                                )
+                                            }
+                                        >
+                                            Buy
+                                        </Button>
+                                    </ButtonFloat>
+                                )}
+                            </tr>
+                        </>
                     ))}
                 </tbody>
             </table>
@@ -110,5 +145,24 @@ const SVGContainer = styled.div`
     &::-webkit-scrollbar {
         width: 0;
         background: transparent;
+    }
+`
+
+const ButtonFloat = styled.div`
+    position: relative;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 2;
+    button {
+        margin: 5px;
+        padding: 5px;
     }
 `

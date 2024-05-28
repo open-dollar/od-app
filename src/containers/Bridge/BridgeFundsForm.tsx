@@ -63,10 +63,7 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>
-                            Select the asset you want to bridge to the Arbitrum network to use as a collateral of your
-                            vault.
-                        </SubTitle>
+                        <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on Network</Description>
@@ -96,7 +93,14 @@ const BridgeFundsForm = () => {
                                 fromTokenAddress: getGasToken(selectedChain),
                             })
                         }
-                        style={{ marginTop: '1em', padding: '20px'}}
+                        style={{
+                            marginTop: '1em',
+                            padding: '20px',
+                            width: '100%',
+                            maxWidth: '311px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                        }}
                     >
                         Bridge
                         <ExternalLink size={20} style={{ marginLeft: '10px' }} />
@@ -115,7 +119,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
-    max-width: 800px;
+    width: 100%;
     padding: 0 10px;
 `
 

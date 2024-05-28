@@ -12,8 +12,8 @@ const Bridge = () => {
 export default Bridge
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-width: 800px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 `

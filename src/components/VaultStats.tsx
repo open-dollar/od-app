@@ -1,29 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { ExternalLink, Info } from 'react-feather'
+import { Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import {
-    formatNumber,
-    formatWithCommas,
-    getEtherscanLink,
-    getRatePercentage,
-    ratioChecker,
-    returnState,
-    returnTotalDebt,
-    returnWalletAddress,
-} from '~/utils'
+import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState, returnTotalDebt } from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
-import { useWeb3React } from '@web3-react/core'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
-    const { chainId, account } = useWeb3React()
     const {
         collateralRatio: newCollateralRatio,
         parsedAmounts,
@@ -229,7 +218,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            <StatSection>
+                            {/* <StatSection>
                                 <StatHeader>
                                     <StatTitle>NFV Owner</StatTitle>
                                     <InfoIcon
@@ -249,7 +238,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                         </AccountLink>
                                     )}
                                 </StatValue>
-                            </StatSection>
+                            </StatSection> */}
                         </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
@@ -373,11 +362,11 @@ const StatValue = styled.div`
     margin-top: 5px;
 `
 
-const AccountLink = styled.a`
-    display: flex;
-    gap: 5px;
-    color: ${(props) => props.theme.colors.primary};
-`
+// const AccountLink = styled.a`
+//     display: flex;
+//     gap: 5px;
+//     color: ${(props) => props.theme.colors.primary};
+// `
 
 const SVGContainer = styled.div`
     display: flex;

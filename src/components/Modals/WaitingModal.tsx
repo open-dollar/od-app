@@ -138,11 +138,11 @@ const InnerContainer = styled.div`
         margin: 25px auto;
         stroke: #4ac6b2;
         path {
-            stroke-width: 1 !important;
+            strokewidth: 1 !important;
         }
         &.error {
             stroke: rgb(255, 104, 113);
-            stroke-width: 2;
+            strokewidth: 2;
             width: 60px !important;
             height: 60px !important;
             margin-bottom: 20px;

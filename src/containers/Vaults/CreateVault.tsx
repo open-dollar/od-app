@@ -8,7 +8,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { useTransactionAdder } from '~/hooks'
-import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas, checkUserBalance } from '~/utils'
+import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas, checkUserHasBalance } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -227,7 +227,7 @@ const CreateVault = ({
         if (!account || !provider || !selectedCollateral) return
         const checkNeedsBridge = async () => {
             setNeedsBridge(
-                await checkUserBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
+                await checkUserHasBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
             )
         }
         checkNeedsBridge()

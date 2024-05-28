@@ -279,7 +279,7 @@ const TableContainer = styled.div`
 
     th,
     td {
-        padding: 8px 12px;
+        padding: 8px 0px;
         text-align: left;
         border: none;
     }
@@ -342,15 +342,16 @@ const SVGContainer = styled.div`
     position: relative;
 
     @media (max-width: 768px) {
-        width: 100%;
-        height: auto;
+        width: 294px;
+        height: 294px;
     }
 `
 
 const SvgWrapper = styled.div`
     transform: scale(0.33);
+
     @media (max-width: 768px) {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 `
 

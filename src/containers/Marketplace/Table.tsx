@@ -2,6 +2,7 @@ import './index.css'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
 import Button from '~/components/Button'
+import { formatDataNumber } from '~/utils'
 
 type Listing = {
     listingPrice: string
@@ -28,7 +29,12 @@ const columns = [
             const image = info.row.original.image
             return image ? (
                 <SVGContainer>
-                    <div style={{ transform: 'scale(0.33)' }} dangerouslySetInnerHTML={{ __html: image }}></div>
+                    <div
+                        style={{
+                            transform: 'scale(0.33)',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: image }}
+                    ></div>
                 </SVGContainer>
             ) : null
         },
@@ -40,11 +46,13 @@ const columns = [
     columnHelper.accessor((row) => row.listingPrice, {
         id: 'price',
         cell: (info) => {
+            const value = info.getValue()
+            const convertedValue = `$${Number(value.replace('$', '')).toFixed(2)}`
             return (
                 <>
                     <span>{info.row.original.price}</span>
                     <br />
-                    <span>{info.getValue()}</span>
+                    <span>{convertedValue}</span>
                 </>
             )
         },
@@ -52,15 +60,23 @@ const columns = [
     }),
     columnHelper.accessor('estimatedValue', {
         header: () => 'Est. Value',
-        cell: (info) => info.renderValue(),
+        cell: (info) => {
+            const value = info.renderValue()
+            const convertedValue = `$${Number(value?.replace('$', '')).toFixed(2)}`
+            return <>{convertedValue}</>
+        },
     }),
     columnHelper.accessor('premium', {
         header: 'Premium',
-        cell: (info) => info.renderValue(),
+        cell: (info) => {
+            const value = info.getValue()
+            const valueNumber = Number(value.replace('$', ''))
+            const color = valueNumber > 0 ? 'green' : 'red'
+            const justNumber = valueNumber > 0 ? `$${valueNumber.toFixed(2)}` : `($${(valueNumber * -1).toFixed(2)})`
+            return <span style={{ color }}>{justNumber}</span>
+        },
     }),
-    columnHelper.accessor('saleStart', {
-        header: 'Start',
-    }),
+
     columnHelper.accessor('saleEnd', {
         header: () => 'End',
     }),
@@ -196,10 +212,16 @@ const TableContainer = styled.div`
 
         td {
             text-align: right;
-            padding-right: 20px;
             position: relative;
-            padding-left: 50%;
+            padding-left: 40%;
             text-align: left;
+
+            &:nth-child(2),
+            &:last-child {
+                padding-left: 0;
+                display: flex;
+                justify-content: center;
+            }
         }
 
         td::before {

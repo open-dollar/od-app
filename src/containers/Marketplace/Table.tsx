@@ -31,7 +31,6 @@ const columns = [
                     <div style={{ transform: 'scale(0.33)' }} dangerouslySetInnerHTML={{ __html: image }}></div>
                 </SVGContainer>
             ) : null
-            // return image ? <SVGCol img={image} /> : null
         },
     }),
     columnHelper.accessor('assetName', {
@@ -43,16 +42,16 @@ const columns = [
         cell: (info) => {
             return (
                 <>
-                    <span>{info.row.original.price} ETH</span>
+                    <span>{info.row.original.price}</span>
                     <br />
                     <span>{info.getValue()}</span>
                 </>
             )
         },
-        header: () => <span>Price</span>,
+        header: () => 'Price',
     }),
     columnHelper.accessor('estimatedValue', {
-        header: () => 'Estimated Value',
+        header: () => 'Est. Value',
         cell: (info) => info.renderValue(),
     }),
     columnHelper.accessor('premium', {
@@ -63,7 +62,7 @@ const columns = [
         header: 'Sale Start',
     }),
     columnHelper.accessor('saleEnd', {
-        header: () => <span>Sale End</span>,
+        header: () => 'Sale End',
     }),
     columnHelper.accessor('actions', {
         header: 'Actions',
@@ -91,7 +90,6 @@ const columns = [
             )
         },
     }),
-    //columnHelper.accessor('actions', { header: 'Actions' }),
 ]
 
 const Table = ({ data }: { data: Listing[] }) => {
@@ -101,8 +99,8 @@ const Table = ({ data }: { data: Listing[] }) => {
         getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div key={`table-${data}`} style={{ overflowX: 'auto' }}>
-            <table style={{ minWidth: '350px' }}>
+        <TableContainer key={`table-${data}`}>
+            <table>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
@@ -119,18 +117,100 @@ const Table = ({ data }: { data: Listing[] }) => {
                 <tbody>
                     {table.getRowModel().rows.map((row) => (
                         <tr key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                            ))}
+                            {row.getVisibleCells().map((cell) => {
+                                const header = cell.column.columnDef.header
+                                let headerText = ''
+
+                                if (typeof header === 'function') {
+                                    // @ts-ignore
+                                    const renderedHeader = header(cell.getContext())
+                                    if (typeof renderedHeader === 'string') {
+                                        headerText = renderedHeader
+                                    } else if (
+                                        typeof renderedHeader === 'object' &&
+                                        renderedHeader.props &&
+                                        renderedHeader.props.children
+                                    ) {
+                                        headerText = renderedHeader.props.children
+                                    }
+                                } else {
+                                    headerText = header ? header.toString() : ''
+                                }
+
+                                return (
+                                    <td key={cell.id} data-label={headerText}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
+                                )
+                            })}
                         </tr>
                     ))}
                 </tbody>
             </table>
-        </div>
+        </TableContainer>
     )
 }
 
 export default Table
+
+const TableContainer = styled.div`
+    overflow-x: auto;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    th,
+    td {
+        padding: 8px 12px;
+        text-align: left;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        table {
+            min-width: 100%;
+            display: block;
+            overflow-x: auto;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody,
+        tr,
+        td {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        tr {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            text-align: right;
+            padding-right: 20px;
+            position: relative;
+            padding-left: 50%;
+            text-align: left;
+        }
+
+        td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            width: calc(50% - 10px);
+            white-space: nowrap;
+            font-weight: bold;
+            text-align: left;
+        }
+    }
+`
 
 const SVGContainer = styled.div`
     display: flex;
@@ -140,12 +220,6 @@ const SVGContainer = styled.div`
     height: 150px;
 
     position: relative;
-    /* overflow: auto;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        width: 0;
-        background: transparent;
-    } */
 `
 
 const ButtonFloat = styled.div`

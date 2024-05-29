@@ -259,7 +259,6 @@ const Analytics = () => {
             if (geb) {
                 try {
                     const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
-                    console.log('poolData', poolData, analyticsData)
                     let totalLockedValue = BigNumber.from('0')
                     const formattedLiquidity = formatDataNumber(
                         ethers.utils

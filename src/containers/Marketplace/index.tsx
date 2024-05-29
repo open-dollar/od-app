@@ -128,6 +128,7 @@ const Marketplace = () => {
                     </Button>
                 </BtnWrapper>
             </Header>
+            <SubHeader>Currently Listed</SubHeader>
             {tableData.length !== 0 && <Table data={tableData} />}
             {tableData.length === 0 && isLoading && <p>Loading...</p>}
             {tableData.length === 0 && !isLoading && <p>No vaults listed available</p>}
@@ -169,6 +170,15 @@ const Header = styled.div`
     }
 
     margin-bottom: 40px;
+`
+
+const SubHeader = styled.h3`
+    text-transform: uppercase;
+    font-family: ${(props) => props.theme.family.headers};
+    font-size: 22px;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.tertiary};
+    margin-bottom: 20px;
 `
 
 const BtnWrapper = styled.div`

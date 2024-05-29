@@ -111,13 +111,9 @@ const columns = [
             return premiumA > premiumB ? 1 : premiumA < premiumB ? -1 : 0
         },
     }),
-    columnHelper.accessor('saleStartMinutes', {
-        header: 'Start',
-        cell: (info) => info.row.original.saleStart,
-        sortingFn: 'basic',
-    }),
+
     columnHelper.accessor('saleEndMinutes', {
-        header: () => 'End',
+        header: () => 'Auction End',
         cell: (info) => info.row.original.saleEnd,
         sortingFn: 'basic',
     }),
@@ -275,13 +271,28 @@ const TableContainer = styled.div`
         width: 100%;
         border-collapse: collapse;
         min-width: 600px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0);
+        backdrop-filter: blur(10px);
     }
-
     th,
     td {
         padding: 8px 0px;
         text-align: left;
-        border: none;
+    }
+
+    th {
+        background-color: #fff;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+    }
+
+    tr {
+        margin-bottom: 20px;
+    }
+
+    tr:not(:last-child) td {
+        border-bottom: 1px solid #ddd;
     }
 
     @media (max-width: 768px) {
@@ -296,7 +307,6 @@ const TableContainer = styled.div`
         }
 
         tbody,
-        tr,
         td {
             display: block;
             width: 100%;
@@ -304,8 +314,8 @@ const TableContainer = styled.div`
         }
 
         tr {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            border-bottom: 4px solid #ddd;
         }
 
         td {
@@ -337,10 +347,11 @@ const SVGContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 150px;
-    height: 150px;
+    width: 139px;
+    height: 139px;
     position: relative;
-
+    margin: 20px 10px 20px 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3), 0 12px 40px 0 rgba(0, 0, 0, 0.25);
     @media (max-width: 768px) {
         width: 294px;
         height: 294px;
@@ -349,7 +360,7 @@ const SVGContainer = styled.div`
 
 const SvgWrapper = styled.div`
     transform: scale(0.33);
-
+    border-radius: 10px;
     @media (max-width: 768px) {
         transform: scale(0.7);
     }
@@ -364,8 +375,7 @@ const ButtonFloat = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background-color: white;
-    padding: 10px;
+    // padding: 10px;
     border-radius: 5px;
     z-index: 2;
     button {

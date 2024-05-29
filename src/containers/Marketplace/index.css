@@ -1,0 +1,38 @@
+html {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 4px;
+
+}
+
+th {
+    padding: 20px;
+    text-align: left;
+    font-family: 'Barlow', sans-serif;
+    text-transform: uppercase;
+    border-bottom: 1px solid #b6c7d3cc;
+    white-space: nowrap;
+
+    &:first-child {
+        /* width: 150px; */
+    }
+
+    &:not(:first-child) {
+        /* text-align: right; */
+    }
+}
+
+td {
+    padding: 20px;
+    text-transform: capitalize;
+    text-decoration: none;
+
+    &:not(:first-child) {
+        /* text-align: right; */
+    }
+}

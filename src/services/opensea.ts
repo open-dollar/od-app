@@ -5,13 +5,18 @@ const fetchFromOpenSea = async (url: string) => {
         method: 'GET',
         headers: {
             accept: 'application/json',
-            'x-api-key': process.env.REACT_APP_OPENSEA_KEY!,
+            'X-API-KEY': process.env.REACT_APP_OPENSEA_KEY!,
         },
     }
 
     return fetch(url, options)
         .then((response) => response.json())
         .catch((err) => console.error(err))
+}
+
+export const getNftMetadata = async (address: string, identifier: string) => {
+    const url = `https://api.opensea.io/api/v2/chain/arbitrum/contract/${address}/nfts/${identifier}`
+    return fetchFromOpenSea(url)
 }
 
 export const getCollectionListingsData = async () => {

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import { formatDataNumber, multiplyWad } from '~/utils'
 import useGeb from '~/hooks/useGeb'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
 import { fetchPoolData } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
 import { useActiveWeb3React } from '~/hooks'
@@ -12,6 +12,7 @@ import { useActiveWeb3React } from '~/hooks'
 const Stats = () => {
     const geb = useGeb()
     const { chainId } = useActiveWeb3React()
+    const analyticsData = useAnalyticsData()
     const [state, setState] = useState({
         totalVaults: '',
         wETHBalance: '',
@@ -22,11 +23,11 @@ const Stats = () => {
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
-            if (geb) {
+            if (geb && analyticsData) {
                 let totalLockedValue = BigNumber.from('0')
                 try {
-                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
-                    Object.entries(analyticsData?.tokenAnalyticsData).forEach(([_, value]) => {
+                    const poolData = await fetchPoolData(geb)
+                    Object.entries(analyticsData.tokenAnalyticsData).forEach(([_, value]) => {
                         const lockedAmountInUsd = multiplyWad(
                             value?.lockedAmount?.toString(),
                             value?.currentPrice?.toString()
@@ -47,7 +48,7 @@ const Stats = () => {
         }
 
         fetchData()
-    }, [geb, chainId])
+    }, [geb, chainId, analyticsData])
 
     return (
         <ComponentContainer>

@@ -6,7 +6,7 @@ const lightTheme: Theme = {
     colors: {
         primary: '#1A74EC',
         secondary: '#6396FF',
-        tertiary: '#475662',
+        tertiary: '#c',
         neutral: '#FFFFFF',
         background: '#E2F1FF',
         accent: '#1C293A',

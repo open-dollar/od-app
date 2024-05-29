@@ -35,7 +35,7 @@ const ZealyLogo = () => (
 
 const GalxeLogo = () => (
     <LogoText>
-        <img alt="Galxe" src={galxeLogo} style={{ height: '17px' }} />
+        <img alt="Galxe" src={galxeLogo} style={{ height: '16px' }} />
     </LogoText>
 )
 
@@ -113,9 +113,9 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'50px'} />
-                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'50px'} />
-                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'50px'} />
+                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'40px'} />
+                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'40px'} />
+                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'40px'} />
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -132,7 +132,7 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
+                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -149,8 +149,8 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'50px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
+                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'40px'} />
+                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
             </TitleContainer>
         ),
         button: (
@@ -173,8 +173,8 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
+                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
+                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
             </TitleContainer>
         ),
         button: (

@@ -14,7 +14,6 @@ import Brand from './Brand'
 import ArrowDown from './Icons/ArrowDown'
 import Camelot from './Icons/Camelot'
 import { fetchPoolData } from '@opendollar/sdk'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
@@ -24,6 +23,7 @@ import walletIcon from '../assets/wallet-icon.svg'
 import od from '../assets/od-logo.svg'
 import odg from '../assets/odg.svg'
 import Loader from './Loader'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -50,6 +50,7 @@ const Navbar = () => {
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
     const signer = provider ? provider.getSigner(account) : undefined
+    const analyticsData = useAnalyticsData()
 
     const handleTokenClick = () => {
         setTokenPopupVisibility(!isTokenPopupVisible)
@@ -150,9 +151,9 @@ const Navbar = () => {
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
-            if (geb) {
+            if (geb && analyticsData) {
                 try {
-                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+                    const poolData = await fetchPoolData(geb)
 
                     const formattedLiquidity = formatDataNumber(
                         ethers.utils
@@ -163,11 +164,10 @@ const Navbar = () => {
                         true
                     ).toString()
 
-                    setState((prevState) => ({
-                        ...prevState,
-                        odPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 2),
+                    setState({
+                        odPrice: formatDataNumber(analyticsData?.marketPrice, 18, 3, true, undefined, 2),
                         totalLiquidity: formattedLiquidity,
-                    }))
+                    })
                 } catch (error) {
                     console.error('Error fetching data:', error)
                 }
@@ -184,7 +184,7 @@ const Navbar = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [geb, chainId, analyticsData])
 
     return (
         <ContainerShadowWrapper>

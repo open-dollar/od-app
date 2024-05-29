@@ -5,7 +5,7 @@ import Table from './Table'
 import { ethers } from 'ethers'
 import { useOpenSeaListings } from '~/hooks/useOpenSeaListings'
 import useGeb from '~/hooks/useGeb'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
 // @ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import * as React from 'react'
@@ -33,11 +33,10 @@ const Marketplace = () => {
     const listings = useOpenSeaListings()
     const allVaults = useVaultSubgraph()
     const geb = useGeb()
+    const analyticsData = useAnalyticsData()
 
     const getSafeData = async () => {
-        if (!geb) return
-        if (!allVaults?.vaults) return
-        const [analyticsData] = await Promise.all([fetchAnalyticsData(geb)])
+        if (!geb || !allVaults?.vaults || !analyticsData) return
 
         setIsLoading(true)
         const tableRows: Listing[] = []
@@ -109,7 +108,7 @@ const Marketplace = () => {
     React.useEffect(() => {
         getSafeData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [listings, allVaults, geb])
+    }, [listings, allVaults, geb, analyticsData])
 
     return (
         <Container>

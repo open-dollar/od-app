@@ -12,10 +12,10 @@ import Button from './Button'
 import ArrowDown from '~/components/Icons/ArrowDown'
 import Camelot from '~/components/Icons/Camelot'
 import { fetchPoolData } from '@opendollar/sdk'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -40,6 +40,7 @@ const SideMenu = () => {
         connectWalletModel: connectWalletState,
         popupsModel: popupsState,
     } = useStoreState((state) => state)
+    const analyticsData = useAnalyticsData()
 
     const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -95,7 +96,6 @@ const SideMenu = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.OD.address,
@@ -116,7 +116,6 @@ const SideMenu = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.ODG.address,
@@ -133,9 +132,9 @@ const SideMenu = () => {
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         async function fetchData() {
-            if (geb) {
+            if (geb && analyticsData) {
                 try {
-                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+                    const poolData = await fetchPoolData(geb)
 
                     const formattedLiquidity = formatDataNumber(
                         ethers.utils
@@ -146,11 +145,10 @@ const SideMenu = () => {
                         true
                     ).toString()
 
-                    setState((prevState) => ({
-                        ...prevState,
-                        odPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 2),
+                    setState({
+                        odPrice: formatDataNumber(analyticsData?.marketPrice, 18, 3, true, undefined, 2),
                         totalLiquidity: formattedLiquidity,
-                    }))
+                    })
                 } catch (error) {
                     console.error('Error fetching data:', error)
                 }
@@ -168,7 +166,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsidePrice)
         }
-    }, [geb, chainId])
+    }, [geb, chainId, analyticsData])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)

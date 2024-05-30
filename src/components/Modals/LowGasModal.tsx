@@ -2,10 +2,17 @@ import { AlertCircle } from 'react-feather'
 import Modal from './Modal'
 import styled from 'styled-components'
 import LinkButton from '../LinkButton'
+import { useStoreActions, useStoreState } from '~/store'
 
 const LowGasModal = () => {
+    const { popupsModel: popupsState } = useStoreState((state) => state)
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+
+    const handleCancel = () => {
+        popupsActions.setIsLowGasModalOpen(false)
+    }
     return (
-        <Modal isModalOpen={true} maxWidth="400px">
+        <Modal maxWidth="400px" closeModal={handleCancel} isModalOpen={popupsState.isLowGasModalOpen}>
             <Container>
                 <AlertCircle color="#ffaf1d" size="50px" />
                 <Title>No funds for Gas fee</Title>

@@ -49,6 +49,7 @@ import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
+import LowGasModal from '~/components/Modals/LowGasModal'
 
 interface Props {
     children: ReactNode
@@ -359,6 +360,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ScreenLoader />
             <LiquidateSafeModal />
             <WaitingModal />
+            <LowGasModal />
             <TopUpModal />
             <EmptyDiv>
                 <Navbar />

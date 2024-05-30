@@ -165,7 +165,14 @@ const Navbar = () => {
                     ).toString()
 
                     setState({
-                        odPrice: formatDataNumber(analyticsData?.marketPrice, 18, 3, true, undefined, 2),
+                        odPrice: formatDataNumber(
+                            analyticsData?.marketPrice ? analyticsData.marketPrice : '0',
+                            18,
+                            3,
+                            true,
+                            undefined,
+                            2
+                        ),
                         totalLiquidity: formattedLiquidity,
                     })
                 } catch (error) {

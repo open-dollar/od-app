@@ -57,6 +57,7 @@ const TxConfirmation = () => {
                     signer,
                     title: 'Wrapping ETH',
                     amount: safeState.amount,
+                    geb,
                 })
             }
             reset()

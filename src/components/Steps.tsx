@@ -35,8 +35,10 @@ const Steps = () => {
         const checkGasBalance = async () => {
             const hasGasToken = await checkUserGasBalance(account!, provider!)
             if (!hasGasToken) {
-                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
-                popupsActions.setIsBridgeModalOpen(true)
+                // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                // popupsActions.setIsBridgeModalOpen(true)
+                // popupsActions.setIsLowGasModalOpen(true)
+
             }
         }
         if (account && (step === 1 || step === 2) && provider) {
@@ -79,8 +81,8 @@ const Steps = () => {
         } catch (e) {
             const hasGasToken = await checkUserGasBalance(account, provider)
             if (!hasGasToken) {
-                bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
-                popupsActions.setIsBridgeModalOpen(true)
+                // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsLowGasModalOpen(true)
             }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)

@@ -12,12 +12,17 @@ const LowGasModal = () => {
         popupsActions.setIsLowGasModalOpen(false)
     }
     return (
-        <Modal maxWidth="400px" closeModal={handleCancel} isModalOpen={popupsState.isLowGasModalOpen}>
+        <Modal
+            maxWidth="400px"
+            closeModal={handleCancel}
+            isModalOpen={popupsState.isLowGasModalOpen}
+            backDropClose={!popupsState.blockBackdrop}
+        >
             <Container>
                 <AlertCircle color="#ffaf1d" size="50px" />
                 <Title>No funds for Gas fee</Title>
                 <Text>Use the Bridge option and transfer our funds from Ethereum mainnet to Arbitrium One.</Text>
-                <LinkBtnContainer>
+                <LinkBtnContainer onClick={handleCancel}>
                     <LinkButton id="create-safe" url={'/bridge'}>
                         Bridge
                     </LinkButton>

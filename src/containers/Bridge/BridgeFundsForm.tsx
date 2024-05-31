@@ -56,7 +56,9 @@ const BridgeFundsForm = () => {
             value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
         }
     })
+
     console.log('balances', balances)
+    console.log('collateralsDropdown', collateralsDropdown)
     return (
         <Container>
             <Content>
@@ -66,25 +68,31 @@ const BridgeFundsForm = () => {
                         <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Assets on Network</Description>
-                    <Row>
-                        <SideLabel>{`Select Source Chain`}</SideLabel>
-                        <Dropdown
-                            items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
-                            itemSelected={'Mainnet'}
-                            getSelectedItem={setSelectedChain}
-                            fontSize="14px"
-                        />
-                    </Row>
-                    <Row>
-                        <SideLabel>{`Select Token to Bridge`}</SideLabel>
-                        <Dropdown
-                            items={collateralsDropdown}
-                            itemSelected={selectedToken}
-                            getSelectedItem={setSelectedToken}
-                            fontSize="14px"
-                        />
-                    </Row>
+                    <Description>Assets on the Network</Description>
+                    <Table>
+                        <DropDownWrapper>
+                            <Dropdown
+                                items={['Ethereum', 'Optimism', 'Polygon', 'Base', 'Gnosis']}
+                                itemSelected={'Ethereum'}
+                                getSelectedItem={setSelectedChain}
+                                fontSize="14px"
+                            />
+                        </DropDownWrapper>
+
+                        <List>
+                            {balances.length > 0 &&
+                                balances.map((balance) => {
+                                    return (
+                                        <Item>
+                                            <Row>
+                                                <Text>{balance.name}</Text>
+                                                <Balance>{balance.balance}</Balance>
+                                            </Row>
+                                        </Item>
+                                    )
+                                })}
+                        </List>
+                    </Table>
                     <Button
                         onClick={() =>
                             bridge({
@@ -167,8 +175,34 @@ const Description = styled.div`
     color: ${(props) => props.theme.colors.accent};
     font-size: ${(props) => props.theme.font.medium};
     font-weight: 700;
+    margin-bottom: 10px;
 `
 
 const Row = styled.div`
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+const Table = styled.div`
+    border: 2px solid ${(props) => props.theme.colors.primary};
+`
+
+const List = styled.div``
+
+const Item = styled.div`
+    padding: 0 15px;
+`
+
+const Balance = styled.div``
+
+const DropDownWrapper = styled.div`
+    button {
+        border: none;
+        border-color: red;
+    }
+
+    span {
+        color: ${(props) => props.theme.colors.primary};
+    }
 `

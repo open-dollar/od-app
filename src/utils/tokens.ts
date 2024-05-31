@@ -98,6 +98,7 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 1,
+        chainName: 'Mainnet',
         publicRPC: 'https://eth-pokt.nodies.app',
     },
     10: {
@@ -136,6 +137,7 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 10,
+        chainName: 'Optimism',
         publicRPC: 'https://op-pokt.nodies.app',
     },
     137: {
@@ -166,10 +168,18 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 137,
+        chainName: 'Polygon',
         publicRPC: 'https://polygon-bor-rpc.publicnode.com',
     },
     42161: {
         tokens: [
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+            },
             {
                 name: 'WETH',
                 icon: WETH,
@@ -200,6 +210,7 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 42161,
+        chainName: 'Arbitrum',
         publicRPC: 'https://arbitrum.blockpi.network/v1/rpc/public',
     },
     8453: {
@@ -234,6 +245,7 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 8453,
+        chainName: 'Base',
         publicRPC: 'https://base.llamarpc.com',
     },
 }

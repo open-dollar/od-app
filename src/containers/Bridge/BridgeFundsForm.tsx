@@ -1,21 +1,23 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getTokenLogo, formatWithCommas, getChainId, getUserBalance, bridgeTokens } from '~/utils'
-import { ethers } from 'ethers'
+import { getChainId, getUserBalance, bridgeTokens } from '~/utils'
+// import { getTokenLogo, formatWithCommas } from '~/utils'
+// import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
-import { getGasToken } from '~/utils'
+// import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+// import { from } from '@apollo/client'
 
 const BridgeFundsForm = () => {
-    const [clickedItem, setClickedItem] = useState<string>('')
+    const [clickedItem, setClickedItem] = useState<any>('')
 
     const {
-        connectWalletModel: { tokensData, tokensFetchedData },
-        bridgeModel: { reason, toTokenSymbol },
+        connectWalletModel: { tokensData },
+        bridgeModel: { reason, toTokenSymbol, fromTokenSymbol },
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
@@ -39,26 +41,34 @@ const BridgeFundsForm = () => {
         async function fetchBalances() {
             const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
             const balances = await getUserBalance(tokens, account!, publicRPC)
+            if (fromTokenSymbol) {
+                const token = tokens.find((token: any) => token.name === fromTokenSymbol)
+                setClickedItem(token)
+                setSelectedToken(token.name)
+            } else {
+                setClickedItem(balances![0])
+                setSelectedToken(balances![0].name)
+            }
             setBalances(balances!)
         }
         fetchBalances()
-    }, [account, selectedChain])
+    }, [account, selectedChain, fromTokenSymbol])
 
-    const formattedCollateralBalances = useMemo(() => {
-        return collaterals.reduce((acc, collateral) => {
-            const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
-            const formattedBalance = ethers.utils.formatEther(balance)
-            return { ...acc, [collateral.symbol]: formattedBalance }
-        }, {} as { [symbol: string]: string })
-    }, [collaterals, tokensFetchedData])
+    // const formattedCollateralBalances = useMemo(() => {
+    //     return collaterals.reduce((acc, collateral) => {
+    //         const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
+    //         const formattedBalance = ethers.utils.formatEther(balance)
+    //         return { ...acc, [collateral.symbol]: formattedBalance }
+    //     }, {} as { [symbol: string]: string })
+    // }, [collaterals, tokensFetchedData])
 
-    const collateralsDropdown = collaterals.map((collateral) => {
-        return {
-            name: collateral.symbol,
-            icon: getTokenLogo(collateral.symbol),
-            value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
-        }
-    })
+    // const collateralsDropdown = collaterals.map((collateral) => {
+    //     return {
+    //         name: collateral.symbol,
+    //         icon: getTokenLogo(collateral.symbol),
+    //         value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
+    //     }
+    // })
 
     return (
         <Container>
@@ -73,7 +83,7 @@ const BridgeFundsForm = () => {
                     <Table>
                         <DropDownWrapper>
                             <Dropdown
-                                items={['Ethereum', 'Optimism', 'Polygon', 'Base', 'Gnosis']}
+                                items={['Ethereum', 'Optimism', 'Polygon', 'Base']}
                                 itemSelected={'Ethereum'}
                                 getSelectedItem={setSelectedChain}
                                 fontSize="14px"
@@ -86,14 +96,16 @@ const BridgeFundsForm = () => {
                                     return (
                                         <Item
                                             onClick={() => {
+                                                if (balance.comingSoon) return
                                                 setSelectedToken(balance.name)
-                                                setClickedItem(balance.name)
+                                                setClickedItem(balance)
                                             }}
                                             style={{
                                                 backgroundColor:
-                                                    clickedItem === balance.name ? '#1A74EC' : 'transparent',
-                                                color: clickedItem === balance.name ? 'white' : '#1A74EC',
+                                                    selectedToken === balance.name ? '#1A74EC' : 'transparent',
+                                                color: selectedToken === balance.name ? 'white' : '#1A74EC',
                                             }}
+                                            key={`bridge-${balance.name}`}
                                             token={selectedToken}
                                         >
                                             <Text>
@@ -121,7 +133,7 @@ const BridgeFundsForm = () => {
                             bridge({
                                 originChain: getChainId(selectedChain),
                                 toTokenAddress: selectedToken,
-                                fromTokenAddress: getGasToken(selectedChain),
+                                fromTokenAddress: selectedToken ? clickedItem.address : '',
                             })
                         }
                         style={{
@@ -159,13 +171,13 @@ const Content = styled.div`
     width: 100%;
 `
 
-const SideLabel = styled.div`
-    color: #1c293a;
-    font-family: 'Barlow', sans-serif;
-    font-size: ${(props) => props.theme.font.default};
-    line-height: 26.4px;
-    margin-bottom: 5px;
-`
+// const SideLabel = styled.div`
+//     color: #1c293a;
+//     font-family: 'Barlow', sans-serif;
+//     font-size: ${(props) => props.theme.font.default};
+//     line-height: 26.4px;
+//     margin-bottom: 5px;
+// `
 
 const DropDownContainer = styled.div`
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
@@ -212,7 +224,7 @@ const Description = styled.div`
     margin-bottom: 10px;
 `
 
-const Row = styled.div``
+// const Row = styled.div``
 const Table = styled.div`
     border: 3px solid ${(props) => props.theme.colors.primary};
     border-radius: 4px;
@@ -227,7 +239,7 @@ const Item = styled.div<{ token?: string }>`
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 5px 15px
+    padding: 5px 15px;
 `
 
 const DropDownWrapper = styled.div`

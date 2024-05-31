@@ -171,14 +171,6 @@ const Content = styled.div`
     width: 100%;
 `
 
-// const SideLabel = styled.div`
-//     color: #1c293a;
-//     font-family: 'Barlow', sans-serif;
-//     font-size: ${(props) => props.theme.font.default};
-//     line-height: 26.4px;
-//     margin-bottom: 5px;
-// `
-
 const DropDownContainer = styled.div`
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
 
@@ -193,13 +185,6 @@ const Text = styled.p`
     align-items: center;
     justify-content: flex-start;
     gap: 5px;
-
-    span {
-        color: white;
-        background-color: ${(props) => props.theme.colors.primary};
-        padding: 5px;
-        border-radius: 4px;
-    }
 `
 
 const Header = styled.div`
@@ -224,7 +209,6 @@ const Description = styled.div`
     margin-bottom: 10px;
 `
 
-// const Row = styled.div``
 const Table = styled.div`
     border: 3px solid ${(props) => props.theme.colors.primary};
     border-radius: 4px;
@@ -233,13 +217,23 @@ const Table = styled.div`
 const List = styled.div``
 
 const Item = styled.div<{ token?: string }>`
-    padding: 0 15px;
-    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 5px 15px;
+    padding: 10px 15px;
+
+    span {
+        font-size: ${(props) => props.theme.font.xSmall};
+        color: white;
+        background-color: ${(props) => props.theme.colors.primary};
+        padding: 2px 10px;
+        border-radius: 4px;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #1c293a33;
+    }
 `
 
 const DropDownWrapper = styled.div`

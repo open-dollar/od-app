@@ -16,6 +16,7 @@ export interface PopupsModel {
     isProxyModalOpen: boolean
     isScreenModalOpen: boolean
     isBridgeModalOpen: boolean
+    isLowGasModalOpen: boolean
     isVotingModalOpen: boolean
     auctionOperationPayload: IAuctionOperation
     liquidateSafePayload: { safeId: string } | null
@@ -33,6 +34,7 @@ export interface PopupsModel {
     setIsConnectorsWalletOpen: Action<PopupsModel, boolean>
     setIsLoadingModalOpen: Action<PopupsModel, LoadingPayload>
     setIsBridgeModalOpen: Action<PopupsModel, boolean>
+    setIsLowGasModalOpen: Action<PopupsModel, boolean>
     setSafeOperationPayload: Action<PopupsModel, IOperation & { isCreate: boolean }>
     setAlertPayload: Action<PopupsModel, IAlert | null>
     setESMOperationPayload: Action<PopupsModel, IOperation>
@@ -65,6 +67,7 @@ const popupsModel: PopupsModel = {
     isSafeManagerOpen: false,
     isClaimPopupOpen: false,
     isBridgeModalOpen: true,
+    isLowGasModalOpen: false,
     liquidateSafePayload: null,
     returnProxyFunction: () => {},
     waitingPayload: {
@@ -147,6 +150,9 @@ const popupsModel: PopupsModel = {
     }),
     setIsBridgeModalOpen: action((state, payload) => {
         state.isBridgeModalOpen = payload
+    }),
+    setIsLowGasModalOpen: action((state, payload) => {
+        state.isLowGasModalOpen = payload
     }),
     setIsWaitingModalOpen: action((state, payload) => {
         state.isWaitingModalOpen = payload

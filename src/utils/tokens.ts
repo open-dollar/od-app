@@ -269,7 +269,7 @@ export const getGasToken = (chain: string | number): string => {
 
 export const checkUserGasBalance = async (userAddress: string, provider: Provider) => {
     const balance = await provider.getBalance(userAddress)
-    return +ethers.utils.formatUnits(balance) === +'0'
+    return +ethers.utils.formatUnits(balance) > +'0'
 }
 
 export const checkUserHasBalance = async (

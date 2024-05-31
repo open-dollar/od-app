@@ -7,10 +7,9 @@ import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-import BridgeModal from './Modals/BridgeModal'
-import { useEffect } from 'react'
 import { checkUserGasBalance } from '~/utils'
 import useFuulSDK from '~/hooks/useFuulSDK'
+import LowGasModal from './Modals/LowGasModal'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -20,37 +19,22 @@ const Steps = () => {
     const history = useHistory()
     const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
-    const {
-        popupsModel: popupsActions,
-        connectWalletModel: connectWalletActions,
-        bridgeModel: bridgeModelActions,
-    } = useStoreActions((state) => state)
+    const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
     const { sendConnectWalletEvent } = useFuulSDK()
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
-    useEffect(() => {
-        const checkGasBalance = async () => {
-            const hasGasToken = await checkUserGasBalance(account!, provider!)
-            if (!hasGasToken) {
-                // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
-                // popupsActions.setIsBridgeModalOpen(true)
-                // popupsActions.setIsLowGasModalOpen(true)
-
-            }
-        }
-        if (account && (step === 1 || step === 2) && provider) {
-            checkGasBalance()
-        }
-    }, [step, account, provider, bridgeModelActions, popupsActions])
-
     const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false
-
+        const hasGasToken = await checkUserGasBalance(account!, provider!)
+        if (!hasGasToken) {
+            popupsActions.setIsLowGasModalOpen(true)
+            return
+        }
         try {
             const referralProgram = localStorage.getItem('referralProgram') === 'true'
             if (referralProgram) {
@@ -144,7 +128,7 @@ const Steps = () => {
 
     return (
         <StepsContainer>
-            <BridgeModal />
+            <LowGasModal />
             {returnSteps(step)}
             {step === 1 && ctHash ? (
                 <>

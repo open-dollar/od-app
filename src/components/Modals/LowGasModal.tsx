@@ -63,14 +63,6 @@ const LinkBtnContainer = styled.div`
     }
 `
 
-const BtnInner = styled.div`
-    display: flex;
-    align-items: center;
-    svg {
-        margin-right: 5px;
-    }
-`
-
 const Title = styled.h2`
     font-family: ${(props) => props.theme.family.headers};
     font-size: ${(props) => props.theme.font.large};

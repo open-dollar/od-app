@@ -10,11 +10,13 @@ export interface BridgeModel {
     toTokenSymbol: string
     amount: string
     reason: string
+    fromTokenSymbol: string
     setReason: Action<BridgeModel, string>
     setOriginChain: Action<BridgeModel, number>
     setToTokenSymbol: Action<BridgeModel, string>
     setToChain: Action<BridgeModel, number>
     setFromTokenAddress: Action<BridgeModel, string>
+    setFromTokenSymbol: Action<BridgeModel, string>
     setToTokenAddress: Action<BridgeModel, string>
     setAmount: Action<BridgeModel, string>
     bridge: Action<BridgeModel, BridgeTransaction>
@@ -23,10 +25,11 @@ export interface BridgeModel {
 const bridgeModel: BridgeModel = {
     originChain: 1,
     toChain: 42161,
-    fromTokenAddress: '0x0000000000000000000000000000000000000000', // DAI ETH
-    toTokenAddress: '0x5979D7b546E38E414F7E9822514be443A4800529', // WSETH ARB
+    fromTokenAddress: '',
+    toTokenAddress: '',
     toTokenSymbol: 'WSTETH',
-    amount: '100',
+    fromTokenSymbol: '',
+    amount: '',
     reason: '',
     setReason: action((state, payload) => {
         state.reason = payload
@@ -46,13 +49,16 @@ const bridgeModel: BridgeModel = {
     setToTokenSymbol: action((state, payload) => {
         state.toTokenSymbol = payload
     }),
+    setFromTokenSymbol: action((state, payload) => {
+        state.fromTokenSymbol = payload
+    }),
     setAmount: action((state, payload) => {
         state.amount = payload
     }),
     bridge: action((state, payload) => {
         const url = formatBridgeUrl({
             amount: state.amount,
-            fromTokenAddress: state.fromTokenAddress,
+            fromTokenAddress: payload.fromTokenAddress,
             originChain: payload.originChain,
             toTokenAddress: payload.toTokenAddress,
         })

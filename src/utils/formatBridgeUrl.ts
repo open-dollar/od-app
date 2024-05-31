@@ -7,7 +7,10 @@ export const formatBridgeUrl = ({
     toTokenAddress,
 }: BridgeTransaction) => {
     if (originChain === 1) {
-        return `https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=ethereum`
+        if (fromTokenAddress === '0x0000000000000000000000000000000000000000')
+            return `https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=ethereum`
+        else
+            return `https://bridge.arbitrum.io/?token=${fromTokenAddress}&&destinationChain=arbitrum-one&sourceChain=ethereum`
     }
     if (originChain !== 1) {
         const toToken = toTokenAddress === 'WSTETH' ? '0x5979D7b546E38E414F7E9822514be443A4800529' : toTokenAddress

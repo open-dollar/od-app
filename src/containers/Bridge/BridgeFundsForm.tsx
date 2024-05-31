@@ -1,18 +1,23 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getTokenLogo, formatWithCommas, getChainId, getUserBalance, bridgeTokens } from '~/utils'
-import { ethers } from 'ethers'
+import { getChainId, getUserBalance, bridgeTokens } from '~/utils'
+// import { getTokenLogo, formatWithCommas } from '~/utils'
+// import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
-import { getGasToken } from '~/utils'
+// import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
-import { ExternalLink } from 'react-feather'
+import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+// import { from } from '@apollo/client'
 
 const BridgeFundsForm = () => {
+    const [clickedItem, setClickedItem] = useState<any>('')
+
     const {
-        connectWalletModel: { tokensData, tokensFetchedData },
-        bridgeModel: { reason, toTokenSymbol },
+        connectWalletModel: { tokensData },
+        bridgeModel: { reason, toTokenSymbol, fromTokenSymbol },
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
@@ -36,27 +41,35 @@ const BridgeFundsForm = () => {
         async function fetchBalances() {
             const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
             const balances = await getUserBalance(tokens, account!, publicRPC)
+            if (fromTokenSymbol) {
+                const token = tokens.find((token: any) => token.name === fromTokenSymbol)
+                setClickedItem(token)
+                setSelectedToken(token.name)
+            } else {
+                setClickedItem(balances![0])
+                setSelectedToken(balances![0].name)
+            }
             setBalances(balances!)
         }
         fetchBalances()
-    }, [account, selectedChain])
+    }, [account, selectedChain, fromTokenSymbol])
 
-    const formattedCollateralBalances = useMemo(() => {
-        return collaterals.reduce((acc, collateral) => {
-            const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
-            const formattedBalance = ethers.utils.formatEther(balance)
-            return { ...acc, [collateral.symbol]: formattedBalance }
-        }, {} as { [symbol: string]: string })
-    }, [collaterals, tokensFetchedData])
+    // const formattedCollateralBalances = useMemo(() => {
+    //     return collaterals.reduce((acc, collateral) => {
+    //         const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
+    //         const formattedBalance = ethers.utils.formatEther(balance)
+    //         return { ...acc, [collateral.symbol]: formattedBalance }
+    //     }, {} as { [symbol: string]: string })
+    // }, [collaterals, tokensFetchedData])
 
-    const collateralsDropdown = collaterals.map((collateral) => {
-        return {
-            name: collateral.symbol,
-            icon: getTokenLogo(collateral.symbol),
-            value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
-        }
-    })
-    console.log('balances', balances)
+    // const collateralsDropdown = collaterals.map((collateral) => {
+    //     return {
+    //         name: collateral.symbol,
+    //         icon: getTokenLogo(collateral.symbol),
+    //         value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
+    //     }
+    // })
+
     return (
         <Container>
             <Content>
@@ -66,31 +79,61 @@ const BridgeFundsForm = () => {
                         <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Assets on Network</Description>
-                    <Row>
-                        <SideLabel>{`Select Source Chain`}</SideLabel>
-                        <Dropdown
-                            items={['Mainnet', 'Optimism', 'Polygon', 'Base']}
-                            itemSelected={'Mainnet'}
-                            getSelectedItem={setSelectedChain}
-                            fontSize="14px"
-                        />
-                    </Row>
-                    <Row>
-                        <SideLabel>{`Select Token to Bridge`}</SideLabel>
-                        <Dropdown
-                            items={collateralsDropdown}
-                            itemSelected={selectedToken}
-                            getSelectedItem={setSelectedToken}
-                            fontSize="14px"
-                        />
-                    </Row>
+                    <Description>Assets on the Network</Description>
+                    <Table>
+                        <DropDownWrapper>
+                            <Dropdown
+                                items={['Ethereum', 'Optimism', 'Polygon', 'Base']}
+                                itemSelected={'Ethereum'}
+                                getSelectedItem={setSelectedChain}
+                                fontSize="14px"
+                            />
+                        </DropDownWrapper>
+
+                        <List>
+                            {balances &&
+                                balances.map((balance) => {
+                                    return (
+                                        <Item
+                                            onClick={() => {
+                                                if (balance.comingSoon) return
+                                                setSelectedToken(balance.name)
+                                                setClickedItem(balance)
+                                            }}
+                                            style={{
+                                                backgroundColor:
+                                                    selectedToken === balance.name ? '#1A74EC' : 'transparent',
+                                                color: selectedToken === balance.name ? 'white' : '#1A74EC',
+                                            }}
+                                            key={`bridge-${balance.name}`}
+                                            token={selectedToken}
+                                        >
+                                            <Text>
+                                                {balance.name}
+                                                {balance.name === 'ETH' && (
+                                                    <Info
+                                                        data-tooltip-id="tooltip-token"
+                                                        data-tooltip-content={
+                                                            'Bridge ETH assets to pay gas fees on the network'
+                                                        }
+                                                        size={'15px'}
+                                                    ></Info>
+                                                )}
+                                                {balance.name === 'pufETH' && <span>coming soon</span>}
+                                            </Text>
+                                            <Text>{balance.balance}</Text>
+                                        </Item>
+                                    )
+                                })}
+                        </List>
+                    </Table>
+                    <ReactTooltip id={`tooltip-token`} variant="dark" data-effect="solid" place="top" />
                     <Button
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(selectedChain),
                                 toTokenAddress: selectedToken,
-                                fromTokenAddress: getGasToken(selectedChain),
+                                fromTokenAddress: selectedToken ? clickedItem.address : '',
                             })
                         }
                         style={{
@@ -128,13 +171,13 @@ const Content = styled.div`
     width: 100%;
 `
 
-const SideLabel = styled.div`
-    color: #1c293a;
-    font-family: 'Barlow', sans-serif;
-    font-size: ${(props) => props.theme.font.default};
-    line-height: 26.4px;
-    margin-bottom: 5px;
-`
+// const SideLabel = styled.div`
+//     color: #1c293a;
+//     font-family: 'Barlow', sans-serif;
+//     font-size: ${(props) => props.theme.font.default};
+//     line-height: 26.4px;
+//     margin-bottom: 5px;
+// `
 
 const DropDownContainer = styled.div`
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
@@ -145,7 +188,18 @@ const DropDownContainer = styled.div`
 `
 
 const Text = styled.p`
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.default};
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+
+    span {
+        color: white;
+        background-color: ${(props) => props.theme.colors.primary};
+        padding: 5px;
+        border-radius: 4px;
+    }
 `
 
 const Header = styled.div`
@@ -167,8 +221,37 @@ const Description = styled.div`
     color: ${(props) => props.theme.colors.accent};
     font-size: ${(props) => props.theme.font.medium};
     font-weight: 700;
+    margin-bottom: 10px;
 `
 
-const Row = styled.div`
+// const Row = styled.div``
+const Table = styled.div`
+    border: 3px solid ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
+`
+
+const List = styled.div``
+
+const Item = styled.div<{ token?: string }>`
+    padding: 0 15px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 15px;
+`
+
+const DropDownWrapper = styled.div`
+    border-bottom: 2px solid ${(props) => props.theme.colors.primary};
+
+    button {
+        border: none;
+        border-color: red;
+    }
+
+    span {
+        color: ${(props) => props.theme.colors.primary};
+        font-size: ${(props) => props.theme.font.default};
+    }
 `

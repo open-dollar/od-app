@@ -9,8 +9,8 @@ import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
-import LinkButton from '~/components/LinkButton'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { set } from 'numeral'
 // import { from } from '@apollo/client'
 
 const BridgeFundsForm = () => {
@@ -23,8 +23,9 @@ const BridgeFundsForm = () => {
     const { account } = useWeb3React()
 
     const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [selectedChain, setSelectedChain] = useState<string>('Ethereum')
     const [balances, setBalances] = useState<any[]>([])
+    const networksList = ['Ethereum', 'Optimism', 'Polygon', 'Base']
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -71,6 +72,11 @@ const BridgeFundsForm = () => {
     //     }
     // })
 
+    const handleNetworkChange = (network: string) => () => {
+        setSelectedChain(network)
+    }
+
+    console.log('selectedChain', selectedChain)
     return (
         <Container>
             <Content>
@@ -81,24 +87,22 @@ const BridgeFundsForm = () => {
                     </Header>
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on the Network</Description>
+                    <ButtonsRow>
+                        {networksList.map((network) => (
+                            <NetworkButton
+                                key={network}
+                                onClick={() => {
+                                    setSelectedChain(network)
+                                }}
+                                selectedChain={selectedChain}
+                                id={network}
+                                color={selectedChain === network ? 'red' : 'transparent'}
+                            >
+                                {network}
+                            </NetworkButton>
+                        ))}
+                    </ButtonsRow>
                     <Table>
-                        {/* <ButtonsRow>
-                            <LinkButton
-                                id="ethereum"
-                                text={'Ethereum'}
-                                //@ts-ignore
-                                color={isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
-                            />
-                        </ButtonsRow> */}
-                        <DropDownWrapper>
-                            <Dropdown
-                                items={['Ethereum', 'Optimism', 'Polygon', 'Base']}
-                                itemSelected={'Ethereum'}
-                                getSelectedItem={setSelectedChain}
-                                fontSize="14px"
-                            />
-                        </DropDownWrapper>
-
                         <List>
                             {balances &&
                                 balances.map((balance) => {
@@ -288,4 +292,10 @@ const ButtonsRow = styled.div`
             justify-content: center;
         }
     }
+`
+
+const NetworkButton = styled.div<{ color: string; selectedChain: string; id: string }>`
+    background-color: ${(props) => (props.selectedChain === props.id ? 'red' : 'transparent')};
+    color: ${(props) => (props.selectedChain === props.id ? 'white' : 'black')};
+    padding: 10px 20px;
 `

@@ -13,7 +13,7 @@ export const formatBridgeUrl = ({
             return `https://bridge.arbitrum.io/?token=${fromTokenAddress}&&destinationChain=arbitrum-one&sourceChain=ethereum`
     }
     if (originChain !== 1) {
-        const toToken = toTokenAddress === 'WSTETH' ? '0x5979D7b546E38E414F7E9822514be443A4800529' : toTokenAddress
+        const toToken = toTokenAddress === 'WETH' ? '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' : toTokenAddress
         return `https://jumper.exchange/?fromChain=${originChain}&fromToken=${fromTokenAddress}&toChain=${toChain}&toToken=${toToken}`
     }
 }

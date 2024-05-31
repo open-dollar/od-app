@@ -76,10 +76,10 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
+                        <SubTitle>Select an asset to move to Arbitrum</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Assets on the Network</Description>
+                    <Description>Asset by Network</Description>
                     <Table>
                         <DropDownWrapper>
                             <Dropdown

@@ -294,7 +294,7 @@ const CreateVault = ({
                                         )}
                                         {needsBridge && !parsedAmounts.leftInput && (
                                             <BridgeLabel>
-                                                {`You don't have enough funds. To use this collateral bridge your assets to Arbitrum. `}
+                                                {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
                                                     onClick={() => {
                                                         setBridge(
@@ -332,7 +332,7 @@ const CreateVault = ({
                                         />
                                         {needsBridge && parsedAmounts.leftInput && (
                                             <BridgeLabel>
-                                                {`You don't have enough funds. To use this collateral bridge your assets to Arbitrum. `}
+                                                {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
                                                     onClick={() => {
                                                         setBridge(

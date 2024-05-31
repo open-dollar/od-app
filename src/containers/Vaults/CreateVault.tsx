@@ -237,7 +237,7 @@ const CreateVault = ({
         bridgeModelActions.setReason(reason)
         bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
         bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
-        popupsActions.setIsBridgeModalOpen(true)
+        history.push('/bridge')
     }
 
     return (

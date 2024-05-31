@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getChainId, getUserBalance, bridgeTokens } from '~/utils'
+import { getChainId, getUserBalance, bridgeTokens, getTokenLogo } from '~/utils'
 // import { getTokenLogo, formatWithCommas } from '~/utils'
 // import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
@@ -9,6 +9,7 @@ import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
+import LinkButton from '~/components/LinkButton'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 // import { from } from '@apollo/client'
 
@@ -81,6 +82,14 @@ const BridgeFundsForm = () => {
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on the Network</Description>
                     <Table>
+                        {/* <ButtonsRow>
+                            <LinkButton
+                                id="ethereum"
+                                text={'Ethereum'}
+                                //@ts-ignore
+                                color={isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
+                            />
+                        </ButtonsRow> */}
                         <DropDownWrapper>
                             <Dropdown
                                 items={['Ethereum', 'Optimism', 'Polygon', 'Base']}
@@ -109,6 +118,12 @@ const BridgeFundsForm = () => {
                                             token={selectedToken}
                                         >
                                             <Text>
+                                                <img
+                                                    src={getTokenLogo(balance.name)}
+                                                    alt=""
+                                                    width="20px"
+                                                    height="20px"
+                                                />{' '}
                                                 {balance.name}
                                                 {balance.name === 'ETH' && (
                                                     <Info
@@ -247,5 +262,30 @@ const DropDownWrapper = styled.div`
     span {
         color: ${(props) => props.theme.colors.primary};
         font-size: ${(props) => props.theme.font.default};
+    }
+`
+
+const ButtonsRow = styled.div`
+    display: flex;
+    align-items: center;
+    a {
+        min-width: 100px;
+        padding: 4px 12px;
+        &:first-child {
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 767px) {
+        min-width: 100%;
+        margin-top: 20px;
+        justify-content: space-between;
+        &:first-child {
+            margin-right: 0;
+        }
+        a {
+            min-width: 49%;
+            display: flex;
+            justify-content: center;
+        }
     }
 `

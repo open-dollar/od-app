@@ -6,10 +6,13 @@ import { useStoreActions, useStoreState } from '~/store'
 import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
-import { ExternalLink } from 'react-feather'
+import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const BridgeFundsForm = () => {
+    const [clickedItem, setClickedItem] = useState<string>('')
+
     const {
         connectWalletModel: { tokensData, tokensFetchedData },
         bridgeModel: { reason, toTokenSymbol },
@@ -57,8 +60,6 @@ const BridgeFundsForm = () => {
         }
     })
 
-    console.log('balances', balances)
-    console.log('collateralsDropdown', collateralsDropdown)
     return (
         <Container>
             <Content>
@@ -80,19 +81,41 @@ const BridgeFundsForm = () => {
                         </DropDownWrapper>
 
                         <List>
-                            {balances.length > 0 &&
+                            {balances &&
                                 balances.map((balance) => {
                                     return (
-                                        <Item>
-                                            <Row>
-                                                <Text>{balance.name}</Text>
-                                                <Balance>{balance.balance}</Balance>
-                                            </Row>
+                                        <Item
+                                            onClick={() => {
+                                                setSelectedToken(balance.name)
+                                                setClickedItem(balance.name)
+                                            }}
+                                            style={{
+                                                backgroundColor:
+                                                    clickedItem === balance.name ? '#1A74EC' : 'transparent',
+                                                color: clickedItem === balance.name ? 'white' : '#1A74EC',
+                                            }}
+                                            token={selectedToken}
+                                        >
+                                            <Text>
+                                                {balance.name}
+                                                {balance.name === 'ETH' && (
+                                                    <Info
+                                                        data-tooltip-id="tooltip-token"
+                                                        data-tooltip-content={
+                                                            'Bridge ETH assets to pay gas fees on the network'
+                                                        }
+                                                        size={'15px'}
+                                                    ></Info>
+                                                )}
+                                                {balance.name === 'pufETH' && <span>coming soon</span>}
+                                            </Text>
+                                            <Text>{balance.balance}</Text>
                                         </Item>
                                     )
                                 })}
                         </List>
                     </Table>
+                    <ReactTooltip id={`tooltip-token`} variant="dark" data-effect="solid" place="top" />
                     <Button
                         onClick={() =>
                             bridge({
@@ -153,7 +176,18 @@ const DropDownContainer = styled.div`
 `
 
 const Text = styled.p`
-    font-size: 14px;
+    font-size: ${(props) => props.theme.font.default};
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+
+    span {
+        color: white;
+        background-color: ${(props) => props.theme.colors.primary};
+        padding: 5px;
+        border-radius: 4px;
+    }
 `
 
 const Header = styled.div`
@@ -178,25 +212,27 @@ const Description = styled.div`
     margin-bottom: 10px;
 `
 
-const Row = styled.div`
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
+const Row = styled.div``
 const Table = styled.div`
-    border: 2px solid ${(props) => props.theme.colors.primary};
+    border: 3px solid ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
 `
 
 const List = styled.div``
 
-const Item = styled.div`
+const Item = styled.div<{ token?: string }>`
     padding: 0 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 15px
 `
 
-const Balance = styled.div``
-
 const DropDownWrapper = styled.div`
+    border-bottom: 2px solid ${(props) => props.theme.colors.primary};
+
     button {
         border: none;
         border-color: red;
@@ -204,5 +240,6 @@ const DropDownWrapper = styled.div`
 
     span {
         color: ${(props) => props.theme.colors.primary};
+        font-size: ${(props) => props.theme.font.default};
     }
 `

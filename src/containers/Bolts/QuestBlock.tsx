@@ -7,7 +7,7 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
             <BlockHeader>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
                     <QuestTitle>{title}</QuestTitle>
-                    <div style={{ display: 'flex', gap: '10px' }}>{button}</div>
+                    <div style={{ display: 'flex', gap: '10px', height: '42px' }}>{button}</div>
                 </div>
                 <BlockDescription>{text}</BlockDescription>
             </BlockHeader>
@@ -55,7 +55,7 @@ const BlockHeader = styled.div`
     ${({ theme }) => theme.mediaWidth.upToSmall`
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-start;
     `}
 `
 
@@ -79,7 +79,6 @@ const QuestTitle = styled.div`
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
-
     margin-right: 22px;
 
     svg {
@@ -94,20 +93,13 @@ const QuestTitle = styled.div`
     ${({ theme }) => theme.mediaWidth.upToSmall`
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
-
 `}
 `
 
 const Block = styled.div`
     display: flex;
     justify-content: start;
-
-    padding-left: 34px;
-    padding-top: 19px;
-    padding-bottom: 22px;
-    padding-right: 34px;
-
+    padding: 19px 34px 22px;
     ${({ theme }) => theme.mediaWidth.upToSmall`
            display: block;
            margin-top: 10px;
@@ -154,12 +146,12 @@ const Value = styled.div`
     display: flex;
     gap: 10px;
     min-height: 37px;
+    align-items: center;
     @media (max-width: 767px) {
         font-size: ${(props) => props.theme.font.small};
+        text-align: end;
+        max-width: 240px;
     }
-
-    display: flex;
-    align-items: end;
 
     &.status {
         color: #459d00;

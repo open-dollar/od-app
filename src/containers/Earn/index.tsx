@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import PoolBlock from './PoolBlock'
-import { useStoreState } from 'easy-peasy'
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect } from 'react'
 import useGeb from '~/hooks/useGeb'
@@ -14,10 +13,7 @@ import { POOLS } from '~/utils'
 const Earn = () => {
     const geb = useGeb()
     const { account } = useActiveWeb3React()
-    // @to-do for some reason the new model is not being tracked in store type, but it is available as a function
-    //  @ts-ignore
     const { nitroPoolsModel: nitroPoolsState } = useStoreState((state) => state)
-    // @ts-ignore
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
 
@@ -115,7 +111,12 @@ const SubHeader = styled.h3`
 `
 
 const Text = styled.div`
-    background-color: #6396ff26;
+    background-color: rgba(202, 234, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
     padding: 20px;
     font-size: ${(props) => props.theme.font.default};
     border-radius: 3px;

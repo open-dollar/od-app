@@ -7,10 +7,7 @@ import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
-
-const onClick = (url: string) => {
-    window.open(url, '_blank')
-}
+import { useHistory } from 'react-router-dom'
 
 const StyledAnchor = styled.a`
     padding: 5px 5px;
@@ -38,7 +35,7 @@ const ZealyLogo = () => (
 
 const GalxeLogo = () => (
     <LogoText>
-        <img alt="Galxe" src={galxeLogo} style={{ height: '17px' }} />
+        <img alt="Galxe" src={galxeLogo} style={{ height: '16px' }} />
     </LogoText>
 )
 
@@ -76,16 +73,27 @@ const QuestTitle = styled.div`
     }
 `
 
-const CtaButton = styled(Button)`
-    max-height: 42px;
-`
+const InternalLinkButton = ({ url }: { url: string }) => {
+    const history = useHistory()
+    const onClick = () => history.push(url)
+
+    return (
+        <Button secondary onClick={onClick}>
+            Go
+        </Button>
+    )
+}
+
+const onClick = (url: string) => {
+    window.open(url, '_blank')
+}
 
 export const QUESTS = [
     {
         title: 'Invite a Friend',
         text: (
             <>
-                Create an affiliate link by signing a message with your wallet.
+                Create a referral link by signing a message with your wallet.
                 <Affiliate />
             </>
         ),
@@ -97,7 +105,7 @@ export const QUESTS = [
             },
             {
                 title: 'Bolts',
-                status: '10% of referrals + Friends receive 250 Bolts per ETH deposited for 30 days',
+                status: '10% of referrals + friends receive 250 Bolts per ETH deposited for 30 days',
             },
         ],
     },
@@ -105,13 +113,13 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'50px'} />
-                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'50px'} />
-                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'50px'} />
+                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'40px'} />
+                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'40px'} />
+                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'40px'} />
             </TitleContainer>
         ),
-        button: '',
-        text: 'Deposit collateral to earn Bolts daily. Minimum 0.2 ETH equivalent.',
+        button: <InternalLinkButton url="/vaults" />,
+        text: 'Deposit collateral to earn Bolts daily.',
         items: [
             {
                 title: 'Source',
@@ -124,10 +132,10 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} height={'50px'} />
+                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
             </TitleContainer>
         ),
-        button: '',
+        button: <InternalLinkButton url="/vaults" />,
         text: 'Borrow OD from your NFV to earn Bolts daily.',
         items: [
             {
@@ -140,44 +148,20 @@ export const QUESTS = [
     {
         title: (
             <TitleContainer>
-                <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'50px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
-            </TitleContainer>
-        ),
-        button: (
-            <CtaButton
-                secondary
-                onClick={() =>
-                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
-                }
-            >
-                Go <LinkIcon />
-            </CtaButton>
-        ),
-        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
-        items: [
-            { title: 'Source', status: <CamelotLogo /> },
-            { title: 'Bolts', status: '3,000 per ETH' },
-        ],
-    },
-    {
-        title: (
-            <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'50px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'50px'} />
+                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'40px'} />
+                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
             </TitleContainer>
         ),
         button: (
-            <CtaButton
+            <Button
                 secondary
                 onClick={() =>
                     onClick('https://info.camelot.exchange/pair/v3/0xf935263c9950eb2881ff58bd6a76c3d2564a78d5')
                 }
             >
                 Go <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: 'Provide liquidity to the ODG/ETH pair on Camelot to earn Bolts daily.',
         items: [
@@ -186,11 +170,35 @@ export const QUESTS = [
         ],
     },
     {
+        title: (
+            <TitleContainer>
+                <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
+                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
+                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
+            </TitleContainer>
+        ),
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
+                }
+            >
+                Go <LinkIcon />
+            </Button>
+        ),
+        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
+        items: [
+            { title: 'Source', status: <CamelotLogo /> },
+            { title: 'Bolts', status: '3,000 per ETH' },
+        ],
+    },
+    {
         title: 'Social Tasks on Galxe',
         button: (
-            <CtaButton secondary onClick={() => onClick('https://galxe.com/opendollar')}>
+            <Button secondary onClick={() => onClick('https://galxe.com/opendollar')}>
                 Go <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: 'Complete tasks on Galxe to earn Bolts.',
         items: [
@@ -201,9 +209,9 @@ export const QUESTS = [
     {
         title: 'Social Tasks on Zealy',
         button: (
-            <CtaButton secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
+            <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
                 Go <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: 'Complete tasks on Zealy to earn Bolts.',
         items: [
@@ -214,7 +222,7 @@ export const QUESTS = [
     {
         title: 'ODOG NFT Holder',
         button: (
-            <CtaButton
+            <Button
                 secondary
                 onClick={() =>
                     onClick(
@@ -223,7 +231,7 @@ export const QUESTS = [
                 }
             >
                 Get yours <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: (
             <div>
@@ -246,7 +254,7 @@ export const QUESTS = [
     {
         title: 'Genesis NFT Holder',
         button: (
-            <CtaButton
+            <Button
                 secondary
                 onClick={() =>
                     onClick(
@@ -255,7 +263,7 @@ export const QUESTS = [
                 }
             >
                 Learn more <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: (
             <div>
@@ -277,12 +285,9 @@ export const QUESTS = [
     {
         title: 'Genesis NFV User',
         button: (
-            <CtaButton
-                secondary
-                onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}
-            >
+            <Button secondary onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}>
                 Learn more <LinkIcon />
-            </CtaButton>
+            </Button>
         ),
         text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
         items: [
@@ -294,9 +299,9 @@ export const QUESTS = [
         ],
     },
     {
-        title: 'Community Goal: 20k ETH TVL',
+        title: 'Community Goal: 20K ETH TVL',
         button: '',
-        text: `All existing point totals will receive a 30% bonus at the time of the snapshot when the Open Dollar TVL reaches 20,000 ETH.`,
+        text: `Existing Bolts receive a 30% bonus when TVL reaches 20,000 ETH.`,
         items: [
             {
                 title: 'Source',

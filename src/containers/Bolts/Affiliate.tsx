@@ -30,7 +30,7 @@ const Affiliate = () => {
                         setAffiliateCode(code)
                     }
                 } catch (err) {
-                    console.error('Error fetching affiliate code:', err)
+                    console.error('Error fetching referral code:', err)
                 }
             })()
         }
@@ -44,8 +44,8 @@ const Affiliate = () => {
                 setNewAffiliateCode('')
                 setError(null)
             } catch (err) {
-                console.error('Error creating affiliate code:', err)
-                setError((err as Error)?.message || 'Failed to create affiliate code. Please try again.')
+                console.error('Error creating referral code:', err)
+                setError((err as Error)?.message || 'Failed to create referral code. Please try again.')
             }
         }
     }
@@ -57,7 +57,7 @@ const Affiliate = () => {
                     <>
                         <FlexContainer>
                             <AffiliateText>
-                                Your Affiliate Link:{' '}
+                                Your Referral Link:{' '}
                                 <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
                             </AffiliateText>
                         </FlexContainer>
@@ -84,7 +84,7 @@ const Affiliate = () => {
                             <UrlText>https://app.opendollar.com?af=</UrlText>
                             <input
                                 type="text"
-                                placeholder="Your new affiliate code"
+                                placeholder="Your new referral code"
                                 value={newAffiliateCode}
                                 onChange={(e) => setNewAffiliateCode(e.target.value)}
                             />
@@ -92,7 +92,7 @@ const Affiliate = () => {
                         <BtnWrapper>
                             {account ? (
                                 <Button secondary onClick={handleCreateAffiliateCode} disabled={!newAffiliateCode}>
-                                    Create Affiliate Code
+                                    Create Referral Link
                                 </Button>
                             ) : (
                                 <Button secondary onClick={handleConnectWallet}>
@@ -123,9 +123,20 @@ const AffiliateText = styled.div`
 `
 
 const Container = styled.div`
+    background-color: rgba(0, 0, 0, 0.02);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
     display: flex;
     justify-content: flex-start;
     margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+
     @media (max-width: 767px) {
         justify-content: center;
     }
@@ -134,12 +145,17 @@ const Container = styled.div`
 const Content = styled.div`
     display: flex;
     align-items: center;
+    column-gap: 10px;
 
     input {
         padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 4px;
         width: 100%;
+    }
+    @media (max-width: 767px) {
+        flex-direction: column;
+        row-gap: 20px;
     }
 `
 
@@ -165,6 +181,8 @@ const UrlText = styled.div`
     font-size: ${(props) => props.theme.font.small};
 `
 const BoldText = styled.span`
+    margin-left: 10px;
+    margin-right: 10px;
     font-weight: bold;
     font-size: ${(props) => props.theme.font.small};
 `
@@ -177,16 +195,12 @@ const ErrorMessage = styled.div`
 const BtnWrapper = styled.div`
     width: max-content;
     margin-right: auto;
-    margin-left: 10px;
     button {
-        height: 42px;
+        height: 49px;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 18px;
-        padding: 17px 30px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
+        width: 280px;
     }
 `

@@ -9,14 +9,12 @@ import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
 import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, parseWad } from '~/utils'
 import Button from '~/components/Button'
-import useGeb from '~/hooks/useGeb'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
 import { utils as gebUtils } from '@opendollar/sdk'
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
 const CollateralAuctionBlock = (auction: Props) => {
-    const geb = useGeb()
     const { auctionId, isClaimed, remainingToRaiseE18, remainingCollateral, tokenSymbol, biddersList, isCollapsed } =
         auction
 
@@ -29,27 +27,17 @@ const CollateralAuctionBlock = (auction: Props) => {
     } = useStoreState((state) => state)
 
     const [collapse, setCollapse] = useState(isCollapsed)
+    const analyticsData = useAnalyticsData()
+
     const [marketPriceOD, setMarketPriceOD] = useState(BigNumber.from('1'))
 
     const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 
     useEffect(() => {
-        const fetchODMarketPrice = async () => {
-            let analytics
-            if (geb) {
-                try {
-                    analytics = await fetchAnalyticsData(geb)
-                } catch (e) {
-                    console.error(e)
-                }
-                if (analytics) {
-                    setMarketPriceOD(BigNumber.from(analytics.marketPrice))
-                }
-            }
+        if (analyticsData) {
+            setMarketPriceOD(BigNumber.from(analyticsData.marketPrice))
         }
-
-        fetchODMarketPrice()
-    }, [geb])
+    }, [analyticsData])
 
     const buySymbol = COIN_TICKER
 

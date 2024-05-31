@@ -80,11 +80,11 @@ const Bolts = () => {
 }
 
 const Container = styled.div`
-    max-width: 1362px;
     margin: 80px auto;
     padding: 0 15px;
     @media (max-width: 767px) {
         margin: 50px auto;
+        padding: 0 10px;
     }
     color: ${(props) => props.theme.colors.accent};
 `
@@ -93,8 +93,10 @@ const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
-
     color: ${(props) => props.theme.colors.accent};
+    @media (max-width: 767px) {
+        text-align: center;
+    }
 `
 
 const SubHeader = styled.h3`
@@ -104,20 +106,23 @@ const SubHeader = styled.h3`
     font-weight: 700;
     color: ${(props) => props.theme.colors.tertiary};
     margin-bottom: 20px;
+    @media (max-width: 767px) {
+        font-size: 18px;
+        text-align: center;
+    }
 `
 
 const Text = styled.div`
-    background-color: #6396ff26;
+    background-color: rgba(202, 234, 255, 0.3);
     backdrop-filter: blur(10px);
-
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     font-size: ${(props) => props.theme.font.default};
-    border-radius: 3px;
-
     p {
         margin-bottom: 10px;
     }
-
     a {
         text-decoration: underline;
         color: ${(props) => props.theme.colors.tertiary};
@@ -127,23 +132,26 @@ const Text = styled.div`
 const BoltsDetails = styled.div`
     padding: 20px;
     margin-bottom: 30px;
-
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(202, 234, 255, 0.3);
     backdrop-filter: blur(10px);
-
     border: 1px solid rgba(255, 255, 255, 0);
-    border-radius: 3px;
+    border-radius: 4px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-
     font-weight: 700;
     font-size: ${(props) => props.theme.font.default};
-
+    display: flex;
+    align-items: start;
+    flex-direction: column;
     div {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
+    }
+    @media (max-width: 767px) {
+        padding: 15px;
+        font-size: ${(props) => props.theme.font.small};
     }
 `
+
 const BoltsDetailsRow = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -156,6 +164,7 @@ const SectionHeader = styled.h2`
     color: ${(props) => props.theme.colors.accent};
     margin-bottom: 20px;
 `
+
 const Section = styled.div``
 
 const BtnWrapper = styled.div`

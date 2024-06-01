@@ -31,75 +31,68 @@ const WALLET_VIEWS = {
     PENDING: 'pending',
 }
 
+type ChainParams = {
+    [key: string]: {
+        chainId: string
+        chainName: string
+        nativeCurrency: {
+            name: string
+            symbol: string
+            decimals: number
+        }
+        rpcUrls: string[]
+        blockExplorerUrls: string[]
+    }
+}
+
 export async function checkAndSwitchMetamaskNetwork() {
     // @ts-ignore
     if (window.ethereum && window.ethereum.isMetaMask && typeof window.ethereum.request === 'function') {
         // @ts-ignore
-        const chainId = await window.ethereum.request({ method: 'net_version' })
-        if (chainId === process.env.REACT_APP_NETWORK_ID) return
-        // Check if chain ID is same as REACT_APP_NETWORK_ID and prompt user to switch networks if not
-        if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '42161') {
+        const currentChainId = await window.ethereum.request({ method: 'net_version' })
+        const targetChainId = process.env.REACT_APP_NETWORK_ID as keyof ChainParams
+
+        if (currentChainId === targetChainId) {
+            return
+        }
+
+        const chainParams: ChainParams = {
+            '42161': {
+                chainId: '0xA4B1',
+                chainName: 'Arbitrum One',
+                nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                rpcUrls: ['https://arbitrum-one.publicnode.com'],
+                blockExplorerUrls: ['https://arbiscan.io/'],
+            },
+            '10': {
+                chainId: '0xA',
+                chainName: 'OP Mainnet',
+                nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                rpcUrls: ['https://optimism-rpc.publicnode.com'],
+                blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+            },
+            '421614': {
+                chainId: '0x66EEE',
+                chainName: 'Arbitrum Sepolia',
+                nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                rpcUrls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
+                blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
+            },
+        }
+
+        const params = chainParams[targetChainId]
+        if (params) {
             try {
+                // @ts-ignore
+                const currentChainId = await window.ethereum.request({ method: 'net_version' })
+                const targetChainId = process.env.REACT_APP_NETWORK_ID as keyof ChainParams
+                if (currentChainId === targetChainId) {
+                    return
+                }
                 // @ts-ignore
                 await window.ethereum.request({
                     method: 'wallet_addEthereumChain',
-                    params: [
-                        {
-                            chainId: `0xA4B1`,
-                            chainName: 'Arbitrum One',
-                            nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
-                                decimals: 18,
-                            },
-                            rpcUrls: ['https://arbitrum-one.publicnode.com'],
-                            blockExplorerUrls: ['https://arbiscan.io/'],
-                        },
-                    ],
-                })
-            } catch (error) {
-                console.error('Failed to switch network', error)
-            }
-        } else if (chainId !== process.env.REACT_APP_NETWORK_ID && process.env.REACT_APP_NETWORK_ID === '10') {
-            try {
-                // @ts-ignore
-                await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [
-                        {
-                            chainId: `0xA`,
-                            chainName: 'OP Mainnet',
-                            nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
-                                decimals: 18,
-                            },
-                            rpcUrls: ['https://optimism-rpc.publicnode.com'],
-                            blockExplorerUrls: ['https://optimistic.etherscan.io/'],
-                        },
-                    ],
-                })
-            } catch (error) {
-                console.error('Failed to switch network', error)
-            }
-        } else {
-            try {
-                // @ts-ignore
-                await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [
-                        {
-                            chainId: `0x66EEE`,
-                            chainName: 'Arbitrum Sepolia',
-                            nativeCurrency: {
-                                name: 'ETH',
-                                symbol: 'ETH',
-                                decimals: 18,
-                            },
-                            rpcUrls: ['https://arbitrum-sepolia.blockpi.network/v1/rpc/public'],
-                            blockExplorerUrls: ['https://sepolia.arbiscan.io/'],
-                        },
-                    ],
+                    params: [params],
                 })
             } catch (error) {
                 console.error('Failed to switch network', error)

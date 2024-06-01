@@ -7,6 +7,7 @@ import multicallModel, { MulticallModel } from './multicallModel'
 import auctionModel, { AuctionModel } from './auctionModel'
 import nitroPoolsModel, { NitroPoolsModel } from './nitroPoolsModel'
 import analyticsModel, { AnalyticsModel } from './analyticsModel'
+import poolDataModel, { PoolDataModel } from '~/model/poolDataModel'
 
 export interface StoreModel {
     settingsModel: SettingsModel
@@ -18,6 +19,7 @@ export interface StoreModel {
     auctionModel: AuctionModel
     nitroPoolsModel: NitroPoolsModel
     analyticsModel: AnalyticsModel
+    poolDataModel: PoolDataModel
 }
 
 const model: StoreModel = {
@@ -30,6 +32,7 @@ const model: StoreModel = {
     auctionModel,
     nitroPoolsModel,
     analyticsModel,
+    poolDataModel,
 }
 
 export default model

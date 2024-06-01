@@ -5,14 +5,15 @@ import styled from 'styled-components'
 import { formatDataNumber, multiplyWad } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
-import { fetchPoolData } from '@opendollar/sdk'
 import { BigNumber } from 'ethers'
 import { useActiveWeb3React } from '~/hooks'
+import usePoolData from '~/hooks/usePoolData'
 
 const Stats = () => {
     const geb = useGeb()
     const { chainId } = useActiveWeb3React()
     const analyticsData = useAnalyticsData()
+    const poolData = usePoolData()
     const [state, setState] = useState({
         totalVaults: '',
         wETHBalance: '',
@@ -22,33 +23,23 @@ const Stats = () => {
 
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
-        async function fetchData() {
-            if (geb && analyticsData) {
-                let totalLockedValue = BigNumber.from('0')
-                try {
-                    const poolData = await fetchPoolData(geb)
-                    Object.entries(analyticsData.tokenAnalyticsData).forEach(([_, value]) => {
-                        const lockedAmountInUsd = multiplyWad(
-                            value?.lockedAmount?.toString(),
-                            value?.currentPrice?.toString()
-                        )
-                        totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
-                    })
-                    setState((prevState) => ({
-                        ...prevState,
-                        totalVaults: analyticsData.totalVaults,
-                        wETHBalance: formatDataNumber(poolData.WETH_balance, 18, 2, false),
-                        odBalance: formatDataNumber(poolData.OD_balance, 18, 2, false),
-                        totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
-                    }))
-                } catch (error) {
-                    console.error('Error fetching data:', error)
-                }
-            }
-        }
 
-        fetchData()
-    }, [geb, chainId, analyticsData])
+        if (geb && analyticsData && poolData) {
+            let totalLockedValue = BigNumber.from('0')
+            Object.entries(analyticsData.tokenAnalyticsData).forEach(([_, value]) => {
+                const lockedAmountInUsd = multiplyWad(value?.lockedAmount?.toString(), value?.currentPrice?.toString())
+                totalLockedValue = totalLockedValue.add(lockedAmountInUsd)
+            })
+
+            setState((prevState) => ({
+                ...prevState,
+                totalVaults: analyticsData.totalVaults,
+                wETHBalance: formatDataNumber(poolData.WETH_balance, 18, 2, false),
+                odBalance: formatDataNumber(poolData.OD_balance, 18, 2, false),
+                totalCollateralSum: formatDataNumber(totalLockedValue.toString(), 18, 2, true, true),
+            }))
+        }
+    }, [geb, chainId, analyticsData, poolData])
 
     return (
         <ComponentContainer>

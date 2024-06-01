@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
@@ -47,7 +47,6 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         10
     )
     const ODPrice = singleSafe ? formatNumber(singleSafe.currentRedemptionPrice, 3) : '0'
-    const [svg, setSvg] = useState('')
 
     const statsForSVG = useMemo(
         () => ({
@@ -68,9 +67,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData]
     )
 
-    useEffect(() => {
-        setSvg(generateSvg(statsForSVG))
-    }, [singleSafe, totalDebt, collateral, collateralName, safeState.liquidationData, statsForSVG])
+    const svg = useMemo(() => generateSvg(statsForSVG), [statsForSVG])
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -420,6 +417,7 @@ const Left = styled.div`
         padding-right: 0;
     }
 `
+
 const Right = styled.div`
     background: white;
     border-radius: 4px;
@@ -477,6 +475,7 @@ const SideTitle = styled.div`
         }
     }
 `
+
 const SideValue = styled.div`
     margin-left: auto;
     text-align: right;

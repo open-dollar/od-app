@@ -23,9 +23,9 @@ const BridgeFundsForm = () => {
     const { account } = useWeb3React()
 
     const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<string>('Ethereum')
+    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
     const [balances, setBalances] = useState<any[]>([])
-    const networksList = ['Ethereum', 'Optimism', 'Polygon', 'Base']
+    const networksList = ['Mainnet', 'Optimism', 'Polygon', 'Base'] // show etherium instead of mainnet for user
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -39,7 +39,7 @@ const BridgeFundsForm = () => {
     }, [collaterals])
 
     useEffect(() => {
-        if (!account) return
+        if (!account || selectedChain) return
         async function fetchBalances() {
             const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
             const balances = await getUserBalance(tokens, account!, publicRPC)
@@ -76,7 +76,6 @@ const BridgeFundsForm = () => {
         setSelectedChain(network)
     }
 
-    console.log('selectedChain', selectedChain)
     return (
         <Container>
             <Content>
@@ -295,7 +294,10 @@ const ButtonsRow = styled.div`
 `
 
 const NetworkButton = styled.div<{ color: string; selectedChain: string; id: string }>`
-    background-color: ${(props) => (props.selectedChain === props.id ? 'red' : 'transparent')};
-    color: ${(props) => (props.selectedChain === props.id ? 'white' : 'black')};
+    background-color: ${(props) => (props.selectedChain === props.id ? props.theme.colors.primary : 'transparent')};
+    color: ${(props) => (props.selectedChain === props.id ? 'white' : props.theme.colors.accent)};
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     padding: 10px 20px;
+    cursor: pointer;
 `

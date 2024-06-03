@@ -1,18 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getChainId, getUserBalance, bridgeTokens, getTokenLogo, formatDataNumber, formatWithCommas } from '~/utils'
-// import { getTokenLogo, formatWithCommas } from '~/utils'
-// import { ethers } from 'ethers'
+import { getChainId, getUserBalance, bridgeTokens, getTokenLogo, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-// import { getGasToken } from '~/utils'
-import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-import { set } from 'numeral'
 import Loader from '~/components/Loader'
-// import { from } from '@apollo/client'
 
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
@@ -92,7 +86,7 @@ const BridgeFundsForm = () => {
                                 id={network}
                                 color={selectedChain === network ? 'red' : 'transparent'}
                             >
-                                {network}
+                                {network === 'Mainnet' ? 'Ethereum' : network}
                             </NetworkButton>
                         ))}
                     </ButtonsRow>
@@ -114,7 +108,12 @@ const BridgeFundsForm = () => {
                                         token={selectedToken}
                                     >
                                         <Text>
-                                            <img src={getTokenLogo((token.name).toUpperCase())} alt="" width="20px" height="20px" />
+                                            <img
+                                                src={getTokenLogo(token.name.toUpperCase())}
+                                                alt=""
+                                                width="20px"
+                                                height="20px"
+                                            />
                                             {token.name}
                                             {token.name === 'ETH' && (
                                                 <Info

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getChainId, getUserBalance, bridgeTokens, getTokenLogo } from '~/utils'
+import { getChainId, getUserBalance, bridgeTokens, getTokenLogo, formatDataNumber, formatWithCommas } from '~/utils'
 // import { getTokenLogo, formatWithCommas } from '~/utils'
 // import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
@@ -61,8 +61,9 @@ const BridgeFundsForm = () => {
     }, [account, selectedChain, fromTokenSymbol])
 
     const getBalance = (token: string) => {
-        const balance = balances.find((balance) => balance.name === token)
-        return balance ? balance.balance : ''
+        let balance = balances.find((balance) => balance.name === token)
+        balance = formatWithCommas(balance?.balance, 4)
+        return balance ? balance : ''
     }
 
     return (

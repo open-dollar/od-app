@@ -17,7 +17,6 @@ import Loader from '~/components/Loader'
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
     const [fixedTokens, setFixedTokens] = useState(bridgeTokens[getChainId('Mainnet')].tokens)
-    console.log('fixedTokens', fixedTokens)
 
     const {
         connectWalletModel: { tokensData },
@@ -45,7 +44,6 @@ const BridgeFundsForm = () => {
         if (!account) return
         async function fetchBalances() {
             const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
-            setFixedTokens(tokens)
             const balances = await getUserBalance(tokens, account!, publicRPC)
             if (fromTokenSymbol) {
                 const token = tokens.find((token: any) => token.name === fromTokenSymbol)
@@ -62,6 +60,13 @@ const BridgeFundsForm = () => {
 
     const getBalance = (token: string) => {
         let balance = balances.find((balance) => balance.name === token)
+        if (balance === undefined)
+            return (
+                <LoaderContainer>
+                    {' '}
+                    <Loader color={selectedToken === token ? 'white' : '#1A74EC'} />
+                </LoaderContainer>
+            )
         balance = formatWithCommas(balance?.balance, 4)
         return balance ? balance : ''
     }

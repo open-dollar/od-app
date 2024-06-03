@@ -33,6 +33,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     ARB: ARB,
     MAGIC: MAGIC,
     PUFETH: PUFETH,
+    ETH: WETH,
 }
 
 export function getTokenLogo(token: string): string {

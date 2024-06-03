@@ -114,7 +114,7 @@ const BridgeFundsForm = () => {
                                         token={selectedToken}
                                     >
                                         <Text>
-                                            <img src={getTokenLogo(token.name)} alt="" width="20px" height="20px" />
+                                            <img src={getTokenLogo((token.name).toUpperCase())} alt="" width="20px" height="20px" />
                                             {token.name}
                                             {token.name === 'ETH' && (
                                                 <Info

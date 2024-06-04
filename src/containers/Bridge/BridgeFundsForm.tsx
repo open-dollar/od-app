@@ -277,42 +277,15 @@ const Item = styled.div<{ token?: string }>`
     }
 `
 
-const DropDownWrapper = styled.div`
-    border-bottom: 2px solid ${(props) => props.theme.colors.primary};
-
-    button {
-        border: none;
-        border-color: red;
-    }
-
-    span {
-        color: ${(props) => props.theme.colors.primary};
-        font-size: ${(props) => props.theme.font.default};
-    }
-`
-
 const ButtonsRow = styled.div`
     display: flex;
     align-items: center;
     column-gap: 10px;
-    a {
-        min-width: 100px;
-        padding: 4px 12px;
-        &:first-child {
-            margin-right: 10px;
-        }
-    }
+    
     @media (max-width: 767px) {
-        min-width: 100%;
-        margin-top: 20px;
-        justify-content: space-between;
-        &:first-child {
-            margin-right: 0;
-        }
-        a {
-            min-width: 49%;
-            display: flex;
-            justify-content: center;
+        flex-wrap: wrap;
+        div {
+            flex: 1;
         }
     }
 `
@@ -320,6 +293,7 @@ const ButtonsRow = styled.div`
 const NetworkButton = styled.div<{ selectedChain: string; id: string }>`
     background-color: ${(props) => (props.selectedChain === props.id ? props.theme.colors.primary : props.theme.colors.background)};
     color: ${(props) => (props.selectedChain === props.id ? 'white' : props.theme.colors.accent)};
+    border-bottom: none;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     padding: 10px 20px;

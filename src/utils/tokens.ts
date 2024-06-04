@@ -50,14 +50,6 @@ export const bridgeTokens: any = {
     1: {
         tokens: [
             {
-                name: 'WETH',
-                icon: WETH,
-                gebName: 'Wrapped Ether',
-                balance: '0',
-                address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-                comingSoon: false,
-            },
-            {
                 name: 'WSTETH',
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',

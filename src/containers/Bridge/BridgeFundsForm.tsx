@@ -11,6 +11,7 @@ import OPTIMISM from '~/assets/optimism.svg'
 import ETHEREUM from '~/assets/ethereum.svg'
 import BASE from '~/assets/base.svg'
 import POLYGON from '~/assets/polygon.svg'
+import { network } from '~/connectors'
 
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
@@ -58,13 +59,9 @@ const BridgeFundsForm = () => {
 
     const getBalance = (token: string) => {
         let balance = balances.find((balance) => balance.name === token)
-        if (balance === undefined)
-            return (
-                <LoaderContainer>
-                    {' '}
-                    <Loader color={selectedToken === token ? 'white' : '#1A74EC'} />
-                </LoaderContainer>
-            )
+        if (balance === undefined) {
+            return undefined
+        }
         balance = formatWithCommas(balance?.balance, 4)
         return balance ? balance : ''
     }

@@ -7,6 +7,10 @@ import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import Loader from '~/components/Loader'
+import OPTIMISM from '~/assets/optimism.svg'
+import ETHEREUM from '~/assets/ethereum.svg'
+import BASE from '~/assets/base.svg'
+import POLYGON from '~/assets/polygon.svg'
 
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
@@ -65,6 +69,20 @@ const BridgeFundsForm = () => {
         return balance ? balance : ''
     }
 
+    const getNrtworkLogo = (network: string) => {
+        switch (network) {
+            case 'Optimism':
+                return <img src={OPTIMISM} alt="" />
+            case 'Mainnet':
+                return <img src={ETHEREUM} alt="" />
+            case 'Polygon':
+                return <img src={POLYGON} alt="" />
+            case 'Base':    
+                return <img src={BASE} alt="" />
+            default:
+                return ''
+        }
+    }
     return (
         <Container>
             <Content>
@@ -86,6 +104,7 @@ const BridgeFundsForm = () => {
                                 id={network}
                                 color={selectedChain === network ? 'red' : 'transparent'}
                             >
+                                {getNrtworkLogo(network)}
                                 {network === 'Mainnet' ? 'Ethereum' : network}
                             </NetworkButton>
                         ))}
@@ -296,6 +315,9 @@ const NetworkButton = styled.div<{ color: string; selectedChain: string; id: str
     border-top-right-radius: 3px;
     padding: 10px 20px;
     cursor: pointer;
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
 `
 
 const LoaderContainer = styled.div`

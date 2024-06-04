@@ -112,6 +112,7 @@ const BridgeFundsForm = () => {
                             {fixedTokens.map((token: any) => {
                                 return (
                                     <Item
+                                        className={token.name === 'pufETH' ? 'disabled' : ''}
                                         onClick={() => {
                                             if (token.comingSoon) return
                                             setSelectedToken(token.name)
@@ -264,6 +265,12 @@ const Item = styled.div<{ token?: string }>`
         background-color: ${(props) => props.theme.colors.primary};
         padding: 2px 10px;
         border-radius: 4px;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f5f5f5!important;
     }
 
     &:not(:last-child) {

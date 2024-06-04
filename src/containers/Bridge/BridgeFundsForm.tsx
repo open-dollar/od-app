@@ -77,7 +77,7 @@ const BridgeFundsForm = () => {
                 return <img src={ETHEREUM} alt="" />
             case 'Polygon':
                 return <img src={POLYGON} alt="" />
-            case 'Base':    
+            case 'Base':
                 return <img src={BASE} alt="" />
             default:
                 return ''
@@ -146,14 +146,18 @@ const BridgeFundsForm = () => {
                                             )}
                                             {token.name === 'pufETH' ? <span>coming soon</span> : null}
                                         </Text>
-                                        {balances.length > 0 ? (
-                                            <Text>{getBalance(token.name)}</Text>
-                                        ) : (
-                                            <LoaderContainer>
-                                                {' '}
-                                                <Loader color={selectedToken === token.name ? 'white' : '#1A74EC'} />
-                                            </LoaderContainer>
-                                        )}
+
+                                        {account ? (
+                                            balances.length > 0 ? (
+                                                <Text>{getBalance(token.name)}</Text>
+                                            ) : (
+                                                <LoaderContainer>
+                                                    <Loader
+                                                        color={selectedToken === token.name ? 'white' : '#1A74EC'}
+                                                    />
+                                                </LoaderContainer>
+                                            )
+                                        ) : null}
                                     </Item>
                                 )
                             })}

@@ -11,11 +11,12 @@ import OPTIMISM from '~/assets/optimism.svg'
 import ETHEREUM from '~/assets/ethereum.svg'
 import BASE from '~/assets/base.svg'
 import POLYGON from '~/assets/polygon.svg'
-import { network } from '~/connectors'
 
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
-    const [fixedTokens, setFixedTokens] = useState(bridgeTokens[getChainId('Mainnet')].tokens)
+    const [selectedToken, setSelectedToken] = useState<string>('')
+    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [balances, setBalances] = useState<any[]>([])
 
     const {
         connectWalletModel: { tokensData },
@@ -23,16 +24,15 @@ const BridgeFundsForm = () => {
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
-    const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
-    const [balances, setBalances] = useState<any[]>([])
-    const networksList = ['Mainnet', 'Optimism', 'Polygon', 'Base'] // show etherium instead of mainnet for user
+    const networksList = ['Mainnet', 'Optimism', 'Polygon', 'Base']
+
+    const { bridge } = useStoreActions((state) => state.bridgeModel)
+
+    const fixedTokens = bridgeTokens[getChainId('Mainnet')].tokens
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
     }, [tokensData])
-
-    const { bridge } = useStoreActions((state) => state.bridgeModel)
 
     useEffect(() => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)

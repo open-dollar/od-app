@@ -100,7 +100,6 @@ const BridgeFundsForm = () => {
                                 }}
                                 selectedChain={selectedChain}
                                 id={network}
-                                color={selectedChain === network ? 'red' : 'transparent'}
                             >
                                 {getNrtworkLogo(network)}
                                 {network === 'Mainnet' ? 'Ethereum' : network}
@@ -295,6 +294,7 @@ const DropDownWrapper = styled.div`
 const ButtonsRow = styled.div`
     display: flex;
     align-items: center;
+    column-gap: 10px;
     a {
         min-width: 100px;
         padding: 4px 12px;
@@ -317,8 +317,8 @@ const ButtonsRow = styled.div`
     }
 `
 
-const NetworkButton = styled.div<{ color: string; selectedChain: string; id: string }>`
-    background-color: ${(props) => (props.selectedChain === props.id ? props.theme.colors.primary : 'transparent')};
+const NetworkButton = styled.div<{ selectedChain: string; id: string }>`
+    background-color: ${(props) => (props.selectedChain === props.id ? props.theme.colors.primary : props.theme.colors.background)};
     color: ${(props) => (props.selectedChain === props.id ? 'white' : props.theme.colors.accent)};
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -327,6 +327,7 @@ const NetworkButton = styled.div<{ color: string; selectedChain: string; id: str
     display: flex;
     gap: 5px;
     justify-content: space-between;
+    width: 150px;
 `
 
 const LoaderContainer = styled.div`

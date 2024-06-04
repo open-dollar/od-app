@@ -1,4 +1,4 @@
-import WETH from '../assets/eth-img.svg'
+import WETH from '../assets/eth.svg'
 import OP from '../assets/op-img.svg'
 import OD from '../assets/od-logo.svg'
 import ODG from '../assets/odg.svg'

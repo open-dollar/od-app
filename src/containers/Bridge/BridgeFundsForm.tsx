@@ -99,6 +99,7 @@ const BridgeFundsForm = () => {
                                 key={network}
                                 onClick={() => {
                                     setSelectedChain(network)
+                                    setBalances([])
                                 }}
                                 selectedChain={selectedChain}
                                 id={network}

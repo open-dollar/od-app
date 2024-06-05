@@ -81,7 +81,6 @@ const VaultDetails = ({ ...props }) => {
                 collateralLiquidationData: collateralLiquidationData,
             }
             safeActions.setLiquidationData(constructedLiquidationData)
-
             const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
             if (!safeById) {
                 return

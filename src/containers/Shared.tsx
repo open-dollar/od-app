@@ -49,6 +49,7 @@ import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
+import ToastBannerNetwork from '~/components/ToastBannerNetwork'
 
 interface Props {
     children: ReactNode
@@ -99,6 +100,8 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
     }
+
+    haiUserCheck()
 
     useEffect(() => {
         connectWalletActions.setTokensData(tokensData)
@@ -206,6 +209,12 @@ const Shared = ({ children, ...rest }: Props) => {
         return true
     }
 
+    async function haiUserCheck() {
+        if (process.env.REACT_APP_NETWORK_ID === '10') {
+            toast(<ToastBannerNetwork />, { autoClose: false, type: 'warning', toastId: sanctionsToastId })
+        }
+    }
+
     async function geoBlockCheck() {
         if (account && isGeofenceEnabled) {
             const isBlocked = await isUserGeoBlocked()
@@ -240,7 +249,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 tokensData: connectWalletState.tokensData,
             })
         }
-
         if (geb && connectWalletState.tokensData) {
             fetchSafes()
         }
@@ -340,7 +348,7 @@ const Shared = ({ children, ...rest }: Props) => {
             }
             checkAndSwitchMetamaskNetwork()
         }
-    }, [chainId, window.ethereum]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [chainId, window.ethereum, account, provider, geb]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>

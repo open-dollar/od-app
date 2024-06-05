@@ -11,9 +11,9 @@ export interface NitroPoolsModel {
 const nitroPoolsModel: NitroPoolsModel = {
     nitroPools: [],
     setNitroPools: action((state, payload) => {
-        state.nitroPools = payload
+        state.nitroPools = [...state.nitroPools, ...payload]
     }),
-    fetchNitroPool: thunk(async (state, payload) => {
+    fetchNitroPool: thunk(async (actions, payload) => {
         const geb = payload.geb
         let fetched
         try {
@@ -27,7 +27,7 @@ const nitroPoolsModel: NitroPoolsModel = {
             console.debug('Error fetching nitropools data', e)
         }
         if (fetched) {
-            state.setNitroPools([fetched])
+            actions.setNitroPools([fetched])
         }
     }),
 }

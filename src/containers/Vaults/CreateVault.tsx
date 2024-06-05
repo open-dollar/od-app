@@ -173,6 +173,7 @@ const CreateVault = ({
                 await safeActions.depositAndBorrow({
                     safeData: safeState.safeData,
                     signer,
+                    geb,
                 })
                 history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)

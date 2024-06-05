@@ -101,6 +101,7 @@ const AuctionsTransactions = () => {
                         haiAmount: amount,
                         collateral: tokenSymbol,
                         collateralAmount: collateralAmount,
+                        geb,
                     })
                 } else if (isSettle) {
                     await auctionsActions.auctionClaim({
@@ -108,6 +109,7 @@ const AuctionsTransactions = () => {
                         auctionId,
                         title: handleWaitingTitle,
                         auctionType,
+                        geb,
                     })
                 } else if (isClaim) {
                     await auctionsActions.auctionClaimInternalBalance({
@@ -125,6 +127,7 @@ const AuctionsTransactions = () => {
                         title: handleWaitingTitle,
                         auctionType,
                         bid: amount,
+                        geb,
                     })
                 }
             }

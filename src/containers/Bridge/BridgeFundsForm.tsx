@@ -1,16 +1,19 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { getChainId, getUserBalance, bridgeTokens } from '~/utils'
-// import { getTokenLogo, formatWithCommas } from '~/utils'
-// import { ethers } from 'ethers'
 import { useStoreActions, useStoreState } from '~/store'
-// import { getGasToken } from '~/utils'
 import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-// import { from } from '@apollo/client'
+
+const chainMapping = {
+    Ethereum: 'Mainnet',
+    Optimism: 'Optimism',
+    Polygon: 'Polygon',
+    Base: 'Base',
+}
 
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
@@ -21,8 +24,10 @@ const BridgeFundsForm = () => {
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
+    type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
+
     const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [selectedChain, setSelectedChain] = useState<SelectedChain>('Ethereum')
     const [balances, setBalances] = useState<any[]>([])
 
     const collaterals = useMemo(() => {
@@ -33,13 +38,13 @@ const BridgeFundsForm = () => {
 
     useEffect(() => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [collaterals])
+    }, [collaterals, toTokenSymbol])
 
     useEffect(() => {
-        if (!account) return
+        if (!account || !selectedChain) return
         async function fetchBalances() {
-            const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
+            const chainId = chainMapping[selectedChain]
+            const { tokens, publicRPC } = bridgeTokens[getChainId(chainId)]
             const balances = await getUserBalance(tokens, account!, publicRPC)
             if (fromTokenSymbol) {
                 const token = tokens.find((token: any) => token.name === fromTokenSymbol)
@@ -54,21 +59,9 @@ const BridgeFundsForm = () => {
         fetchBalances()
     }, [account, selectedChain, fromTokenSymbol])
 
-    // const formattedCollateralBalances = useMemo(() => {
-    //     return collaterals.reduce((acc, collateral) => {
-    //         const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
-    //         const formattedBalance = ethers.utils.formatEther(balance)
-    //         return { ...acc, [collateral.symbol]: formattedBalance }
-    //     }, {} as { [symbol: string]: string })
-    // }, [collaterals, tokensFetchedData])
-
-    // const collateralsDropdown = collaterals.map((collateral) => {
-    //     return {
-    //         name: collateral.symbol,
-    //         icon: getTokenLogo(collateral.symbol),
-    //         value: formatWithCommas(formattedCollateralBalances[collateral.symbol]),
-    //     }
-    // })
+    const handleSelectedChainChange = (item: string) => {
+        setSelectedChain(item as SelectedChain)
+    }
 
     return (
         <Container>
@@ -83,9 +76,9 @@ const BridgeFundsForm = () => {
                     <Table>
                         <DropDownWrapper>
                             <Dropdown
-                                items={['Ethereum', 'Optimism', 'Polygon', 'Base']}
-                                itemSelected={'Ethereum'}
-                                getSelectedItem={setSelectedChain}
+                                items={Object.keys(chainMapping)}
+                                itemSelected={selectedChain}
+                                getSelectedItem={handleSelectedChainChange}
                                 fontSize="14px"
                             />
                         </DropDownWrapper>
@@ -131,7 +124,7 @@ const BridgeFundsForm = () => {
                     <Button
                         onClick={() =>
                             bridge({
-                                originChain: getChainId(selectedChain),
+                                originChain: getChainId(chainMapping[selectedChain]),
                                 toTokenAddress: selectedToken,
                                 fromTokenAddress: selectedToken ? clickedItem.address : '',
                             })
@@ -170,14 +163,6 @@ const Content = styled.div`
     position: relative;
     width: 100%;
 `
-
-// const SideLabel = styled.div`
-//     color: #1c293a;
-//     font-family: 'Barlow', sans-serif;
-//     font-size: ${(props) => props.theme.font.default};
-//     line-height: 26.4px;
-//     margin-bottom: 5px;
-// `
 
 const DropDownContainer = styled.div`
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
@@ -224,7 +209,6 @@ const Description = styled.div`
     margin-bottom: 10px;
 `
 
-// const Row = styled.div``
 const Table = styled.div`
     border: 3px solid ${(props) => props.theme.colors.primary};
     border-radius: 4px;

@@ -300,7 +300,7 @@ const NetworkButton = styled.div<{ selectedChain: string; id: string }>`
     cursor: pointer;
     display: flex;
     gap: 5px;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 150px;
 `
 

@@ -95,8 +95,6 @@ const BridgeFundsForm = () => {
         }
     }
 
-    console.log('balances: ', balances)
-
     return (
         <Container>
             <Content>
@@ -113,7 +111,7 @@ const BridgeFundsForm = () => {
                                 <NetworkButton
                                     key={network}
                                     onClick={() => {
-                                        setSelectedChain(network as SelectedChain) // Cast the network variable to SelectedChain type
+                                        setSelectedChain(network as SelectedChain)
                                     }}
                                     selectedChain={selectedChain}
                                     id={network}

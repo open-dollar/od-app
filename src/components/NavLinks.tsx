@@ -24,12 +24,12 @@ const NavLinks = () => {
     }
 
     const links = [
-        { name: 'App', to: '/vaults' },
-        { name: 'Earn', to: '/earn' },
-        { name: 'Auctions', to: '/auctions' },
-        { name: 'Bolts', to: '/bolts' },
-        { name: 'Stats', to: '/stats' },
-        { name: 'Bridge', to: '/bridge' },
+        { name: 'app', to: '/vaults' },
+        { name: 'earn', to: '/earn' },
+        { name: 'auctions', to: '/auctions' },
+        { name: 'bolts', to: '/bolts' },
+        { name: 'stats', to: '/stats' },
+        { name: 'bridge', to: '/bridge' },
     ]
 
     return (

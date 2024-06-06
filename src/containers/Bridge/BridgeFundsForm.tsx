@@ -12,10 +12,19 @@ import ETHEREUM from '~/assets/ethereum.svg'
 import BASE from '~/assets/base.svg'
 import POLYGON from '~/assets/polygon.svg'
 
+const chainMapping = {
+    Ethereum: 'Mainnet',
+    Optimism: 'Optimism',
+    Polygon: 'Polygon',
+    Base: 'Base',
+}
+
+type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
+
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
     const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
+    const [selectedChain, setSelectedChain] = useState<SelectedChain>('Ethereum')
     const [balances, setBalances] = useState<Record<string, any[]>>({})
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -25,7 +34,6 @@ const BridgeFundsForm = () => {
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
-    const networksList = ['Mainnet', 'Optimism', 'Polygon', 'Base']
 
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
@@ -37,19 +45,25 @@ const BridgeFundsForm = () => {
 
     useEffect(() => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [collaterals])
+    }, [collaterals, toTokenSymbol, selectedToken])
 
     useEffect(() => {
+        if (!account || !selectedChain) return
         const fetchAllBalances = async () => {
             setLoading(true)
-            const balancePromises = networksList.map(async (network) => {
-                const { tokens, publicRPC } = bridgeTokens[getChainId(network)]
+            const balancePromises = Object.keys(chainMapping).map(async (network) => {
+                
+                const chainId = chainMapping[network as SelectedChain]
+              
+                const { tokens, publicRPC } = bridgeTokens[getChainId(chainId)]
+               
                 const fetchedBalances = await getUserBalance(tokens, account!, publicRPC)
+                
                 return { network, balances: fetchedBalances }
             })
 
             const results = await Promise.all(balancePromises)
+            console.log('results: ', results)
             const newBalances = results.reduce((acc, result) => {
                 // @ts-ignore
                 acc[result.network] = result.balances
@@ -58,11 +72,8 @@ const BridgeFundsForm = () => {
             setBalances(newBalances)
             setLoading(false)
         }
-
-        if (account) {
-            fetchAllBalances()
-        }
-    }, [account])
+        fetchAllBalances()
+    }, [account, selectedChain])
 
     const getBalance = (token: string) => {
         const tokenBalances = balances[selectedChain] || []
@@ -85,6 +96,8 @@ const BridgeFundsForm = () => {
         }
     }
 
+    console.log('balances: ', balances)
+
     return (
         <Container>
             <Content>
@@ -96,18 +109,20 @@ const BridgeFundsForm = () => {
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on the Network</Description>
                     <ButtonsRow>
-                        {networksList.map((network) => (
-                            <NetworkButton
-                                key={network}
-                                onClick={() => {
-                                    setSelectedChain(network)
-                                }}
-                                selectedChain={selectedChain}
-                                id={network}
-                            >
-                                {getNrtworkLogo(network)}
-                                {network === 'Mainnet' ? 'Ethereum' : network}
-                            </NetworkButton>
+                        {Object.keys(chainMapping).map((network) => (
+                            <>
+                                <NetworkButton
+                                    key={network}
+                                    onClick={() => {
+                                        setSelectedChain(network as SelectedChain) // Cast the network variable to SelectedChain type
+                                    }}
+                                    selectedChain={selectedChain}
+                                    id={network}
+                                >
+                                    {getNrtworkLogo(network)}
+                                    {network === 'Mainnet' ? 'Ethereum' : network}
+                                </NetworkButton>
+                            </>
                         ))}
                     </ButtonsRow>
                     <Table>

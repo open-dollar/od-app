@@ -91,19 +91,11 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 1,
-        chainName: 'Mainnet',
+        chainName: 'Ethereum',
         publicRPC: 'https://eth-pokt.nodies.app',
     },
     10: {
         tokens: [
-            {
-                name: 'WETH',
-                icon: WETH,
-                gebName: 'Wrapped Ether',
-                balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
-                comingSoon: false,
-            },
             {
                 name: 'ETH',
                 icon: WSTETH,
@@ -136,7 +128,7 @@ export const bridgeTokens: any = {
     137: {
         tokens: [
             {
-                name: 'WETH',
+                name: 'ETH',
                 icon: WETH,
                 gebName: 'Wrapped Ether',
                 balance: '0',
@@ -208,13 +200,6 @@ export const bridgeTokens: any = {
     },
     8453: {
         tokens: [
-            {
-                name: 'WETH',
-                icon: WETH,
-                gebName: 'Wrapped Ether',
-                balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
-            },
             {
                 name: 'ETH',
                 icon: WETH,

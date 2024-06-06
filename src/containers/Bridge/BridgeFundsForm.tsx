@@ -13,7 +13,7 @@ import BASE from '~/assets/base.svg'
 import POLYGON from '~/assets/polygon.svg'
 
 const chainMapping = {
-    Ethereum: 'Mainnet',
+    Ethereum: 'Ethereum',
     Optimism: 'Optimism',
     Polygon: 'Polygon',
     Base: 'Base',
@@ -36,7 +36,7 @@ const BridgeFundsForm = () => {
 
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
-    const fixedTokens = bridgeTokens[getChainId('Mainnet')].tokens
+    const fixedTokens = bridgeTokens[getChainId('Ethereum')].tokens
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -80,11 +80,12 @@ const BridgeFundsForm = () => {
         return balance ? formatWithCommas(balance.balance, 4) : '-'
     }
 
-    const getNrtworkLogo = (network: string) => {
+    const getNetworkLogo = (network: string) => {
+        console.log('network', network)
         switch (network) {
             case 'Optimism':
                 return <img src={OPTIMISM} alt="" />
-            case 'Mainnet':
+            case 'Ethereum':
                 return <img src={ETHEREUM} alt="" />
             case 'Polygon':
                 return <img src={POLYGON} alt="" />
@@ -100,10 +101,10 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>View and bridge collateral from other networks</SubTitle>
+                        <SubTitle>Select an asset to move to Arbitrum</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Networks</Description>
+                    <Description>Assets on the Network</Description>
                     <ButtonsRow>
                         {Object.keys(chainMapping).map((network) => (
                             <>
@@ -115,8 +116,8 @@ const BridgeFundsForm = () => {
                                     selectedChain={selectedChain}
                                     id={network}
                                 >
-                                    {getNrtworkLogo(network)}
-                                    {network === 'Mainnet' ? 'Ethereum' : network}
+                                    {getNetworkLogo(network)}
+                                    {network}
                                 </NetworkButton>
                             </>
                         ))}

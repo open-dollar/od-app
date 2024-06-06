@@ -36,7 +36,7 @@ const BridgeFundsForm = () => {
 
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
-    const fixedTokens = bridgeTokens[getChainId('Ethereum')].tokens
+    const fixedTokens = bridgeTokens[getChainId(selectedChain)].tokens
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -81,7 +81,6 @@ const BridgeFundsForm = () => {
     }
 
     const getNetworkLogo = (network: string) => {
-        console.log('network', network)
         switch (network) {
             case 'Optimism':
                 return <img src={OPTIMISM} alt="" />

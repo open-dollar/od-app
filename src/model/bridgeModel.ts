@@ -27,7 +27,7 @@ const bridgeModel: BridgeModel = {
     toChain: 42161,
     fromTokenAddress: '',
     toTokenAddress: '',
-    toTokenSymbol: 'WSTETH',
+    toTokenSymbol: '',
     fromTokenSymbol: '',
     amount: '',
     reason: '',

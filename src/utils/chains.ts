@@ -6,7 +6,7 @@ export enum SupportedChainId {
 }
 
 export const chainMapping: { [key: string]: number } = {
-    Mainnet: 1,
+    Ethereum: 1,
     Optimism: 10,
     Polygon: 137,
     Base: 8453,

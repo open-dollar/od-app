@@ -1,68 +1,99 @@
 import { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { getChainId, getUserBalance, bridgeTokens } from '~/utils'
+import { getChainId, getUserBalance, bridgeTokens, getTokenLogo, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
-import Dropdown from '~/components/Dropdown'
 import Button from '~/components/Button'
 import { ExternalLink, Info } from 'react-feather'
 import { useWeb3React } from '@web3-react/core'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import Loader from '~/components/Loader'
+import OPTIMISM from '~/assets/optimism.svg'
+import ETHEREUM from '~/assets/ethereum.svg'
+import BASE from '~/assets/base.svg'
+import POLYGON from '~/assets/polygon.svg'
 
 const chainMapping = {
-    Ethereum: 'Mainnet',
+    Ethereum: 'Ethereum',
     Optimism: 'Optimism',
     Polygon: 'Polygon',
     Base: 'Base',
 }
 
+type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
+
 const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
+    const [selectedToken, setSelectedToken] = useState<string>('')
+    const [selectedChain, setSelectedChain] = useState<SelectedChain>('Ethereum')
+    const [balances, setBalances] = useState<Record<string, any[]>>({})
+    const [loading, setLoading] = useState<boolean>(true)
 
     const {
         connectWalletModel: { tokensData },
-        bridgeModel: { reason, toTokenSymbol, fromTokenSymbol },
+        bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
-    type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
+    const { bridge } = useStoreActions((state) => state.bridgeModel)
 
-    const [selectedToken, setSelectedToken] = useState<string>('')
-    const [selectedChain, setSelectedChain] = useState<SelectedChain>('Ethereum')
-    const [balances, setBalances] = useState<any[]>([])
+    const fixedTokens = bridgeTokens[getChainId(selectedChain)].tokens
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
     }, [tokensData])
 
-    const { bridge } = useStoreActions((state) => state.bridgeModel)
-
     useEffect(() => {
         if (collaterals.length > 0 && selectedToken === '') setSelectedToken(toTokenSymbol)
-    }, [collaterals, toTokenSymbol])
+    }, [collaterals, toTokenSymbol, selectedToken])
 
     useEffect(() => {
-        if (!account || !selectedChain) return
-        async function fetchBalances() {
-            const chainId = chainMapping[selectedChain]
-            const { tokens, publicRPC } = bridgeTokens[getChainId(chainId)]
-            const balances = await getUserBalance(tokens, account!, publicRPC)
-            if (fromTokenSymbol) {
-                const token = tokens.find((token: any) => token.name === fromTokenSymbol)
-                setClickedItem(token)
-                setSelectedToken(token.name)
-            } else {
-                setClickedItem(balances![0])
-                setSelectedToken(balances![0].name)
-            }
-            setBalances(balances!)
-        }
-        fetchBalances()
-    }, [account, selectedChain, fromTokenSymbol])
+        if (!account) return
+        const fetchAllBalances = async () => {
+            setLoading(true)
+            const balancePromises = Object.keys(chainMapping).map(async (network) => {
+                const chainId = chainMapping[network as SelectedChain]
+                const { tokens, publicRPC } = bridgeTokens[getChainId(chainId)]
+                const fetchedBalances = await getUserBalance(tokens, account!, publicRPC)
+                return { network, balances: fetchedBalances }
+            })
 
-    const handleSelectedChainChange = (item: string) => {
-        setSelectedChain(item as SelectedChain)
+            const results = await Promise.all(balancePromises)
+            const newBalances = results.reduce((acc: Record<string, any[]>, result) => {
+                if (result.balances) {
+                    acc[result.network] = result.balances
+                }
+
+                return acc
+            }, {})
+            setBalances(newBalances)
+            setLoading(false)
+        }
+        fetchAllBalances()
+    }, [account])
+
+    const getBalance = (token: string) => {
+        const tokenBalances = balances[selectedChain] || []
+        token = token.toLocaleLowerCase()
+        const balance = tokenBalances.find((b) => {
+            return b.name.toLowerCase() === token
+        })
+        return balance ? formatWithCommas(balance.balance, 4) : '-'
     }
 
+    const getNetworkLogo = (network: string) => {
+        switch (network) {
+            case 'Optimism':
+                return <img src={OPTIMISM} alt="" />
+            case 'Ethereum':
+                return <img src={ETHEREUM} alt="" />
+            case 'Polygon':
+                return <img src={POLYGON} alt="" />
+            case 'Base':
+                return <img src={BASE} alt="" />
+            default:
+                return ''
+        }
+    }
     return (
         <Container>
             <Content>
@@ -72,56 +103,79 @@ const BridgeFundsForm = () => {
                         <SubTitle>Select an asset to move to Arbitrum</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Asset by Network</Description>
+                    <Description>Assets on the Network</Description>
+                    <ButtonsRow>
+                        {Object.keys(chainMapping).map((network) => (
+                            <NetworkButton
+                                key={network}
+                                onClick={() => {
+                                    setSelectedChain(network as SelectedChain)
+                                }}
+                                selectedChain={selectedChain}
+                                id={network}
+                            >
+                                {getNetworkLogo(network)}
+                                {network}
+                            </NetworkButton>
+                        ))}
+                    </ButtonsRow>
                     <Table>
-                        <DropDownWrapper>
-                            <Dropdown
-                                items={Object.keys(chainMapping)}
-                                itemSelected={selectedChain}
-                                getSelectedItem={handleSelectedChainChange}
-                                fontSize="14px"
-                            />
-                        </DropDownWrapper>
-
                         <List>
-                            {balances &&
-                                balances.map((balance) => {
-                                    return (
-                                        <Item
-                                            onClick={() => {
-                                                if (balance.comingSoon) return
-                                                setSelectedToken(balance.name)
-                                                setClickedItem(balance)
-                                            }}
-                                            style={{
-                                                backgroundColor:
-                                                    selectedToken === balance.name ? '#1A74EC' : 'transparent',
-                                                color: selectedToken === balance.name ? 'white' : '#1A74EC',
-                                            }}
-                                            key={`bridge-${balance.name}`}
-                                            token={selectedToken}
-                                        >
-                                            <Text>
-                                                {balance.name}
-                                                {balance.name === 'ETH' && (
-                                                    <Info
-                                                        data-tooltip-id="tooltip-token"
-                                                        data-tooltip-content={
-                                                            'Bridge ETH assets to pay gas fees on the network'
-                                                        }
-                                                        size={'15px'}
-                                                    ></Info>
-                                                )}
-                                                {balance.name === 'pufETH' && <span>coming soon</span>}
-                                            </Text>
-                                            <Text>{balance.balance}</Text>
-                                        </Item>
-                                    )
-                                })}
+                            {fixedTokens.map((token: any) => {
+                                return (
+                                    <Item
+                                        className={token.name === 'pufETH' || token.address === '' ? 'disabled' : ''}
+                                        onClick={() => {
+                                            if (token.comingSoon) return
+                                            setSelectedToken(token.name)
+                                            setClickedItem(token)
+                                        }}
+                                        style={{
+                                            backgroundColor: selectedToken === token.name ? '#1A74EC' : 'transparent',
+                                            color: selectedToken === token.name ? 'white' : '#1A74EC',
+                                        }}
+                                        key={`bridge-${token.name}`}
+                                        token={selectedToken}
+                                    >
+                                        <Text>
+                                            <img
+                                                src={getTokenLogo(token.name.toUpperCase())}
+                                                alt=""
+                                                width="20px"
+                                                height="20px"
+                                            />
+                                            {token.name}
+                                            {['ETH', 'WETH'].includes(token.name) && (
+                                                <Info
+                                                    data-tooltip-id="tooltip-token"
+                                                    data-tooltip-content={
+                                                        'Bridge ETH or WETH to pay for network gas fees'
+                                                    }
+                                                    size={'15px'}
+                                                ></Info>
+                                            )}
+                                            {token.name === 'pufETH' ? <span>coming soon</span> : null}
+                                        </Text>
+
+                                        {account ? (
+                                            !loading ? (
+                                                <Text>{getBalance(token.name)}</Text>
+                                            ) : (
+                                                <LoaderContainer>
+                                                    <Loader
+                                                        color={selectedToken === token.name ? 'white' : '#1A74EC'}
+                                                    />
+                                                </LoaderContainer>
+                                            )
+                                        ) : null}
+                                    </Item>
+                                )
+                            })}
                         </List>
                     </Table>
                     <ReactTooltip id={`tooltip-token`} variant="dark" data-effect="solid" place="top" />
                     <Button
+                        disabled={!selectedToken}
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(chainMapping[selectedChain]),
@@ -138,8 +192,14 @@ const BridgeFundsForm = () => {
                             marginRight: 'auto',
                         }}
                     >
-                        Bridge
-                        <ExternalLink size={20} style={{ marginLeft: '10px' }} />
+                        {selectedToken ? (
+                            <>
+                                Bridge
+                                <ExternalLink size={20} style={{ marginLeft: '10px' }} />
+                            </>
+                        ) : (
+                            'Select an Asset'
+                        )}
                     </Button>
                 </DropDownContainer>
             </Content>
@@ -178,13 +238,6 @@ const Text = styled.p`
     align-items: center;
     justify-content: flex-start;
     gap: 5px;
-
-    span {
-        color: white;
-        background-color: ${(props) => props.theme.colors.primary};
-        padding: 5px;
-        border-radius: 4px;
-    }
 `
 
 const Header = styled.div`
@@ -211,31 +264,70 @@ const Description = styled.div`
 
 const Table = styled.div`
     border: 3px solid ${(props) => props.theme.colors.primary};
-    border-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
 `
 
 const List = styled.div``
 
 const Item = styled.div<{ token?: string }>`
-    padding: 0 15px;
-    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 5px 15px;
-`
-
-const DropDownWrapper = styled.div`
-    border-bottom: 2px solid ${(props) => props.theme.colors.primary};
-
-    button {
-        border: none;
-        border-color: red;
-    }
+    padding: 10px 15px;
 
     span {
-        color: ${(props) => props.theme.colors.primary};
-        font-size: ${(props) => props.theme.font.default};
+        font-size: ${(props) => props.theme.font.xSmall};
+        color: white;
+        background-color: ${(props) => props.theme.colors.primary};
+        padding: 2px 10px;
+        border-radius: 4px;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f5f5f5 !important;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #1c293a33;
+    }
+`
+
+const ButtonsRow = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+
+    @media (max-width: 767px) {
+        flex-wrap: wrap;
+        column-gap: 0;
+        div {
+            flex: 1;
+        }
+    }
+`
+
+const NetworkButton = styled.div<{ selectedChain: string; id: string }>`
+    background-color: ${(props) =>
+        props.selectedChain === props.id ? props.theme.colors.primary : props.theme.colors.background};
+    color: ${(props) => (props.selectedChain === props.id ? 'white' : props.theme.colors.accent)};
+    border-bottom: none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-start;
+    width: 150px;
+`
+
+const LoaderContainer = styled.div`
+    span {
+        display: none;
     }
 `

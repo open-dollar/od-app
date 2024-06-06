@@ -269,7 +269,7 @@ const Item = styled.div<{ token?: string }>`
     &.disabled {
         opacity: 0.5;
         cursor: not-allowed;
-        background-color: #f5f5f5!important;
+        background-color: #f5f5f5 !important;
     }
 
     &:not(:last-child) {
@@ -281,9 +281,10 @@ const ButtonsRow = styled.div`
     display: flex;
     align-items: center;
     column-gap: 10px;
-    
+
     @media (max-width: 767px) {
         flex-wrap: wrap;
+        column-gap: 0;
         div {
             flex: 1;
         }
@@ -291,7 +292,8 @@ const ButtonsRow = styled.div`
 `
 
 const NetworkButton = styled.div<{ selectedChain: string; id: string }>`
-    background-color: ${(props) => (props.selectedChain === props.id ? props.theme.colors.primary : props.theme.colors.background)};
+    background-color: ${(props) =>
+        props.selectedChain === props.id ? props.theme.colors.primary : props.theme.colors.background};
     color: ${(props) => (props.selectedChain === props.id ? 'white' : props.theme.colors.accent)};
     border-bottom: none;
     border-top-left-radius: 3px;

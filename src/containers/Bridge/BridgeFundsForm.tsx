@@ -16,11 +16,12 @@ const BridgeFundsForm = () => {
     const [clickedItem, setClickedItem] = useState<any>('')
     const [selectedToken, setSelectedToken] = useState<string>('')
     const [selectedChain, setSelectedChain] = useState<string>('Mainnet')
-    const [balances, setBalances] = useState<any[]>([])
+    const [balances, setBalances] = useState<Record<string, any[]>>({})
+    const [loading, setLoading] = useState<boolean>(true)
 
     const {
         connectWalletModel: { tokensData },
-        bridgeModel: { reason, toTokenSymbol, fromTokenSymbol },
+        bridgeModel: { reason, toTokenSymbol },
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
@@ -40,30 +41,33 @@ const BridgeFundsForm = () => {
     }, [collaterals])
 
     useEffect(() => {
-        if (!account) return
-        async function fetchBalances() {
-            const { tokens, publicRPC } = bridgeTokens[getChainId(selectedChain)]
-            const balances = await getUserBalance(tokens, account!, publicRPC)
-            if (fromTokenSymbol) {
-                const token = tokens.find((token: any) => token.name === fromTokenSymbol)
-                setClickedItem(token)
-                setSelectedToken(token.name)
-            } else {
-                setClickedItem(balances![0])
-                setSelectedToken(balances![0].name)
-            }
-            setBalances(balances!)
+        const fetchAllBalances = async () => {
+            setLoading(true)
+            const balancePromises = networksList.map(async (network) => {
+                const { tokens, publicRPC } = bridgeTokens[getChainId(network)]
+                const fetchedBalances = await getUserBalance(tokens, account!, publicRPC)
+                return { network, balances: fetchedBalances }
+            })
+
+            const results = await Promise.all(balancePromises)
+            const newBalances = results.reduce((acc, result) => {
+                // @ts-ignore
+                acc[result.network] = result.balances
+                return acc
+            }, {})
+            setBalances(newBalances)
+            setLoading(false)
         }
-        fetchBalances()
-    }, [account, selectedChain, fromTokenSymbol])
+
+        if (account) {
+            fetchAllBalances()
+        }
+    }, [account])
 
     const getBalance = (token: string) => {
-        let balance = balances.find((balance) => balance.name === token)
-        if (balance === undefined) {
-            return undefined
-        }
-        balance = formatWithCommas(balance?.balance, 4)
-        return balance ? balance : ''
+        const tokenBalances = balances[selectedChain] || []
+        const balance = tokenBalances.find((b) => b.name === token)
+        return balance ? formatWithCommas(balance.balance, 4) : ''
     }
 
     const getNrtworkLogo = (network: string) => {
@@ -80,6 +84,7 @@ const BridgeFundsForm = () => {
                 return ''
         }
     }
+
     return (
         <Container>
             <Content>
@@ -96,7 +101,6 @@ const BridgeFundsForm = () => {
                                 key={network}
                                 onClick={() => {
                                     setSelectedChain(network)
-                                    setBalances([])
                                 }}
                                 selectedChain={selectedChain}
                                 id={network}
@@ -145,7 +149,7 @@ const BridgeFundsForm = () => {
                                         </Text>
 
                                         {account ? (
-                                            balances.length > 0 ? (
+                                            !loading ? (
                                                 <Text>{getBalance(token.name)}</Text>
                                             ) : (
                                                 <LoaderContainer>

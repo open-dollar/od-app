@@ -100,10 +100,10 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>Select an asset to move to Arbitrum</SubTitle>
+                        <SubTitle>View and bridge collateral from other networks</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
-                    <Description>Assets on the Network</Description>
+                    <Description>Networks</Description>
                     <ButtonsRow>
                         {Object.keys(chainMapping).map((network) => (
                             <>

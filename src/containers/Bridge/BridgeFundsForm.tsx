@@ -34,9 +34,6 @@ const BridgeFundsForm = () => {
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
-    type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
-
-
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
     const fixedTokens = bridgeTokens[getChainId('Mainnet')].tokens
@@ -54,32 +51,32 @@ const BridgeFundsForm = () => {
         const fetchAllBalances = async () => {
             setLoading(true)
             const balancePromises = Object.keys(chainMapping).map(async (network) => {
-                
                 const chainId = chainMapping[network as SelectedChain]
-              
                 const { tokens, publicRPC } = bridgeTokens[getChainId(chainId)]
-               
                 const fetchedBalances = await getUserBalance(tokens, account!, publicRPC)
-                
                 return { network, balances: fetchedBalances }
             })
 
             const results = await Promise.all(balancePromises)
-            console.log('results: ', results)
-            const newBalances = results.reduce((acc, result) => {
-                // @ts-ignore
-                acc[result.network] = result.balances
+            const newBalances = results.reduce((acc: Record<string, any[]>, result) => {
+                if (result.balances) {
+                    acc[result.network] = result.balances
+                }
+
                 return acc
             }, {})
             setBalances(newBalances)
             setLoading(false)
         }
         fetchAllBalances()
-    }, [account, selectedChain])
+    }, [account])
 
     const getBalance = (token: string) => {
         const tokenBalances = balances[selectedChain] || []
-        const balance = tokenBalances.find((b) => b.name === token)
+        token = token.toLocaleLowerCase()
+        const balance = tokenBalances.find((b) => {
+            return b.name.toLowerCase() === token
+        })
         return balance ? formatWithCommas(balance.balance, 4) : ''
     }
 

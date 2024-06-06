@@ -1,0 +1,19 @@
+html {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    background-color: #1A74EC;
+    border-radius: 14px;
+    padding: 10px 20px 10px 14px;
+    gap: 16px;
+}
+
+td {
+    padding: 20px;
+    text-transform: capitalize;
+    text-decoration: none;
+    color: #FFFFFF;
+}

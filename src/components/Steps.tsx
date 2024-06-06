@@ -13,7 +13,9 @@ import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { checkUserGasBalance } from '~/utils'
 import useFuulSDK from '~/hooks/useFuulSDK'
+import LowGasModal from './Modals/LowGasModal'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -34,7 +36,11 @@ const Steps = () => {
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false
-
+        const hasGasToken = await checkUserGasBalance(account!, provider!)
+        if (!hasGasToken) {
+            popupsActions.setIsLowGasModalOpen(true)
+            return
+        }
         try {
             const referralProgram = localStorage.getItem('referralProgram') === 'true'
             if (referralProgram) {
@@ -64,6 +70,11 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
+            const hasGasToken = await checkUserGasBalance(account, provider)
+            if (!hasGasToken) {
+                // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsLowGasModalOpen(true)
+            }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }
@@ -124,6 +135,7 @@ const Steps = () => {
 
     return (
         <StepsContainer>
+            <LowGasModal />
             {returnSteps(step)}
             {step === 1 && ctHash ? (
                 <>

@@ -49,6 +49,7 @@ import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
+import LowGasModal from '~/components/Modals/LowGasModal'
 import ToastBannerNetwork from '~/components/ToastBannerNetwork'
 
 interface Props {
@@ -99,6 +100,7 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsVotingModalOpen(false)
         popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
+        popupsActions.setIsBridgeModalOpen(false)
     }
 
     haiUserCheck()
@@ -366,6 +368,7 @@ const Shared = ({ children, ...rest }: Props) => {
             <ScreenLoader />
             <LiquidateSafeModal />
             <WaitingModal />
+            <LowGasModal />
             <TopUpModal />
             <EmptyDiv>
                 <Navbar />

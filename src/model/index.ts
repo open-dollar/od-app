@@ -5,6 +5,7 @@ import safeModel, { SafeModel } from './safeModel'
 import transactionsModel, { TransactionsModel } from './transactionsModel'
 import multicallModel, { MulticallModel } from './multicallModel'
 import auctionModel, { AuctionModel } from './auctionModel'
+import bridgeModel, { BridgeModel } from './bridgeModel'
 import nitroPoolsModel, { NitroPoolsModel } from './nitroPoolsModel'
 import analyticsModel, { AnalyticsModel } from './analyticsModel'
 import poolDataModel, { PoolDataModel } from '~/model/poolDataModel'
@@ -17,6 +18,7 @@ export interface StoreModel {
     transactionsModel: TransactionsModel
     multicallModel: MulticallModel
     auctionModel: AuctionModel
+    bridgeModel: BridgeModel
     nitroPoolsModel: NitroPoolsModel
     analyticsModel: AnalyticsModel
     poolDataModel: PoolDataModel
@@ -30,6 +32,7 @@ const model: StoreModel = {
     transactionsModel,
     multicallModel,
     auctionModel,
+    bridgeModel,
     nitroPoolsModel,
     analyticsModel,
     poolDataModel,

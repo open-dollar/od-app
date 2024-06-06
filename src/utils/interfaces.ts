@@ -487,3 +487,11 @@ export interface CallResults {
         }
     }
 }
+
+export interface BridgeTransaction {
+    toTokenAddress: string
+    originChain: number
+    fromTokenAddress?: string
+    toChain?: number
+    amount?: string
+}

@@ -11,6 +11,7 @@ import Safes from './containers/Vaults'
 import VaultDetails from './containers/Vaults/VaultDetails'
 import DepositFunds from './containers/Deposit/DepositFunds'
 import Shared from './containers/Shared'
+import Bridge from './containers/Bridge'
 import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 import { ApolloProvider } from '@apollo/client'
@@ -90,6 +91,7 @@ const App = () => {
                                                 <Route exact strict component={Auctions} path={'/auctions'} />
                                                 <Route exact strict component={Marketplace} path={'/marketplace'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
+                                                <Route exact strict component={Bridge} path={'/bridge'} />
                                                 <Route
                                                     exact
                                                     strict

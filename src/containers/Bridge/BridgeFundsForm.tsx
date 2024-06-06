@@ -77,7 +77,7 @@ const BridgeFundsForm = () => {
         const balance = tokenBalances.find((b) => {
             return b.name.toLowerCase() === token
         })
-        return balance ? formatWithCommas(balance.balance, 4) : ''
+        return balance ? formatWithCommas(balance.balance, 4) : '-'
     }
 
     const getNrtworkLogo = (network: string) => {
@@ -94,7 +94,7 @@ const BridgeFundsForm = () => {
                 return ''
         }
     }
-
+    console.log('balances', balances)
     return (
         <Container>
             <Content>

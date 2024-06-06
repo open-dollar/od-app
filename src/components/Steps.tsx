@@ -1,7 +1,13 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import { useActiveWeb3React, handleTransactionError, useTransactionAdder, use10BlocksConfirmations } from '~/hooks'
+import {
+    useActiveWeb3React,
+    handleTransactionError,
+    useTransactionAdder,
+    use10BlocksConfirmations,
+    handlePreTxGasEstimate,
+} from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
@@ -53,7 +59,8 @@ const Steps = () => {
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
             })
-            const txResponse = await signer.sendTransaction(txData)
+            const tx = await handlePreTxGasEstimate(signer, txData)
+            const txResponse = await signer.sendTransaction(tx)
             connectWalletActions.setCtHash(txResponse.hash)
             addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
             popupsActions.setWaitingPayload({

@@ -8,6 +8,7 @@ import auctionModel, { AuctionModel } from './auctionModel'
 import bridgeModel, { BridgeModel } from './bridgeModel'
 import nitroPoolsModel, { NitroPoolsModel } from './nitroPoolsModel'
 import analyticsModel, { AnalyticsModel } from './analyticsModel'
+import poolDataModel, { PoolDataModel } from '~/model/poolDataModel'
 
 export interface StoreModel {
     settingsModel: SettingsModel
@@ -20,6 +21,7 @@ export interface StoreModel {
     bridgeModel: BridgeModel
     nitroPoolsModel: NitroPoolsModel
     analyticsModel: AnalyticsModel
+    poolDataModel: PoolDataModel
 }
 
 const model: StoreModel = {
@@ -33,6 +35,7 @@ const model: StoreModel = {
     bridgeModel,
     nitroPoolsModel,
     analyticsModel,
+    poolDataModel,
 }
 
 export default model

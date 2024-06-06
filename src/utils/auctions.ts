@@ -14,12 +14,18 @@ export interface IAuctionBuy {
     auctionId: string
     title: string
 }
-export const handleAuctionBuy = async ({ signer, haiAmount, auctionId, collateral, collateralAmount }: IAuctionBuy) => {
+export const handleAuctionBuy = async ({
+    signer,
+    haiAmount,
+    auctionId,
+    collateral,
+    collateralAmount,
+    geb,
+}: IAuctionBuy & { geb: Geb }) => {
     if (!signer || !auctionId || !haiAmount || !collateral || !collateralAmount) {
         return false
     }
 
-    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
     const haiAmountBN = ethers.utils.parseUnits(haiAmount, 18)
     const collateralAmountBN = ethers.utils.parseUnits(collateralAmount, 18)
@@ -34,12 +40,11 @@ export const handleAuctionBuy = async ({ signer, haiAmount, auctionId, collatera
     return txData
 }
 
-export const handleAuctionBid = async ({ signer, bid, auctionId, auctionType }: IAuctionBid) => {
+export const handleAuctionBid = async ({ signer, bid, auctionId, auctionType, geb }: IAuctionBid & { geb: Geb }) => {
     if (!signer || !auctionId || !bid) {
         return false
     }
 
-    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
     const bidBN = ethers.utils.parseEther(bid)
 
@@ -59,11 +64,10 @@ export const handleAuctionBid = async ({ signer, bid, auctionId, auctionType }: 
     return txData
 }
 
-export const handleAuctionClaim = async ({ signer, auctionId, auctionType }: IAuctionBid) => {
+export const handleAuctionClaim = async ({ signer, auctionId, auctionType, geb }: IAuctionBid & { geb: Geb }) => {
     if (!signer || !auctionId || !auctionType) {
         return false
     }
-    const geb = new Geb(ETH_NETWORK as GebDeployment, signer)
     const proxy = await geb.getProxyAction(signer._address)
 
     let tx

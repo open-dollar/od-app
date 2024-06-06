@@ -34,6 +34,8 @@ const BridgeFundsForm = () => {
     } = useStoreState((state) => state)
     const { account } = useWeb3React()
 
+    type SelectedChain = 'Ethereum' | 'Optimism' | 'Polygon' | 'Base'
+
 
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
@@ -104,7 +106,7 @@ const BridgeFundsForm = () => {
                 <DropDownContainer>
                     <Header>
                         <Title>Bridge</Title>
-                        <SubTitle>Select an asset to bridge to the Arbitrum network.</SubTitle>
+                        <SubTitle>Select an asset to move to Arbitrum</SubTitle>
                     </Header>
                     <Text>{reason ?? ''}</Text>
                     <Description>Assets on the Network</Description>
@@ -183,7 +185,7 @@ const BridgeFundsForm = () => {
                     <Button
                         onClick={() =>
                             bridge({
-                                originChain: getChainId(selectedChain),
+                                originChain: getChainId(chainMapping[selectedChain]),
                                 toTokenAddress: selectedToken,
                                 fromTokenAddress: selectedToken ? clickedItem.address : '',
                             })

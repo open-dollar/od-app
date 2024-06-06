@@ -129,7 +129,7 @@ const EarnDetails = () => {
                                     <Value>{`${formatWithCommas(totalApy, 0)}%`}</Value>
                                 </Item>
                                 <Item>
-                                    <Label>Awailable Rewards</Label>
+                                    <Label>Available Rewards</Label>
                                     <Value>
                                         {`${formatDataNumber(
                                             nitroPools[0].nitroData.rewardsToken1RemainingAmount,

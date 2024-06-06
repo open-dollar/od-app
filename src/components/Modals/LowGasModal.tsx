@@ -20,8 +20,8 @@ const LowGasModal = () => {
         >
             <Container>
                 <AlertCircle color="#ffaf1d" size="50px" />
-                <Title>No funds for Gas fee</Title>
-                <Text>Use the Bridge option and transfer our funds from Ethereum mainnet to Arbitrium One.</Text>
+                <Title>No Gas</Title>
+                <Text>Bridge ETH to Arbitrum to enable transactions</Text>
                 <LinkBtnContainer onClick={handleCancel}>
                     <LinkButton id="create-safe" url={'/bridge'}>
                         Bridge

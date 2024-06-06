@@ -212,6 +212,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         safeData: safeState.safeData,
                         signer,
                         safeId: safeState.singleSafe.id,
+                        geb,
                     })
                 }
 
@@ -223,6 +224,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         },
                         signer,
                         safeId: safeState.singleSafe.id,
+                        geb,
                     })
                 }
 
@@ -402,7 +404,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                 <ErrorContainer>
                                     {needsBridge && parsedAmounts.leftInput && (
                                         <BridgeLabel>
-                                            {`You don't have enough funds. To use this collateral bridge your assets to Arbitrum. `}
+                                            {`Insufficient funds. Move assets to Arbitrum using the `}
                                             <BridgeButton
                                                 onClick={() => {
                                                     setBridge(

@@ -1,14 +1,19 @@
 import styled from 'styled-components'
-
-import PoolBlock from './PoolBlock'
 import { useStoreActions, useStoreState } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
 import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import { POOLS } from '~/utils'
+import PoolBlock from './PoolBlock'
+import { JSX } from 'react/jsx-runtime'
+import { PoolData } from '@opendollar/sdk'
+
+interface Cache {
+    [key: string]: PoolData
+}
 
 const Earn = () => {
     const geb = useGeb()
@@ -17,24 +22,42 @@ const Earn = () => {
     const { nitroPoolsModel: nitroPoolsActions } = useStoreActions((state) => state)
     const { nitroPools } = nitroPoolsState
 
-    useEffect(() => {
-        if (!geb) return
-        async function fetchPools() {
-            for (const pool of POOLS) {
-                try {
-                    await nitroPoolsActions.fetchNitroPool({
-                        userAddress: account ?? undefined,
-                        camelotPoolAddress: pool.camelotPoolAddress,
-                        nitroPoolAddress: pool.nitroPoolAddress,
-                        geb,
+    const [cachedPools, setCachedPools] = useState<Cache>({})
+
+    const fetchPools = useMemo(() => {
+        if (!geb) return () => {}
+        return async () => {
+            try {
+                const poolResults = await Promise.all(
+                    POOLS.map(async (pool: { camelotPoolAddress: any; nitroPoolAddress: any }) => {
+                        const cacheKey = `${account}-${pool.camelotPoolAddress}-${pool.nitroPoolAddress}`
+                        if (cachedPools[cacheKey]) {
+                            return cachedPools[cacheKey]
+                        }
+                        const poolData = await nitroPoolsActions.fetchNitroPool({
+                            userAddress: account ?? undefined,
+                            camelotPoolAddress: pool.camelotPoolAddress,
+                            nitroPoolAddress: pool.nitroPoolAddress,
+                            geb,
+                        })
+                        setCachedPools((prev) => ({
+                            ...prev,
+                            [cacheKey]: poolData,
+                        }))
+                        return poolData
                     })
-                } catch (e) {
-                    throw new Error(`Error fetching nitropools data ${e}`)
-                }
+                )
+                return poolResults
+            } catch (e) {
+                console.error(`Error fetching Nitro Pools data: ${e}`)
+                return []
             }
         }
+    }, [account, geb, nitroPoolsActions, cachedPools])
+
+    useEffect(() => {
         fetchPools()
-    }, [account, geb, nitroPoolsActions])
+    }, [fetchPools])
 
     const handleClick = () => {
         window.open('https://discord.opendollar.com/', '_blank')
@@ -61,21 +84,18 @@ const Earn = () => {
             <Pools>
                 <PoolsHeader>Strategies</PoolsHeader>
                 {nitroPools.length > 0 ? (
-                    POOLS?.map((pool: any, i: number) => (
-                        <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
-                    ))
+                    POOLS?.map(
+                        (
+                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: any },
+                            i: number
+                        ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
+                    )
                 ) : (
                     <Loader width="50px" color="#1A74EC" />
                 )}
             </Pools>
             <BtnWrapper>
-                <Button
-                    data-test-id="steps-btn"
-                    id={'suggest-pool-btn'}
-                    // text={'suggest a new pool'}
-                    secondary
-                    onClick={handleClick}
-                >
+                <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
                     suggest a new pool <ExternalLink />
                 </Button>
             </BtnWrapper>
@@ -97,7 +117,6 @@ const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
-
     color: ${(props) => props.theme.colors.accent};
 `
 
@@ -116,10 +135,10 @@ const Text = styled.div`
     border: 1px solid rgba(255, 255, 255, 0);
     border-radius: 3px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-
     padding: 20px;
     font-size: ${(props) => props.theme.font.default};
     border-radius: 3px;
+    margin-bottom: 30px;
 
     p {
         margin-bottom: 10px;
@@ -129,14 +148,15 @@ const Text = styled.div`
         text-decoration: underline;
         color: ${(props) => props.theme.colors.tertiary};
     }
-    margin-bottom: 30px;
 `
+
 const PoolsHeader = styled.h2`
     font-size: 34px;
     font-weight: 700;
     color: ${(props) => props.theme.colors.accent};
     margin-bottom: 20px;
 `
+
 const Pools = styled.div``
 
 const BtnWrapper = styled.div`

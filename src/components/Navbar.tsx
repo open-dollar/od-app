@@ -13,7 +13,6 @@ import Button from './Button'
 import Brand from './Brand'
 import ArrowDown from './Icons/ArrowDown'
 import Camelot from './Icons/Camelot'
-import { fetchPoolData } from '@opendollar/sdk'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
@@ -24,6 +23,7 @@ import od from '../assets/od-logo.svg'
 import odg from '../assets/odg.svg'
 import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
+import usePoolData from '~/hooks/usePoolData'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -50,6 +50,7 @@ const Navbar = () => {
     const [isTokenPopupVisible, setTokenPopupVisibility] = useState(false)
     const [isTestTokenPopupVisible, setTestTokenPopupVisibility] = useState(false)
     const signer = provider ? provider.getSigner(account) : undefined
+    const poolData = usePoolData()
     const analyticsData = useAnalyticsData()
 
     const handleTokenClick = () => {
@@ -150,31 +151,33 @@ const Navbar = () => {
 
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
-        async function fetchData() {
-            if (geb && analyticsData) {
-                try {
-                    const poolData = await fetchPoolData(geb)
+        if (poolData && analyticsData) {
+            const formattedLiquidity = formatDataNumber(
+                ethers.utils
+                    .parseEther(
+                        BigNumber.from(
+                            Math.floor(Number(poolData?.totalLiquidityUSD ? poolData.totalLiquidityUSD : '0'))
+                        ).toString()
+                    )
+                    .toString(),
+                18,
+                0,
+                true
+            ).toString()
 
-                    const formattedLiquidity = formatDataNumber(
-                        ethers.utils
-                            .parseEther(BigNumber.from(Math.floor(Number(poolData?.totalLiquidityUSD))).toString())
-                            .toString(),
-                        18,
-                        0,
-                        true
-                    ).toString()
-
-                    setState({
-                        odPrice: formatDataNumber(analyticsData?.marketPrice, 18, 3, true, undefined, 2),
-                        totalLiquidity: formattedLiquidity,
-                    })
-                } catch (error) {
-                    console.error('Error fetching data:', error)
-                }
-            }
+            setState({
+                odPrice: formatDataNumber(
+                    analyticsData?.marketPrice ? analyticsData.marketPrice : '0',
+                    18,
+                    3,
+                    true,
+                    undefined,
+                    2
+                ),
+                totalLiquidity: formattedLiquidity,
+            })
         }
 
-        fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
         document.addEventListener('mousedown', handleClickOutsideOdWallet)
@@ -184,7 +187,7 @@ const Navbar = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsideOdWallet)
         }
-    }, [geb, chainId, analyticsData])
+    }, [poolData, chainId, analyticsData, geb])
 
     return (
         <ContainerShadowWrapper>

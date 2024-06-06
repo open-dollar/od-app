@@ -47,7 +47,7 @@ const BridgeFundsForm = () => {
     }, [collaterals, toTokenSymbol, selectedToken])
 
     useEffect(() => {
-        if (!account || !selectedChain) return
+        if (!account) return
         const fetchAllBalances = async () => {
             setLoading(true)
             const balancePromises = Object.keys(chainMapping).map(async (network) => {

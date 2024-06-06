@@ -94,7 +94,6 @@ const BridgeFundsForm = () => {
                 return ''
         }
     }
-    console.log('balances', balances)
     return (
         <Container>
             <Content>

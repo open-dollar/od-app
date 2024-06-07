@@ -319,6 +319,8 @@ const StatsGrid = styled.div`
 
     .sideNote {
         font-size: 12px;
+        font-weight: 700;
+        color: ${(props) => props.theme.colors.primary};
         span {
             &.green {
                 color: ${(props) => props.theme.colors.blueish};
@@ -465,6 +467,8 @@ const SideTitle = styled.div`
     margin-right: 4px;
     .sideNote {
         font-size: 12px;
+        font-weight: 700;
+        color: ${(props) => props.theme.colors.primary};
         span {
             &.green {
                 color: ${(props) => props.theme.colors.blueish};

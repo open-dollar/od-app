@@ -55,7 +55,6 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-
 `
 
 const QuestTitle = styled.div`

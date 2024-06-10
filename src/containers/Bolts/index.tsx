@@ -6,6 +6,7 @@ import Button from '~/components/Button'
 import useFuulSDK from '~/hooks/useFuulSDK'
 import { QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
+import Image from '~/assets/quests-img.png'
 
 import styled from 'styled-components'
 
@@ -37,19 +38,20 @@ const Bolts = () => {
         <Container>
             <Title>Bolts 🔩</Title>
             <SubHeader>Welcome Vault Keepers!</SubHeader>
-            <Text>
-                <p>
-                    Complete the quests below to earn Bolts. Deposits, borrows, and LPs are awarded Bolts based on their
-                    equivalent value in ETH.
-                </p>
-                <p>
-                    For program details, see our{' '}
-                    <Link href="https://www.opendollar.com/blog/vault-keeper-program" target="_blank">
-                        blog
-                    </Link>
-                    .
-                </p>
-            </Text>
+            <MessageBox>
+                <img src={Image} alt="" />
+                <Text>
+                    <h3>Complete the quests below to earn Bolts.</h3>
+                    <p>
+                        Deposits, borrows, and LPs are awarded Bolts based on their equivalent value in ETH. For program
+                        details, see our{' '}
+                        <Link href="https://www.opendollar.com/blog/vault-keeper-program" target="_blank">
+                            blog
+                        </Link>
+                        .
+                    </p>
+                </Text>
+            </MessageBox>
             <Section>
                 <SectionHeader>Status</SectionHeader>
                 <BoltsDetails>
@@ -89,6 +91,31 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.accent};
 `
 
+const MessageBox = styled.div`
+    border-radius: 4px;
+    background: ${(props) => props.theme.colors.gradientBg};
+    color: white;
+    padding-left: 28px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+    & h3 {
+        font-size: ${(props) => props.theme.font.large};
+        font-weight: 700;
+        font-family: ${(props) => props.theme.family.headers};
+    }
+
+    a {
+        text-decoration: underline;
+        color: white
+    }
+`
+
+const Text = styled.div`
+    max-width: 400px;
+`
+
 const Title = styled.h2`
     font-size: 34px;
     font-weight: 700;
@@ -112,23 +139,6 @@ const SubHeader = styled.h3`
     }
 `
 
-const Text = styled.div`
-    background-color: rgba(202, 234, 255, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0);
-    border-radius: 4px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    font-size: ${(props) => props.theme.font.default};
-    p {
-        margin-bottom: 10px;
-    }
-    a {
-        text-decoration: underline;
-        color: ${(props) => props.theme.colors.tertiary};
-    }
-    margin-bottom: 30px;
-`
 const BoltsDetails = styled.div`
     padding: 20px;
     margin-bottom: 30px;

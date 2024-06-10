@@ -150,6 +150,7 @@ export const QUESTS = [
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
                 <TokenIcon token={'ODG'} />
+                <TokenIcon token={'WETH'} />
             </TitleContainer>
         ),
         button: (

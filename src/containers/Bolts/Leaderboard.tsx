@@ -139,7 +139,9 @@ const Table = ({ data, userFuulData }) => {
                                     style={
                                         index === 2
                                             ? { textAlign: 'right', paddingRight: '20px' }
-                                            : { paddingRight: '20px' }
+                                            : { paddingRight: '20px' } && index === 0
+                                            ? { paddingTop: '16px', paddingBottom: '16px' }
+                                            : {}
                                     }
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -223,6 +225,7 @@ const SortableHeader = styled.div`
 
 const TableContainer = styled.div`
     overflow-x: auto;
+    position: relative;
     table {
         width: 100%;
         border-collapse: collapse;
@@ -233,7 +236,7 @@ const TableContainer = styled.div`
     }
     th,
     td {
-        padding: 16px 0 16px 0;
+        padding: 8px 0 8px 0;
         text-align: left;
         text-transform: uppercase;
     }

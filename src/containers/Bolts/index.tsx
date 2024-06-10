@@ -20,8 +20,10 @@ const Bolts = () => {
         const fetchData = async () => {
             try {
                 const response = account
-                    ? await fetch(`http://localhost:3010/api/bolts?address=${account}`)
-                    : await fetch('http://localhost:3010/api/bolts')
+                    ? await fetch(`https://bot.opendollar.com/api/bolts?address=${account}`)
+                    : await fetch(
+                          'https://bot.opendollar.com/api/bolts?address=0x0000000000000000000000000000000000000000'
+                      )
                 const result = await response.json()
                 if (result.success) {
                     setLeaderboardData(result.data.fuul.leaderboard.users)

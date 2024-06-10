@@ -5,10 +5,10 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
     return (
         <BlockContainer>
             <BlockHeader>
-                <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
+                <HeaderTop>
                     <QuestTitle>{title}</QuestTitle>
                     <div style={{ display: 'flex', gap: '10px', height: '42px' }}>{button}</div>
-                </div>
+                </HeaderTop>
                 <BlockDescription>{text}</BlockDescription>
             </BlockHeader>
             <Block>
@@ -38,8 +38,7 @@ const BlockContainer = styled.div`
     background: white;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
-    display: flex;
-    flex-direction: column;
+
     &.empty {
         background: white;
     }
@@ -51,12 +50,17 @@ const BlockHeader = styled.div`
     padding-left: 34px;
     padding-top: 22px;
     padding-right: 34px;
+`
 
+const HeaderTop = styled.div`
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
     ${({ theme }) => theme.mediaWidth.upToSmall`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-    `}
+    `};
 `
 
 const BlockDescription = styled.div`
@@ -72,9 +76,6 @@ const BlockDescription = styled.div`
 `
 
 const QuestTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};

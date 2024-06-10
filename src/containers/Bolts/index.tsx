@@ -104,6 +104,8 @@ const MessageBox = styled.div`
         font-size: ${(props) => props.theme.font.large};
         font-weight: 700;
         font-family: ${(props) => props.theme.family.headers};
+        margin-bottom: 10px;
+        line-height: 36px;
     }
 
     a {

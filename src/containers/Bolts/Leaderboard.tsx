@@ -11,7 +11,8 @@ import {
 import styled from 'styled-components'
 import { useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
-import {returnWalletAddress} from "~/utils";
+import { returnWalletAddress } from '~/utils'
+import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
 
 const columnHelper = createColumnHelper()
 
@@ -23,25 +24,32 @@ const Table = ({ data, userFuulData }) => {
     const columns = [
         columnHelper.accessor('rank', {
             header: 'Rank',
-            cell: info => {
+            cell: (info) => {
                 const rank = info.getValue()
                 let color = '#8DB2FF'
+                let badge = null
                 if (rank <= 3) {
-                    color = '#FFD700'
+                    color = '#FFFFFF'
+                    badge = <BadgeImage src={leaderboardLeadersBadge} alt="leaderboard-badge" />
                 } else if (rank === userFuulData.rank) {
-                    color = '#8DB2FF99'
+                    color = '#FFFFFF'
                 }
-                return <Rank style={{ color }}>{rank}</Rank>
+                return (
+                    <RankContainer>
+                        {badge}
+                        <Rank style={{ color }}>{rank}</Rank>
+                    </RankContainer>
+                )
             },
         }),
         columnHelper.accessor('address', {
             header: 'Address',
-            cell: info => {
+            cell: (info) => {
                 const address = info.getValue()
                 return (
                     <Address>
                         {userFuulData.address === address && <Badge>YOU</Badge>}
-                        {returnWalletAddress(address)}
+                        {returnWalletAddress(address, 2)}
                     </Address>
                 )
             },
@@ -49,14 +57,14 @@ const Table = ({ data, userFuulData }) => {
         columnHelper.accessor('points', {
             header: 'Points',
             //@ts-ignore
-            cell: info => <Points>{info.getValue().toLocaleString()}</Points>,
+            cell: (info) => <Points>{info.getValue().toLocaleString()}</Points>,
         }),
     ]
 
     let displayData = [...data.slice(0, 10)]
     if (userFuulData.points) {
         //@ts-ignore
-        const userInTop10 = data.find(user => user.address === userFuulData.address && user.rank <= 10)
+        const userInTop10 = data.find((user) => user.address === userFuulData.address && user.rank <= 10)
         if (!userInTop10) {
             displayData.push(userFuulData)
         }
@@ -81,49 +89,64 @@ const Table = ({ data, userFuulData }) => {
         <TableContainer>
             <table>
                 <thead>
-                {table.getHeaderGroups().map(headerGroup => (
-                    <tr key={headerGroup.id}>
-                        {headerGroup.headers.map(header => (
-                            <th key={header.id}>
-                                {header.isPlaceholder ? null : (
-                                    <SortableHeader
-                                        onClick={header.column.getToggleSortingHandler()}
-                                        style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default' }}
-                                    >
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                        {header.column.getCanSort() ? (
-                                            header.column.getIsSorted() ? (
-                                                header.column.getIsSorted() === 'asc' ? (
-                                                    <StyledArrow>
-                                                        <ArrowUp size={16} />
-                                                    </StyledArrow>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => (
+                                <th key={header.id}>
+                                    {header.isPlaceholder ? null : (
+                                        <SortableHeader
+                                            onClick={header.column.getToggleSortingHandler()}
+                                            style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default' }}
+                                        >
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                            {header.column.getCanSort() ? (
+                                                header.column.getIsSorted() ? (
+                                                    header.column.getIsSorted() === 'asc' ? (
+                                                        <StyledArrow>
+                                                            <ArrowUp size={16} />
+                                                        </StyledArrow>
+                                                    ) : (
+                                                        <StyledArrow>
+                                                            <ArrowDown size={16} />
+                                                        </StyledArrow>
+                                                    )
                                                 ) : (
-                                                    <StyledArrow>
-                                                        <ArrowDown size={16} />
-                                                    </StyledArrow>
+                                                    <ArrowUpAndDownIcon>&nbsp;⇅</ArrowUpAndDownIcon>
                                                 )
-                                            ) : (
-                                                <ArrowUpAndDownIcon>&nbsp;⇅</ArrowUpAndDownIcon>
-                                            )
-                                        ) : null}
-                                    </SortableHeader>
-                                )}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
+                                            ) : null}
+                                        </SortableHeader>
+                                    )}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
                 </thead>
                 <tbody>
-                {table.getRowModel().rows.map(row => (
-                    //@ts-ignore
-                    <tr key={row.id} style={row.original.address === userFuulData.address ? { backgroundColor: '#8DB2FF99' } : { backgroundColor: '#1A74EC' }}>
-                        {row.getVisibleCells().map((cell, index) => (
-                            <td key={cell.id} style={index === 2 ? { textAlign: 'right' } : {}}>
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
-                        ))}
-                    </tr>
-                ))}
+                    {table.getRowModel().rows.map((row) => (
+                        //@ts-ignore
+                        <tr
+                            key={row.id}
+                            style={
+                                //@ts-ignore
+                                row.original.address === userFuulData.address
+                                    ? { backgroundColor: '#8DB2FF99' }
+                                    : { backgroundColor: '#1A74EC' }
+                            }
+                        >
+                            {row.getVisibleCells().map((cell, index) => (
+                                <td
+                                    key={cell.id}
+                                    style={
+                                        index === 2
+                                            ? { textAlign: 'right', paddingRight: '20px' }
+                                            : { paddingRight: '20px' }
+                                    }
+                                >
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </TableContainer>
@@ -132,11 +155,25 @@ const Table = ({ data, userFuulData }) => {
 
 export default Table
 
+const RankContainer = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const BadgeImage = styled.img`
+    position: absolute;
+    width: 48px;
+    height: 48px;
+`
+
 const Rank = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     font-size: 18px;
     line-height: 27px;
+    z-index: 1;
 `
 
 const Address = styled.span`
@@ -144,7 +181,8 @@ const Address = styled.span`
     font-weight: 700;
     font-size: 16px;
     line-height: 21.79px;
-    color: #EEEEEE;
+    letter-spacing: 0.05em;
+    color: #eeeeee;
 `
 
 const Points = styled.span`
@@ -155,7 +193,8 @@ const Points = styled.span`
 `
 
 const Badge = styled.span`
-    background-color: #8DB2FF99;
+    background-color: #e2f1ff;
+    color: #1a74ec;
     padding: 2px 8px;
     border-radius: 4px;
     margin-right: 8px;
@@ -187,7 +226,6 @@ const TableContainer = styled.div`
     table {
         width: 100%;
         border-collapse: collapse;
-        padding: 10px 20px 10px 14px;
         gap: 16px;
         background-color: rgba(255, 255, 255, 0);
         backdrop-filter: blur(10px);
@@ -195,20 +233,17 @@ const TableContainer = styled.div`
     }
     th,
     td {
-        padding: 8px 0px;
+        padding: 16px 0 16px 0;
         text-align: left;
+        text-transform: uppercase;
     }
 
     th {
-        display: none; /* Hide table headers */
-    }
-
-    tr {
-        margin-bottom: 20px;
+        display: none;
     }
 
     tr:not(:last-child) td {
-        border-bottom: none; /* Remove bottom border */
+        border-bottom: none;
     }
 
     @media (max-width: 768px) {
@@ -235,11 +270,8 @@ const TableContainer = styled.div`
         }
 
         td {
-            text-align: right;
             position: relative;
-            padding-left: 40%;
-            text-align: left;
-            &:nth-child(1),
+            text-align: center;
             &:last-child {
                 padding-left: 0;
                 display: flex;

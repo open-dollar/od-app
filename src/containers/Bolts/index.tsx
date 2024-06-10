@@ -7,14 +7,14 @@ import { QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 
 import styled from 'styled-components'
-import Leaderboard from "~/containers/Bolts/Leaderboard";
+import Leaderboard from '~/containers/Bolts/Leaderboard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
 
     const [userFuulData, setUserFuulData] = useState<any>({ rank: '', points: '' })
     const [leaderboardData, setLeaderboardData] = useState<any[]>([])
-    const [hasFetched, setHasFetched] = useState<boolean>(false)
+    const [hasFetched] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchData = async () => {

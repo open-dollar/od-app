@@ -7,7 +7,7 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
             <BlockHeader>
                 <HeaderTop>
                     <QuestTitle>{title}</QuestTitle>
-                    <div style={{ display: 'flex', gap: '10px', height: '42px' }}>{button}</div>
+                    <QuestBtn>{button}</QuestBtn>
                 </HeaderTop>
                 <BlockDescription>{text}</BlockDescription>
             </BlockHeader>
@@ -61,6 +61,12 @@ const HeaderTop = styled.div`
         flex-direction: column;
         align-items: flex-start;
     `};
+`
+
+const QuestBtn = styled.div`
+    display: flex;
+    gap: 10px;
+    height: 42px;
 `
 
 const BlockDescription = styled.div`

@@ -173,7 +173,7 @@ const BadgeImage = styled.img`
 const Rank = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
-    font-size: 18px;
+    font-size: ${(props: any) => props.theme.font.default};
     line-height: 27px;
     z-index: 1;
 `
@@ -181,7 +181,7 @@ const Rank = styled.span`
 const Address = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: ${(props: any) => props.theme.font.xSmall};
     line-height: 21.79px;
     letter-spacing: 0.05em;
     color: #eeeeee;

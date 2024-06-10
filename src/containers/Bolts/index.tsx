@@ -9,6 +9,7 @@ import QuestBlock from './QuestBlock'
 import Image from '~/assets/quests-img.png'
 
 import styled from 'styled-components'
+import Leaderboard from './Leaderboard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
@@ -52,6 +53,7 @@ const Bolts = () => {
                     </p>
                 </Text>
             </MessageBox>
+            <Leaderboard />
             <Section>
                 <SectionHeader>Status</SectionHeader>
                 <BoltsDetails>
@@ -110,7 +112,7 @@ const MessageBox = styled.div`
 
     a {
         text-decoration: underline;
-        color: white
+        color: white;
     }
 `
 

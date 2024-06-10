@@ -91,14 +91,14 @@ const Analytics = () => {
             {
                 name: 'Delayed Price',
                 description:
-                    'System price of the collateral, it is delayed from spot price, and updates every period to "Next Price".',
+                    'System price of the collateral, it is delayed from spot price, and updates every period (typically 1 hour) to "Next Price".',
             },
             {
                 name: 'Next Price',
                 description:
                     'Next system price of the collateral, this value is already quoted, and will impact the system on the next price update.',
             },
-            { name: 'Stability Fee', description: 'Annual interest rate paid by Safe owners on their debt.' },
+            { name: 'Stability Fee', description: 'Annual interest rate paid by vault owners on their debt.' },
             { name: 'Total Debt', description: 'Total amount of OD minted per collateral.' },
             {
                 name: 'Debt Utilization',
@@ -106,7 +106,7 @@ const Analytics = () => {
             },
             {
                 name: 'Total Locked',
-                description: 'Total amount of collateral tokens deposited in Safes backing OD debt.',
+                description: 'Total amount of collateral tokens deposited in vaults backing OD debt.',
             },
             {
                 name: 'Total Locked ($)',

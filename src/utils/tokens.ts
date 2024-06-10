@@ -47,8 +47,58 @@ const gasTokenArray = [
 ]
 
 export const bridgeTokens: any = {
+    42161: {
+        tokens: [
+            {
+                name: 'ETH',
+                icon: WETH,
+                gebName: 'Ether',
+                balance: '0',
+                address: '0x0000000000000000000000000000000000000000',
+            },
+            {
+                name: 'WSTETH',
+                icon: WSTETH,
+                gebName: 'Wrapped Staked Ether',
+                balance: '0',
+                address: '0x5979D7b546E38E414F7E9822514be443A4800529',
+            },
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+            },
+            {
+                name: 'WETH',
+                icon: WETH,
+                gebName: 'Wrapped Ether',
+                balance: '0',
+                address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+            },
+            {
+                name: 'RETH',
+                icon: RETH,
+                gebName: 'Rocket Ether',
+                balance: '0',
+                address: '0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8',
+            },
+        ],
+        chainId: 42161,
+        chainName: 'Arbitrum',
+        publicRPC: 'https://arbitrum.blockpi.network/v1/rpc/public',
+    },
     1: {
         tokens: [
+            {
+                name: 'ETH',
+                icon: WETH,
+                gebName: 'Ether',
+                balance: '0',
+                address: '0x0000000000000000000000000000000000000000',
+                comingSoon: false,
+            },
             {
                 name: 'WSTETH',
                 icon: WSTETH,
@@ -58,7 +108,7 @@ export const bridgeTokens: any = {
                 comingSoon: false,
             },
             {
-                name: 'rETH',
+                name: 'RETH',
                 icon: RETH,
                 gebName: 'Rocket Ether',
                 balance: '0',
@@ -74,14 +124,6 @@ export const bridgeTokens: any = {
                 comingSoon: false,
             },
             {
-                name: 'ETH',
-                icon: WETH,
-                gebName: 'Ether',
-                balance: '0',
-                address: '0x0000000000000000000000000000000000000000',
-                comingSoon: false,
-            },
-            {
                 name: 'pufETH',
                 icon: WETH,
                 gebName: 'Puff ETH',
@@ -91,7 +133,7 @@ export const bridgeTokens: any = {
             },
         ],
         chainId: 1,
-        chainName: 'Mainnet',
+        chainName: 'Ethereum',
         publicRPC: 'https://eth-pokt.nodies.app',
     },
     10: {
@@ -99,17 +141,9 @@ export const bridgeTokens: any = {
             {
                 name: 'WETH',
                 icon: WETH,
-                gebName: 'Wrapped Ether',
-                balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
-                comingSoon: false,
-            },
-            {
-                name: 'ETH',
-                icon: WSTETH,
                 gebName: 'Ether',
                 balance: '0',
-                address: '0x4200000000000000000000000000000000000042',
+                address: '0x4200000000000000000000000000000000000006',
                 comingSoon: false,
             },
             {
@@ -127,6 +161,22 @@ export const bridgeTokens: any = {
                 balance: '0',
                 address: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D',
                 comingSoon: false,
+            },
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '',
+                comingSoon: false,
+            },
+            {
+                name: 'pufETH',
+                icon: WETH,
+                gebName: 'Puff ETH',
+                balance: '0',
+                address: '',
+                comingSoon: true,
             },
         ],
         chainId: 10,
@@ -159,68 +209,36 @@ export const bridgeTokens: any = {
                 address: '0x0266F4F08D82372CF0FcbCCc0Ff74309089c74d1',
                 comingSoon: false,
             },
-        ],
-        chainId: 137,
-        chainName: 'Polygon',
-        publicRPC: 'https://polygon-bor-rpc.publicnode.com',
-    },
-    42161: {
-        tokens: [
             {
                 name: 'ARB',
                 icon: ARB,
                 gebName: 'Arbitrum',
                 balance: '0',
-                address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+                address: '',
+                comingSoon: false,
             },
             {
-                name: 'WETH',
+                name: 'pufETH',
                 icon: WETH,
-                gebName: 'Wrapped Ether',
+                gebName: 'Puff ETH',
                 balance: '0',
-                address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-            },
-            {
-                name: 'ETH',
-                icon: WETH,
-                gebName: 'Ether',
-                balance: '0',
-                address: '0x0000000000000000000000000000000000000000',
-            },
-            {
-                name: 'WSTETH',
-                icon: WSTETH,
-                gebName: 'Wrapped Staked Ether',
-                balance: '0',
-                address: '0x5979D7b546E38E414F7E9822514be443A4800529',
-            },
-            {
-                name: 'RETH',
-                icon: RETH,
-                gebName: 'Rocket Ether',
-                balance: '0',
-                address: '0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8',
+                address: '',
+                comingSoon: true,
             },
         ],
-        chainId: 42161,
-        chainName: 'Arbitrum',
-        publicRPC: 'https://arbitrum.blockpi.network/v1/rpc/public',
+        chainId: 137,
+        chainName: 'Polygon',
+        publicRPC: 'https://polygon-bor-rpc.publicnode.com',
     },
+
     8453: {
         tokens: [
             {
                 name: 'WETH',
                 icon: WETH,
-                gebName: 'Wrapped Ether',
-                balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
-            },
-            {
-                name: 'ETH',
-                icon: WETH,
                 gebName: 'Ether',
                 balance: '0',
-                address: '0x0000000000000000000000000000000000000000',
+                address: '0x4200000000000000000000000000000000000006',
             },
             {
                 name: 'WSTETH',
@@ -235,6 +253,22 @@ export const bridgeTokens: any = {
                 gebName: 'Rocket Ether',
                 balance: '0',
                 address: '0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c',
+            },
+            {
+                name: 'ARB',
+                icon: ARB,
+                gebName: 'Arbitrum',
+                balance: '0',
+                address: '',
+                comingSoon: false,
+            },
+            {
+                name: 'pufETH',
+                icon: WETH,
+                gebName: 'Puff ETH',
+                balance: '0',
+                address: '',
+                comingSoon: true,
             },
         ],
         chainId: 8453,
@@ -283,32 +317,36 @@ export const checkUserHasBalance = async (
 export const getUserBalance = async (tokens: any[], userAddress: string, rpcUrl: string) => {
     const user = ethers.utils.getAddress(userAddress)
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
-    const balances = []
-    for await (const token of tokens) {
-        if (gasTokenArray.includes(token.address)) {
-            try {
-                const balance = await provider.getBalance(user)
-                balances.push({
-                    ...token,
-                    balance: ethers.utils.formatUnits(balance),
-                })
-            } catch (e) {
-                console.log(e)
-                return
+    const balances = [] as any
+
+    await Promise.all(
+        tokens.map(async (token) => {
+            if (gasTokenArray.includes(token.address)) {
+                try {
+                    const balance = await provider.getBalance(user)
+                    balances.push({
+                        ...token,
+                        balance: ethers.utils.formatUnits(balance),
+                    })
+                } catch (e) {
+                    console.log(e)
+                    return
+                }
+            } else {
+                try {
+                    const tokenContract = new ethers.Contract(token.address, ERC20__factory.abi, provider)
+                    const balance = await tokenContract.balanceOf(user)
+                    balances.push({
+                        ...token,
+                        balance: ethers.utils.formatUnits(balance),
+                    })
+                } catch (e) {
+                    console.log(e)
+                    return
+                }
             }
-        } else {
-            try {
-                const tokenContract = new ethers.Contract(token.address, ERC20__factory.abi, provider)
-                const balance = await tokenContract.balanceOf(user)
-                balances.push({
-                    ...token,
-                    balance: ethers.utils.formatUnits(balance),
-                })
-            } catch (e) {
-                console.log(e)
-                return
-            }
-        }
-    }
+        })
+    )
+
     return balances
 }

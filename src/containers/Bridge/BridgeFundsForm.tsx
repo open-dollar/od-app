@@ -13,7 +13,7 @@ import BASE from '~/assets/base.svg'
 import POLYGON from '~/assets/polygon.svg'
 
 const chainMapping = {
-    Ethereum: 'Mainnet',
+    Ethereum: 'Ethereum',
     Optimism: 'Optimism',
     Polygon: 'Polygon',
     Base: 'Base',
@@ -36,7 +36,7 @@ const BridgeFundsForm = () => {
 
     const { bridge } = useStoreActions((state) => state.bridgeModel)
 
-    const fixedTokens = bridgeTokens[getChainId('Mainnet')].tokens
+    const fixedTokens = bridgeTokens[getChainId(selectedChain)].tokens
 
     const collaterals = useMemo(() => {
         return tokensData ? Object.values(tokensData).filter((token) => token.isCollateral) : []
@@ -80,11 +80,11 @@ const BridgeFundsForm = () => {
         return balance ? formatWithCommas(balance.balance, 4) : '-'
     }
 
-    const getNrtworkLogo = (network: string) => {
+    const getNetworkLogo = (network: string) => {
         switch (network) {
             case 'Optimism':
                 return <img src={OPTIMISM} alt="" />
-            case 'Mainnet':
+            case 'Ethereum':
                 return <img src={ETHEREUM} alt="" />
             case 'Polygon':
                 return <img src={POLYGON} alt="" />
@@ -106,19 +106,17 @@ const BridgeFundsForm = () => {
                     <Description>Assets on the Network</Description>
                     <ButtonsRow>
                         {Object.keys(chainMapping).map((network) => (
-                            <>
-                                <NetworkButton
-                                    key={network}
-                                    onClick={() => {
-                                        setSelectedChain(network as SelectedChain)
-                                    }}
-                                    selectedChain={selectedChain}
-                                    id={network}
-                                >
-                                    {getNrtworkLogo(network)}
-                                    {network === 'Mainnet' ? 'Ethereum' : network}
-                                </NetworkButton>
-                            </>
+                            <NetworkButton
+                                key={network}
+                                onClick={() => {
+                                    setSelectedChain(network as SelectedChain)
+                                }}
+                                selectedChain={selectedChain}
+                                id={network}
+                            >
+                                {getNetworkLogo(network)}
+                                {network}
+                            </NetworkButton>
                         ))}
                     </ButtonsRow>
                     <Table>
@@ -126,7 +124,7 @@ const BridgeFundsForm = () => {
                             {fixedTokens.map((token: any) => {
                                 return (
                                     <Item
-                                        className={token.name === 'pufETH' ? 'disabled' : ''}
+                                        className={token.name === 'pufETH' || token.address === '' ? 'disabled' : ''}
                                         onClick={() => {
                                             if (token.comingSoon) return
                                             setSelectedToken(token.name)
@@ -147,11 +145,11 @@ const BridgeFundsForm = () => {
                                                 height="20px"
                                             />
                                             {token.name}
-                                            {token.name === 'ETH' && (
+                                            {['ETH', 'WETH'].includes(token.name) && (
                                                 <Info
                                                     data-tooltip-id="tooltip-token"
                                                     data-tooltip-content={
-                                                        'Bridge ETH assets to pay gas fees on the network'
+                                                        'Bridge ETH or WETH to pay for network gas fees'
                                                     }
                                                     size={'15px'}
                                                 ></Info>
@@ -177,6 +175,7 @@ const BridgeFundsForm = () => {
                     </Table>
                     <ReactTooltip id={`tooltip-token`} variant="dark" data-effect="solid" place="top" />
                     <Button
+                        disabled={!selectedToken}
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(chainMapping[selectedChain]),
@@ -193,8 +192,14 @@ const BridgeFundsForm = () => {
                             marginRight: 'auto',
                         }}
                     >
-                        Bridge
-                        <ExternalLink size={20} style={{ marginLeft: '10px' }} />
+                        {selectedToken ? (
+                            <>
+                                Bridge
+                                <ExternalLink size={20} style={{ marginLeft: '10px' }} />
+                            </>
+                        ) : (
+                            'Select an Asset'
+                        )}
                     </Button>
                 </DropDownContainer>
             </Content>

@@ -74,6 +74,13 @@ const QuestTitle = styled.div`
     }
 `
 
+const TokensGroup = styled.div`
+    display: flex;
+    img:not(:first-child) {
+        margin-left: -10px;
+    }
+`
+
 const InternalLinkButton = ({ url }: { url: string }) => {
     const history = useHistory()
     const onClick = () => history.push(url)
@@ -114,9 +121,11 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <TokenIcon token={'WSTETH'} />
-                <TokenIcon token={'RETH'} />
-                <TokenIcon token={'ARB'} />
+                <TokensGroup>
+                    <TokenIcon token={'WSTETH'} />
+                    <TokenIcon token={'RETH'} />
+                    <TokenIcon token={'ARB'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -133,7 +142,9 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <TokenIcon token={'OD'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -150,8 +161,10 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <TokenIcon token={'ODG'} />
-                <TokenIcon token={'WETH'} />
+                <TokensGroup>
+                    <TokenIcon token={'ODG'} />
+                    <TokenIcon token={'WETH'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (
@@ -174,8 +187,10 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <TokenIcon token={'OD'} />
-                <TokenIcon token={'WETH'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} />
+                    <TokenIcon token={'WETH'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (

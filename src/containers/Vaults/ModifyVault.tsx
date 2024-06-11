@@ -452,6 +452,8 @@ const ErrorContainer = styled.div`
 `
 
 const ContainerUnderBottonsRow = styled.div`
+    border-radius: 4px;
+    border-top-left-radius: 0; 
     background: white;
     padding: 20px;
 `
@@ -512,7 +514,6 @@ const ButtonContainer = styled.div`
     }
 `
 const Container = styled.div`
-    border-radius: 4px;
     padding: 20px 0;
     margin-top: 20px;
 `

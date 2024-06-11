@@ -53,7 +53,6 @@ const Bolts = () => {
                     </p>
                 </Text>
             </MessageBox>
-            <Leaderboard />
             <Section>
                 <SectionHeader>Status</SectionHeader>
                 <BoltsDetails>

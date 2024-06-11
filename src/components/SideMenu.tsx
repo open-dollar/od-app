@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, ETH_NETWORK } from '~/utils'
+import { amountToFiat, returnWalletAddress, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'

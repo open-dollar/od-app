@@ -18,9 +18,6 @@ import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import discordIcon from '../assets/discord.svg'
-import walletIcon from '../assets/wallet-icon.svg'
-import od from '../assets/od-logo.svg'
-import odg from '../assets/odg.svg'
 import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
@@ -599,11 +596,6 @@ const PopupWrapperLink = styled.a`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
-`
-
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
 `
 
 const ArrowWrapper = styled.div`

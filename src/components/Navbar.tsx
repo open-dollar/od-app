@@ -24,6 +24,7 @@ import odg from '../assets/odg.svg'
 import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
+import TokenIcon from './TokenIcon'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -276,8 +277,8 @@ const Navbar = () => {
                             {account ? (
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
                                     <TotalValue onClick={handleTokenClick}>
-                                        <Icon src={walletIcon} width={22} height={22} />
-                                        {odBalance + ' '} OD
+                                        <TokenIcon token={'OD'} width={'22px'} />
+                                        <OdBalanceWrapper>{odBalance + ' '}</OdBalanceWrapper>{' '}
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -318,9 +319,7 @@ const Navbar = () => {
                                                         className="group"
                                                         style={{ marginRight: 10 }}
                                                     >
-                                                        <IconWrapper>
-                                                            <img src={od} height={'24px'} width={'24px'} alt="X" />
-                                                        </IconWrapper>
+                                                        <TokenIcon token={'OD'} width="24px"/>
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>OD</InfoPopUpSubText>
                                                         </PopupColumn>
@@ -329,9 +328,7 @@ const Navbar = () => {
                                                         onClick={() => handleAddODG()}
                                                         className="group"
                                                     >
-                                                        <IconWrapper>
-                                                            <img src={odg} height={'24px'} width={'24px'} alt="X" />
-                                                        </IconWrapper>
+                                                        <TokenIcon token={'ODG'} width="24px"/>
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>ODG</InfoPopUpSubText>
                                                         </PopupColumn>
@@ -405,7 +402,7 @@ const PopupColumn = styled.div`
 
 const PopupWrapperTokenLink = styled.a`
     display: flex;
-    gap: 10px;
+    gap: 7px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
@@ -650,4 +647,8 @@ const InfoPopUpSubText = styled.div`
     line-height: ${(props) => props.theme.font.xSmall};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 500;
+`
+
+const OdBalanceWrapper = styled.span`
+    margin-left: 7px;
 `

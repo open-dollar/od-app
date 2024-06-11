@@ -373,7 +373,7 @@ const SVGContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 420px;
-    width: 420px;
+    max-width: 420px;
     border-radius: 4px;
     position: relative;
     overflow: auto;
@@ -414,8 +414,6 @@ const Inner = styled.div`
 `
 
 const Left = styled.div`
-    /* flex: 0 0 55%; */
-    /* padding-right: 10px; */
     display: flex;
     justify-content: space-between;
     margin-top: 20px;

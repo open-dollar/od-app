@@ -131,8 +131,8 @@ const Table = ({ data, userFuulData }) => {
                             style={
                                 //@ts-ignore
                                 row.original.address === userFuulData.address
-                                    ? { backgroundColor: '#8DB2FF99', borderRadius: '14px' }
-                                    : { backgroundColor: '#1A74EC', borderRadius: '14px' }
+                                    ? { backgroundColor: '#8DB2FF99' }
+                                    : { backgroundColor: '#1A74EC' }
                             }
                         >
                             {row.getVisibleCells().map((cell, index) => (
@@ -167,7 +167,7 @@ const RankContainer = styled.div`
 `
 
 const BadgeImage = styled.img`
-    position: absolute;
+    position: fixed;
     width: 48px;
     height: 48px;
 `
@@ -190,9 +190,10 @@ const Address = styled.span`
 `
 
 const Points = styled.span`
-    font-family: 'Open Sans', sans-serif';
+    font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     font-size: 13px;
+    color: #eeeeee;
     line-height: 20px;
 `
 
@@ -230,11 +231,14 @@ const TableContainer = styled.div`
     position: relative;
     table {
         width: 100%;
+        border-radius: 14px !important;
         border-collapse: collapse;
-        gap: 16px;
         background-color: rgba(255, 255, 255, 0);
         backdrop-filter: blur(10px);
-        border-radius: 14px;
+
+        @media (max-width: 768px) {
+            border-radius: 0;
+        }
     }
     th,
     td {
@@ -253,8 +257,8 @@ const TableContainer = styled.div`
 
     @media (max-width: 768px) {
         table {
-            min-width: 100%;
             display: block;
+            width: 100%;
             overflow-x: auto;
         }
 
@@ -262,26 +266,24 @@ const TableContainer = styled.div`
             display: none;
         }
 
-        tbody,
-        td {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
+        tbody {
+            display: flex;
+            flex-direction: column;
         }
 
         tr {
-            margin-bottom: 20px;
-            border-bottom: 4px solid #ddd;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-radius: 0;
         }
 
         td {
-            position: relative;
-            text-align: center;
-            &:last-child {
-                padding-left: 0;
-                display: flex;
-                justify-content: center;
-            }
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 24px 0px 24px;
+            border: none;
         }
 
         td::before {

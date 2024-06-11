@@ -319,7 +319,7 @@ const Navbar = () => {
                                                         className="group"
                                                         style={{ marginRight: 10 }}
                                                     >
-                                                        <TokenIcon token={'OD'} width="24px"/>
+                                                        <TokenIcon token={'OD'} width="24px" />
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>OD</InfoPopUpSubText>
                                                         </PopupColumn>
@@ -328,7 +328,7 @@ const Navbar = () => {
                                                         onClick={() => handleAddODG()}
                                                         className="group"
                                                     >
-                                                        <TokenIcon token={'ODG'} width="24px"/>
+                                                        <TokenIcon token={'ODG'} width="24px" />
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>ODG</InfoPopUpSubText>
                                                         </PopupColumn>

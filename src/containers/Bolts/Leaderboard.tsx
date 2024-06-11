@@ -153,7 +153,7 @@ const Table = ({ data, userFuulData }) => {
                                         index === 2
                                             ? { textAlign: 'right', paddingRight: '20px' }
                                             : { paddingRight: '20px' } && index === 0
-                                            ? { paddingTop: '16px', paddingBottom: '16px' }
+                                            ? { paddingTop: '10px', paddingBottom: '10px' }
                                             : {}
                                     }
                                 >
@@ -320,6 +320,7 @@ const PillarsImage = styled.img`
     right: -0.6px;
     width: 217px;
     height: auto;
+    pointer-events: none;
     z-index: 10;
 
     @media (max-width: 768px) {

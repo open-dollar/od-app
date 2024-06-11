@@ -36,8 +36,10 @@ const Bolts = () => {
 
     return (
         <Container>
-            <Title>Bolts 🔩</Title>
-            <SubHeader>Welcome Vault Keepers!</SubHeader>
+            <Section>
+                <Title>Bolts 🔩</Title>
+                <SubHeader>Welcome Vault Keepers!</SubHeader>
+            </Section>
             <MessageBox>
                 <img src={Image} alt="" />
                 <Text>
@@ -65,28 +67,29 @@ const Bolts = () => {
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>
-            <BtnWrapper>
-                <Button
-                    data-test-id="steps-btn"
-                    id={'suggest-pool-btn'}
-                    secondary
-                    onClick={() => {
-                        window.open('https://discord.opendollar.com/', '_blank')
-                    }}
-                >
-                    Suggest a Quest <ExternalLink />
-                </Button>
-            </BtnWrapper>
+            <Section>
+                <BtnWrapper>
+                    <Button
+                        data-test-id="steps-btn"
+                        id={'suggest-pool-btn'}
+                        secondary
+                        onClick={() => {
+                            window.open('https://discord.opendollar.com/', '_blank')
+                        }}
+                    >
+                        Suggest a Quest <ExternalLink />
+                    </Button>
+                </BtnWrapper>
+            </Section>
         </Container>
     )
 }
 
 const Container = styled.div`
     margin: 80px auto;
-    padding: 0 15px;
+
     @media (max-width: 767px) {
         margin: 50px auto;
-        padding: 0 10px;
     }
     color: ${(props) => props.theme.colors.accent};
 `
@@ -101,7 +104,6 @@ const MessageBox = styled.div`
     padding-left: 28px;
     display: flex;
     align-items: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
     & h3 {
         font-size: 32px;
@@ -116,7 +118,7 @@ const MessageBox = styled.div`
         color: white;
     }
 
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+    @media (max-width: 767px) {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -125,7 +127,8 @@ const MessageBox = styled.div`
         padding-bottom: 36px;
         padding-left: 25px;
         padding-right: 25px;
-    `}
+        border-radius: 0;
+    }
 `
 
 const Text = styled.div`
@@ -191,7 +194,13 @@ const SectionHeader = styled.h2`
     margin-bottom: 20px;
 `
 
-const Section = styled.div``
+const Section = styled.div`
+    padding: 0 15px;
+
+    @media (max-width: 767px) {
+        padding: 0 10px;
+    }
+`
 
 const BtnWrapper = styled.div`
     width: max-content;

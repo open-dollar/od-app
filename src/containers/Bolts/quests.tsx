@@ -61,12 +61,12 @@ const QuestTitle = styled.div`
     display: flex;
     align-items: center;
 
-    font-size: ${(props) => props.theme.font.large};
+    font-size: 26px;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 22px;
+    margin-right: 10px;
 
     span {
         font-weight: 500;
@@ -122,9 +122,9 @@ export const QUESTS = [
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
                 <TokensGroup>
-                    <TokenIcon token={'WSTETH'} />
-                    <TokenIcon token={'RETH'} />
-                    <TokenIcon token={'ARB'} />
+                    <TokenIcon token={'WSTETH'} width={'34'} />
+                    <TokenIcon token={'RETH'} width={'34'} />
+                    <TokenIcon token={'ARB'} width={'34'} />
                 </TokensGroup>
             </TitleContainer>
         ),
@@ -143,7 +143,7 @@ export const QUESTS = [
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
                 <TokensGroup>
-                    <TokenIcon token={'OD'} />
+                    <TokenIcon token={'OD'} width={'34'} />
                 </TokensGroup>
             </TitleContainer>
         ),
@@ -162,8 +162,8 @@ export const QUESTS = [
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
                 <TokensGroup>
-                    <TokenIcon token={'ODG'} />
-                    <TokenIcon token={'WETH'} />
+                    <TokenIcon token={'ODG'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
                 </TokensGroup>
             </TitleContainer>
         ),
@@ -188,8 +188,8 @@ export const QUESTS = [
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
                 <TokensGroup>
-                    <TokenIcon token={'OD'} />
-                    <TokenIcon token={'WETH'} />
+                    <TokenIcon token={'OD'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
                 </TokensGroup>
             </TitleContainer>
         ),

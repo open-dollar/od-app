@@ -67,6 +67,10 @@ const QuestBtn = styled.div`
     display: flex;
     gap: 10px;
     height: 42px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        width: 100%;
+    `};
 `
 
 const BlockDescription = styled.div`

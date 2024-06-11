@@ -373,6 +373,8 @@ const SVGContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 420px;
+    width: 420px;
+    border-radius: 4px;
     position: relative;
     overflow: auto;
     scrollbar-width: none;
@@ -384,6 +386,7 @@ const SVGContainer = styled.div`
 
 const Flex = styled.div`
     display: flex;
+    justify-content: space-between;
     @media (max-width: 767px) {
         flex-direction: column;
         justify-items: center;
@@ -411,8 +414,10 @@ const Inner = styled.div`
 `
 
 const Left = styled.div`
-    flex: 0 0 55%;
-    padding-right: 10px;
+    /* flex: 0 0 55%; */
+    /* padding-right: 10px; */
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
     @media (max-width: 767px) {
         flex: 0 0 100%;

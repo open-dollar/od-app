@@ -513,7 +513,7 @@ const ButtonContainer = styled.div`
 `
 const Container = styled.div`
     border-radius: 4px;
-    padding: 20px;
+    padding: 20px 0;
     margin-top: 20px;
 `
 

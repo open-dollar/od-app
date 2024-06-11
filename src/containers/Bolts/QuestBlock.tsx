@@ -5,11 +5,11 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
     return (
         <BlockContainer>
             <BlockHeader>
-                <HeaderTop>
+                <HeaderLeft>
                     <QuestTitle>{title}</QuestTitle>
-                    <QuestBtn>{button}</QuestBtn>
-                </HeaderTop>
-                <BlockDescription>{text}</BlockDescription>
+                    <BlockDescription>{text}</BlockDescription>
+                </HeaderLeft>
+                <QuestBtn>{button}</QuestBtn>
             </BlockHeader>
             <Block>
                 {items.map((item: any, index: string) => (
@@ -45,22 +45,24 @@ const BlockContainer = styled.div`
 `
 
 const BlockHeader = styled.div`
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     border-bottom: 1px solid #1c293a33;
     padding-left: 34px;
     padding-top: 22px;
     padding-right: 34px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        flex-direction: column;
+        padding-bottom: 20px;
+    `};
 `
 
-const HeaderTop = styled.div`
+const HeaderLeft = styled.div`
     display: flex;
-    gap: 10px;
+    flex-direction: column;
     justify-content: space-between;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    `};
 `
 
 const QuestBtn = styled.div`
@@ -77,7 +79,7 @@ const BlockDescription = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
-    margin-top: 20px;
+    margin-top: 8px;
     margin-bottom: 20px;
     line-height: 1.5;
     ${({ theme }) => theme.mediaWidth.upToSmall`

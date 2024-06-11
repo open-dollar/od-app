@@ -9,7 +9,6 @@ import QuestBlock from './QuestBlock'
 import Image from '~/assets/quests-img.png'
 
 import styled from 'styled-components'
-import Leaderboard from './Leaderboard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
@@ -93,6 +92,9 @@ const Container = styled.div`
 `
 
 const MessageBox = styled.div`
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 4px;
     background: ${(props) => props.theme.colors.gradientBg};
     color: white;
@@ -102,7 +104,7 @@ const MessageBox = styled.div`
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
     & h3 {
-        font-size: ${(props) => props.theme.font.large};
+        font-size: 32px;
         font-weight: 700;
         font-family: ${(props) => props.theme.family.headers};
         margin-bottom: 10px;
@@ -113,6 +115,17 @@ const MessageBox = styled.div`
         text-decoration: underline;
         color: white;
     }
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-left: 0;
+        padding-bottom: 36px;
+        padding-left: 25px;
+        padding-right: 25px;
+    `}
 `
 
 const Text = styled.div`

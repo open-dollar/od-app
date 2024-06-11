@@ -16,6 +16,8 @@ import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
+import TokenIcon from './TokenIcon'
+import WalletIcon from '~/assets/wallet-icon.svg'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -218,12 +220,11 @@ const SideMenu = () => {
                             <Price>
                                 {account && (
                                     <DollarValue ref={odRef} onClick={handleTokenClick}>
-                                        <Icon
-                                            src={require('../assets/wallet-icon.svg').default}
-                                            width={'16px'}
-                                            height={'16px'}
-                                        />
-                                        {odBalance + ' '} OD
+                                        <Icon src={WalletIcon} width={'16px'} height={'16px'} />
+                                        {odBalance + ' '}{' '}
+                                        <div style={{ marginLeft: '10px' }}>
+                                            <TokenIcon token="OD" width="20px" />
+                                        </div>
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -234,27 +235,13 @@ const SideMenu = () => {
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/od-logo.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="OD" width="24px" />
                                                 <PopupColumn>
                                                     <div>OD</div>
                                                 </PopupColumn>
                                             </PopupWrapperTokenLink>
                                             <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/odg.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="ODG" width="24px" />
                                                 <PopupColumn>
                                                     <div>ODG</div>
                                                 </PopupColumn>
@@ -265,7 +252,7 @@ const SideMenu = () => {
                             </Price>
                             <Price>
                                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                    <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
+                                    <TokenIcon token="OD" width="20px" />
                                     <span>{state.odPrice}</span>
                                     <ArrowWrapper>
                                         <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
@@ -477,6 +464,9 @@ const OdButton = styled.button`
 const DollarValue = styled(OdButton)`
     width: auto;
     white-space: nowrap;
+    img {
+        margin-right: 8px;
+    }
 `
 
 // close button container should be button on right side of screen

@@ -118,12 +118,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         parsedAmounts.rightInput === availableHai && availableHai !== '0'
     )
     useEffect(() => {
-        if (!account || !provider || !singleSafe?.collateralName || !chainId) return
-        console.log('BRIDGE TOKENS AND CHAIN ID', bridgeTokens, chainId)
-        console.log('BRIDGE TOKENS', bridgeTokens[chainId])
-        console.log('BRIDGE TOKENS', bridgeTokens[chainId].tokens)
+        if (!account || !provider || !singleSafe?.collateralName || !chainId || !bridgeTokens[chainId]) return
         const token = bridgeTokens[chainId].tokens.find((token: any) => token.name === singleSafe?.collateralName)
-        console.log('TOKEN', token)
         const checkNeedsBridge = async () => {
             setNeedsBridge(await checkUserHasBalance(token.address, account, provider, parsedAmounts.leftInput))
         }

@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
 import { returnWalletAddress } from '~/utils'
 import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
+import leaderboardPillars from '~/assets/leaderboard-pillars.svg'
 
 const columnHelper = createColumnHelper()
 
@@ -87,6 +88,7 @@ const Table = ({ data, userFuulData }) => {
 
     return (
         <TableContainer>
+            <PillarsImage src={leaderboardPillars} alt="leaderboard-pillars" />
             <table>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -129,8 +131,8 @@ const Table = ({ data, userFuulData }) => {
                             style={
                                 //@ts-ignore
                                 row.original.address === userFuulData.address
-                                    ? { backgroundColor: '#8DB2FF99' }
-                                    : { backgroundColor: '#1A74EC' }
+                                    ? { backgroundColor: '#8DB2FF99', borderRadius: '14px' }
+                                    : { backgroundColor: '#1A74EC', borderRadius: '14px' }
                             }
                         >
                             {row.getVisibleCells().map((cell, index) => (
@@ -188,7 +190,7 @@ const Address = styled.span`
 `
 
 const Points = styled.span`
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif';
     font-weight: 700;
     font-size: 13px;
     line-height: 20px;
@@ -224,7 +226,7 @@ const SortableHeader = styled.div`
 `
 
 const TableContainer = styled.div`
-    overflow-x: auto;
+    overflow: visible;
     position: relative;
     table {
         width: 100%;
@@ -291,5 +293,19 @@ const TableContainer = styled.div`
             font-weight: bold;
             text-align: left;
         }
+    }
+`
+
+const PillarsImage = styled.img`
+    display: block;
+    position: absolute;
+    top: -197px;
+    right: -0.6px;
+    width: 217px;
+    height: auto;
+    z-index: 10;
+
+    @media (max-width: 768px) {
+        display: none;
     }
 `

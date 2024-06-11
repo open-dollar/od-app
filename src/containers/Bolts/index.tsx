@@ -22,7 +22,7 @@ const Bolts = () => {
                 const response = account
                     ? await fetch(`https://bot.opendollar.com/api/bolts?address=${account}`)
                     : await fetch(
-                          'https://bot.opendollar.com/api/bolts?address=0x0000000000000000000000000000000000000000'
+                          'https://bot.opendollar.com/api/bolts'
                       )
                 const result = await response.json()
                 if (result.success) {

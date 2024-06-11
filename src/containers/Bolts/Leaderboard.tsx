@@ -9,7 +9,7 @@ import {
     SortingState,
 } from '@tanstack/react-table'
 import styled from 'styled-components'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
 import { returnWalletAddress } from '~/utils'
 import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
@@ -21,6 +21,18 @@ const columnHelper = createColumnHelper()
 const Table = ({ data, userFuulData }) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState<string>('')
+    const [isTableReady, setIsTableReady] = useState(false)
+    const [isReady, setIsReady] = useState(false)
+
+    useEffect(() => {
+        if (isTableReady) {
+            setIsReady(true)
+        }
+    }, [isTableReady])
+
+    useEffect(() => {
+        setIsTableReady(true)
+    }, [data])
 
     const columns = [
         columnHelper.accessor('rank', {
@@ -57,14 +69,14 @@ const Table = ({ data, userFuulData }) => {
         }),
         columnHelper.accessor('points', {
             header: 'Points',
-            //@ts-ignore
+            // @ts-ignore
             cell: (info) => <Points>{info.getValue().toLocaleString()}</Points>,
         }),
     ]
 
     let displayData = [...data.slice(0, 10)]
     if (userFuulData.points) {
-        //@ts-ignore
+        // @ts-ignore
         const userInTop10 = data.find((user) => user.address === userFuulData.address && user.rank <= 10)
         if (!userInTop10) {
             displayData.push(userFuulData)
@@ -73,7 +85,7 @@ const Table = ({ data, userFuulData }) => {
 
     const table = useReactTable({
         data: displayData,
-        //@ts-ignore
+        // @ts-ignore
         columns,
         state: {
             sorting,
@@ -88,8 +100,8 @@ const Table = ({ data, userFuulData }) => {
 
     return (
         <TableContainer>
-            <PillarsImage src={leaderboardPillars} alt="leaderboard-pillars" />
-            <table>
+            {isReady && <PillarsImage src={leaderboardPillars} alt="leaderboard-pillars" />}
+            <TableWrapper>
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
@@ -124,12 +136,11 @@ const Table = ({ data, userFuulData }) => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row) => (
-                        //@ts-ignore
+                    {table.getRowModel().rows.map((row, rowIndex) => (
                         <tr
                             key={row.id}
                             style={
-                                //@ts-ignore
+                                // @ts-ignore
                                 row.original.address === userFuulData.address
                                     ? { backgroundColor: '#8DB2FF99' }
                                     : { backgroundColor: '#1A74EC' }
@@ -152,7 +163,7 @@ const Table = ({ data, userFuulData }) => {
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </TableWrapper>
         </TableContainer>
     )
 }
@@ -168,6 +179,7 @@ const RankContainer = styled.div`
 
 const BadgeImage = styled.img`
     position: fixed;
+    padding-left: 8px;
     width: 48px;
     height: 48px;
 `
@@ -175,6 +187,9 @@ const BadgeImage = styled.img`
 const Rank = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
     font-size: ${(props: any) => props.theme.font.default};
     line-height: 27px;
     z-index: 1;
@@ -226,20 +241,20 @@ const SortableHeader = styled.div`
     font-size: ${(props) => props.theme.font.xSmall};
 `
 
+const TableWrapper = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(10px);
+    @media (max-width: 768px) {
+        border-radius: 14px;
+    }
+`
+
 const TableContainer = styled.div`
     overflow: visible;
     position: relative;
-    table {
-        width: 100%;
-        border-radius: 14px !important;
-        border-collapse: collapse;
-        background-color: rgba(255, 255, 255, 0);
-        backdrop-filter: blur(10px);
-
-        @media (max-width: 768px) {
-            border-radius: 0;
-        }
-    }
+    margin-bottom: 20px;
     th,
     td {
         padding: 8px 0 8px 0;

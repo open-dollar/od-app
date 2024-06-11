@@ -3,11 +3,6 @@ html {
     font-size: 18px;
 }
 
-table {
-    width: 100%;
-    background-color: #1A74EC;
-}
-
 @media (max-width: 768px) {
     table {
         display: block;
@@ -37,7 +32,6 @@ table {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 8px;
         border: none;
     }
 

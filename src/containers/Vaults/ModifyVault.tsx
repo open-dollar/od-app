@@ -453,7 +453,7 @@ const ErrorContainer = styled.div`
 
 const ContainerUnderBottonsRow = styled.div`
     border-radius: 4px;
-    border-top-left-radius: 0; 
+    border-top-left-radius: 0;
     background: white;
     padding: 20px;
 `

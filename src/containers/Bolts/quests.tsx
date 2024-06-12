@@ -52,9 +52,8 @@ const LinkIcon = styled(ExternalLink)`
 `
 
 const TitleContainer = styled.div`
-    display: block;
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
 `
 
 const QuestTitle = styled.div`
@@ -75,14 +74,13 @@ const QuestTitle = styled.div`
 `
 
 const TokensGroup = styled.span`
-    display: inline-block;
-    img {
-        display: inline;
-        vertical-align: middle;
-    }
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
     img:not(:first-child) {
         margin-left: -10px;
     }
+    flex-shrink: 0;
 `
 
 const InternalLinkButton = ({ url }: { url: string }) => {

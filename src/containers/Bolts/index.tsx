@@ -3,35 +3,39 @@ import { ExternalLink } from 'react-feather'
 
 import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
-import useFuulSDK from '~/hooks/useFuulSDK'
 import { QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 
 import styled from 'styled-components'
+import Leaderboard from '~/containers/Bolts/Leaderboard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
-    const { getUserData } = useFuulSDK()
 
     const [userFuulData, setUserFuulData] = useState<any>({ rank: '', points: '' })
-    const [hasFetched, setHasFetched] = useState<boolean>(false)
+    const [leaderboardData, setLeaderboardData] = useState<any[]>([])
+    const [hasFetched] = useState<boolean>(false)
 
     useEffect(() => {
-        if (account && !hasFetched) {
-            setHasFetched(true)
-            ;(async () => {
-                try {
-                    const data = await getUserData(account)
-                    // const data = await getUserData('0x000000000000000000000000000000000000dead')
-                    if (data) {
-                        setUserFuulData(data)
+        const fetchData = async () => {
+            try {
+                const response = account
+                    ? await fetch(`https://bot.opendollar.com/api/bolts?address=${account}`)
+                    : await fetch('https://bot.opendollar.com/api/bolts')
+                const result = await response.json()
+                if (result.success) {
+                    setLeaderboardData(result.data.fuul.leaderboard.users)
+                    if (account) {
+                        setUserFuulData(result.data.fuul.user)
                     }
-                } catch (err) {
-                    console.error('Error fetching user fuul data:', err)
                 }
-            })()
+            } catch (err) {
+                console.error('Error fetching leaderboard data:', err)
+            }
         }
-    }, [account, getUserData, hasFetched])
+
+        fetchData()
+    }, [account, hasFetched])
 
     return (
         <Container>
@@ -56,6 +60,10 @@ const Bolts = () => {
                     <BoltsDetailsRow>EARNED: {userFuulData.points}</BoltsDetailsRow>
                     <BoltsDetailsRow>RANK: {userFuulData.rank}</BoltsDetailsRow>
                 </BoltsDetails>
+            </Section>
+            <Section>
+                <SectionHeader>Leaderboard</SectionHeader>
+                <Leaderboard data={leaderboardData} userFuulData={userFuulData} />
             </Section>
             <Section>
                 <SectionHeader>Quests</SectionHeader>

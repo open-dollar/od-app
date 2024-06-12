@@ -22,6 +22,7 @@ import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
+import walletIcon from '../assets/wallet-icon.svg'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -274,8 +275,9 @@ const Navbar = () => {
                             {account ? (
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
                                     <TotalValue onClick={handleTokenClick}>
-                                        <TokenIcon token={'OD'} width={'22px'} />
+                                        <Icon src={walletIcon} width={22} height={22} />
                                         <OdBalanceWrapper>{odBalance + ' '}</OdBalanceWrapper>{' '}
+                                        <TokenIcon token={'OD'} width={'22px'} />
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -642,5 +644,5 @@ const InfoPopUpSubText = styled.div`
 `
 
 const OdBalanceWrapper = styled.span`
-    margin-left: 7px;
+    margin-right: 7px;
 `

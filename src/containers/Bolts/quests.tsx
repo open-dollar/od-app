@@ -1,13 +1,13 @@
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import { getTokenLogo } from '~/utils'
 import Affiliate from './Affiliate'
 import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
 import { useHistory } from 'react-router-dom'
+import TokenIcon from '~/components/TokenIcon'
 
 const StyledAnchor = styled.a`
     padding: 5px 5px;
@@ -113,9 +113,9 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'40px'} />
-                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'40px'} />
-                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'40px'} />
+                <TokenIcon token={'WSTETH'} />
+                <TokenIcon token={'RETH'} />
+                <TokenIcon token={'ARB'} />
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -132,7 +132,7 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
+                <TokenIcon token={'OD'} />
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -149,8 +149,8 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'40px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
+                <TokenIcon token={'ODG'} />
+                <TokenIcon token={'WETH'} />
             </TitleContainer>
         ),
         button: (
@@ -173,8 +173,8 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
+                <TokenIcon token={'OD'} />
+                <TokenIcon token={'WETH'} />
             </TitleContainer>
         ),
         button: (

@@ -88,7 +88,11 @@ const onClick = (url: string) => {
     window.open(url, '_blank')
 }
 
-export const QUESTS = [
+export type BoltsEarnedData = {
+    [key: string]: number
+}
+
+export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
     {
         title: 'Invite a Friend',
         text: (
@@ -106,6 +110,10 @@ export const QUESTS = [
             {
                 title: 'Bolts',
                 status: '10% of referrals + friends receive 250 Bolts per ETH deposited for 30 days',
+            },
+            {
+                title: 'Bolts Earned',
+                status: boltsEarnedData['Invite a Friend'] || 0,
             },
         ],
     },
@@ -126,6 +134,7 @@ export const QUESTS = [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Deposit collateral'] || 0 },
         ],
     },
     {
@@ -143,6 +152,7 @@ export const QUESTS = [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Borrow OD'] || 0 },
         ],
     },
     {
@@ -167,6 +177,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Provide liquidity on ODG/ETH pool on Camelot'] || 0 },
         ],
     },
     {
@@ -191,6 +202,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Provide liquidity on OD/ETH pool on Camelot'] || 0 },
         ],
     },
     {
@@ -204,6 +216,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: <GalxeLogo /> },
             { title: 'Bolts', status: 'Varies' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Galxe'] || 0 },
         ],
     },
     {
@@ -217,6 +230,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: <ZealyLogo /> },
             { title: 'Bolts', status: 'Varies' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Zealy'] || 0 },
         ],
     },
     {
@@ -249,6 +263,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: 'Guild.xyz' },
             { title: 'Bolts', status: '+3% to all points' },
+            { title: 'Bolts Earned', status: boltsEarnedData['ODOG NFT Holder'] || 0 },
         ],
     },
     {
@@ -280,6 +295,7 @@ export const QUESTS = [
         items: [
             { title: 'Source', status: 'NFTs2Me' },
             { title: 'Bolts', status: '+7% to all points' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Genesis NFT Holder'] || 0 },
         ],
     },
     {
@@ -296,6 +312,7 @@ export const QUESTS = [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Genesis NFV User'] || 0 },
         ],
     },
     {
@@ -308,6 +325,7 @@ export const QUESTS = [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+30%' },
+            { title: 'Bolts Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || 0 },
         ],
     },
 ]

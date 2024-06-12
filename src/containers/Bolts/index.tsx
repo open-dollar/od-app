@@ -4,7 +4,7 @@ import { ExternalLink } from 'react-feather'
 import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
 import useFuulSDK from '~/hooks/useFuulSDK'
-import { QUESTS } from './quests'
+import { BoltsEarnedData, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 
 import styled from 'styled-components'
@@ -14,6 +14,7 @@ const Bolts = () => {
     const { getUserData } = useFuulSDK()
 
     const [userFuulData, setUserFuulData] = useState<any>({ rank: '', points: '' })
+    const [boltsEarnedData, setBoltsEarnedData] = useState<any>({})
     const [hasFetched, setHasFetched] = useState<boolean>(false)
 
     useEffect(() => {
@@ -25,13 +26,38 @@ const Bolts = () => {
                     // const data = await getUserData('0x000000000000000000000000000000000000dead')
                     if (data) {
                         setUserFuulData(data)
+                        fetchBoltsEarnedData(account)
                     }
                 } catch (err) {
                     console.error('Error fetching user fuul data:', err)
                 }
             })()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account, getUserData, hasFetched])
+
+    type Conversion = {
+        is_referrer: boolean
+        conversion_id: number
+        conversion_name: string
+        total_amount: string
+    }
+
+    const fetchBoltsEarnedData = async (address: string) => {
+        try {
+            const response = await fetch(`https://bot.opendollar.com/api/bolts?address=${address}`)
+            const result = await response.json()
+            if (result.success) {
+                const boltsEarned: BoltsEarnedData = {}
+                result.data.fuul.user.conversions.forEach((conversion: Conversion) => {
+                    boltsEarned[conversion.conversion_name] = parseInt(conversion.total_amount, 10)
+                })
+                setBoltsEarnedData(boltsEarned)
+            }
+        } catch (err) {
+            console.error('Error fetching bolts earned data:', err)
+        }
+    }
 
     return (
         <Container>
@@ -59,7 +85,7 @@ const Bolts = () => {
             </Section>
             <Section>
                 <SectionHeader>Quests</SectionHeader>
-                {QUESTS.map((quest, index) => (
+                {QUESTS(boltsEarnedData).map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>

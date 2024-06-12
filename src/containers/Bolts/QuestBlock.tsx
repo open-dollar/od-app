@@ -111,6 +111,7 @@ const Block = styled.div`
 
 const Item = styled.div`
     min-width: 200px;
+    padding-right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

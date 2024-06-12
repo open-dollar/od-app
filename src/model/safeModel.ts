@@ -230,6 +230,9 @@ const safeModel: SafeModel = {
         state.list = payload
     }),
     setSingleSafe: action((state, payload) => {
+        if (!payload) {
+            return
+        }
         state.singleSafe = payload
     }),
     setOperation: action((state, payload) => {

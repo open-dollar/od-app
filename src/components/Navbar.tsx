@@ -585,11 +585,9 @@ const Price = styled.div`
 
 const InfoPopup = styled.div`
     position: absolute;
-    background: ${(props) => props.theme.colors.background};
-    border-radius: 14px;
+    background-color: white;
+    border-radius: 4px;
     top: 75px;
-    border-width: 1px;
-    border-color: ${(props) => props.theme.colors.neutral};
     width: 15vw;
     max-width: 210px;
 
@@ -631,7 +629,6 @@ const InfoPopUpHorizontalSeparator = styled.div`
 
 const InfoPopupContentWrapper = styled.div`
     padding: 16px;
-    background: ${(props) => props.theme.colors.neutral};
 `
 
 const InfoPopUpText = styled.div`

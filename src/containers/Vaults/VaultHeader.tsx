@@ -46,9 +46,7 @@ const VaultHeader = ({ safeId }: { safeId: string }) => {
 
 export default VaultHeader
 
-const Container = styled.div`
-    padding-left: 18px;
-`
+const Container = styled.div``
 
 const VaultNumberContainer = styled.span`
     font-size: 30px;

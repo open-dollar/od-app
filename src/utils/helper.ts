@@ -11,9 +11,9 @@ import { injected } from '~/connectors'
 
 export const IS_IN_IFRAME = window.parent !== window
 
-export const returnWalletAddress = (walletAddress: string) => {
+export const returnWalletAddress = (walletAddress: string, startingIndex: number = 0) => {
     if (!walletAddress) return 'undefined'
-    return `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+    return `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`
 }
 
 export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
@@ -151,7 +151,7 @@ export const formatUserSafe = (
             const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
             const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
 
-            const availableDebt = returnAvaiableDebt(currentPrice?.safetyPrice, '0', s.collateral, s.debt)
+            const availableDebt = returnAvailableDebt(currentPrice?.safetyPrice, '0', s.collateral, s.debt)
 
             const totalDebt = returnTotalValue(returnTotalDebt(s.debt, accumulatedRate) as string, '0').toString()
 
@@ -288,7 +288,7 @@ export const returnTotalValue = (
     return formatNumber(gebUtils.wadToFixed(totalBN).toString()).toString()
 }
 
-export const returnAvaiableDebt = (
+export const returnAvailableDebt = (
     safetyPrice: string,
     accumulatedRate: string,
     currentCollatral = '0',
@@ -320,6 +320,27 @@ export const returnTotalDebt = (debt: string, accumulatedRate: string, beautify 
 
     if (!beautify) return totalDebtBN
     return gebUtils.wadToFixed(totalDebtBN).toString()
+}
+
+/**
+ * Returns the available debt with a 0.1% buffer to avoid exceeding the safety ratio
+ * @param safetyPrice
+ * @param accumulatedRate
+ * @param currentCollatral
+ * @param prevCollatral
+ * @param prevDebt
+ */
+export const returnAvailableDebtWithBuffer = (
+    safetyPrice: string,
+    accumulatedRate: string,
+    currentCollatral = '0',
+    prevCollatral = '0',
+    prevDebt = '0'
+) => {
+    const availableDebt = returnAvailableDebt(safetyPrice, accumulatedRate, currentCollatral, prevCollatral, prevDebt)
+    const availableDebtBN = BigNumber.from(toFixedString(availableDebt, 'WAD'))
+    const availableDebtWithBufferBN = availableDebtBN.mul(999).div(1000)
+    return formatNumber(gebUtils.wadToFixed(availableDebtWithBufferBN).toString()).toString()
 }
 
 export const returnTotalDebtPlusInterest = (

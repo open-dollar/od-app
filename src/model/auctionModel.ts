@@ -57,11 +57,11 @@ export interface AuctionModel {
     selectedCollateralAuction: ICollateralAuction | null
     setSelectedCollateralAuction: Action<AuctionModel, ICollateralAuction | null>
 
-    auctionBid: Thunk<AuctionModel, IAuctionBid, any, StoreModel>
+    auctionBid: Thunk<AuctionModel, IAuctionBid & { geb: Geb }, any, StoreModel>
     auctionClaimInternalBalance: Thunk<AuctionModel, IClaimInternalBalance, any, StoreModel>
-    auctionClaim: Thunk<AuctionModel, IAuctionBid, any, StoreModel>
+    auctionClaim: Thunk<AuctionModel, IAuctionBid & { geb: Geb }, any, StoreModel>
 
-    auctionBuy: Thunk<AuctionModel, IAuctionBuy, any, StoreModel>
+    auctionBuy: Thunk<AuctionModel, IAuctionBuy & { geb: Geb }, any, StoreModel>
 
     isSubmitting: boolean
     setIsSubmitting: Action<AuctionModel, boolean>

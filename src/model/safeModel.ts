@@ -14,6 +14,7 @@ import {
     ISafeData,
     ISafePayload,
 } from '~/utils'
+import { Geb } from '@opendollar/sdk'
 
 export interface SafeModel {
     list: Array<ISafe>
@@ -32,8 +33,8 @@ export interface SafeModel {
     safeData: ISafeData
     liquidationData: ILiquidationData | null
     uniSwapPool: ISafeData
-    depositAndBorrow: Thunk<SafeModel, ISafePayload & { safeId?: string }, any, StoreModel>
-    repayAndWithdraw: Thunk<SafeModel, ISafePayload & { safeId: string }, any, StoreModel>
+    depositAndBorrow: Thunk<SafeModel, ISafePayload & { safeId?: string } & { geb: Geb }, any, StoreModel>
+    repayAndWithdraw: Thunk<SafeModel, ISafePayload & { safeId: string } & { geb: Geb }, any, StoreModel>
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
     // collectETH: Thunk<
     //     SafeModel,
@@ -57,7 +58,7 @@ export interface SafeModel {
     setAmount: Action<SafeModel, string>
     setTargetedCRatio: Action<SafeModel, number>
     setIsMaxWithdraw: Action<SafeModel, boolean>
-    wrapEther: Thunk<SafeModel, WrapEtherProps, any, StoreModel>
+    wrapEther: Thunk<SafeModel, WrapEtherProps & { geb: Geb }, any, StoreModel>
 }
 
 const safeModel: SafeModel = {
@@ -79,7 +80,7 @@ const safeModel: SafeModel = {
     uniSwapPool: DEFAULT_SAFE_STATE,
     depositAndBorrow: thunk(async (actions, payload, { getStoreActions }) => {
         const storeActions = getStoreActions()
-        const txResponse = await handleDepositAndBorrow(payload.signer, payload.safeData, payload.safeId)
+        const txResponse = await handleDepositAndBorrow(payload.signer, payload.safeData, payload.safeId, payload.geb)
         if (txResponse) {
             const { hash, chainId } = txResponse
             storeActions.transactionsModel.addTransaction({
@@ -118,7 +119,7 @@ const safeModel: SafeModel = {
     }),
     repayAndWithdraw: thunk(async (actions, payload, { getStoreActions, getStoreState }) => {
         const storeActions = getStoreActions()
-        const txResponse = await handleRepayAndWithdraw(payload.signer, payload.safeData, payload.safeId)
+        const txResponse = await handleRepayAndWithdraw(payload.signer, payload.safeData, payload.safeId, payload.geb)
         if (txResponse) {
             const { hash, chainId } = txResponse
             storeActions.transactionsModel.addTransaction({
@@ -229,6 +230,9 @@ const safeModel: SafeModel = {
         state.list = payload
     }),
     setSingleSafe: action((state, payload) => {
+        if (!payload) {
+            return
+        }
         state.singleSafe = payload
     }),
     setOperation: action((state, payload) => {

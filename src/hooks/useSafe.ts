@@ -11,7 +11,7 @@ import {
     getCollateralRatio,
     getLiquidationPrice,
     getRatePercentage,
-    returnAvaiableDebt,
+    returnAvailableDebtWithBuffer,
     returnPercentAmount,
     returnTotalDebt,
     returnTotalValue,
@@ -124,14 +124,14 @@ export function useSafeInfo(type: SafeTypes = 'create') {
     const availableHai = useMemo(() => {
         if (!collateralLiquidationData) return '0.00'
         if (type === 'create') {
-            return returnAvaiableDebt(
+            return returnAvailableDebtWithBuffer(
                 collateralLiquidationData.currentPrice.safetyPrice,
                 collateralLiquidationData.accumulatedRate,
                 leftInput
             )
         } else if (type === 'deposit_borrow') {
             if (singleSafe) {
-                return returnAvaiableDebt(
+                return returnAvailableDebtWithBuffer(
                     collateralLiquidationData.currentPrice.safetyPrice,
                     collateralLiquidationData.accumulatedRate,
                     leftInput,

@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { ethers } from 'ethers'
-import { formatNumber } from '~/utils/helper'
 import { TokenFetchData } from '@opendollar/sdk/lib/virtual/tokenData'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
@@ -30,7 +29,7 @@ export const useCollateralBalances = (
     const selectedCollateralBalance = formattedCollateralBalances[collateralName]
 
     const selectedTokenBalance = useMemo(() => {
-        return selectedCollateralBalance ? formatNumber(selectedCollateralBalance, 2) : formatNumber('0', 2)
+        return selectedCollateralBalance
     }, [selectedCollateralBalance])
 
     return selectedTokenBalance

@@ -3,7 +3,7 @@ import { Geb, TransactionRequest } from '@opendollar/sdk'
 import { BigNumber, ethers, utils as ethersUtils } from 'ethers'
 
 import { handlePreTxGasEstimate } from '~/hooks'
-import { ETH_NETWORK, ISafeData } from '~/utils'
+import { ISafeData } from '~/utils'
 
 const abi = ['function drop() public view returns ()']
 
@@ -37,15 +37,13 @@ export const liquidateSafe = async (geb: Geb, safeId: string) => {
     return txResponse
 }
 
-export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: ISafeData, safeId = '') => {
+export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: ISafeData, safeId = '', geb: Geb) => {
     if (!signer || !safeData) {
         return false
     }
 
     const collateralBN = safeData.leftInput ? ethersUtils.parseEther(safeData.leftInput) : ethersUtils.parseEther('0')
     const debtBN = safeData.rightInput ? ethersUtils.parseEther(safeData.rightInput) : ethersUtils.parseEther('0')
-
-    const geb = new Geb(ETH_NETWORK, signer)
 
     const proxy = await geb.getProxyAction(signer._address)
 
@@ -71,13 +69,11 @@ export const handleDepositAndBorrow = async (signer: JsonRpcSigner, safeData: IS
     return txResponse
 }
 
-export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: ISafeData, safeId: string) => {
-    if (!signer || !safeData) {
+export const handleRepayAndWithdraw = async (signer: JsonRpcSigner, safeData: ISafeData, safeId: string, geb: Geb) => {
+    if (!signer || !safeData || !geb) {
         return false
     }
     if (!safeId) throw new Error('No safe Id')
-
-    const geb = new Geb(ETH_NETWORK, signer)
 
     const totalDebtBN = ethersUtils.parseEther(safeData.totalDebt)
     const totalCollateralBN = ethersUtils.parseEther(safeData.totalCollateral)

@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, ETH_NETWORK } from '~/utils'
+import { amountToFiat, returnWalletAddress, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -11,11 +11,13 @@ import Button from './Button'
 
 import ArrowDown from '~/components/Icons/ArrowDown'
 import Camelot from '~/components/Icons/Camelot'
-import { fetchPoolData } from '@opendollar/sdk'
-import { fetchAnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
+import useAnalyticsData from '~/hooks/useAnalyticsData'
+import usePoolData from '~/hooks/usePoolData'
+import TokenIcon from './TokenIcon'
+import WalletIcon from '~/assets/wallet-icon.svg'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -40,6 +42,8 @@ const SideMenu = () => {
         connectWalletModel: connectWalletState,
         popupsModel: popupsState,
     } = useStoreState((state) => state)
+    const poolData = usePoolData()
+    const analyticsData = useAnalyticsData()
 
     const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -95,7 +99,6 @@ const SideMenu = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.OD.address,
@@ -116,7 +119,6 @@ const SideMenu = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.ODG.address,
@@ -132,32 +134,33 @@ const SideMenu = () => {
 
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
-        async function fetchData() {
-            if (geb) {
-                try {
-                    const [poolData, analyticsData] = await Promise.all([fetchPoolData(geb), fetchAnalyticsData(geb)])
+        if (poolData && analyticsData) {
+            const formattedLiquidity = formatDataNumber(
+                ethers.utils
+                    .parseEther(
+                        BigNumber.from(
+                            Math.floor(Number(poolData?.totalLiquidityUSD ? poolData.totalLiquidityUSD : '0'))
+                        ).toString()
+                    )
+                    .toString(),
+                18,
+                0,
+                true
+            ).toString()
 
-                    const formattedLiquidity = formatDataNumber(
-                        ethers.utils
-                            .parseEther(BigNumber.from(Math.floor(Number(poolData?.totalLiquidityUSD))).toString())
-                            .toString(),
-                        18,
-                        0,
-                        true
-                    ).toString()
-
-                    setState((prevState) => ({
-                        ...prevState,
-                        odPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 2),
-                        totalLiquidity: formattedLiquidity,
-                    }))
-                } catch (error) {
-                    console.error('Error fetching data:', error)
-                }
-            }
+            setState({
+                odPrice: formatDataNumber(
+                    analyticsData?.marketPrice ? analyticsData.marketPrice : '0',
+                    18,
+                    3,
+                    true,
+                    undefined,
+                    2
+                ),
+                totalLiquidity: formattedLiquidity,
+            })
         }
 
-        fetchData()
         document.addEventListener('mousedown', handleClickOutsideOdRef)
         document.addEventListener('mousedown', handleClickOutsideTestToken)
         document.addEventListener('mousedown', handleClickOutsidePrice)
@@ -168,7 +171,7 @@ const SideMenu = () => {
             document.removeEventListener('mousedown', handleClickOutsideTestToken)
             document.removeEventListener('mousedown', handleClickOutsidePrice)
         }
-    }, [geb, chainId])
+    }, [geb, chainId, analyticsData, poolData])
 
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
@@ -217,12 +220,11 @@ const SideMenu = () => {
                             <Price>
                                 {account && (
                                     <DollarValue ref={odRef} onClick={handleTokenClick}>
-                                        <Icon
-                                            src={require('../assets/wallet-icon.svg').default}
-                                            width={'16px'}
-                                            height={'16px'}
-                                        />
-                                        {odBalance + ' '} OD
+                                        <Icon src={WalletIcon} width={'16px'} height={'16px'} />
+                                        {odBalance + ' '}{' '}
+                                        <div style={{ marginLeft: '10px' }}>
+                                            <TokenIcon token="OD" width="20px" />
+                                        </div>
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -233,27 +235,13 @@ const SideMenu = () => {
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/od-logo.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="OD" width="24px" />
                                                 <PopupColumn>
                                                     <div>OD</div>
                                                 </PopupColumn>
                                             </PopupWrapperTokenLink>
                                             <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/odg.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="ODG" width="24px" />
                                                 <PopupColumn>
                                                     <div>ODG</div>
                                                 </PopupColumn>
@@ -264,7 +252,7 @@ const SideMenu = () => {
                             </Price>
                             <Price>
                                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                    <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
+                                    <TokenIcon token="OD" width="20px" />
                                     <span>{state.odPrice}</span>
                                     <ArrowWrapper>
                                         <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
@@ -476,6 +464,9 @@ const OdButton = styled.button`
 const DollarValue = styled(OdButton)`
     width: auto;
     white-space: nowrap;
+    img {
+        margin-right: 8px;
+    }
 `
 
 // close button container should be button on right side of screen

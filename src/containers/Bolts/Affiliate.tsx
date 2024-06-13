@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '~/hooks/useActiveWeb3React'
+import { useStoreActions } from '~/store'
+
 import useFuulSDK from '~/hooks/useFuulSDK'
 import Button from '~/components/Button'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -15,6 +17,9 @@ const Affiliate = () => {
     const [copied, setCopied] = useState(false)
     const [hasFetched, setHasFetched] = useState<boolean>(false)
 
+    const { popupsModel: popupsActions } = useStoreActions((state) => state)
+    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
+
     useEffect(() => {
         if (account && !hasFetched) {
             setHasFetched(true)
@@ -25,7 +30,7 @@ const Affiliate = () => {
                         setAffiliateCode(code)
                     }
                 } catch (err) {
-                    console.error('Error fetching affiliate code:', err)
+                    console.error('Error fetching referral code:', err)
                 }
             })()
         }
@@ -39,8 +44,8 @@ const Affiliate = () => {
                 setNewAffiliateCode('')
                 setError(null)
             } catch (err) {
-                console.error('Error creating affiliate code:', err)
-                setError((err as Error)?.message || 'Failed to create affiliate code. Please try again.')
+                console.error('Error creating referral code:', err)
+                setError((err as Error)?.message || 'Failed to create referral code. Please try again.')
             }
         }
     }
@@ -48,15 +53,14 @@ const Affiliate = () => {
     return (
         <Container>
             <Content>
-                <Title>Affiliate Program</Title>
                 {affiliateCode ? (
                     <>
-                        <AffiliateText>
-                            Your Affiliate Code: <BoldText>{affiliateCode}</BoldText>
-                        </AffiliateText>
-                        <AffiliateText>
-                            Your Affiliate Link: <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
-                        </AffiliateText>
+                        <FlexContainer>
+                            <AffiliateText>
+                                Your Referral Link:{' '}
+                                <BoldText>{`https://app.opendollar.com?af=${affiliateCode}`}</BoldText>
+                            </AffiliateText>
+                        </FlexContainer>
                         <CopyToClipboard
                             text={`https://app.opendollar.com?af=${affiliateCode}`}
                             onCopy={() => {
@@ -64,12 +68,14 @@ const Affiliate = () => {
                                 setTimeout(() => setCopied(false), 1500)
                             }}
                         >
-                            <Button>
-                                {copied ? 'Copied!' : 'Copy Affiliate Link'}
-                                <CopyIconContainer>
-                                    <CopyIcon />
-                                </CopyIconContainer>
-                            </Button>
+                            <BtnWrapper>
+                                <Button secondary>
+                                    {copied ? 'Copied!' : 'Copy'}
+                                    <CopyIconContainer>
+                                        <CopyIcon />
+                                    </CopyIconContainer>
+                                </Button>
+                            </BtnWrapper>
                         </CopyToClipboard>
                     </>
                 ) : (
@@ -78,14 +84,23 @@ const Affiliate = () => {
                             <UrlText>https://app.opendollar.com?af=</UrlText>
                             <input
                                 type="text"
-                                placeholder="Enter new affiliate code"
+                                placeholder="Your new referral code"
                                 value={newAffiliateCode}
                                 onChange={(e) => setNewAffiliateCode(e.target.value)}
                             />
                         </FlexContainer>
-                        <Button onClick={handleCreateAffiliateCode} disabled={!account || !newAffiliateCode}>
-                            {account ? 'Create Affiliate Code' : 'Wallet Disconnected'}
-                        </Button>
+                        <BtnWrapper>
+                            {account ? (
+                                <Button secondary onClick={handleCreateAffiliateCode} disabled={!newAffiliateCode}>
+                                    Create Referral Link
+                                </Button>
+                            ) : (
+                                <Button secondary onClick={handleConnectWallet}>
+                                    Connect Wallet
+                                </Button>
+                            )}
+                        </BtnWrapper>
+
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                     </>
                 )}
@@ -101,40 +116,46 @@ const CopyIconContainer = styled.div`
 `
 
 const AffiliateText = styled.div`
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
     font-size: ${(props) => props.theme.font.small};
-    margin-bottom: 20px;
-`
-
-const BoldText = styled.span`
-    font-weight: bold;
-`
-
-const Title = styled.h2`
-    font-size: 40px;
-    font-weight: 700;
-    color: #1c293a;
-    margin-bottom: 28px;
 `
 
 const Container = styled.div`
-    padding: 30px 20px;
+    background-color: rgba(0, 0, 0, 0.02);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+
+    @media (max-width: 767px) {
+        justify-content: center;
+    }
 `
 
 const Content = styled.div`
-    max-width: fit-content;
-    margin: 0 auto;
-    text-align: center;
-
-    h2 {
-        margin-bottom: 20px;
-    }
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
 
     input {
         padding: 10px;
-        margin-bottom: 10px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 4px;
         width: 100%;
+    }
+    @media (max-width: 767px) {
+        flex-direction: column;
+        row-gap: 20px;
     }
 `
 
@@ -142,20 +163,44 @@ const FlexContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    min-height: 59px;
 
     input {
         flex-grow: 1;
+    }
+
+    @media (max-width: 767px) {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start;
     }
 `
 
 const UrlText = styled.div`
     text-wrap: nowrap;
+    font-style: italic;
+    font-size: ${(props) => props.theme.font.small};
+`
+const BoldText = styled.span`
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bold;
     font-size: ${(props) => props.theme.font.small};
 `
 
 const ErrorMessage = styled.div`
     color: red;
     margin-top: 10px;
+`
+
+const BtnWrapper = styled.div`
+    width: max-content;
+    margin-right: auto;
+    button {
+        height: 49px;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 18px;
+        display: flex;
+        width: 280px;
+    }
 `

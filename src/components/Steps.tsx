@@ -1,13 +1,21 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import { useActiveWeb3React, handleTransactionError, useTransactionAdder, use10BlocksConfirmations } from '~/hooks'
+import {
+    useActiveWeb3React,
+    handleTransactionError,
+    useTransactionAdder,
+    use10BlocksConfirmations,
+    handlePreTxGasEstimate,
+} from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import StepsContent from './StepsContent'
 import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { checkUserGasBalance } from '~/utils'
 import useFuulSDK from '~/hooks/useFuulSDK'
+import LowGasModal from './Modals/LowGasModal'
 
 const Steps = () => {
     const { t } = useTranslation()
@@ -28,7 +36,11 @@ const Steps = () => {
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false
-
+        const hasGasToken = await checkUserGasBalance(account!, provider!)
+        if (!hasGasToken) {
+            popupsActions.setIsLowGasModalOpen(true)
+            return
+        }
         try {
             const referralProgram = localStorage.getItem('referralProgram') === 'true'
             if (referralProgram) {
@@ -47,7 +59,8 @@ const Steps = () => {
                 hint: 'Confirm this transaction in your wallet',
                 status: 'loading',
             })
-            const txResponse = await signer.sendTransaction(txData)
+            const tx = await handlePreTxGasEstimate(signer, txData)
+            const txResponse = await signer.sendTransaction(tx)
             connectWalletActions.setCtHash(txResponse.hash)
             addTransaction({ ...txResponse, blockNumber: blockNumber[chainId] }, 'Creating an account')
             popupsActions.setWaitingPayload({
@@ -57,6 +70,11 @@ const Steps = () => {
             })
             await txResponse.wait()
         } catch (e) {
+            const hasGasToken = await checkUserGasBalance(account, provider)
+            if (!hasGasToken) {
+                // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
+                popupsActions.setIsLowGasModalOpen(true)
+            }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)
         }
@@ -117,6 +135,7 @@ const Steps = () => {
 
     return (
         <StepsContainer>
+            <LowGasModal />
             {returnSteps(step)}
             {step === 1 && ctHash ? (
                 <>

@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import styled from 'styled-components'
-import { DEFAULT_SAFE_STATE, formatNumber, formatWithCommas, getTokenLogo } from '~/utils'
+import {
+    DEFAULT_SAFE_STATE,
+    formatNumber,
+    formatWithCommas,
+    getTokenLogo,
+    checkUserHasBalance,
+    bridgeTokens,
+} from '~/utils'
 import useGeb, { useProxyAddress } from '~/hooks/useGeb'
 import Review from './Review'
 import { useStoreActions, useStoreState } from '~/store'
@@ -9,6 +16,7 @@ import TokenInput from '~/components/TokenInput'
 import Button from '~/components/Button'
 import Modal from '~/components/Modals/Modal'
 import LinkButton from '~/components/LinkButton'
+import BridgeModal from '~/components/Modals/BridgeModal'
 import {
     handleTransactionError,
     useTokenBalanceInUSD,
@@ -18,18 +26,22 @@ import {
     useTokenApproval,
     ApprovalState,
 } from '~/hooks'
+import { useHistory } from 'react-router-dom'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
+    const [needsBridge, setNeedsBridge] = useState(false)
     const { safeModel: safeState, connectWalletModel } = useStoreState((state) => state)
-    const { provider, account } = useActiveWeb3React()
+    const { provider, account, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const [showPreview, setShowPreview] = useState(false)
     const { singleSafe } = safeState
+    const history = useHistory()
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
     const {
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
+        bridgeModel: bridgeModelActions,
     } = useStoreActions((state) => state)
 
     const {
@@ -105,6 +117,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         true,
         parsedAmounts.rightInput === availableHai && availableHai !== '0'
     )
+    useEffect(() => {
+        if (!account || !provider || !singleSafe?.collateralName || !chainId || !bridgeTokens[chainId]) return
+        const token = bridgeTokens[chainId].tokens.find((token: any) => token.name === singleSafe?.collateralName)
+        const checkNeedsBridge = async () => {
+            setNeedsBridge(await checkUserHasBalance(token.address, account, provider, parsedAmounts.leftInput))
+        }
+        checkNeedsBridge()
+    }, [account, provider, chainId, singleSafe?.collateralName, parsedAmounts.leftInput])
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
@@ -192,6 +212,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         safeData: safeState.safeData,
                         signer,
                         safeId: safeState.singleSafe.id,
+                        geb,
                     })
                 }
 
@@ -203,6 +224,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         },
                         signer,
                         safeId: safeState.singleSafe.id,
+                        geb,
                     })
                 }
 
@@ -218,10 +240,18 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         }
     }
 
+    const setBridge = (reason: string) => {
+        if (!singleSafe) return
+        bridgeModelActions.setReason(reason)
+        bridgeModelActions.setFromTokenSymbol(singleSafe?.collateralName)
+        history.push('/bridge')
+    }
+
     return (
         <>
             {singleSafe && (
                 <Container>
+                    <BridgeModal />
                     <ButtonsRow>
                         <LinkButton
                             id="deposit_borrow"
@@ -315,22 +345,22 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                             <>
                                                 Borrow OD:{' '}
                                                 <Bold>
-                                                    &nbsp;{formatWithCommas(availableHai, 2)} {tokensData.OD.symbol}
+                                                    &nbsp;{formatWithCommas(availableHai, 4)} {tokensData.OD.symbol}
                                                 </Bold>
                                             </>
                                         ) : (
                                             <>
                                                 Balance:{' '}
                                                 <Bold>
-                                                    &nbsp;{formatWithCommas(haiBalance, 2)} {tokensData.OD.symbol}
+                                                    &nbsp;{formatWithCommas(haiBalance, 4)} {tokensData.OD.symbol}
                                                 </Bold>
                                             </>
                                         )
                                     }
                                     rightLabel={
                                         isDeposit
-                                            ? `~$${formatWithCommas(haiBalanceUSD, 2)}`
-                                            : `OD Owed: ${formatWithCommas(availableHai, 2)}`
+                                            ? `~$${formatWithCommas(haiBalanceUSD, 4)}`
+                                            : `OD Owed: ${formatWithCommas(availableHai, 4)}`
                                     }
                                     onChange={onRightInput}
                                     value={rightInput}
@@ -372,7 +402,21 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
                             {error && (leftInput || rightInput) && (
                                 <ErrorContainer>
-                                    <p>Error: {error}</p>
+                                    {needsBridge && parsedAmounts.leftInput && (
+                                        <BridgeLabel>
+                                            {`Insufficient funds. Move assets to Arbitrum using the `}
+                                            <BridgeButton
+                                                onClick={() => {
+                                                    setBridge(
+                                                        `Insufficient Collateral Balance: ${singleSafe.collateralName}`
+                                                    )
+                                                }}
+                                            >
+                                                Bridge
+                                            </BridgeButton>
+                                        </BridgeLabel>
+                                    )}
+                                    {!needsBridge && (leftInput || rightInput) && <p>Error: {error}</p>}
                                 </ErrorContainer>
                             )}
                         </Row>
@@ -408,6 +452,8 @@ const ErrorContainer = styled.div`
 `
 
 const ContainerUnderBottonsRow = styled.div`
+    border-radius: 4px;
+    border-top-left-radius: 0;
     background: white;
     padding: 20px;
 `
@@ -468,8 +514,7 @@ const ButtonContainer = styled.div`
     }
 `
 const Container = styled.div`
-    border-radius: 4px;
-    padding: 20px;
+    padding: 20px 0;
     margin-top: 20px;
 `
 
@@ -497,4 +542,14 @@ const SideLabel = styled.div`
     font-size: 18px;
     line-height: 26.4px;
     margin-bottom: 10px;
+`
+const BridgeLabel = styled.div`
+    color: #e39806;
+    font-size: 14px;
+    margin-top: 10px;
+`
+
+const BridgeButton = styled.span`
+    color: ${(props) => props.theme.colors.primary};
+    cursor: pointer;
 `

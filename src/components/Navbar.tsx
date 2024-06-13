@@ -283,7 +283,7 @@ const Navbar = () => {
                                         </ArrowWrapper>
                                     </TotalValue>
                                     {isTokenPopupVisible && (
-                                        <InfoPopup className="group">
+                                        <InfoPopup className="group wallet">
                                             <InfoPopupContentWrapper>
                                                 <Button
                                                     style={{ fontWeight: 600 }}
@@ -567,6 +567,7 @@ const OdButton = styled.button`
 
 const RightPriceWrapper = styled.div`
     margin-right: auto;
+    position: relative;
 
     @media (max-width: ${screenWidth}) {
         display: none;
@@ -591,6 +592,10 @@ const InfoPopup = styled.div`
     border-color: ${(props) => props.theme.colors.neutral};
     width: 15vw;
     max-width: 210px;
+
+    &.wallet {
+        top: 68px;
+    }
 `
 
 const PopupWrapperLink = styled.a`

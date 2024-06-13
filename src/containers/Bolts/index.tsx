@@ -95,6 +95,7 @@ const Bolts = () => {
 
 const Container = styled.div`
     margin: 80px auto;
+    max-width: 1362px;
 
     @media (max-width: 767px) {
         margin: 50px auto;

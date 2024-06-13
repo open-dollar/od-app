@@ -118,7 +118,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         parsedAmounts.rightInput === availableHai && availableHai !== '0'
     )
     useEffect(() => {
-        if (!account || !provider || !singleSafe?.collateralName || !chainId) return
+        if (!account || !provider || !singleSafe?.collateralName || !chainId || !bridgeTokens[chainId]) return
         const token = bridgeTokens[chainId].tokens.find((token: any) => token.name === singleSafe?.collateralName)
         const checkNeedsBridge = async () => {
             setNeedsBridge(await checkUserHasBalance(token.address, account, provider, parsedAmounts.leftInput))
@@ -345,22 +345,22 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                             <>
                                                 Borrow OD:{' '}
                                                 <Bold>
-                                                    &nbsp;{formatWithCommas(availableHai, 2)} {tokensData.OD.symbol}
+                                                    &nbsp;{formatWithCommas(availableHai, 4)} {tokensData.OD.symbol}
                                                 </Bold>
                                             </>
                                         ) : (
                                             <>
                                                 Balance:{' '}
                                                 <Bold>
-                                                    &nbsp;{formatWithCommas(haiBalance, 2)} {tokensData.OD.symbol}
+                                                    &nbsp;{formatWithCommas(haiBalance, 4)} {tokensData.OD.symbol}
                                                 </Bold>
                                             </>
                                         )
                                     }
                                     rightLabel={
                                         isDeposit
-                                            ? `~$${formatWithCommas(haiBalanceUSD, 2)}`
-                                            : `OD Owed: ${formatWithCommas(availableHai, 2)}`
+                                            ? `~$${formatWithCommas(haiBalanceUSD, 4)}`
+                                            : `OD Owed: ${formatWithCommas(availableHai, 4)}`
                                     }
                                     onChange={onRightInput}
                                     value={rightInput}
@@ -452,6 +452,8 @@ const ErrorContainer = styled.div`
 `
 
 const ContainerUnderBottonsRow = styled.div`
+    border-radius: 4px;
+    border-top-left-radius: 0;
     background: white;
     padding: 20px;
 `
@@ -512,8 +514,7 @@ const ButtonContainer = styled.div`
     }
 `
 const Container = styled.div`
-    border-radius: 4px;
-    padding: 20px;
+    padding: 20px 0;
     margin-top: 20px;
 `
 

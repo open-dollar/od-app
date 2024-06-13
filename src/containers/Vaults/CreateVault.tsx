@@ -321,7 +321,7 @@ const CreateVault = ({
                                                       }
                                                     : undefined
                                             }
-                                            label={`Balance: ${formatWithCommas(selectedTokenBalance, 2)} ${
+                                            label={`Balance: ${formatWithCommas(selectedTokenBalance, 4)} ${
                                                 selectedCollateral?.symbol
                                             }`}
                                             rightLabel={`~$${formatWithCommas(selectedTokenBalanceInUSD, 2)}`}
@@ -353,7 +353,7 @@ const CreateVault = ({
                                                     name: tokensData.OD.symbol,
                                                 }
                                             }
-                                            label={`Borrow OD: ${formatWithCommas(availableHai)} ${
+                                            label={`Borrow OD: ${formatWithCommas(availableHai, 4)} ${
                                                 tokensData.OD?.symbol
                                             }`}
                                             rightLabel={`~$${formatWithCommas(haiBalanceUSD)}`}
@@ -364,7 +364,16 @@ const CreateVault = ({
                                         />
                                     </Inputs>
                                     <Note data-test-id="debt_floor_note">
-                                        {` The minimum amount to mint per vault is ${debtFloor} OD`}
+                                        {`The minimum deposit size is ~$${
+                                            debtFloor *
+                                            Number(
+                                                safeState.liquidationData!.collateralLiquidationData[
+                                                    selectedCollateral?.symbol
+                                                ].liquidationCRatio
+                                            )
+                                        }.`}
+                                        <br />
+                                        {`The minimum amount to mint per vault is ${debtFloor} OD`}
                                     </Note>
                                 </Col>
                             ) : (

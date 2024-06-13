@@ -311,7 +311,7 @@ export const checkUserHasBalance = async (
         provider
     )
     const balance = await tokenContract.balanceOf(userAddress)
-    return +ethers.utils.formatUnits(balance) <= +(amount || '0')
+    return +ethers.utils.formatUnits(balance) < +(amount || '0')
 }
 
 export const getUserBalance = async (tokens: any[], userAddress: string, rpcUrl: string) => {

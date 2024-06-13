@@ -195,7 +195,7 @@ const SideMenu = () => {
                             <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
                         <AccountBalance>
-                            {isActive && account ? (
+                            {isActive && account && (
                                 <Account
                                     onClick={() => {
                                         popupsActions.setIsConnectedWalletModalOpen(true)
@@ -208,14 +208,14 @@ const SideMenu = () => {
                                         <Balance>{`$ ${renderBalance()}`}</Balance>
                                     </AccountData>
                                 </Account>
-                            ) : (
-                                <ConnectBtnContainer>
-                                    <Button onClick={handleWalletConnect} text={'connect_wallet'} />
-                                </ConnectBtnContainer>
                             )}
                         </AccountBalance>
                         <NavLinks />
-
+                        {!account && (
+                            <ConnectBtnContainer>
+                                <Button onClick={handleWalletConnect} text={'connect_wallet'} />
+                            </ConnectBtnContainer>
+                        )}
                         <OpenDollarInformationColumn>
                             <Price>
                                 {account && (
@@ -521,9 +521,12 @@ const InnerContainer = styled.div`
 `
 
 const ConnectBtnContainer = styled.div`
-    text-align: center;
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
 
     button {
         border-radius: 3px;

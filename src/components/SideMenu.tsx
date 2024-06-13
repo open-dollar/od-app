@@ -211,13 +211,6 @@ const SideMenu = () => {
                                 </Account>
                             </AccountBalance>
                         )}
-
-                        <NavLinks />
-                        {!account && (
-                            <ConnectBtnContainer>
-                                <Button onClick={handleWalletConnect} text={'connect_wallet'} />
-                            </ConnectBtnContainer>
-                        )}
                         <OpenDollarInformationColumn>
                             <Price>
                                 {account && (
@@ -299,6 +292,13 @@ const SideMenu = () => {
                                 )}
                             </Price>
                         </OpenDollarInformationColumn>
+
+                        <NavLinks />
+                        {!account && (
+                            <ConnectBtnContainer>
+                                <Button onClick={handleWalletConnect} text={'connect_wallet'} />
+                            </ConnectBtnContainer>
+                        )}
                     </InnerContainer>
                 </Inner>
             </Container>
@@ -348,19 +348,10 @@ const TokenTextWrapper = styled.div`
 `
 
 const OpenDollarInformationColumn = styled.div`
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
     flex-direction: column;
-    padding: 30px 25px;
-    margin-top: 48px;
+    padding: 0px 25px;
     display: flex;
     gap: 16px;
-    @media (max-width: 767px) {
-        margin-top: 16px;
-        position: unset;
-        transform: initial;
-    }
 `
 
 const ClaimButton = styled.div`

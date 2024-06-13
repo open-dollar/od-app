@@ -339,7 +339,7 @@ export function useSafeInfo(type: SafeTypes = 'create') {
         liquidationPenaltyPercentage: getLiquidationPenalty(collateralName),
         stats,
         balances,
-        account
+        account,
     }
 }
 // returns totalCollateral

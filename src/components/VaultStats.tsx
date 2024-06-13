@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLink, Info } from 'react-feather'
@@ -23,12 +23,11 @@ import { useWeb3React } from '@web3-react/core'
 
 const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
     const { t } = useTranslation()
-    const { chainId, account } = useWeb3React()
+    const { chainId } = useWeb3React()
     const {
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
-        account: safeAccount,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
@@ -227,49 +226,30 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            { <StatSection>
-                                <StatHeader>
-                                    <StatTitle>NFV Owner</StatTitle>
-                                    <InfoIcon
-                                        data-tooltip-id="vault-stats"
-                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
-                                    >
-                                        <Info size="16" />
-                                    </InfoIcon>
-                                </StatHeader>
-                                <StatValue>
-                                    {chainId && account && (
-                                        <AccountLink
-                                            href={getEtherscanLink(chainId, account, 'address')}
-                                            target="_blank"
-                                        >
-                                            {returnWalletAddress(account)} <ExternalLink />
-                                        </AccountLink>
-                                    )}
-                                </StatValue>
-                            </StatSection>}
-                            {safeAccount && (
+                            {singleSafe?.ownerAddress ? (
                                 <StatSection>
                                     <StatHeader>
                                         <StatTitle>NFV Owner</StatTitle>
                                         <InfoIcon
                                             data-tooltip-id="vault-stats"
-                                            data-tooltip-content={'Owner address for this Non Fungible Vault'}
+                                            data-tooltip-content={'Owner address for this Non-Fungible Vault'}
                                         >
                                             <Info size="16" />
                                         </InfoIcon>
                                     </StatHeader>
                                     <StatValue>
-                                        {chainId && account && (
+                                        {chainId && singleSafe?.ownerAddress && (
                                             <AccountLink
-                                                href={getEtherscanLink(chainId, safeAccount, 'address')}
+                                                href={getEtherscanLink(chainId, singleSafe.ownerAddress, 'address')}
                                                 target="_blank"
                                             >
-                                                {returnWalletAddress(safeAccount)} <ExternalLink />
+                                                {returnWalletAddress(singleSafe.ownerAddress)} <ExternalLink />
                                             </AccountLink>
                                         )}
                                     </StatValue>
                                 </StatSection>
+                            ) : (
+                                <></>
                             )}
                         </StatsGrid>
                         <Side>

@@ -91,6 +91,7 @@ const VaultDetails = ({ ...props }) => {
                 constructedLiquidationData as ILiquidationData,
                 geb.tokenList
             )
+            formattedSafe[0].ownerAddress = ownerAddress
             safeActions.setSingleSafe(formattedSafe[0])
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }

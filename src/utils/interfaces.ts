@@ -140,6 +140,7 @@ export interface WalletInfo {
 
 export interface ISafe {
     id: string
+    ownerAddress: string
     date: string
     safeHandler: string
     riskState: number

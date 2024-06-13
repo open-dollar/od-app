@@ -23,6 +23,7 @@ import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
 import walletIcon from '../assets/wallet-icon.svg'
+import DollarValueInner from './DollarValueInner'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -197,11 +198,12 @@ const Navbar = () => {
                         <Brand />
                         <Price>
                             <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                <Icon src={getTokenLogo('OD')} width={22} height={22} />
+                                {/* <Icon src={getTokenLogo('OD')} width={22} height={22} />
                                 {state.odPrice ? <span>{state.odPrice}</span> : <Loader color="#0071E7" width="20px" />}
                                 <ArrowWrapper>
                                     <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
-                                </ArrowWrapper>
+                                </ArrowWrapper> */}
+                                <DollarValueInner value={state.odPrice} popup={isPopupVisible} />
                             </DollarValue>
                             {isPopupVisible && (
                                 <InfoPopup ref={popupRef}>

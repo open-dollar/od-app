@@ -593,6 +593,7 @@ const InfoPopup = styled.div`
 
     &.wallet {
         top: 68px;
+        right: 0;
     }
 `
 

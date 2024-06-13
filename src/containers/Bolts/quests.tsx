@@ -52,25 +52,41 @@ const LinkIcon = styled(ExternalLink)`
 `
 
 const TitleContainer = styled.div`
-    display: flex;
+    display: inline;
     align-items: center;
+
+    img {
+        display: inline;
+        vertical-align: sub;
+    }
 `
 
 const QuestTitle = styled.div`
-    display: flex;
+    display: inline;
     align-items: center;
 
-    font-size: ${(props) => props.theme.font.large};
+    font-size: 26px;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 22px;
+    margin-right: 10px;
 
     span {
         font-weight: 500;
         color: ${(props) => props.theme.colors.primary};
     }
+`
+
+const TokensGroup = styled.span`
+    display: inline;
+    flex-wrap: nowrap;
+    align-items: center;
+    white-space: nowrap;
+    img:not(:first-child) {
+        margin-left: -10px;
+    }
+    flex-shrink: 0;
 `
 
 const InternalLinkButton = ({ url }: { url: string }) => {
@@ -113,9 +129,11 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <TokenIcon token={'WSTETH'} />
-                <TokenIcon token={'RETH'} />
-                <TokenIcon token={'ARB'} />
+                <TokensGroup>
+                    <TokenIcon token={'WSTETH'} width={'34'} />
+                    <TokenIcon token={'RETH'} width={'34'} />
+                    <TokenIcon token={'ARB'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -132,7 +150,9 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <TokenIcon token={'OD'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -149,8 +169,10 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <TokenIcon token={'ODG'} />
-                <TokenIcon token={'WETH'} />
+                <TokensGroup>
+                    <TokenIcon token={'ODG'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (
@@ -173,8 +195,10 @@ export const QUESTS = [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <TokenIcon token={'OD'} />
-                <TokenIcon token={'WETH'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (

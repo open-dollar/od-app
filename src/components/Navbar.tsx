@@ -18,12 +18,11 @@ import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import discordIcon from '../assets/discord.svg'
-import walletIcon from '../assets/wallet-icon.svg'
-import od from '../assets/od-logo.svg'
-import odg from '../assets/odg.svg'
 import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
+import TokenIcon from './TokenIcon'
+import walletIcon from '../assets/wallet-icon.svg'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -277,13 +276,14 @@ const Navbar = () => {
                                 <RightPriceWrapper ref={odRef} style={{ marginLeft: 20 }}>
                                     <TotalValue onClick={handleTokenClick}>
                                         <Icon src={walletIcon} width={22} height={22} />
-                                        {odBalance + ' '} OD
+                                        <OdBalanceWrapper>{odBalance + ' '}</OdBalanceWrapper>{' '}
+                                        <TokenIcon token={'OD'} width={'22px'} />
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
                                     </TotalValue>
                                     {isTokenPopupVisible && (
-                                        <InfoPopup className="group">
+                                        <InfoPopup className="group wallet">
                                             <InfoPopupContentWrapper>
                                                 <Button
                                                     style={{ fontWeight: 600 }}
@@ -318,9 +318,7 @@ const Navbar = () => {
                                                         className="group"
                                                         style={{ marginRight: 10 }}
                                                     >
-                                                        <IconWrapper>
-                                                            <img src={od} height={'24px'} width={'24px'} alt="X" />
-                                                        </IconWrapper>
+                                                        <TokenIcon token={'OD'} width="24px" />
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>OD</InfoPopUpSubText>
                                                         </PopupColumn>
@@ -329,9 +327,7 @@ const Navbar = () => {
                                                         onClick={() => handleAddODG()}
                                                         className="group"
                                                     >
-                                                        <IconWrapper>
-                                                            <img src={odg} height={'24px'} width={'24px'} alt="X" />
-                                                        </IconWrapper>
+                                                        <TokenIcon token={'ODG'} width="24px" />
                                                         <PopupColumn>
                                                             <InfoPopUpSubText>ODG</InfoPopUpSubText>
                                                         </PopupColumn>
@@ -405,7 +401,7 @@ const PopupColumn = styled.div`
 
 const PopupWrapperTokenLink = styled.a`
     display: flex;
-    gap: 10px;
+    gap: 7px;
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
@@ -571,6 +567,7 @@ const OdButton = styled.button`
 
 const RightPriceWrapper = styled.div`
     margin-right: auto;
+    position: relative;
 
     @media (max-width: ${screenWidth}) {
         display: none;
@@ -588,13 +585,15 @@ const Price = styled.div`
 
 const InfoPopup = styled.div`
     position: absolute;
-    background: ${(props) => props.theme.colors.background};
-    border-radius: 14px;
-    top: 75px;
-    border-width: 1px;
-    border-color: ${(props) => props.theme.colors.neutral};
+    background-color: white;
+    border-radius: 4px;
+    top: 85px;
     width: 15vw;
     max-width: 210px;
+
+    &.wallet {
+        top: 68px;
+    }
 `
 
 const PopupWrapperLink = styled.a`
@@ -602,11 +601,6 @@ const PopupWrapperLink = styled.a`
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     color: ${(props) => props.theme.colors.neutral};
-`
-
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
 `
 
 const ArrowWrapper = styled.div`
@@ -635,7 +629,6 @@ const InfoPopUpHorizontalSeparator = styled.div`
 
 const InfoPopupContentWrapper = styled.div`
     padding: 16px;
-    background: ${(props) => props.theme.colors.neutral};
 `
 
 const InfoPopUpText = styled.div`
@@ -650,4 +643,8 @@ const InfoPopUpSubText = styled.div`
     line-height: ${(props) => props.theme.font.xSmall};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 500;
+`
+
+const OdBalanceWrapper = styled.span`
+    margin-right: 7px;
 `

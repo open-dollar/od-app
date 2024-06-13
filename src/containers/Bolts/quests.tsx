@@ -52,8 +52,13 @@ const LinkIcon = styled(ExternalLink)`
 `
 
 const TitleContainer = styled.div`
-    display: flex;
+    display: inline;
     align-items: center;
+
+    img {
+        display: inline;
+        vertical-align: sub;
+    }
 `
 
 const QuestTitle = styled.div`
@@ -74,9 +79,10 @@ const QuestTitle = styled.div`
 `
 
 const TokensGroup = styled.span`
-    display: flex;
+    display: inline;
     flex-wrap: nowrap;
     align-items: center;
+    white-space: nowrap;
     img:not(:first-child) {
         margin-left: -10px;
     }

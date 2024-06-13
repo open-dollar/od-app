@@ -587,7 +587,7 @@ const InfoPopup = styled.div`
     position: absolute;
     background-color: white;
     border-radius: 4px;
-    top: 75px;
+    top: 85px;
     width: 15vw;
     max-width: 210px;
 

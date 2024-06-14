@@ -45,7 +45,7 @@ Sentry.init({
     environment: process.env.NODE_ENV,
 })
 
-const network = process.env.REACT_APP_NETWORK_ID as string
+const network = process.env.REACT_APP_NETWORK_ID
 const fuulApiKey = process.env.REACT_APP_FUUL_API_KEY
 // Only initialize Fuul on Arbitrum One
 if (network === '42161' && fuulApiKey) {

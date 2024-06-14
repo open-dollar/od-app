@@ -28,6 +28,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
+        account,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
@@ -132,6 +133,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
                                 <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
                             </StatSection>
+
                             <StatSection>
                                 <StatHeader>
                                     <StatTitle>Collateral Deposited</StatTitle>
@@ -226,31 +228,32 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            {singleSafe?.ownerAddress ? (
-                                <StatSection>
-                                    <StatHeader>
-                                        <StatTitle>NFV Owner</StatTitle>
-                                        <InfoIcon
-                                            data-tooltip-id="vault-stats"
-                                            data-tooltip-content={'Owner address for this Non-Fungible Vault'}
+
+                            <StatSection>
+                                <StatHeader>
+                                    <StatTitle>NFV Owner</StatTitle>
+                                    <InfoIcon
+                                        data-tooltip-id="vault-stats"
+                                        data-tooltip-content={'Owner address for this Non-Fungible Vault'}
+                                    >
+                                        <Info size="16" />
+                                    </InfoIcon>
+                                </StatHeader>
+                                <StatValue>
+                                    {chainId && (
+                                        <AccountLink
+                                            href={getEtherscanLink(
+                                                chainId,
+                                                singleSafe?.ownerAddress || account!,
+                                                'address'
+                                            )}
+                                            target="_blank"
                                         >
-                                            <Info size="16" />
-                                        </InfoIcon>
-                                    </StatHeader>
-                                    <StatValue>
-                                        {chainId && singleSafe?.ownerAddress && (
-                                            <AccountLink
-                                                href={getEtherscanLink(chainId, singleSafe.ownerAddress, 'address')}
-                                                target="_blank"
-                                            >
-                                                {returnWalletAddress(singleSafe.ownerAddress)} <ExternalLink />
-                                            </AccountLink>
-                                        )}
-                                    </StatValue>
-                                </StatSection>
-                            ) : (
-                                <></>
-                            )}
+                                            {returnWalletAddress(singleSafe?.ownerAddress || account!)} <ExternalLink />
+                                        </AccountLink>
+                                    )}
+                                </StatValue>
+                            </StatSection>
                         </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>

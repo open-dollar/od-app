@@ -19,6 +19,7 @@ import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
 import WalletIcon from '~/assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
+import parachuteIcon from '../assets/parachute-icon.svg'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -271,7 +272,8 @@ const SideMenu = () => {
                             <Price ref={testTokenPopupRef}>
                                 {ETH_NETWORK === 'arbitrum-sepolia' && (
                                     <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
-                                        Test tokens 🪂
+                                        <Icon src={parachuteIcon} width={22} height={22} />
+                                        Test tokens
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -354,6 +356,8 @@ const OpenDollarInformationColumn = styled.div`
 const ClaimButton = styled.div`
     display: flex;
     padding-left: 12px;
+    align-items: center;
+    font-size: ${(props) => props.theme.font.small};
 `
 
 const PopupColumn = styled.div`

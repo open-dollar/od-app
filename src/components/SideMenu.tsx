@@ -18,6 +18,7 @@ import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
 import WalletIcon from '~/assets/wallet-icon.svg'
+import DollarValueInner from './DollarValueInner'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -247,11 +248,7 @@ const SideMenu = () => {
                             </Price>
                             <Price>
                                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                    <TokenIcon token="OD" width="20px" />
-                                    <span>{state.odPrice}</span>
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
+                                    <DollarValueInner value={state.odPrice} popup={isPopupVisible} />
                                 </DollarValue>
                                 {isPopupVisible && (
                                     <LiquidityPriceInfoPopup ref={popupRef} className="group">
@@ -356,6 +353,7 @@ const OpenDollarInformationColumn = styled.div`
 
 const ClaimButton = styled.div`
     display: flex;
+    padding-left: 12px;
 `
 
 const PopupColumn = styled.div`
@@ -454,13 +452,7 @@ const OdButton = styled.button`
     }
 `
 
-const DollarValue = styled(OdButton)`
-    width: auto;
-    white-space: nowrap;
-    img {
-        margin-right: 8px;
-    }
-`
+const DollarValue = styled(OdButton)``
 
 // close button container should be button on right side of screen
 const CloseButtonContainer = styled.div`

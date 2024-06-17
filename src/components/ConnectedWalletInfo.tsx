@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { newTransactionsFirst, returnWalletAddress, getEtherscanLink, SUPPORTED_WALLETS } from '~/utils'
+import { newTransactionsFirst, getEtherscanLink, SUPPORTED_WALLETS } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import ExpandIcon from './Icons/ExpandIcon'
@@ -15,6 +15,7 @@ import ConnectedWalletIcon from '~/components/ConnectedWalletIcon'
 import { MetaMask } from '@web3-react/metamask'
 import { Info } from 'react-feather'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { useAddress } from '~/hooks/useAddress'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
@@ -22,6 +23,7 @@ const ConnectedWalletInfo = () => {
     const [copied, setCopied] = useState(false)
     const { transactionsModel: transactionsState } = useStoreState((state) => state)
     const { popupsModel: popupsActions, transactionsModel: transactionsActions } = useStoreActions((state) => state)
+    const address = useAddress(account)
 
     const handleChange = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -72,7 +74,7 @@ const ConnectedWalletInfo = () => {
                     <LeftContainer>
                         <Address id="web3-account-identifier-row">
                             <ConnectedWalletIcon size={18} />
-                            {account && isActive ? returnWalletAddress(account) : 'N/A'}
+                            {account && isActive ? address : 'N/A'}
                         </Address>
                         <Connection>{connector ? formatConnectorName() : 'N/A'}</Connection>
                     </LeftContainer>

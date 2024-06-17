@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { ExternalLinkArrow } from '~/GlobalStyle'
 import { useActiveWeb3React } from '~/hooks'
-import { ChainId, formatNumber, getEtherscanLink, returnWalletAddress } from '~/utils'
+import { ChainId, formatNumber, getEtherscanLink } from '~/utils'
+import { useAddress } from '~/hooks/useAddress'
 
 type Props = {
     eventType: string
@@ -18,6 +19,7 @@ type Props = {
 
 const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbol, createdAtTransaction }: Props) => {
     const { chainId } = useActiveWeb3React()
+    const address = useAddress(bidder)
 
     const returnWad = (amount: string) => {
         if (!amount) return '0'
@@ -30,7 +32,7 @@ const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbo
             <ListItem>
                 {bidder && (
                     <Link href={getEtherscanLink(chainId as ChainId, bidder, 'address')} target="_blank">
-                        {returnWalletAddress(bidder)}
+                        {address}
                     </Link>
                 )}
             </ListItem>
@@ -49,7 +51,7 @@ const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbo
             <ListItem>
                 <ListItemLabel>TX</ListItemLabel>
                 <Link href={getEtherscanLink(chainId as ChainId, createdAtTransaction, 'transaction')} target="_blank">
-                    {returnWalletAddress(createdAtTransaction)}
+                    {useAddress(createdAtTransaction)}
                 </Link>
             </ListItem>
         </>

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { ExternalLinkArrow } from '~/GlobalStyle'
-import { getEtherscanLink, returnWalletAddress } from '~/utils'
+import { getEtherscanLink } from '~/utils'
+import { useAddress } from '~/hooks/useAddress'
 
 export const Link = styled.a`
     ${ExternalLinkArrow}
@@ -14,7 +15,7 @@ interface AddressLinkProps {
 export const AddressLink = ({ chainId, address }: AddressLinkProps) => {
     return (
         <Link href={getEtherscanLink(chainId, address, 'address')} target="_blank">
-            {returnWalletAddress(address)}
+            {useAddress(address)}
         </Link>
     )
 }

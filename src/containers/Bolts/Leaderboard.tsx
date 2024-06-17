@@ -14,6 +14,7 @@ import { ArrowDown, ArrowUp } from 'react-feather'
 import { returnWalletAddress } from '~/utils'
 import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
 import leaderboardPillars from '~/assets/leaderboard-pillars.svg'
+import { useAddress } from '~/hooks/useAddress'
 
 const columnHelper = createColumnHelper()
 
@@ -59,10 +60,14 @@ const Table = ({ data, userFuulData }) => {
             header: 'Address',
             cell: (info) => {
                 const address = info.getValue()
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                const walletAddress = useAddress(address)
                 return (
                     <Address>
                         {userFuulData.address === address && <Badge>YOU</Badge>}
-                        {returnWalletAddress(address, 2)}
+                        {typeof walletAddress === 'string' && walletAddress.startsWith('0x')
+                            ? returnWalletAddress(address, 2)
+                            : walletAddress}
                     </Address>
                 )
             },

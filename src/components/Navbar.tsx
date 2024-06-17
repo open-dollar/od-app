@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 
-import { ETH_NETWORK, formatDataNumber, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { ETH_NETWORK, formatDataNumber, newTransactionsFirst } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -23,6 +23,7 @@ import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
 import walletIcon from '../assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
+import { useAddress } from '~/hooks/useAddress'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -51,6 +52,7 @@ const Navbar = () => {
     const signer = provider ? provider.getSigner(account) : undefined
     const poolData = usePoolData()
     const analyticsData = useAnalyticsData()
+    const address = useAddress(account)
 
     const handleTokenClick = () => {
         setTokenPopupVisibility(!isTokenPopupVisible)
@@ -296,9 +298,7 @@ const Navbar = () => {
                                                             <IdenticonWrapper>
                                                                 <Identicon />
                                                             </IdenticonWrapper>
-                                                            <InfoPopUpText>
-                                                                {returnWalletAddress(account)}
-                                                            </InfoPopUpText>
+                                                            <InfoPopUpText>{address}</InfoPopUpText>
                                                         </InnerBtn>
                                                     )}
                                                 </Button>

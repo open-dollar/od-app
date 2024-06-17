@@ -13,13 +13,13 @@ import {
     ratioChecker,
     returnState,
     returnTotalDebt,
-    returnWalletAddress,
 } from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
+import { useAddress } from '~/hooks/useAddress'
 
 const VaultStats = ({
     isModifying,
@@ -88,6 +88,7 @@ const VaultStats = ({
     )
 
     const svg = useMemo(() => generateSvg(statsForSVG), [statsForSVG])
+    const address = useAddress(singleSafe?.ownerAddress || account!)
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -257,7 +258,7 @@ const VaultStats = ({
                                             )}
                                             target="_blank"
                                         >
-                                            {returnWalletAddress(singleSafe?.ownerAddress || account!)} <ExternalLink />
+                                            {address} <ExternalLink />
                                         </AccountLink>
                                     )}
                                 </StatValue>

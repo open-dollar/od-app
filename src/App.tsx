@@ -31,6 +31,7 @@ import Bolts from './containers/Bolts'
 import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,

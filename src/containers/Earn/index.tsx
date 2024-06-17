@@ -10,6 +10,7 @@ import { POOLS } from '~/utils'
 import PoolBlock from './PoolBlock'
 import { JSX } from 'react/jsx-runtime'
 import { PoolData } from '@opendollar/sdk'
+import Skeleton from 'react-loading-skeleton'
 
 interface Cache {
     [key: string]: PoolData
@@ -91,9 +92,10 @@ const Earn = () => {
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )
                 ) : (
-                    <Loader width="50px" color="#1A74EC" />
+                    <Skeleton height={100} />
                 )}
             </Pools>
+
             <BtnWrapper>
                 <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
                     suggest a new pool <ExternalLink />

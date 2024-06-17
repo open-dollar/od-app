@@ -14,18 +14,30 @@ export function useAddress(walletAddress: string | undefined, startingIndex: num
     const rpcProvider = new JsonRpcProvider('https://eth.llamarpc.com', 1)
 
     useEffect(() => {
+        let isMounted = true
+
         const fetchData = async () => {
             if (walletAddress) {
                 try {
                     const ensName = await rpcProvider.lookupAddress(walletAddress)
-                    setAddress(ensName || `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`)
+                    if (isMounted) {
+                        setAddress(
+                            ensName || `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`
+                        )
+                    }
                 } catch (error) {
-                    setAddress(`${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`)
+                    if (isMounted) {
+                        setAddress(`${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`)
+                    }
                 }
             }
         }
 
         fetchData()
+
+        return () => {
+            isMounted = false
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provider, walletAddress, startingIndex])
 

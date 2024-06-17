@@ -21,7 +21,15 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
 
-const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
+const VaultStats = ({
+    isModifying,
+    isDeposit,
+    isOwner,
+}: {
+    isModifying: boolean
+    isDeposit: boolean
+    isOwner: boolean
+}) => {
     const { t } = useTranslation()
     const { chainId } = useWeb3React()
     const {
@@ -101,6 +109,17 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
         return false
     }, [isModifying, parsedAmounts.leftInput, parsedAmounts.rightInput])
 
+    const getOwnerAddress = () => {
+        console.log('singleSafe', singleSafe)
+        console.log('account', account)
+        console.log('isOwner', isOwner)
+        if (singleSafe) {
+            return singleSafe.ownerAddress
+        } else if (account && isOwner) {
+            return account
+        }
+        return ''
+    }
     return (
         <>
             <Flex>
@@ -242,14 +261,10 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <StatValue>
                                     {chainId && (
                                         <AccountLink
-                                            href={getEtherscanLink(
-                                                chainId,
-                                                singleSafe?.ownerAddress || account!,
-                                                'address'
-                                            )}
+                                            href={getEtherscanLink(chainId, getOwnerAddress(), 'address')}
                                             target="_blank"
                                         >
-                                            {returnWalletAddress(singleSafe?.ownerAddress || account!)} <ExternalLink />
+                                            {returnWalletAddress(getOwnerAddress())} <ExternalLink />
                                         </AccountLink>
                                     )}
                                 </StatValue>

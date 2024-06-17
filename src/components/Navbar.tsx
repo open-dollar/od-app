@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 
-import { ETH_NETWORK, formatDataNumber, getTokenLogo, newTransactionsFirst, returnWalletAddress } from '~/utils'
+import { ETH_NETWORK, formatDataNumber, newTransactionsFirst, returnWalletAddress } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { isTransactionRecent } from '~/hooks'
 import Identicon from './Icons/Identicon'
@@ -18,11 +18,11 @@ import { BigNumber, ethers } from 'ethers'
 import BlockBodyContainer from './BlockBodyContainer'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import discordIcon from '../assets/discord.svg'
-import Loader from './Loader'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
 import TokenIcon from './TokenIcon'
 import walletIcon from '../assets/wallet-icon.svg'
+import DollarValueInner from './DollarValueInner'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -197,11 +197,7 @@ const Navbar = () => {
                         <Brand />
                         <Price>
                             <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                <Icon src={getTokenLogo('OD')} width={22} height={22} />
-                                {state.odPrice ? <span>{state.odPrice}</span> : <Loader color="#0071E7" width="20px" />}
-                                <ArrowWrapper>
-                                    <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
-                                </ArrowWrapper>
+                                <DollarValueInner value={state.odPrice} popup={isPopupVisible} />
                             </DollarValue>
                             {isPopupVisible && (
                                 <InfoPopup ref={popupRef}>
@@ -593,6 +589,7 @@ const InfoPopup = styled.div`
 
     &.wallet {
         top: 68px;
+        right: 0;
     }
 `
 

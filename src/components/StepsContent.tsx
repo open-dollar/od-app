@@ -112,6 +112,10 @@ const StepperWrapper = styled.div<{ stepNumber: number }>`
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     width: 100%;
     margin-bottom: ${(props) => (props.stepNumber === 2 || props.stepNumber === 1 ? '80px' : '40px')};
+
+    @media (max-width: 960px) {
+        display: none;
+    }
 `
 
 const Title = styled.h2`

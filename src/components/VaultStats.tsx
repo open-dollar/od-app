@@ -109,17 +109,6 @@ const VaultStats = ({
         return false
     }, [isModifying, parsedAmounts.leftInput, parsedAmounts.rightInput])
 
-    const getOwnerAddress = () => {
-        console.log('singleSafe', singleSafe)
-        console.log('account', account)
-        console.log('isOwner', isOwner)
-        if (singleSafe) {
-            return singleSafe.ownerAddress
-        } else if (account && isOwner) {
-            return account
-        }
-        return ''
-    }
     return (
         <>
             <Flex>
@@ -261,10 +250,14 @@ const VaultStats = ({
                                 <StatValue>
                                     {chainId && (
                                         <AccountLink
-                                            href={getEtherscanLink(chainId, getOwnerAddress(), 'address')}
+                                            href={getEtherscanLink(
+                                                chainId,
+                                                singleSafe?.ownerAddress || account!,
+                                                'address'
+                                            )}
                                             target="_blank"
                                         >
-                                            {returnWalletAddress(getOwnerAddress())} <ExternalLink />
+                                            {returnWalletAddress(singleSafe?.ownerAddress || account!)} <ExternalLink />
                                         </AccountLink>
                                     )}
                                 </StatValue>

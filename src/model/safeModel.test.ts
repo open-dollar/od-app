@@ -27,6 +27,7 @@ const liquidationDataMock = {
 const listMock = [
     {
         id: '6',
+        ownerAddress: '0x1234567890123456789012345678901234567890',
         date: '1612881676',
         safeHandler: 'handler',
         riskState: 3,

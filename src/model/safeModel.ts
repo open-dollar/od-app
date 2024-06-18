@@ -106,7 +106,12 @@ const safeModel: SafeModel = {
                     status: 'success',
                 })
             }
-
+            if (window?._paq && payload.safeData.leftInput !== '0') {
+                window._paq.push(['trackEvent', 'Vault', 'Deposit', 'Deposit Made', 1])
+            }
+            if (window?._paq && payload.safeData.rightInput !== '0') {
+                window._paq.push(['trackEvent', 'Vault', 'Borrow', 'Borrow Made', 1])
+            }
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
@@ -136,7 +141,9 @@ const safeModel: SafeModel = {
                 hash: txResponse.hash,
                 status: 'success',
             })
-
+            if (window?._paq) {
+                window._paq.push(['trackEvent', 'Vault', 'Withdraw', 'Withdraw Made', 1])
+            }
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)

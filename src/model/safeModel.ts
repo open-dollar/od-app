@@ -141,7 +141,7 @@ const safeModel: SafeModel = {
                 hash: txResponse.hash,
                 status: 'success',
             })
-            if (window?._paq) {
+            if (window?._paq && payload.safeData.leftInput !== '0') {
                 window._paq.push(['trackEvent', 'Vault', 'Withdraw', 'Withdraw Made', 1])
             }
             actions.setStage(0)

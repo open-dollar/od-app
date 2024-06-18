@@ -11,6 +11,7 @@ import PUFETH from '../assets/pufeth.svg'
 import { Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
+import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
 
 export type Tokens = {
     [key: string]: {
@@ -87,7 +88,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 42161,
         chainName: 'Arbitrum',
-        publicRPC: 'https://arbitrum.blockpi.network/v1/rpc/public',
+        publicRPC: RPC_URL_ARBITRUM,
     },
     1: {
         tokens: [
@@ -134,7 +135,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 1,
         chainName: 'Ethereum',
-        publicRPC: 'https://eth-pokt.nodies.app',
+        publicRPC: RPC_URL_ETHEREUM,
     },
     10: {
         tokens: [
@@ -181,7 +182,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 10,
         chainName: 'Optimism',
-        publicRPC: 'https://op-pokt.nodies.app',
+        publicRPC: RPC_URL_OPTIMISM,
     },
     137: {
         tokens: [
@@ -228,7 +229,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 137,
         chainName: 'Polygon',
-        publicRPC: 'https://polygon-bor-rpc.publicnode.com',
+        publicRPC: RPC_URL_POLYGON,
     },
 
     8453: {
@@ -273,7 +274,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 8453,
         chainName: 'Base',
-        publicRPC: 'https://base.llamarpc.com',
+        publicRPC: RPC_URL_BASE,
     },
 }
 

@@ -22,8 +22,8 @@ const Bolts = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // const BOT_DOMAIN = 'https://bot.opendollar.com'
-                const BOT_DOMAIN = 'http://localhost:3000'
+                const BOT_DOMAIN = 'https://bot.opendollar.com'
+                // const BOT_DOMAIN = 'http://localhost:3000'
 
                 const BOT_API = `${BOT_DOMAIN}/api/bolts`
                 const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)

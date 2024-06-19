@@ -3674,15 +3674,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.2":
-  version: 1.7.2
-  resolution: "@opendollar/sdk@npm:1.7.2"
+"@opendollar/sdk@npm:1.7.3-rc.1":
+  version: 1.7.3-rc.1
+  resolution: "@opendollar/sdk@npm:1.7.3-rc.1"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 916852900519049454096dd93ad308e1081d0f116d2c76e5447b01d3a096c43eaafef41f13153cd50442a4c97c924798dbd7d552922d4d8d6e5aba7d0b1c94b1
+  checksum: 43ad0437424c39a0938fc8994f1469ac9e3f83b3246e2fde7c3d293ecd68ffe11dae8eb60eebaaee7d91fb4182132014e165c7799a4713b504057aaa0246b8ff
   languageName: node
   linkType: hard
 
@@ -14997,7 +14997,7 @@ __metadata:
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
     "@fuul/sdk": ^4.7.1
-    "@opendollar/sdk": 1.7.2
+    "@opendollar/sdk": 1.7.3-rc.1
     "@opendollar/svg-generator": 1.0.5
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0

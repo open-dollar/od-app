@@ -45,13 +45,18 @@ const Bolts = () => {
 
     const fetchBoltsEarnedData = async (address: string) => {
         try {
-            const response = await fetch(`https://bot.opendollar.com/api/bolts?address=${address}`)
+            const response = await fetch(`http://localhost:3000/api/bolts?address=${address}`)
             const result = await response.json()
             if (result.success) {
                 const boltsEarned: BoltsEarnedData = {}
-                result.data.fuul.user.conversions.forEach((conversion: Conversion) => {
-                    boltsEarned[conversion.conversion_name] = parseInt(conversion.total_amount, 10)
+                const { data } = result
+                data.fuul.user.conversions.forEach((conversion: Conversion) => {
+                    boltsEarned[conversion.conversion_id] = parseInt(conversion.total_amount, 10).toString()
                 })
+                console.log(data)
+                if (data.OgNFT) boltsEarned['OgNFT'] = 'Yes'
+                if (data.OgNFV) boltsEarned['OgNFV'] = 'Yes'
+                if (data.GenesisNFT) boltsEarned['GenesisNFT'] = 'Yes'
                 setBoltsEarnedData(boltsEarned)
             }
         } catch (err) {

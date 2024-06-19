@@ -89,7 +89,7 @@ const onClick = (url: string) => {
 }
 
 export type BoltsEarnedData = {
-    [key: string]: number
+    [key: string]: string
 }
 
 export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
@@ -127,7 +127,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
-        text: 'Deposit collateral to earn Bolts daily.',
+        text: 'Deposit collateral to earn Bolts daily. Genesis NFV users receive a 10% bonus.',
         items: [
             {
                 title: 'Source',
@@ -145,7 +145,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
-        text: 'Borrow OD from your NFV to earn Bolts daily.',
+        text: 'Borrow OD from your NFV to earn Bolts daily. Genesis NFV users receive a 10% bonus.',
         items: [
             {
                 title: 'Source',
@@ -206,31 +206,61 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         ],
     },
     {
-        title: 'Social Tasks on Galxe',
+        title: 'Galxe and Zealy',
         button: (
-            <Button secondary onClick={() => onClick('https://galxe.com/opendollar')}>
-                Go <LinkIcon />
-            </Button>
+            <>
+                <Button secondary onClick={() => onClick('https://galxe.com/opendollar')}>
+                    Galxe <LinkIcon />
+                </Button>
+                <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
+                    Zealy <LinkIcon />
+                </Button>
+            </>
         ),
-        text: 'Complete tasks on Galxe to earn Bolts.',
+        text: 'Complete tasks on Galxe and Zealy to earn Bolts.',
         items: [
-            { title: 'Source', status: <GalxeLogo /> },
+            {
+                title: 'Source',
+                status: (
+                    <>
+                        <GalxeLogo />
+                        <ZealyLogo />
+                    </>
+                ),
+            },
             { title: 'Bolts', status: 'Varies' },
             { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Galxe'] || 0 },
         ],
     },
+    // {
+    //     title: 'Social Tasks on Zealy',
+    //     button: (
+    //         <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
+    //             Zealy <LinkIcon />
+    //         </Button>
+    //     ),
+    //     text: 'Complete tasks on Zealy to earn Bolts.',
+    //     items: [
+    //         { title: 'Source', status: <ZealyLogo /> },
+    //         { title: 'Bolts', status: 'Varies' },
+    //         { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Zealy'] || 0 },
+    //     ],
+    // },
     {
-        title: 'Social Tasks on Zealy',
+        title: 'Genesis NFV User',
         button: (
-            <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
-                Go <LinkIcon />
+            <Button secondary onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}>
+                Learn more <LinkIcon />
             </Button>
         ),
-        text: 'Complete tasks on Zealy to earn Bolts.',
+        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
         items: [
-            { title: 'Source', status: <ZealyLogo /> },
-            { title: 'Bolts', status: 'Varies' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Zealy'] || 0 },
+            {
+                title: 'Source',
+                status: <OpenDollarLogo />,
+            },
+            { title: 'Bolts', status: '+10% to deposit/borrow' },
+            { title: 'Holder', status: boltsEarnedData['OgNFV'] || 'No' },
         ],
     },
     {
@@ -263,7 +293,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'Guild.xyz' },
             { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Bolts Earned', status: boltsEarnedData['ODOG NFT Holder'] || 0 },
+            { title: 'Holder', status: boltsEarnedData['OgNFT'] || 'No' },
         ],
     },
     {
@@ -295,24 +325,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'NFTs2Me' },
             { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Genesis NFT Holder'] || 0 },
-        ],
-    },
-    {
-        title: 'Genesis NFV User',
-        button: (
-            <Button secondary onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}>
-                Learn more <LinkIcon />
-            </Button>
-        ),
-        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
-        items: [
-            {
-                title: 'Source',
-                status: <OpenDollarLogo />,
-            },
-            { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Genesis NFV User'] || 0 },
+            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || 'No' },
         ],
     },
     {

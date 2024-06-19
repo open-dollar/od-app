@@ -51,9 +51,10 @@ const Bolts = () => {
                         boltsEarned[1] = combinedBorrowBolts.toLocaleString()
                         boltsEarned[3] = combinedDepositBolts.toLocaleString()
 
-                        if (data.OgNFT) boltsEarned['OgNFT'] = 'Yes'
-                        if (data.OgNFV) boltsEarned['OgNFV'] = 'Yes'
-                        if (data.GenesisNFT) boltsEarned['GenesisNFT'] = 'Yes'
+                        boltsEarned['OgNFT'] = data.OgNFT ? 'Yes' : 'No'
+                        boltsEarned['OgNFV'] = data.OgNFV ? 'Yes' : 'No'
+                        boltsEarned['GenesisNFT'] = data.GenesisNFT ? 'Yes' : 'No'
+
                         setBoltsEarnedData(boltsEarned)
                     }
                 }

@@ -134,7 +134,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Deposit collateral'] || 0 },
+            { title: 'Bolts Earned', status: boltsEarnedData[3] || 0 },
         ],
     },
     {
@@ -152,7 +152,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Borrow OD'] || 0 },
+            { title: 'Bolts Earned', status: boltsEarnedData[1] || 0 },
         ],
     },
     {
@@ -177,7 +177,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Provide liquidity on ODG/ETH pool on Camelot'] || 0 },
+            { title: 'Bolts Earned', status: boltsEarnedData[8] || 0 },
         ],
     },
     {
@@ -202,7 +202,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Provide liquidity on OD/ETH pool on Camelot'] || 0 },
+            { title: 'Bolts Earned', status: boltsEarnedData[7] || 0 },
         ],
     },
     {
@@ -229,7 +229,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 ),
             },
             { title: 'Bolts', status: 'Varies' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Galxe'] || 0 },
+            { title: 'Bolts Earned', status: boltsEarnedData[6] || 0 },
         ],
     },
     // {

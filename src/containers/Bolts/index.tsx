@@ -46,14 +46,23 @@ const Bolts = () => {
     const fetchBoltsEarnedData = async (address: string) => {
         try {
             const response = await fetch(`http://localhost:3000/api/bolts?address=${address}`)
+            // const response = await fetch(`https://bot.opendollar.com/api/bolts?address=${address}`)
             const result = await response.json()
             if (result.success) {
                 const boltsEarned: BoltsEarnedData = {}
                 const { data } = result
+                let combinedBorrowBolts = 0
+                let combinedDepositBolts = 0
                 data.fuul.user.conversions.forEach((conversion: Conversion) => {
-                    boltsEarned[conversion.conversion_id] = parseInt(conversion.total_amount, 10).toString()
+                    if ([1, 2].includes(conversion.conversion_id))
+                        combinedBorrowBolts += parseInt(conversion.total_amount)
+                    else if ([3, 4].includes(conversion.conversion_id))
+                        combinedDepositBolts += parseInt(conversion.total_amount)
+                    else boltsEarned[conversion.conversion_id] = parseInt(conversion.total_amount).toLocaleString()
                 })
-                console.log(data)
+                boltsEarned[1] = combinedBorrowBolts.toLocaleString()
+                boltsEarned[3] = combinedDepositBolts.toLocaleString()
+
                 if (data.OgNFT) boltsEarned['OgNFT'] = 'Yes'
                 if (data.OgNFV) boltsEarned['OgNFV'] = 'Yes'
                 if (data.GenesisNFT) boltsEarned['GenesisNFT'] = 'Yes'

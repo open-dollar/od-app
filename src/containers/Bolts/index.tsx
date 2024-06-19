@@ -3,7 +3,6 @@ import { ExternalLink } from 'react-feather'
 
 import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
-import useFuulSDK from '~/hooks/useFuulSDK'
 import { BoltsEarnedData, MULTIPLIERS, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 import Image from '~/assets/quests-img.png'

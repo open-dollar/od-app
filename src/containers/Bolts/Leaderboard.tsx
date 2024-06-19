@@ -45,7 +45,7 @@ const Table = ({ data, userFuulData }) => {
                     color = '#FFFFFF'
                     badge = <BadgeImage src={leaderboardLeadersBadge} alt="leaderboard-badge" />
                 } else if (rank === userFuulData.rank) {
-                    color = '#FFFFFF'
+                    color = '#1A74EC'
                 }
                 return (
                     <RankContainer>
@@ -146,20 +146,21 @@ const Table = ({ data, userFuulData }) => {
                                     : { backgroundColor: '#1A74EC' }
                             }
                         >
-                            {row.getVisibleCells().map((cell, index) => (
-                                <td
-                                    key={cell.id}
-                                    style={
-                                        index === 2
-                                            ? { textAlign: 'right', paddingRight: '20px' }
-                                            : { paddingRight: '20px' } && index === 0
-                                            ? { paddingTop: '10px', paddingBottom: '10px' }
-                                            : {}
-                                    }
-                                >
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </td>
-                            ))}
+                            {row.getVisibleCells().map((cell, index) => {
+                                let tdStyle: any = {}
+                                if (index === 2)
+                                    tdStyle = { textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }
+                                else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
+                                if (index === 0) tdStyle.paddingBottom = '10px'
+                                // @ts-ignore
+                                if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
+
+                                return (
+                                    <td key={cell.id} style={tdStyle}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
+                                )
+                            })}
                         </tr>
                     ))}
                 </tbody>
@@ -201,14 +202,12 @@ const Address = styled.span`
     font-size: ${(props: any) => props.theme.font.xSmall};
     line-height: 21.79px;
     letter-spacing: 0.05em;
-    color: #eeeeee;
 `
 
 const Points = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     font-size: 13px;
-    color: #eeeeee;
     line-height: 20px;
 `
 

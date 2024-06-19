@@ -75,40 +75,37 @@ const Bolts = () => {
     return (
         <Container>
             <Section>
-                <Title>Bolts 🔩</Title>
+                <Title>Bolts</Title>
                 <SubHeader>Welcome Vault Keepers!</SubHeader>
-            </Section>
-            <MessageBox>
-                <img src={Image} alt="" />
-                <Text>
-                    <h3>Complete the quests below to earn Bolts.</h3>
-                    <p>
-                        Deposits, borrows, and LPs are awarded Bolts based on their equivalent value in ETH. For program
-                        details, see our{' '}
-                        <Link href="https://www.opendollar.com/blog/vault-keeper-program" target="_blank">
-                            blog
-                        </Link>
-                        .
-                    </p>
-                </Text>
-            </MessageBox>
-            <Section>
-                <SectionHeader>Status</SectionHeader>
-                <BoltsDetails>
-                    <BoltsDetailsRow>EARNED: {userFuulData.points}</BoltsDetailsRow>
-                    <BoltsDetailsRow>RANK: {userFuulData.rank}</BoltsDetailsRow>
-                </BoltsDetails>
             </Section>
             <Section>
                 <SectionHeader>Leaderboard</SectionHeader>
                 <Leaderboard data={leaderboardData} userFuulData={userFuulData} />
             </Section>
             <Section>
+                <MessageBox>
+                    <img src={Image} alt="" />
+                    <Text>
+                        <h3>Complete the quests below to earn Bolts.</h3>
+                        <p>
+                            Deposits, borrows, and LPs are awarded Bolts based on their equivalent value in ETH. For
+                            program details, see our{' '}
+                            <Link href="https://www.opendollar.com/blog/vault-keeper-program" target="_blank">
+                                blog
+                            </Link>
+                            .
+                        </p>
+                    </Text>
+                </MessageBox>
+            </Section>
+
+            <Section>
                 <SectionHeader>Quests</SectionHeader>
                 {QUESTS(boltsEarnedData).map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>
+
             <Section>
                 <BtnWrapper>
                     <Button
@@ -201,35 +198,6 @@ const SubHeader = styled.h3`
     }
 `
 
-const BoltsDetails = styled.div`
-    padding: 20px;
-    margin-bottom: 30px;
-    background-color: rgba(202, 234, 255, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0);
-    border-radius: 4px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-weight: 700;
-    font-size: ${(props) => props.theme.font.default};
-    display: flex;
-    align-items: start;
-    flex-direction: column;
-    div {
-        display: flex;
-        justify-content: space-between;
-    }
-    @media (max-width: 767px) {
-        padding: 15px;
-        font-size: ${(props) => props.theme.font.small};
-    }
-`
-
-const BoltsDetailsRow = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: start;
-`
-
 const SectionHeader = styled.h2`
     font-size: 34px;
     font-weight: 700;
@@ -239,7 +207,7 @@ const SectionHeader = styled.h2`
 
 const Section = styled.div`
     padding: 0 15px;
-
+    margin-bottom: 60px;
     @media (max-width: 767px) {
         padding: 0 10px;
     }

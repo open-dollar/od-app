@@ -128,8 +128,8 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: '10% of referrals + friends receive 250 Bolts per ETH deposited for 30 days',
             },
             {
-                title: 'Bolts Earned',
-                status: boltsEarnedData['Invite a Friend'] || 0,
+                title: 'Earned',
+                status: boltsEarnedData['Invite a Friend'] || '-',
             },
         ],
     },
@@ -152,7 +152,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData[3] || 0 },
+            { title: 'Earned', status: boltsEarnedData[3] || '-' },
         ],
     },
     {
@@ -172,7 +172,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData[1] || 0 },
+            { title: 'Earned', status: boltsEarnedData[1] || '-' },
         ],
     },
     {
@@ -199,7 +199,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData[8] || 0 },
+            { title: 'Earned', status: boltsEarnedData[8] || '-' },
         ],
     },
     {
@@ -226,7 +226,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },
-            { title: 'Bolts Earned', status: boltsEarnedData[7] || 0 },
+            { title: 'Earned', status: boltsEarnedData[7] || '-' },
         ],
     },
     {
@@ -253,7 +253,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 ),
             },
             { title: 'Bolts', status: 'Varies' },
-            { title: 'Bolts Earned', status: boltsEarnedData[6] || 0 },
+            { title: 'Earned', status: boltsEarnedData[6] || '-' },
         ],
     },
     // {
@@ -267,7 +267,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
     //     items: [
     //         { title: 'Source', status: <ZealyLogo /> },
     //         { title: 'Bolts', status: 'Varies' },
-    //         { title: 'Bolts Earned', status: boltsEarnedData['Social Tasks on Zealy'] || 0 },
+    //         { title: 'Earned', status: boltsEarnedData['Social Tasks on Zealy'] || "..." },
     //     ],
     // },
     {
@@ -284,7 +284,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: boltsEarnedData['OgNFV'] || 'No' },
+            { title: 'Holder', status: boltsEarnedData['OgNFV'] || '-' },
         ],
     },
     {
@@ -317,7 +317,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'Guild.xyz' },
             { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Holder', status: boltsEarnedData['OgNFT'] || 'No' },
+            { title: 'Holder', status: boltsEarnedData['OgNFT'] || '-' },
         ],
     },
     {
@@ -349,7 +349,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'NFTs2Me' },
             { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || 'No' },
+            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || '-' },
         ],
     },
     {
@@ -362,7 +362,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+30%' },
-            { title: 'Bolts Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || 0 },
+            { title: 'Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || '-' },
         ],
     },
 ]

@@ -108,7 +108,7 @@ export type BoltsEarnedData = {
     [key: string]: string
 }
 
-export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
+export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
     {
         title: 'Invite a Friend',
         text: (
@@ -133,6 +133,104 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
             },
         ],
     },
+    {
+        title: 'Genesis NFV User',
+        button: (
+            <Button secondary onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}>
+                Learn more <LinkIcon />
+            </Button>
+        ),
+        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
+        items: [
+            {
+                title: 'Source',
+                status: <OpenDollarLogo />,
+            },
+            { title: 'Bolts', status: '+10% to deposit/borrow' },
+            { title: 'Holder', status: boltsEarnedData['OgNFV'] || '-' },
+        ],
+    },
+    {
+        title: 'ODOG NFT Holder',
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick(
+                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
+                    )
+                }
+            >
+                Get yours <LinkIcon />
+            </Button>
+        ),
+        text: (
+            <div>
+                Holders of the
+                <StyledAnchor
+                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
+                    target="_blank"
+                >
+                    ODOG NFT
+                </StyledAnchor>
+                receive a 3% bonus for all points earned.
+            </div>
+        ),
+
+        items: [
+            { title: 'Source', status: 'Guild.xyz' },
+            { title: 'Bolts', status: '+3% to all points' },
+            { title: 'Holder', status: boltsEarnedData['OgNFT'] || '-' },
+        ],
+    },
+    {
+        title: 'Genesis NFT Holder',
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick(
+                        'https://www.opendollar.com/blog/open-dollar-launches-mainnet#:~:text=Commemorative%20Launch%20Day%20NFT'
+                    )
+                }
+            >
+                Learn more <LinkIcon />
+            </Button>
+        ),
+        text: (
+            <div>
+                Holders of the
+                <StyledAnchor
+                    href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
+                    target="_blank"
+                >
+                    Genesis NFT
+                </StyledAnchor>
+                receive a 7% bonus for all points earned.
+            </div>
+        ),
+        items: [
+            { title: 'Source', status: 'NFTs2Me' },
+            { title: 'Bolts', status: '+7% to all points' },
+            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || '-' },
+        ],
+    },
+    {
+        title: 'Community Goal: 20K ETH TVL',
+        button: '',
+        text: `Existing Bolts receive a 30% bonus when TVL reaches 20,000 ETH.`,
+        items: [
+            {
+                title: 'Source',
+                status: <OpenDollarLogo />,
+            },
+            { title: 'Bolts', status: '+30%' },
+            { title: 'Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || '-' },
+        ],
+    },
+]
+
+export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
     {
         title: (
             <TitleContainer>
@@ -254,115 +352,6 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
             },
             { title: 'Bolts', status: 'Varies' },
             { title: 'Earned', status: boltsEarnedData[6] || '-' },
-        ],
-    },
-    // {
-    //     title: 'Social Tasks on Zealy',
-    //     button: (
-    //         <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
-    //             Zealy <LinkIcon />
-    //         </Button>
-    //     ),
-    //     text: 'Complete tasks on Zealy to earn Bolts.',
-    //     items: [
-    //         { title: 'Source', status: <ZealyLogo /> },
-    //         { title: 'Bolts', status: 'Varies' },
-    //         { title: 'Earned', status: boltsEarnedData['Social Tasks on Zealy'] || "..." },
-    //     ],
-    // },
-    {
-        title: 'Genesis NFV User',
-        button: (
-            <Button secondary onClick={() => onClick('https://www.opendollar.com/blog/open-dollar-launches-mainnet')}>
-                Learn more <LinkIcon />
-            </Button>
-        ),
-        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
-        items: [
-            {
-                title: 'Source',
-                status: <OpenDollarLogo />,
-            },
-            { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: boltsEarnedData['OgNFV'] || '-' },
-        ],
-    },
-    {
-        title: 'ODOG NFT Holder',
-        button: (
-            <Button
-                secondary
-                onClick={() =>
-                    onClick(
-                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
-                    )
-                }
-            >
-                Get yours <LinkIcon />
-            </Button>
-        ),
-        text: (
-            <div>
-                Holders of the
-                <StyledAnchor
-                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
-                    target="_blank"
-                >
-                    ODOG NFT
-                </StyledAnchor>
-                receive a 3% bonus for all points earned.
-            </div>
-        ),
-
-        items: [
-            { title: 'Source', status: 'Guild.xyz' },
-            { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Holder', status: boltsEarnedData['OgNFT'] || '-' },
-        ],
-    },
-    {
-        title: 'Genesis NFT Holder',
-        button: (
-            <Button
-                secondary
-                onClick={() =>
-                    onClick(
-                        'https://www.opendollar.com/blog/open-dollar-launches-mainnet#:~:text=Commemorative%20Launch%20Day%20NFT'
-                    )
-                }
-            >
-                Learn more <LinkIcon />
-            </Button>
-        ),
-        text: (
-            <div>
-                Holders of the
-                <StyledAnchor
-                    href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
-                    target="_blank"
-                >
-                    Genesis NFT
-                </StyledAnchor>
-                receive a 7% bonus for all points earned.
-            </div>
-        ),
-        items: [
-            { title: 'Source', status: 'NFTs2Me' },
-            { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || '-' },
-        ],
-    },
-    {
-        title: 'Community Goal: 20K ETH TVL',
-        button: '',
-        text: `Existing Bolts receive a 30% bonus when TVL reaches 20,000 ETH.`,
-        items: [
-            {
-                title: 'Source',
-                status: <OpenDollarLogo />,
-            },
-            { title: 'Bolts', status: '+30%' },
-            { title: 'Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || '-' },
         ],
     },
 ]

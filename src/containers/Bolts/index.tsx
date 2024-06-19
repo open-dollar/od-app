@@ -4,7 +4,7 @@ import { ExternalLink } from 'react-feather'
 import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
 import useFuulSDK from '~/hooks/useFuulSDK'
-import { BoltsEarnedData, QUESTS } from './quests'
+import { BoltsEarnedData, MULTIPLIERS, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 import Image from '~/assets/quests-img.png'
 
@@ -35,7 +35,6 @@ const Bolts = () => {
                         // Set quest-specific data
                         const boltsEarned: BoltsEarnedData = {}
                         const { data } = result
-                        console.log(data)
                         let combinedBorrowBolts = 0
                         let combinedDepositBolts = 0
                         data.fuul.user.conversions.forEach((conversion: Conversion) => {
@@ -103,6 +102,13 @@ const Bolts = () => {
             <Section>
                 <SectionHeader>Quests</SectionHeader>
                 {QUESTS(boltsEarnedData).map((quest, index) => (
+                    <QuestBlock key={index} {...quest} />
+                ))}
+            </Section>
+
+            <Section>
+                <SectionHeader>Multipliers</SectionHeader>
+                {MULTIPLIERS(boltsEarnedData).map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>

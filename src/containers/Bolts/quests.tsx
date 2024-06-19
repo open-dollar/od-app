@@ -1,13 +1,13 @@
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import { getTokenLogo } from '~/utils'
 import Affiliate from './Affiliate'
 import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
 import { useHistory } from 'react-router-dom'
+import TokenIcon from '~/components/TokenIcon'
 
 const StyledAnchor = styled.a`
     padding: 5px 5px;
@@ -52,25 +52,41 @@ const LinkIcon = styled(ExternalLink)`
 `
 
 const TitleContainer = styled.div`
-    display: flex;
+    display: inline;
     align-items: center;
+
+    img {
+        display: inline;
+        vertical-align: sub;
+    }
 `
 
 const QuestTitle = styled.div`
-    display: flex;
+    display: inline;
     align-items: center;
 
-    font-size: ${(props) => props.theme.font.large};
+    font-size: 26px;
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 22px;
+    margin-right: 10px;
 
     span {
         font-weight: 500;
         color: ${(props) => props.theme.colors.primary};
     }
+`
+
+const TokensGroup = styled.span`
+    display: inline;
+    flex-wrap: nowrap;
+    align-items: center;
+    white-space: nowrap;
+    img:not(:first-child) {
+        margin-left: -10px;
+    }
+    flex-shrink: 0;
 `
 
 const InternalLinkButton = ({ url }: { url: string }) => {
@@ -121,9 +137,11 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         title: (
             <TitleContainer>
                 <QuestTitle>Deposit Collateral</QuestTitle>
-                <img src={getTokenLogo('WSTETH')} alt={'WSTETH'} width={'40px'} />
-                <img src={getTokenLogo('RETH')} alt={'RETH'} width={'40px'} />
-                <img src={getTokenLogo('ARB')} alt={'ARB'} width={'40px'} />
+                <TokensGroup>
+                    <TokenIcon token={'WSTETH'} width={'34'} />
+                    <TokenIcon token={'RETH'} width={'34'} />
+                    <TokenIcon token={'ARB'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -141,7 +159,9 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         title: (
             <TitleContainer>
                 <QuestTitle>Borrow OD</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: <InternalLinkButton url="/vaults" />,
@@ -159,8 +179,10 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity ODG-ETH</QuestTitle>
-                <img src={getTokenLogo('ODG')} alt={'ODG'} width={'40px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
+                <TokensGroup>
+                    <TokenIcon token={'ODG'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (
@@ -184,8 +206,10 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         title: (
             <TitleContainer>
                 <QuestTitle>Provide Liquidity OD-ETH</QuestTitle>
-                <img src={getTokenLogo('OD')} alt={'OD'} width={'40px'} />
-                <img src={getTokenLogo('WETH')} alt={'WETH'} width={'40px'} />
+                <TokensGroup>
+                    <TokenIcon token={'OD'} width={'34'} />
+                    <TokenIcon token={'WETH'} width={'34'} />
+                </TokensGroup>
             </TitleContainer>
         ),
         button: (

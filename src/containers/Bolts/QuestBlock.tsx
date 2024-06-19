@@ -5,11 +5,11 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
     return (
         <BlockContainer>
             <BlockHeader>
-                <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
+                <HeaderLeft>
                     <QuestTitle>{title}</QuestTitle>
-                    <div style={{ display: 'flex', gap: '10px', height: '42px' }}>{button}</div>
-                </div>
-                <BlockDescription>{text}</BlockDescription>
+                    <BlockDescription>{text}</BlockDescription>
+                </HeaderLeft>
+                <QuestBtn>{button}</QuestBtn>
             </BlockHeader>
             <Block>
                 {items.map((item: any, index: string) => (
@@ -38,32 +38,48 @@ const BlockContainer = styled.div`
     background: white;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
-    display: flex;
-    flex-direction: column;
+
     &.empty {
         background: white;
     }
 `
 
 const BlockHeader = styled.div`
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     border-bottom: 1px solid #1c293a33;
     padding-left: 34px;
     padding-top: 22px;
     padding-right: 34px;
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
-        display: flex;
         flex-direction: column;
-        align-items: flex-start;
-    `}
+        padding-bottom: 20px;
+    `};
+`
+
+const HeaderLeft = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`
+
+const QuestBtn = styled.div`
+    display: flex;
+    gap: 10px;
+    height: 42px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        width: 100%;
+    `};
 `
 
 const BlockDescription = styled.div`
     font-size: ${(props) => props.theme.font.default};
     color: ${(props) => props.theme.colors.tertiary};
     font-weight: 400;
-    margin-top: 20px;
+    margin-top: 8px;
     margin-bottom: 20px;
     line-height: 1.5;
     ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -72,9 +88,6 @@ const BlockDescription = styled.div`
 `
 
 const QuestTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};

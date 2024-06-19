@@ -46,7 +46,11 @@ const VaultManager = () => {
                 return
             }
             popupsActions.setIsWaitingModalOpen(true)
-            history.push(`/${value}`)
+            if (window?.location) {
+                window.location.assign(`/${value}`)
+            } else {
+                history.push(`/${value}`)
+            }
             handleCancel()
             await timeout(3000)
             popupsActions.setIsWaitingModalOpen(false)

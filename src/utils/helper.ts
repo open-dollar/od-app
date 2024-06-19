@@ -11,9 +11,9 @@ import { injected } from '~/connectors'
 
 export const IS_IN_IFRAME = window.parent !== window
 
-export const returnWalletAddress = (walletAddress: string) => {
+export const returnWalletAddress = (walletAddress: string, startingIndex: number = 0) => {
     if (!walletAddress) return 'undefined'
-    return `${walletAddress.slice(0, 4 + 2)}...${walletAddress.slice(-4)}`
+    return `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`
 }
 
 export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)

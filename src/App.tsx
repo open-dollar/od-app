@@ -45,13 +45,18 @@ Sentry.init({
     environment: process.env.NODE_ENV,
 })
 
-try {
-    Fuul.init({
-        apiKey: process.env.REACT_APP_FUUL_API_KEY!,
-    })
-    Fuul.sendPageview()
-} catch (e) {
-    console.log(e)
+const network = process.env.REACT_APP_NETWORK_ID
+const fuulApiKey = process.env.REACT_APP_FUUL_API_KEY
+// Only initialize Fuul on Arbitrum One
+if (network === '42161' && fuulApiKey) {
+    try {
+        Fuul.init({
+            apiKey: fuulApiKey,
+        })
+        Fuul.sendPageview()
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 const App = () => {

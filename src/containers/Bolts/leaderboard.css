@@ -1,0 +1,44 @@
+html {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: flex;
+        flex-direction: column;
+    }
+
+    tr {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    td {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+
+    .address {
+        letter-spacing: 0.1em;
+        line-height: 21.79px;
+        font-family: 'Open Sans', sans-serif;
+        color: #eeeeee;
+    }
+}

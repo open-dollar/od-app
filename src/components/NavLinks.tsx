@@ -115,6 +115,7 @@ const BtnStyle = css`
       text-align: left;
       margin: 0;
       color :${(props: any) => props.theme.colors.primary};
+      font-size: ${(props: any) => props.theme.font.small};
     
   `}
 `

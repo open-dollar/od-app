@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, getTokenLogo, formatDataNumber, ETH_NETWORK } from '~/utils'
+import { amountToFiat, returnWalletAddress, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -16,6 +16,10 @@ import { BigNumber, ethers } from 'ethers'
 import { X } from 'react-feather'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
+import TokenIcon from './TokenIcon'
+import WalletIcon from '~/assets/wallet-icon.svg'
+import DollarValueInner from './DollarValueInner'
+import parachuteIcon from '../assets/parachute-icon.svg'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -192,8 +196,9 @@ const SideMenu = () => {
                         <CloseButtonContainer onClick={() => popupsActions.setShowSideMenu(false)}>
                             <X size="24" color="#1A74EC" />
                         </CloseButtonContainer>
-                        <AccountBalance>
-                            {isActive && account ? (
+
+                        {isActive && account && (
+                            <AccountBalance>
                                 <Account
                                     onClick={() => {
                                         popupsActions.setIsConnectedWalletModalOpen(true)
@@ -206,24 +211,17 @@ const SideMenu = () => {
                                         <Balance>{`$ ${renderBalance()}`}</Balance>
                                     </AccountData>
                                 </Account>
-                            ) : (
-                                <ConnectBtnContainer>
-                                    <Button onClick={handleWalletConnect} text={'connect_wallet'} />
-                                </ConnectBtnContainer>
-                            )}
-                        </AccountBalance>
-                        <NavLinks />
-
+                            </AccountBalance>
+                        )}
                         <OpenDollarInformationColumn>
                             <Price>
                                 {account && (
                                     <DollarValue ref={odRef} onClick={handleTokenClick}>
-                                        <Icon
-                                            src={require('../assets/wallet-icon.svg').default}
-                                            width={'16px'}
-                                            height={'16px'}
-                                        />
-                                        {odBalance + ' '} OD
+                                        <Icon src={WalletIcon} width={'16px'} height={'16px'} />
+                                        {odBalance + ' '}{' '}
+                                        <div style={{ marginLeft: '10px' }}>
+                                            <TokenIcon token="OD" width="20px" />
+                                        </div>
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -234,27 +232,13 @@ const SideMenu = () => {
                                         <TokenTextWrapper>ADD TOKEN TO WALLET</TokenTextWrapper>
                                         <PopupColumnWrapper>
                                             <PopupWrapperTokenLink onClick={() => handleAddOD()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/od-logo.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="OD" width="24px" />
                                                 <PopupColumn>
                                                     <div>OD</div>
                                                 </PopupColumn>
                                             </PopupWrapperTokenLink>
                                             <PopupWrapperTokenLink onClick={() => handleAddODG()} className="group">
-                                                <IconWrapper>
-                                                    <img
-                                                        src={require('../assets/odg.svg').default}
-                                                        height={'24px'}
-                                                        width={'24px'}
-                                                        alt="X"
-                                                    />
-                                                </IconWrapper>
+                                                <TokenIcon token="ODG" width="24px" />
                                                 <PopupColumn>
                                                     <div>ODG</div>
                                                 </PopupColumn>
@@ -265,11 +249,7 @@ const SideMenu = () => {
                             </Price>
                             <Price>
                                 <DollarValue ref={dollarRef} onClick={handleDollarClick}>
-                                    <Icon src={getTokenLogo('OD')} width={'16px'} height={'16px'} />
-                                    <span>{state.odPrice}</span>
-                                    <ArrowWrapper>
-                                        <ArrowDown fill={isPopupVisible ? '#1499DA' : '#00587E'} />
-                                    </ArrowWrapper>
+                                    <DollarValueInner value={state.odPrice} popup={isPopupVisible} />
                                 </DollarValue>
                                 {isPopupVisible && (
                                     <LiquidityPriceInfoPopup ref={popupRef} className="group">
@@ -292,7 +272,8 @@ const SideMenu = () => {
                             <Price ref={testTokenPopupRef}>
                                 {ETH_NETWORK === 'arbitrum-sepolia' && (
                                     <ClaimButton onClick={() => setTestTokenPopupVisibility(!isTestTokenPopupVisible)}>
-                                        Test tokens 🪂
+                                        <Icon src={parachuteIcon} width={22} height={22} />
+                                        Test tokens
                                         <ArrowWrapper>
                                             <ArrowDown fill={isTestTokenPopupVisible ? '#1499DA' : '#00587E'} />
                                         </ArrowWrapper>
@@ -310,6 +291,13 @@ const SideMenu = () => {
                                 )}
                             </Price>
                         </OpenDollarInformationColumn>
+
+                        <NavLinks />
+                        {!account && (
+                            <ConnectBtnContainer>
+                                <Button onClick={handleWalletConnect} text={'connect_wallet'} />
+                            </ConnectBtnContainer>
+                        )}
                     </InnerContainer>
                 </Inner>
             </Container>
@@ -359,23 +347,17 @@ const TokenTextWrapper = styled.div`
 `
 
 const OpenDollarInformationColumn = styled.div`
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
     flex-direction: column;
-    padding: 30px 25px;
-    margin-top: 48px;
+    padding: 0px 25px;
     display: flex;
     gap: 16px;
-    @media (max-width: 767px) {
-        margin-top: 16px;
-        position: unset;
-        transform: initial;
-    }
 `
 
 const ClaimButton = styled.div`
     display: flex;
+    padding-left: 12px;
+    align-items: center;
+    font-size: ${(props) => props.theme.font.small};
 `
 
 const PopupColumn = styled.div`
@@ -474,10 +456,7 @@ const OdButton = styled.button`
     }
 `
 
-const DollarValue = styled(OdButton)`
-    width: auto;
-    white-space: nowrap;
-`
+const DollarValue = styled(OdButton)``
 
 // close button container should be button on right side of screen
 const CloseButtonContainer = styled.div`
@@ -531,9 +510,12 @@ const InnerContainer = styled.div`
 `
 
 const ConnectBtnContainer = styled.div`
-    text-align: center;
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
 
     button {
         border-radius: 3px;

@@ -31,14 +31,14 @@ const VaultDetails = ({ ...props }) => {
             return props.location.pathname.includes('deposit')
         }
         return false
-    }, [props])
+    }, [props.location])
 
     const isWithdraw = useMemo(() => {
         if (props.location) {
             return props.location.pathname.includes('withdraw')
         }
         return false
-    }, [props])
+    }, [props.location])
 
     const isOwner = useIsOwner(safeId)
 
@@ -52,6 +52,7 @@ const VaultDetails = ({ ...props }) => {
         if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
+            return
         }
 
         if (!safe && geb && safeId) {
@@ -90,6 +91,7 @@ const VaultDetails = ({ ...props }) => {
                 constructedLiquidationData as ILiquidationData,
                 geb.tokenList
             )
+            formattedSafe[0].ownerAddress = ownerAddress
             safeActions.setSingleSafe(formattedSafe[0])
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
         }

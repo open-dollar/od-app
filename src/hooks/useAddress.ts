@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { RPC_URL_ETHEREUM } from '~/chains'
 
 /**
  * Return the wallet address or ENS name if applicable
@@ -11,7 +12,7 @@ export function useAddress(walletAddress: string | undefined, startingIndex: num
     const { provider } = useWeb3React()
     const [address, setAddress] = useState<string | undefined>('')
 
-    const rpcProvider = new JsonRpcProvider('https://eth.llamarpc.com', 1)
+    const rpcProvider = new JsonRpcProvider(RPC_URL_ETHEREUM, 1)
 
     useEffect(() => {
         let isMounted = true

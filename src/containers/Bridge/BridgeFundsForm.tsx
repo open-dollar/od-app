@@ -132,7 +132,10 @@ const BridgeFundsForm = () => {
                                         }}
                                         style={{
                                             backgroundColor: selectedToken === token.name ? '#1A74EC' : 'transparent',
-                                            color: selectedToken === token.name ? 'white' : '#1A74EC',
+                                            color:
+                                                selectedToken === token.name && token.address !== ''
+                                                    ? 'white'
+                                                    : '#1A74EC',
                                         }}
                                         key={`bridge-${token.name}`}
                                         token={selectedToken}
@@ -287,6 +290,7 @@ const Item = styled.div<{ token?: string }>`
     }
 
     &.disabled {
+        user-select: none;
         opacity: 0.5;
         cursor: not-allowed;
         background-color: #f5f5f5 !important;

@@ -14,14 +14,11 @@ const Bolts = () => {
     const userFuulData = useStoreState((state) => state.boltsModel.userFuulData)
     const leaderboardData = useStoreState((state) => state.boltsModel.leaderboardData)
     const boltsEarnedData = useStoreState((state) => state.boltsModel.boltsEarnedData)
-    const hasFetched = useStoreState((state) => state.boltsModel.hasFetched)
     const fetchData = useStoreActions((actions) => actions.boltsModel.fetchData)
 
     useEffect(() => {
-        if (!hasFetched) {
-            fetchData({ account } as { account: string | null })
-        }
-    }, [account, hasFetched, fetchData])
+        fetchData({ account } as { account: string | null })
+    }, [account, fetchData])
 
     return (
         <Container>

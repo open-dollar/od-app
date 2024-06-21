@@ -10,8 +10,13 @@ const rpcProvider = new JsonRpcProvider(RPC_URL_ETHEREUM, 1)
  * Return the wallet address or ENS name if applicable
  * @param walletAddress
  * @param startingIndex
+ * @param skipEnsCheck
  */
-export function useAddress(walletAddress: string | undefined, startingIndex: number = 0) {
+export function useAddress(
+    walletAddress: string | undefined,
+    startingIndex: number = 0,
+    skipEnsCheck: boolean = false
+) {
     const { provider } = useWeb3React()
     const [address, setAddress] = useState<string | undefined>('')
     const ensCache = useStoreState((state) => state.boltsModel.ensCache)
@@ -22,7 +27,12 @@ export function useAddress(walletAddress: string | undefined, startingIndex: num
 
         const fetchData = async () => {
             if (walletAddress) {
-                if (ensCache[walletAddress]) {
+                if (skipEnsCheck) {
+                    const displayName = `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`
+                    if (isMounted) {
+                        setAddress(displayName)
+                    }
+                } else if (ensCache[walletAddress]) {
                     setAddress(ensCache[walletAddress])
                 } else {
                     try {
@@ -49,7 +59,7 @@ export function useAddress(walletAddress: string | undefined, startingIndex: num
         return () => {
             isMounted = false
         }
-    }, [provider, walletAddress, startingIndex, ensCache, setEnsCache])
+    }, [provider, walletAddress, startingIndex, skipEnsCheck, ensCache, setEnsCache])
 
     return address
 }

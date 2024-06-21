@@ -182,7 +182,7 @@ const BridgeFundsForm = () => {
                         onClick={() =>
                             bridge({
                                 originChain: getChainId(chainMapping[selectedChain]),
-                                toTokenAddress: selectedToken,
+                                toTokenAddress: selectedToken.toLowerCase(),
                                 fromTokenAddress: selectedToken ? clickedItem.address : '',
                             })
                         }

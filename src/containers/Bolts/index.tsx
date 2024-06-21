@@ -1,75 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { ExternalLink } from 'react-feather'
-
 import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
-import { BoltsEarnedData, MULTIPLIERS, QUESTS } from './quests'
+import { MULTIPLIERS, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
 import Image from '~/assets/quests-img.png'
-
 import styled from 'styled-components'
 import Leaderboard from '~/containers/Bolts/Leaderboard'
+import { useStoreState, useStoreActions } from '~/store'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
-
-    const [userFuulData, setUserFuulData] = useState<any>({ rank: '', points: '' })
-    const [leaderboardData, setLeaderboardData] = useState<any[]>([])
-    const [hasFetched] = useState<boolean>(false)
-    const [boltsEarnedData, setBoltsEarnedData] = useState<BoltsEarnedData>({})
+    const userFuulData = useStoreState((state) => state.boltsModel.userFuulData)
+    const leaderboardData = useStoreState((state) => state.boltsModel.leaderboardData)
+    const boltsEarnedData = useStoreState((state) => state.boltsModel.boltsEarnedData)
+    const hasFetched = useStoreState((state) => state.boltsModel.hasFetched)
+    const fetchData = useStoreActions((actions) => actions.boltsModel.fetchData)
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const BOT_DOMAIN = 'https://bot.opendollar.com'
-                // const BOT_DOMAIN = 'http://localhost:3000'
-
-                const BOT_API = `${BOT_DOMAIN}/api/bolts`
-                const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)
-                const result = await response.json()
-                if (result.success) {
-                    setLeaderboardData(result.data.fuul.leaderboard.users)
-                    if (account) {
-                        setUserFuulData(result.data.fuul.user)
-                        // Set quest-specific data
-                        const boltsEarned: BoltsEarnedData = {}
-                        const { data } = result
-                        let combinedBorrowBolts = 0
-                        let combinedDepositBolts = 0
-                        data.fuul.user.conversions.forEach((conversion: Conversion) => {
-                            if ([1, 2].includes(conversion.conversion_id))
-                                combinedBorrowBolts += parseInt(conversion.total_amount)
-                            else if ([3, 4].includes(conversion.conversion_id))
-                                combinedDepositBolts += parseInt(conversion.total_amount)
-                            else
-                                boltsEarned[conversion.conversion_id] = parseInt(
-                                    conversion.total_amount
-                                ).toLocaleString()
-                        })
-                        boltsEarned[1] = combinedBorrowBolts.toLocaleString()
-                        boltsEarned[3] = combinedDepositBolts.toLocaleString()
-
-                        boltsEarned['OgNFT'] = data.OgNFT ? 'Yes' : 'No'
-                        boltsEarned['OgNFV'] = data.OgNFV ? 'Yes' : 'No'
-                        boltsEarned['GenesisNFT'] = data.GenesisNFT ? 'Yes' : 'No'
-
-                        setBoltsEarnedData(boltsEarned)
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching leaderboard data:', err)
-            }
+        if (!hasFetched) {
+            fetchData({ account } as { account: string | null })
         }
-        if (!hasFetched) fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account, hasFetched])
-
-    type Conversion = {
-        is_referrer: boolean
-        conversion_id: number
-        conversion_name: string
-        total_amount: string
-    }
+    }, [account, hasFetched, fetchData])
 
     return (
         <Container>

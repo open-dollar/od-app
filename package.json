@@ -72,6 +72,7 @@
         "react-feather": "^2.0.9",
         "react-helmet-async": "^1.0.7",
         "react-i18next": "^11.7.2",
+        "react-loading-skeleton": "^3.4.0",
         "react-number-format": "^5.2.2",
         "react-paginate": "^6.5.0",
         "react-router-dom": "^5.3.0",

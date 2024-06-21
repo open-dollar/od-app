@@ -1,4 +1,4 @@
-import './leaderboard.css'
+import React, { useState, useEffect } from 'react'
 import {
     createColumnHelper,
     flexRender,
@@ -9,8 +9,9 @@ import {
     SortingState,
 } from '@tanstack/react-table'
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { returnWalletAddress } from '~/utils'
 import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
 import leaderboardPillars from '~/assets/leaderboard-pillars.svg'
@@ -141,33 +142,47 @@ const Table = ({ data, userFuulData }) => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row, rowIndex) => (
-                        <tr
-                            key={row.id}
-                            style={
-                                // @ts-ignore
-                                row.original.address === userFuulData.address
-                                    ? { backgroundColor: '#8DB2FF99' }
-                                    : { backgroundColor: '#1A74EC' }
-                            }
-                        >
-                            {row.getVisibleCells().map((cell, index) => {
-                                let tdStyle: any = {}
-                                if (index === 2)
-                                    tdStyle = { textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }
-                                else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
-                                if (index === 0) tdStyle.paddingBottom = '10px'
-                                // @ts-ignore
-                                if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
+                    {isTableReady
+                        ? table.getRowModel().rows.map((row, rowIndex) => (
+                              <tr
+                                  key={row.id}
+                                  style={
+                                      // @ts-ignore
+                                      row.original.address === userFuulData.address
+                                          ? { backgroundColor: '#8DB2FF99' }
+                                          : { backgroundColor: '#1A74EC' }
+                                  }
+                              >
+                                  {row.getVisibleCells().map((cell, index) => {
+                                      let tdStyle: any = {}
+                                      if (index === 2)
+                                          tdStyle = { textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }
+                                      else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
+                                      if (index === 0) tdStyle.paddingBottom = '10px'
+                                      // @ts-ignore
+                                      if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
 
-                                return (
-                                    <td key={cell.id} style={tdStyle}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                )
-                            })}
-                        </tr>
-                    ))}
+                                      return (
+                                          <td key={cell.id} style={tdStyle}>
+                                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                          </td>
+                                      )
+                                  })}
+                              </tr>
+                          ))
+                        : new Array(10).fill(0).map((_, index) => (
+                              <tr key={index} style={{ backgroundColor: '#1A74EC' }}>
+                                  <td style={{ paddingTop: '10px', paddingBottom: '10px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={50} />
+                                  </td>
+                                  <td style={{ paddingTop: '10px', paddingBottom: '10px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={150} />
+                                  </td>
+                                  <td style={{ textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={80} />
+                                  </td>
+                              </tr>
+                          ))}
                 </tbody>
             </TableWrapper>
         </TableContainer>
@@ -247,6 +262,7 @@ const SortableHeader = styled.div`
 
 const TableWrapper = styled.table`
     width: 100%;
+    min-width: 100%;
     border-collapse: collapse;
     background-color: rgba(255, 255, 255, 0);
     backdrop-filter: blur(10px);
@@ -259,6 +275,7 @@ const TableContainer = styled.div`
     overflow: visible;
     position: relative;
     margin-bottom: 20px;
+    min-height: 550px;
     th,
     td {
         padding: 8px 0 8px 0;

@@ -1,24 +1,26 @@
 import './leaderboard.css'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
-    useReactTable,
-    getSortedRowModel,
     getFilteredRowModel,
+    getSortedRowModel,
     SortingState,
+    useReactTable,
 } from '@tanstack/react-table'
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
-import { returnWalletAddress } from '~/utils'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import leaderboardLeadersBadge from '~/assets/leaderboard-leaders-badge.svg'
 import leaderboardPillars from '~/assets/leaderboard-pillars.svg'
-import { useAddress } from '~/hooks/useAddress'
+import AddressCell from '~/components/Bolts/AddressCell'
+import { LeaderboardUser } from '~/model/boltsModel'
 
 const columnHelper = createColumnHelper()
 
-//@ts-ignore
+// @ts-ignore
 const Table = ({ data, userFuulData }) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState<string>('')
@@ -34,6 +36,19 @@ const Table = ({ data, userFuulData }) => {
     useEffect(() => {
         setIsTableReady(true)
     }, [data])
+
+    const displayData = useMemo(() => {
+        let dataToDisplay = [...data.slice(0, 10)]
+        if (userFuulData.points) {
+            const userInTop10 = data.find(
+                (user: LeaderboardUser) => user.address === userFuulData.address && user.rank <= 10
+            )
+            if (!userInTop10) {
+                dataToDisplay.push(userFuulData)
+            }
+        }
+        return dataToDisplay
+    }, [data, userFuulData])
 
     const columns = [
         columnHelper.accessor('rank', {
@@ -60,16 +75,7 @@ const Table = ({ data, userFuulData }) => {
             header: 'Address',
             cell: (info) => {
                 const address = info.getValue()
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const walletAddress = useAddress(address)
-                return (
-                    <Address>
-                        {userFuulData.address === address && <Badge>YOU</Badge>}
-                        {typeof walletAddress === 'string' && walletAddress.startsWith('0x')
-                            ? returnWalletAddress(address, 2)
-                            : walletAddress}
-                    </Address>
-                )
+                return <AddressCell address={address} userFuulDataAddress={userFuulData.address} data={data} />
             },
         }),
         columnHelper.accessor('points', {
@@ -78,15 +84,6 @@ const Table = ({ data, userFuulData }) => {
             cell: (info) => <Points>{info.getValue().toLocaleString()}</Points>,
         }),
     ]
-
-    let displayData = [...data.slice(0, 10)]
-    if (userFuulData.points) {
-        // @ts-ignore
-        const userInTop10 = data.find((user) => user.address === userFuulData.address && user.rank <= 10)
-        if (!userInTop10) {
-            displayData.push(userFuulData)
-        }
-    }
 
     const table = useReactTable({
         data: displayData,
@@ -141,33 +138,47 @@ const Table = ({ data, userFuulData }) => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row, rowIndex) => (
-                        <tr
-                            key={row.id}
-                            style={
-                                // @ts-ignore
-                                row.original.address === userFuulData.address
-                                    ? { backgroundColor: '#8DB2FF99' }
-                                    : { backgroundColor: '#1A74EC' }
-                            }
-                        >
-                            {row.getVisibleCells().map((cell, index) => {
-                                let tdStyle: any = {}
-                                if (index === 2)
-                                    tdStyle = { textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }
-                                else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
-                                if (index === 0) tdStyle.paddingBottom = '10px'
-                                // @ts-ignore
-                                if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
+                    {isTableReady
+                        ? table.getRowModel().rows.map((row, rowIndex) => (
+                              <tr
+                                  key={row.id}
+                                  style={
+                                      // @ts-ignore
+                                      row.original.address === userFuulData.address
+                                          ? { backgroundColor: '#8DB2FF99' }
+                                          : { backgroundColor: '#1A74EC' }
+                                  }
+                              >
+                                  {row.getVisibleCells().map((cell, index) => {
+                                      let tdStyle: any = {}
+                                      if (index === 2)
+                                          tdStyle = { textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }
+                                      else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
+                                      if (index === 0) tdStyle.paddingBottom = '10px'
+                                      // @ts-ignore
+                                      if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
 
-                                return (
-                                    <td key={cell.id} style={tdStyle}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                )
-                            })}
-                        </tr>
-                    ))}
+                                      return (
+                                          <td key={cell.id} style={tdStyle}>
+                                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                          </td>
+                                      )
+                                  })}
+                              </tr>
+                          ))
+                        : new Array(10).fill(0).map((_, index) => (
+                              <tr key={index} style={{ backgroundColor: '#1A74EC' }}>
+                                  <td style={{ paddingTop: '10px', paddingBottom: '10px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={50} />
+                                  </td>
+                                  <td style={{ paddingTop: '10px', paddingBottom: '10px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={150} />
+                                  </td>
+                                  <td style={{ textAlign: 'right', paddingRight: '20px', color: '#eeeeee' }}>
+                                      <Skeleton height={20} width={80} />
+                                  </td>
+                              </tr>
+                          ))}
                 </tbody>
             </TableWrapper>
         </TableContainer>
@@ -201,30 +212,11 @@ const Rank = styled.span`
     z-index: 1;
 `
 
-const Address = styled.span`
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 700;
-    font-size: ${(props: any) => props.theme.font.xSmall};
-    line-height: 21.79px;
-    letter-spacing: 0.05em;
-`
-
 const Points = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     font-size: 13px;
     line-height: 20px;
-`
-
-const Badge = styled.span`
-    background-color: #e2f1ff;
-    color: #1a74ec;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-right: 8px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
 `
 
 const ArrowUpAndDownIcon = styled.span`
@@ -247,6 +239,8 @@ const SortableHeader = styled.div`
 
 const TableWrapper = styled.table`
     width: 100%;
+    min-width: 100%;
+    min-height: 400px;
     border-collapse: collapse;
     background-color: rgba(255, 255, 255, 0);
     backdrop-filter: blur(10px);
@@ -259,6 +253,8 @@ const TableContainer = styled.div`
     overflow: visible;
     position: relative;
     margin-bottom: 20px;
+    min-height: 400px;
+    min-width: 100%;
     th,
     td {
         padding: 8px 0 8px 0;

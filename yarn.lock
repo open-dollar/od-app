@@ -15060,6 +15060,7 @@ __metadata:
     react-feather: ^2.0.9
     react-helmet-async: ^1.0.7
     react-i18next: ^11.7.2
+    react-loading-skeleton: ^3.4.0
     react-number-format: ^5.2.2
     react-paginate: ^6.5.0
     react-router-dom: ^5.3.0
@@ -17014,6 +17015,15 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
+  languageName: node
+  linkType: hard
+
+"react-loading-skeleton@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "react-loading-skeleton@npm:3.4.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: dca2c60d38abd57e658ff5abb02cf62c08b51e09e4c83e107a1fec3ad58d6f0068846b4149ee452d472e35c831b31a00e8cdbdb066dd35c8b47b803fbad1f834
   languageName: node
   linkType: hard
 

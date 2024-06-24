@@ -33,8 +33,18 @@ export interface SafeModel {
     safeData: ISafeData
     liquidationData: ILiquidationData | null
     uniSwapPool: ISafeData
-    depositAndBorrow: Thunk<SafeModel, ISafePayload & { safeId?: string } & { geb: Geb }, any, StoreModel>
-    repayAndWithdraw: Thunk<SafeModel, ISafePayload & { safeId: string } & { geb: Geb }, any, StoreModel>
+    depositAndBorrow: Thunk<
+        SafeModel,
+        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string },
+        any,
+        StoreModel
+    >
+    repayAndWithdraw: Thunk<
+        SafeModel,
+        ISafePayload & { safeId: string } & { geb: Geb } & { account: string },
+        any,
+        StoreModel
+    >
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
     // collectETH: Thunk<
     //     SafeModel,
@@ -106,16 +116,18 @@ const safeModel: SafeModel = {
                     status: 'success',
                 })
             }
-            if (window?._paq && payload.safeData.leftInput !== '0') {
-                window._paq.push(['trackEvent', 'Vault', 'Deposit', 'Deposit Made', 1])
-            }
-            if (window?._paq && payload.safeData.rightInput !== '0') {
-                window._paq.push(['trackEvent', 'Vault', 'Borrow', 'Borrow Made', 1])
-            }
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
             await txResponse.wait()
+            if (txResponse.hash) {
+                if (window?._paq && payload.safeData.leftInput !== '0') {
+                    window._paq.push(['trackEvent', 'Vault', 'Deposit', payload.account, payload.safeData.leftInput])
+                }
+                if (window?._paq && payload.safeData.rightInput !== '0') {
+                    window._paq.push(['trackEvent', 'Vault', 'Borrow', payload.account, payload.safeData.rightInput])
+                }
+            }
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         } else {
             storeActions.connectWalletModel.setIsStepLoading(false)
@@ -141,13 +153,13 @@ const safeModel: SafeModel = {
                 hash: txResponse.hash,
                 status: 'success',
             })
-            if (window?._paq && payload.safeData.leftInput !== '0') {
-                window._paq.push(['trackEvent', 'Vault', 'Withdraw', 'Withdraw Made', 1])
-            }
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
             await txResponse.wait()
+            if (txResponse.hash && window?._paq && payload.safeData.leftInput !== '0') {
+                window._paq.push(['trackEvent', 'Vault', 'Withdraw', payload.account, payload.safeData.leftInput])
+            }
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         }
     }),

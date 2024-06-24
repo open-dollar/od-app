@@ -119,15 +119,28 @@ const safeModel: SafeModel = {
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
-            if (txResponse.hash) {
-                if (window?._paq && payload.safeData.leftInput !== '0') {
-                    window._paq.push(['trackEvent', 'Vault', 'Deposit', payload.account, payload.safeData.leftInput])
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Deposit',
+                            payload.account,
+                            payload.safeData.leftInput,
+                        ])
+                    }
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Borrow',
+                            payload.account,
+                            payload.safeData.rightInput,
+                        ])
+                    }
                 }
-                if (window?._paq && payload.safeData.rightInput !== '0') {
-                    window._paq.push(['trackEvent', 'Vault', 'Borrow', payload.account, payload.safeData.rightInput])
-                }
-            }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         } else {
             storeActions.connectWalletModel.setIsStepLoading(false)
@@ -156,10 +169,22 @@ const safeModel: SafeModel = {
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
-            if (txResponse.hash && window?._paq && payload.safeData.leftInput !== '0') {
-                window._paq.push(['trackEvent', 'Vault', 'Withdraw', payload.account, payload.safeData.leftInput])
-            }
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Repay', payload.account, payload.safeData.rightInput])
+                    }
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Withdraw',
+                            payload.account,
+                            payload.safeData.leftInput,
+                        ])
+                    }
+                }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         }
     }),

@@ -111,7 +111,7 @@ const CreateVault = ({
     //const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     //available hai - 5% of available hai, this is a buffer to prevent bugs.
-    const onMaxRightInput = () => onRightInput(haiBalanceUSD.toString())
+    const onMaxRightInput = () => onRightInput(availableHai.toString())
 
     const onClearAll = useCallback(() => {
         clearAll()

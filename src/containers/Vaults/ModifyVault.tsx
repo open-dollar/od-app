@@ -213,6 +213,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         signer,
                         safeId: safeState.singleSafe.id,
                         geb,
+                        account,
                     })
                 }
 
@@ -225,6 +226,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         signer,
                         safeId: safeState.singleSafe.id,
                         geb,
+                        account,
                     })
                 }
 

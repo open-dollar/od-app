@@ -33,8 +33,18 @@ export interface SafeModel {
     safeData: ISafeData
     liquidationData: ILiquidationData | null
     uniSwapPool: ISafeData
-    depositAndBorrow: Thunk<SafeModel, ISafePayload & { safeId?: string } & { geb: Geb }, any, StoreModel>
-    repayAndWithdraw: Thunk<SafeModel, ISafePayload & { safeId: string } & { geb: Geb }, any, StoreModel>
+    depositAndBorrow: Thunk<
+        SafeModel,
+        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string },
+        any,
+        StoreModel
+    >
+    repayAndWithdraw: Thunk<
+        SafeModel,
+        ISafePayload & { safeId: string } & { geb: Geb } & { account: string },
+        any,
+        StoreModel
+    >
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
     // collectETH: Thunk<
     //     SafeModel,
@@ -106,11 +116,31 @@ const safeModel: SafeModel = {
                     status: 'success',
                 })
             }
-
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Deposit',
+                            payload.account,
+                            payload.safeData.leftInput,
+                        ])
+                    }
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Borrow',
+                            payload.account,
+                            payload.safeData.rightInput,
+                        ])
+                    }
+                }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         } else {
             storeActions.connectWalletModel.setIsStepLoading(false)
@@ -136,11 +166,25 @@ const safeModel: SafeModel = {
                 hash: txResponse.hash,
                 status: 'success',
             })
-
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Repay', payload.account, payload.safeData.rightInput])
+                    }
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push([
+                            'trackEvent',
+                            'Vault',
+                            'Withdraw',
+                            payload.account,
+                            payload.safeData.leftInput,
+                        ])
+                    }
+                }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         }
     }),

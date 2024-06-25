@@ -6,6 +6,7 @@ declare global {
     interface Window {
         Buffer: typeof Buffer
         util: any
+        _paq: any
     }
 }
 

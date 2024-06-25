@@ -174,6 +174,7 @@ const CreateVault = ({
                     safeData: safeState.safeData,
                     signer,
                     geb,
+                    account,
                 })
                 history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)

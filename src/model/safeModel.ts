@@ -35,16 +35,16 @@ export interface SafeModel {
     uniSwapPool: ISafeData
     depositAndBorrow: Thunk<
         SafeModel,
-        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string } & { depositAmount: number } & {
-            borrowAmount?: number
+        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string } & { depositAmountUSD: number } & {
+            borrowAmountUSD?: number
         },
         any,
         StoreModel
     >
     repayAndWithdraw: Thunk<
         SafeModel,
-        ISafePayload & { safeId: string } & { geb: Geb } & { account: string } & { withdrawAmount: number } & {
-            repayAmount?: number
+        ISafePayload & { safeId: string } & { geb: Geb } & { account: string } & { withdrawAmountUSD: number } & {
+            repayAmountUSD?: number
         },
         any,
         StoreModel
@@ -136,7 +136,7 @@ const safeModel: SafeModel = {
                         window._paq.push([
                             'trackEcommerceOrder',
                             (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
-                            payload.depositAmount,
+                            payload.depositAmountUSD,
                         ])
                     }
 
@@ -151,7 +151,7 @@ const safeModel: SafeModel = {
                         window._paq.push([
                             'trackEcommerceOrder',
                             (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
-                            payload.depositAmount,
+                            payload.depositAmountUSD,
                         ])
                     }
                 }
@@ -197,7 +197,7 @@ const safeModel: SafeModel = {
                         window._paq.push([
                             'trackEcommerceOrder',
                             (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
-                            payload.repayAmount,
+                            payload.repayAmountUSD,
                         ])
                     }
                     if (payload.safeData.leftInput !== '0') {
@@ -211,7 +211,7 @@ const safeModel: SafeModel = {
                         window._paq.push([
                             'trackEcommerceOrder',
                             (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
-                            payload.withdrawAmount,
+                            payload.withdrawAmountUSD,
                         ])
                     }
                 }

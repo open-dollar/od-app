@@ -208,22 +208,22 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             try {
                 connectWalletActions.setIsStepLoading(true)
                 if (safeState.singleSafe && isDeposit) {
-                    const depositAmount = collateralInUSD ? Number(collateralInUSD) : 0
-                    const borrowAmount = haiBalanceUSD ? Number(haiBalanceUSD) : 0
+                    const depositAmountUSD = collateralInUSD ? Number(collateralInUSD) : 0
+                    const borrowAmountUSD = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                     await safeActions.depositAndBorrow({
                         safeData: safeState.safeData,
                         signer,
                         safeId: safeState.singleSafe.id,
                         geb,
                         account,
-                        depositAmount,
-                        borrowAmount,
+                        depositAmountUSD,
+                        borrowAmountUSD,
                     })
                 }
 
                 if (safeState.singleSafe && !isDeposit) {
-                    const withdrawAmount = collateralInUSD ? Number(collateralInUSD) : 0
-                    const repayAmount = haiBalanceUSD ? Number(haiBalanceUSD) : 0
+                    const withdrawAmountUSD = collateralInUSD ? Number(collateralInUSD) : 0
+                    const repayAmountUSD = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                     await safeActions.repayAndWithdraw({
                         safeData: {
                             ...safeState.safeData,
@@ -233,8 +233,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         safeId: safeState.singleSafe.id,
                         geb,
                         account,
-                        withdrawAmount,
-                        repayAmount,
+                        withdrawAmountUSD,
+                        repayAmountUSD,
                     })
                 }
 

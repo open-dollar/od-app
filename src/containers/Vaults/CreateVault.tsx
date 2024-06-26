@@ -170,11 +170,15 @@ const CreateVault = ({
             const signer = provider.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
+                const depositAmountUSD = collateralUnitPriceUSD ? Number(collateralUnitPriceUSD) : 0
+                const borrowAmountUSD = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                 await safeActions.depositAndBorrow({
                     safeData: safeState.safeData,
                     signer,
                     geb,
                     account,
+                    depositAmountUSD,
+                    borrowAmountUSD,
                 })
                 history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)

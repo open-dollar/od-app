@@ -15,7 +15,7 @@ interface AddressLinkProps {
 export const AddressLink = ({ chainId, address }: AddressLinkProps) => {
     return (
         <Link href={getEtherscanLink(chainId, address, 'address')} target="_blank">
-            {useAddress(address)}
+            {useAddress(address, 0, true)}
         </Link>
     )
 }

@@ -35,13 +35,17 @@ export interface SafeModel {
     uniSwapPool: ISafeData
     depositAndBorrow: Thunk<
         SafeModel,
-        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string },
+        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string } & { depositAmount: number } & {
+            borrowAmount?: number
+        },
         any,
         StoreModel
     >
     repayAndWithdraw: Thunk<
         SafeModel,
-        ISafePayload & { safeId: string } & { geb: Geb } & { account: string },
+        ISafePayload & { safeId: string } & { geb: Geb } & { account: string } & { withdrawAmount: number } & {
+            repayAmount?: number
+        },
         any,
         StoreModel
     >
@@ -122,21 +126,32 @@ const safeModel: SafeModel = {
             await txResponse.wait().then((receipt) => {
                 if (receipt && receipt.status === 1 && window?._paq) {
                     if (payload.safeData.leftInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Deposit', payload.account])
                         window._paq.push([
-                            'trackEvent',
-                            'Vault',
-                            'Deposit',
-                            payload.account,
-                            payload.safeData.leftInput,
+                            'addEcommerceItem',
+                            payload.safeData.collateral + '_Deposited', // (required) SKU: Product unique identifier
+                            payload.safeData.collateral + '_Deposited', // (optional) Product name
+                            'Collateral_Deposited', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.depositAmount,
                         ])
                     }
+
                     if (payload.safeData.rightInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Borrow', payload.account])
                         window._paq.push([
-                            'trackEvent',
-                            'Vault',
-                            'Borrow',
-                            payload.account,
-                            payload.safeData.rightInput,
+                            'addEcommerceItem',
+                            'OD_Borrowed', // (required) SKU: Product unique identifier
+                            'OD_Borrowed', // (optional) Product name
+                            'Debt_Borrowed', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.depositAmount,
                         ])
                     }
                 }
@@ -172,15 +187,31 @@ const safeModel: SafeModel = {
             await txResponse.wait().then((receipt) => {
                 if (receipt && receipt.status === 1 && window?._paq) {
                     if (payload.safeData.rightInput !== '0') {
-                        window._paq.push(['trackEvent', 'Vault', 'Repay', payload.account, payload.safeData.rightInput])
+                        window._paq.push(['trackEvent', 'Vault', 'Repay', payload.account])
+                        window._paq.push([
+                            'addEcommerceItem',
+                            'OD_Repaid', // (required) SKU: Product unique identifier
+                            'OD_Repaid', // (optional) Product name
+                            'Debt_Repaid', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.repayAmount,
+                        ])
                     }
                     if (payload.safeData.leftInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Withdraw', payload.account])
                         window._paq.push([
-                            'trackEvent',
-                            'Vault',
-                            'Withdraw',
-                            payload.account,
-                            payload.safeData.leftInput,
+                            'addEcommerceItem',
+                            payload.safeData.collateral + '_Withdrawn', // (required) SKU: Product unique identifier
+                            payload.safeData.collateral + '_Withdrawn', // (optional) Product name
+                            'Collateral_Withdrawn', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.withdrawAmount,
                         ])
                     }
                 }

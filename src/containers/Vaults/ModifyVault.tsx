@@ -208,16 +208,22 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
             try {
                 connectWalletActions.setIsStepLoading(true)
                 if (safeState.singleSafe && isDeposit) {
+                    const depositAmount = collateralInUSD ? Number(collateralInUSD) : 0
+                    const borrowAmount = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                     await safeActions.depositAndBorrow({
                         safeData: safeState.safeData,
                         signer,
                         safeId: safeState.singleSafe.id,
                         geb,
                         account,
+                        depositAmount,
+                        borrowAmount,
                     })
                 }
 
                 if (safeState.singleSafe && !isDeposit) {
+                    const withdrawAmount = collateralInUSD ? Number(collateralInUSD) : 0
+                    const repayAmount = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                     await safeActions.repayAndWithdraw({
                         safeData: {
                             ...safeState.safeData,
@@ -227,6 +233,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                         safeId: safeState.singleSafe.id,
                         geb,
                         account,
+                        withdrawAmount,
+                        repayAmount,
                     })
                 }
 

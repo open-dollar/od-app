@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -47,8 +47,18 @@ const VaultDetails = ({ ...props }) => {
     const safes = safeState.list
     const safe = safes.find((safe) => safe.id === safeId)
 
+    // Ref to track the number of fetchSingleVaultData calls
+    const fetchCallCount = useRef(0)
+
     // Fetches vault data of a vault not owned by the user
     const fetchSingleVaultData = async () => {
+        fetchCallCount.current += 1
+
+        if (fetchCallCount.current > 10) {
+            props.history.push('/vaults')
+            return
+        }
+
         if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
             safeActions.setSafeData(DEFAULT_SAFE_STATE)

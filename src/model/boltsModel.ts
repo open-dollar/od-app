@@ -68,7 +68,6 @@ const boltsModel: BoltsModel = {
 
     fetchData: thunk(async (actions, { account }, { getState }) => {
         try {
-            console.log(account, 'account in fetchData')
             const BOT_DOMAIN = 'https://bot.opendollar.com'
             const BOT_API = `${BOT_DOMAIN}/api/bolts`
             const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)

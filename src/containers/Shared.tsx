@@ -1,34 +1,13 @@
-import React, { ReactNode, useEffect, useCallback } from 'react'
+import React, { ReactNode, useEffect, useCallback, Suspense } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
-
-import ConnectedWalletModal from '~/components/Modals/ConnectedWalletModal'
-import ApplicationUpdater from '~/services/ApplicationUpdater'
 import { useActiveWeb3React } from '~/hooks'
-import TransactionUpdater from '~/services/TransactionUpdater'
-import AuctionsModal from '~/components/Modals/AuctionsModal'
-import TopUpModal from '~/components/Modals/SafeManagerModal'
-import ScreenLoader from '~/components/Modals/ScreenLoader'
-import WaitingModal from '~/components/Modals/WaitingModal'
-import LoadingModal from '~/components/Modals/LoadingModal'
-import MulticallUpdater from '~/services/MulticallUpdater'
-import BlockedAddress from '~/components/BlockedAddress'
 import { useStoreState, useStoreActions } from '~/store'
-import ImagePreloader from '~/components/ImagePreloader'
-import ProxyModal from '~/components/Modals/ProxyModal'
-import BalanceUpdater from '~/services/BalanceUpdater'
-import WethModal from '~/components/Modals/WETHModal'
-import ToastPayload from '~/components/ToastPayload'
-import CookieBanner from '~/components/CookieBanner'
-import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
-import AlertLabel from '~/components/AlertLabel'
 import usePrevious from '~/hooks/usePrevious'
-import SideMenu from '~/components/SideMenu'
 import { NETWORK_ID } from '~/connectors'
-import Navbar from '~/components/Navbar'
 import useGeb from '~/hooks/useGeb'
 import {
     ETHERSCAN_PREFIXES,
@@ -40,17 +19,39 @@ import {
     IS_IN_IFRAME,
     timeout,
 } from '~/utils'
-import LiquidateSafeModal from '~/components/Modals/LiquidateSafeModal'
-import Footer from '~/components/Footer'
-import checkSanctions from '~/services/checkSanctions'
 import axios from 'axios'
 import useTokenData from '~/hooks/useTokenData'
 import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
-import LowGasModal from '~/components/Modals/LowGasModal'
+
+import checkSanctions from '~/services/checkSanctions'
+import ToastPayload from '~/components/ToastPayload'
+import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
+import SideMenu from '~/components/SideMenu'
+import Navbar from '~/components/Navbar'
+import AlertLabel from '~/components/AlertLabel'
+import BlockedAddress from '~/components/BlockedAddress'
+import CookieBanner from '~/components/CookieBanner'
+import Footer from '~/components/Footer'
+import ApplicationUpdater from '~/services/ApplicationUpdater'
+import TransactionUpdater from '~/services/TransactionUpdater'
+import BalanceUpdater from '~/services/BalanceUpdater'
+import MulticallUpdater from '~/services/MulticallUpdater'
+import ScreenLoader from '~/components/Modals/ScreenLoader'
 import ToastBannerNetwork from '~/components/ToastBannerNetwork'
+
+const ConnectedWalletModal = React.lazy(() => import('~/components/Modals/ConnectedWalletModal'))
+const AuctionsModal = React.lazy(() => import('~/components/Modals/AuctionsModal'))
+const TopUpModal = React.lazy(() => import('~/components/Modals/SafeManagerModal'))
+const WaitingModal = React.lazy(() => import('~/components/Modals/WaitingModal'))
+const LoadingModal = React.lazy(() => import('~/components/Modals/LoadingModal'))
+const ProxyModal = React.lazy(() => import('~/components/Modals/ProxyModal'))
+const WethModal = React.lazy(() => import('~/components/Modals/WETHModal'))
+const LiquidateSafeModal = React.lazy(() => import('~/components/Modals/LiquidateSafeModal'))
+const LowGasModal = React.lazy(() => import('~/components/Modals/LowGasModal'))
+const ImagePreloader = React.lazy(() => import('~/components/ImagePreloader'))
 
 interface Props {
     children: ReactNode
@@ -354,42 +355,44 @@ const Shared = ({ children, ...rest }: Props) => {
 
     return (
         <Container>
-            <SideMenu />
-            <WalletModal />
-            <MulticallUpdater />
-            <ApplicationUpdater />
-            <BalanceUpdater />
-            <TransactionUpdater />
-            <LoadingModal />
-            <AuctionsModal />
-            <WethModal />
-            <ProxyModal />
-            <ConnectedWalletModal />
-            <ScreenLoader />
-            <LiquidateSafeModal />
-            <WaitingModal />
-            <LowGasModal />
-            <TopUpModal />
-            <EmptyDiv>
-                <Navbar />
-            </EmptyDiv>
-            {SYSTEM_STATUS && SYSTEM_STATUS.toLowerCase() === 'shutdown' ? (
-                <AlertContainer>
-                    <AlertLabel type="danger" text={t('shutdown_text')} />
-                </AlertContainer>
-            ) : null}
-            {account && blockedAddresses.includes(account.toLowerCase()) ? (
-                <BlockedAddress />
-            ) : (
-                <Content>{children}</Content>
-            )}
-            <EmptyDiv>
-                <CookieBanner />
-            </EmptyDiv>
-            <ImagePreloader />
-            <EmptyDiv>
-                <Footer />
-            </EmptyDiv>
+            <Suspense fallback={<ScreenLoader />}>
+                <SideMenu />
+                <WalletModal />
+                <MulticallUpdater />
+                <ApplicationUpdater />
+                <BalanceUpdater />
+                <TransactionUpdater />
+                <LoadingModal />
+                <AuctionsModal />
+                <WethModal />
+                <ProxyModal />
+                <ConnectedWalletModal />
+                <ScreenLoader />
+                <LiquidateSafeModal />
+                <WaitingModal />
+                <LowGasModal />
+                <TopUpModal />
+                <EmptyDiv>
+                    <Navbar />
+                </EmptyDiv>
+                {SYSTEM_STATUS && SYSTEM_STATUS.toLowerCase() === 'shutdown' ? (
+                    <AlertContainer>
+                        <AlertLabel type="danger" text={t('shutdown_text')} />
+                    </AlertContainer>
+                ) : null}
+                {account && blockedAddresses.includes(account.toLowerCase()) ? (
+                    <BlockedAddress />
+                ) : (
+                    <Content>{children}</Content>
+                )}
+                <EmptyDiv>
+                    <CookieBanner />
+                </EmptyDiv>
+                <ImagePreloader />
+                <EmptyDiv>
+                    <Footer />
+                </EmptyDiv>
+            </Suspense>
         </Container>
     )
 }

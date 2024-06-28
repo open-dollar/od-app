@@ -13,6 +13,34 @@ import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
 import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
 
+// Helper function to dynamically import SVGs
+const importTokenIcon = (tokenName: string) => {
+    switch (tokenName) {
+        case 'WETH':
+            return WETH
+        case 'OP':
+            return OP
+        case 'OD':
+            return OD
+        case 'ODG':
+            return ODG
+        case 'WSTETH':
+            return WSTETH
+        case 'CBETH':
+            return CBETH
+        case 'RETH':
+            return RETH
+        case 'ARB':
+            return ARB
+        case 'MAGIC':
+            return MAGIC
+        case 'PUFETH':
+            return PUFETH
+        default:
+            return require('../assets/unknown-token.svg').default
+    }
+}
+
 export type Tokens = {
     [key: string]: {
         name: string
@@ -24,21 +52,21 @@ export type Tokens = {
 }
 
 export const TOKEN_LOGOS: { [key: string]: string } = {
-    WETH: WETH,
-    OP: OP,
-    OD: OD,
-    ODG: ODG,
-    WSTETH: WSTETH,
-    CBETH: CBETH,
-    RETH: RETH,
-    ARB: ARB,
-    MAGIC: MAGIC,
-    PUFETH: PUFETH,
-    ETH: WETH,
+    WETH: importTokenIcon('WETH'),
+    OP: importTokenIcon('OP'),
+    OD: importTokenIcon('OD'),
+    ODG: importTokenIcon('ODG'),
+    WSTETH: importTokenIcon('WSTETH'),
+    CBETH: importTokenIcon('CBETH'),
+    RETH: importTokenIcon('RETH'),
+    ARB: importTokenIcon('ARB'),
+    MAGIC: importTokenIcon('MAGIC'),
+    PUFETH: importTokenIcon('PUFETH'),
+    ETH: importTokenIcon('WETH'),
 }
 
 export function getTokenLogo(token: string): string {
-    return TOKEN_LOGOS[token] || require('../assets/unknown-token.svg').default
+    return TOKEN_LOGOS[token] || importTokenIcon('').default
 }
 
 const gasTokenArray = [

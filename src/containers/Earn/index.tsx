@@ -91,7 +91,7 @@ const Earn = () => {
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )
                 ) : (
-                    <Skeleton height={50} count={2} baseColor={'#89B3FB'} highlightColor="#2871FD" />
+                    <Skeleton height={58} count={3} baseColor={'#89B3FB'} highlightColor="#2871FD" />
                 )}
             </Pools>
 

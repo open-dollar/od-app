@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 
-import { amountToFiat, returnWalletAddress, formatDataNumber, ETH_NETWORK } from '~/utils'
+import { amountToFiat, formatDataNumber, ETH_NETWORK } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import ConnectedWalletIcon from './ConnectedWalletIcon'
 import NavLinks from './NavLinks'
@@ -20,6 +20,7 @@ import TokenIcon from './TokenIcon'
 import WalletIcon from '~/assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
 import parachuteIcon from '../assets/parachute-icon.svg'
+import { useAddress } from '~/hooks/useAddress'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -46,6 +47,7 @@ const SideMenu = () => {
     } = useStoreState((state) => state)
     const poolData = usePoolData()
     const analyticsData = useAnalyticsData()
+    const address = useAddress(account)
 
     const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -207,7 +209,7 @@ const SideMenu = () => {
                                 >
                                     <ConnectedWalletIcon size={40} />
                                     <AccountData>
-                                        <Address>{returnWalletAddress(account)}</Address>
+                                        <Address>{address}</Address>
                                         <Balance>{`$ ${renderBalance()}`}</Balance>
                                     </AccountData>
                                 </Account>

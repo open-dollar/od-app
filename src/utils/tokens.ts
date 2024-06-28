@@ -11,6 +11,7 @@ import PUFETH from '../assets/pufeth.svg'
 import { Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
+import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
 
 export type Tokens = {
     [key: string]: {
@@ -61,33 +62,33 @@ export const bridgeTokens: any = {
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0x5979D7b546E38E414F7E9822514be443A4800529',
+                address: '0x5979d7b546e38e414f7e9822514be443a4800529',
             },
             {
                 name: 'ARB',
                 icon: ARB,
                 gebName: 'Arbitrum',
                 balance: '0',
-                address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+                address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
             },
             {
                 name: 'WETH',
                 icon: WETH,
                 gebName: 'Wrapped Ether',
                 balance: '0',
-                address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+                address: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
             },
             {
                 name: 'RETH',
                 icon: RETH,
                 gebName: 'Rocket Ether',
                 balance: '0',
-                address: '0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8',
+                address: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
             },
         ],
         chainId: 42161,
         chainName: 'Arbitrum',
-        publicRPC: 'https://arbitrum.blockpi.network/v1/rpc/public',
+        publicRPC: RPC_URL_ARBITRUM,
     },
     1: {
         tokens: [
@@ -104,7 +105,7 @@ export const bridgeTokens: any = {
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+                address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
                 comingSoon: false,
             },
             {
@@ -120,7 +121,7 @@ export const bridgeTokens: any = {
                 icon: ARB,
                 gebName: 'Arbitrum',
                 balance: '0',
-                address: '0xB50721BCf8d664c30412Cfbc6cf7a15145234ad1',
+                address: '0xb50721bcf8d664c30412cfbc6cf7a15145234ad1',
                 comingSoon: false,
             },
             {
@@ -128,22 +129,22 @@ export const bridgeTokens: any = {
                 icon: WETH,
                 gebName: 'Puff ETH',
                 balance: '0',
-                address: '0xD9A442856C234a39a81a089C06451EBAa4306a72',
+                address: '0xd9a442856c234a39a81a089c06451ebaa4306a72',
                 comingSoon: true,
             },
         ],
         chainId: 1,
         chainName: 'Ethereum',
-        publicRPC: 'https://eth-pokt.nodies.app',
+        publicRPC: RPC_URL_ETHEREUM,
     },
     10: {
         tokens: [
             {
-                name: 'WETH',
+                name: 'ETH',
                 icon: WETH,
                 gebName: 'Ether',
                 balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
+                address: '0x0000000000000000000000000000000000000000',
                 comingSoon: false,
             },
             {
@@ -151,7 +152,7 @@ export const bridgeTokens: any = {
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
+                address: '0x1f32b1c2345538c0c6f582fcb022739c4a194ebb',
                 comingSoon: false,
             },
             {
@@ -159,7 +160,7 @@ export const bridgeTokens: any = {
                 icon: RETH,
                 gebName: 'Rocket Ether',
                 balance: '0',
-                address: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D',
+                address: '0x9bcef72be871e61ed4fbbc7630889bee758eb81d',
                 comingSoon: false,
             },
             {
@@ -181,7 +182,7 @@ export const bridgeTokens: any = {
         ],
         chainId: 10,
         chainName: 'Optimism',
-        publicRPC: 'https://op-pokt.nodies.app',
+        publicRPC: RPC_URL_OPTIMISM,
     },
     137: {
         tokens: [
@@ -190,7 +191,7 @@ export const bridgeTokens: any = {
                 icon: WETH,
                 gebName: 'Wrapped Ether',
                 balance: '0',
-                address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+                address: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
                 comingSoon: false,
             },
             {
@@ -198,7 +199,7 @@ export const bridgeTokens: any = {
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD',
+                address: '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd',
                 comingSoon: false,
             },
             {
@@ -206,7 +207,7 @@ export const bridgeTokens: any = {
                 icon: RETH,
                 gebName: 'Rocket Ether',
                 balance: '0',
-                address: '0x0266F4F08D82372CF0FcbCCc0Ff74309089c74d1',
+                address: '0x0266f4f08d82372cf0fcbccc0ff74309089c74d1',
                 comingSoon: false,
             },
             {
@@ -228,31 +229,31 @@ export const bridgeTokens: any = {
         ],
         chainId: 137,
         chainName: 'Polygon',
-        publicRPC: 'https://polygon-bor-rpc.publicnode.com',
+        publicRPC: RPC_URL_POLYGON,
     },
 
     8453: {
         tokens: [
             {
-                name: 'WETH',
+                name: 'ETH',
                 icon: WETH,
                 gebName: 'Ether',
                 balance: '0',
-                address: '0x4200000000000000000000000000000000000006',
+                address: '0x0000000000000000000000000000000000000000',
             },
             {
                 name: 'WSTETH',
                 icon: WSTETH,
                 gebName: 'Wrapped Staked Ether',
                 balance: '0',
-                address: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+                address: '0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452',
             },
             {
                 name: 'RETH',
                 icon: RETH,
                 gebName: 'Rocket Ether',
                 balance: '0',
-                address: '0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c',
+                address: '0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c',
             },
             {
                 name: 'ARB',
@@ -273,19 +274,19 @@ export const bridgeTokens: any = {
         ],
         chainId: 8453,
         chainName: 'Base',
-        publicRPC: 'https://base.llamarpc.com',
+        publicRPC: RPC_URL_BASE,
     },
 }
 
 export const gasTokenMapping: { [key: string | number]: string } = {
     Mainnet: '0x0000000000000000000000000000000000000000',
     Polygon: '0x0000000000000000000000000000000000001010',
-    Optimism: '0x4200000000000000000000000000000000000042',
+    Optimism: '0x0000000000000000000000000000000000000000',
     Base: '0x0000000000000000000000000000000000000000',
     Arbitrum: '0x0000000000000000000000000000000000000000',
     1: '0x0000000000000000000000000000000000000000',
     137: '0x0000000000000000000000000000000000001010',
-    10: '0x4200000000000000000000000000000000000042',
+    10: '0x0000000000000000000000000000000000000000',
     42161: '0x0000000000000000000000000000000000000000',
     8453: '0x0000000000000000000000000000000000000000',
 }

@@ -1,22 +1,42 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Info } from 'react-feather'
+import { ExternalLink, Info } from 'react-feather'
 import Numeral from 'numeral'
 
 import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
-import { formatNumber, formatWithCommas, getRatePercentage, ratioChecker, returnState, returnTotalDebt } from '~/utils'
+import {
+    formatNumber,
+    formatWithCommas,
+    getEtherscanLink,
+    getRatePercentage,
+    ratioChecker,
+    returnState,
+    returnTotalDebt,
+} from '~/utils'
 import { useStoreState } from '~/store'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 //@ts-ignore
 import { generateSvg } from '@opendollar/svg-generator'
+import { useWeb3React } from '@web3-react/core'
+import { useAddress } from '~/hooks/useAddress'
 
-const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposit: boolean; isOwner: boolean }) => {
+const VaultStats = ({
+    isModifying,
+    isDeposit,
+    isOwner,
+}: {
+    isModifying: boolean
+    isDeposit: boolean
+    isOwner: boolean
+}) => {
     const { t } = useTranslation()
+    const { chainId } = useWeb3React()
     const {
         collateralRatio: newCollateralRatio,
         parsedAmounts,
         liquidationPrice: newLiquidationPrice,
+        account,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
 
     const { safeModel: safeState } = useStoreState((state) => state)
@@ -68,6 +88,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
     )
 
     const svg = useMemo(() => generateSvg(statsForSVG), [statsForSVG])
+    const address = useAddress(singleSafe?.ownerAddress || account!)
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -121,6 +142,7 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                 <StatValue>{formatWithCommas(totalDebt)} OD</StatValue>
                                 <DollarValue>${formatWithCommas(totalDebtInUSD)}</DollarValue>
                             </StatSection>
+
                             <StatSection>
                                 <StatHeader>
                                     <StatTitle>Collateral Deposited</StatTitle>
@@ -215,27 +237,32 @@ const VaultStats = ({ isModifying, isDeposit }: { isModifying: boolean; isDeposi
                                     </span>
                                 </div>
                             </StatSection>
-                            {/* <StatSection>
+
+                            <StatSection>
                                 <StatHeader>
                                     <StatTitle>NFV Owner</StatTitle>
                                     <InfoIcon
                                         data-tooltip-id="vault-stats"
-                                        data-tooltip-content={'Owner address for this Non Fungible Vault'}
+                                        data-tooltip-content={'Owner address for this Non-Fungible Vault'}
                                     >
                                         <Info size="16" />
                                     </InfoIcon>
                                 </StatHeader>
                                 <StatValue>
-                                    {chainId && account && (
+                                    {chainId && (
                                         <AccountLink
-                                            href={getEtherscanLink(chainId, account, 'address')}
+                                            href={getEtherscanLink(
+                                                chainId,
+                                                singleSafe?.ownerAddress || account!,
+                                                'address'
+                                            )}
                                             target="_blank"
                                         >
-                                            {returnWalletAddress(account)} <ExternalLink />
+                                            {address} <ExternalLink />
                                         </AccountLink>
                                     )}
                                 </StatValue>
-                            </StatSection> */}
+                            </StatSection>
                         </StatsGrid>
                         <Side>
                             <SideTitle>{singleSafe?.collateralName} Price (Delayed)</SideTitle>
@@ -361,11 +388,11 @@ const StatValue = styled.div`
     margin-top: 5px;
 `
 
-// const AccountLink = styled.a`
-//     display: flex;
-//     gap: 5px;
-//     color: ${(props) => props.theme.colors.primary};
-// `
+const AccountLink = styled.a`
+    display: flex;
+    gap: 5px;
+    color: ${(props) => props.theme.colors.primary};
+`
 
 const SVGContainer = styled.div`
     display: flex;

@@ -111,7 +111,7 @@ const CreateVault = ({
     //const maxHaiWithBuffer = Math.trunc(+availableHai - (+availableHai * 5) / 100)
     const onMaxLeftInput = () => onLeftInput(selectedTokenBalance.toString())
     //available hai - 5% of available hai, this is a buffer to prevent bugs.
-    const onMaxRightInput = () => onRightInput(haiBalanceUSD.toString())
+    const onMaxRightInput = () => onRightInput(availableHai.toString())
 
     const onClearAll = useCallback(() => {
         clearAll()
@@ -170,10 +170,15 @@ const CreateVault = ({
             const signer = provider.getSigner(account)
             try {
                 connectWalletActions.setIsStepLoading(true)
+                const depositAmountUSD = collateralUnitPriceUSD ? Number(collateralUnitPriceUSD) : 0
+                const borrowAmountUSD = haiBalanceUSD ? Number(haiBalanceUSD) : 0
                 await safeActions.depositAndBorrow({
                     safeData: safeState.safeData,
                     signer,
                     geb,
+                    account,
+                    depositAmountUSD,
+                    borrowAmountUSD,
                 })
                 history.push('/vaults')
                 safeActions.setIsSuccessfulTx(true)

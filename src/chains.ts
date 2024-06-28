@@ -25,6 +25,15 @@ const ETH: AddEthereumChainParameter['nativeCurrency'] = {
     decimals: 18,
 }
 
+export const RPC_URL_ETHEREUM =
+    process.env.REACT_APP_RPC_URL_ETHEREUM && process.env.NODE_ENV !== 'development'
+        ? process.env.REACT_APP_RPC_URL_ETHEREUM
+        : 'https://eth.llamarpc.com'
+export const RPC_URL_ARBITRUM = 'https://arbitrum.blockpi.network/v1/rpc/public'
+export const RPC_URL_OPTIMISM = 'https://op-pokt.nodies.app'
+export const RPC_URL_POLYGON = 'https://polygon-bor-rpc.publicnode.com'
+export const RPC_URL_BASE = 'https://base.llamarpc.com'
+
 interface BasicChainInformation {
     urls: string[]
     name: string
@@ -59,13 +68,13 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
 type ChainConfig = { [chainId: number]: BasicChainInformation | ExtendedChainInformation }
 export const MAINNET_CHAINS: ChainConfig = {
     42161: {
-        urls: [RPC_URL, 'https://arbitrum.blockpi.network/v1/rpc/public'],
+        urls: [RPC_URL, RPC_URL_ARBITRUM],
         name: 'Arbitrum One',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://arbiscan.io'],
     },
     10: {
-        urls: ['https://mainnet.optimism.io'],
+        urls: [RPC_URL_OPTIMISM],
         name: 'Optimism Mainnet',
         nativeCurrency: ETH,
         blockExplorerUrls: ['https://optimistic.etherscan.io'],

@@ -33,8 +33,22 @@ export interface SafeModel {
     safeData: ISafeData
     liquidationData: ILiquidationData | null
     uniSwapPool: ISafeData
-    depositAndBorrow: Thunk<SafeModel, ISafePayload & { safeId?: string } & { geb: Geb }, any, StoreModel>
-    repayAndWithdraw: Thunk<SafeModel, ISafePayload & { safeId: string } & { geb: Geb }, any, StoreModel>
+    depositAndBorrow: Thunk<
+        SafeModel,
+        ISafePayload & { safeId?: string } & { geb: Geb } & { account: string } & { depositAmountUSD: number } & {
+            borrowAmountUSD?: number
+        },
+        any,
+        StoreModel
+    >
+    repayAndWithdraw: Thunk<
+        SafeModel,
+        ISafePayload & { safeId: string } & { geb: Geb } & { account: string } & { withdrawAmountUSD: number } & {
+            repayAmountUSD?: number
+        },
+        any,
+        StoreModel
+    >
     fetchUserSafes: Thunk<SafeModel, IFetchSafesPayload, any, StoreModel>
     // collectETH: Thunk<
     //     SafeModel,
@@ -106,11 +120,42 @@ const safeModel: SafeModel = {
                     status: 'success',
                 })
             }
-
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Deposit', payload.account])
+                        window._paq.push([
+                            'addEcommerceItem',
+                            payload.safeData.collateral + '_Deposited', // (required) SKU: Product unique identifier
+                            payload.safeData.collateral + '_Deposited', // (optional) Product name
+                            'Collateral_Deposited', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.depositAmountUSD,
+                        ])
+                    }
+
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Borrow', payload.account])
+                        window._paq.push([
+                            'addEcommerceItem',
+                            'OD_Borrowed', // (required) SKU: Product unique identifier
+                            'OD_Borrowed', // (optional) Product name
+                            'Debt_Borrowed', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.depositAmountUSD,
+                        ])
+                    }
+                }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         } else {
             storeActions.connectWalletModel.setIsStepLoading(false)
@@ -136,11 +181,41 @@ const safeModel: SafeModel = {
                 hash: txResponse.hash,
                 status: 'success',
             })
-
             actions.setStage(0)
             actions.setUniSwapPool(DEFAULT_SAFE_STATE)
             actions.setSafeData(DEFAULT_SAFE_STATE)
-            await txResponse.wait()
+            await txResponse.wait().then((receipt) => {
+                if (receipt && receipt.status === 1 && window?._paq) {
+                    if (payload.safeData.rightInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Repay', payload.account])
+                        window._paq.push([
+                            'addEcommerceItem',
+                            'OD_Repaid', // (required) SKU: Product unique identifier
+                            'OD_Repaid', // (optional) Product name
+                            'Debt_Repaid', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.repayAmountUSD,
+                        ])
+                    }
+                    if (payload.safeData.leftInput !== '0') {
+                        window._paq.push(['trackEvent', 'Vault', 'Withdraw', payload.account])
+                        window._paq.push([
+                            'addEcommerceItem',
+                            payload.safeData.collateral + '_Withdrawn', // (required) SKU: Product unique identifier
+                            payload.safeData.collateral + '_Withdrawn', // (optional) Product name
+                            'Collateral_Withdrawn', // (optional) Product category
+                        ])
+                        window._paq.push([
+                            'trackEcommerceOrder',
+                            (Math.random() * (2 - 1) + 1).toString(), // (required) unique order ID between 1 and 2
+                            payload.withdrawAmountUSD,
+                        ])
+                    }
+                }
+            })
             storeActions.connectWalletModel.setForceUpdateTokens(true)
         }
     }),
@@ -230,9 +305,6 @@ const safeModel: SafeModel = {
         state.list = payload
     }),
     setSingleSafe: action((state, payload) => {
-        if (!payload) {
-            return
-        }
         state.singleSafe = payload
     }),
     setOperation: action((state, payload) => {

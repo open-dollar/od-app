@@ -3,7 +3,6 @@ import { useStoreActions, useStoreState } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect, useMemo, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
-import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import { POOLS } from '~/utils'
@@ -92,7 +91,7 @@ const Earn = () => {
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )
                 ) : (
-                    <Skeleton height={100} />
+                    <Skeleton height={50} count={2} baseColor={'#89B3FB'} highlightColor="#2871FD" />
                 )}
             </Pools>
 
@@ -159,7 +158,9 @@ const PoolsHeader = styled.h2`
     margin-bottom: 20px;
 `
 
-const Pools = styled.div``
+const Pools = styled.div`
+    margin-bottom: 30px;
+`
 
 const BtnWrapper = styled.div`
     width: max-content;

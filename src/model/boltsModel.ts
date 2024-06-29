@@ -104,7 +104,7 @@ const boltsModel: BoltsModel = {
                     boltsEarned[3] = combinedDepositBolts.toLocaleString()
 
                     boltsEarned['OgNFT'] = data.OgNFT ? 'Yes' : 'No'
-                    boltsEarned['OgNFV'] = data.OgNFV ? 'Yes' : 'No'
+                    boltsEarned['GenesisNFV'] = data.GenesisNFV ? 'Yes' : 'No'
                     boltsEarned['GenesisNFT'] = data.GenesisNFT ? 'Yes' : 'No'
 
                     actions.setBoltsEarnedData(boltsEarned)

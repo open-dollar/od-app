@@ -147,7 +147,7 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: boltsEarnedData['OgNFV'] || '-' },
+            { title: 'Holder', status: boltsEarnedData['GenesisNFV'] || '-' },
         ],
     },
     {

@@ -62,7 +62,6 @@ export default PoolBlock
 
 const BlockContainer = styled.div`
     border-radius: 4px;
-    margin-bottom: 29px;
     background: white;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
@@ -70,6 +69,9 @@ const BlockContainer = styled.div`
     flex-direction: column;
     &.empty {
         background: white;
+    }
+    &:not(:last-child) {
+        margin-bottom: 29px;
     }
 `
 

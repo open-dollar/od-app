@@ -3,13 +3,13 @@ import { useStoreActions, useStoreState } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
 import { useEffect, useMemo, useState } from 'react'
 import useGeb from '~/hooks/useGeb'
-import Loader from '~/components/Loader'
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import { POOLS } from '~/utils'
 import PoolBlock from './PoolBlock'
 import { JSX } from 'react/jsx-runtime'
 import { PoolData } from '@opendollar/sdk'
+import Skeleton from 'react-loading-skeleton'
 
 interface Cache {
     [key: string]: PoolData
@@ -91,9 +91,16 @@ const Earn = () => {
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )
                 ) : (
-                    <Loader width="50px" color="#1A74EC" />
+                    <Skeleton
+                        height={185}
+                        count={3}
+                        baseColor={'#89B3FB'}
+                        highlightColor="#2871FD"
+                        style={{ marginBottom: '30px' }}
+                    />
                 )}
             </Pools>
+
             <BtnWrapper>
                 <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
                     suggest a new pool <ExternalLink />
@@ -157,7 +164,9 @@ const PoolsHeader = styled.h2`
     margin-bottom: 20px;
 `
 
-const Pools = styled.div``
+const Pools = styled.div`
+    margin-bottom: 30px;
+`
 
 const BtnWrapper = styled.div`
     width: max-content;

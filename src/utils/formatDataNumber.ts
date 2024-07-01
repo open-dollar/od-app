@@ -31,7 +31,9 @@ export function formatDataNumber(
     return new Intl.NumberFormat('en-US', {
         minimumFractionDigits: minimumDecimals,
         maximumFractionDigits:
-            (minimumDecimals >= formatDecimal && formatDecimal !== 0) ? Math.min(minimumDecimals, formatDecimal) + 1 : formatDecimal,
+            minimumDecimals >= formatDecimal && formatDecimal !== 0
+                ? Math.min(minimumDecimals, formatDecimal) + 1
+                : formatDecimal,
         notation: compact ? 'compact' : 'standard',
         style: currency ? 'currency' : 'decimal',
         currency: 'USD',

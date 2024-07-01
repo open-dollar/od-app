@@ -108,31 +108,11 @@ export type BoltsEarnedData = {
     [key: string]: string
 }
 
-export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
-    {
-        title: 'Invite a Friend',
-        text: (
-            <>
-                Create a referral link by signing a message with your wallet.
-                <Affiliate />
-            </>
-        ),
-        button: '',
-        items: [
-            {
-                title: 'Source',
-                status: <OpenDollarLogo />,
-            },
-            {
-                title: 'Bolts',
-                status: '10% of referrals + friends receive 250 Bolts per ETH deposited for 30 days',
-            },
-            {
-                title: 'Earned',
-                status: boltsEarnedData['Invite a Friend'] || '-',
-            },
-        ],
-    },
+export type MultipliersData = {
+    [key: string]: string
+}
+
+export const MULTIPLIERS = (multipliersData: MultipliersData) => [
     {
         title: 'Genesis NFV User',
         button: (
@@ -147,7 +127,7 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: boltsEarnedData['GenesisNFV'] || '-' },
+            { title: 'Holder', status: multipliersData['GENESIS_NFV'] || '-' },
         ],
     },
     {
@@ -180,7 +160,7 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'Guild.xyz' },
             { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Holder', status: boltsEarnedData['OgNFT'] || '-' },
+            { title: 'Holder', status: multipliersData['OG_NFT'] || '-' },
         ],
     },
     {
@@ -212,7 +192,7 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: 'NFTs2Me' },
             { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || '-' },
+            { title: 'Holder', status: multipliersData['GENESIS_NFT'] || '-' },
         ],
     },
     {
@@ -225,7 +205,7 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '+30%' },
-            { title: 'Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || '-' },
+            { title: 'Earned', status: multipliersData['ETH_TVL_20K'] || '-' },
         ],
     },
 ]
@@ -250,7 +230,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[3] || '-' },
+            { title: 'Earned', status: boltsEarnedData['COLLATERAL_DEPOSIT'] || '-' },
         ],
     },
     {
@@ -270,7 +250,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[1] || '-' },
+            { title: 'Earned', status: boltsEarnedData['DEBT_BORROW'] || '-' },
         ],
     },
     {
@@ -297,7 +277,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[8] || '-' },
+            { title: 'Earned', status: boltsEarnedData['ODG_ETH_LP'] || '-' },
         ],
     },
     {
@@ -324,34 +304,53 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[7] || '-' },
+            { title: 'Earned', status: boltsEarnedData['OD_ETH_LP'] || '-' },
         ],
     },
     {
-        title: 'Galxe and Zealy',
+        title: 'Galxe',
         button: (
             <>
                 <Button secondary onClick={() => onClick('https://galxe.com/opendollar')}>
-                    Galxe <LinkIcon />
-                </Button>
-                <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
-                    Zealy <LinkIcon />
+                    Go <LinkIcon />
                 </Button>
             </>
         ),
-        text: 'Complete tasks on Galxe and Zealy to earn Bolts.',
+        text: 'Complete quests on Galxe.',
         items: [
             {
                 title: 'Source',
                 status: (
                     <>
                         <GalxeLogo />
+                    </>
+                ),
+            },
+            { title: 'Bolts', status: '1 per Point' },
+            { title: 'Earned', status: boltsEarnedData['GALXE'] || '-' },
+        ],
+    },
+    {
+        title: 'Zealy',
+        button: (
+            <>
+                <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
+                    Go <LinkIcon />
+                </Button>
+            </>
+        ),
+        text: 'Complete quests on Zealy.',
+        items: [
+            {
+                title: 'Source',
+                status: (
+                    <>
                         <ZealyLogo />
                     </>
                 ),
             },
-            { title: 'Bolts', status: 'Varies' },
-            { title: 'Earned', status: boltsEarnedData[6] || '-' },
+            { title: 'Bolts', status: '1 per Point' },
+            { title: 'Earned', status: boltsEarnedData['ZEALY'] || '-' },
         ],
     },
 ]

@@ -1,32 +1,33 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
-import { BoltsEarnedData } from '~/containers/Bolts/quests'
+import { BoltsEarnedData, MultipliersData } from '~/containers/Bolts/quests'
 
-type Conversion = {
-    is_referrer: boolean
-    conversion_id: number
-    conversion_name: string
-    total_amount: string
+type Campaign = {
+    type: number
+    amount: string
 }
 
 export type LeaderboardUser = {
     rank: number
     address: string
-    points: number
+    bolts: number
     ens?: string
 }
 
 export interface BoltsModel {
-    userFuulData: {
+    userBoltsData: {
         rank: string
-        points: string
+        bolts: string
     }
-    setUserFuulData: Action<BoltsModel, { rank: string; points: string }>
+    setUserBoltsData: Action<BoltsModel, { rank: string; bolts: string }>
 
     leaderboardData: LeaderboardUser[]
     setLeaderboardData: Action<BoltsModel, LeaderboardUser[]>
 
     boltsEarnedData: BoltsEarnedData
     setBoltsEarnedData: Action<BoltsModel, BoltsEarnedData>
+
+    multipliersData: MultipliersData
+    setMultipliersData: Action<BoltsModel, MultipliersData>
 
     hasFetched: boolean
     setHasFetched: Action<BoltsModel, boolean>
@@ -38,12 +39,12 @@ export interface BoltsModel {
 }
 
 const boltsModel: BoltsModel = {
-    userFuulData: {
+    userBoltsData: {
         rank: '',
-        points: '',
+        bolts: '',
     },
-    setUserFuulData: action((state, payload) => {
-        state.userFuulData = payload
+    setUserBoltsData: action((state, payload) => {
+        state.userBoltsData = payload
     }),
 
     leaderboardData: [],
@@ -54,6 +55,11 @@ const boltsModel: BoltsModel = {
     boltsEarnedData: {},
     setBoltsEarnedData: action((state, payload) => {
         state.boltsEarnedData = payload
+    }),
+
+    multipliersData: {},
+    setMultipliersData: action((state, payload) => {
+        state.multipliersData = payload
     }),
 
     hasFetched: false,
@@ -68,46 +74,38 @@ const boltsModel: BoltsModel = {
 
     fetchData: thunk(async (actions, { account }, { getState }) => {
         try {
-            const BOT_DOMAIN = 'https://bot.opendollar.com'
+            const BOT_DOMAIN = process.env.REACT_APP_OD_API_URL
+                ? process.env.REACT_APP_OD_API_URL
+                : 'https://bot.opendollar.com'
             const BOT_API = `${BOT_DOMAIN}/api/bolts`
             const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)
             const result = await response.json()
             if (result.success) {
-                const users = result.data.fuul.leaderboard.users
+                const { leaderboard, user } = result.data
                 const state = getState()
 
                 // Populate ENS cache for leaderboard users
-                users.forEach((user: LeaderboardUser) => {
+                leaderboard.forEach((user: LeaderboardUser) => {
                     const ens = state.ensCache[user.address] || null
                     if (ens) {
                         user.ens = ens
                     }
                 })
 
-                actions.setLeaderboardData(users)
-
-                if (account) {
-                    actions.setUserFuulData(result.data.fuul.user)
-
+                actions.setLeaderboardData(leaderboard)
+                if (account && user) {
                     const boltsEarned: BoltsEarnedData = {}
-                    const { data } = result
-                    let combinedBorrowBolts = 0
-                    let combinedDepositBolts = 0
-                    data.fuul.user.conversions.forEach((conversion: Conversion) => {
-                        if ([1, 2].includes(conversion.conversion_id))
-                            combinedBorrowBolts += parseInt(conversion.total_amount)
-                        else if ([3, 4].includes(conversion.conversion_id))
-                            combinedDepositBolts += parseInt(conversion.total_amount)
-                        else boltsEarned[conversion.conversion_id] = parseInt(conversion.total_amount).toLocaleString()
+                    const multipliers: MultipliersData = {}
+                    user.campaigns?.forEach((campaign: Campaign) => {
+                        boltsEarned[campaign.type] = campaign.amount.toLocaleString()
                     })
-                    boltsEarned[1] = combinedBorrowBolts.toLocaleString()
-                    boltsEarned[3] = combinedDepositBolts.toLocaleString()
+                    user.multipliers?.forEach((multiplier: Campaign) => {
+                        multipliers[multiplier.type] = multiplier.amount
+                    })
 
-                    boltsEarned['OgNFT'] = data.OgNFT ? 'Yes' : 'No'
-                    boltsEarned['GenesisNFV'] = data.GenesisNFV ? 'Yes' : 'No'
-                    boltsEarned['GenesisNFT'] = data.GenesisNFT ? 'Yes' : 'No'
-
+                    actions.setUserBoltsData(user)
                     actions.setBoltsEarnedData(boltsEarned)
+                    actions.setMultipliersData(multipliers)
                 }
             }
             actions.setHasFetched(true)

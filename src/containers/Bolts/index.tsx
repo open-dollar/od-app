@@ -11,7 +11,7 @@ import { useStoreState, useStoreActions } from '~/store'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
-    const userFuulData = useStoreState((state) => state.boltsModel.userFuulData)
+    const userBoltsData = useStoreState((state) => state.boltsModel.userBoltsData)
     const leaderboardData = useStoreState((state) => state.boltsModel.leaderboardData)
     const boltsEarnedData = useStoreState((state) => state.boltsModel.boltsEarnedData)
     const fetchData = useStoreActions((actions) => actions.boltsModel.fetchData)
@@ -28,7 +28,7 @@ const Bolts = () => {
             </Section>
             <Section>
                 <SectionHeader>Leaderboard</SectionHeader>
-                <Leaderboard data={leaderboardData} userFuulData={userFuulData} />
+                <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
             </Section>
             <Section>
                 <MessageBox>

@@ -21,7 +21,7 @@ import { LeaderboardUser } from '~/model/boltsModel'
 const columnHelper = createColumnHelper()
 
 // @ts-ignore
-const Table = ({ data, userFuulData }) => {
+const Table = ({ data, userBoltsData }) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState<string>('')
     const [isTableReady, setIsTableReady] = useState(false)
@@ -39,16 +39,16 @@ const Table = ({ data, userFuulData }) => {
 
     const displayData = useMemo(() => {
         let dataToDisplay = [...data.slice(0, 10)]
-        if (userFuulData.points) {
+        if (userBoltsData.bolts) {
             const userInTop10 = data.find(
-                (user: LeaderboardUser) => user.address === userFuulData.address && user.rank <= 10
+                (user: LeaderboardUser) => user.address === userBoltsData.address && user.rank <= 10
             )
             if (!userInTop10) {
-                dataToDisplay.push(userFuulData)
+                dataToDisplay.push(userBoltsData)
             }
         }
         return dataToDisplay
-    }, [data, userFuulData])
+    }, [data, userBoltsData])
 
     const columns = [
         columnHelper.accessor('rank', {
@@ -60,7 +60,7 @@ const Table = ({ data, userFuulData }) => {
                 if (rank <= 3) {
                     color = '#FFFFFF'
                     badge = <BadgeImage src={leaderboardLeadersBadge} alt="leaderboard-badge" />
-                } else if (rank === userFuulData.rank) {
+                } else if (rank === userBoltsData.rank) {
                     color = '#1A74EC'
                 }
                 return (
@@ -75,11 +75,11 @@ const Table = ({ data, userFuulData }) => {
             header: 'Address',
             cell: (info) => {
                 const address = info.getValue()
-                return <AddressCell address={address} userFuulDataAddress={userFuulData.address} data={data} />
+                return <AddressCell address={address} userBoltsDataAddress={userBoltsData.address} data={data} />
             },
         }),
-        columnHelper.accessor('points', {
-            header: 'Points',
+        columnHelper.accessor('bolts', {
+            header: 'Bolts',
             // @ts-ignore
             cell: (info) => <Points>{info.getValue().toLocaleString()}</Points>,
         }),
@@ -144,7 +144,7 @@ const Table = ({ data, userFuulData }) => {
                                   key={row.id}
                                   style={
                                       // @ts-ignore
-                                      row.original.address === userFuulData.address
+                                      row.original.address === userBoltsData.address
                                           ? { backgroundColor: '#8DB2FF99' }
                                           : { backgroundColor: '#1A74EC' }
                                   }
@@ -156,7 +156,7 @@ const Table = ({ data, userFuulData }) => {
                                       else tdStyle = { paddingTop: '10px', color: '#eeeeee' }
                                       if (index === 0) tdStyle.paddingBottom = '10px'
                                       // @ts-ignore
-                                      if (row?.original.address === userFuulData.address) tdStyle.color = '#1A74EC'
+                                      if (row?.original.address === userBoltsData.address) tdStyle.color = '#1A74EC'
 
                                       return (
                                           <td key={cell.id} style={tdStyle}>

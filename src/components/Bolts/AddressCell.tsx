@@ -7,18 +7,18 @@ import styled from 'styled-components'
 
 interface AddressCellProps {
     address: string
-    userFuulDataAddress: string
+    userBoltsDataAddress: string
     data: LeaderboardUser[]
 }
 
-const AddressCell: React.FC<AddressCellProps> = ({ address, userFuulDataAddress, data }) => {
+const AddressCell: React.FC<AddressCellProps> = ({ address, userBoltsDataAddress, data }) => {
     const userInTop10 = useMemo(() => data.find((user) => user.rank <= 10 && user.address === address), [data, address])
     // Skip ENS check for users not in the top 10
     const resolvedAddress = useAddress(address, 0, !userInTop10)
 
     return (
         <Address>
-            {userFuulDataAddress === address && (
+            {userBoltsDataAddress === address && (
                 <Badge
                     style={{
                         backgroundColor: '#e2f1ff',
@@ -43,7 +43,7 @@ const AddressCell: React.FC<AddressCellProps> = ({ address, userFuulDataAddress,
 export default React.memo(AddressCell, (prevProps, nextProps) => {
     return (
         prevProps.address === nextProps.address &&
-        prevProps.userFuulDataAddress === nextProps.userFuulDataAddress &&
+        prevProps.userBoltsDataAddress === nextProps.userBoltsDataAddress &&
         prevProps.data === nextProps.data
     )
 })

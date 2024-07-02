@@ -30,6 +30,7 @@ import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
 import ScreenLoader from '~/components/Modals/ScreenLoader'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const ToastContainer = lazy(() => import('react-toastify').then((module) => ({ default: module.ToastContainer })))
 

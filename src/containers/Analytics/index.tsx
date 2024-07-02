@@ -165,7 +165,7 @@ const Analytics = () => {
 
     const surplusInTreasuryData: DataCardProps = {
         title: 'Surplus in Treasury',
-        value: `${surplusInTreasury} OD`,
+        value: surplusInTreasury,
         description:
             "Total HAI accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
     }
@@ -333,7 +333,7 @@ const Analytics = () => {
                     analyticsData.globalDebt,
                     analyticsData.globalDebtCeiling
                 ),
-                surplusInTreasury: formatDataNumber(analyticsData.surplusInTreasury, 18, 0),
+                surplusInTreasury: `${formatDataNumber(analyticsData.surplusInTreasury, 18, 0)} OD`,
                 marketPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 4),
                 redemptionPrice: formatDataNumber(analyticsData.redemptionPrice, 18, 3, true, undefined, 4),
                 totalLiquidity: formattedLiquidity,

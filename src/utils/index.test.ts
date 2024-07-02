@@ -171,22 +171,22 @@ describe('utils', () => {
 
     describe('formatDataNumber', () => {
         it('handles format decimals correctly', () => {
-            const input = "2457565485783295579314012"
+            const input = '2457565485783295579314012'
             expect(formatDataNumber(input, 18, 2)).toEqual('2,457,565.49')
         })
 
         it('handles dollar currency sign correctly', () => {
-            const input = "2457565485783295579314012"
+            const input = '2457565485783295579314012'
             expect(formatDataNumber(input, 18, 2, true)).toEqual('$2,457,565.49')
         })
 
         it('handles compact value and currency sign correctly', () => {
-            const input = "2457565485783295579314012"
+            const input = '2457565485783295579314012'
             expect(formatDataNumber(input, 18, 2, true, true)).toEqual('$2.46M')
         })
 
         it('handles compact format decimals and minimum decimals correctly', () => {
-            const input = "1000000000000000000"
+            const input = '1000000000000000000'
             expect(formatDataNumber(input, 18, 3, true, undefined, 4)).toEqual('$1.0000')
         })
     })

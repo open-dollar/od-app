@@ -276,7 +276,6 @@ const Analytics = () => {
                 0,
                 true
             ).toString()
-            console.log('analytics data', analyticsData)
             const colRows = Object.fromEntries(
                 Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
                     const lockedAmountInUsd = multiplyWad(

@@ -1,3 +1,4 @@
+import { formatDataNumber } from './formatDataNumber'
 import {
     formatNumber,
     getCollateralRatio,
@@ -9,6 +10,7 @@ import {
     safeIsSafe,
 } from './helper'
 import { ChainId } from './interfaces'
+import { utils } from 'ethers'
 
 describe('utils', () => {
     describe('#getEtherscanLink', () => {
@@ -165,6 +167,58 @@ describe('utils', () => {
         })
         it('returns 0', () => {
             expect(returnTotalValue('2', '2', true, true)).toEqual('0')
+        })
+    })
+
+    describe('formatDataNumber', () => {
+        it('formats a BigNumber string with default parameters', () => {
+            const input = utils.parseUnits('1234.56789', 18).toString()
+            expect(formatDataNumber(input)).toEqual('1,234.57')
+        })
+
+        it('formats a BigNumber string with specified decimals', () => {
+            const input = utils.parseUnits('1234.56789', 18).toString()
+            expect(formatDataNumber(input, 18, 3)).toEqual('1,234.568')
+        })
+
+        it('formats a BigNumber string as currency', () => {
+            const input = utils.parseUnits('1234.56789', 18).toString()
+            expect(formatDataNumber(input, 18, 2, true)).toEqual('$1,234.57')
+        })
+
+        it('formats a BigNumber string as compact', () => {
+            const input = utils.parseUnits('1234567890', 18).toString()
+            expect(formatDataNumber(input, 18, 2, false, true)).toEqual('1.23B')
+        })
+
+        it('formats a BigNumber string with minimum decimals', () => {
+            const input = utils.parseUnits('0.00000001', 18).toString()
+            expect(formatDataNumber(input, 18, 2, false, false, 8)).toEqual('0.00000001')
+        })
+
+        it('returns formatted string with minimum decimals less than formatDecimal', () => {
+            const input = utils.parseUnits('0.001234', 18).toString()
+            expect(formatDataNumber(input, 18, 3, false, false, 2)).toEqual('0.001')
+        })
+
+        it('returns formatted string with currency and minimum decimals', () => {
+            const input = utils.parseUnits('0.00000001', 18).toString()
+            expect(formatDataNumber(input, 18, 2, true, false, 8)).toEqual('$0.00000001')
+        })
+
+        it('formats a number less than 0.01 correctly', () => {
+            const input = utils.parseUnits('0.0056789', 18).toString()
+            expect(formatDataNumber(input, 18, 2, true, false, 3)).toEqual('$0.006')
+        })
+
+        it('handles zero decimals correctly', () => {
+            const input = '1234567890'
+            expect(formatDataNumber(input, 0, 2)).toEqual('1,234,567,890.00')
+        })
+
+        it('formats a number correctly when minimumDecimals > formatDecimal', () => {
+            const input = utils.parseUnits('0.001234', 18).toString()
+            expect(formatDataNumber(input, 18, 2, false, false, 3)).toEqual('0.001')
         })
     })
 })

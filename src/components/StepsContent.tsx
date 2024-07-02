@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { useState } from 'react'
 import Button from './Button'
 import closedVault from '../assets/closed-vault.webp'
 import wallet from '../assets/wallet.webp'
@@ -26,27 +29,38 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
         { title: 'Step 3', text: 'Create a Vault' },
     ]
 
-    const returnLottie = (step: number) => {
-        switch (step) {
-            case 0:
-                return <img src={closedVault} alt="" />
-            case 1:
-                return <img src={wallet} alt="" />
-            case 2:
-                return <img src={vaultFacilitator} alt="" />
-            case 3:
-                return <img src={openedVault} alt="" />
-            default:
-                return <img src={closedVault} alt="" />
+    const useReturnLottie = (step: number) => {
+        const [loaded, setLoaded] = useState(false)
+
+        const handleImageLoad = () => {
+            setLoaded(true)
         }
+
+        const imageSrc = [closedVault, wallet, vaultFacilitator, openedVault][step] || closedVault
+
+        return (
+            <>
+                {!loaded && <Skeleton baseColor={'rgb(220 241 255)'} width="100%" height="330px" />}
+                <img
+                    src={imageSrc}
+                    alt=""
+                    width="100%"
+                    height="330px"
+                    loading="lazy"
+                    onLoad={handleImageLoad}
+                    style={{ display: loaded ? 'block' : 'none' }}
+                />
+            </>
+        )
     }
+
     return (
         <Container id={id}>
             <StepperWrapper stepNumber={stepNumber}>
                 <Stepper step={stepNumber} steps={steps} />
             </StepperWrapper>
             <ContentContainer stepNumber={stepNumber}>
-                <ImageContainer stepNumber={stepNumber}>{returnLottie(stepNumber)}</ImageContainer>
+                <ImageContainer stepNumber={stepNumber}>{useReturnLottie(stepNumber)}</ImageContainer>
                 <ContentWrapper stepNumber={stepNumber}>
                     <Title>{t(title)}</Title>
                     <Text>{t(text)}</Text>
@@ -78,6 +92,7 @@ const Container = styled.div`
 const ImageContainer = styled.div<{ stepNumber: number }>`
     margin-right: ${(props) => (props.stepNumber === 0 ? '' : '30px')};
     max-width: ${(props) => (props.stepNumber === 0 ? '358px' : '319px')};
+    width: 358px;
 
     @media (max-width: 960px) {
         margin-right: 0;

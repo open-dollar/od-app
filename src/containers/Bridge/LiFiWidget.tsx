@@ -2,7 +2,7 @@ import { LiFiWidget, WidgetConfig } from '@lifi/widget'
 
 const widgetConfig: WidgetConfig = {
     integrator: 'opendollar',
-    variant: 'wide',
+    // variant: 'wide',
     subvariant: 'default',
     appearance: 'light',
     // theme: {
@@ -52,9 +52,9 @@ const widgetConfig: WidgetConfig = {
     //         borderRadius: 3,
     //     },
     // },
-    walletConfig: {
-        async onConnect() {},
-    },
+    // walletConfig: {
+    //     async onConnect() {},
+    // },
 }
 
 const Widget = () => {

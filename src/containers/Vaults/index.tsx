@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useGeb from '~/hooks/useGeb'
 import CreateVaultStep from '~/components/CreateVaultStep'
 import VaultList from './VaultList'
@@ -14,7 +14,7 @@ import Accounts from './Accounts'
 
 const OnBoarding = ({ ...props }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const history = useHistory()
+    const navigate = useNavigate()
     const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const { t } = useTranslation()
@@ -77,7 +77,7 @@ const OnBoarding = ({ ...props }) => {
     ])
 
     const handleCreateSafe = () => {
-        history.push('/vaults/create')
+        navigate('/vaults/create')
     }
 
     return (

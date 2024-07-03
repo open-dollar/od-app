@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { RouteComponentProps, useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
@@ -12,11 +12,9 @@ import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
 
-const Auctions = ({
-    match: {
-        params: { auctionType },
-    },
-}: RouteComponentProps<{ auctionType?: string }>) => {
+const Auctions = ({ ...props }) => {
+    const auctionType = props.match.params.id as string
+
     const { account } = useActiveWeb3React()
     const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
     const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
@@ -27,7 +25,7 @@ const Auctions = ({
     const [isLoading, setIsLoading] = useState(false)
     const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
     const geb = useGeb()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const getText = () => {
         switch (type) {
@@ -98,7 +96,7 @@ const Auctions = ({
         } else {
             params.delete('type')
         }
-        history.push({ search: params.toString() })
+        navigate({ search: params.toString() })
         setType(type)
     }
 

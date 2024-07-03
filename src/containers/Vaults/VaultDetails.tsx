@@ -110,7 +110,7 @@ const VaultDetails = ({ ...props }) => {
     useEffect(() => {
         if (!account || !provider) return
         if (!isNumeric(safeId)) {
-            props.history.push('/vaults')
+            props.navigate('/vaults')
         }
     }, [account, provider, props.history, safeId])
 

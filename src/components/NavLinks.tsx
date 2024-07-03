@@ -1,14 +1,12 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 import { useStoreActions } from '../store'
 
 const NavLinks = () => {
-    const history = useHistory()
-    const { location } = history
+    const location = useLocation()
 
     const { t } = useTranslation()
     const { popupsModel: popupsActions } = useStoreActions((state) => state)

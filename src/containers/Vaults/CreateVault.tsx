@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 import { ChevronLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
@@ -50,7 +50,7 @@ const CreateVault = ({
         safeModel: safeState,
         connectWalletModel: { proxyAddress, tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
-    const history = useHistory()
+    const navigate = useNavigate()
     const {
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
@@ -180,7 +180,7 @@ const CreateVault = ({
                     depositAmountUSD,
                     borrowAmountUSD,
                 })
-                history.push('/vaults')
+                navigate('/vaults')
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)
             } catch (e) {
@@ -243,7 +243,7 @@ const CreateVault = ({
         bridgeModelActions.setReason(reason)
         bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
         bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
-        history.push('/bridge')
+        navigate('/bridge')
     }
 
     return (
@@ -271,7 +271,7 @@ const CreateVault = ({
                 <Content>
                     <Header>
                         <Btn>
-                            <FlexBtn onClick={() => history.goBack()}>
+                            <FlexBtn onClick={() => navigate(-1)}>
                                 <ChevronLeft />
                                 <span>Back</span>
                             </FlexBtn>

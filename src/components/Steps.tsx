@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
     useActiveWeb3React,
     handleTransactionError,
@@ -22,7 +22,7 @@ const Steps = () => {
     const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const blocksSinceCheck = use10BlocksConfirmations()
-    const history = useHistory()
+    const navigate = useNavigate()
     const { connectWalletModel: connectWalletState } = useStoreState((state) => state)
 
     const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
@@ -82,7 +82,7 @@ const Steps = () => {
     }
 
     const handleCreateSafe = () => {
-        history.push('/vaults/create')
+        navigate('/vaults/create')
     }
 
     const returnSteps = (stepNumber: number) => {

@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useCallback } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -61,7 +61,7 @@ const Shared = ({ children, ...rest }: Props) => {
     const { chainId, account, provider, connector } = useActiveWeb3React()
 
     const geb = useGeb()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const previousAccount = usePrevious(account)
 
@@ -183,7 +183,7 @@ const Shared = ({ children, ...rest }: Props) => {
             transactionsActions.setTransactions({})
         }
         if (isAccountSwitched) {
-            history.push('/')
+            navigate('/')
             transactionsActions.setTransactions({})
         }
     }
@@ -223,7 +223,7 @@ const Shared = ({ children, ...rest }: Props) => {
             if (isBlocked) {
                 popupsActions.setIsConnectedWalletModalOpen(false)
                 popupsActions.setIsConnectorsWalletOpen(false)
-                history.push('/geoblock')
+                navigate('/geoblock')
                 connectWalletActions.setIsWrongNetwork(true)
                 settingsActions.setBlockBody(true)
                 return false

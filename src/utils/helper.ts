@@ -127,7 +127,7 @@ export const toFixedString = (value: string, type: keyof typeof floatsTypes = 'W
     }
 }
 
-const getBytes32String = (collateralType: string, tokensData: { [key: string]: TokenData }): string | null => {
+export const getBytes32String = (collateralType: string, tokensData: { [key: string]: TokenData }): string | null => {
     const token = Object.values(tokensData).find(
         (token) => token.symbol === collateralType || token.bytes32String === collateralType
     )

@@ -30,6 +30,8 @@ import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
 import ScreenLoader from '~/components/Modals/ScreenLoader'
+import Explore from '~/containers/Explore'
+
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const ToastContainer = lazy(() => import('react-toastify').then((module) => ({ default: module.ToastContainer })))
@@ -101,6 +103,7 @@ const App = () => {
                                                 <Route exact strict component={Marketplace} path={'/marketplace'} />
                                                 <Route exact strict component={CreateVault} path={'/vaults/create'} />
                                                 <Route exact strict component={Bridge} path={'/bridge'} />
+                                                <Route exact strict component={Explore} path={'/explore'} />
                                                 <Route
                                                     exact
                                                     strict

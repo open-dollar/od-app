@@ -14,6 +14,8 @@ const Bolts = () => {
     const userBoltsData = useStoreState((state) => state.boltsModel.userBoltsData)
     const leaderboardData = useStoreState((state) => state.boltsModel.leaderboardData)
     const boltsEarnedData = useStoreState((state) => state.boltsModel.boltsEarnedData)
+    const multipliersData = useStoreState((state) => state.boltsModel.multipliersData)
+
     const fetchData = useStoreActions((actions) => actions.boltsModel.fetchData)
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const Bolts = () => {
 
             <Section>
                 <SectionHeader>Multipliers</SectionHeader>
-                {MULTIPLIERS(boltsEarnedData).map((quest, index) => (
+                {MULTIPLIERS(multipliersData).map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>

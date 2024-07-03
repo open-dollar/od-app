@@ -100,7 +100,7 @@ const boltsModel: BoltsModel = {
                         boltsEarned[campaign.type] = campaign.amount.toLocaleString()
                     })
                     user.multipliers?.forEach((multiplier: Campaign) => {
-                        multipliers[multiplier.type] = multiplier.amount
+                        multipliers[multiplier.type] = parseInt(multiplier.amount) > 0 ? 'Active' : 'Inactive'
                     })
 
                     actions.setUserBoltsData(user)

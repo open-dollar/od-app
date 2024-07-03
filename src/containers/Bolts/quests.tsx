@@ -126,41 +126,8 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
                 title: 'Source',
                 status: <OpenDollarLogo />,
             },
-            { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: multipliersData['GENESIS_NFV'] || '-' },
-        ],
-    },
-    {
-        title: 'ODOG NFT Holder',
-        button: (
-            <Button
-                secondary
-                onClick={() =>
-                    onClick(
-                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
-                    )
-                }
-            >
-                Get yours <LinkIcon />
-            </Button>
-        ),
-        text: (
-            <div>
-                Holders of the
-                <StyledAnchor
-                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
-                    target="_blank"
-                >
-                    ODOG NFT
-                </StyledAnchor>
-                receive a 3% bonus for all points earned.
-            </div>
-        ),
-
-        items: [
-            { title: 'Source', status: 'Guild.xyz' },
-            { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Holder', status: multipliersData['OG_NFT'] || '-' },
+            { title: 'Multiplier', status: '+10%' },
+            { title: 'Status', status: multipliersData['GENESIS_NFV'] || '-' },
         ],
     },
     {
@@ -179,20 +146,51 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
         ),
         text: (
             <div>
-                Holders of the
+                Holders the
                 <StyledAnchor
                     href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
                     target="_blank"
                 >
                     Genesis NFT
                 </StyledAnchor>
-                receive a 7% bonus for all points earned.
             </div>
         ),
         items: [
             { title: 'Source', status: 'NFTs2Me' },
-            { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Holder', status: multipliersData['GENESIS_NFT'] || '-' },
+            { title: 'Multiplier', status: '+7%' },
+            { title: 'Status', status: multipliersData['GENESIS_NFT'] || '-' },
+        ],
+    },
+    {
+        title: 'ODOG NFT Holder',
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick(
+                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
+                    )
+                }
+            >
+                Get yours <LinkIcon />
+            </Button>
+        ),
+        text: (
+            <div>
+                Hold the
+                <StyledAnchor
+                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
+                    target="_blank"
+                >
+                    ODOG NFT
+                </StyledAnchor>
+            </div>
+        ),
+
+        items: [
+            { title: 'Source', status: 'Guild.xyz' },
+            { title: 'Multiplier', status: '+3%' },
+            { title: 'Status', status: multipliersData['OG_NFT'] || '-' },
         ],
     },
     {
@@ -204,8 +202,8 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
                 title: 'Source',
                 status: <OpenDollarLogo />,
             },
-            { title: 'Bolts', status: '+30%' },
-            { title: 'Earned', status: multipliersData['ETH_TVL_20K'] || '-' },
+            { title: 'Multiplier', status: '+30% one-time bonus' },
+            { title: 'Status', status: multipliersData['ETH_TVL_20K'] || '-' },
         ],
     },
 ]

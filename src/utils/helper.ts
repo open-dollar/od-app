@@ -127,6 +127,13 @@ export const toFixedString = (value: string, type: keyof typeof floatsTypes = 'W
     }
 }
 
+const getBytes32String = (collateralType: string, tokensData: { [key: string]: TokenData }): string | null => {
+    const token = Object.values(tokensData).find(
+        (token) => token.symbol === collateralType || token.bytes32String === collateralType
+    )
+    return token ? token.bytes32String : null
+}
+
 export const formatUserSafe = (
     safes: Array<any>,
     liquidationData: ILiquidationData,
@@ -141,17 +148,18 @@ export const formatUserSafe = (
     const { currentRedemptionPrice, currentRedemptionRate, collateralLiquidationData } = liquidationData
 
     return safes
-        .filter((s) => s.collateralType in collateralBytes32)
         .map((s) => {
-            const token = collateralBytes32[s.collateralType]
+            const bytes32String = getBytes32String(s.collateralType, tokensData)
+            if (!bytes32String || !(bytes32String in collateralBytes32)) return null
+
+            const token = collateralBytes32[bytes32String]
             const accumulatedRate = collateralLiquidationData[token]?.accumulatedRate
             const currentPrice = collateralLiquidationData[token]?.currentPrice
+            const availableDebt = returnAvailableDebt(currentPrice?.safetyPrice, '0', s.collateral, s.debt)
             const liquidationCRatio = collateralLiquidationData[token]?.liquidationCRatio
             const safetyCRatio = collateralLiquidationData[token]?.safetyCRatio
             const liquidationPenalty = collateralLiquidationData[token]?.liquidationPenalty
             const totalAnnualizedStabilityFee = collateralLiquidationData[token]?.totalAnnualizedStabilityFee
-
-            const availableDebt = returnAvailableDebt(currentPrice?.safetyPrice, '0', s.collateral, s.debt)
 
             const totalDebt = returnTotalValue(returnTotalDebt(s.debt, accumulatedRate) as string, '0').toString()
 
@@ -171,12 +179,13 @@ export const formatUserSafe = (
 
             return {
                 id: s.safeId,
+                ownerAddress: s.ownerAddress,
                 safeHandler: s.safeHandler,
                 date: s.createdAt,
                 riskState: ratioChecker(Number(collateralRatio), Number(liquidationCRatio), Number(safetyCRatio)),
                 collateral: s.collateral,
                 collateralType: s.collateralType,
-                collateralName: collateralBytes32[s.collateralType],
+                collateralName: collateralBytes32[bytes32String],
                 debt: s.debt,
                 totalDebt,
                 availableDebt,
@@ -192,6 +201,7 @@ export const formatUserSafe = (
                 currentRedemptionRate: currentRedemptionRate || '0',
             } as ISafe
         })
+        .filter((s): s is ISafe => s !== null)
         .sort((a, b) => Number(b.riskState) - Number(a.riskState) || Number(b.debt) - Number(a.debt))
 }
 

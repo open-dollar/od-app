@@ -5,6 +5,7 @@ import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
+import turtleClubLogo from '~/assets/turtle-club.png'
 import { useHistory } from 'react-router-dom'
 import TokenIcon from '~/components/TokenIcon'
 
@@ -18,6 +19,12 @@ const LogoText = styled.p`
     display: flex;
     align-items: center;
 `
+
+const TurtleClubLogo = () => (
+    <LogoText>
+        <img alt="Turtle Club" src={turtleClubLogo} style={{ height: '27px', marginRight: '8px' }} /> Turtle Club
+    </LogoText>
+)
 
 const CamelotLogo = () => (
     <LogoText>
@@ -112,6 +119,26 @@ export type MultipliersData = {
 }
 
 export const MULTIPLIERS = (multipliersData: MultipliersData) => [
+    {
+        title: 'Turtle Club',
+        button: (
+            <Button
+                secondary
+                onClick={() => onClick('https://www.opendollar.com/blog/turtle-club-joins-the-vault-keeper-program')}
+            >
+                Learn more <LinkIcon />
+            </Button>
+        ),
+        text: `Become a Turtle Club member.`,
+        items: [
+            {
+                title: 'Source',
+                status: <TurtleClubLogo />,
+            },
+            { title: 'Multiplier', status: '+10%' },
+            { title: 'Status', status: multipliersData['TURTLE_CLUB'] || '-' },
+        ],
+    },
     {
         title: 'Genesis NFV User',
         button: (

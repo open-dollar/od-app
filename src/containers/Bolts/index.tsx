@@ -31,12 +31,12 @@ const Bolts = () => {
                 <FlexMultipleRow>
                     <DataCard
                         title={'Your Bolts'}
-                        value={userBoltsData.bolts ? userBoltsData.bolts : '-'}
+                        value={userBoltsData.bolts ? parseInt(userBoltsData.bolts).toLocaleString() : '-'}
                         // description={val.description}
                     />
                     <DataCard
                         title={'Your Multiplier'}
-                        value={userBoltsData.multiplier ? userBoltsData.multiplier : '-'}
+                        value={userBoltsData.multiplier ? parseInt(userBoltsData.multiplier).toFixed(2) : '-'}
                         // description={"Multiplier"}
                     />
                 </FlexMultipleRow>

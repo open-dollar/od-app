@@ -32,21 +32,21 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ globalSafes, analyticsData })
                 }
 
                 const estimatedValue = `${(
-                    +ethers.utils.formatUnits(vault.collateral) * +ethers.utils.formatUnits(tokenData.currentPrice)
+                    +ethers.utils.formatUnits(Math.trunc(Number(vault.collateral)).toString()) * +ethers.utils.formatUnits(tokenData.currentPrice)
                 ).toFixed(2)}`
 
                 const stabilityFee = transformToAnnualRate(
-                    multiplyRates(tokenData.stabilityFee.toString(), vault.currentRedemptionRate) || '0',
+                    multiplyRates(tokenData.stabilityFee.toString(), Math.trunc(Number(vault.currentRedemptionRate)).toString()) || '0',
                     27
                 )
 
-                const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
+                const cratio = (+estimatedValue / +formatDataNumber(Math.trunc(Number(vault.debt)).toString())) * 100
 
                 const svgData = {
                     vaultID: vault.id,
                     stabilityFee,
-                    debtAmount: formatDataNumber(vault.debt) + ' OD',
-                    collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
+                    debtAmount: formatDataNumber(Number(vault.debt).toString()) + ' OD',
+                    collateralAmount: formatDataNumber(Math.trunc(Number(vault.collateral)).toString()) + ' ' + vault.collateralType,
                     collateralizationRatio: cratio ?? '∞',
                     safetyRatio: parseRay(tokenData.safetyCRatio),
                     liqRatio: parseRay(tokenData.liquidationCRatio),

@@ -1,4 +1,4 @@
-import { formatUserSafe, IFetchSafesPayload, IUserSafeList } from '~/utils'
+import { formatUserSafe, IFetchGlobalSafesPayload, IFetchSafesPayload, IUserSafeList } from '~/utils'
 import gebManager from '~/utils/gebManager'
 
 export const fetchUserSafes = async (config: IFetchSafesPayload) => {
@@ -41,4 +41,27 @@ export const fetchUserSafesRaw = async (config: IFetchSafesPayload) => {
     })
 
     return response
+}
+
+export const fetchGlobalSafes = async (config: IFetchGlobalSafesPayload) => {
+    let ownerAddressesResponse = await gebManager.getGlobalSafesRpc()
+    if (!ownerAddressesResponse) return
+
+    let safesResponse = await gebManager.fetchSafesForOwners(config, ownerAddressesResponse.ownerAddresses)
+    if (!safesResponse) return
+
+    const liquidationData = {
+        collateralLiquidationData: safesResponse.collateralLiquidationData,
+        currentRedemptionPrice: safesResponse.systemState.currentRedemptionPrice.value,
+        currentRedemptionRate: safesResponse.systemState.currentRedemptionRate.annualizedRate,
+        globalDebt: safesResponse.systemState.globalDebt,
+        globalDebtCeiling: safesResponse.systemState.globalDebtCeiling,
+        perSafeDebtCeiling: safesResponse.systemState.perSafeDebtCeiling,
+    }
+
+    const globalSafes = formatUserSafe(safesResponse.safes, liquidationData, config.tokensData)
+    return {
+        globalSafes,
+        liquidationData,
+    }
 }

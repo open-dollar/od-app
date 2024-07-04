@@ -4,22 +4,23 @@ import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
 import { MULTIPLIERS, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
-import Image from '~/assets/quests-img.png'
 import styled from 'styled-components'
 import Leaderboard from '~/containers/Bolts/Leaderboard'
 import { useStoreState, useStoreActions } from '~/store'
+import DataCard from '~/containers/Analytics/DataCard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
-    const userFuulData = useStoreState((state) => state.boltsModel.userFuulData)
+    const userBoltsData = useStoreState((state) => state.boltsModel.userBoltsData)
     const leaderboardData = useStoreState((state) => state.boltsModel.leaderboardData)
     const boltsEarnedData = useStoreState((state) => state.boltsModel.boltsEarnedData)
+    const multipliersData = useStoreState((state) => state.boltsModel.multipliersData)
+
     const fetchData = useStoreActions((actions) => actions.boltsModel.fetchData)
 
     useEffect(() => {
         fetchData({ account } as { account: string | null })
     }, [account, fetchData])
-
     return (
         <Container>
             <Section>
@@ -27,10 +28,25 @@ const Bolts = () => {
                 <SubHeader>Welcome Vault Keepers!</SubHeader>
             </Section>
             <Section>
-                <SectionHeader>Leaderboard</SectionHeader>
-                <Leaderboard data={leaderboardData} userFuulData={userFuulData} />
+                <FlexMultipleRow>
+                    <DataCard
+                        title={'Your Bolts'}
+                        value={userBoltsData.bolts ? userBoltsData.bolts : '-'}
+                        // description={val.description}
+                    />
+                    <DataCard
+                        title={'Your Multiplier'}
+                        value={userBoltsData.multiplier ? userBoltsData.multiplier : '-'}
+                        // description={"Multiplier"}
+                    />
+                </FlexMultipleRow>
             </Section>
+
             <Section>
+                <SectionHeader>Leaderboard</SectionHeader>
+                <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
+            </Section>
+            {/* <Section>
                 <MessageBox>
                     <img src={Image} alt="" />
                     <Text>
@@ -45,7 +61,7 @@ const Bolts = () => {
                         </p>
                     </Text>
                 </MessageBox>
-            </Section>
+            </Section> */}
 
             <Section>
                 <SectionHeader>Quests</SectionHeader>
@@ -56,7 +72,7 @@ const Bolts = () => {
 
             <Section>
                 <SectionHeader>Multipliers</SectionHeader>
-                {MULTIPLIERS(boltsEarnedData).map((quest, index) => (
+                {MULTIPLIERS(multipliersData).map((quest, index) => (
                     <QuestBlock key={index} {...quest} />
                 ))}
             </Section>
@@ -79,6 +95,20 @@ const Bolts = () => {
     )
 }
 
+const FlexMultipleRow = styled.div`
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+
+        & div {
+            margin-bottom: 24px;
+        }
+    `}
+`
+
 const Container = styled.div`
     margin: 80px auto;
     max-width: 1362px;
@@ -90,46 +120,46 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.accent};
 `
 
-const MessageBox = styled.div`
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 4px;
-    background: ${(props) => props.theme.colors.gradientBg};
-    color: white;
-    padding-left: 28px;
-    display: flex;
-    align-items: center;
+// const MessageBox = styled.div`
+//     max-width: 800px;
+//     margin-left: auto;
+//     margin-right: auto;
+//     border-radius: 4px;
+//     background: ${(props) => props.theme.colors.gradientBg};
+//     color: white;
+//     padding-left: 28px;
+//     display: flex;
+//     align-items: center;
 
-    & h3 {
-        font-size: 32px;
-        font-weight: 700;
-        font-family: ${(props) => props.theme.family.headers};
-        margin-bottom: 10px;
-        line-height: 36px;
-    }
+//     & h3 {
+//         font-size: 32px;
+//         font-weight: 700;
+//         font-family: ${(props) => props.theme.family.headers};
+//         margin-bottom: 10px;
+//         line-height: 36px;
+//     }
 
-    a {
-        text-decoration: underline;
-        color: white;
-    }
+//     a {
+//         text-decoration: underline;
+//         color: white;
+//     }
 
-    @media (max-width: 767px) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding-left: 0;
-        padding-bottom: 36px;
-        padding-left: 25px;
-        padding-right: 25px;
-        border-radius: 0;
-    }
-`
+//     @media (max-width: 767px) {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
+//         text-align: center;
+//         padding-left: 0;
+//         padding-bottom: 36px;
+//         padding-left: 25px;
+//         padding-right: 25px;
+//         border-radius: 0;
+//     }
+// `
 
-const Text = styled.div`
-    max-width: 400px;
-`
+// const Text = styled.div`
+//     max-width: 400px;
+// `
 
 const Title = styled.h2`
     font-size: 34px;
@@ -185,6 +215,6 @@ const BtnWrapper = styled.div`
     }
 `
 
-const Link = styled.a``
+// const Link = styled.a``
 
 export default Bolts

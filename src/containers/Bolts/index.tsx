@@ -8,6 +8,7 @@ import Image from '~/assets/quests-img.png'
 import styled from 'styled-components'
 import Leaderboard from '~/containers/Bolts/Leaderboard'
 import { useStoreState, useStoreActions } from '~/store'
+import DataCard from '~/containers/Analytics/DataCard'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
@@ -21,7 +22,6 @@ const Bolts = () => {
     useEffect(() => {
         fetchData({ account } as { account: string | null })
     }, [account, fetchData])
-
     return (
         <Container>
             <Section>
@@ -29,10 +29,25 @@ const Bolts = () => {
                 <SubHeader>Welcome Vault Keepers!</SubHeader>
             </Section>
             <Section>
+                <FlexMultipleRow>
+                    <DataCard
+                        title={'Your Bolts'}
+                        value={userBoltsData.bolts ? userBoltsData.bolts : '-'}
+                        // description={val.description}
+                    />
+                    <DataCard
+                        title={'Your Multiplier'}
+                        value={userBoltsData.multiplier ? userBoltsData.multiplier : '-'}
+                        // description={"Multiplier"}
+                    />
+                </FlexMultipleRow>
+            </Section>
+
+            <Section>
                 <SectionHeader>Leaderboard</SectionHeader>
                 <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
             </Section>
-            <Section>
+            {/* <Section>
                 <MessageBox>
                     <img src={Image} alt="" />
                     <Text>
@@ -47,7 +62,7 @@ const Bolts = () => {
                         </p>
                     </Text>
                 </MessageBox>
-            </Section>
+            </Section> */}
 
             <Section>
                 <SectionHeader>Quests</SectionHeader>
@@ -80,6 +95,20 @@ const Bolts = () => {
         </Container>
     )
 }
+
+const FlexMultipleRow = styled.div`
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+
+        & div {
+            margin-bottom: 24px;
+        }
+    `}
+`
 
 const Container = styled.div`
     margin: 80px auto;

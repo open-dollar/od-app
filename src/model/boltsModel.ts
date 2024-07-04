@@ -17,8 +17,9 @@ export interface BoltsModel {
     userBoltsData: {
         rank: string
         bolts: string
+        multiplier: string
     }
-    setUserBoltsData: Action<BoltsModel, { rank: string; bolts: string }>
+    setUserBoltsData: Action<BoltsModel, { rank: string; bolts: string; multiplier: string }>
 
     leaderboardData: LeaderboardUser[]
     setLeaderboardData: Action<BoltsModel, LeaderboardUser[]>
@@ -42,6 +43,7 @@ const boltsModel: BoltsModel = {
     userBoltsData: {
         rank: '',
         bolts: '',
+        multiplier: '',
     },
     setUserBoltsData: action((state, payload) => {
         state.userBoltsData = payload

@@ -120,7 +120,7 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
                 Learn more <LinkIcon />
             </Button>
         ),
-        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
+        text: `Hold the Genesis NFV.`,
         items: [
             {
                 title: 'Source',
@@ -146,13 +146,14 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
         ),
         text: (
             <div>
-                Holders the
+                Hold the
                 <StyledAnchor
                     href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
                     target="_blank"
                 >
                     Genesis NFT
                 </StyledAnchor>
+                {'.'}
             </div>
         ),
         items: [
@@ -184,6 +185,7 @@ export const MULTIPLIERS = (multipliersData: MultipliersData) => [
                 >
                     ODOG NFT
                 </StyledAnchor>
+                {'.'}
             </div>
         ),
 

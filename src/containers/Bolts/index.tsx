@@ -36,7 +36,7 @@ const Bolts = () => {
                     />
                     <DataCard
                         title={'Your Multiplier'}
-                        value={userBoltsData.multiplier ? parseInt(userBoltsData.multiplier).toFixed(2) : '-'}
+                        value={userBoltsData.multiplier ? Number(userBoltsData.multiplier).toFixed(2) : '-'}
                         // description={"Multiplier"}
                     />
                 </FlexMultipleRow>

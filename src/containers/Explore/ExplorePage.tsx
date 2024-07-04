@@ -5,15 +5,8 @@ import { generateSvg } from '@opendollar/svg-generator'
 import ExploreTable from './ExploreTable'
 import { ethers } from 'ethers'
 import { parseRay, formatDataNumber, multiplyRates, transformToAnnualRate } from '~/utils'
-import { GlobalSafeModel } from '~/model/globalSafeModel'
-import { AnalyticsData } from '@opendollar/sdk/lib/virtual/virtualAnalyticsData'
 
-type ExplorePageProps = {
-    globalSafes: GlobalSafeModel
-    analyticsData: AnalyticsData | undefined
-}
-
-const ExplorePage: React.FC<ExplorePageProps> = ({ globalSafes, analyticsData }) => {
+const ExplorePage: React.FC<any> = ({ globalSafes, analyticsData }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [tableData, setTableData] = useState([])
 
@@ -21,35 +14,39 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ globalSafes, analyticsData })
         setIsLoading(true)
         const tableRows = []
 
-        if (!globalSafes?.list || !analyticsData?.tokenAnalyticsData) return
+        if (!globalSafes.vaults || !analyticsData?.tokenAnalyticsData) return
 
-        for (const vault of globalSafes.list) {
+        for (const vault of globalSafes.vaults) {
             try {
-                const tokenData = analyticsData.tokenAnalyticsData[vault.collateralName]
+                const tokenData = analyticsData.tokenAnalyticsData[vault.collateralType]
 
                 if (!tokenData) {
                     continue
                 }
 
                 const estimatedValue = `${(
-                    +ethers.utils.formatUnits(Math.trunc(Number(vault.collateral)).toString()) * +ethers.utils.formatUnits(tokenData.currentPrice)
+                    +ethers.utils.formatUnits(vault.collateral) *
+                    +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)
                 ).toFixed(2)}`
 
                 const stabilityFee = transformToAnnualRate(
-                    multiplyRates(tokenData.stabilityFee.toString(), Math.trunc(Number(vault.currentRedemptionRate)).toString()) || '0',
+                    multiplyRates(
+                        analyticsData.tokenAnalyticsData[vault.collateralType].stabilityFee.toString(),
+                        analyticsData.redemptionRate?.toString()
+                    ) || '0',
                     27
                 )
 
-                const cratio = (+estimatedValue / +formatDataNumber(Math.trunc(Number(vault.debt)).toString())) * 100
+                const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
 
                 const svgData = {
                     vaultID: vault.id,
                     stabilityFee,
-                    debtAmount: formatDataNumber(Number(vault.debt).toString()) + ' OD',
-                    collateralAmount: formatDataNumber(Math.trunc(Number(vault.collateral)).toString()) + ' ' + vault.collateralType,
+                    debtAmount: formatDataNumber(vault.debt) + ' OD',
+                    collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
                     collateralizationRatio: cratio ?? '∞',
-                    safetyRatio: parseRay(tokenData.safetyCRatio),
-                    liqRatio: parseRay(tokenData.liquidationCRatio),
+                    safetyRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio),
+                    liqRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio),
                 }
 
                 let svg = null
@@ -76,7 +73,7 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ globalSafes, analyticsData })
     useEffect(() => {
         getSafeData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [globalSafes.list, analyticsData])
+    }, [globalSafes.vaults, analyticsData])
 
     return (
         <Container>

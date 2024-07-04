@@ -7,6 +7,7 @@ import {
     getFilteredRowModel,
     SortingState,
 } from '@tanstack/react-table'
+import './index.css'
 import styled from 'styled-components'
 import Button from '~/components/Button'
 import { useState } from 'react'
@@ -223,28 +224,22 @@ const TableContainer = styled.div`
         }
 
         tr {
+            display: flex;
+            flex-direction: column;
             margin-bottom: 20px;
             border-bottom: 4px solid #ddd;
         }
 
         td {
-            text-align: right;
-            position: relative;
-            padding-left: 40%;
-            text-align: left;
-            &:nth-child(1),
-            &:last-child {
-                padding-left: 0;
-                display: flex;
-                justify-content: center;
-            }
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
         }
 
         td::before {
+            display: flex;
             content: attr(data-label);
-            position: absolute;
             left: 10px;
-            width: calc(50% - 10px);
             white-space: nowrap;
             font-weight: bold;
             text-align: left;
@@ -261,15 +256,22 @@ const SVGContainer = styled.div`
     position: relative;
     margin: 20px 10px 20px 10px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3), 0 12px 40px 0 rgba(0, 0, 0, 0.25);
+    background-color: transparent; /* Ensure the background is transparent */
+
     @media (max-width: 768px) {
         width: 294px;
         height: 294px;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
     }
 `
 
 const SvgWrapper = styled.div`
     transform: scale(0.33);
     border-radius: 10px;
+    background-color: transparent; /* Ensure the background is transparent */
+
     @media (max-width: 768px) {
         transform: scale(0.7);
     }

@@ -1,16 +1,13 @@
 import React from 'react'
-import { useStoreState } from '~/store'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import ExplorePage from './ExplorePage'
+import { useVaultSubgraph } from '~/hooks/useVaultSubgraph'
 
 const Explore: React.FC = () => {
-    const { globalSafeModel } = useStoreState((state) => state)
+    const allVaults = useVaultSubgraph()
     const analyticsData = useAnalyticsData()
 
-    return (
-        //@ts-ignore
-        <ExplorePage globalSafes={globalSafeModel} analyticsData={analyticsData} />
-    )
+    return <ExplorePage globalSafes={allVaults} analyticsData={analyticsData} />
 }
 
 export default Explore

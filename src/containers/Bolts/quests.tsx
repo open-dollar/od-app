@@ -1,7 +1,6 @@
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import Affiliate from './Affiliate'
 import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'

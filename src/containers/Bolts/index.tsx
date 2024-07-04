@@ -4,7 +4,6 @@ import { useActiveWeb3React } from '~/hooks'
 import Button from '~/components/Button'
 import { MULTIPLIERS, QUESTS } from './quests'
 import QuestBlock from './QuestBlock'
-import Image from '~/assets/quests-img.png'
 import styled from 'styled-components'
 import Leaderboard from '~/containers/Bolts/Leaderboard'
 import { useStoreState, useStoreActions } from '~/store'
@@ -120,46 +119,46 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.accent};
 `
 
-const MessageBox = styled.div`
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 4px;
-    background: ${(props) => props.theme.colors.gradientBg};
-    color: white;
-    padding-left: 28px;
-    display: flex;
-    align-items: center;
+// const MessageBox = styled.div`
+//     max-width: 800px;
+//     margin-left: auto;
+//     margin-right: auto;
+//     border-radius: 4px;
+//     background: ${(props) => props.theme.colors.gradientBg};
+//     color: white;
+//     padding-left: 28px;
+//     display: flex;
+//     align-items: center;
 
-    & h3 {
-        font-size: 32px;
-        font-weight: 700;
-        font-family: ${(props) => props.theme.family.headers};
-        margin-bottom: 10px;
-        line-height: 36px;
-    }
+//     & h3 {
+//         font-size: 32px;
+//         font-weight: 700;
+//         font-family: ${(props) => props.theme.family.headers};
+//         margin-bottom: 10px;
+//         line-height: 36px;
+//     }
 
-    a {
-        text-decoration: underline;
-        color: white;
-    }
+//     a {
+//         text-decoration: underline;
+//         color: white;
+//     }
 
-    @media (max-width: 767px) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding-left: 0;
-        padding-bottom: 36px;
-        padding-left: 25px;
-        padding-right: 25px;
-        border-radius: 0;
-    }
-`
+//     @media (max-width: 767px) {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
+//         text-align: center;
+//         padding-left: 0;
+//         padding-bottom: 36px;
+//         padding-left: 25px;
+//         padding-right: 25px;
+//         border-radius: 0;
+//     }
+// `
 
-const Text = styled.div`
-    max-width: 400px;
-`
+// const Text = styled.div`
+//     max-width: 400px;
+// `
 
 const Title = styled.h2`
     font-size: 34px;
@@ -215,6 +214,6 @@ const BtnWrapper = styled.div`
     }
 `
 
-const Link = styled.a``
+// const Link = styled.a``
 
 export default Bolts

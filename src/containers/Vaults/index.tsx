@@ -25,7 +25,7 @@ const OnBoarding = ({ ...props }) => {
     } = useStoreState((state) => state)
     const { safeModel: safeActions } = useStoreActions((state) => state)
     const { isWrongNetwork, isStepLoading } = connectWalletState
-    const address: string = props.match.params.address ?? ''
+    const address: string = props.match?.params?.address ?? ''
 
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return

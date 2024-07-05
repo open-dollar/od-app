@@ -6,6 +6,7 @@ import {
     getSortedRowModel,
     getFilteredRowModel,
     SortingState,
+    ColumnDef,
 } from '@tanstack/react-table'
 import './index.css'
 import styled from 'styled-components'
@@ -14,20 +15,27 @@ import { useState } from 'react'
 
 type Vault = {
     id: string
-    assetName: string
+    collateral: string
     image?: string | any
+    collateralAmount: string
+    debtAmount: string
     actions?: any
 }
 
+const parseDebtAmount = (value: string): number => {
+    return parseFloat(value.replace(/,/g, '').replace(' OD', ''))
+}
+
 const columnHelper = createColumnHelper<Vault>()
-const columns = [
+const columns: ColumnDef<Vault, any>[] = [
     columnHelper.accessor('image', {
         header: () => '',
         cell: (info) => {
             const image = info.row.original.image
+            const vaultID = info.row.original.id
             return image ? (
-                <SVGContainer>
-                    <SvgWrapper dangerouslySetInnerHTML={{ __html: image }}></SvgWrapper>
+                <SVGContainer key={vaultID}>
+                    <SvgWrapper key={vaultID} dangerouslySetInnerHTML={{ __html: image }}></SvgWrapper>
                 </SVGContainer>
             ) : null
         },
@@ -37,10 +45,39 @@ const columns = [
         header: () => 'ID',
         cell: (info) => info.getValue(),
         sortingFn: 'alphanumeric',
+        enableSorting: false,
     }),
-    columnHelper.accessor('assetName', {
-        header: () => 'Asset Name',
+    columnHelper.accessor('collateral', {
+        header: () => 'Collateral',
         cell: (info) => info.getValue(),
+        sortingFn: 'alphanumeric',
+        enableSorting: false,
+    }),
+    columnHelper.accessor('collateralAmount', {
+        header: () => 'Collateral Amount',
+        cell: (info) => info.getValue().toLocaleString(),
+        sortingFn: (rowA, rowB) => {
+            const a = rowA.getValue<number>('collateralAmount')
+            const b = rowB.getValue<number>('collateralAmount')
+            return a - b
+        },
+        filterFn: (row, columnId, filterValue) => {
+            const value = row.getValue<number>(columnId)
+            return value.toString().includes(filterValue)
+        },
+    }),
+    columnHelper.accessor('debtAmount', {
+        header: () => 'Debt Amount',
+        cell: (info) => info.getValue(),
+        sortingFn: (rowA, rowB) => {
+            const a = parseDebtAmount(rowA.getValue<string>('debtAmount'))
+            const b = parseDebtAmount(rowB.getValue<string>('debtAmount'))
+            return a - b
+        },
+        filterFn: (row, columnId, filterValue) => {
+            const value = parseDebtAmount(row.getValue<string>(columnId))
+            return value.toString().includes(filterValue)
+        },
     }),
     columnHelper.accessor('actions', {
         header: '',
@@ -256,7 +293,6 @@ const SVGContainer = styled.div`
     position: relative;
     margin: 20px 10px 20px 10px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3), 0 12px 40px 0 rgba(0, 0, 0, 0.25);
-    background-color: transparent; /* Ensure the background is transparent */
 
     @media (max-width: 768px) {
         width: 294px;
@@ -270,7 +306,6 @@ const SVGContainer = styled.div`
 const SvgWrapper = styled.div`
     transform: scale(0.33);
     border-radius: 10px;
-    background-color: transparent; /* Ensure the background is transparent */
 
     @media (max-width: 768px) {
         transform: scale(0.7);

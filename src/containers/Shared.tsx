@@ -133,11 +133,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
-        popupsActions.setWaitingPayload({
-            title: '',
-            status: 'loading',
-        })
-        popupsActions.setIsWaitingModalOpen(true)
+
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)
@@ -171,7 +167,6 @@ const Shared = ({ children, ...rest }: Props) => {
             connectWalletActions.setStep(1)
         }
         await timeout(1000)
-        popupsActions.setIsWaitingModalOpen(false)
     }
 
     function accountChange() {

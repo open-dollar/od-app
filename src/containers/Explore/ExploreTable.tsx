@@ -28,6 +28,12 @@ const parseDebtAmount = (value: string): number => {
 
 const columnHelper = createColumnHelper<Vault>()
 const columns: ColumnDef<Vault, any>[] = [
+    columnHelper.accessor('id', {
+        header: () => 'ID',
+        cell: (info) => info.getValue(),
+        sortingFn: 'alphanumeric',
+        enableSorting: false,
+    }),
     columnHelper.accessor('image', {
         header: () => '',
         cell: (info) => {
@@ -39,18 +45,6 @@ const columns: ColumnDef<Vault, any>[] = [
                 </SVGContainer>
             ) : null
         },
-        enableSorting: false,
-    }),
-    columnHelper.accessor('id', {
-        header: () => 'ID',
-        cell: (info) => info.getValue(),
-        sortingFn: 'alphanumeric',
-        enableSorting: false,
-    }),
-    columnHelper.accessor('collateral', {
-        header: () => 'Collateral',
-        cell: (info) => info.getValue(),
-        sortingFn: 'alphanumeric',
         enableSorting: false,
     }),
     columnHelper.accessor('collateralAmount', {
@@ -65,6 +59,12 @@ const columns: ColumnDef<Vault, any>[] = [
             const value = row.getValue<number>(columnId)
             return value.toString().includes(filterValue)
         },
+    }),
+    columnHelper.accessor('collateral', {
+        header: () => 'Collateral',
+        cell: (info) => info.getValue(),
+        sortingFn: 'alphanumeric',
+        enableSorting: false,
     }),
     columnHelper.accessor('debtAmount', {
         header: () => 'Debt Amount',
@@ -87,7 +87,7 @@ const columns: ColumnDef<Vault, any>[] = [
                     <Button
                         secondary
                         onClick={() =>
-                            window.open(`https://app.opendollar.com/vaults/${info.row.original.id}`, '_blank')
+                            window.location.assign(`https://app.opendollar.com/vaults/${info.row.original.id}`)
                         }
                     >
                         View

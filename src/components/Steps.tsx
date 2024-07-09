@@ -32,7 +32,14 @@ const Steps = () => {
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
-    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
+    const handleConnectWallet = () => {
+        popupsActions.setWaitingPayload({
+            title: '',
+            status: 'loading',
+        })
+        popupsActions.setIsWaitingModalOpen(true)
+        popupsActions.setIsConnectorsWalletOpen(true)
+    }
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false
@@ -132,7 +139,8 @@ const Steps = () => {
                 break
         }
     }
-
+    console.log('step number', step)
+    
     return (
         <StepsContainer>
             <LowGasModal />

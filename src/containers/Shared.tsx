@@ -98,7 +98,6 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsSettingModalOpen(false)
         popupsActions.setIsScreenModalOpen(false)
         popupsActions.setIsVotingModalOpen(false)
-        popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setShowSideMenu(false)
         popupsActions.setIsBridgeModalOpen(false)
     }
@@ -133,7 +132,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
-
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)

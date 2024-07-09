@@ -15,6 +15,7 @@ import {
     ISafePayload,
 } from '~/utils'
 import { Geb } from '@opendollar/sdk'
+import popupsModel from './popupsModel'
 
 export interface SafeModel {
     list: Array<ISafe>
@@ -242,6 +243,7 @@ const safeModel: SafeModel = {
     //     }
     // }),
     fetchUserSafes: thunk(async (actions, payload, { getStoreActions, getState }) => {
+        console.log('fetchUserSafes')
         const storeActions = getStoreActions()
         const state = getState()
         const { isSuccessfulTx } = state
@@ -249,13 +251,15 @@ const safeModel: SafeModel = {
         try {
             fetched = await fetchUserSafes(payload)
         } catch (e) {
+            storeActions.popupsModel.setIsWaitingModalOpen(false)
             console.debug('Failed to fetch user safes', e)
         }
         if (fetched) {
+            storeActions.popupsModel.setIsWaitingModalOpen(false)
             actions.setList(fetched.userSafes)
             if (fetched.userSafes.length > 0) {
                 actions.setIsSafeCreated(true)
-                storeActions.connectWalletModel.setStep(2)
+                // storeActions.connectWalletModel.setStep(2)
             } else if (!fetched.userSafes.length && !isSuccessfulTx) {
                 actions.setIsSafeCreated(false)
                 storeActions.connectWalletModel.setIsStepLoading(false)

@@ -140,7 +140,7 @@ const Steps = () => {
         }
     }
     console.log('step number', step)
-    
+
     return (
         <StepsContainer>
             <LowGasModal />

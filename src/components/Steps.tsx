@@ -134,7 +134,6 @@ const Steps = () => {
                 break
         }
     }
-    console.log('step number', step)
 
     return (
         <StepsContainer>

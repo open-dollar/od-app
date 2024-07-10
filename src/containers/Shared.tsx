@@ -97,6 +97,7 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsScreenModalOpen(false)
         popupsActions.setIsSettingModalOpen(false)
         popupsActions.setIsScreenModalOpen(false)
+        popupsActions.setIsWaitingModalOpen(false)
         popupsActions.setIsVotingModalOpen(false)
         popupsActions.setShowSideMenu(false)
         popupsActions.setIsBridgeModalOpen(false)

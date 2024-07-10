@@ -36,20 +36,15 @@ const OnBoarding = ({ ...props }) => {
             return
 
         async function fetchSafes() {
-            console.log('Fetching safes')
             setLoading(true)
-            // popupsModel.setIsWaitingModalOpen(true)
             try {
                 await safeActions.fetchUserSafes({
                     address: address || (account as string),
                     geb,
                     tokensData: connectWalletState.tokensData,
                 })
-                console.log('Safes fetched SUCCESS')
                 setLoading(false)
-                // popupsModel.setIsWaitingModalOpen(false)
             } catch (error) {
-                console.log('ERROR GETTING SAFES')
                 console.debug('Error fetching safes:', error)
                 setLoading(false)
             }
@@ -86,7 +81,6 @@ const OnBoarding = ({ ...props }) => {
         history.push('/vaults/create')
     }
 
-    console.log('LOADING', loading)
     return (
         <Container id="app-page">
             <Content>

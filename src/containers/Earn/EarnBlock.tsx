@@ -17,7 +17,7 @@ const EarnBlock = ({
     url: string
     apy: string
     tvl: string
-    title: string
+    title: string | JSX.Element
     rewardToken1Symbol: string
     rewardToken2Symbol: string
 }) => {
@@ -26,9 +26,7 @@ const EarnBlock = ({
             <BlockContainer>
                 <BlockHeader>
                     <PoolInfo>
-                        <PoolData>
-                            <PoolTitle>{title}</PoolTitle>
-                        </PoolData>
+                        <PoolData>{title}</PoolData>
                     </PoolInfo>
                 </BlockHeader>
                 <Block>
@@ -116,23 +114,21 @@ const PoolInfo = styled.div`
 
 const PoolData = styled.div`
     display: flex;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        margin-left: 10px;
-    `}
-`
-
-const PoolTitle = styled.div`
     font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 22px;
-
+    img {
+        margin-left: 22px;
+    }
     span {
         font-weight: 500;
         color: ${(props) => props.theme.colors.primary};
     }
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin-left: 10px;
+    `}
 `
 
 const Block = styled.div`

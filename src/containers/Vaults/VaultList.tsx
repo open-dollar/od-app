@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { useStoreActions, useStoreState } from '~/store'
+import { useStoreState } from '~/store'
 import LinkButton from '~/components/LinkButton'
 import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
@@ -16,12 +16,7 @@ const VaultList = ({ address }: { address?: string }) => {
 
     const { t } = useTranslation()
 
-    const {
-        connectWalletModel: connectWalletState,
-        safeModel: safeState,
-        popupsModel,
-    } = useStoreState((state) => state)
-    const { popupsModel: popupAction } = useStoreActions((state) => state)
+    const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
 
     const safes = useMemo(() => {
         if (safeState.list.length > 0) {
@@ -35,17 +30,8 @@ const VaultList = ({ address }: { address?: string }) => {
         [account, address]
     )
 
-    // useEffect(() => {
-    //     if (safeState.list.length > 0) {
-    //         popupAction.setIsWaitingModalOpen(false)
-    //     }
-    // }, [safeState.list.length, popupAction])
-
     const returnSafeList = () => {
-        if (
-            safeState.list.length > 0
-            // && !popupsModel.isWaitingModalOpen
-        ) {
+        if (safeState.list.length > 0) {
             return (
                 <Container>
                     <Header>

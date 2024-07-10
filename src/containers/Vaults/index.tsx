@@ -20,12 +20,8 @@ const OnBoarding = ({ ...props }) => {
     const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const { t } = useTranslation()
-    const {
-        connectWalletModel: connectWalletState,
-        safeModel: safeState,
-        popupsModel: popupsState,
-    } = useStoreState((state) => state)
-    const { safeModel: safeActions, popupsModel } = useStoreActions((state) => state)
+    const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
+    const { safeModel: safeActions } = useStoreActions((state) => state)
     const { isWrongNetwork, isStepLoading } = connectWalletState
     const address: string = props.match.params.address ?? ''
 

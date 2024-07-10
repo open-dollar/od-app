@@ -15,7 +15,6 @@ import {
     ISafePayload,
 } from '~/utils'
 import { Geb } from '@opendollar/sdk'
-import popupsModel from './popupsModel'
 
 export interface SafeModel {
     list: Array<ISafe>

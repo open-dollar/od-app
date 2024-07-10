@@ -2938,16 +2938,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fuul/sdk@npm:^4.7.1":
-  version: 4.7.4
-  resolution: "@fuul/sdk@npm:4.7.4"
-  dependencies:
-    axios: ^1.2.2
-    nanoid: ^4.0.0
-  checksum: 0351e5f52733dcc12f1f8f28c75289a36387721b64f7425e2e33c7e6c438e04af56c207e3bded8799c12500a4584be7070e26d559351dbdb8b28072678b16a0f
-  languageName: node
-  linkType: hard
-
 "@graphql-typed-document-node/core@npm:^3.1.1":
   version: 3.2.0
   resolution: "@graphql-typed-document-node/core@npm:3.2.0"
@@ -7016,7 +7006,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.2, axios@npm:^1.6.7":
+"axios@npm:^1.6.7":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -14656,15 +14646,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^4.0.0":
-  version: 4.0.2
-  resolution: "nanoid@npm:4.0.2"
-  bin:
-    nanoid: bin/nanoid.js
-  checksum: 3fec62f422bc4727918eda0e7aa43e9cbb2e759be72813a0587b9dac99727d3c7ad972efce7f4f1d4cb5c7c554136a1ec3b1043d1d91d28d818d6acbe98200e5
-  languageName: node
-  linkType: hard
-
 "napi-wasm@npm:^1.1.0":
   version: 1.1.0
   resolution: "napi-wasm@npm:1.1.0"
@@ -15022,7 +15003,6 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@fuul/sdk": ^4.7.1
     "@opendollar/sdk": 1.7.4-rc.1
     "@opendollar/svg-generator": 1.0.5
     "@react-spring/web": ^9.7.3

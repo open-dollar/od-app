@@ -71,53 +71,71 @@ const WaitingModal = () => {
                 )
         }
     }
+
     return (
         <Modal width={'445px'} isModalOpen={popupsState.isWaitingModalOpen} handleModalContent>
-            <InnerContainer data-test-id="waiting-modal" ref={modalRef}>
-                {returnStatusIcon(status)}
-                <TextColumnContainer>
-                    {
-                        <Title data-test-id="waiting-modal-title" className={status}>
-                            {title ? title : t('initializing')}
-                        </Title>
-                    }
+            <Wrapper data-test-id="waiting-modal" ref={modalRef}>
+                {!title && !text && !hint && !hash ? (
+                    <LoaderWrapper>
+                        <Loader width="200px" color="#1A74EC" />
+                    </LoaderWrapper>
+                ) : (
+                    <InnerContainer>
+                        {returnStatusIcon(status)}
+                        <TextColumnContainer>
+                            {
+                                <Title data-test-id="waiting-modal-title" className={status}>
+                                    {title ? title : t('initializing')}
+                                </Title>
+                            }
 
-                    {text || (status === 'success' && !isCreate) ? (
-                        <Text className={status}>
-                            {status === 'success' && chainId && hash ? (
-                                <a
-                                    href={getEtherscanLink(chainId, hash, 'transaction')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {t('view_arbiscan')}
-                                </a>
-                            ) : status === 'success' && isCreate ? (
-                                <CreateNew>
-                                    <Loader width={'14px'} /> {text}
-                                </CreateNew>
-                            ) : (
-                                text
-                            )}
-                        </Text>
-                    ) : null}
-                    {hint && <Hint>{hint}</Hint>}
+                            {text || (status === 'success' && !isCreate) ? (
+                                <Text className={status}>
+                                    {status === 'success' && chainId && hash ? (
+                                        <a
+                                            href={getEtherscanLink(chainId, hash, 'transaction')}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {t('view_arbiscan')}
+                                        </a>
+                                    ) : status === 'success' && isCreate ? (
+                                        <CreateNew>
+                                            <Loader width={'14px'} /> {text}
+                                        </CreateNew>
+                                    ) : (
+                                        text
+                                    )}
+                                </Text>
+                            ) : null}
+                            {hint && <Hint>{hint}</Hint>}
 
-                    {status !== 'loading' && !isCreate ? (
-                        <BtnContainer>
-                            <Button
-                                text={status === 'success' ? 'close' : 'dismiss'}
-                                onClick={() => popupsActions.setIsWaitingModalOpen(false)}
-                            />
-                        </BtnContainer>
-                    ) : null}
-                </TextColumnContainer>
-            </InnerContainer>
+                            {status !== 'loading' && !isCreate ? (
+                                <BtnContainer>
+                                    <Button
+                                        text={status === 'success' ? 'close' : 'dismiss'}
+                                        onClick={() => popupsActions.setIsWaitingModalOpen(false)}
+                                    />
+                                </BtnContainer>
+                            ) : null}
+                        </TextColumnContainer>
+                    </InnerContainer>
+                )}
+            </Wrapper>
         </Modal>
     )
 }
 
 export default WaitingModal
+
+const Wrapper = styled.div``
+
+const LoaderWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+`
 
 const TextColumnContainer = styled.div`
     display: flex;

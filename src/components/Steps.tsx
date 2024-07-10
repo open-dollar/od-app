@@ -30,7 +30,9 @@ const Steps = () => {
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
-    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
+    const handleConnectWallet = () => {
+        popupsActions.setIsConnectorsWalletOpen(true)
+    }
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false

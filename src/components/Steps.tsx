@@ -33,11 +33,6 @@ const Steps = () => {
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
     const handleConnectWallet = () => {
-        popupsActions.setWaitingPayload({
-            title: '',
-            status: 'loading',
-        })
-        popupsActions.setIsWaitingModalOpen(true)
         popupsActions.setIsConnectorsWalletOpen(true)
     }
 

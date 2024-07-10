@@ -213,10 +213,12 @@ const VaultStats = ({
                                         }}
                                     >
                                         Safety:{' '}
-                                        {Number(
-                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
-                                                .safetyCRatio
-                                        ) * 100}
+                                        {Math.round(
+                                            Number(
+                                                safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                    .safetyCRatio
+                                            ) * 100
+                                        )}
                                         %
                                     </span>{' '}
                                     &nbsp;
@@ -229,10 +231,12 @@ const VaultStats = ({
                                         }}
                                     >
                                         Minimum:{' '}
-                                        {Number(
-                                            safeState.liquidationData!.collateralLiquidationData[collateralName]
-                                                .liquidationCRatio
-                                        ) * 100}
+                                        {Math.round(
+                                            Number(
+                                                safeState.liquidationData!.collateralLiquidationData[collateralName]
+                                                    .liquidationCRatio
+                                            ) * 100
+                                        )}
                                         %
                                     </span>
                                 </div>

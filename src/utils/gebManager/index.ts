@@ -4,6 +4,7 @@ import { fetchLiquidationData, Geb, TokenLiquidationData, utils } from '@opendol
 import { ILiquidationResponse, IUserSafeList, IOwnerAddressesResponse } from '../interfaces'
 import { fetchUserSafes } from '@opendollar/sdk/lib/virtual/virtualUserSafes.js'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
+import { OD_API_URL } from '~/utils/constants'
 
 interface UserListConfig {
     geb: Geb
@@ -117,7 +118,7 @@ const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> =
 }
 
 const getGlobalSafesRpc = async (): Promise<IOwnerAddressesResponse> => {
-    const response = await axios.get('https://bot.opendollar.com/api/vaults')
+    const response = await axios.get(`${OD_API_URL}/vaults`)
     const ownerAddresses: string[] = Array.from(new Set(response.data.details.map((safe: any) => safe.owner)))
     return { ownerAddresses }
 }

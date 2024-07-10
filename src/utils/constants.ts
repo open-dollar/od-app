@@ -7,7 +7,9 @@ import { ChainId, WalletInfo } from './interfaces'
 
 type AddressMap = { [chainId: number]: string }
 
-const { REACT_APP_SYSTEM_STATUS, REACT_APP_NETWORK_URL } = process.env
+const { REACT_APP_SYSTEM_STATUS, REACT_APP_NETWORK_URL, REACT_APP_OD_API_URL } = process.env
+
+export const OD_API_URL = REACT_APP_OD_API_URL ? REACT_APP_OD_API_URL : 'https://bot.opendollar.com/api'
 
 export const MULTICALL2_ADDRESSES: AddressMap = {
     [SupportedChainId.ARBITRUM_SEPOLIA]: '0xcA11bde05977b3631167028862bE2a173976CA11',

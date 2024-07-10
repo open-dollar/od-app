@@ -1,12 +1,10 @@
 import axios from 'axios'
+import { OD_API_URL } from '~/utils/constants'
 
 async function checkSanctions(address: string) {
     let res
     try {
-        const BOT_DOMAIN = process.env.REACT_APP_OD_API_URL
-            ? process.env.REACT_APP_OD_API_URL
-            : 'https://bot.opendollar.com/api'
-        const BOT_API = `${BOT_DOMAIN}/screen?address=${address}`
+        const BOT_API = `${OD_API_URL}/screen?address=${address}`
         res = await axios.get(BOT_API, {
             headers: {
                 Accept: 'application/json',

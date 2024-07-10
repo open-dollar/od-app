@@ -26,7 +26,6 @@ import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
 import Bolts from './containers/Bolts'
-import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
 import ScreenLoader from '~/components/Modals/ScreenLoader'
@@ -46,20 +45,6 @@ Sentry.init({
     replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
     environment: process.env.NODE_ENV,
 })
-
-const network = process.env.REACT_APP_NETWORK_ID
-const fuulApiKey = process.env.REACT_APP_FUUL_API_KEY
-// Only initialize Fuul on Arbitrum One
-if (network === '42161' && fuulApiKey) {
-    try {
-        Fuul.init({
-            apiKey: fuulApiKey,
-        })
-        Fuul.sendPageview()
-    } catch (e) {
-        console.log(e)
-    }
-}
 
 const App = () => {
     const location = useLocation()

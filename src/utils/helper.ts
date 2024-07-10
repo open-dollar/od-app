@@ -256,6 +256,35 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
 }
 
 /**
+ * Removes commas from a formatted number
+ * @param value
+ */
+export const parseFormattedNumber = (value: string): number => {
+    return parseFloat(value.replace(/,/g, ''))
+}
+
+/**
+ * Calculate the risk status text given a numeric risk status
+ * @param riskStatusNumeric
+ */
+export const calculateRiskStatusText = (riskStatusNumeric: Number) => {
+    switch (riskStatusNumeric) {
+        case 0:
+            return 'NO'
+        case 1:
+            return 'LOW'
+        case 2:
+            return 'ELEVATED'
+        case 3:
+            return 'HIGH'
+        case 4:
+            return 'LIQUIDATION'
+        default:
+            return 'LOW'
+    }
+}
+
+/**
  * Check the risk state of the current liquidation ratio given a fixed minLiquidationRatio
  * @param currentLiquidationRatio
  * @param liqRatio

@@ -19,7 +19,16 @@ type Vault = {
     image?: string | any
     collateralAmount: string
     debtAmount: string
+    riskStatus: string
     actions?: any
+}
+
+const riskStatusMapping: { [key: string]: number } = {
+    NO: 0,
+    LOW: 1,
+    ELEVATED: 2,
+    HIGH: 3,
+    LIQUIDATION: 4,
 }
 
 const parseDebtAmount = (value: string): number => {
@@ -32,7 +41,7 @@ const columns: ColumnDef<Vault, any>[] = [
         header: () => 'ID',
         cell: (info) => info.getValue(),
         sortingFn: 'alphanumeric',
-        enableSorting: false,
+        enableSorting: true,
     }),
     columnHelper.accessor('image', {
         header: () => '',
@@ -64,7 +73,7 @@ const columns: ColumnDef<Vault, any>[] = [
         header: () => 'Collateral',
         cell: (info) => info.getValue(),
         sortingFn: 'alphanumeric',
-        enableSorting: false,
+        enableSorting: true,
     }),
     columnHelper.accessor('debtAmount', {
         header: () => 'Debt Amount',
@@ -77,6 +86,19 @@ const columns: ColumnDef<Vault, any>[] = [
         filterFn: (row, columnId, filterValue) => {
             const value = parseDebtAmount(row.getValue<string>(columnId))
             return value.toString().includes(filterValue)
+        },
+    }),
+    columnHelper.accessor('riskStatus', {
+        header: () => 'Risk Status',
+        cell: (info) => info.getValue().toLocaleString(),
+        sortingFn: (rowA, rowB) => {
+            const a = riskStatusMapping[rowA.getValue<string>('riskStatus')] || 1
+            const b = riskStatusMapping[rowB.getValue<string>('riskStatus')] || 1
+            return a - b
+        },
+        filterFn: (row, columnId, filterValue) => {
+            const value = row.getValue<string>(columnId)
+            return value.includes(filterValue)
         },
     }),
     columnHelper.accessor('actions', {

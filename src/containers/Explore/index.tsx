@@ -4,7 +4,15 @@ import { useState, useEffect } from 'react'
 import { generateSvg } from '@opendollar/svg-generator'
 import ExploreTable from './ExploreTable'
 import { ethers } from 'ethers'
-import { parseRay, formatDataNumber, multiplyRates, transformToAnnualRate } from '~/utils'
+import {
+    parseRay,
+    formatDataNumber,
+    multiplyRates,
+    transformToAnnualRate,
+    calculateRiskStatusText,
+    ratioChecker,
+    parseFormattedNumber,
+} from '~/utils'
 import { AllVaults, useVaultSubgraph } from '~/hooks/useVaultSubgraph'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import useGeb from '~/hooks/useGeb'
@@ -41,20 +49,40 @@ const Explore: React.FC<any> = () => {
                     27
                 )
 
-                const cratio = (+estimatedValue / +formatDataNumber(vault.debt)) * 100
+                const formattedDebt = parseFormattedNumber(formatDataNumber(vault.debt))
+                let cratio = 0
+                if (formattedDebt !== 0) {
+                    cratio = (+estimatedValue / formattedDebt) * 100
+                }
+
+                let correctCollateralizationRatio
+                if (Number(cratio) > 0) {
+                    correctCollateralizationRatio = Number(cratio)
+                } else if (Number(cratio) === 0 && parseFormattedNumber(formatDataNumber(vault.collateral)) > 0) {
+                    correctCollateralizationRatio = '∞'
+                } else if (Number(cratio) === 0 && parseFormattedNumber(formatDataNumber(vault.collateral)) === 0) {
+                    correctCollateralizationRatio = 0
+                }
 
                 const svgData = {
                     vaultID: vault.id,
                     stabilityFee,
-                    debtAmount: formatDataNumber(vault.debt) + ' OD',
+                    debtAmount: formatDataNumber(vault.debt),
                     collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
-                    collateralizationRatio:
-                        Number(cratio) >= 0 && !Number.isNaN(Number(cratio)) && cratio !== Infinity
-                            ? Number(cratio)
-                            : '∞',
-                    liqRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio),
-                    safetyRatio: parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio),
+                    collateralizationRatio: correctCollateralizationRatio,
+                    liqRatio: Number(
+                        parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
+                    ),
+                    safetyRatio: Number(parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio)),
                 }
+
+                const riskStatus = calculateRiskStatusText(
+                    ratioChecker(
+                        Number(cratio),
+                        Number(parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)),
+                        Number(parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].safetyCRatio))
+                    )
+                )
 
                 let svg = null
                 try {
@@ -69,6 +97,7 @@ const Explore: React.FC<any> = () => {
                     image: svg ? svg : null,
                     collateralAmount: parseNumber(formatDataNumber(vault.collateral)),
                     debtAmount: formatDataNumber(vault.debt) + ' OD',
+                    riskStatus: riskStatus,
                 })
             } catch (e) {
                 console.error(e)

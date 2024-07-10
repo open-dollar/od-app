@@ -27,12 +27,8 @@ const Bolts = () => {
                 <Title>Bolts</Title>
                 <SubHeader>Welcome Vault Keepers!</SubHeader>
             </Section>
-            <Section>
-                <SectionHeader>Under Maintenance</SectionHeader>
-                <SubHeader>Check back later</SubHeader>
-            </Section>
 
-            {/* <Section>
+            <Section>
                 <FlexMultipleRow>
                     <DataCard
                         title={'Your Bolts'}
@@ -79,7 +75,7 @@ const Bolts = () => {
                         Suggest a Quest <ExternalLink />
                     </Button>
                 </BtnWrapper>
-            </Section> */}
+            </Section>
         </Container>
     )
 }

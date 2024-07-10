@@ -90,8 +90,8 @@ const Earn = () => {
                     url="https://app.creditguild.org/earn"
                     apy="Variable"
                     tvl="$99k"
-                    rewardToken1Symbol="OD, ODG, and GUILD"
-                    rewardToken2Symbol=""
+                    rewardToken1Symbol="OD"
+                    rewardToken2Symbol="ODG, and GUILD"
                     title={
                         <>
                             Credit Guild <img src={getTokenLogo('OD')} alt={''} width={'50px'} />

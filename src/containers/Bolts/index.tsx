@@ -28,6 +28,11 @@ const Bolts = () => {
                 <SubHeader>Welcome Vault Keepers!</SubHeader>
             </Section>
             <Section>
+                <SectionHeader>Under Maintenance</SectionHeader>
+                <SubHeader>Check back later</SubHeader>
+            </Section>
+
+            {/* <Section>
                 <FlexMultipleRow>
                     <DataCard
                         title={'Your Bolts'}
@@ -46,22 +51,6 @@ const Bolts = () => {
                 <SectionHeader>Leaderboard</SectionHeader>
                 <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
             </Section>
-            {/* <Section>
-                <MessageBox>
-                    <img src={Image} alt="" />
-                    <Text>
-                        <h3>Complete the quests below to earn Bolts.</h3>
-                        <p>
-                            Deposits, borrows, and LPs are awarded Bolts based on their equivalent value in ETH. For
-                            program details, see our{' '}
-                            <Link href="https://www.opendollar.com/blog/vault-keeper-program" target="_blank">
-                                blog
-                            </Link>
-                            .
-                        </p>
-                    </Text>
-                </MessageBox>
-            </Section> */}
 
             <Section>
                 <SectionHeader>Quests</SectionHeader>
@@ -90,7 +79,7 @@ const Bolts = () => {
                         Suggest a Quest <ExternalLink />
                     </Button>
                 </BtnWrapper>
-            </Section>
+            </Section> */}
         </Container>
     )
 }
@@ -115,6 +104,7 @@ const Container = styled.div`
 
     @media (max-width: 767px) {
         margin: 50px auto;
+        padding: 0 10px;
     }
     color: ${(props) => props.theme.colors.accent};
 `

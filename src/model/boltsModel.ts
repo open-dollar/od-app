@@ -1,5 +1,6 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 import { BoltsEarnedData, MultipliersData } from '~/containers/Bolts/quests'
+import { OD_API_URL } from '~/utils/constants'
 
 type Campaign = {
     type: number
@@ -76,10 +77,7 @@ const boltsModel: BoltsModel = {
 
     fetchData: thunk(async (actions, { account }, { getState }) => {
         try {
-            const BOT_API_URL = process.env.REACT_APP_OD_API_URL
-                ? process.env.REACT_APP_OD_API_URL
-                : 'https://bot.opendollar.com/api'
-            const BOT_API = `${BOT_API_URL}/bolts`
+            const BOT_API = `${OD_API_URL}/bolts`
             const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)
             const result = await response.json()
             if (result.success) {

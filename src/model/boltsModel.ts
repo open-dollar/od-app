@@ -76,10 +76,10 @@ const boltsModel: BoltsModel = {
 
     fetchData: thunk(async (actions, { account }, { getState }) => {
         try {
-            const BOT_DOMAIN = process.env.REACT_APP_OD_API_URL
+            const BOT_API_URL = process.env.REACT_APP_OD_API_URL
                 ? process.env.REACT_APP_OD_API_URL
-                : 'https://bot.opendollar.com'
-            const BOT_API = `${BOT_DOMAIN}/api/bolts`
+                : 'https://bot.opendollar.com/api'
+            const BOT_API = `${BOT_API_URL}/bolts`
             const response = account ? await fetch(`${BOT_API}?address=${account}`) : await fetch(BOT_API)
             const result = await response.json()
             if (result.success) {

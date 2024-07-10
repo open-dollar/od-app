@@ -5,7 +5,7 @@ async function checkSanctions(address: string) {
     try {
         const BOT_DOMAIN = process.env.REACT_APP_OD_API_URL
             ? process.env.REACT_APP_OD_API_URL
-            : 'https://bot.opendollar.com'
+            : 'https://bot.opendollar.com/api'
         const BOT_API = `${BOT_DOMAIN}/screen?address=${address}`
         res = await axios.get(BOT_API, {
             headers: {

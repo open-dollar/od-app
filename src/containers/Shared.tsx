@@ -132,7 +132,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
-        
+
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)

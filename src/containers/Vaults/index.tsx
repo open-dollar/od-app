@@ -112,7 +112,7 @@ const OnBoarding = ({ ...props }) => {
                     </>
                 ) : loading ? (
                     <LoaderWrapper>
-                        <Loader width="200px" color="#1A74EC"/>
+                        <Loader width="200px" color="#1A74EC" />
                     </LoaderWrapper>
                 ) : (
                     <Accounts />

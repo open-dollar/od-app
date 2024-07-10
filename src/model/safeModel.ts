@@ -252,6 +252,7 @@ const safeModel: SafeModel = {
             console.debug('Failed to fetch user safes', e)
         }
         if (fetched) {
+            storeActions.popupsModel.setIsWaitingModalOpen(false)
             actions.setList(fetched.userSafes)
             if (fetched.userSafes.length > 0) {
                 actions.setIsSafeCreated(true)

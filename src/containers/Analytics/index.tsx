@@ -167,7 +167,7 @@ const Analytics = () => {
         title: 'Surplus in Treasury',
         value: surplusInTreasury,
         description:
-            "Total HAI accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
+            "Total OD accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
     }
 
     const liquidityUniswap = {

@@ -10,6 +10,8 @@ import PoolBlock from './PoolBlock'
 import { JSX } from 'react/jsx-runtime'
 import { PoolData } from '@opendollar/sdk'
 import Skeleton from 'react-loading-skeleton'
+import EarnBlock from './EarnBlock'
+import { getTokenLogo } from '~/utils'
 
 interface Cache {
     [key: string]: PoolData
@@ -83,6 +85,19 @@ const Earn = () => {
             </Text>
             <Pools>
                 <PoolsHeader>Strategies</PoolsHeader>
+                <EarnBlock
+                    status="Active"
+                    url="https://app.creditguild.org/earn"
+                    apy="Variable"
+                    tvl="$99k"
+                    rewardToken1Symbol="OD"
+                    rewardToken2Symbol="ODG, and GUILD"
+                    title={
+                        <>
+                            Credit Guild <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
+                        </>
+                    }
+                />
                 {nitroPools.length > 0 ? (
                     POOLS?.map(
                         (

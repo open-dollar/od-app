@@ -14,7 +14,6 @@ import { COIN_TICKER } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { checkUserGasBalance } from '~/utils'
-import useFuulSDK from '~/hooks/useFuulSDK'
 import LowGasModal from './Modals/LowGasModal'
 
 const Steps = () => {
@@ -28,11 +27,12 @@ const Steps = () => {
     const { popupsModel: popupsActions, connectWalletModel: connectWalletActions } = useStoreActions((state) => state)
 
     const addTransaction = useTransactionAdder()
-    const { sendConnectWalletEvent } = useFuulSDK()
 
     const { step, isWrongNetwork, isStepLoading, blockNumber, ctHash } = connectWalletState
 
-    const handleConnectWallet = () => popupsActions.setIsConnectorsWalletOpen(true)
+    const handleConnectWallet = () => {
+        popupsActions.setIsConnectorsWalletOpen(true)
+    }
 
     const handleCreateAccount = async () => {
         if (!account || !provider || !chainId) return false
@@ -42,14 +42,6 @@ const Steps = () => {
             return
         }
         try {
-            const referralProgram = localStorage.getItem('referralProgram') === 'true'
-            if (referralProgram) {
-                try {
-                    await sendConnectWalletEvent(account)
-                } catch (e) {
-                    console.debug('User declined Fuul program ', e)
-                }
-            }
             const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
             const signer = provider.getSigner(account)
             connectWalletActions.setIsStepLoading(true)

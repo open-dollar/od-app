@@ -28,6 +28,13 @@ export type VaultDetails = {
     collateralType: string
 }
 
+export type AllVaults = {
+    vaults: VaultDetails[]
+    owners: string[]
+    vaultsByOwner: { [key: string]: string[] }
+    vaultsByCollateral: { [key: string]: string[] }
+}
+
 export const fetchAllVaults = async () => {
     const data = await postQuery(
         `
@@ -65,8 +72,12 @@ export const fetchAllVaults = async () => {
 }
 
 export const useVaultSubgraph = () => {
-    const [vaults, setVaults] = useState({ vaults: [] })
-
+    const [vaults, setVaults] = useState<AllVaults>({
+        vaults: [],
+        owners: [],
+        vaultsByOwner: {},
+        vaultsByCollateral: {},
+    })
     const getVaults = async () => {
         const allVaults = await fetchAllVaults()
         setVaults(allVaults)

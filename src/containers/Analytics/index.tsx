@@ -68,6 +68,7 @@ const Analytics = () => {
         globalDebt,
         globalDebtCeiling,
         globalDebtUtilization,
+        surplusInTreasury,
         marketPrice,
         redemptionPrice,
         totalLiquidity,
@@ -162,6 +163,13 @@ const Analytics = () => {
 
     const circulation = { title: 'circulation', value: erc20Supply, description: 'Circulating supply of OD stablecoin' }
 
+    const surplusInTreasuryData: DataCardProps = {
+        title: 'Surplus in Treasury',
+        value: surplusInTreasury,
+        description:
+            "Total OD accrued by the system's stability fees. It's stored in the Stability Fee Treasury accountance",
+    }
+
     const liquidityUniswap = {
         title: 'OD/ETH Liquidity in Camelot',
         value: totalLiquidity,
@@ -244,6 +252,7 @@ const Analytics = () => {
         // totalFeesEarned,
         globalDebtUtilizationData,
         globalDebtData,
+        surplusInTreasuryData,
     ]
 
     const pricesData: DataCardProps[] = [
@@ -267,7 +276,6 @@ const Analytics = () => {
                 0,
                 true
             ).toString()
-
             const colRows = Object.fromEntries(
                 Object.entries(analyticsData?.tokenAnalyticsData).map(([key, value]) => {
                     const lockedAmountInUsd = multiplyWad(
@@ -324,7 +332,7 @@ const Analytics = () => {
                     analyticsData.globalDebt,
                     analyticsData.globalDebtCeiling
                 ),
-                surplusInTreasury: formatDataNumber(analyticsData.surplusInTreasury, 18, 0, true),
+                surplusInTreasury: `${formatDataNumber(analyticsData.surplusInTreasury, 18, 0)} OD`,
                 marketPrice: formatDataNumber(analyticsData.marketPrice, 18, 3, true, undefined, 4),
                 redemptionPrice: formatDataNumber(analyticsData.redemptionPrice, 18, 3, true, undefined, 4),
                 totalLiquidity: formattedLiquidity,

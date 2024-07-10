@@ -1,28 +1,32 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: any }) => {
-    const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
+const Link = styled.a``
 
-    const getTimePeriod = () => {
-        const start = new Date(Number(nitroPoolData.nitroData.startTime) * 1000)
-        const end = new Date(Number(nitroPoolData.nitroData.endTime) * 1000)
-        const now = new Date()
-        return now > start && now < end ? 'Active' : 'Inactive'
-    }
-    const totalApy = +nitroPoolData.nitroData.apy.toFixed(2) + +nitroPoolData.spNftData.apy.toFixed(2)
+const EarnBlock = ({
+    status,
+    url,
+    apy,
+    tvl,
+    title,
+    rewardToken1Symbol,
+    rewardToken2Symbol,
+}: {
+    status: string
+    url: string
+    apy: string
+    tvl: string
+    title: string | JSX.Element
+    rewardToken1Symbol: string
+    rewardToken2Symbol: string
+}) => {
     return (
-        <Link to={`/earn/${nitroPoolAddress}`}>
-            <BlockContainer id={`${nitroPoolAddress}`}>
+        <Link href={url} target="_blank">
+            <BlockContainer>
                 <BlockHeader>
                     <PoolInfo>
-                        <PoolData>
-                            <PoolTitle>{`${collateral0TokenSymbol} - ${collateral1TokenSymbol}`}</PoolTitle>
-                            <img src={getTokenLogo(collateral0TokenSymbol)} alt={''} width={'50px'} />
-                            <img src={getTokenLogo(collateral1TokenSymbol)} alt={''} width={'50px'} />
-                        </PoolData>
+                        <PoolData>{title}</PoolData>
                     </PoolInfo>
                 </BlockHeader>
                 <Block>
@@ -30,16 +34,16 @@ const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: stri
                         <Label>Status</Label>
                         <Value className="status">
                             <Dot></Dot>
-                            {getTimePeriod()}
+                            {status}
                         </Value>
                     </Item>
                     <Item>
                         <Label>TVL</Label>
-                        <Value>${formatWithCommas(nitroPoolData.nitroData.tvlUSD?.toFixed(2) || 0)}</Value>
+                        <Value>{tvl}</Value>
                     </Item>
                     <Item className="apy">
                         <Label>APY</Label>
-                        <Value>{`${formatWithCommas(totalApy)}%`}</Value>
+                        <Value>{apy}</Value>
                     </Item>
                     <Item>
                         <Label>Rewards</Label>
@@ -58,10 +62,11 @@ const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: stri
     )
 }
 
-export default PoolBlock
+export default EarnBlock
 
 const BlockContainer = styled.div`
     border-radius: 4px;
+    margin-bottom: 29px;
     background: white;
     box-shadow: 0px 4px 6px 0px #0d4b9d33;
     position: relative;
@@ -69,9 +74,6 @@ const BlockContainer = styled.div`
     flex-direction: column;
     &.empty {
         background: white;
-    }
-    &:not(:last-child) {
-        margin-bottom: 29px;
     }
 `
 
@@ -112,23 +114,21 @@ const PoolInfo = styled.div`
 
 const PoolData = styled.div`
     display: flex;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        margin-left: 10px;
-    `}
-`
-
-const PoolTitle = styled.div`
     font-size: ${(props) => props.theme.font.large};
     font-family: ${(props) => props.theme.family.headers};
     color: ${(props) => props.theme.colors.accent};
     font-weight: 700;
 
-    margin-right: 22px;
-
+    img {
+        margin-left: 22px;
+    }
     span {
         font-weight: 500;
         color: ${(props) => props.theme.colors.primary};
     }
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin-left: 10px;
+    `}
 `
 
 const Block = styled.div`

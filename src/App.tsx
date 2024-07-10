@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import i18next from 'i18next'
-import { Suspense } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
@@ -19,7 +18,6 @@ import { client } from './utils/graph'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
-import { ToastContainer } from 'react-toastify'
 import PageNotFound from '~/containers/PageNotFound'
 import Maintenance from '~/containers/Maintenance'
 import MaintenanceRedirect from '~/containers/MaintenanceRedirect'
@@ -27,10 +25,15 @@ import GeoBlockContainer from './containers/GeoBlockContainer'
 import * as Sentry from '@sentry/react'
 import Earn from './containers/Earn'
 import Bolts from './containers/Bolts'
-import { Fuul } from '@fuul/sdk'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
 import LiFiWidget from './containers/Bridge/LiFiWidget'
+import ScreenLoader from '~/components/Modals/ScreenLoader'
+import Explore from '~/containers/Explore'
+
+import 'react-loading-skeleton/dist/skeleton.css'
+
+const ToastContainer = lazy(() => import('react-toastify').then((module) => ({ default: module.ToastContainer })))
 
 Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -44,20 +47,6 @@ Sentry.init({
     replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
     environment: process.env.NODE_ENV,
 })
-
-const network = process.env.REACT_APP_NETWORK_ID
-const fuulApiKey = process.env.REACT_APP_FUUL_API_KEY
-// Only initialize Fuul on Arbitrum One
-if (network === '42161' && fuulApiKey) {
-    try {
-        Fuul.init({
-            apiKey: fuulApiKey,
-        })
-        Fuul.sendPageview()
-    } catch (e) {
-        console.log(e)
-    }
-}
 
 const App = () => {
     const location = useLocation()
@@ -77,11 +66,14 @@ const App = () => {
             <ThemeProvider theme={lightTheme}>
                 <GlobalStyle />
                 <ErrorBoundary>
-                    <ToastContainer style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }} />
-                    <Shared>
-                        <ApolloProvider client={client}>
-                            <StatsProvider>
-                                <Suspense fallback={null}>
+                    <Suspense fallback={<ScreenLoader />}>
+                        <Shared>
+                            <ApolloProvider client={client}>
+                                <StatsProvider>
+                                    <ToastContainer
+                                        style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }}
+                                    />
+
                                     <Web3ReactManager>
                                         <MaintenanceRedirect>
                                             <Routes>
@@ -91,6 +83,7 @@ const App = () => {
                                                 <Route element={<Earn />} path={'/earn'} />
                                                 <Route element={<Bolts />} path={'/bolts'} />
                                                 <Route element={<Analytics />} path={'/stats'} />
+                                                <Route element={<Explore />} path={'/explore'} />
                                                 <Route
                                                     caseSensitive
                                                     element={<GeoBlockContainer />}
@@ -120,10 +113,10 @@ const App = () => {
                                             </Routes>
                                         </MaintenanceRedirect>
                                     </Web3ReactManager>
-                                </Suspense>
-                            </StatsProvider>
-                        </ApolloProvider>
-                    </Shared>
+                                </StatsProvider>
+                            </ApolloProvider>
+                        </Shared>
+                    </Suspense>
                 </ErrorBoundary>
             </ThemeProvider>
         </I18nextProvider>

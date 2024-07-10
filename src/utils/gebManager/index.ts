@@ -1,8 +1,7 @@
+import axios from 'axios'
 import { BigNumber } from 'ethers'
-import { Geb, utils } from '@opendollar/sdk'
-import { ILiquidationResponse, IUserSafeList } from '../interfaces'
-
-import { TokenLiquidationData, fetchLiquidationData } from '@opendollar/sdk/lib/virtual/virtualLiquidationData'
+import { fetchLiquidationData, Geb, TokenLiquidationData, utils } from '@opendollar/sdk'
+import { ILiquidationResponse, IUserSafeList, IOwnerAddressesResponse } from '../interfaces'
 import { fetchUserSafes } from '@opendollar/sdk/lib/virtual/virtualUserSafes.js'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 
@@ -12,6 +11,11 @@ interface UserListConfig {
     tokensData: { [key: string]: TokenData }
     proxy_not?: null
     safeId_not?: null
+}
+
+interface GlobalSafesConfig {
+    geb: Geb
+    tokensData: { [key: string]: TokenData }
 }
 
 // returns LiquidationData
@@ -98,6 +102,7 @@ const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> =
         safeHandler: safe.addy,
         safeId: safe.id.toString(),
         collateralType: safe.collateralType,
+        ownerAddress: config.address,
     }))
 
     return {
@@ -111,12 +116,36 @@ const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> =
     }
 }
 
+const getGlobalSafesRpc = async (): Promise<IOwnerAddressesResponse> => {
+    const response = await axios.get('https://bot.opendollar.com/api/vaults')
+    const ownerAddresses: string[] = Array.from(new Set(response.data.details.map((safe: any) => safe.owner)))
+    return { ownerAddresses }
+}
+
+const fetchSafesForOwners = async (config: GlobalSafesConfig, ownerAddresses: string[]): Promise<IUserSafeList> => {
+    const allSafes: any[] = []
+    const safePromises = ownerAddresses.map((address) => getUserSafesRpc({ ...config, address }))
+
+    const results = await Promise.all(safePromises)
+    results.forEach((result) => {
+        allSafes.push(...result.safes)
+    })
+
+    const liquidationData = await getLiquidationDataRpc(config.geb, config.tokensData)
+    return {
+        safes: allSafes,
+        erc20Balances: [],
+        ...liquidationData,
+    }
+}
+
 const gebManager = {
     getUserSafesRpc,
+    getGlobalSafesRpc,
+    fetchSafesForOwners,
     getLiquidationDataRpc,
 }
 
-// Helper functions
 export const parseWad = (val: BigNumber) => utils.wadToFixed(val).toString()
 export const parseRay = (val: BigNumber) => utils.rayToFixed(val).toString()
 export const parseRad = (val: BigNumber) => utils.radToFixed(val).toString()

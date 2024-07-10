@@ -16,6 +16,10 @@ export interface DynamicObject {
     [key: string]: any
 }
 
+export interface IOwnerAddressesResponse {
+    ownerAddresses: string[]
+}
+
 interface IColors {
     primary: string
     secondary: string
@@ -362,6 +366,11 @@ export interface IFetchTokensDataPayload {
 
 export interface IFetchSafesPayload {
     address: string
+    geb: Geb
+    tokensData: { [key: string]: TokenData }
+}
+
+export interface IFetchGlobalSafesPayload {
     geb: Geb
     tokensData: { [key: string]: TokenData }
 }

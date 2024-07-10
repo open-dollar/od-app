@@ -2,6 +2,7 @@ import settingsModel, { SettingsModel } from './settingsModel'
 import popupsModel, { PopupsModel } from './popupsModel'
 import connectWalletModel, { ConnectWalletModel } from './connectWalletModel'
 import safeModel, { SafeModel } from './safeModel'
+import globalSafeModel, { GlobalSafeModel } from './globalSafeModel'
 import transactionsModel, { TransactionsModel } from './transactionsModel'
 import multicallModel, { MulticallModel } from './multicallModel'
 import auctionModel, { AuctionModel } from './auctionModel'
@@ -16,6 +17,7 @@ export interface StoreModel {
     popupsModel: PopupsModel
     connectWalletModel: ConnectWalletModel
     safeModel: SafeModel
+    globalSafeModel: GlobalSafeModel
     transactionsModel: TransactionsModel
     multicallModel: MulticallModel
     auctionModel: AuctionModel
@@ -31,6 +33,7 @@ const model: StoreModel = {
     popupsModel,
     connectWalletModel,
     safeModel,
+    globalSafeModel,
     transactionsModel,
     multicallModel,
     auctionModel,

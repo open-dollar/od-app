@@ -8,7 +8,7 @@
       script-src 'self' blob:  https://kb.wowto.ai https://app.wowto.ai http://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/usekeyp.matomo.cloud/matomo.js https://cdn.matomo.cloud/matomo.js https://usekeyp.matomo.cloud/matomo.js;
       media-src 'self';
       img-src 'self' data: blob: https://explorer-api.walletconnect.com https://usekeyp.matomo.cloud https://app.opendollar.com;
-      connect-src 'self' blob: https://*.quiknode.pro https://api.opensea.io https://api.fuul.xyz https://api.camelot.exchange https://opt-mainnet.g.alchemy.com https://arb-mainnet.g.alchemy.com https://mainnet.optimism.io/ https://eth.llamarpc.com https://base.llamarpc.com https://polygon-bor-rpc.publicnode.com https://eth-pokt.nodies.app https://polygon-pokt.nodies.app https://op-pokt.nodies.app https://arb-pokt.nodies.app https://holy-damp-firefly.arbitrum-mainnet.quiknode.pro https://api.studio.thegraph.com https://od-subgraph-node-image.onrender.com https://usekeyp.matomo.cloud https://o1016103.ingest.us.sentry.io/api/4507153379295232/envelope/ https://o1016103.ingest.us.sentry.io/api/4507153379295232/security/ https://arbitrum-sepolia.infura.io https://arbitrum-sepolia.blockpi.network/v1/rpc/public https://arbitrum.blockpi.network/v1/rpc/public https://optimism.blockpi.network wss://relay.walletconnect.com/ https://verify.walletconnect.org wss://www.walletlink.org/rpc https://explorer-api.walletconnect.com https://chain-proxy.wallet.coinbase.com https://rpc.walletconnect.com https://bot.opendollar.com https://bot.dev.opendollar.com https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/rai https://api.country.is/ ;
+      connect-src 'self' blob: https://eth-pokt.nodies.app http://localhost:3000 https://*.quiknode.pro https://api.opensea.io https://api.fuul.xyz https://api.camelot.exchange https://opt-mainnet.g.alchemy.com https://arb-mainnet.g.alchemy.com https://mainnet.optimism.io/ https://eth.llamarpc.com https://base.llamarpc.com https://polygon-bor-rpc.publicnode.com https://eth-pokt.nodies.app https://polygon-pokt.nodies.app https://op-pokt.nodies.app https://arb-pokt.nodies.app https://holy-damp-firefly.arbitrum-mainnet.quiknode.pro https://api.studio.thegraph.com https://od-subgraph-node-image.onrender.com https://usekeyp.matomo.cloud https://o1016103.ingest.us.sentry.io/api/4507153379295232/envelope/ https://o1016103.ingest.us.sentry.io/api/4507153379295232/security/ https://arbitrum-sepolia.infura.io https://arbitrum-sepolia.blockpi.network/v1/rpc/public https://arbitrum.blockpi.network/v1/rpc/public https://optimism.blockpi.network wss://relay.walletconnect.com/ https://verify.walletconnect.org wss://www.walletlink.org/rpc https://explorer-api.walletconnect.com https://chain-proxy.wallet.coinbase.com https://rpc.walletconnect.com https://bot.opendollar.com https://bot.dev.opendollar.com https://subgraph.reflexer.finance/subgraphs/name/reflexer-labs/rai https://api.country.is/ ;
       object-src 'self' blob:;
       form-action 'self';
       font-src 'self' data: https://fonts.gstatic.com;
@@ -38,13 +38,30 @@
         <meta name="description" content="Open Dollar is a stablecoin protocol built on Arbitrum designed to help you yield and leverage your assets with safety and predictability." />
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap" rel="stylesheet">
+
+        <!-- Preconnect and Preload -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" as="style">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" as="style">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" as="style">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" as="style">
+
+        <!-- Load fonts asynchronously -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
         <title>OD | App</title>
 
         <!-- Matomo -->
         <script src="./tracking.js"></script>
-        <script src="https://usekeyp.matomo.cloud/matomo.js" async defer></script>
+        <script src="https://usekeyp.matomo.cloud/matomo.js"></script>
         <!-- End Matomo Code -->
-        <script type="text/javascript" src="https://kb.wowto.ai/widgets/M4cmuZpuJqb/widget.js"></script>
+        <script type="text/javascript" src="https://kb.wowto.ai/widgets/M4cmuZpuJqb/widget.js" async defer></script>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>

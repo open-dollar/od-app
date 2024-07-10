@@ -127,7 +127,7 @@ export const toFixedString = (value: string, type: keyof typeof floatsTypes = 'W
     }
 }
 
-const getBytes32String = (collateralType: string, tokensData: { [key: string]: TokenData }): string | null => {
+export const getBytes32String = (collateralType: string, tokensData: { [key: string]: TokenData }): string | null => {
     const token = Object.values(tokensData).find(
         (token) => token.symbol === collateralType || token.bytes32String === collateralType
     )
@@ -253,6 +253,35 @@ export const safeIsSafe = (totalCollateral: string, totalDebt: string, safetyPri
     const totalCollateralBN = BigNumber.from(toFixedString(totalCollateral, 'WAD'))
     const safetyPriceBN = BigNumber.from(toFixedString(safetyPrice, 'RAY'))
     return totalDebtBN.lte(totalCollateralBN.mul(safetyPriceBN).div(gebUtils.RAY))
+}
+
+/**
+ * Removes commas from a formatted number
+ * @param value
+ */
+export const parseFormattedNumber = (value: string): number => {
+    return parseFloat(value.replace(/,/g, ''))
+}
+
+/**
+ * Calculate the risk status text given a numeric risk status
+ * @param riskStatusNumeric
+ */
+export const calculateRiskStatusText = (riskStatusNumeric: Number) => {
+    switch (riskStatusNumeric) {
+        case 0:
+            return 'NO'
+        case 1:
+            return 'LOW'
+        case 2:
+            return 'ELEVATED'
+        case 3:
+            return 'HIGH'
+        case 4:
+            return 'LIQUIDATION'
+        default:
+            return 'LOW'
+    }
 }
 
 /**

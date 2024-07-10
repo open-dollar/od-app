@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -14,40 +15,29 @@ import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
 import Loader from '~/components/Loader'
 
-const VaultDetails = ({ ...props }) => {
+const VaultDetails = () => {
     const geb = useGeb()
     const { t } = useTranslation()
     const { account, provider } = useActiveWeb3React()
     const { safeModel: safeActions } = useStoreActions((state) => state)
-
     const {
         safeModel: { liquidationData, singleSafe },
     } = useStoreState((state) => state)
 
-    const safeId = props.match.params.id as string
+    const { id } = useParams()
+    const safeId = id ?? ''
+    const location = useLocation()
+    const navigate = useNavigate()
 
-    const isDeposit = useMemo(() => {
-        if (props.location) {
-            return props.location.pathname.includes('deposit')
-        }
-        return false
-    }, [props.location])
-
-    const isWithdraw = useMemo(() => {
-        if (props.location) {
-            return props.location.pathname.includes('withdraw')
-        }
-        return false
-    }, [props.location])
+    const isDeposit = useMemo(() => location.pathname.includes('deposit'), [location.pathname])
+    const isWithdraw = useMemo(() => location.pathname.includes('withdraw'), [location.pathname])
 
     const isOwner = useIsOwner(safeId)
 
     const { safeModel: safeState } = useStoreState((state) => state)
-
     const safes = safeState.list
     const safe = safes.find((safe) => safe.id === safeId)
 
-    // Fetches vault data of a vault not owned by the user
     const fetchSingleVaultData = async () => {
         if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
@@ -110,9 +100,9 @@ const VaultDetails = ({ ...props }) => {
     useEffect(() => {
         if (!account || !provider) return
         if (!isNumeric(safeId)) {
-            props.navigate('/vaults')
+            navigate('/vaults')
         }
-    }, [account, provider, props.history, safeId])
+    }, [account, provider, navigate, safeId])
 
     const isLoading = !(liquidationData && singleSafe?.collateralName)
 
@@ -135,6 +125,7 @@ const VaultDetails = ({ ...props }) => {
 
                 {/* Users can only repay debt from a vault they don't own */}
                 {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
+
                 {!isOwner ? (
                     <LabelContainer>
                         <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />

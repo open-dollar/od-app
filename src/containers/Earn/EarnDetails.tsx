@@ -47,8 +47,8 @@ const EarnDetails = () => {
     const endTime = nitroPools[0]?.nitroData.endTime
 
     const handleBack = useCallback(() => {
-        navigate(`/earn`)
-    }, [history])
+        navigate('/earn')
+    }, [navigate])
 
     const getDates = () => {
         const start = new Date(Number(startTime) * 1000)

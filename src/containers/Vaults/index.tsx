@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
-
 import { useStoreState, useStoreActions } from '~/store'
 import { useActiveWeb3React } from '~/hooks'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useGeb from '~/hooks/useGeb'
 import CreateVaultStep from '~/components/CreateVaultStep'
 import VaultList from './VaultList'
@@ -12,12 +11,16 @@ import { COIN_TICKER } from '~/utils'
 import { useTranslation } from 'react-i18next'
 import Accounts from './Accounts'
 
-const OnBoarding = ({ ...props }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface OnBoardingProps {
+    className?: string
+}
+
+const OnBoarding = ({ className }: OnBoardingProps) => {
     const navigate = useNavigate()
     const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const { t } = useTranslation()
+    const { address } = useParams<{ address: string }>()
     const {
         connectWalletModel: connectWalletState,
         safeModel: safeState,
@@ -25,19 +28,13 @@ const OnBoarding = ({ ...props }) => {
     } = useStoreState((state) => state)
     const { safeModel: safeActions } = useStoreActions((state) => state)
     const { isWrongNetwork, isStepLoading } = connectWalletState
-    const address: string = props.match?.params?.address ?? ''
 
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
-        if (
-            (!account && !address) ||
-            (address && !isAddress(address.toLowerCase())) ||
-            !provider ||
-            connectWalletState.isWrongNetwork
-        )
+        if ((!account && !address) || (address && !isAddress(address.toLowerCase())) || !provider || isWrongNetwork)
             return
 
-        async function fetchSafes() {
+        const fetchSafes = async () => {
             try {
                 await safeActions.fetchUserSafes({
                     address: address || (account as string),
@@ -49,39 +46,18 @@ const OnBoarding = ({ ...props }) => {
             }
         }
 
-        if (geb && connectWalletState.tokensData) {
-            fetchSafes()
-        }
+        if (geb && connectWalletState.tokensData) fetchSafes()
 
-        const ms = 3000
-        const interval = setInterval(() => {
-            if (
-                (!account && !address) ||
-                (address && !isAddress(address.toLowerCase())) ||
-                !provider ||
-                connectWalletState.isWrongNetwork
-            )
-                fetchSafes()
-        }, ms)
-
+        const interval = setInterval(fetchSafes, 3000)
         return () => clearInterval(interval)
-    }, [
-        account,
-        address,
-        connectWalletState.isWrongNetwork,
-        connectWalletState.tokensData,
-        geb,
-        provider,
-        safeActions,
-        chainId,
-    ])
+    }, [account, address, isWrongNetwork, connectWalletState.tokensData, geb, provider, safeActions, chainId])
 
     const handleCreateSafe = () => {
         navigate('/vaults/create')
     }
 
     return (
-        <Container id="app-page">
+        <Container id="app-page" className={className}>
             <Content>
                 {safeState.safeCreated ? (
                     <>
@@ -90,18 +66,16 @@ const OnBoarding = ({ ...props }) => {
                             stepNumber={2}
                             id="step2"
                             title={'create_safe'}
-                            text={t('create_safe_text', {
-                                coin_ticker: COIN_TICKER,
-                            })}
+                            text={t('create_safe_text', { coin_ticker: COIN_TICKER })}
                             btnText={'create_safe'}
                             handleClick={handleCreateSafe}
                             isDisabled={isWrongNetwork}
                             isLoading={isStepLoading}
                         />
                     </>
-                ) : popupsState.isWaitingModalOpen ? null : (
+                ) : !popupsState.isWaitingModalOpen ? (
                     <Accounts />
-                )}
+                ) : null}
             </Content>
         </Container>
     )

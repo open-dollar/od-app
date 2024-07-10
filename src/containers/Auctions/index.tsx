@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { useActiveWeb3React, handleTransactionError, useStartAuction, useQuery, useGetAuctions } from '~/hooks'
+import { useActiveWeb3React, handleTransactionError, useStartAuction, useGetAuctions } from '~/hooks'
 import AlertLabel from '~/components/AlertLabel'
 import { AuctionEventType } from '~/types'
 import { useStoreActions, useStoreState } from '~/store'
@@ -12,31 +12,26 @@ import { formatNumber } from '~/utils'
 import useGeb from '~/hooks/useGeb'
 import CollateralAuctionsList from './CollateralAuctions/CollateralAuctionsList'
 
-const Auctions = ({ ...props }) => {
-    const auctionType = props.match.params.id as string
+interface AuctionsProps {
+    className?: string
+}
 
-    const { account } = useActiveWeb3React()
-    const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
-    const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
-    const query = useQuery()
+const Auctions = ({ className }: AuctionsProps) => {
+    const { id } = useParams<{ id: string }>()
+    const auctionType = id ?? ''
+    const location = useLocation()
+    const query = new URLSearchParams(location.search)
     const queryType = query.get('type') as AuctionEventType | null
     const [type, setType] = useState<AuctionEventType>(queryType || 'COLLATERAL')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [selectedItem, setSelectedItem] = useState<string>('WSTETH')
-    const geb = useGeb()
     const navigate = useNavigate()
-
-    const getText = () => {
-        switch (type) {
-            case 'COLLATERAL':
-                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
-            case 'SURPLUS':
-                return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
-            case 'DEBT':
-                return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
-        }
-    }
+    const { account } = useActiveWeb3React()
+    const geb = useGeb()
+    const { auctionModel: auctionsActions, popupsModel: popupsActions } = useStoreActions((state) => state)
+    const { auctionModel: auctionsState, connectWalletModel: connectWalletState } = useStoreState((state) => state)
+    const { proxyAddress } = connectWalletState
 
     const {
         startSurplusAcution,
@@ -53,7 +48,16 @@ const Auctions = ({ ...props }) => {
         surplusCooldownDone,
     } = useStartAuction()
 
-    const { proxyAddress } = connectWalletState
+    const getText = () => {
+        switch (type) {
+            case 'COLLATERAL':
+                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
+            case 'SURPLUS':
+                return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
+            case 'DEBT':
+                return 'Debt auctions mint and auction new ODG in exchange for OD. The OD that is received by an auction will be used to eliminate bad (uncovered) debt from the system.'
+        }
+    }
 
     const handleStartSurplusAuction = async () => {
         setIsLoading(true)
@@ -91,10 +95,8 @@ const Auctions = ({ ...props }) => {
 
     const onTabClick = (type: AuctionEventType) => {
         const params = new URLSearchParams()
-        if (query) {
+        if (type) {
             params.append('type', type)
-        } else {
-            params.delete('type')
         }
         navigate({ search: params.toString() })
         setType(type)
@@ -142,7 +144,7 @@ const Auctions = ({ ...props }) => {
     }, [auctionsActions, geb, proxyAddress, auctionsState.auctionsData])
 
     return (
-        <Container>
+        <Container className={className}>
             {error ? <AlertLabel type="danger" text={error} /> : null}
             <Content>
                 <Title>Auctions</Title>
@@ -260,7 +262,6 @@ const Title = styled.div`
     font-size: 34px;
     font-weight: 700;
     font-family: ${(props) => props.theme.family.headers};
-
     color: ${(props) => props.theme.colors.accent};
     min-width: 180px;
 `
@@ -271,15 +272,12 @@ const Content = styled.div`
     button {
         display: flex;
         align-items: center;
-
         min-width: 100px;
         padding: 4px 12px;
-
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 2px;
-
         color: ${(props) => props.theme.colors.accent};
     }
 `

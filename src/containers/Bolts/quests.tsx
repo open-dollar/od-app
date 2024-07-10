@@ -1,11 +1,11 @@
 import Button from '~/components/Button'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import Affiliate from './Affiliate'
 import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
+import turtleClubLogo from '~/assets/turtle-club.png'
 import { useHistory } from 'react-router-dom'
 import TokenIcon from '~/components/TokenIcon'
 
@@ -19,6 +19,12 @@ const LogoText = styled.p`
     display: flex;
     align-items: center;
 `
+
+const TurtleClubLogo = () => (
+    <LogoText>
+        <img alt="Turtle Club" src={turtleClubLogo} style={{ height: '27px', marginRight: '8px' }} /> Turtle Club
+    </LogoText>
+)
 
 const CamelotLogo = () => (
     <LogoText>
@@ -108,29 +114,29 @@ export type BoltsEarnedData = {
     [key: string]: string
 }
 
-export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
+export type MultipliersData = {
+    [key: string]: string
+}
+
+export const MULTIPLIERS = (multipliersData: MultipliersData) => [
     {
-        title: 'Invite a Friend',
-        text: (
-            <>
-                Create a referral link by signing a message with your wallet.
-                <Affiliate />
-            </>
+        title: 'Turtle Club',
+        button: (
+            <Button
+                secondary
+                onClick={() => onClick('https://www.opendollar.com/blog/turtle-club-joins-the-vault-keeper-program')}
+            >
+                Learn more <LinkIcon />
+            </Button>
         ),
-        button: '',
+        text: `Become a Turtle Club member.`,
         items: [
             {
                 title: 'Source',
-                status: <OpenDollarLogo />,
+                status: <TurtleClubLogo />,
             },
-            {
-                title: 'Bolts',
-                status: '10% of referrals + friends receive 250 Bolts per ETH deposited for 30 days',
-            },
-            {
-                title: 'Earned',
-                status: boltsEarnedData['Invite a Friend'] || '-',
-            },
+            { title: 'Multiplier', status: '+10%' },
+            { title: 'Status', status: multipliersData['TURTLE_CLUB'] || '-' },
         ],
     },
     {
@@ -140,47 +146,14 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
                 Learn more <LinkIcon />
             </Button>
         ),
-        text: `Depositors using a Genesis NFV receive a 10% bonus for all deposit and borrow points earned with that vault.`,
+        text: `Hold the Genesis NFV.`,
         items: [
             {
                 title: 'Source',
                 status: <OpenDollarLogo />,
             },
-            { title: 'Bolts', status: '+10% to deposit/borrow' },
-            { title: 'Holder', status: boltsEarnedData['OgNFV'] || '-' },
-        ],
-    },
-    {
-        title: 'ODOG NFT Holder',
-        button: (
-            <Button
-                secondary
-                onClick={() =>
-                    onClick(
-                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
-                    )
-                }
-            >
-                Get yours <LinkIcon />
-            </Button>
-        ),
-        text: (
-            <div>
-                Holders of the
-                <StyledAnchor
-                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
-                    target="_blank"
-                >
-                    ODOG NFT
-                </StyledAnchor>
-                receive a 3% bonus for all points earned.
-            </div>
-        ),
-
-        items: [
-            { title: 'Source', status: 'Guild.xyz' },
-            { title: 'Bolts', status: '+3% to all points' },
-            { title: 'Holder', status: boltsEarnedData['OgNFT'] || '-' },
+            { title: 'Multiplier', status: '+10%' },
+            { title: 'Status', status: multipliersData['GENESIS_NFV'] || '-' },
         ],
     },
     {
@@ -199,20 +172,53 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
         ),
         text: (
             <div>
-                Holders of the
+                Hold the
                 <StyledAnchor
                     href="https://arbiscan.io/token/0x3D6d1f3cEeb33F8cF3906bb716360ba25037beC8"
                     target="_blank"
                 >
                     Genesis NFT
                 </StyledAnchor>
-                receive a 7% bonus for all points earned.
+                {'.'}
             </div>
         ),
         items: [
             { title: 'Source', status: 'NFTs2Me' },
-            { title: 'Bolts', status: '+7% to all points' },
-            { title: 'Holder', status: boltsEarnedData['GenesisNFT'] || '-' },
+            { title: 'Multiplier', status: '+7%' },
+            { title: 'Status', status: multipliersData['GENESIS_NFT'] || '-' },
+        ],
+    },
+    {
+        title: 'ODOG NFT Holder',
+        button: (
+            <Button
+                secondary
+                onClick={() =>
+                    onClick(
+                        'https://www.opendollar.com/blog/open-dollars-first-airdrop-and-call-for-delegates#:~:text=invitation%20to%20them.-,%E2%80%9COD%20OG%E2%80%9D%20NFTs,-To%20commemorate%20this'
+                    )
+                }
+            >
+                Get yours <LinkIcon />
+            </Button>
+        ),
+        text: (
+            <div>
+                Hold the
+                <StyledAnchor
+                    href="https://polygonscan.com/token/0x346324e797c8fa534b10fc9127ccfd9cb9e9aab7"
+                    target="_blank"
+                >
+                    ODOG NFT
+                </StyledAnchor>
+                {'.'}
+            </div>
+        ),
+
+        items: [
+            { title: 'Source', status: 'Guild.xyz' },
+            { title: 'Multiplier', status: '+3%' },
+            { title: 'Status', status: multipliersData['OG_NFT'] || '-' },
         ],
     },
     {
@@ -224,8 +230,8 @@ export const MULTIPLIERS = (boltsEarnedData: BoltsEarnedData) => [
                 title: 'Source',
                 status: <OpenDollarLogo />,
             },
-            { title: 'Bolts', status: '+30%' },
-            { title: 'Earned', status: boltsEarnedData['Community Goal: 20K ETH TVL'] || '-' },
+            { title: 'Multiplier', status: '+30% one-time bonus' },
+            { title: 'Status', status: multipliersData['ETH_TVL_20K'] || '-' },
         ],
     },
 ]
@@ -250,7 +256,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '500 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[3] || '-' },
+            { title: 'Earned', status: boltsEarnedData['COLLATERAL_DEPOSIT'] || '-' },
         ],
     },
     {
@@ -270,7 +276,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
                 status: <OpenDollarLogo />,
             },
             { title: 'Bolts', status: '1,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[1] || '-' },
+            { title: 'Earned', status: boltsEarnedData['DEBT_BORROW'] || '-' },
         ],
     },
     {
@@ -297,7 +303,7 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[8] || '-' },
+            { title: 'Earned', status: boltsEarnedData['ODG_ETH_LP'] || '-' },
         ],
     },
     {
@@ -324,34 +330,53 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },
-            { title: 'Earned', status: boltsEarnedData[7] || '-' },
+            { title: 'Earned', status: boltsEarnedData['OD_ETH_LP'] || '-' },
         ],
     },
     {
-        title: 'Galxe and Zealy',
+        title: 'Galxe',
         button: (
             <>
                 <Button secondary onClick={() => onClick('https://galxe.com/opendollar')}>
-                    Galxe <LinkIcon />
-                </Button>
-                <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
-                    Zealy <LinkIcon />
+                    Go <LinkIcon />
                 </Button>
             </>
         ),
-        text: 'Complete tasks on Galxe and Zealy to earn Bolts.',
+        text: 'Complete quests on Galxe.',
         items: [
             {
                 title: 'Source',
                 status: (
                     <>
                         <GalxeLogo />
+                    </>
+                ),
+            },
+            { title: 'Bolts', status: '1 per Point' },
+            { title: 'Earned', status: boltsEarnedData['GALXE'] || '-' },
+        ],
+    },
+    {
+        title: 'Zealy',
+        button: (
+            <>
+                <Button secondary onClick={() => onClick('https://zealy.io/c/opendollar/questboard')}>
+                    Go <LinkIcon />
+                </Button>
+            </>
+        ),
+        text: 'Complete quests on Zealy.',
+        items: [
+            {
+                title: 'Source',
+                status: (
+                    <>
                         <ZealyLogo />
                     </>
                 ),
             },
-            { title: 'Bolts', status: 'Varies' },
-            { title: 'Earned', status: boltsEarnedData[6] || '-' },
+            { title: 'Bolts', status: '1 per Point' },
+            { title: 'Earned', status: boltsEarnedData['ZEALY'] || '-' },
         ],
     },
 ]

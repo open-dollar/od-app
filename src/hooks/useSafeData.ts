@@ -12,8 +12,22 @@ export default function useSafeData() {
     const geb = useGeb()
     const tokensData = geb?.tokenList
     const { account } = useActiveWeb3React()
-    const { safeModel: safeActions } = useStoreActions((state) => state)
+    const { safeModel: safeActions, globalSafeModel: globalSafeActions } = useStoreActions((state) => state)
+
     const previousAccount = usePrevious(account)
+
+    const fetchGlobalSafes = useCallback(() => {
+        if (geb && tokensData) {
+            try {
+                globalSafeActions.fetchGlobalSafes({
+                    geb,
+                    tokensData,
+                })
+            } catch (error) {
+                console.debug('Failed to fetch user safes', error)
+            }
+        }
+    }, [geb, tokensData, globalSafeActions])
 
     const fetchUserSafes = useCallback(() => {
         if (account && geb && tokensData) {
@@ -32,14 +46,20 @@ export default function useSafeData() {
     // Fetch safes initially and on account or geb change
     useEffect(() => {
         fetchUserSafes()
+        fetchGlobalSafes()
         const interval = setInterval(fetchUserSafes, 60000)
-        return () => clearInterval(interval)
-    }, [fetchUserSafes])
+        const globalInterval = setInterval(fetchGlobalSafes, 60000)
+        return () => {
+            clearInterval(interval)
+            clearInterval(globalInterval)
+        }
+    }, [fetchUserSafes, fetchGlobalSafes])
 
     // Handles account changes
     useEffect(() => {
         if (account && previousAccount !== account) {
             fetchUserSafes()
+            fetchGlobalSafes()
         }
-    }, [account, previousAccount, fetchUserSafes])
+    }, [account, previousAccount, fetchUserSafes, fetchGlobalSafes])
 }

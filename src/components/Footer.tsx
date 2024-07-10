@@ -21,9 +21,6 @@ const Footer: React.FC = () => {
                 <Row className="linksContainer">
                     <Column>
                         <Header>PROJECT</Header>
-                        <Link target="_blank" href="https://app.opendollar.com/">
-                            Join Testnet
-                        </Link>
                         <Link target="_blank" href="https://docs.opendollar.com/">
                             Docs
                         </Link>

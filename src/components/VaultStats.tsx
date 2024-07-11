@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ExternalLink, Info } from 'react-feather'
 import Numeral from 'numeral'
 
-import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
+import {useTokenBalanceInUSD, useSafeInfo, useInputsHandlers} from '~/hooks'
 import {
     formatNumber,
     formatWithCommas,
@@ -20,12 +20,15 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
 import { useAddress } from '~/hooks/useAddress'
+import {BasicActions} from "@opendollar/sdk";
+import useGeb from "~/hooks/useGeb";
+import {utils as ethersUtils} from "ethers/lib/ethers";
 
 const VaultStats = ({
-    isModifying,
-    isDeposit,
-    isOwner,
-}: {
+                        isModifying,
+                        isDeposit,
+                        isOwner,
+                    }: {
     isModifying: boolean
     isDeposit: boolean
     isOwner: boolean
@@ -38,9 +41,11 @@ const VaultStats = ({
         liquidationPrice: newLiquidationPrice,
         account,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
+    const geb = useGeb()
 
     const { safeModel: safeState } = useStoreState((state) => state)
     const { singleSafe, liquidationData } = safeState
+    const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
 
@@ -109,6 +114,17 @@ const VaultStats = ({
         }
         return false
     }, [isModifying, parsedAmounts.leftInput, parsedAmounts.rightInput])
+
+    const handleClaimClick = async () => {
+        if (!account) return
+        try {
+        const proxy = await geb.getProxyAction(account)
+        // const debtBN = safeData.rightInput ? ethersUtils.parseEther(safeData.rightInput) : ethersUtils.parseEther('0')
+        // proxy.collectTokenCollateral(geb.contracts.safeManager.address, geb.contracts.tokenCollateralJoin.address, singleSafe?.id, )
+        } catch (e) {
+            console.debug(e, 'Error in claiming internal balance')
+        }
+    }
 
     return (
         <>
@@ -180,21 +196,21 @@ const VaultStats = ({
                                                 isDeposit
                                                     ? 'green'
                                                     : 'yellow' &&
-                                                      returnState(
-                                                          ratioChecker(
-                                                              Number(newCollateralRatio),
-                                                              Number(
-                                                                  safeState.liquidationData!.collateralLiquidationData[
-                                                                      collateralName
-                                                                  ].liquidationCRatio
-                                                              ),
-                                                              Number(
-                                                                  safeState.liquidationData!.collateralLiquidationData[
-                                                                      collateralName
-                                                                  ].safetyCRatio
-                                                              )
-                                                          )
-                                                      ).toLowerCase()
+                                                    returnState(
+                                                        ratioChecker(
+                                                            Number(newCollateralRatio),
+                                                            Number(
+                                                                safeState.liquidationData!.collateralLiquidationData[
+                                                                    collateralName
+                                                                    ].liquidationCRatio
+                                                            ),
+                                                            Number(
+                                                                safeState.liquidationData!.collateralLiquidationData[
+                                                                    collateralName
+                                                                    ].safetyCRatio
+                                                            )
+                                                        )
+                                                    ).toLowerCase()
                                             }
                                         >
                                             {formatWithCommas(newCollateralRatio)}%
@@ -329,6 +345,15 @@ const VaultStats = ({
                                 <Info size="16" />
                             </InfoIcon>
                             <SideValue>{`${returnRedRate()}%`}</SideValue>
+                        </Side>
+
+                        <Side style={{ fontWeight: 'bold' }}>
+                                <SideTitle>Internal Balance</SideTitle>
+                                <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={'internal_balance_tip'}>
+                                    <Info size="16" />
+                                </InfoIcon>
+                                <ClaimLink onClick={handleClaimClick}>CLAIM</ClaimLink>
+                            <StatValue>{/* internal balance value */}</StatValue>
                         </Side>
                     </Inner>
                 </Right>
@@ -530,4 +555,13 @@ const InfoIcon = styled.div`
         color: #475662;
         margin-top: 4px;
     }
+`
+
+const ClaimLink = styled.span`
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    text-decoration: underline;
+    color: ${(props) => props.theme.colors.blueish};
+    margin-left: 10px;
 `

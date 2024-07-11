@@ -95,6 +95,9 @@ function parseTokenLiquidationData(redemptionPrice: BigNumber, tokenLiquidationD
 // Returns list of user safes
 const getUserSafesRpc = async (config: UserListConfig): Promise<IUserSafeList> => {
     const [userCoinBalance, safesData] = await fetchUserSafes(config.geb, config.address)
+    console.log('userCoinBalance', userCoinBalance)
+    console.log('safesData', safesData)
+
 
     const safes = safesData.map((safe) => ({
         collateral: parseWad(safe.lockedCollateral),

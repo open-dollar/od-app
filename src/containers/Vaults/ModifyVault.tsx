@@ -495,8 +495,14 @@ const ButtonsRow = styled.div`
     a {
         min-width: 100px;
         padding: 4px 12px;
-        &:first-child {
-            margin-right: 10px;
+        height: 42px;
+        border: none;
+
+        &:nth-child(2) {
+            border-top-left-radius: 0;
+        }
+        &:last-child {
+            border-top-right-radius: 4px;
         }
     }
     @media (max-width: 767px) {

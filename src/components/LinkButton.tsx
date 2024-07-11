@@ -15,7 +15,7 @@ interface Props {
     withArrow?: boolean
     children?: ReactNode
     color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
-    border?: string
+    className?: string
 }
 const LinkButton = ({
     id,
@@ -26,7 +26,7 @@ const LinkButton = ({
     withArrow,
     children,
     color = 'blueish',
-    border = '',
+    className,
     ...rest
 }: Props) => {
     return isExternal ? (
@@ -36,7 +36,7 @@ const LinkButton = ({
             <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}
         </ExtLink>
     ) : (
-        <CustomLink id={id} {...rest} to={url} color={color} disabled={disabled} border={border}>
+        <CustomLink id={id} {...rest} to={url} color={color} disabled={disabled} className={className}>
             {children}
             <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}
         </CustomLink>
@@ -56,21 +56,20 @@ const ExtLink = styled.a`
 const RedesignedBtnStyle = css<{
     disabled?: boolean
     color?: string
-    border?: string
+    className?: string
 }>`
-    pointer-events: ${({ theme, disabled }) => (disabled ? 'none' : 'inherit')};
+    pointer-events: ${({ disabled }) => (disabled ? 'none' : 'inherit')};
     outline: none;
-    cursor: ${({ theme, disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     min-width: 134px;
-    border: ${({ theme, border }) => (border ? `1px solid ${theme.colors.blueish}` : 'none')};
     box-shadow: none;
     line-height: 24px;
     font-size: 18px;
     font-weight: 600;
     padding: 8px 30px;
     font-family: 'Barlow', sans-serif;
-    color: ${({ theme, border }) => (border ? 'white' : '#1A74EC')};
-    background: ${({ theme, disabled, color }) => (disabled ? 'rgb(71, 86, 98, 0.4)' : color)};
+    color: ${({ className }) => (className === 'active' ? 'white' : '#1A74EC')};
+    background: ${({ disabled, color }) => (disabled ? 'rgb(71, 86, 98, 0.4)' : color)};
     border-radius: 4px 0px 0px 0px;
     transition: all 0.3s ease;
     display: flex;

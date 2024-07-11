@@ -257,6 +257,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         history.push('/bridge')
     }
 
+    console.log('is deposit', isDeposit)
+
     return (
         <>
             {singleSafe && (
@@ -269,16 +271,16 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/deposit`}
                             disabled={!isOwner}
                             //@ts-ignore
-                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
-                            border={isDeposit.toString()}
+                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'white'}
+                            className={isDeposit ? 'active' : ''}
                         />
                         <LinkButton
                             id="repay_withdraw"
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
-                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
-                            border={(!isDeposit).toString()}
+                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'white'}
+                            className={!isDeposit ? 'active' : ''}
                         />
                     </ButtonsRow>
                     <Modal
@@ -497,9 +499,10 @@ const ButtonsRow = styled.div`
         padding: 4px 12px;
         height: 42px;
         border: none;
-
-        &:nth-child(2) {
-            border-top-left-radius: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0px;
+        &:first-child {
+            border-top-left-radius: 4px;
         }
         &:last-child {
             border-top-right-radius: 4px;

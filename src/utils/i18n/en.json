@@ -76,6 +76,7 @@
     "repay_withdraw": "Repay & Withdraw",
     "confirmations_info": "You need to wait for 10 block confirmations to make sure that your account address does not change.",
     "annual_redemption_tip": "Rate at which OD is devalued or revalued over 1 year.",
+    "internal_balance_tip": "The internal balance of the Vault left in the system after the Vault is liquidated.",
     "liquidation_price_tip": "Collateral price under which this Vault can get liquidated. The liquidation price varies with the redemption price.",
     "liquidation_penalty_tip": "Liquidations ask for more OD than you have minted in your Vault, and apply a discount on the latest oracle price in order to incentivize bidding.",
     "app": "App",

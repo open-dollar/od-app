@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Link = styled.a``

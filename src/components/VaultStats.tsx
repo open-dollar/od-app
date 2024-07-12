@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ExternalLink, Info } from 'react-feather'
 import Numeral from 'numeral'
 
-import {useTokenBalanceInUSD, useSafeInfo, useInputsHandlers} from '~/hooks'
+import { useTokenBalanceInUSD, useSafeInfo } from '~/hooks'
 import {
     formatNumber,
     formatWithCommas,
@@ -20,15 +20,13 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
 import { useAddress } from '~/hooks/useAddress'
-import {BasicActions} from "@opendollar/sdk";
-import useGeb from "~/hooks/useGeb";
-import {utils as ethersUtils} from "ethers/lib/ethers";
+import useGeb from '~/hooks/useGeb'
 
 const VaultStats = ({
-                        isModifying,
-                        isDeposit,
-                        isOwner,
-                    }: {
+    isModifying,
+    isDeposit,
+    isOwner,
+}: {
     isModifying: boolean
     isDeposit: boolean
     isOwner: boolean
@@ -45,7 +43,6 @@ const VaultStats = ({
 
     const { safeModel: safeState } = useStoreState((state) => state)
     const { singleSafe, liquidationData } = safeState
-    const { onLeftInput, onRightInput, onClearAll } = useInputsHandlers()
 
     const collateral = formatNumber(singleSafe?.collateral || '0')
 
@@ -118,9 +115,13 @@ const VaultStats = ({
     const handleClaimClick = async () => {
         if (!account) return
         try {
-        const proxy = await geb.getProxyAction(account)
-        // const debtBN = safeData.rightInput ? ethersUtils.parseEther(safeData.rightInput) : ethersUtils.parseEther('0')
-        // proxy.collectTokenCollateral(geb.contracts.safeManager.address, geb.contracts.tokenCollateralJoin.address, singleSafe?.id, )
+            const proxy = await geb.getProxyAction(account)
+            await proxy.collectTokenCollateral(
+                geb.contracts.safeManager.address,
+                geb.contracts.tokenCollateralJoin[collateralName].address,
+                Number(singleSafe?.id),
+                Number(singleSafe?.internalCollateralBalance)
+            )
         } catch (e) {
             console.debug(e, 'Error in claiming internal balance')
         }
@@ -196,21 +197,21 @@ const VaultStats = ({
                                                 isDeposit
                                                     ? 'green'
                                                     : 'yellow' &&
-                                                    returnState(
-                                                        ratioChecker(
-                                                            Number(newCollateralRatio),
-                                                            Number(
-                                                                safeState.liquidationData!.collateralLiquidationData[
-                                                                    collateralName
-                                                                    ].liquidationCRatio
-                                                            ),
-                                                            Number(
-                                                                safeState.liquidationData!.collateralLiquidationData[
-                                                                    collateralName
-                                                                    ].safetyCRatio
-                                                            )
-                                                        )
-                                                    ).toLowerCase()
+                                                      returnState(
+                                                          ratioChecker(
+                                                              Number(newCollateralRatio),
+                                                              Number(
+                                                                  safeState.liquidationData!.collateralLiquidationData[
+                                                                      collateralName
+                                                                  ].liquidationCRatio
+                                                              ),
+                                                              Number(
+                                                                  safeState.liquidationData!.collateralLiquidationData[
+                                                                      collateralName
+                                                                  ].safetyCRatio
+                                                              )
+                                                          )
+                                                      ).toLowerCase()
                                             }
                                         >
                                             {formatWithCommas(newCollateralRatio)}%
@@ -346,15 +347,23 @@ const VaultStats = ({
                             </InfoIcon>
                             <SideValue>{`${returnRedRate()}%`}</SideValue>
                         </Side>
-
-                        <Side style={{ fontWeight: 'bold' }}>
+                        {Number(singleSafe?.internalCollateralBalance) > 0 ? (
+                            <Side style={{ fontWeight: 'bold' }}>
                                 <SideTitle>Internal Balance</SideTitle>
-                                <InfoIcon data-tooltip-id="vault-stats" data-tooltip-content={'internal_balance_tip'}>
+                                <InfoIcon
+                                    data-tooltip-id="vault-stats"
+                                    data-tooltip-content={t('internal_balance_tip')}
+                                >
                                     <Info size="16" />
                                 </InfoIcon>
                                 <ClaimLink onClick={handleClaimClick}>CLAIM</ClaimLink>
-                            <StatValue>{/* internal balance value */}</StatValue>
-                        </Side>
+                                <SideValue>
+                                    {formatWithCommas(singleSafe?.internalCollateralBalance || '0', 2, 2)}
+                                </SideValue>
+                            </Side>
+                        ) : (
+                            <></>
+                        )}
                     </Inner>
                 </Right>
             </Flex>
@@ -560,8 +569,9 @@ const InfoIcon = styled.div`
 const ClaimLink = styled.span`
     cursor: pointer;
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+    font-size: ${(props) => props.theme.font.xxSmall};
     text-decoration: underline;
     color: ${(props) => props.theme.colors.blueish};
-    margin-left: 10px;
+    margin-left: 5px;
+    padding-top: 1px;
 `

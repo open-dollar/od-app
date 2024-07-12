@@ -45,6 +45,12 @@ const VaultBlock = ({ ...props }) => {
                                 <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
+                        {Number(props.internalCollateralBalance) > 0 && (
+                            <Item>
+                                <Label>{'Internal Balance'}</Label>
+                                <Value>{formatWithCommas(props.internalCollateralBalance)}</Value>
+                            </Item>
+                        )}
                     </Block>
                 </BlockContainer>
             </Link>

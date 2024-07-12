@@ -24,6 +24,7 @@ import TokenIcon from './TokenIcon'
 import walletIcon from '../assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
 import { useAddress } from '~/hooks/useAddress'
+import Skeleton from 'react-loading-skeleton'
 
 const Navbar = () => {
     const theme = useTheme()
@@ -298,7 +299,7 @@ const Navbar = () => {
                                                             <IdenticonWrapper>
                                                                 <Identicon />
                                                             </IdenticonWrapper>
-                                                            <InfoPopUpText>{address}</InfoPopUpText>
+                                                            <InfoPopUpText>{address || <Skeleton width={150} height={18}/>}</InfoPopUpText>
                                                         </InnerBtn>
                                                     )}
                                                 </Button>

@@ -257,8 +257,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         history.push('/bridge')
     }
 
-    console.log('is deposit', isDeposit)
-
     return (
         <>
             {singleSafe && (

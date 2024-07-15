@@ -269,8 +269,6 @@ const VaultStats = ({
                                         <Skeleton
                                             width={130}
                                             height={18}
-                                            baseColor={'#89B3FB'}
-                                            highlightColor="#2871FD"
                                         />
                                     )}
                                 </StatValue>

@@ -299,7 +299,9 @@ const Navbar = () => {
                                                             <IdenticonWrapper>
                                                                 <Identicon />
                                                             </IdenticonWrapper>
-                                                            <InfoPopUpText>{address || <Skeleton width={150} height={18}/>}</InfoPopUpText>
+                                                            <InfoPopUpText>
+                                                                {address || <Skeleton width={150} height={18} />}
+                                                            </InfoPopUpText>
                                                         </InnerBtn>
                                                     )}
                                                 </Button>

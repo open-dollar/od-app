@@ -266,10 +266,7 @@ const VaultStats = ({
                                             {address} <ExternalLink />
                                         </AccountLink>
                                     ) : (
-                                        <Skeleton
-                                            width={130}
-                                            height={18}
-                                        />
+                                        <Skeleton width={130} height={18} />
                                     )}
                                 </StatValue>
                             </StatSection>

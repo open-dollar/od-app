@@ -16,7 +16,7 @@ export const returnWalletAddress = (walletAddress: string, startingIndex: number
     return `${walletAddress.slice(startingIndex, 4 + 2)}...${walletAddress.slice(-4)}`
 }
 
-export const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1)
+export const capitalizeName = (name: string) => name?.charAt(0).toUpperCase() + name?.slice(1)
 
 export const isAddress = (value: any): string | false => {
     try {

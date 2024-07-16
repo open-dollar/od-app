@@ -22,8 +22,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    color: ${(props) => props.theme.colors.primary};
-    background-color:${(props) => props.theme.colors.background};
     background-image: url('/squares1x.webp'), url('/wavy-blue.webp');
     background-size: contain, 100%;
     background-position: bottom left, top right;
@@ -60,27 +58,6 @@ const GlobalStyle = createGlobalStyle`
    
   }
 }
-.place-left {
-    &:after{
-      border-left-color:${(props) => props.theme.colors.foreground} !important
-    }
-  }
-
-  .place-top {
-    &:after{
-      border-top-color:${(props) => props.theme.colors.foreground} !important
-    }
-  }
-  .place-bottom {
-    &:after{
-      border-bottom-color:${(props) => props.theme.colors.foreground} !important
-    }
-  }
-  .place-right {
-    &:after{
-      border-right-color:${(props) => props.theme.colors.foreground} !important
-    }
-  }
 
   .Toastify__toast-container {
     padding: 0;
@@ -92,12 +69,8 @@ const GlobalStyle = createGlobalStyle`
     padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 5px;
-    color:${(props) => props.theme.colors.primary};
     opacity: 1 !important;
-    background: ${(props: any) => props.theme.colors.foreground};
-    border: ${(props: any) => props.theme.colors.border} !important;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
-   
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);   
   }
   }
 `
@@ -109,7 +82,7 @@ export const ExternalLinkArrow = css`
     outline: none;
     padding: 0;
     margin: 0;
-    color: ${(props: any) => props.theme.colors.blueish};
+    color: ${(props) => props.theme.colors.blueish};
     font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     line-height: 24px;

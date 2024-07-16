@@ -1,33 +1,9 @@
+import { ratioChecker } from '~/utils/helper'
+
 interface Values {
     collateralizationRatio: string | number
     liqRatio: number
     safetyRatio: number
-}
-
-const calculateRiskStatus = (
-    collateralizationRatio: string | number | null,
-    liqRatio: number | null,
-    safetyRatio: number | null
-): number => {
-    if (collateralizationRatio === '∞') return 1
-    if (
-        collateralizationRatio == null ||
-        Number.isNaN(parseFloat(collateralizationRatio.toString())) ||
-        liqRatio == null ||
-        safetyRatio == null
-    ) {
-        console.debug('Error calculating risk state')
-        return 1
-    }
-    const currentLiquidationRatioAsDecimal = parseFloat(collateralizationRatio.toString()) / 100
-
-    if (currentLiquidationRatioAsDecimal === 0) return 0
-    if (currentLiquidationRatioAsDecimal === liqRatio) return 3
-    if (currentLiquidationRatioAsDecimal < liqRatio) return 4
-    if (currentLiquidationRatioAsDecimal > liqRatio && currentLiquidationRatioAsDecimal <= safetyRatio) return 3
-    if (currentLiquidationRatioAsDecimal > safetyRatio && currentLiquidationRatioAsDecimal <= safetyRatio * 1.2)
-        return 2
-    return 1
 }
 
 const calculateColor = (riskStatus: string): string => {
@@ -67,7 +43,7 @@ const calculateRiskStatusText = (riskStatusNumeric: number): string => {
 export const generateSVGRing = (values: Values, width: number, height: number): string => {
     const { collateralizationRatio, liqRatio, safetyRatio } = values
 
-    const riskStatusNumeric = calculateRiskStatus(collateralizationRatio, liqRatio, safetyRatio)
+    const riskStatusNumeric = ratioChecker(collateralizationRatio as number, liqRatio, safetyRatio)
     let riskStatus: string
 
     riskStatus = calculateRiskStatusText(riskStatusNumeric)

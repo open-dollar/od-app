@@ -207,7 +207,7 @@ const Rank = styled.span`
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 8px;
-    font-size: ${(props: any) => props.theme.font.default};
+    font-size: ${(props) => props.theme.font.default};
     line-height: 27px;
     z-index: 1;
 `

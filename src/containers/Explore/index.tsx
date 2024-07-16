@@ -1,21 +1,12 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-// @ts-ignore
-import { generateSvg } from '@opendollar/svg-generator'
 import ExploreTable from './ExploreTable'
 import { ethers } from 'ethers'
-import {
-    parseRay,
-    formatDataNumber,
-    multiplyRates,
-    transformToAnnualRate,
-    calculateRiskStatusText,
-    ratioChecker,
-    parseFormattedNumber,
-} from '~/utils'
+import { parseRay, formatDataNumber, calculateRiskStatusText, ratioChecker, parseFormattedNumber } from '~/utils'
 import { AllVaults, useVaultSubgraph } from '~/hooks/useVaultSubgraph'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import useGeb from '~/hooks/useGeb'
+import { generateSVGRing } from '~/utils/generateSVGRing'
 
 const Explore: React.FC<any> = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -41,14 +32,6 @@ const Explore: React.FC<any> = () => {
                     +ethers.utils.formatUnits(analyticsData.tokenAnalyticsData[vault.collateralType].currentPrice)
                 ).toFixed(2)}`
 
-                const stabilityFee = transformToAnnualRate(
-                    multiplyRates(
-                        analyticsData.tokenAnalyticsData[vault.collateralType].stabilityFee.toString(),
-                        analyticsData.redemptionRate?.toString()
-                    ) || '0',
-                    27
-                )
-
                 const formattedDebt = parseFormattedNumber(formatDataNumber(vault.debt))
                 let cratio = 0
                 if (formattedDebt !== 0) {
@@ -62,13 +45,11 @@ const Explore: React.FC<any> = () => {
                     correctCollateralizationRatio = '∞'
                 } else if (Number(cratio) === 0 && parseFormattedNumber(formatDataNumber(vault.collateral)) === 0) {
                     correctCollateralizationRatio = 0
+                } else {
+                    correctCollateralizationRatio = 0
                 }
 
                 const svgData = {
-                    vaultID: vault.id,
-                    stabilityFee,
-                    debtAmount: formatDataNumber(vault.debt),
-                    collateralAmount: formatDataNumber(vault.collateral) + ' ' + vault.collateralType,
                     collateralizationRatio: correctCollateralizationRatio,
                     liqRatio: Number(
                         parseRay(analyticsData.tokenAnalyticsData[vault.collateralType].liquidationCRatio)
@@ -86,7 +67,7 @@ const Explore: React.FC<any> = () => {
 
                 let svg = null
                 try {
-                    svg = await generateSvg(svgData)
+                    svg = generateSVGRing(svgData, 210, 420)
                 } catch (e) {
                     console.error(e)
                 }

@@ -143,7 +143,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
     width: 100% !important;
 `
 
-const OptionCard = styled(InfoCard as any)`
+const OptionCard = styled(InfoCard)`
     display: flex;
     flex-direction: row;
     border: 2px solid white;

@@ -53,12 +53,11 @@ export function retry<T>(
                     completed = true
                 }
                 break
-                //@ts-ignore
-            } catch (error: any) {
+            } catch (error) {
                 if (completed) {
                     break
                 }
-                if (n <= 0 || !error.isRetryableError) {
+                if (n <= 0 || !(error instanceof RetryableError)) {
                     reject(error)
                     completed = true
                     break

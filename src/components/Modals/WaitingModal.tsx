@@ -28,8 +28,8 @@ const WaitingModal = () => {
     }, [list.length])
 
     useEffect(() => {
-        const handleClickOutside = (event: { target: any }) => {
-            if (modalRef?.current && !modalRef?.current?.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (modalRef?.current && !modalRef?.current?.contains(event.target as Node)) {
                 popupsActions.setIsWaitingModalOpen(false)
             }
         }

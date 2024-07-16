@@ -89,7 +89,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
     }
 `
 
-const OptionCard = styled(InfoCard as any)`
+const OptionCard = styled(InfoCard)`
     display: flex;
     flex-direction: row;
     align-items: center;

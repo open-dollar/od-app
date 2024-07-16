@@ -1,6 +1,13 @@
 import styled from 'styled-components'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
+interface Item {
+    title: string;
+    status: string;
+}
+
+
+
 const QuestBlock = ({ title, text, items, button }: { title: any; text: any; items: any; button: any }) => {
     return (
         <BlockContainer>
@@ -12,7 +19,7 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
                 <QuestBtn>{button}</QuestBtn>
             </BlockHeader>
             <Block>
-                {items.map((item: any, index: string) => (
+                {items.map((item: Item, index: string) => (
                     <Item key={index}>
                         <Label>{item.title}</Label>
                         <Value>{item.status}</Value>

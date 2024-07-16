@@ -111,9 +111,10 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
 
                 passedCheckForAllowance(allowance.toString(), amountBN.toString(), true)
             }
-        } catch (e: any) {
+        } catch (e) {
             popupsActions.setBlockBackdrop(false)
-            if (e?.code === 4001) {
+            const error = e as { code?: number; message: string };
+            if (error.code === 4001) {
                 setTextPayload({
                     title: 'Transaction Rejected.',
                     text: '',
@@ -122,7 +123,7 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
                 return
             }
             setTextPayload({
-                title: e.message.includes('proxy') ? 'No Open Dollar Account' : 'Transaction Failed.',
+                title: error.message.includes('proxy') ? 'No Open Dollar Account' : 'Transaction Failed.',
                 text: '',
                 status: 'error',
             })

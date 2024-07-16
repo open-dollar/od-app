@@ -113,7 +113,7 @@ const ApproveToken = ({ bids, amount, handleBackBtn, handleSuccess, methodName, 
             }
         } catch (e) {
             popupsActions.setBlockBackdrop(false)
-            const error = e as { code?: number; message: string };
+            const error = e as { code?: number; message: string }
             if (error.code === 4001) {
                 setTextPayload({
                     title: 'Transaction Rejected.',

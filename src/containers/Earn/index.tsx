@@ -31,7 +31,7 @@ const Earn = () => {
         return async () => {
             try {
                 const poolResults = await Promise.all(
-                    POOLS.map(async (pool: { camelotPoolAddress: any; nitroPoolAddress: any }) => {
+                    POOLS.map(async (pool: { camelotPoolAddress: string; nitroPoolAddress: string }) => {
                         const cacheKey = `${account}-${pool.camelotPoolAddress}-${pool.nitroPoolAddress}`
                         if (cachedPools[cacheKey]) {
                             return cachedPools[cacheKey]

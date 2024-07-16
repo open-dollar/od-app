@@ -2,11 +2,9 @@ import styled from 'styled-components'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 interface Item {
-    title: string;
-    status: string;
+    title: string
+    status: string
 }
-
-
 
 const QuestBlock = ({ title, text, items, button }: { title: any; text: any; items: any; button: any }) => {
     return (

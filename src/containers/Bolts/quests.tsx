@@ -5,8 +5,8 @@ import zealyLogo from '~/assets/zealy.svg'
 import galxeLogo from '~/assets/galxe.svg'
 import camelotLogo from '~/assets/camelot.svg'
 import odLogo from '~/assets/od-full-logo-light.svg'
+import { useNavigate } from 'react-router-dom'
 import turtleClubLogo from '~/assets/turtle-club.png'
-import { useHistory } from 'react-router-dom'
 import TokenIcon from '~/components/TokenIcon'
 
 const StyledAnchor = styled.a`
@@ -96,8 +96,8 @@ const TokensGroup = styled.span`
 `
 
 const InternalLinkButton = ({ url }: { url: string }) => {
-    const history = useHistory()
-    const onClick = () => history.push(url)
+    const navigate = useNavigate()
+    const onClick = () => navigate(url)
 
     return (
         <Button secondary onClick={onClick}>

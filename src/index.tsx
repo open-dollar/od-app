@@ -1,5 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
+
 import { BrowserRouter } from 'react-router-dom'
 import { StoreProvider } from 'easy-peasy'
 import './index.css'
@@ -26,7 +27,11 @@ const connectors: [MetaMask | WalletConnectV2 | CoinbaseWallet | Network | Gnosi
     [gnosisSafe, hooks],
 ]
 
-ReactDOM.render(
+const container = document.getElementById('root')
+
+const root = createRoot(container!) // createRoot(container!) if you use TypeScript
+
+root.render(
     <React.StrictMode>
         <HelmetProvider>
             <BrowserRouter>
@@ -37,6 +42,5 @@ ReactDOM.render(
                 </Web3ReactProvider>
             </BrowserRouter>
         </HelmetProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 )

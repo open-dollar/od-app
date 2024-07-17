@@ -26,7 +26,7 @@ import {
     useTokenApproval,
     ApprovalState,
 } from '~/hooks'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOwner: boolean; vaultId: string }) => {
     const [needsBridge, setNeedsBridge] = useState(false)
@@ -35,7 +35,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
     const geb = useGeb()
     const [showPreview, setShowPreview] = useState(false)
     const { singleSafe } = safeState
-    const history = useHistory()
+    const navigate = useNavigate()
     const type = isDeposit ? 'deposit_borrow' : 'repay_withdraw'
     const {
         safeModel: safeActions,
@@ -254,7 +254,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         if (!singleSafe) return
         bridgeModelActions.setReason(reason)
         bridgeModelActions.setFromTokenSymbol(singleSafe?.collateralName)
-        history.push('/bridge')
+        navigate('/bridge')
     }
 
     return (

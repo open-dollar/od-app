@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { handleTransactionError } from '~/hooks'
@@ -18,7 +18,7 @@ const LiquidateSafeModal = () => {
     const { t } = useTranslation()
     const [accepted, setAccepted] = useState(false)
     const geb = useGeb()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const closeModal = () => {
         setAccepted(false)
@@ -55,7 +55,7 @@ const LiquidateSafeModal = () => {
                         txResponse.wait().then(() => {
                             closeModal()
                             popupsModel.setIsWaitingModalOpen(false)
-                            history.go(0)
+                            navigate(-1)
                         })
                     }
                 })

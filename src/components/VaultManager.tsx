@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { isAddress } from '@ethersproject/address'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { useStoreActions, useStoreState } from '~/store'
@@ -18,7 +18,7 @@ const VaultManager = () => {
     const [error, setError] = useState('')
     const [value, setValue] = useState('')
 
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { tokensData } = useStoreState((state) => state.connectWalletModel)
@@ -49,7 +49,7 @@ const VaultManager = () => {
             if (window?.location) {
                 window.location.assign(`/${value}`)
             } else {
-                history.push(`/${value}`)
+                navigate(`/${value}`)
             }
             handleCancel()
             await timeout(3000)

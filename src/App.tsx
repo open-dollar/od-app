@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react'
 import i18next from 'i18next'
 import { I18nextProvider } from 'react-i18next'
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import ErrorBoundary from './ErrorBoundary'
 import GlobalStyle from './GlobalStyle'
@@ -15,7 +15,6 @@ import { lightTheme } from './utils/themes/light'
 import { StatsProvider } from './hooks/useStats'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/graph'
-import GoogleTagManager from './components/Analytics/GoogleTagManager'
 import CreateVault from './containers/Vaults/CreateVault'
 import Auctions from './containers/Auctions'
 import Analytics from './containers/Analytics'
@@ -73,46 +72,43 @@ const App = () => {
                                     <ToastContainer
                                         style={{ zIndex: 1001, position: 'sticky', top: 0, left: 0, width: '100%' }}
                                     />
-                                    <Route component={GoogleTagManager} />
+
                                     <Web3ReactManager>
                                         <MaintenanceRedirect>
-                                            <Switch>
-                                                <Route exact strict component={PageNotFound} path="/404" />
-                                                <Route exact strict component={Safes} path={'/'} />
-                                                <Route exact strict component={Maintenance} path={'/maintenance'} />
-                                                <Route exact strict component={Earn} path={'/earn'} />
-                                                <Route exact strict component={Bolts} path={'/bolts'} />
-                                                <Route exact strict component={Analytics} path={'/stats'} />
-                                                <Route exact strict component={GeoBlockContainer} path={'/geoblock'} />
-                                                <Route exact strict component={Auctions} path={'/auctions'} />
-                                                <Route exact strict component={Marketplace} path={'/marketplace'} />
-                                                <Route exact strict component={CreateVault} path={'/vaults/create'} />
-                                                <Route exact strict component={Bridge} path={'/bridge'} />
-                                                <Route exact strict component={Explore} path={'/explore'} />
+                                            <Routes>
+                                                <Route element={<PageNotFound />} path="/404" />
+                                                <Route element={<Safes />} path={'/'} />
+                                                <Route element={<Maintenance />} path={'/maintenance'} />
+                                                <Route element={<Earn />} path={'/earn'} />
+                                                <Route element={<Bolts />} path={'/bolts'} />
+                                                <Route element={<Analytics />} path={'/stats'} />
+                                                <Route element={<Explore />} path={'/explore'} />
                                                 <Route
-                                                    exact
-                                                    strict
-                                                    component={VaultDetails}
+                                                    caseSensitive
+                                                    element={<GeoBlockContainer />}
+                                                    path={'/geoblock'}
+                                                />
+                                                <Route element={<Auctions />} path={'/auctions'} />
+                                                <Route element={<Marketplace />} path={'/marketplace'} />
+                                                <Route
+                                                    caseSensitive
+                                                    element={<CreateVault />}
+                                                    path={'/vaults/create'}
+                                                />
+                                                <Route element={<Bridge />} path={'/bridge'} />
+                                                <Route
+                                                    caseSensitive
+                                                    element={<VaultDetails />}
                                                     path={'/vaults/:id/deposit'}
                                                 />
-                                                <Route
-                                                    exact
-                                                    strict
-                                                    component={VaultDetails}
-                                                    path={'/vaults/:id/withdraw'}
-                                                />
-                                                <Route exact component={VaultDetails} path={'/vaults/:id'} />
-                                                <Route exact component={EarnDetails} path={'/earn/:id'} />
-                                                <Route exact strict component={Safes} path={'/vaults'} />
-                                                <Route exact strict component={Safes} path={'/:address'} />
-                                                <Route
-                                                    exact
-                                                    strict
-                                                    component={DepositFunds}
-                                                    path={'/deposit/:token/deposit'}
-                                                />
-                                                <Redirect path="*" to="/404" />
-                                            </Switch>
+                                                <Route element={<VaultDetails />} path={'/vaults/:id/withdraw'} />
+                                                <Route element={<VaultDetails />} path={'/vaults/:id'} />
+                                                <Route element={<EarnDetails />} path={'/earn/:id'} />
+                                                <Route element={<Safes />} path={'/vaults'} />
+                                                <Route element={<Safes />} path={'/:address'} />
+                                                <Route element={<DepositFunds />} path={'/deposit/:token/deposit'} />
+                                                <Route path="*" element={<PageNotFound />} />
+                                            </Routes>
                                         </MaintenanceRedirect>
                                     </Web3ReactManager>
                                 </StatsProvider>

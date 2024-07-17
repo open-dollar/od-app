@@ -27,7 +27,6 @@ import Earn from './containers/Earn'
 import Bolts from './containers/Bolts'
 import EarnDetails from './containers/Earn/EarnDetails'
 import Marketplace from './containers/Marketplace'
-import LiFiWidget from './containers/Bridge/LiFiWidget'
 import ScreenLoader from '~/components/Modals/ScreenLoader'
 import Explore from '~/containers/Explore'
 
@@ -97,7 +96,6 @@ const App = () => {
                                                     path={'/vaults/create'}
                                                 />
                                                 <Route element={<Bridge />} path={'/bridge'} />
-                                                <Route element={<LiFiWidget />} path={'/bridge/*'} />
                                                 <Route
                                                     caseSensitive
                                                     element={<VaultDetails />}

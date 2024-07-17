@@ -65,7 +65,7 @@ const Steps = () => {
             const hasGasToken = await checkUserGasBalance(account, provider)
             if (!hasGasToken) {
                 // bridgeModelActions.setReason('No funds for gas fee, please bridge some funds.')
-                popupsActions.setIsLowGasModalOpen(true)
+                // popupsActions.setIsLowGasModalOpen(true)
             }
             connectWalletActions.setIsStepLoading(false)
             handleTransactionError(e)

@@ -40,7 +40,7 @@ const calculateRiskStatusText = (riskStatusNumeric: number): string => {
     }
 }
 
-export const generateSVGRing = (values: Values, width: number, height: number): string => {
+export const generateSVGRing = (values: Values, width: number, height: number, id: string): string => {
     const { collateralizationRatio, liqRatio, safetyRatio } = values
 
     const riskStatusNumeric = ratioChecker(collateralizationRatio as number, liqRatio, safetyRatio)
@@ -54,31 +54,33 @@ export const generateSVGRing = (values: Values, width: number, height: number): 
 
     if ((strokeDashArrayValue <= 100 && strokeDashArrayValue !== 0) || strokeDashArrayValue >= 200) {
         strokeDashArrayValue = 100
-    } else if (strokeDashArrayValue === 0) {
+    } else if (strokeDashArrayValue === 0 || Number.isNaN(strokeDashArrayValue)) {
         strokeDashArrayValue = 0
     } else {
         strokeDashArrayValue = strokeDashArrayValue - 100
     }
 
+    const uniqueClassName = `chart-${id}`
+
     const ringParts = [
         `
-    <svg width="${width}" height="${height}" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg id="${id}" width="${width}" height="${height}" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <style>
-            .graph-bg {
+            .${uniqueClassName}-graph-bg {
                 fill: none;
                 stroke: #000;
                 stroke-width: 20;
                 opacity: 80%;
             }
 
-            .graph {
+            .${uniqueClassName}-graph {
                 fill: none;
                 stroke-width: 20;
                 stroke-linecap: round;
                 animation: progress 1s ease-out forwards;
             }
 
-            .chart {
+            .${uniqueClassName}-chart {
                 stroke: ${actualBackgroundGradientColor};
                 opacity: 40%;
             }
@@ -103,9 +105,9 @@ export const generateSVGRing = (values: Values, width: number, height: number): 
                 }
             }
         </style>
-        <g class="chart">
-            <path class="graph-bg" d="M210 40a160 160 0 0 1 0 320 160 160 0 0 1 0-320"/>
-            <path class="graph" stroke-dasharray="${strokeDashArrayValue}, 1005"
+        <g class="${uniqueClassName}-chart">
+            <path class="${uniqueClassName}-graph-bg" d="M210 40a160 160 0 0 1 0 320 160 160 0 0 1 0-320"/>
+            <path class="${uniqueClassName}-graph" stroke-dasharray="${strokeDashArrayValue}, 1005"
                   d="M210 40a160 160 0 0 1 0 320 160 160 0 0 1 0-320"/>
         </g>
     </svg>`,

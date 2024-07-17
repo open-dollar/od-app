@@ -19,7 +19,7 @@ const Explore: React.FC<any> = () => {
         return parseFloat(value.replace(/,/g, ''))
     }
 
-    const getSafeData = async () => {
+    const getSafeData = () => {
         setIsLoading(true)
         const tableRows = []
 
@@ -67,7 +67,7 @@ const Explore: React.FC<any> = () => {
 
                 let svg = null
                 try {
-                    svg = generateSVGRing(svgData, 210, 420)
+                    svg = generateSVGRing(svgData, 210, 420, `svg-${vault.id}`)
                 } catch (e) {
                     console.error(e)
                 }

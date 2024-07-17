@@ -27,7 +27,7 @@ const NavLinks = () => {
         { name: 'auctions', to: '/auctions' },
         { name: 'bolts', to: '/bolts' },
         { name: 'stats', to: '/stats' },
-        { name: 'bridge', to: '/bridge' },
+        // { name: 'bridge', to: '/bridge' },
     ]
 
     return (

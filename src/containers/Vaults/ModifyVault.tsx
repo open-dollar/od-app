@@ -269,16 +269,16 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             url={`/vaults/${vaultId}/deposit`}
                             disabled={!isOwner}
                             //@ts-ignore
-                            color={isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
-                            border={isDeposit.toString()}
+                            color={isDeposit ? 'linear-gradient(180deg, #1A74EC 100%, #6396FF 0%)' : 'white'}
+                            className={isDeposit ? 'active' : ''}
                         />
                         <LinkButton
                             id="repay_withdraw"
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
                             //@ts-ignore
-                            color={!isDeposit ? (props) => props.theme.colors.gradientBg : 'rgb(71, 86, 98, 0.4)'}
-                            border={(!isDeposit).toString()}
+                            color={!isDeposit ? 'linear-gradient(180deg, #1A74EC 100%, #6396FF 0%)' : 'white'}
+                            className={!isDeposit ? 'active' : ''}
                         />
                     </ButtonsRow>
                     <Modal
@@ -462,6 +462,9 @@ const ErrorContainer = styled.div`
 `
 
 const ContainerUnderBottonsRow = styled.div`
+    border: 3px solid #1a74ec;
+    box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
+        2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
     border-radius: 4px;
     border-top-left-radius: 0;
     background: white;
@@ -492,11 +495,19 @@ const BtnContainer = styled.div`
 const ButtonsRow = styled.div`
     display: flex;
     align-items: center;
+
     a {
         min-width: 100px;
         padding: 4px 12px;
+        height: 42px;
+        border: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0px;
         &:first-child {
-            margin-right: 10px;
+            border-top-left-radius: 4px;
+        }
+        &:last-child {
+            border-top-right-radius: 4px;
         }
     }
     @media (max-width: 767px) {

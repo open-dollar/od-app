@@ -98,8 +98,8 @@ const Shared = ({ children, ...rest }: Props) => {
         popupsActions.setIsScreenModalOpen(false)
         popupsActions.setIsSettingModalOpen(false)
         popupsActions.setIsScreenModalOpen(false)
-        popupsActions.setIsVotingModalOpen(false)
         popupsActions.setIsWaitingModalOpen(false)
+        popupsActions.setIsVotingModalOpen(false)
         popupsActions.setShowSideMenu(false)
         popupsActions.setIsBridgeModalOpen(false)
     }
@@ -134,11 +134,7 @@ const Shared = ({ children, ...rest }: Props) => {
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
-        popupsActions.setWaitingPayload({
-            title: '',
-            status: 'loading',
-        })
-        popupsActions.setIsWaitingModalOpen(true)
+
         try {
             connectWalletActions.setProxyAddress('')
             const userProxy = await geb.getProxyAction(account)
@@ -170,9 +166,8 @@ const Shared = ({ children, ...rest }: Props) => {
         } catch (error) {
             safeActions.setIsSafeCreated(false)
             connectWalletActions.setStep(1)
+            popupsActions.setIsWaitingModalOpen(false)
         }
-        await timeout(1000)
-        popupsActions.setIsWaitingModalOpen(false)
     }
 
     function accountChange() {

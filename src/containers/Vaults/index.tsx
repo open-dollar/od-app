@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
 import { useStoreState, useStoreActions } from '~/store'
@@ -10,6 +10,7 @@ import VaultList from './VaultList'
 import { COIN_TICKER } from '~/utils'
 import { useTranslation } from 'react-i18next'
 import Accounts from './Accounts'
+import Loader from '~/components/Loader'
 
 interface OnBoardingProps {
     className?: string
@@ -20,12 +21,10 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
     const { account, provider, chainId } = useActiveWeb3React()
     const geb = useGeb()
     const { t } = useTranslation()
+
+    const [loading, setLoading] = useState(false)
     const { address } = useParams<{ address: string }>()
-    const {
-        connectWalletModel: connectWalletState,
-        safeModel: safeState,
-        popupsModel: popupsState,
-    } = useStoreState((state) => state)
+    const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
     const { safeModel: safeActions } = useStoreActions((state) => state)
     const { isWrongNetwork, isStepLoading } = connectWalletState
 
@@ -35,14 +34,17 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
             return
 
         const fetchSafes = async () => {
+            setLoading(true)
             try {
                 await safeActions.fetchUserSafes({
                     address: address || (account as string),
                     geb,
                     tokensData: connectWalletState.tokensData,
                 })
+                setLoading(false)
             } catch (error) {
                 console.debug('Error fetching safes:', error)
+                setLoading(false)
             }
         }
 
@@ -73,9 +75,13 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
                             isLoading={isStepLoading}
                         />
                     </>
-                ) : !popupsState.isWaitingModalOpen ? (
+                ) : loading ? (
+                    <LoaderWrapper>
+                        <Loader width="200px" color="#1A74EC" />
+                    </LoaderWrapper>
+                ) : (
                     <Accounts />
-                ) : null}
+                )}
             </Content>
         </Container>
     )
@@ -94,4 +100,11 @@ const Content = styled.div`
     position: relative;
     max-width: 1362px;
     width: 100%;
+`
+
+const LoaderWrapper = styled.div`
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

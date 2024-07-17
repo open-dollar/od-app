@@ -1,19 +1,19 @@
 import { useCallback } from 'react'
 import { ChevronLeft } from 'react-feather'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Button from '~/components/Button'
 import { useStoreActions, useStoreState } from '~/store'
 
 const VaultHeader = ({ safeId }: { safeId: string }) => {
-    const history = useHistory()
+    const navigate = useNavigate()
     const { openLiquidateSafeModal } = useStoreActions((state) => state.popupsModel)
     const { singleSafe } = useStoreState((state) => state.safeModel)
 
     const handleBack = useCallback(() => {
-        history.push(`/vaults`)
-    }, [history])
+        navigate(`/vaults`)
+    }, [navigate])
 
     const canLiquidate = singleSafe && Number(singleSafe.riskState) === 4
 

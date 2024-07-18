@@ -95,7 +95,7 @@ const VaultDetails = () => {
             safeActions.setSingleSafe(null)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe, safeActions, geb, liquidationData, safeActions.setLiquidationData, account])
+    }, [safeId, geb])
 
     useEffect(() => {
         if (!account || !provider) return

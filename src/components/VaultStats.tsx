@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLink, Info } from 'react-feather'
@@ -20,7 +20,9 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
 import { useAddress } from '~/hooks/useAddress'
+
 import useGeb from '~/hooks/useGeb'
+import Skeleton from 'react-loading-skeleton'
 
 const VaultStats = ({
     isModifying,
@@ -90,7 +92,7 @@ const VaultStats = ({
     )
 
     const svg = useMemo(() => generateSvg(statsForSVG), [statsForSVG])
-    const address = useAddress(singleSafe?.ownerAddress || account!)
+    let address = useAddress(singleSafe?.ownerAddress || account!)
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -270,10 +272,10 @@ const VaultStats = ({
                                     </InfoIcon>
                                 </StatHeader>
                                 <StatValue>
-                                    {chainId && (
+                                    {address ? (
                                         <AccountLink
                                             href={getEtherscanLink(
-                                                chainId,
+                                                chainId!,
                                                 singleSafe?.ownerAddress || account!,
                                                 'address'
                                             )}
@@ -281,6 +283,8 @@ const VaultStats = ({
                                         >
                                             {address} <ExternalLink />
                                         </AccountLink>
+                                    ) : (
+                                        <Skeleton width={130} height={18} />
                                     )}
                                 </StatValue>
                             </StatSection>

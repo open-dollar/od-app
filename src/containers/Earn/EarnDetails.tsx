@@ -1,7 +1,7 @@
 import { useStoreState } from 'easy-peasy'
 import { useCallback, useEffect } from 'react'
 import { ChevronLeft } from 'react-feather'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '~/hooks'
 import useGeb from '~/hooks/useGeb'
@@ -13,7 +13,7 @@ import Camelot from '~/components/Icons/Camelot'
 import { POOLS } from '~/utils'
 
 const EarnDetails = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
     const location = useLocation()
 
     const geb = useGeb()
@@ -47,8 +47,8 @@ const EarnDetails = () => {
     const endTime = nitroPools[0]?.nitroData.endTime
 
     const handleBack = useCallback(() => {
-        history.push(`/earn`)
-    }, [history])
+        navigate('/earn')
+    }, [navigate])
 
     const getDates = () => {
         const start = new Date(Number(startTime) * 1000)

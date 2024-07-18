@@ -3695,9 +3695,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.4-rc.1":
-  version: 1.7.4-rc.1
-  resolution: "@opendollar/sdk@npm:1.7.4-rc.1"
+"@opendollar/sdk@npm:1.7.4-rc.2":
+  version: 1.7.4-rc.2
+  resolution: "@opendollar/sdk@npm:1.7.4-rc.2"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
@@ -15006,7 +15006,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": 1.7.4-rc.1
+    "@opendollar/sdk": 1.7.4-rc.2
     "@opendollar/svg-generator": 1.0.5
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0

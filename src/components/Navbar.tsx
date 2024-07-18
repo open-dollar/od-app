@@ -1,7 +1,7 @@
 import { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import { ETH_NETWORK, formatDataNumber, newTransactionsFirst } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
@@ -26,7 +26,6 @@ import DollarValueInner from './DollarValueInner'
 import { useAddress } from '~/hooks/useAddress'
 
 const Navbar = () => {
-    const theme = useTheme()
     const { settingsModel: settingsState } = useStoreState((state) => state)
 
     const [isPopupVisible, setPopupVisibility] = useState(false)

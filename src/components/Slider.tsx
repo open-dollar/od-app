@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 interface InputSliderProps {

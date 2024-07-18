@@ -21,6 +21,7 @@ import WalletIcon from '~/assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import { useAddress } from '~/hooks/useAddress'
+import Skeleton from 'react-loading-skeleton'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -47,7 +48,7 @@ const SideMenu = () => {
     } = useStoreState((state) => state)
     const poolData = usePoolData()
     const analyticsData = useAnalyticsData()
-    const address = useAddress(account)
+    let address = useAddress(account)
 
     const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
 
@@ -135,7 +136,6 @@ const SideMenu = () => {
             console.log('Error adding ODG to the wallet:', error)
         }
     }
-
     useEffect(() => {
         if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
         if (poolData && analyticsData) {
@@ -180,7 +180,6 @@ const SideMenu = () => {
     useEffect(() => {
         setIsOpen(popupsState.showSideMenu)
     }, [popupsState.showSideMenu])
-
     return isOpen ? (
         <CSSTransition
             in={isOpen}
@@ -209,7 +208,7 @@ const SideMenu = () => {
                                 >
                                     <ConnectedWalletIcon size={40} />
                                     <AccountData>
-                                        <Address>{address}</Address>
+                                        <Address>{address || <Skeleton width={115} />}</Address>
                                         <Balance>{`$ ${renderBalance()}`}</Balance>
                                     </AccountData>
                                 </Account>

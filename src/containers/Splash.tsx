@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import kite from '~/assets/splash/kite.webp'
 
 const options = ['OPTIMISM...', 'LIQUID ETH...', 'ETH...', 'WETH']
 
 const Splash = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const [title, setTitle] = useState(options[0])
 
@@ -39,7 +39,7 @@ const Splash = () => {
                             <button
                                 type="button"
                                 className="rounded-2xl mt-8 mb-20 bg-egg px-14 py-2.5 text-lg font-normal text-white "
-                                onClick={() => history.push('/vaults')}
+                                onClick={() => navigate('/vaults')}
                             >
                                 LAUNCH APP
                             </button>

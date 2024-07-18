@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ArrowLeft, Info, AlertCircle } from 'react-feather'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
@@ -12,17 +12,16 @@ import { ApprovalState } from '~/hooks'
 import TokenInput from '~/components/TokenInput'
 import Button from '~/components/Button'
 
-const DepositFunds = ({ ...props }) => {
+const DepositFunds = () => {
     const { t } = useTranslation()
-    const history = useHistory()
+    const navigate = useNavigate()
+    const { token } = useParams<{ token: string }>()
+    const tokenSymbol = token?.toUpperCase()
     const proxyAddress = useProxyAddress()
 
     const { account, isActive } = useActiveWeb3React()
 
     const [depositAmount, setDepositAmount] = useState('')
-
-    const tokenPath = props.match.params.token as string
-    const tokenSymbol = tokenPath.toUpperCase()
 
     const {
         safeModel: { liquidationData },
@@ -31,11 +30,11 @@ const DepositFunds = ({ ...props }) => {
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
 
-    const tokenData = tokensData?.[tokenSymbol]
-    const tokenFetchedData = tokensFetchedData?.[tokenSymbol]
+    const tokenData = tokensData?.[tokenSymbol || '']
+    const tokenFetchedData = tokensFetchedData?.[tokenSymbol || '']
 
     const depositAssetUSDValue = formatNumber(
-        liquidationData?.collateralLiquidationData?.[tokenSymbol]?.currentPrice?.value || '0'
+        liquidationData?.collateralLiquidationData?.[tokenSymbol || '']?.currentPrice?.value || '0'
     )
 
     const depositAssetBalance = useMemo(
@@ -67,10 +66,10 @@ const DepositFunds = ({ ...props }) => {
         approvalState !== ApprovalState.APPROVED || Number(depositAmount) === 0 || isWrongNetwork
 
     useEffect(() => {
-        if (!isEmptyObject(tokensData) && !tokensData?.[tokenSymbol]?.isCollateral) {
-            history.push('/404')
+        if (!isEmptyObject(tokensData) && !tokensData?.[tokenSymbol || '']?.isCollateral) {
+            navigate('/404')
         }
-    }, [history, tokenSymbol, tokensData])
+    }, [tokenSymbol, tokensData, navigate])
 
     // TODO: Implement onDeposit function once contracts are ready
     const onDeposit = () => console.log('Deposit')
@@ -82,7 +81,7 @@ const DepositFunds = ({ ...props }) => {
             <Content>
                 <InnerContainer>
                     <HeaderContainer>
-                        <ArrowLeft size="24" onClick={() => history.goBack()} cursor="pointer" />
+                        <ArrowLeft size="24" onClick={() => navigate(-1)} cursor="pointer" />
                         <HeaderText>Deposit funds</HeaderText>
                     </HeaderContainer>
                     <HorizontalSeparator />

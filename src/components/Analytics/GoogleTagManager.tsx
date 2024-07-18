@@ -1,8 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import { RouteComponentProps } from 'react-router-dom'
 
-const GoogleTagManager = ({ location: { pathname } }: RouteComponentProps) => {
+const GoogleTagManager = ({ location: { pathname } }: { location: { pathname: string } }) => {
     return (
         <Helmet>
             {process.env.REACT_APP_GOOGLE_ANALYTICS_ID ? (

@@ -308,15 +308,13 @@ const SVGContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 139px;
-    height: 139px;
+    width: 70px;
+    height: 70px;
     position: relative;
-    margin: 20px 10px 20px 10px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3), 0 12px 40px 0 rgba(0, 0, 0, 0.25);
 
     @media (max-width: 768px) {
-        width: 294px;
-        height: 294px;
+        width: 140px;
+        height: 140px;
         justify-content: center;
         margin-left: auto;
         margin-right: auto;

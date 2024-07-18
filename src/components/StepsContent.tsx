@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from './Button'
 import closedVault from '../assets/closed-vault.webp'
 import wallet from '../assets/wallet.webp'
@@ -32,14 +32,27 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
     const useReturnLottie = (step: number) => {
         const [loaded, setLoaded] = useState(false)
 
+        useEffect(() => {
+            // Fallback to load image
+            const timer = setTimeout(() => {
+                setLoaded(true)
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }, [step])
+
         const handleImageLoad = () => {
             setLoaded(true)
         }
 
         const imageSrc = [closedVault, wallet, vaultFacilitator, openedVault][step] || closedVault
 
+        useEffect(() => {
+            setLoaded(false)
+        }, [step])
+
         return (
-            <>
+            <div>
                 {!loaded && <Skeleton baseColor={'rgb(220 241 255)'} width="100%" height="330px" />}
                 <img
                     src={imageSrc}
@@ -50,7 +63,7 @@ const StepsContent = ({ title, text, stepNumber, btnText, handleClick, isDisable
                     onLoad={handleImageLoad}
                     style={{ display: loaded ? 'block' : 'none' }}
                 />
-            </>
+            </div>
         )
     }
 

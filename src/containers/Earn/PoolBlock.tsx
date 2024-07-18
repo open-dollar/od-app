@@ -3,8 +3,24 @@ import styled from 'styled-components'
 import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: any }) => {
-    console.log("DATA: ", nitroPoolData)
+interface PoolData {
+    nitroData: {
+        startTime: number
+        endTime: number
+        apy: number
+        tvlUSD: number
+    }
+    spNftData: {
+        apy: number
+    }
+    collateral0TokenSymbol: string
+    collateral1TokenSymbol: string
+    rewardToken1Symbol: string
+    rewardToken2Symbol: string
+}
+
+const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: PoolData }) => {
+    console.log('DATA: ', nitroPoolData)
     const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
 
     const getTimePeriod = () => {

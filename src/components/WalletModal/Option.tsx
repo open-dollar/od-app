@@ -41,7 +41,6 @@ export default function Option({
 }) {
     const content = (
         <OptionCardClickable
-            //@ts-ignore
             id={id}
             onClick={onClick}
             clickable={clickable && !active}

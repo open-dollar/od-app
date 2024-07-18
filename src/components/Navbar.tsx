@@ -65,7 +65,6 @@ const Navbar = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.OD.address,
@@ -86,7 +85,6 @@ const Navbar = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.ODG.address,
@@ -208,8 +206,7 @@ const Navbar = () => {
                                             <InfoPopUpText style={{ marginBottom: 6 }}>
                                                 {t('liquidity').toUpperCase()}
                                             </InfoPopUpText>
-                                            {/* @ts-ignore */}
-                                            <InfoPopUpText style={{ fontSize: theme.font.default }}>
+                                            <InfoPopUpText style={{ fontSize: '18px' }}>
                                                 {state.totalLiquidity}
                                             </InfoPopUpText>
                                         </InfoPopupContentWrapper>

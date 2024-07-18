@@ -4,7 +4,6 @@ import { ArrowLeft, Info, AlertCircle } from 'react-feather'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from 'styled-components'
 import { useTokenApproval, useProxyAddress, useActiveWeb3React } from '~/hooks'
 import { getTokenLogo, formatWithCommas, formatNumber } from '~/utils'
 import { useStoreState, useStoreActions } from '~/store'
@@ -15,8 +14,6 @@ import Button from '~/components/Button'
 
 const DepositFunds = ({ ...props }) => {
     const { t } = useTranslation()
-    //@ts-ignore
-    const { colors } = useTheme()
     const history = useHistory()
     const proxyAddress = useProxyAddress()
 
@@ -118,20 +115,14 @@ const DepositFunds = ({ ...props }) => {
                         <DateInfoContainer>
                             <InnerContainer style={{ display: 'flex', alignItems: 'center' }}>
                                 <DateInfoLabel>{t('tokens_will_be_unlocked')}</DateInfoLabel>
-                                <Info
-                                    size="16"
-                                    color={colors.blueish}
-                                    style={{ marginLeft: 6 }}
-                                    cursor="pointer"
-                                    onClick={onInfoClick}
-                                />
+                                <Info size="16" style={{ marginLeft: 6 }} cursor="pointer" onClick={onInfoClick} />
                             </InnerContainer>
                             <DateInfoValue>{shortStringDate(1677653610000)}</DateInfoValue>
                         </DateInfoContainer>
                     </InnerContainer>
                     <WarningLabelContainer>
                         <InnerContainer style={{ display: 'flex', alignItems: 'flex-start' }}>
-                            <AlertCircle size="24" color={colors.yellowish} style={{ height: 'auto', marginTop: 1 }} />
+                            <AlertCircle size="24" style={{ height: 'auto', marginTop: 1 }} />
                             <WarningLabel>{t('deposit_funds_warning')}</WarningLabel>
                         </InnerContainer>
                     </WarningLabelContainer>

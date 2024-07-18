@@ -26,8 +26,6 @@ const Slider = ({
     ...rest
 }: InputSliderProps) => {
     const { t } = useTranslation()
-    //@ts-ignore
-    const { colors } = useTheme()
 
     const changeCallback = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,14 +44,14 @@ const Slider = ({
                         <SliderTrackMarker
                             key={index}
                             style={{
-                                backgroundColor: index >= Math.max(value, min) ? colors.placeholder : 'transparent',
+                                backgroundColor: index >= Math.max(value, min) ? '#E2F1FF' : 'transparent',
                             }}
                         />
                     ))}
                 </SliderStepMarkersContainer>
                 <SliderTrack
                     style={{
-                        background: `linear-gradient(to right, ${colors.blueish} ${slidePercentage}%, ${colors.colorPrimary} 0%)`,
+                        background: `linear-gradient(to right, #E2F1FF ${slidePercentage}%, #1A74EC 0%)`,
                     }}
                 >
                     <Input

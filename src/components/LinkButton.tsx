@@ -14,7 +14,7 @@ interface Props {
     isExternal?: boolean
     withArrow?: boolean
     children?: ReactNode
-    color?: 'blueish' | 'greenish' | 'yellowish' | 'colorPrimary' | 'colorSecondary'
+    color?: any
     className?: string
 }
 const LinkButton = ({
@@ -30,7 +30,6 @@ const LinkButton = ({
     ...rest
 }: Props) => {
     return isExternal ? (
-        //@ts-ignore
         <ExtLink id={id} {...rest} href={url} target="_blank" rel="norefferer" disabled={disabled} color={color}>
             {children}
             <span>{text}</span> {withArrow ? <ArrowRightCircle size={'18'} /> : null}

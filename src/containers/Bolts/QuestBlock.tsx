@@ -17,7 +17,7 @@ const QuestBlock = ({ title, text, items, button }: { title: any; text: any; ite
                 <QuestBtn>{button}</QuestBtn>
             </BlockHeader>
             <Block>
-                {items.map((item: Item, index: string) => (
+                {items.map((item: Item, index: number) => (
                     <Item key={index}>
                         <Label>{item.title}</Label>
                         <Value>{item.status}</Value>

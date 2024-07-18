@@ -4,6 +4,7 @@ import { formatWithCommas, getTokenLogo } from '~/utils'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const PoolBlock = ({ nitroPoolAddress, nitroPoolData }: { nitroPoolAddress: string; nitroPoolData: any }) => {
+    console.log("DATA: ", nitroPoolData)
     const { collateral0TokenSymbol, collateral1TokenSymbol, rewardToken1Symbol, rewardToken2Symbol } = nitroPoolData
 
     const getTimePeriod = () => {

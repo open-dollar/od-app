@@ -101,7 +101,7 @@ const Earn = () => {
                 {nitroPools.length > 0 ? (
                     POOLS?.map(
                         (
-                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: any },
+                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: PoolData },
                             i: number
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )

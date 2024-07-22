@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -14,8 +14,10 @@ import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
 import Loader from '~/components/Loader'
+import { set } from 'numeral'
 
 const VaultDetails = () => {
+    const [error, setError] = useState(false)
     const geb = useGeb()
     const { t } = useTranslation()
     const { account, provider } = useActiveWeb3React()
@@ -38,10 +40,20 @@ const VaultDetails = () => {
     const safes = safeState.list
     const safe = safes.find((safe) => safe.id === safeId)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const fetchSingleVaultData = async () => {
+        if (!isNumeric(safeId)) {
+            setIsLoading(false)
+            return
+        }
+
+        setIsLoading(true)
+
         if (safe && safeId && geb && liquidationData) {
             safeActions.setSingleSafe(safe)
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
+            setIsLoading(false)
             return
         }
 
@@ -49,13 +61,18 @@ const VaultDetails = () => {
             const safeDataResponse = await geb.contracts.safeManager.connect(geb.provider).safeData(safeId)
             const ODProxyAddress = safeDataResponse[1]
             if (ODProxyAddress.startsWith('0x000000')) {
+                console.log('HEEEEY WRONG SAFE ID')
+                setError(true)
+                setIsLoading(false)
                 return
             }
+
             const ODProxyContract = new ethers.Contract(
                 ODProxyAddress,
                 '[{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"OnlyOwner","type":"error"},{"inputs":[],"name":"TargetAddressRequired","type":"error"},{"inputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"name":"TargetCallFailed","type":"error"},{"inputs":[],"name":"OWNER","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_target","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"execute","outputs":[{"internalType":"bytes","name":"_response","type":"bytes"}],"stateMutability":"payable","type":"function"}]',
                 provider
             )
+
             const ownerAddress = await ODProxyContract.OWNER()
             const userSafes = await gebManager.getUserSafesRpc({
                 address: ownerAddress,
@@ -74,6 +91,8 @@ const VaultDetails = () => {
             safeActions.setLiquidationData(constructedLiquidationData)
             const safeById = userSafes.safes.find((safe) => safe.safeId === safeId)
             if (!safeById) {
+                setIsLoading(false)
+                setError(true)
                 return
             }
             const formattedSafe = formatUserSafe(
@@ -84,12 +103,15 @@ const VaultDetails = () => {
             formattedSafe[0].ownerAddress = ownerAddress
             safeActions.setSingleSafe(formattedSafe[0])
             safeActions.setSafeData(DEFAULT_SAFE_STATE)
+            setIsLoading(false)
         }
     }
 
     useEffect(() => {
         if (!liquidationData || !singleSafe) {
             fetchSingleVaultData()
+        } else {
+            setIsLoading(false)
         }
         return () => {
             safeActions.setSingleSafe(null)
@@ -104,39 +126,48 @@ const VaultDetails = () => {
         }
     }, [account, provider, navigate, safeId])
 
-    const isLoading = !(liquidationData && singleSafe?.collateralName)
-
     return (
         <>
             <Container>
                 <VaultHeader safeId={safeId} />
-
-                {isLoading ? (
-                    <LoaderContainer>
-                        <Loader width="150px" color="#1A74EC" />
-                    </LoaderContainer>
+                {error ? (
+                    <ErrorMessage>This vault does not exist</ErrorMessage>
                 ) : (
-                    <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
+                    <>
+                        {isLoading ? (
+                            <LoaderContainer>
+                                <Loader width="150px" color="#1A74EC" />
+                            </LoaderContainer>
+                        ) : (
+                            <VaultStats isModifying={isDeposit || isWithdraw} isDeposit={isDeposit} isOwner={isOwner} />
+                        )}
+
+                        {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
+                            <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} key={account} />
+                        ) : null}
+
+                        {/* Users can only repay debt from a vault they don't own */}
+                        {!isLoading && !isOwner ? (
+                            <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} />
+                        ) : null}
+
+                        {!isOwner ? (
+                            <LabelContainer>
+                                <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
+                            </LabelContainer>
+                        ) : null}
+                    </>
                 )}
-
-                {(isDeposit || isWithdraw) && !isLoading && isOwner ? (
-                    <ModifyVault vaultId={safeId} isDeposit={isDeposit} isOwner={isOwner} key={account} />
-                ) : null}
-
-                {/* Users can only repay debt from a vault they don't own */}
-                {!isLoading && !isOwner ? <ModifyVault vaultId={safeId} isDeposit={false} isOwner={isOwner} /> : null}
-
-                {!isOwner ? (
-                    <LabelContainer>
-                        <AlertLabel isBlock={false} text={t('managed_safe_warning')} type="warning" />
-                    </LabelContainer>
-                ) : null}
             </Container>
         </>
     )
 }
 
 export default VaultDetails
+
+const ErrorMessage = styled.div`
+    color: ${({ theme }) => theme.colors.error};
+`
 
 const Container = styled.div`
     max-width: 880px;

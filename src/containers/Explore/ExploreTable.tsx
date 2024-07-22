@@ -12,7 +12,7 @@ import './index.css'
 import styled from 'styled-components'
 import Button from '~/components/Button'
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 type Vault = {
     id: string
@@ -41,7 +41,7 @@ const columnHelper = createColumnHelper<Vault>()
 const ExploreTable = ({ data }: { data: Vault[] }) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState<string>('')
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const columns: ColumnDef<Vault, any>[] = [
         columnHelper.accessor('id', {
@@ -113,7 +113,7 @@ const ExploreTable = ({ data }: { data: Vault[] }) => {
             cell: (info) => {
                 return (
                     <ButtonFloat>
-                        <Button secondary onClick={() => history.push(`/vaults/${info.row.original.id}`)}>
+                        <Button secondary onClick={() => navigate(`/vaults/${info.row.original.id}`)}>
                             View
                         </Button>
                     </ButtonFloat>

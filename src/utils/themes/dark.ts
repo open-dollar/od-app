@@ -13,6 +13,7 @@ const darkTheme: Theme = {
         background: '#E2F1FF',
         accent: '#1C293A',
         gradientBg: 'linear-gradient(180deg, #1A74EC 0%, #6396FF 100%);        ',
+        error: 'red',
         gradient: '',
         overlay: '',
         border: '',

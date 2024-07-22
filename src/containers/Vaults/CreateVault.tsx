@@ -8,7 +8,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { useTransactionAdder } from '~/hooks'
-import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas, checkUserHasBalance } from '~/utils'
+import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -55,13 +55,12 @@ const CreateVault = ({
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
-        bridgeModel: bridgeModelActions,
     } = useStoreActions((state) => state)
     const { leftInput, rightInput } = parsedAmounts
     const { onLeftInput, onRightInput, onClearAll: clearAll } = useInputsHandlers()
     const { t } = useTranslation()
     const isValid = !error
-    const [needsBridge, setNeedsBridge] = useState(false)
+    // const [needsBridge, setNeedsBridge] = useState(false)
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {
             const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
@@ -737,13 +736,13 @@ const Note = styled.div`
     color: ${(props) => props.theme.colors.primary};
 `
 
-const BridgeLabel = styled.div`
-    color: #e39806;
-    font-size: 14px;
-    margin-top: 10px;
-`
+// const BridgeLabel = styled.div`
+//     color: #e39806;
+//     font-size: 14px;
+//     margin-top: 10px;
+// `
 
-const BridgeButton = styled.span`
-    color: ${(props) => props.theme.colors.primary};
-    cursor: pointer;
-`
+// const BridgeButton = styled.span`
+//     color: ${(props) => props.theme.colors.primary};
+//     cursor: pointer;
+// `

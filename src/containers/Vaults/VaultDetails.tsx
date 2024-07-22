@@ -14,7 +14,6 @@ import useGeb from '~/hooks/useGeb'
 import gebManager from '~/utils/gebManager'
 import { ethers } from 'ethers'
 import Loader from '~/components/Loader'
-import { set } from 'numeral'
 
 const VaultDetails = () => {
     const [error, setError] = useState(false)

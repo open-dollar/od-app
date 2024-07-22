@@ -503,6 +503,7 @@ const Overlay = styled.div`
 const InnerContainer = styled.div`
     min-height: 100vh;
     width: calc(100% - 50px);
+    max-width: 364px;
     background: ${(props) => props.theme.colors.neutral};
     padding-bottom: 1rem;
     position: relative;
@@ -555,7 +556,4 @@ const Account = styled.div`
     display: flex;
     justify-content: center;
     cursor: pointer;
-    @media (max-width: 767px) {
-        justify-content: flex-start;
-    }
 `

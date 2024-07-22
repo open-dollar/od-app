@@ -117,14 +117,14 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         true,
         parsedAmounts.rightInput === availableHai && availableHai !== '0'
     )
-    useEffect(() => {
-        if (!account || !provider || !singleSafe?.collateralName || !chainId || !bridgeTokens[chainId]) return
-        const token = bridgeTokens[chainId].tokens.find((token: any) => token.name === singleSafe?.collateralName)
-        const checkNeedsBridge = async () => {
-            setNeedsBridge(await checkUserHasBalance(token.address, account, provider, parsedAmounts.leftInput))
-        }
-        checkNeedsBridge()
-    }, [account, provider, chainId, singleSafe?.collateralName, parsedAmounts.leftInput])
+    // useEffect(() => {
+    //     if (!account || !provider || !singleSafe?.collateralName || !chainId || !bridgeTokens[chainId]) return
+    //     const token = bridgeTokens[chainId].tokens.find((token: any) => token.name === singleSafe?.collateralName)
+    //     const checkNeedsBridge = async () => {
+    //         setNeedsBridge(await checkUserHasBalance(token.address, account, provider, parsedAmounts.leftInput))
+    //     }
+    //     checkNeedsBridge()
+    // }, [account, provider, chainId, singleSafe?.collateralName, parsedAmounts.leftInput])
 
     const onMaxLeftInput = () => {
         if (isDeposit) {
@@ -250,12 +250,12 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
         }
     }
 
-    const setBridge = (reason: string) => {
-        if (!singleSafe) return
-        bridgeModelActions.setReason(reason)
-        bridgeModelActions.setFromTokenSymbol(singleSafe?.collateralName)
-        navigate('/bridge')
-    }
+    // const setBridge = (reason: string) => {
+    //     if (!singleSafe) return
+    //     bridgeModelActions.setReason(reason)
+    //     bridgeModelActions.setFromTokenSymbol(singleSafe?.collateralName)
+    //     navigate('/bridge')
+    // }
 
     return (
         <>
@@ -412,7 +412,7 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
 
                             {error && (leftInput || rightInput) && (
                                 <ErrorContainer>
-                                    {needsBridge && parsedAmounts.leftInput && (
+                                    {/* {needsBridge && parsedAmounts.leftInput && (
                                         <BridgeLabel>
                                             {`Insufficient funds. Move assets to Arbitrum using the `}
                                             <BridgeButton
@@ -425,8 +425,8 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                                                 Bridge
                                             </BridgeButton>
                                         </BridgeLabel>
-                                    )}
-                                    {!needsBridge && (leftInput || rightInput) && <p>Error: {error}</p>}
+                                    )} */}
+                                    {(leftInput || rightInput) && <p>Error: {error}</p>}
                                 </ErrorContainer>
                             )}
                         </Row>

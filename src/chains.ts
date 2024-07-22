@@ -28,7 +28,7 @@ const ETH: AddEthereumChainParameter['nativeCurrency'] = {
 export const RPC_URL_ETHEREUM = process.env.REACT_APP_RPC_URL_ETHEREUM
     ? process.env.REACT_APP_RPC_URL_ETHEREUM
     : 'https://eth.llamarpc.com'
-export const RPC_URL_ARBITRUM = 'https://arbitrum.blockpi.network/v1/rpc/public'
+export const RPC_URL_ARBITRUM = RPC_URL || 'https://arbitrum.blockpi.network/v1/rpc/public'
 export const RPC_URL_OPTIMISM = 'https://op-pokt.nodies.app'
 export const RPC_URL_POLYGON = 'https://polygon-bor-rpc.publicnode.com'
 export const RPC_URL_BASE = 'https://base.llamarpc.com'

@@ -229,22 +229,22 @@ const CreateVault = ({
         connectWalletActions.setIsStepLoading(false)
     }
 
-    useEffect(() => {
-        if (!account || !provider || !selectedCollateral) return
-        const checkNeedsBridge = async () => {
-            setNeedsBridge(
-                await checkUserHasBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
-            )
-        }
-        checkNeedsBridge()
-    }, [account, provider, selectedCollateral, parsedAmounts.leftInput])
+    // useEffect(() => {
+    //     if (!account || !provider || !selectedCollateral) return
+    //     const checkNeedsBridge = async () => {
+    //         setNeedsBridge(
+    //             await checkUserHasBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
+    //         )
+    //     }
+    //     checkNeedsBridge()
+    // }, [account, provider, selectedCollateral, parsedAmounts.leftInput])
 
-    const setBridge = (reason: string) => {
-        bridgeModelActions.setReason(reason)
-        bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
-        bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
-        navigate('/bridge')
-    }
+    // const setBridge = (reason: string) => {
+    //     bridgeModelActions.setReason(reason)
+    //     bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
+    //     bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
+    //     navigate('/bridge')
+    // }
 
     return (
         <>
@@ -298,7 +298,7 @@ const CreateVault = ({
                                                 </WrapBtn>
                                             </WrapBox>
                                         )}
-                                        {needsBridge && !parsedAmounts.leftInput && (
+                                        {/* {needsBridge && !parsedAmounts.leftInput && (
                                             <BridgeLabel>
                                                 {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
@@ -311,7 +311,7 @@ const CreateVault = ({
                                                     Bridge
                                                 </BridgeButton>
                                             </BridgeLabel>
-                                        )}
+                                        )} */}
                                     </DropDownContainer>
 
                                     <Inputs>
@@ -336,7 +336,7 @@ const CreateVault = ({
                                             data_test_id="deposit_borrow"
                                             decimals={Number(selectedCollateralDecimals)}
                                         />
-                                        {needsBridge && parsedAmounts.leftInput && (
+                                        {/* {needsBridge && parsedAmounts.leftInput && (
                                             <BridgeLabel>
                                                 {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
@@ -349,7 +349,7 @@ const CreateVault = ({
                                                     Bridge
                                                 </BridgeButton>
                                             </BridgeLabel>
-                                        )}
+                                        )} */}
                                         <br />
                                         <TokenInput
                                             token={

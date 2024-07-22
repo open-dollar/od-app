@@ -19,7 +19,6 @@ import { useEffect, useState } from 'react'
 import { MAINNET_CHAINS } from '../../chains'
 import { hooks, walletConnectV2 } from '../../connectors/walletConnectV2'
 import { Card } from './Card'
-import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions } from '~/store'
 
 const CHAIN_IDS = Object.keys(MAINNET_CHAINS).map(Number)
@@ -38,7 +37,6 @@ export default function WalletConnectV2Card({ error, setError }: WalletConnectV2
     const isActive = useIsActive()
     const provider = useProvider()
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
-    const { connector } = useActiveWeb3React()
 
     // attempt to connect eagerly on mount
     useEffect(() => {
@@ -47,7 +45,7 @@ export default function WalletConnectV2Card({ error, setError }: WalletConnectV2
             .then(() => userInitiatedConnection && popupsActions.setIsConnectorsWalletOpen(false))
             .catch(() => {})
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [connector])
+    }, [])
 
     // log URI when available
     useEffect(() => {

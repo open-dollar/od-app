@@ -2,6 +2,8 @@ import WETH from '../assets/eth.svg'
 import OP from '../assets/op-img.svg'
 import OD from '../assets/od-token.svg'
 import ODG from '../assets/odg-token.svg'
+import GRT from '../assets/grt.svg'
+
 import WSTETH from '../assets/wsteth.svg'
 import CBETH from '../assets/cbETH.svg'
 import RETH from '../assets/rETH.svg'
@@ -36,6 +38,8 @@ const importTokenIcon = (tokenName: string) => {
             return MAGIC
         case 'PUFETH':
             return PUFETH
+        case 'GRT':
+            return GRT
         default:
             return require('../assets/unknown-token.svg').default
     }
@@ -62,6 +66,7 @@ export const TOKEN_LOGOS: { [key: string]: string } = {
     ARB: importTokenIcon('ARB'),
     MAGIC: importTokenIcon('MAGIC'),
     PUFETH: importTokenIcon('PUFETH'),
+    GRT: importTokenIcon('GRT'),
     ETH: importTokenIcon('WETH'),
 }
 

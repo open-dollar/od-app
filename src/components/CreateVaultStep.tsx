@@ -10,11 +10,11 @@ interface Props {
     btnText: string
     handleClick: () => void
     isDisabled: boolean
-    isLoading: boolean
+    isStepLoading: boolean
     id: string
 }
 
-const CreateVaultStep = ({ stepNumber, title, text, isDisabled, isLoading, btnText, handleClick }: Props) => {
+const CreateVaultStep = ({ stepNumber, title, text, isDisabled, isStepLoading, btnText, handleClick }: Props) => {
     const { t } = useTranslation()
     return (
         <ContentContainer stepNumber={stepNumber}>
@@ -27,8 +27,8 @@ const CreateVaultStep = ({ stepNumber, title, text, isDisabled, isLoading, btnTe
                 <Button
                     data-test-id="steps-btn"
                     id={stepNumber === 2 ? 'create-safe' : ''}
-                    disabled={isDisabled || isLoading}
-                    isLoading={isLoading}
+                    disabled={isDisabled || isStepLoading}
+                    isLoading={isStepLoading}
                     text={t(btnText)}
                     onClick={handleClick}
                     secondary

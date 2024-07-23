@@ -44,15 +44,14 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
     return (
         <Container id="app-page" className={className}>
             <Helmet>
-                <title>Open Dollar - Low-Interest DeFi Loans & Tradable CDPs</title>
-                <title>Open Dollar - Low-Interest DeFi Loans & Tradable CDPs</title>
+                <title>Open Dollar Dashboard - Manage Your Open Dollar Positions</title>
                 <meta
                     name="description"
-                    content="Discover Open Dollar, a DeFi platform offering low-interest tradable onchain loans. Secure and trade your collateral with ease. The future of onchain lending is here."
+                    content="Access the Open Dollar Dashboard to manage your low-interest loans and tradable assets. Secure, efficient, and user-friendly DeFi platform for all your financial needs."
                 />
                 <meta
                     name="keywords"
-                    content="Open Dollar, DeFi, low-interest loans, tradable assets, decentralized finance, collateral, stablecoins, tradeable CDPs"
+                    content="Open Dollar dashboard, manage loans, low-interest loans, tradable assets, DeFi platform"
                 />
             </Helmet>
             <Content>

@@ -70,14 +70,12 @@ const ListItemLabel = styled.div`
     display:block;
     margin-bottom:5px;
     font-weight:normal;
-   color: ${(props: any) => props.theme.colors.customSecondary};
   `}
 `
 
 const ListItem = styled.div`
     flex: 0 0 16.6%;
-    color: ${(props: any) => props.theme.colors.customSecondary};
-    font-size: ${(props: any) => props.theme.font.xSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     padding: 15px 10px;
     &:first-child {
         padding-left: 25px;
@@ -91,7 +89,7 @@ const ListItem = styled.div`
 
     flex: 0 0 50%;
     min-width:50%;
-    font-size: ${(props: any) => props.theme.font.xSmall};
+    font-size: 16px;
     font-weight:900;
   `}
 `

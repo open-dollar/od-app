@@ -51,7 +51,7 @@ export default React.memo(AddressCell, (prevProps, nextProps) => {
 const Address = styled.span`
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
-    font-size: ${(props: any) => props.theme.font.xSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
     line-height: 21.79px;
     letter-spacing: 0.05em;
 `

@@ -93,7 +93,7 @@ const ErrorTextContainer = styled.div`
 const ErrorText = styled.div`
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
-    font-size: ${(props: any) => props.theme.font.xxSmall};
+    font-size: ${(props) => props.theme.font.xxSmall};
     color: #ddf08b;
     justify-content: start;
     text-align: center;

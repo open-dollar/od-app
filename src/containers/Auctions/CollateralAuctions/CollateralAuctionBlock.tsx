@@ -258,7 +258,7 @@ const Container = styled.div`
     background: #05284c;
 `
 const Header = styled.div`
-    font-size: ${(props: any) => props.theme.font.small};
+    font-size: ${(props) => props.theme.font.small};
     font-weight: 600;
     padding: 20px;
     display: flex;
@@ -281,7 +281,7 @@ const Info = styled.div`
 `
 
 const InfoCol = styled.div`
-    font-size: ${(props: any) => props.theme.font.small};
+    font-size: ${(props) => props.theme.font.small};
     min-width: 100px;
     padding: 0px 10px 0px;
 
@@ -298,25 +298,25 @@ const InfoCol = styled.div`
 `
 
 const InfoLabel = styled.div`
-    color: ${(props: any) => props.theme.colors.secondary};
-    font-size: ${(props: any) => props.theme.font.xSmall};
+    color: ${(props) => props.theme.colors.secondary};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 const InfoValue = styled.div`
     margin-top: 3px;
-    color: ${(props: any) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
     font-weight: normal;
-    font-size: ${(props: any) => props.theme.font.xSmall};
+    font-size: ${(props) => props.theme.font.xSmall};
 `
 
 const Content = styled.div`
     padding: 20px 20px 20px 20px;
-    border-top: 1px solid ${(props: any) => props.theme.colors.border};
+    border-top: 1px solid ${(props) => props.theme.colors.border};
     background: #031f3a;
     border-radius: 0 0 15px 15px;
 `
 
 const SectionContent = styled.div`
-    font-size: ${(props: any) => props.theme.font.default};
+    font-size: ${(props) => props.theme.font.default};
 `
 
 const BtnContainer = styled.div`
@@ -324,7 +324,7 @@ const BtnContainer = styled.div`
     padding-top: 15px;
     margin-bottom: -5px;
     margin-top: 10px;
-    border-top: 1px solid ${(props: any) => props.theme.colors.border};
+    border-top: 1px solid ${(props) => props.theme.colors.border};
 `
 
 const LeftAucInfo = styled.div<{ type?: string }>`
@@ -371,7 +371,7 @@ const Head = styled.div`
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
-    color: ${(props: any) => props.theme.colors.secondary};
+    color: ${(props) => props.theme.colors.secondary};
     padding-left: 10px;
     &:first-child {
         padding-left: 25px;
@@ -384,7 +384,6 @@ const ListItemLabel = styled.div`
     display:block;
     margin-bottom:5px;
     font-weight:normal;
-   color: ${(props: any) => props.theme.colors.customSecondary};
   `}
 `
 
@@ -396,19 +395,18 @@ const List = styled.div`
         background: #12385e;
     }
     &.winner {
-        background: ${(props: any) => props.theme.colors.greenish};
+        background: ${(props) => props.theme.colors.greenish};
         a,
         div {
-            color: ${(props: any) => props.theme.colors.neutral} !important;
+            color: ${(props) => props.theme.colors.neutral} !important;
         }
         ${ListItemLabel} {
-            color: ${(props: any) => props.theme.colors.background} !important;
+            color: ${(props) => props.theme.colors.background} !important;
         }
     }
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-wrap:wrap;
-    border:1px solid ${(props: any) => props.theme.colors.border};
     margin-bottom:10px;
     &:last-child {
       margin-bottom:0;

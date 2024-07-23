@@ -143,7 +143,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
     width: 100% !important;
 `
 
-const OptionCard = styled(InfoCard as any)`
+const OptionCard = styled(InfoCard)`
     display: flex;
     flex-direction: row;
     border: 2px solid white;
@@ -163,6 +163,6 @@ const NetworkHeader = styled.h3`
     font-family: 'Barlow', sans-serif;
     font-weight: 700;
     color: white;
-    font-size: ${(props: any) => props.theme.font.large};
+    font-size: ${(props) => props.theme.font.large};
     line-height: 38.4px;
 `

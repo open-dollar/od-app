@@ -31,7 +31,7 @@ const Earn = () => {
         return async () => {
             try {
                 const poolResults = await Promise.all(
-                    POOLS.map(async (pool: { camelotPoolAddress: any; nitroPoolAddress: any }) => {
+                    POOLS.map(async (pool: { camelotPoolAddress: string; nitroPoolAddress: string }) => {
                         const cacheKey = `${account}-${pool.camelotPoolAddress}-${pool.nitroPoolAddress}`
                         if (cachedPools[cacheKey]) {
                             return cachedPools[cacheKey]
@@ -101,7 +101,7 @@ const Earn = () => {
                 {nitroPools.length > 0 ? (
                     POOLS?.map(
                         (
-                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: any },
+                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: PoolData },
                             i: number
                         ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
                     )

@@ -40,13 +40,7 @@ export default function Option({
     id: string
 }) {
     const content = (
-        <OptionCardClickable
-            //@ts-ignore
-            id={id}
-            onClick={onClick}
-            clickable={clickable && !active}
-            active={active}
-        >
+        <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
             <OptionCardLeft>
                 <HeaderText color={color}>
                     {active ? (
@@ -89,7 +83,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
     }
 `
 
-const OptionCard = styled(InfoCard as any)`
+const OptionCard = styled(InfoCard)`
     display: flex;
     flex-direction: row;
     align-items: center;

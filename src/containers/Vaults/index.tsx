@@ -10,7 +10,8 @@ import Accounts from './Accounts'
 import Loader from '~/components/Loader'
 import useGeb from '~/hooks/useGeb'
 import { useWeb3React } from '@web3-react/core'
-import { Helmet } from 'react-helmet-async'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 interface OnBoardingProps {
     className?: string
@@ -43,17 +44,7 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
 
     return (
         <Container id="app-page" className={className}>
-            <Helmet>
-                <title>Open Dollar Dashboard - Manage Your Open Dollar Positions</title>
-                <meta
-                    name="description"
-                    content="Access the Open Dollar Dashboard to manage your low-interest loans and tradable assets. Secure, efficient, and user-friendly DeFi platform for all your financial needs."
-                />
-                <meta
-                    name="keywords"
-                    content="Open Dollar dashboard, manage loans, low-interest loans, tradable assets, DeFi platform"
-                />
-            </Helmet>
+            <MetaTags page={metaInfo.home} />
             <Content>
                 {safeState.safeCreated ? (
                     <>

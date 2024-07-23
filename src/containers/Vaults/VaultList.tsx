@@ -8,7 +8,8 @@ import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
-import { Helmet } from 'react-helmet-async'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 const VaultList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
@@ -35,17 +36,7 @@ const VaultList = ({ address }: { address?: string }) => {
         if (safeState.list.length > 0) {
             return (
                 <Container>
-                    <Helmet>
-                        <title>Open Dollar Vaults - Secure Collateral for Low-Interest Loans</title>
-                        <meta
-                            name="description"
-                            content="Utilize Open Dollar Vaults to securely lock collateral for minting stablecoins at low interest. Trade your assets with ease on our DeFi platform."
-                        />
-                        <meta
-                            name="keywords"
-                            content="Open Dollar vaults, secure collateral, low-interest loans, mint stablecoins, DeFi trading"
-                        />
-                    </Helmet>
+                    <MetaTags page={metaInfo.vaults} />
                     <Header>
                         <Col className="first-col">
                             <Title>{'Vaults'}</Title>

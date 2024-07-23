@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ExternalLink, Info } from 'react-feather'
@@ -21,6 +21,9 @@ import { generateSvg } from '@opendollar/svg-generator'
 import { useWeb3React } from '@web3-react/core'
 import { useAddress } from '~/hooks/useAddress'
 
+import useGeb from '~/hooks/useGeb'
+import Skeleton from 'react-loading-skeleton'
+
 const VaultStats = ({
     isModifying,
     isDeposit,
@@ -38,6 +41,7 @@ const VaultStats = ({
         liquidationPrice: newLiquidationPrice,
         account,
     } = useSafeInfo(isModifying ? (isDeposit ? 'deposit_borrow' : 'repay_withdraw') : 'info')
+    const geb = useGeb()
 
     const { safeModel: safeState } = useStoreState((state) => state)
     const { singleSafe, liquidationData } = safeState
@@ -88,7 +92,7 @@ const VaultStats = ({
     )
 
     const svg = useMemo(() => generateSvg(statsForSVG), [statsForSVG])
-    const address = useAddress(singleSafe?.ownerAddress || account!)
+    let address = useAddress(singleSafe?.ownerAddress || account!)
 
     const returnRedRate = () => {
         const currentRedemptionRate = singleSafe ? getRatePercentage(singleSafe.currentRedemptionRate, 10) : '0'
@@ -109,6 +113,21 @@ const VaultStats = ({
         }
         return false
     }, [isModifying, parsedAmounts.leftInput, parsedAmounts.rightInput])
+
+    const handleClaimClick = async () => {
+        if (!account) return
+        try {
+            const proxy = await geb.getProxyAction(account)
+            await proxy.collectTokenCollateral(
+                geb.contracts.safeManager.address,
+                geb.contracts.tokenCollateralJoin[collateralName].address,
+                Number(singleSafe?.id),
+                Number(singleSafe?.internalCollateralBalance)
+            )
+        } catch (e) {
+            console.debug(e, 'Error in claiming internal balance')
+        }
+    }
 
     return (
         <>
@@ -253,10 +272,10 @@ const VaultStats = ({
                                     </InfoIcon>
                                 </StatHeader>
                                 <StatValue>
-                                    {chainId && (
+                                    {address ? (
                                         <AccountLink
                                             href={getEtherscanLink(
-                                                chainId,
+                                                chainId!,
                                                 singleSafe?.ownerAddress || account!,
                                                 'address'
                                             )}
@@ -264,6 +283,8 @@ const VaultStats = ({
                                         >
                                             {address} <ExternalLink />
                                         </AccountLink>
+                                    ) : (
+                                        <Skeleton width={130} height={18} />
                                     )}
                                 </StatValue>
                             </StatSection>
@@ -330,6 +351,23 @@ const VaultStats = ({
                             </InfoIcon>
                             <SideValue>{`${returnRedRate()}%`}</SideValue>
                         </Side>
+                        {Number(singleSafe?.internalCollateralBalance) > 0 ? (
+                            <Side style={{ fontWeight: 'bold' }}>
+                                <SideTitle>Internal Balance</SideTitle>
+                                <InfoIcon
+                                    data-tooltip-id="vault-stats"
+                                    data-tooltip-content={t('internal_balance_tip')}
+                                >
+                                    <Info size="16" />
+                                </InfoIcon>
+                                <ClaimLink onClick={handleClaimClick}>CLAIM</ClaimLink>
+                                <SideValue>
+                                    {formatWithCommas(singleSafe?.internalCollateralBalance || '0', 2, 2)}
+                                </SideValue>
+                            </Side>
+                        ) : (
+                            <></>
+                        )}
                     </Inner>
                 </Right>
             </Flex>
@@ -530,4 +568,14 @@ const InfoIcon = styled.div`
         color: #475662;
         margin-top: 4px;
     }
+`
+
+const ClaimLink = styled.span`
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: ${(props) => props.theme.font.xxSmall};
+    text-decoration: underline;
+    color: ${(props) => props.theme.colors.blueish};
+    margin-left: 5px;
+    padding-top: 1px;
 `

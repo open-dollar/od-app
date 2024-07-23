@@ -3,48 +3,74 @@ import styled from 'styled-components'
 
 import { returnState, COIN_TICKER, getTokenLogo, formatWithCommas } from '~/utils'
 
-const VaultBlock = ({ ...props }) => {
+interface VaultBlockProps {
+    id: string
+    riskState: number
+    collateralName: string
+    collateral: string
+    totalDebt: string
+    collateralRatio: string
+    liquidationPrice: string
+    className?: string
+    internalCollateralBalance: string
+}
+
+const VaultBlock = ({
+    id,
+    riskState,
+    collateralName,
+    collateral,
+    totalDebt,
+    collateralRatio,
+    liquidationPrice,
+    className,
+    internalCollateralBalance,
+}: VaultBlockProps) => {
+    const stateClass = returnState(riskState) ? returnState(riskState).toLowerCase() : 'dimmed'
+
     return (
-        <Container className={props.className}>
-            <Link to={`/vaults/${props.id}/deposit`}>
-                <BlockContainer className={!returnState(props.riskState) ? 'empty' : ''}>
+        <Container className={className}>
+            <Link to={`/vaults/${id}/deposit`}>
+                <BlockContainer className={!returnState(riskState) ? 'empty' : ''}>
                     <BlockHeader>
                         <SafeInfo>
-                            <img src={getTokenLogo(props.collateralName)} alt={props.collateralName} width={'50px'} />
+                            <img src={getTokenLogo(collateralName)} alt={collateralName} width={'50px'} />
                             <SafeData>
                                 <SafeTitle>
-                                    Vault <span>#{props.id}</span>
+                                    Vault <span>#{id}</span>
                                 </SafeTitle>
                             </SafeData>
                         </SafeInfo>
                     </BlockHeader>
                     <Block>
                         <Item>
-                            <Label>{`${props.collateralName} Deposited`}</Label>
-                            <Value>{formatWithCommas(props.collateral)}</Value>
+                            <Label>{`${collateralName} Deposited`}</Label>
+                            <Value>{formatWithCommas(collateral)}</Value>
                         </Item>
                         <Item>
                             <Label>{`${COIN_TICKER} Borrowed`}</Label>
-                            <Value>{formatWithCommas(props.totalDebt)}</Value>
+                            <Value>{formatWithCommas(totalDebt)}</Value>
                         </Item>
                         <Item>
                             <Label>{'Collateral Ratio'}</Label>
-                            <Value>{`${formatWithCommas(props.collateralRatio)}%`}</Value>
+                            <Value>{`${formatWithCommas(collateralRatio)}%`}</Value>
                         </Item>
                         <Item>
                             <Label>{'Liquidation Price'}</Label>
-                            <Value>${formatWithCommas(props.liquidationPrice)}</Value>
+                            <Value>${formatWithCommas(liquidationPrice)}</Value>
                         </Item>
-                        <Item
-                            className={
-                                returnState(props.riskState) ? returnState(props.riskState).toLowerCase() : 'dimmed'
-                            }
-                        >
+                        <Item className={stateClass}>
                             <Label>{'Risk'}</Label>
                             <Wrapper>
-                                <div>{returnState(props.riskState) ? returnState(props.riskState) : 'Closed'}</div>
+                                <div>{returnState(riskState) ? returnState(riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
+                        {Number(internalCollateralBalance) > 0 && (
+                            <Item>
+                                <Label>{'Internal Balance'}</Label>
+                                <Value>{formatWithCommas(internalCollateralBalance)}</Value>
+                            </Item>
+                        )}
                     </Block>
                 </BlockContainer>
             </Link>

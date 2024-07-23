@@ -1,88 +1,47 @@
 import { useEffect, useState } from 'react'
-import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
-
-import { useStoreState, useStoreActions } from '~/store'
-import { useActiveWeb3React } from '~/hooks'
-import { useHistory } from 'react-router-dom'
-import useGeb from '~/hooks/useGeb'
+import { useStoreState } from '~/store'
+import { useNavigate, useParams } from 'react-router-dom'
 import CreateVaultStep from '~/components/CreateVaultStep'
 import VaultList from './VaultList'
 import { COIN_TICKER } from '~/utils'
 import { useTranslation } from 'react-i18next'
 import Accounts from './Accounts'
 import Loader from '~/components/Loader'
+import useGeb from '~/hooks/useGeb'
+import { useWeb3React } from '@web3-react/core'
 
-const OnBoarding = ({ ...props }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const history = useHistory()
-    const [loading, setLoading] = useState(false)
-    const { account, provider, chainId } = useActiveWeb3React()
-    const geb = useGeb()
+interface OnBoardingProps {
+    className?: string
+}
+
+const OnBoarding = ({ className }: OnBoardingProps) => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
+
+    const [loading, setLoading] = useState(true)
+    const { address } = useParams<{ address: string }>()
     const { connectWalletModel: connectWalletState, safeModel: safeState } = useStoreState((state) => state)
-    const { safeModel: safeActions } = useStoreActions((state) => state)
     const { isWrongNetwork, isStepLoading } = connectWalletState
-    const address: string = props.match.params.address ?? ''
-
-    useEffect(() => {
-        if (chainId !== 421614 && chainId !== 42161 && chainId !== 10) return
-        if (
-            (!account && !address) ||
-            (address && !isAddress(address.toLowerCase())) ||
-            !provider ||
-            connectWalletState.isWrongNetwork
-        )
-            return
-
-        async function fetchSafes() {
-            setLoading(true)
-            try {
-                await safeActions.fetchUserSafes({
-                    address: address || (account as string),
-                    geb,
-                    tokensData: connectWalletState.tokensData,
-                })
-                setLoading(false)
-            } catch (error) {
-                console.debug('Error fetching safes:', error)
-                setLoading(false)
-            }
-        }
-
-        if (geb && connectWalletState.tokensData) {
-            fetchSafes()
-        }
-
-        const ms = 3000
-        const interval = setInterval(() => {
-            if (
-                (!account && !address) ||
-                (address && !isAddress(address.toLowerCase())) ||
-                !provider ||
-                connectWalletState.isWrongNetwork
-            )
-                fetchSafes()
-        }, ms)
-
-        return () => clearInterval(interval)
-    }, [
-        account,
-        address,
-        connectWalletState.isWrongNetwork,
-        connectWalletState.tokensData,
-        geb,
-        provider,
-        safeActions,
-        chainId,
-    ])
+    const geb = useGeb()
+    const { account } = useWeb3React()
 
     const handleCreateSafe = () => {
-        history.push('/vaults/create')
+        navigate('/vaults/create')
     }
 
+    useEffect(() => {
+        if (geb && !account) {
+            setLoading(false)
+        } else if ((connectWalletState.tokensData && account) || geb) {
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000)
+        }
+    }, [loading, geb, connectWalletState.tokensData, account])
+
     return (
-        <Container id="app-page">
+        <Container id="app-page" className={className}>
             <Content>
                 {safeState.safeCreated ? (
                     <>
@@ -91,16 +50,14 @@ const OnBoarding = ({ ...props }) => {
                             stepNumber={2}
                             id="step2"
                             title={'create_safe'}
-                            text={t('create_safe_text', {
-                                coin_ticker: COIN_TICKER,
-                            })}
+                            text={t('create_safe_text', { coin_ticker: COIN_TICKER })}
                             btnText={'create_safe'}
                             handleClick={handleCreateSafe}
                             isDisabled={isWrongNetwork}
-                            isLoading={isStepLoading}
+                            isStepLoading={isStepLoading}
                         />
                     </>
-                ) : loading ? (
+                ) : loading || isStepLoading ? (
                     <LoaderWrapper>
                         <Loader width="200px" color="#1A74EC" />
                     </LoaderWrapper>

@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TokenData } from '@opendollar/sdk/lib/contracts/addreses'
 import { ChevronLeft, Info, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router'
 import useGeb from '~/hooks/useGeb'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { useTransactionAdder } from '~/hooks'
-import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas, checkUserHasBalance } from '~/utils'
+import { DEFAULT_SAFE_STATE, getTokenLogo, formatNumber, formatWithCommas } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import TokenInput from '~/components/TokenInput'
 import Modal from '~/components/Modals/Modal'
@@ -50,18 +50,17 @@ const CreateVault = ({
         safeModel: safeState,
         connectWalletModel: { proxyAddress, tokensData, tokensFetchedData },
     } = useStoreState((state) => state)
-    const history = useHistory()
+    const navigate = useNavigate()
     const {
         safeModel: safeActions,
         connectWalletModel: connectWalletActions,
         popupsModel: popupsActions,
-        bridgeModel: bridgeModelActions,
     } = useStoreActions((state) => state)
     const { leftInput, rightInput } = parsedAmounts
     const { onLeftInput, onRightInput, onClearAll: clearAll } = useInputsHandlers()
     const { t } = useTranslation()
     const isValid = !error
-    const [needsBridge, setNeedsBridge] = useState(false)
+    // const [needsBridge, setNeedsBridge] = useState(false)
     const formattedCollateralBalances = useMemo(() => {
         return collaterals.reduce((acc, collateral) => {
             const balance = tokensFetchedData[collateral.symbol]?.balanceE18 || '0'
@@ -180,7 +179,7 @@ const CreateVault = ({
                     depositAmountUSD,
                     borrowAmountUSD,
                 })
-                history.push('/vaults')
+                navigate('/vaults')
                 safeActions.setIsSuccessfulTx(true)
                 popupsActions.setIsWaitingModalOpen(false)
             } catch (e) {
@@ -229,22 +228,22 @@ const CreateVault = ({
         connectWalletActions.setIsStepLoading(false)
     }
 
-    useEffect(() => {
-        if (!account || !provider || !selectedCollateral) return
-        const checkNeedsBridge = async () => {
-            setNeedsBridge(
-                await checkUserHasBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
-            )
-        }
-        checkNeedsBridge()
-    }, [account, provider, selectedCollateral, parsedAmounts.leftInput])
+    // useEffect(() => {
+    //     if (!account || !provider || !selectedCollateral) return
+    //     const checkNeedsBridge = async () => {
+    //         setNeedsBridge(
+    //             await checkUserHasBalance(selectedCollateral.address, account, provider, parsedAmounts.leftInput)
+    //         )
+    //     }
+    //     checkNeedsBridge()
+    // }, [account, provider, selectedCollateral, parsedAmounts.leftInput])
 
-    const setBridge = (reason: string) => {
-        bridgeModelActions.setReason(reason)
-        bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
-        bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
-        history.push('/bridge')
-    }
+    // const setBridge = (reason: string) => {
+    //     bridgeModelActions.setReason(reason)
+    //     bridgeModelActions.setFromTokenSymbol(selectedCollateral?.symbol)
+    //     bridgeModelActions.setToTokenAddress(selectedCollateral?.address)
+    //     navigate('/bridge')
+    // }
 
     return (
         <>
@@ -271,7 +270,7 @@ const CreateVault = ({
                 <Content>
                     <Header>
                         <Btn>
-                            <FlexBtn onClick={() => history.goBack()}>
+                            <FlexBtn onClick={() => navigate(-1)}>
                                 <ChevronLeft />
                                 <span>Back</span>
                             </FlexBtn>
@@ -298,7 +297,7 @@ const CreateVault = ({
                                                 </WrapBtn>
                                             </WrapBox>
                                         )}
-                                        {needsBridge && !parsedAmounts.leftInput && (
+                                        {/* {needsBridge && !parsedAmounts.leftInput && (
                                             <BridgeLabel>
                                                 {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
@@ -311,7 +310,7 @@ const CreateVault = ({
                                                     Bridge
                                                 </BridgeButton>
                                             </BridgeLabel>
-                                        )}
+                                        )} */}
                                     </DropDownContainer>
 
                                     <Inputs>
@@ -336,7 +335,7 @@ const CreateVault = ({
                                             data_test_id="deposit_borrow"
                                             decimals={Number(selectedCollateralDecimals)}
                                         />
-                                        {needsBridge && parsedAmounts.leftInput && (
+                                        {/* {needsBridge && parsedAmounts.leftInput && (
                                             <BridgeLabel>
                                                 {`Insufficient funds. Move assets to Arbitrum using the `}
                                                 <BridgeButton
@@ -349,7 +348,7 @@ const CreateVault = ({
                                                     Bridge
                                                 </BridgeButton>
                                             </BridgeLabel>
-                                        )}
+                                        )} */}
                                         <br />
                                         <TokenInput
                                             token={
@@ -737,13 +736,13 @@ const Note = styled.div`
     color: ${(props) => props.theme.colors.primary};
 `
 
-const BridgeLabel = styled.div`
-    color: #e39806;
-    font-size: 14px;
-    margin-top: 10px;
-`
+// const BridgeLabel = styled.div`
+//     color: #e39806;
+//     font-size: 14px;
+//     margin-top: 10px;
+// `
 
-const BridgeButton = styled.span`
-    color: ${(props) => props.theme.colors.primary};
-    cursor: pointer;
-`
+// const BridgeButton = styled.span`
+//     color: ${(props) => props.theme.colors.primary};
+//     cursor: pointer;
+// `

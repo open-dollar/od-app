@@ -10,6 +10,7 @@ import Accounts from './Accounts'
 import Loader from '~/components/Loader'
 import useGeb from '~/hooks/useGeb'
 import { useWeb3React } from '@web3-react/core'
+import { Helmet } from 'react-helmet-async'
 
 interface OnBoardingProps {
     className?: string
@@ -42,6 +43,18 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
 
     return (
         <Container id="app-page" className={className}>
+            <Helmet>
+                <title>Open Dollar - Low-Interest DeFi Loans & Tradable CDPs</title>
+                <title>Open Dollar - Low-Interest DeFi Loans & Tradable CDPs</title>
+                <meta
+                    name="description"
+                    content="Discover Open Dollar, a DeFi platform offering low-interest tradable onchain loans. Secure and trade your collateral with ease. The future of onchain lending is here."
+                />
+                <meta
+                    name="keywords"
+                    content="Open Dollar, DeFi, low-interest loans, tradable assets, decentralized finance, collateral, stablecoins, tradeable CDPs"
+                />
+            </Helmet>
             <Content>
                 {safeState.safeCreated ? (
                     <>

@@ -21,6 +21,8 @@ import useGeb from '~/hooks/useGeb'
 import { BigNumber, ethers } from 'ethers'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import usePoolData from '~/hooks/usePoolData'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 interface AnalyticsStateProps {
     erc20Supply: string

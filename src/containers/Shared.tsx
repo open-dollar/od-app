@@ -18,6 +18,7 @@ import {
     ChainId,
     IS_IN_IFRAME,
     timeout,
+    OD_API_URL,
 } from '~/utils'
 import axios from 'axios'
 import useTokenData from '~/hooks/useTokenData'
@@ -89,7 +90,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -110,12 +110,12 @@ const Shared = ({ children, ...rest }: Props) => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
 
-    const fetchUserCountry = async () => {
+    const fetchUserIP = async () => {
         try {
-            const response = await axios.get('https://api.country.is')
-            return response.data?.country
+            const response = await axios.get('https://api.ipify.org?format=json')
+            return response.data.ip
         } catch (error) {
-            console.error('Error fetching country:', error)
+            console.debug('Error fetching IP address:', error)
             return null
         }
     }
@@ -125,11 +125,19 @@ const Shared = ({ children, ...rest }: Props) => {
             return false
         }
 
-        const userCountry = await fetchUserCountry()
-        if (userCountry && bannedCountryCodes.includes(userCountry)) {
-            return true
+        const userIP = await fetchUserIP()
+        if (!userIP) {
+            return false
         }
-        return false
+
+        try {
+            const response = await axios.get(`${OD_API_URL}/geoblock?ip=${userIP}`)
+            const data = response.data
+            return !data.success
+        } catch (error) {
+            console.error('Error checking geoblocking:', error)
+            return false
+        }
     }
 
     async function accountChecker() {

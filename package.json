@@ -65,7 +65,7 @@
         "react-device-detect": "^1.13.1",
         "react-dom": "^18.3.1",
         "react-feather": "^2.0.9",
-        "react-helmet-async": "^1.0.7",
+        "react-helmet": "^6.1.0",
         "react-i18next": "^11.7.2",
         "react-loading-skeleton": "^3.4.0",
         "react-number-format": "^5.2.2",

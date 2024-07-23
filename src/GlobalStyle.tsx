@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-image: url('/squares1x.webp'), url('/wavy-blue.webp');
+    background-color: #E2F1FF;
     background-size: contain, 100%;
     background-position: bottom left, top right;
     background-repeat: no-repeat;

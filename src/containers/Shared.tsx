@@ -18,16 +18,14 @@ import {
     ChainId,
     IS_IN_IFRAME,
     timeout,
-    OD_API_URL,
 } from '~/utils'
-import axios from 'axios'
 import useTokenData from '~/hooks/useTokenData'
 import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
 
-import checkSanctions from '~/services/checkSanctions'
+import checkGeoBlockAndSanctions from '~/services/checkGeoBlockAndSanctions'
 import ToastPayload from '~/components/ToastPayload'
 import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
 import SideMenu from '~/components/SideMenu'
@@ -110,20 +108,6 @@ const Shared = ({ children, ...rest }: Props) => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
 
-    const isUserGeoBlocked = async () => {
-        if (!isGeofenceEnabled) {
-            return false
-        }
-
-        try {
-            const response = await axios.get(`${OD_API_URL}/screen?address=${account}`)
-            return response.data?.message?.includes('geoblocked')
-        } catch (error) {
-            console.debug('Error screening address:', error)
-            return false
-        }
-    }
-
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
 
@@ -176,10 +160,25 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }
 
-    async function sanctionsCheck() {
-        if (account && process.env.NODE_ENV === 'production') {
-            const response = await checkSanctions(account)
-            if (response?.identifications.length > 0) {
+    async function haiUserCheck() {
+        if (process.env.REACT_APP_NETWORK_ID === '10') {
+            toast(<ToastBannerNetwork />, { autoClose: false, type: 'warning', toastId: sanctionsToastId })
+        }
+    }
+
+    async function sanctionsAndGeoBlockCheck() {
+        if (account && (isGeofenceEnabled || process.env.NODE_ENV === 'production')) {
+            const botAPIResponse = await checkGeoBlockAndSanctions(account)
+            const isBlocked = botAPIResponse.data?.message?.includes('geoblocked')
+            const isSanctioned = botAPIResponse?.identifications.length > 0
+            if (isBlocked && isGeofenceEnabled) {
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
+                navigate('/geoblock')
+                connectWalletActions.setIsWrongNetwork(true)
+                settingsActions.setBlockBody(true)
+                return false
+            } else if (isSanctioned && process.env.NODE_ENV === 'production') {
                 connectWalletActions.setIsWrongNetwork(true)
                 toast(
                     <ToastPayload
@@ -191,30 +190,6 @@ const Shared = ({ children, ...rest }: Props) => {
                     />,
                     { autoClose: false, type: 'warning', toastId: sanctionsToastId }
                 )
-                return false
-            } else {
-                return true
-            }
-        }
-        return true
-    }
-
-    async function haiUserCheck() {
-        if (process.env.REACT_APP_NETWORK_ID === '10') {
-            toast(<ToastBannerNetwork />, { autoClose: false, type: 'warning', toastId: sanctionsToastId })
-        }
-    }
-
-    async function geoBlockCheck() {
-        if (account && isGeofenceEnabled) {
-            const isBlocked = await isUserGeoBlocked()
-            if (isBlocked) {
-                popupsActions.setIsConnectedWalletModalOpen(false)
-                popupsActions.setIsConnectorsWalletOpen(false)
-                navigate('/geoblock')
-                connectWalletActions.setIsWrongNetwork(true)
-                settingsActions.setBlockBody(true)
-                return false
             } else {
                 return true
             }
@@ -292,8 +267,7 @@ const Shared = ({ children, ...rest }: Props) => {
         settingsActions.setBlockBody(false)
         connectWalletActions.setIsWrongNetwork(false)
         if (account) {
-            sanctionsCheck()
-            geoBlockCheck()
+            sanctionsAndGeoBlockCheck()
             connectWalletActions.setStep(1)
             accountChecker()
         }
@@ -332,8 +306,7 @@ const Shared = ({ children, ...rest }: Props) => {
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
-                sanctionsCheck()
-                geoBlockCheck()
+                sanctionsAndGeoBlockCheck()
                 accountChecker()
             }
             checkAndSwitchMetamaskNetwork()

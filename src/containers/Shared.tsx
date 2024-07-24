@@ -110,32 +110,16 @@ const Shared = ({ children, ...rest }: Props) => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
 
-    const fetchUserIP = async () => {
-        try {
-            const response = await axios.get('https://api.ipify.org?format=json')
-            return response.data.ip
-        } catch (error) {
-            console.debug('Error fetching IP address:', error)
-            return null
-        }
-    }
-
     const isUserGeoBlocked = async () => {
         if (!isGeofenceEnabled) {
             return false
         }
 
-        const userIP = await fetchUserIP()
-        if (!userIP) {
-            return false
-        }
-
         try {
-            const response = await axios.get(`${OD_API_URL}/geoblock?ip=${userIP}`)
-            const data = response.data
-            return !data.success
+            const response = await axios.get(`${OD_API_URL}/screen?address=${account}`)
+            return response.data?.message?.includes('geoblocked')
         } catch (error) {
-            console.error('Error checking geoblocking:', error)
+            console.debug('Error screening address:', error)
             return false
         }
     }

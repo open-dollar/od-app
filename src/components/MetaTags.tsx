@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async'
-import { MetaInfo } from '~/utils/metaInfo';
+import { MetaInfo } from '~/utils/metaInfo'
 
 interface MetaTagsProps {
-    page: MetaInfo;
+    page: MetaInfo
 }
 
 const MetaTags: React.FC<MetaTagsProps> = ({ page }) => {

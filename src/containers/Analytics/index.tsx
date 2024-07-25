@@ -350,94 +350,101 @@ const Analytics = () => {
     }, [geb, chainId, analyticsData, poolData])
 
     return (
-        <Container>
-            <Section>
-                <Title>Stats</Title>
-                <AnaliticsTop>
-                    {analiticsData &&
-                        analiticsData?.map((val, index) => (
+        <>
+            <MetaTags page={metaInfo.stats} />
+            <Container>
+                <Section>
+                    <Title>Stats</Title>
+                    <AnaliticsTop>
+                        {analiticsData &&
+                            analiticsData?.map((val, index) => (
+                                <DataCard
+                                    key={val.title + index}
+                                    image={val.image}
+                                    title={val.title}
+                                    value={val.value}
+                                    description={val.description}
+                                />
+                            ))}
+                    </AnaliticsTop>
+                    <AnaliticsMiddle>
+                        {systemInfoData && (
+                            <RightColumn>
+                                <SubTitle>System Info</SubTitle>
+                                <FlexMultipleRow>
+                                    {systemInfoData.slice(0, 2).map((val, index) => {
+                                        return (
+                                            <DataCard
+                                                key={val.title + index}
+                                                title={val.title}
+                                                value={val.value}
+                                                description={val.description}
+                                            />
+                                        )
+                                    })}
+                                </FlexMultipleRow>
+                                <FlexMultipleRow>
+                                    {systemInfoData.slice(2).map((val, index) => {
+                                        return (
+                                            <DataCard
+                                                key={val.title + index}
+                                                title={val.title}
+                                                value={val.value}
+                                                description={val.description}
+                                            />
+                                        )
+                                    })}
+                                </FlexMultipleRow>
+                            </RightColumn>
+                        )}
+                    </AnaliticsMiddle>
+                    <SubTitle>Prices</SubTitle>
+                    <AnaliticsBottom>
+                        {pricesData.map((val, index) => (
                             <DataCard
                                 key={val.title + index}
-                                image={val.image}
                                 title={val.title}
                                 value={val.value}
                                 description={val.description}
+                                bg={'light'}
                             />
                         ))}
-                </AnaliticsTop>
-                <AnaliticsMiddle>
-                    {systemInfoData && (
-                        <RightColumn>
-                            <SubTitle>System Info</SubTitle>
-                            <FlexMultipleRow>
-                                {systemInfoData.slice(0, 2).map((val, index) => {
-                                    return (
-                                        <DataCard
-                                            key={val.title + index}
-                                            title={val.title}
-                                            value={val.value}
-                                            description={val.description}
-                                        />
-                                    )
-                                })}
-                            </FlexMultipleRow>
-                            <FlexMultipleRow>
-                                {systemInfoData.slice(2).map((val, index) => {
-                                    return (
-                                        <DataCard
-                                            key={val.title + index}
-                                            title={val.title}
-                                            value={val.value}
-                                            description={val.description}
-                                        />
-                                    )
-                                })}
-                            </FlexMultipleRow>
-                        </RightColumn>
-                    )}
-                </AnaliticsMiddle>
-                <SubTitle>Prices</SubTitle>
-                <AnaliticsBottom>
-                    {pricesData.map((val, index) => (
-                        <DataCard
-                            key={val.title + index}
-                            title={val.title}
-                            value={val.value}
-                            description={val.description}
-                            bg={'light'}
+                    </AnaliticsBottom>
+                    <TooltipWrapper>
+                        <ReactTooltip
+                            variant="light"
+                            data-effect="solid"
+                            id="analitics"
+                            style={{ maxWidth: '300px' }}
+                            classNameArrow="tooltip-arrow"
                         />
-                    ))}
-                </AnaliticsBottom>
-                <TooltipWrapper>
-                    <ReactTooltip
-                        variant="light"
-                        data-effect="solid"
-                        id="analitics"
-                        style={{ maxWidth: '300px' }}
-                        classNameArrow="tooltip-arrow"
-                    />
-                </TooltipWrapper>
-            </Section>
-            <Section>
-                <Title>Collaterals</Title>
-                <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
-                <TooltipWrapper>
-                    <ReactTooltip
-                        variant="light"
-                        data-effect="solid"
-                        id="collaterals-table"
-                        style={{ maxWidth: '300px' }}
-                        classNameArrow="tooltip-arrow"
-                    />
-                </TooltipWrapper>
-            </Section>
+                    </TooltipWrapper>
+                </Section>
+                <Section>
+                    <Title>Collaterals</Title>
+                    <DataTable title={colData.title} colums={colData.colums} rows={colData.rows} />
+                    <TooltipWrapper>
+                        <ReactTooltip
+                            variant="light"
+                            data-effect="solid"
+                            id="collaterals-table"
+                            style={{ maxWidth: '300px' }}
+                            classNameArrow="tooltip-arrow"
+                        />
+                    </TooltipWrapper>
+                </Section>
 
-            <Section>
-                <Title>Contracts</Title>
-                {/* Contracts Table */}
-                <ContractsTable title={contractsData.title} colums={contractsData.colums} rows={contractsData.rows} />
-            </Section>
-        </Container>
+                <Section>
+                    <Title>Contracts</Title>
+                    {/* Contracts Table */}
+                    <ContractsTable
+                        title={contractsData.title}
+                        colums={contractsData.colums}
+                        rows={contractsData.rows}
+                    />
+                </Section>
+            </Container>
+        </>
     )
 }
 

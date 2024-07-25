@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import BellIcon from './Icons/BellIcon'
 
 const NotificationPopup = () => {
-    const wrapperRef = useRef(null)
+    const wrapperRef = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleClickOutside = (e: any) => {
-        const wrapper: any = wrapperRef.current
-        if (!wrapper.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+        const wrapper = wrapperRef.current
+        if (wrapper && !wrapper.contains(e.target as Node)) {
             setTimeout(() => {
                 setIsOpen(false)
             }, 10)
@@ -21,7 +21,7 @@ const NotificationPopup = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    })
+    }, [])
 
     return (
         <InnerContent ref={wrapperRef}>

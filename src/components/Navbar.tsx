@@ -1,7 +1,7 @@
 import { useMemo, useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import { ETH_NETWORK, formatDataNumber, newTransactionsFirst } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
@@ -27,7 +27,6 @@ import { useAddress } from '~/hooks/useAddress'
 import Skeleton from 'react-loading-skeleton'
 
 const Navbar = () => {
-    const theme = useTheme()
     const { settingsModel: settingsState } = useStoreState((state) => state)
 
     const [isPopupVisible, setPopupVisibility] = useState(false)
@@ -66,7 +65,6 @@ const Navbar = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.OD.address,
@@ -87,7 +85,6 @@ const Navbar = () => {
             await ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    // @ts-ignore
                     type: 'ERC20',
                     options: {
                         address: connectWalletModel.tokensData.ODG.address,
@@ -209,8 +206,7 @@ const Navbar = () => {
                                             <InfoPopUpText style={{ marginBottom: 6 }}>
                                                 {t('liquidity').toUpperCase()}
                                             </InfoPopUpText>
-                                            {/* @ts-ignore */}
-                                            <InfoPopUpText style={{ fontSize: theme.font.default }}>
+                                            <InfoPopUpText style={{ fontSize: '18px' }}>
                                                 {state.totalLiquidity}
                                             </InfoPopUpText>
                                         </InfoPopupContentWrapper>

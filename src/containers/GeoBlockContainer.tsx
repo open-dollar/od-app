@@ -90,7 +90,7 @@ const RightAlign = styled.div`
 `
 
 const Text = styled.p`
-    color: ${(props: any) => props.theme.colors.tertiary};
+    color: ${(props) => props.theme.colors.tertiary};
     margin-bottom: 16px;
     font-size: 18px;
     line-height: 1.6;
@@ -109,7 +109,7 @@ const Link = styled.a`
 `
 
 const Textarea = styled.textarea`
-    color: ${(props: any) => props.theme.colors.tertiary};
+    color: ${(props) => props.theme.colors.tertiary};
     width: 100%;
     min-height: 150px;
     margin-top: 16px;
@@ -161,7 +161,7 @@ const Button = styled.button`
 `
 
 const BigText = styled(Text)`
-    color: ${(props: any) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
     margin-bottom: 20px;
     font-size: 36px;
     font-weight: 900;

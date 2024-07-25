@@ -558,6 +558,6 @@ const Address = styled.div`
 
 const Account = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     cursor: pointer;
 `

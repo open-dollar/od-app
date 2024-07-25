@@ -1,11 +1,16 @@
 import styled from 'styled-components'
 import BridgeFundsForm from './BridgeFundsForm'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 const Bridge = () => {
     return (
-        <Container id="app-page">
-            <BridgeFundsForm />
-        </Container>
+        <>
+            <MetaTags page={metaInfo.bridge} />
+            <Container id="app-page">
+                <BridgeFundsForm />
+            </Container>
+        </>
     )
 }
 

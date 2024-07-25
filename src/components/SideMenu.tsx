@@ -484,6 +484,10 @@ const Container = styled.div`
         opacity: 1;
         transition: all 300ms;
     }
+
+    @media (min-width: 1073px) {
+        display: none;
+    }
 `
 
 const Inner = styled.div`

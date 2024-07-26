@@ -22,6 +22,7 @@ import DollarValueInner from './DollarValueInner'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import { useAddress } from '~/hooks/useAddress'
 import Skeleton from 'react-loading-skeleton'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -34,7 +35,7 @@ const SideMenu = () => {
     })
     const popupRef = useRef<HTMLDivElement | null>(null)
     const priceRef = useRef<HTMLDivElement | null>(null)
-    const { isActive, account, chainId } = useWeb3React()
+    const { isActive, account, chainId, connector } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const geb = useGeb()
     const odRef = useRef<HTMLButtonElement | null>(null)
@@ -50,7 +51,14 @@ const SideMenu = () => {
     const analyticsData = useAnalyticsData()
     let address = useAddress(account)
 
-    const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
+    const handleWalletConnect = () => {
+        if (isActive && account) {
+            popupsActions.setIsConnectedWalletModalOpen(true)
+        }
+        if (!(connector instanceof GnosisSafe)) {
+            return popupsActions.setIsConnectorsWalletOpen(true)
+        }
+    }
 
     const handleDollarClick = () => {
         setPopupVisibility(!isPopupVisible)

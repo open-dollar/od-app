@@ -5,6 +5,8 @@ import ODG from '../assets/odg-token.svg'
 import GRT from '../assets/grt.svg'
 import PT_wstETH_26JUN2025 from '../assets/pendle-pt-wsteth.svg'
 import PT_rETH_26JUN2025 from '../assets/pendle-pt-reth.svg'
+import ARB_GRIFF from '../assets/arb-griff.svg'
+
 import WSTETH from '../assets/wsteth.svg'
 import CBETH from '../assets/cbETH.svg'
 import RETH from '../assets/rETH.svg'
@@ -17,6 +19,36 @@ import { Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
 import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
+
+// Helper function to dynamically import SVGs
+const importTokenIcon = (tokenName: string) => {
+    switch (tokenName) {
+        case 'WETH':
+            return WETH
+        case 'OP':
+            return OP
+        case 'OD':
+            return OD
+        case 'ODG':
+            return ODG
+        case 'WSTETH':
+            return WSTETH
+        case 'CBETH':
+            return CBETH
+        case 'RETH':
+            return RETH
+        case 'ARB':
+            return ARB
+        case 'MAGIC':
+            return MAGIC
+        case 'PUFETH':
+            return PUFETH
+        case 'GRT':
+            return GRT
+        default:
+            return require('../assets/unknown-token.svg').default
+    }
+}
 
 export type Tokens = {
     [key: string]: {
@@ -44,6 +76,7 @@ export function getTokenLogo(token: string): string {
         ETH: WETH,
         'PT-rETH-26JUN2025': PT_rETH_26JUN2025,
         'PT-wstETH-26JUN2025': PT_wstETH_26JUN2025,
+        'ARB-Griff': ARB_GRIFF,
     }
     return TOKEN_LOGOS[token] || FALLBACK_TOKEN_ICON
 }

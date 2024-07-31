@@ -3,47 +3,20 @@ import OP from '../assets/op-img.svg'
 import OD from '../assets/od-token.svg'
 import ODG from '../assets/odg-token.svg'
 import GRT from '../assets/grt.svg'
-
+import PT_wstETH_26JUN2025 from '../assets/pendle-pt-wsteth.svg'
+import PT_rETH_26JUN2025 from '../assets/pendle-pt-reth.svg'
 import WSTETH from '../assets/wsteth.svg'
 import CBETH from '../assets/cbETH.svg'
 import RETH from '../assets/rETH.svg'
 import ARB from '../assets/arb.svg'
 import MAGIC from '../assets/magic.svg'
 import PUFETH from '../assets/pufeth.svg'
+import FALLBACK_TOKEN_ICON from '../assets/unknown-token.svg'
+
 import { Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
 import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
-
-// Helper function to dynamically import SVGs
-const importTokenIcon = (tokenName: string) => {
-    switch (tokenName) {
-        case 'WETH':
-            return WETH
-        case 'OP':
-            return OP
-        case 'OD':
-            return OD
-        case 'ODG':
-            return ODG
-        case 'WSTETH':
-            return WSTETH
-        case 'CBETH':
-            return CBETH
-        case 'RETH':
-            return RETH
-        case 'ARB':
-            return ARB
-        case 'MAGIC':
-            return MAGIC
-        case 'PUFETH':
-            return PUFETH
-        case 'GRT':
-            return GRT
-        default:
-            return require('../assets/unknown-token.svg').default
-    }
-}
 
 export type Tokens = {
     [key: string]: {
@@ -55,23 +28,24 @@ export type Tokens = {
     }
 }
 
-export const TOKEN_LOGOS: { [key: string]: string } = {
-    WETH: importTokenIcon('WETH'),
-    OP: importTokenIcon('OP'),
-    OD: importTokenIcon('OD'),
-    ODG: importTokenIcon('ODG'),
-    WSTETH: importTokenIcon('WSTETH'),
-    CBETH: importTokenIcon('CBETH'),
-    RETH: importTokenIcon('RETH'),
-    ARB: importTokenIcon('ARB'),
-    MAGIC: importTokenIcon('MAGIC'),
-    PUFETH: importTokenIcon('PUFETH'),
-    GRT: importTokenIcon('GRT'),
-    ETH: importTokenIcon('WETH'),
-}
-
 export function getTokenLogo(token: string): string {
-    return TOKEN_LOGOS[token] || importTokenIcon('').default
+    const TOKEN_LOGOS: { [key: string]: string } = {
+        WETH: WETH,
+        OP: OP,
+        OD: OD,
+        ODG: ODG,
+        WSTETH: WSTETH,
+        CBETH: CBETH,
+        RETH: RETH,
+        ARB: ARB,
+        MAGIC: MAGIC,
+        PUFETH: PUFETH,
+        GRT: GRT,
+        ETH: WETH,
+        'PT-rETH-26JUN2025': PT_rETH_26JUN2025,
+        'PT-wstETH-26JUN2025': PT_wstETH_26JUN2025,
+    }
+    return TOKEN_LOGOS[token] || FALLBACK_TOKEN_ICON
 }
 
 const gasTokenArray = [

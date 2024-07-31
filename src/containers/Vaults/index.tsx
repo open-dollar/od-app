@@ -10,6 +10,8 @@ import Accounts from './Accounts'
 import Loader from '~/components/Loader'
 import useGeb from '~/hooks/useGeb'
 import { useWeb3React } from '@web3-react/core'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 interface OnBoardingProps {
     className?: string
@@ -42,6 +44,7 @@ const OnBoarding = ({ className }: OnBoardingProps) => {
 
     return (
         <Container id="app-page" className={className}>
+            <MetaTags page={metaInfo.home} />
             <Content>
                 {safeState.safeCreated ? (
                     <>

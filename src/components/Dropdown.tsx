@@ -28,7 +28,7 @@ interface Props {
     dropSelection?: boolean
 }
 const Dropdown = (props: Props) => {
-    const wrapperRef = useRef(null)
+    const wrapperRef = useRef<HTMLDivElement>(null)
     const {
         itemSelected,
         items,
@@ -59,9 +59,9 @@ const Dropdown = (props: Props) => {
         }
     }
 
-    const handleClickOutside = (event: any) => {
-        const wrapper: any = wrapperRef.current
-        if (!wrapper.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        const wrapper = wrapperRef.current
+        if (wrapper && !wrapper.contains(event.target as Node)) {
             setTimeout(() => {
                 setIsOpen(false)
             }, 10)
@@ -73,7 +73,7 @@ const Dropdown = (props: Props) => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    })
+    }, [])
 
     useEffect(() => {
         setSelectedItem(itemSelected)

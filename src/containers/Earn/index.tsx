@@ -12,6 +12,8 @@ import { PoolData } from '@opendollar/sdk'
 import Skeleton from 'react-loading-skeleton'
 import EarnBlock from './EarnBlock'
 import { getTokenLogo } from '~/utils'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 interface Cache {
     [key: string]: PoolData
@@ -31,7 +33,7 @@ const Earn = () => {
         return async () => {
             try {
                 const poolResults = await Promise.all(
-                    POOLS.map(async (pool: { camelotPoolAddress: any; nitroPoolAddress: any }) => {
+                    POOLS.map(async (pool: { camelotPoolAddress: string; nitroPoolAddress: string }) => {
                         const cacheKey = `${account}-${pool.camelotPoolAddress}-${pool.nitroPoolAddress}`
                         if (cachedPools[cacheKey]) {
                             return cachedPools[cacheKey]
@@ -66,56 +68,65 @@ const Earn = () => {
     }
 
     return (
-        <Container>
-            <Title>Earn</Title>
-            <SubHeader>incentivized pools and strategies</SubHeader>
-            <Text>
-                <p>Earn additional yield by staking your LP position in Camelot Nitro.</p>
-                <p>
-                    When creating a OD-ETH position, use the "Auto" mode provided by Gamma. <br></br>See full
-                    instructions{' '}
-                    <Link
-                        href="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool"
-                        target="_blank"
-                    >
-                        here
-                    </Link>
-                    .
-                </p>
-            </Text>
-            <Pools>
-                <PoolsHeader>Strategies</PoolsHeader>
-                <EarnBlock
-                    status="Active"
-                    url="https://app.creditguild.org/earn"
-                    apy="Variable"
-                    tvl="$99k"
-                    rewardToken1Symbol="OD"
-                    rewardToken2Symbol="ODG, and GUILD"
-                    title={
-                        <>
-                            Credit Guild <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
-                        </>
-                    }
-                />
-                {nitroPools.length > 0 ? (
-                    POOLS?.map(
-                        (
-                            pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: any },
-                            i: number
-                        ) => <PoolBlock {...pool} nitroPoolData={nitroPools[i]} key={`${pool.nitroPoolAddress}-pool`} />
-                    )
-                ) : (
-                    <Skeleton height={185} count={3} style={{ marginBottom: '30px' }} />
-                )}
-            </Pools>
+        <>
+            <MetaTags page={metaInfo.earn} />
+            <Container>
+                <Title>Earn</Title>
+                <SubHeader>incentivized pools and strategies</SubHeader>
+                <Text>
+                    <p>Earn additional yield by staking your LP position in Camelot Nitro.</p>
+                    <p>
+                        When creating a OD-ETH position, use the "Auto" mode provided by Gamma. <br></br>See full
+                        instructions{' '}
+                        <Link
+                            href="https://www.opendollar.com/blog/the-earn-page-and-new-camelot-nitro-pool"
+                            target="_blank"
+                        >
+                            here
+                        </Link>
+                        .
+                    </p>
+                </Text>
+                <Pools>
+                    <PoolsHeader>Strategies</PoolsHeader>
+                    <EarnBlock
+                        status="Active"
+                        url="https://app.creditguild.org/earn"
+                        apy="Variable"
+                        tvl="$99k"
+                        rewardToken1Symbol="OD"
+                        rewardToken2Symbol="ODG, and GUILD"
+                        title={
+                            <>
+                                Credit Guild <img src={getTokenLogo('OD')} alt={''} width={'50px'} />
+                            </>
+                        }
+                    />
+                    {nitroPools.length > 0 ? (
+                        POOLS?.map(
+                            (
+                                pool: JSX.IntrinsicAttributes & { nitroPoolAddress: string; nitroPoolData: PoolData },
+                                i: number
+                            ) => (
+                                <PoolBlock
+                                    {...pool}
+                                    nitroPoolData={nitroPools[i]}
+                                    key={`${pool.nitroPoolAddress}-pool`}
+                                />
+                            )
+                        )
+                    ) : (
+                        <Skeleton height={185} count={3} style={{ marginBottom: '30px' }} />
+                    )}
+                </Pools>
 
-            <BtnWrapper>
-                <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
-                    suggest a new pool <ExternalLink />
-                </Button>
-            </BtnWrapper>
-        </Container>
+                <BtnWrapper>
+                    <Button data-test-id="steps-btn" id={'suggest-pool-btn'} secondary onClick={handleClick}>
+                        suggest a new pool <ExternalLink />
+                    </Button>
+                </BtnWrapper>
+            </Container>
+        </>
     )
 }
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { OD_API_URL } from '~/utils/constants'
 
-async function checkSanctions(address: string) {
+async function checkGeoBlockAndSanctions(address: string) {
     let res
     try {
         const BOT_API = `${OD_API_URL}/screen?address=${address}`
@@ -16,4 +16,4 @@ async function checkSanctions(address: string) {
     }
 }
 
-export default checkSanctions
+export default checkGeoBlockAndSanctions

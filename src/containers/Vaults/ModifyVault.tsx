@@ -257,7 +257,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             text={'Deposit & Borrow'}
                             url={`/vaults/${vaultId}/deposit`}
                             disabled={!isOwner}
-                            //@ts-ignore
                             color={isDeposit ? 'linear-gradient(180deg, #1A74EC 100%, #6396FF 0%)' : 'white'}
                             className={isDeposit ? 'active' : ''}
                         />
@@ -265,7 +264,6 @@ const ModifyVault = ({ isDeposit, isOwner, vaultId }: { isDeposit: boolean; isOw
                             id="repay_withdraw"
                             text={'Repay & Withdraw'}
                             url={`/vaults/${vaultId}/withdraw`}
-                            //@ts-ignore
                             color={!isDeposit ? 'linear-gradient(180deg, #1A74EC 100%, #6396FF 0%)' : 'white'}
                             className={!isDeposit ? 'active' : ''}
                         />

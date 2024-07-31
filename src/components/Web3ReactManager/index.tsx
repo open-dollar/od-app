@@ -19,9 +19,12 @@ import { useWeb3React } from '@web3-react/core'
 
 import { useEagerConnect, useInactiveListener } from '../../hooks'
 import { network } from '~/connectors/network'
+import { IS_IN_IFRAME } from '~/utils'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
+import { gnosisSafe } from '~/connectors/gnosisSafe'
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-    const { isActive } = useWeb3React()
+    const { isActive, connector } = useWeb3React()
 
     // try to eagerly connect to an injected provider, if it exists and has granted access already
     const triedEager = useEagerConnect()
@@ -42,11 +45,15 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
         }
     }, [])
 
-    // If the RPC connection isn't active, and we've tried connecting eagerly already, connect to RPC
+    // If the RPC connection isn't active, and we've tried connecting eagerly already, and we're not in Gnosis Safe context, connect to RPC
     useEffect(() => {
-        if (!isActive && triedEager) {
+        if (!isActive && triedEager && !(connector instanceof GnosisSafe) && !IS_IN_IFRAME) {
             void network.activate().catch(() => {
                 console.debug('Failed to connect to network')
+            })
+        } else if (!isActive && triedEager && IS_IN_IFRAME) {
+            void gnosisSafe.activate().catch(() => {
+                console.debug('Failed to connect to gnosis safe')
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

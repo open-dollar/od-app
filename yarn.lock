@@ -3695,15 +3695,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opendollar/sdk@npm:1.7.4-rc.3":
-  version: 1.7.4-rc.3
-  resolution: "@opendollar/sdk@npm:1.7.4-rc.3"
+"@opendollar/sdk@npm:1.7.5":
+  version: 1.7.5
+  resolution: "@opendollar/sdk@npm:1.7.5"
   dependencies:
     "@opendollar/abis": 0.0.0-605371bd
     ethers: 5.4.7
   peerDependencies:
     utf-8-validate: ^5.0.2
-  checksum: 8ed9174b048af9d688f1160ecc470c929da2874f0f4f6624f703cafde7b298914996afa0e0fb10f4dcbe0f9d2dd507db441278a7fa24c190c336cdc92c763bf8
+  checksum: a43b6e7d6bb02822685522f7171dcf12bbf99b2bfa0e4274f00f6736dd730061950a6f1370e722ddf289953002c5ebdb6e8f129ed979ef9f4a89e6096d4fa455
   languageName: node
   linkType: hard
 
@@ -15006,7 +15006,7 @@ __metadata:
     "@ethersproject/address": ^5.0.10
     "@ethersproject/experimental": 5.4.0
     "@ethersproject/providers": 5.4.5
-    "@opendollar/sdk": 1.7.4-rc.3
+    "@opendollar/sdk": 1.7.5
     "@opendollar/svg-generator": 1.7.4
     "@react-spring/web": ^9.7.3
     "@sentry/cli": ^2.31.0
@@ -15067,7 +15067,7 @@ __metadata:
     react-device-detect: ^1.13.1
     react-dom: ^18.3.1
     react-feather: ^2.0.9
-    react-helmet-async: ^1.0.7
+    react-helmet-async: ^2.0.5
     react-i18next: ^11.7.2
     react-loading-skeleton: ^3.4.0
     react-number-format: ^5.2.2
@@ -16949,7 +16949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-fast-compare@npm:^3.2.0":
+"react-fast-compare@npm:^3.2.2":
   version: 3.2.2
   resolution: "react-fast-compare@npm:3.2.2"
   checksum: 0bbd2f3eb41ab2ff7380daaa55105db698d965c396df73e6874831dbafec8c4b5b08ba36ff09df01526caa3c61595247e3269558c284e37646241cba2b90a367
@@ -16967,19 +16967,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-helmet-async@npm:^1.0.7":
-  version: 1.3.0
-  resolution: "react-helmet-async@npm:1.3.0"
+"react-helmet-async@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-helmet-async@npm:2.0.5"
   dependencies:
-    "@babel/runtime": ^7.12.5
     invariant: ^2.2.4
-    prop-types: ^15.7.2
-    react-fast-compare: ^3.2.0
+    react-fast-compare: ^3.2.2
     shallowequal: ^1.1.0
   peerDependencies:
     react: ^16.6.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
-  checksum: 8f3e6d26beff61d2ed18f7b41561df3e4d83a7582914c7196aa65158c7f3cce939276547d7a0b8987952d9d44131406df74efba02d1f8fa8a3940b49e6ced70b
+  checksum: f390ea8bf13c2681850e5f8eb5b73d8613f407c245a5fd23e9db9b2cc14a3700dd1ce992d3966632886d1d613083294c2aeee009193f49dfa7d145d9f13ea2b0
   languageName: node
   linkType: hard
 

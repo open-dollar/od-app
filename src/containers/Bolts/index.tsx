@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import Leaderboard from '~/containers/Bolts/Leaderboard'
 import { useStoreState, useStoreActions } from '~/store'
 import DataCard from '~/containers/Analytics/DataCard'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 const Bolts = () => {
     const { account } = useActiveWeb3React()
@@ -22,61 +24,64 @@ const Bolts = () => {
         fetchData({ account } as { account: string | null })
     }, [account, fetchData])
     return (
-        <Container>
-            <Section>
-                <Title>Bolts</Title>
-                <SubHeader>Welcome Vault Keepers!</SubHeader>
-            </Section>
+        <>
+            <MetaTags page={metaInfo.bolts} />
+            <Container>
+                <Section>
+                    <Title>Bolts</Title>
+                    <SubHeader>Welcome Vault Keepers!</SubHeader>
+                </Section>
 
-            <Section>
-                <FlexMultipleRow>
-                    <DataCard
-                        title={'Your Bolts'}
-                        value={userBoltsData.bolts ? parseInt(userBoltsData.bolts).toLocaleString() : '-'}
-                        // description={val.description}
-                    />
-                    <DataCard
-                        title={'Your Multiplier'}
-                        value={userBoltsData.multiplier ? Number(userBoltsData.multiplier).toFixed(2) : '-'}
-                        // description={"Multiplier"}
-                    />
-                </FlexMultipleRow>
-            </Section>
+                <Section>
+                    <FlexMultipleRow>
+                        <DataCard
+                            title={'Your Bolts'}
+                            value={userBoltsData.bolts ? parseInt(userBoltsData.bolts).toLocaleString() : '-'}
+                            // description={val.description}
+                        />
+                        <DataCard
+                            title={'Your Multiplier'}
+                            value={userBoltsData.multiplier ? Number(userBoltsData.multiplier).toFixed(2) : '-'}
+                            // description={"Multiplier"}
+                        />
+                    </FlexMultipleRow>
+                </Section>
 
-            <Section>
-                <SectionHeader>Leaderboard</SectionHeader>
-                <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
-            </Section>
+                <Section>
+                    <SectionHeader>Leaderboard</SectionHeader>
+                    <Leaderboard data={leaderboardData} userBoltsData={userBoltsData} />
+                </Section>
 
-            <Section>
-                <SectionHeader>Quests</SectionHeader>
-                {QUESTS(boltsEarnedData).map((quest, index) => (
-                    <QuestBlock key={index} {...quest} />
-                ))}
-            </Section>
+                <Section>
+                    <SectionHeader>Quests</SectionHeader>
+                    {QUESTS(boltsEarnedData).map((quest, index) => (
+                        <QuestBlock key={index} {...quest} />
+                    ))}
+                </Section>
 
-            <Section>
-                <SectionHeader>Multipliers</SectionHeader>
-                {MULTIPLIERS(multipliersData).map((quest, index) => (
-                    <QuestBlock key={index} {...quest} />
-                ))}
-            </Section>
+                <Section>
+                    <SectionHeader>Multipliers</SectionHeader>
+                    {MULTIPLIERS(multipliersData).map((quest, index) => (
+                        <QuestBlock key={index} {...quest} />
+                    ))}
+                </Section>
 
-            <Section>
-                <BtnWrapper>
-                    <Button
-                        data-test-id="steps-btn"
-                        id={'suggest-pool-btn'}
-                        secondary
-                        onClick={() => {
-                            window.open('https://discord.opendollar.com/', '_blank')
-                        }}
-                    >
-                        Suggest a Quest <ExternalLink />
-                    </Button>
-                </BtnWrapper>
-            </Section>
-        </Container>
+                <Section>
+                    <BtnWrapper>
+                        <Button
+                            data-test-id="steps-btn"
+                            id={'suggest-pool-btn'}
+                            secondary
+                            onClick={() => {
+                                window.open('https://discord.opendollar.com/', '_blank')
+                            }}
+                        >
+                            Suggest a Quest <ExternalLink />
+                        </Button>
+                    </BtnWrapper>
+                </Section>
+            </Container>
+        </>
     )
 }
 

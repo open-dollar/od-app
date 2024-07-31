@@ -484,6 +484,10 @@ const Container = styled.div`
         opacity: 1;
         transition: all 300ms;
     }
+
+    @media (min-width: 1073px) {
+        display: none;
+    }
 `
 
 const Inner = styled.div`
@@ -503,6 +507,7 @@ const Overlay = styled.div`
 const InnerContainer = styled.div`
     min-height: 100vh;
     width: calc(100% - 50px);
+    max-width: 364px;
     background: ${(props) => props.theme.colors.neutral};
     padding-bottom: 1rem;
     position: relative;
@@ -553,9 +558,6 @@ const Address = styled.div`
 
 const Account = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     cursor: pointer;
-    @media (max-width: 767px) {
-        justify-content: flex-start;
-    }
 `

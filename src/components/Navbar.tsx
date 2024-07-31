@@ -637,8 +637,11 @@ const InfoPopUpText = styled.div`
 const InfoPopUpSubText = styled.div`
     font-size: 13px;
     line-height: ${(props) => props.theme.font.xSmall};
-    color: ${(props) => props.theme.colors.accent};
     font-weight: 500;
+
+    a {
+        color: ${(props) => props.theme.colors.accent};
+    }
 `
 
 const OdBalanceWrapper = styled.span`

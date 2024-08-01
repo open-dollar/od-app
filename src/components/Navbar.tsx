@@ -25,6 +25,7 @@ import walletIcon from '../assets/wallet-icon.svg'
 import DollarValueInner from './DollarValueInner'
 import { useAddress } from '~/hooks/useAddress'
 import Skeleton from 'react-loading-skeleton'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 const Navbar = () => {
     const { settingsModel: settingsState } = useStoreState((state) => state)
@@ -43,7 +44,7 @@ const Navbar = () => {
 
     const { popupsModel: popupsActions } = useStoreActions((state) => state)
     const { connectWalletModel } = useStoreState((state) => state)
-    const { isActive, account, provider, chainId } = useWeb3React()
+    const { isActive, account, provider, chainId, connector } = useWeb3React()
     const geb = useGeb()
     const odRef = useRef<HTMLDivElement | null>(null)
     const testTokenPopupRef = useRef<HTMLDivElement | null>(null)
@@ -125,9 +126,11 @@ const Navbar = () => {
 
     const handleWalletConnect = () => {
         if (isActive && account) {
-            return popupsActions.setIsConnectedWalletModalOpen(true)
+            popupsActions.setIsConnectedWalletModalOpen(true)
         }
-        return popupsActions.setIsConnectorsWalletOpen(true)
+        if (!(connector instanceof GnosisSafe)) {
+            return popupsActions.setIsConnectorsWalletOpen(true)
+        }
     }
 
     const handleLinkToDiscord = () => {
@@ -637,8 +640,11 @@ const InfoPopUpText = styled.div`
 const InfoPopUpSubText = styled.div`
     font-size: 13px;
     line-height: ${(props) => props.theme.font.xSmall};
-    color: ${(props) => props.theme.colors.accent};
     font-weight: 500;
+
+    a {
+        color: ${(props) => props.theme.colors.accent};
+    }
 `
 
 const OdBalanceWrapper = styled.span`

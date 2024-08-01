@@ -55,12 +55,11 @@ const Nav = styled.div`
     align-items: center;
     justify-content: center;
     height: 100%;
-    @media (max-width: 767px) {
+    @media (max-width: 1073px) {
         position: unset;
         transform: initial;
         flex-direction: column;
     }
-    ${({ theme }) => theme.mediaWidth.upToSmall``}
 `
 
 const BtnStyle = css`
@@ -99,18 +98,18 @@ const BtnStyle = css`
         margin-right: 0;
     }
 
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      flex: 0 0 100%;
-      min-width: 100%;
-      font-weight: normal;
-      padding: 15px 25px;
-      display: flex;
-      align-items:center;
-      text-align: left;
-      margin: 0;
-      color :#1A74EC;
-      font-size: 20px;
-  `}
+    @media (max-width: 1073px) {
+        flex: 0 0 100%;
+        min-width: 100%;
+        font-weight: normal;
+        padding: 15px 25px;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        margin: 0;
+        color: #1a74ec;
+        font-size: 20px;
+    }
 `
 const NavBarLink = styled(NavLink)`
     ${BtnStyle}

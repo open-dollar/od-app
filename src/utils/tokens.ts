@@ -20,36 +20,6 @@ import { ethers } from 'ethers'
 import { ERC20__factory } from '@opendollar/sdk/lib/typechained'
 import { RPC_URL_ETHEREUM, RPC_URL_ARBITRUM, RPC_URL_OPTIMISM, RPC_URL_POLYGON, RPC_URL_BASE } from '~/chains'
 
-// Helper function to dynamically import SVGs
-const importTokenIcon = (tokenName: string) => {
-    switch (tokenName) {
-        case 'WETH':
-            return WETH
-        case 'OP':
-            return OP
-        case 'OD':
-            return OD
-        case 'ODG':
-            return ODG
-        case 'WSTETH':
-            return WSTETH
-        case 'CBETH':
-            return CBETH
-        case 'RETH':
-            return RETH
-        case 'ARB':
-            return ARB
-        case 'MAGIC':
-            return MAGIC
-        case 'PUFETH':
-            return PUFETH
-        case 'GRT':
-            return GRT
-        default:
-            return require('../assets/unknown-token.svg').default
-    }
-}
-
 export type Tokens = {
     [key: string]: {
         name: string

@@ -11,7 +11,6 @@ import { AddressLink } from '~/components/AddressLink'
 import { contractsDescriptions } from '~/utils/contractsDescription'
 import {
     formatDataNumber,
-    multiplyRates,
     multiplyWad,
     transformToWadPercentage,
     transformToAnnualRate,

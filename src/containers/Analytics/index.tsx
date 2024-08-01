@@ -11,7 +11,6 @@ import { AddressLink } from '~/components/AddressLink'
 import { contractsDescriptions } from '~/utils/contractsDescription'
 import {
     formatDataNumber,
-    multiplyRates,
     multiplyWad,
     transformToWadPercentage,
     transformToAnnualRate,
@@ -299,13 +298,7 @@ const Analytics = () => {
                             <AddressLink address={value?.delayedOracle} chainId={chainId || 420} />,
                             formatDataNumber(value?.currentPrice?.toString() || '0', 18, 2, true),
                             formatDataNumber(value?.nextPrice?.toString() || '0', 18, 2, true),
-                            transformToAnnualRate(
-                                multiplyRates(
-                                    value?.stabilityFee?.toString(),
-                                    analyticsData.redemptionRate?.toString()
-                                ) || '0',
-                                27
-                            ),
+                            transformToAnnualRate(value?.stabilityFee?.toString(), 27),
                             formatDataNumber(value?.debtAmount?.toString() || '0', 18, 2, true, true),
                             transformToWadPercentage(value?.debtAmount?.toString(), value?.debtCeiling?.toString()),
                             formatDataNumber(value?.lockedAmount?.toString() || '0', 18, 2, false, true) + ' ' + key,

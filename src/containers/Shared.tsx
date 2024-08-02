@@ -49,7 +49,6 @@ const LoadingModal = React.lazy(() => import('~/components/Modals/LoadingModal')
 const ProxyModal = React.lazy(() => import('~/components/Modals/ProxyModal'))
 const WethModal = React.lazy(() => import('~/components/Modals/WETHModal'))
 const LiquidateSafeModal = React.lazy(() => import('~/components/Modals/LiquidateSafeModal'))
-const LowGasModal = React.lazy(() => import('~/components/Modals/LowGasModal'))
 const ImagePreloader = React.lazy(() => import('~/components/ImagePreloader'))
 
 interface Props {
@@ -330,7 +329,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 <ScreenLoader />
                 <LiquidateSafeModal />
                 <WaitingModal />
-                <LowGasModal />
                 <TopUpModal />
                 <EmptyDiv>
                     <Navbar />

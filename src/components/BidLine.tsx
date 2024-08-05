@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 
-import { ExternalLinkArrow } from '~/GlobalStyle'
 import { useActiveWeb3React } from '~/hooks'
 import { ChainId, formatNumber, getEtherscanLink } from '~/utils'
 import { useAddress } from '~/hooks/useAddress'

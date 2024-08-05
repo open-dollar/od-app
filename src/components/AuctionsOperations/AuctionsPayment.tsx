@@ -9,7 +9,6 @@ import { useStoreActions, useStoreState } from '~/store'
 import { COIN_TICKER, formatNumber, sanitizeDecimals, toFixedString } from '~/utils'
 import DecimalInput from '~/components/DecimalInput'
 import Button from '~/components/Button'
-import Results from './Results'
 
 const AuctionsPayment = () => {
     const { t } = useTranslation()

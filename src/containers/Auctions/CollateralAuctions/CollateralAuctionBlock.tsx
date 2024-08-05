@@ -12,8 +12,6 @@ import Button from '~/components/Button'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import { utils as gebUtils } from '@opendollar/sdk'
 
-import collateral from '../../../assets/collateral.svg'
-
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
 const CollateralAuctionBlock = (auction: Props) => {

@@ -12,6 +12,7 @@ interface VaultBlockProps {
     collateralRatio: string
     liquidationPrice: string
     className?: string
+    internalCollateralBalance: string
 }
 
 const VaultBlock = ({
@@ -23,6 +24,7 @@ const VaultBlock = ({
     collateralRatio,
     liquidationPrice,
     className,
+    internalCollateralBalance,
 }: VaultBlockProps) => {
     const stateClass = returnState(riskState) ? returnState(riskState).toLowerCase() : 'dimmed'
 
@@ -63,6 +65,12 @@ const VaultBlock = ({
                                 <div>{returnState(riskState) ? returnState(riskState) : 'Closed'}</div>
                             </Wrapper>
                         </Item>
+                        {Number(internalCollateralBalance) > 0 && (
+                            <Item>
+                                <Label>{'Internal Balance'}</Label>
+                                <Value>{formatWithCommas(internalCollateralBalance)}</Value>
+                            </Item>
+                        )}
                     </Block>
                 </BlockContainer>
             </Link>

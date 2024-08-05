@@ -19,14 +19,13 @@ import {
     IS_IN_IFRAME,
     timeout,
 } from '~/utils'
-import axios from 'axios'
 import useTokenData from '~/hooks/useTokenData'
 import useSafeData from '~/hooks/useSafeData'
 import useCoinBalanceUpdate from '~/hooks/useCoinBalanceUpdate'
 import useAuctionDataUpdate from '~/hooks/useAuctionDataUpdate'
 import useAllowanceCheck from '~/hooks/useAllowanceCheck'
 
-import checkSanctions from '~/services/checkSanctions'
+import checkGeoBlockAndSanctions from '~/services/checkGeoBlockAndSanctions'
 import ToastPayload from '~/components/ToastPayload'
 import WalletModal, { checkAndSwitchMetamaskNetwork } from '~/components/WalletModal'
 import SideMenu from '~/components/SideMenu'
@@ -50,7 +49,6 @@ const LoadingModal = React.lazy(() => import('~/components/Modals/LoadingModal')
 const ProxyModal = React.lazy(() => import('~/components/Modals/ProxyModal'))
 const WethModal = React.lazy(() => import('~/components/Modals/WETHModal'))
 const LiquidateSafeModal = React.lazy(() => import('~/components/Modals/LiquidateSafeModal'))
-const LowGasModal = React.lazy(() => import('~/components/Modals/LowGasModal'))
 const ImagePreloader = React.lazy(() => import('~/components/ImagePreloader'))
 
 interface Props {
@@ -89,7 +87,6 @@ const Shared = ({ children, ...rest }: Props) => {
 
     const toastId = 'networkToastHash'
     const sanctionsToastId = 'sanctionsToastHash'
-    const bannedCountryCodes = ['US', 'IR', 'KP']
 
     const resetModals = () => {
         popupsActions.setIsConnectedWalletModalOpen(false)
@@ -109,28 +106,6 @@ const Shared = ({ children, ...rest }: Props) => {
     useEffect(() => {
         connectWalletActions.setTokensData(tokensData)
     }, [connectWalletActions, tokensData])
-
-    const fetchUserCountry = async () => {
-        try {
-            const response = await axios.get('https://api.country.is')
-            return response.data?.country
-        } catch (error) {
-            console.error('Error fetching country:', error)
-            return null
-        }
-    }
-
-    const isUserGeoBlocked = async () => {
-        if (!isGeofenceEnabled) {
-            return false
-        }
-
-        const userCountry = await fetchUserCountry()
-        if (userCountry && bannedCountryCodes.includes(userCountry)) {
-            return true
-        }
-        return false
-    }
 
     async function accountChecker() {
         if (!account || !chainId || !provider || !geb) return
@@ -184,10 +159,25 @@ const Shared = ({ children, ...rest }: Props) => {
         }
     }
 
-    async function sanctionsCheck() {
-        if (account && process.env.NODE_ENV === 'production') {
-            const response = await checkSanctions(account)
-            if (response?.identifications.length > 0) {
+    async function haiUserCheck() {
+        if (process.env.REACT_APP_NETWORK_ID === '10') {
+            toast(<ToastBannerNetwork />, { autoClose: false, type: 'warning', toastId: sanctionsToastId })
+        }
+    }
+
+    async function sanctionsAndGeoBlockCheck() {
+        if (account && (isGeofenceEnabled || process.env.NODE_ENV === 'production')) {
+            const botAPIResponse = await checkGeoBlockAndSanctions(account)
+            const isBlocked = botAPIResponse.data?.message?.includes('geoblocked')
+            const isSanctioned = botAPIResponse?.identifications.length > 0
+            if (isBlocked && isGeofenceEnabled) {
+                popupsActions.setIsConnectedWalletModalOpen(false)
+                popupsActions.setIsConnectorsWalletOpen(false)
+                navigate('/geoblock')
+                connectWalletActions.setIsWrongNetwork(true)
+                settingsActions.setBlockBody(true)
+                return false
+            } else if (isSanctioned && process.env.NODE_ENV === 'production') {
                 connectWalletActions.setIsWrongNetwork(true)
                 toast(
                     <ToastPayload
@@ -199,30 +189,6 @@ const Shared = ({ children, ...rest }: Props) => {
                     />,
                     { autoClose: false, type: 'warning', toastId: sanctionsToastId }
                 )
-                return false
-            } else {
-                return true
-            }
-        }
-        return true
-    }
-
-    async function haiUserCheck() {
-        if (process.env.REACT_APP_NETWORK_ID === '10') {
-            toast(<ToastBannerNetwork />, { autoClose: false, type: 'warning', toastId: sanctionsToastId })
-        }
-    }
-
-    async function geoBlockCheck() {
-        if (account && isGeofenceEnabled) {
-            const isBlocked = await isUserGeoBlocked()
-            if (isBlocked) {
-                popupsActions.setIsConnectedWalletModalOpen(false)
-                popupsActions.setIsConnectorsWalletOpen(false)
-                navigate('/geoblock')
-                connectWalletActions.setIsWrongNetwork(true)
-                settingsActions.setBlockBody(true)
-                return false
             } else {
                 return true
             }
@@ -300,8 +266,7 @@ const Shared = ({ children, ...rest }: Props) => {
         settingsActions.setBlockBody(false)
         connectWalletActions.setIsWrongNetwork(false)
         if (account) {
-            sanctionsCheck()
-            geoBlockCheck()
+            sanctionsAndGeoBlockCheck()
             connectWalletActions.setStep(1)
             accountChecker()
         }
@@ -340,8 +305,7 @@ const Shared = ({ children, ...rest }: Props) => {
             settingsActions.setBlockBody(false)
             connectWalletActions.setIsWrongNetwork(false)
             if (account) {
-                sanctionsCheck()
-                geoBlockCheck()
+                sanctionsAndGeoBlockCheck()
                 accountChecker()
             }
             checkAndSwitchMetamaskNetwork()
@@ -365,7 +329,6 @@ const Shared = ({ children, ...rest }: Props) => {
                 <ScreenLoader />
                 <LiquidateSafeModal />
                 <WaitingModal />
-                <LowGasModal />
                 <TopUpModal />
                 <EmptyDiv>
                     <Navbar />

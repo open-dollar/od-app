@@ -16,6 +16,7 @@ import { MetaMask } from '@web3-react/metamask'
 import { Info } from 'react-feather'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { useAddress } from '~/hooks/useAddress'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 const ConnectedWalletInfo = () => {
     const { t } = useTranslation()
@@ -80,8 +81,12 @@ const ConnectedWalletInfo = () => {
                     </LeftContainer>
 
                     <RightContainer>
-                        <Button text={'Change'} disabled={connector instanceof MetaMask} onClick={handleChange} />
-                        {connector instanceof MetaMask && (
+                        <Button
+                            text={'Change'}
+                            disabled={connector instanceof MetaMask || connector instanceof GnosisSafe}
+                            onClick={handleChange}
+                        />
+                        {(connector instanceof MetaMask || connector instanceof GnosisSafe) && (
                             <>
                                 <ReactTooltip id="browserWalletDisconnectTooltip" variant="light" data-effect="solid" />
                                 <Info

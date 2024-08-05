@@ -292,7 +292,7 @@ export const calculateRiskStatusText = (riskStatusNumeric: Number) => {
  */
 export const ratioChecker = (currentLiquidationRatio: number, liqRatio: number, safetyRatio: number) => {
     if (currentLiquidationRatio == null || Number.isNaN(currentLiquidationRatio) || !liqRatio || !safetyRatio) {
-        console.error('Error calculating risk state')
+        console.debug('Error calculating risk state')
         return 1
     }
     const currentLiquidationRatioAsDecimal = currentLiquidationRatio / 100

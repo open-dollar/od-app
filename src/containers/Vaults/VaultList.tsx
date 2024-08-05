@@ -8,6 +8,8 @@ import VaultBlock from '~/components/VaultBlock'
 import CheckBox from '~/components/CheckBox'
 import { returnState, ISafe } from '~/utils'
 import { useActiveWeb3React } from '~/hooks'
+import MetaTags from '~/components/MetaTags'
+import metaInfo from '~/utils/metaInfo'
 
 const VaultList = ({ address }: { address?: string }) => {
     const [showEmpty, setShowEmpty] = useState(true)
@@ -34,6 +36,7 @@ const VaultList = ({ address }: { address?: string }) => {
         if (safeState.list.length > 0) {
             return (
                 <Container>
+                    <MetaTags page={metaInfo.vaults} />
                     <Header>
                         <Col className="first-col">
                             <Title>{'Vaults'}</Title>

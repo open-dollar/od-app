@@ -22,6 +22,7 @@ import DollarValueInner from './DollarValueInner'
 import parachuteIcon from '../assets/parachute-icon.svg'
 import { useAddress } from '~/hooks/useAddress'
 import Skeleton from 'react-loading-skeleton'
+import { GnosisSafe } from '@web3-react/gnosis-safe'
 
 const SideMenu = () => {
     const nodeRef = React.useRef(null)
@@ -34,7 +35,7 @@ const SideMenu = () => {
     })
     const popupRef = useRef<HTMLDivElement | null>(null)
     const priceRef = useRef<HTMLDivElement | null>(null)
-    const { isActive, account, chainId } = useWeb3React()
+    const { isActive, account, chainId, connector } = useWeb3React()
     const dollarRef = useRef<HTMLButtonElement | null>(null)
     const geb = useGeb()
     const odRef = useRef<HTMLButtonElement | null>(null)
@@ -50,7 +51,14 @@ const SideMenu = () => {
     const analyticsData = useAnalyticsData()
     let address = useAddress(account)
 
-    const handleWalletConnect = () => popupsActions.setIsConnectorsWalletOpen(true)
+    const handleWalletConnect = () => {
+        if (isActive && account) {
+            popupsActions.setIsConnectedWalletModalOpen(true)
+        }
+        if (!(connector instanceof GnosisSafe)) {
+            return popupsActions.setIsConnectorsWalletOpen(true)
+        }
+    }
 
     const handleDollarClick = () => {
         setPopupVisibility(!isPopupVisible)
@@ -484,6 +492,10 @@ const Container = styled.div`
         opacity: 1;
         transition: all 300ms;
     }
+
+    @media (min-width: 1073px) {
+        display: none;
+    }
 `
 
 const Inner = styled.div`
@@ -503,6 +515,7 @@ const Overlay = styled.div`
 const InnerContainer = styled.div`
     min-height: 100vh;
     width: calc(100% - 50px);
+    max-width: 364px;
     background: ${(props) => props.theme.colors.neutral};
     padding-bottom: 1rem;
     position: relative;
@@ -553,9 +566,6 @@ const Address = styled.div`
 
 const Account = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     cursor: pointer;
-    @media (max-width: 767px) {
-        justify-content: flex-start;
-    }
 `

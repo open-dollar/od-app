@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 
-import { ExternalLinkArrow } from '~/GlobalStyle'
 import { useActiveWeb3React } from '~/hooks'
 import { ChainId, formatNumber, getEtherscanLink } from '~/utils'
 import { useAddress } from '~/hooks/useAddress'
@@ -61,7 +60,9 @@ const BidLine = ({ eventType, bidder, date, bid, buyAmount, buySymbol, sellSymbo
 export default BidLine
 
 const Link = styled.a`
-    ${ExternalLinkArrow}
+    color: ${(props) => props.theme.colors.accent};
+    line-height: ${(props) => props.theme.font.xSmall};
+    font-weight: 500;
 `
 
 const ListItemLabel = styled.div`

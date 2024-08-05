@@ -91,9 +91,12 @@ const AuctionsOperations = () => {
 export default AuctionsOperations
 
 const ModalContent = styled.div`
-    background: ${(props) => props.theme.colors.background};
-    border-radius: ${(props) => props.theme.global.borderRadius};
-    border: 1px solid ${(props) => props.theme.colors.border};
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: white;
+    border: 3px solid #1a74ec;
+    box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
+        2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
 `
 
 const Header = styled.div`

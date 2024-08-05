@@ -46,7 +46,7 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
         <Container>
             {collateralsDropdown && dropdownSelected && (
                 <DropdownContainer>
-                    <SideLabel>{`Select Collateral Type`}</SideLabel>
+                    <SideLabel>{`Select Collateral`}</SideLabel>
                     <Dropdown
                         items={collateralsDropdown!}
                         itemSelected={dropdownSelected!}
@@ -54,11 +54,6 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
                     />
                 </DropdownContainer>
             )}
-            <InfoBox>
-                <Box>
-                    <Title>Collateral Auctions</Title>
-                </Box>
-            </InfoBox>
             {!auctions ? (
                 <Loader text="Loading..." />
             ) : auctions.length > 0 ? (
@@ -82,40 +77,9 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
 export default CollateralAuctionsList
 
 const Container = styled.div`
-    margin-top: 40px;
-    padding: 30px 20px;
+    padding: 10px 20px 30px 20px;
     border-radius: 15px;
     background: ${(props) => props.theme.colors.colorSecondary};
-`
-
-const Title = styled.div`
-    font-size: ${(props) => props.theme.font.large};
-    font-weight: 700;
-    font-family: ${(props) => props.theme.family.headers};
-    color: ${(props) => props.theme.colors.accent};
-    text-transform: capitalize !important;
-`
-
-const Box = styled.div`
-    display: flex;
-    align-items: center;
-`
-
-const InfoBox = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-    button {
-        min-width: 100px;
-        padding: 4px 12px;
-        margin-left: 30px;
-    }
-    margin-bottom: 8px;
-    span {
-        margin-right: 20px;
-        font-size: 12px;
-    }
 `
 
 const NoData = styled.div`

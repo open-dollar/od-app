@@ -42,6 +42,7 @@ const AuctionsList = ({ type, selectedItem, setSelectedItem }: Props) => {
     const { proxyAddress, tokensData } = connectWalletState
 
     // auctions list
+    const collaterals = tokensData && Object.values(tokensData).filter((token) => token.isCollateral)
     const auctions = useAuctions(type, selectedItem)
 
     // handle clicking to claim
@@ -70,7 +71,6 @@ const AuctionsList = ({ type, selectedItem, setSelectedItem }: Props) => {
         })
     }
 
-    const collaterals = tokensData && Object.values(tokensData).filter((token) => token.isCollateral)
     const collateralsDropdown = collaterals?.map((collateral) => {
         return { name: collateral.symbol, icon: getTokenLogo(collateral.symbol) }
     })

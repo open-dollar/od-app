@@ -85,7 +85,6 @@ const Container = styled.div``
 
 const Label = styled.div`
     line-height: 21px;
-    color: ${(props) => props.theme.colors.secondary};
     font-size: ${(props) => props.theme.font.small};
     letter-spacing: -0.09px;
     margin-bottom: 4px;
@@ -115,10 +114,9 @@ const CustomInput = styled.input`
     border: none;
     border-radius: 0;
     padding: 20px;
-    background: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.primary};
     line-height: 24px;
     outline: none;
+    font-weight: 600;
 
     &:disabled {
         cursor: not-allowed;

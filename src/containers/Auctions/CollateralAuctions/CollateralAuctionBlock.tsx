@@ -311,11 +311,9 @@ const InfoValue = styled.div`
 `
 
 const Content = styled.div`
-    padding: 20px 20px 20px 20px;
+    padding: 20px 0px 20px 0px;
+    margin: 0 20px;
     border-top: 1px solid ${(props) => props.theme.colors.border};
-    border: #031f3a;
-    border-width: 1px;
-    border-radius: 0 0 15px 15px;
 `
 
 const SectionContent = styled.div`

@@ -53,7 +53,7 @@ const Auctions = ({ className }: AuctionsProps) => {
     const getText = () => {
         switch (type) {
             case 'COLLATERAL':
-                return 'Collateral auctions are meant to sell collateral that was seized from a vault in exchange for OD. The OD that is received by an auction is burned.'
+                return 'Collateral seized during liquidations are sold at a discount. The OD received is burned.'
             case 'SURPLUS':
                 return 'Surplus auctions sell OD that has accrued inside the protocol in exchange for ODG. The ODG that is received by an auction is burned.'
             case 'DEBT':

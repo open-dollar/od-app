@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { useActiveWeb3React, handleTransactionError } from '~/hooks'
-import TransactionOverview from '~/components/TransactionOverview'
 import { returnConnectorName, COIN_TICKER } from '~/utils'
 import { useStoreActions, useStoreState } from '~/store'
 import { AuctionEventType } from '~/types'
@@ -141,24 +140,14 @@ const AuctionsTransactions = () => {
 
     return (
         <Container>
-            <>
-                <Body>
-                    <TransactionOverview
-                        title={t('confirm_transaction_details')}
-                        description={
-                            t('confirm_details_text') +
-                            // @ts-ignore
-                            (returnConnectorName(connector) ? 'on ' + returnConnectorName(connector) : '')
-                        }
-                    />
-                    <Results />
-                </Body>
+            <Body>
+                <Results />
+            </Body>
 
-                <Footer>
-                    <Button dimmedWithArrow text={t('back')} onClick={handleBack} />
-                    <Button withArrow text={t('confirm_transaction')} onClick={handleConfirm} />
-                </Footer>
-            </>
+            <Footer>
+                <Button dimmed text={t('back')} onClick={handleBack} />
+                <Button primary text={t('confirm_transaction')} onClick={handleConfirm} />
+            </Footer>
         </Container>
     )
 }
@@ -175,4 +164,8 @@ const Footer = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    gap: 25px;
+    button {
+        width: 300px;
+    }
 `

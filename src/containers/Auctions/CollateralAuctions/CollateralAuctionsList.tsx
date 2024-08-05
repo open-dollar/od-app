@@ -46,7 +46,7 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
         <Container>
             {collateralsDropdown && dropdownSelected && (
                 <DropdownContainer>
-                    <SideLabel>{`Select Collateral Type`}</SideLabel>
+                    <SideLabel>{`Select Collateral`}</SideLabel>
                     <Dropdown
                         items={collateralsDropdown!}
                         itemSelected={dropdownSelected!}
@@ -77,7 +77,7 @@ const CollateralAuctionsList = ({ selectedItem, setSelectedItem }: Props) => {
 export default CollateralAuctionsList
 
 const Container = styled.div`
-    padding: 30px 20px;
+    padding: 10px 20px 30px 20px;
     border-radius: 15px;
     background: ${(props) => props.theme.colors.colorSecondary};
 `

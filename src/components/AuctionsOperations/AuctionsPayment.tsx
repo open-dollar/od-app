@@ -252,6 +252,11 @@ const AuctionsPayment = () => {
                 return false
             }
 
+            if (valueBN.lt(ethers.utils.parseUnits('101', 18))) {
+                setError(`The minimum bid amount is 100 OD.`)
+                return false
+            }
+
             // Collateral Error when there is not enough collateral left to buy
             if (collateralAmountBN.gt(remainingCollateral)) {
                 setError(`Insufficient ${tokenSymbol} to buy.`)
@@ -408,10 +413,9 @@ const AuctionsPayment = () => {
                 />
             )}
             {error && <Error>{error}</Error>}
-            <Results />
             <Footer>
                 <Button dimmed text={t('cancel')} onClick={handleCancel} />
-                <Button withArrow onClick={handleSubmit} text={t('review_transaction')} />
+                <Button primary onClick={handleSubmit} text={t('review_transaction')} />
             </Footer>
         </Container>
     )
@@ -431,6 +435,10 @@ const Footer = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 20px 0 0 0;
+    gap: 25px;
+    button {
+        width: 300px;
+    }
 `
 
 const Error = styled.p`

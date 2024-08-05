@@ -178,18 +178,18 @@ const CollateralAuctionBlock = (auction: Props) => {
                                     )
                                 }`}</InfoValue>
                             </InfoCol>
-                            <InfoCol>
+                            {/* <InfoCol>
                                 <InfoLabel>AUCTION PRICE</InfoLabel>
                                 <InfoValue>
                                     {`${formatDataNumber(auctionPrice ? auctionPrice.toString() : '0', 18, 2, true)}`}
                                 </InfoValue>
-                            </InfoCol>
-                            <InfoCol>
+                            </InfoCol> */}
+                            {/* <InfoCol>
                                 <InfoLabel>DISCOUNT</InfoLabel>
                                 <InfoValue>
                                     {`${formatNumber(auctionDiscount ? auctionDiscount.toString() : '0', 3)}%`}
                                 </InfoValue>
-                            </InfoCol>
+                            </InfoCol> */}
                             <InfoCol>
                                 <InfoLabel>ENDS</InfoLabel>
                                 <InfoValue>{auctionDateString}</InfoValue>

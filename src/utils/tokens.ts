@@ -6,7 +6,6 @@ import GRT from '../assets/grt.svg'
 import PT_wstETH_26JUN2025 from '../assets/pendle-pt-wsteth.svg'
 import PT_rETH_26JUN2025 from '../assets/pendle-pt-reth.svg'
 import ARB_GRIFF from '../assets/arb-griff.svg'
-
 import WSTETH from '../assets/wsteth.svg'
 import CBETH from '../assets/cbETH.svg'
 import RETH from '../assets/rETH.svg'

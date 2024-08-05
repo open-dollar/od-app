@@ -102,14 +102,6 @@ const CollateralAuctionBlock = (auction: Props) => {
         }
         return null
     }
-    const remainingToRaise = _.get(auction, 'remainingToRaiseE18', '0')
-
-    const maxAmount = (function () {
-        const odToBidPlusOne = BigNumber.from(remainingToRaise).add(1)
-        const odToBid = ethers.utils.formatUnits(odToBidPlusOne.toString(), 18)
-        const odBalanceNumber = Number(odBalance)
-        return odBalanceNumber < Number(odToBid) ? odBalance : odToBid.toString()
-    })()
 
     const collateralPrice = useMemo(() => {
         if (auctionsState.collateralData) {
@@ -128,9 +120,7 @@ const CollateralAuctionBlock = (auction: Props) => {
     let maxCollateral
     let maxCollateralParsed
     if (collateralPrice) {
-        maxCollateral = BigNumber.from(ethers.utils.parseEther(maxAmount.toString()))
-            .mul(collateralPrice)
-            .div(constants.WeiPerEther)
+        maxCollateral = BigNumber.from(remainingCollateral)
         maxCollateralParsed = ethers.utils.formatEther(maxCollateral)
     }
 

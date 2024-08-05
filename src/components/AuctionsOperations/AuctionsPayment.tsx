@@ -259,7 +259,11 @@ const AuctionsPayment = () => {
 
             // Collateral Error when there is not enough collateral left to buy
             if (collateralAmountBN.gt(remainingCollateral)) {
-                setError(`Insufficient ${tokenSymbol} to buy.`)
+                setError(
+                    `Insufficient ${tokenSymbol} to buy. There is only ${Number(
+                        ethers.utils.formatEther(remainingCollateral.toString())
+                    )} ${tokenSymbol} left.`
+                )
                 return false
             }
         }
@@ -412,7 +416,7 @@ const AuctionsPayment = () => {
                     label={`Claimable ${isClaim ? returnClaimValues().symbol : sellSymbol}`}
                 />
             )}
-            {error && <Error>{error}</Error>}
+            <Error>{error}</Error>
             <Footer>
                 <Button dimmed text={t('cancel')} onClick={handleCancel} />
                 <Button primary onClick={handleSubmit} text={t('review_transaction')} />
@@ -434,7 +438,6 @@ const MarginFixer = styled.div`
 const Footer = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 20px 0 0 0;
     gap: 25px;
     button {
         width: 300px;
@@ -442,8 +445,10 @@ const Footer = styled.div`
 `
 
 const Error = styled.p`
-    color: ${(props) => props.theme.colors.dangerColor};
+    color: ${(props) => props.theme.colors.error};
     font-size: ${(props) => props.theme.font.xSmall};
+    font-weight: 600;
     width: 100%;
     margin: 16px 0;
+    height: 20px;
 `

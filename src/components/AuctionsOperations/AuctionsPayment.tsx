@@ -9,7 +9,6 @@ import { useStoreActions, useStoreState } from '~/store'
 import { COIN_TICKER, formatNumber, sanitizeDecimals, toFixedString } from '~/utils'
 import DecimalInput from '~/components/DecimalInput'
 import Button from '~/components/Button'
-import Results from './Results'
 
 const AuctionsPayment = () => {
     const { t } = useTranslation()
@@ -242,14 +241,28 @@ const AuctionsPayment = () => {
                 : BigNumber.from('0')
 
             // Collateral Error when you dont have enough balance
-            if (buyAmountBN.gt(totalRaiBalance) || valueBN.gt(odBalanceBN)) {
+            if (buyAmountBN.gt(totalRaiBalance)) {
                 setError(`Insufficient ${COIN_TICKER} balance.`)
+                return false
+            }
+
+            if (valueBN.gt(odBalanceBN)) {
+                setError(`Insufficient OD balance.`)
+                return false
+            }
+
+            if (valueBN.lt(ethers.utils.parseUnits('101', 18))) {
+                setError(`The minimum bid amount is 100 OD.`)
                 return false
             }
 
             // Collateral Error when there is not enough collateral left to buy
             if (collateralAmountBN.gt(remainingCollateral)) {
-                setError(`Insufficient ${tokenSymbol} to buy.`)
+                setError(
+                    `Insufficient ${tokenSymbol} to buy. There is only ${Number(
+                        ethers.utils.formatEther(remainingCollateral.toString())
+                    )} ${tokenSymbol} left.`
+                )
                 return false
             }
         }
@@ -402,11 +415,10 @@ const AuctionsPayment = () => {
                     label={`Claimable ${isClaim ? returnClaimValues().symbol : sellSymbol}`}
                 />
             )}
-            {error && <Error>{error}</Error>}
-            <Results />
+            <Error>{error}</Error>
             <Footer>
                 <Button dimmed text={t('cancel')} onClick={handleCancel} />
-                <Button withArrow onClick={handleSubmit} text={t('review_transaction')} />
+                <Button primary onClick={handleSubmit} text={t('review_transaction')} />
             </Footer>
         </Container>
     )
@@ -425,12 +437,17 @@ const MarginFixer = styled.div`
 const Footer = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 20px 0 0 0;
+    gap: 25px;
+    button {
+        width: 300px;
+    }
 `
 
 const Error = styled.p`
-    color: ${(props) => props.theme.colors.dangerColor};
+    color: ${(props) => props.theme.colors.error};
     font-size: ${(props) => props.theme.font.xSmall};
+    font-weight: 600;
     width: 100%;
     margin: 16px 0;
+    height: 20px;
 `

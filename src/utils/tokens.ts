@@ -5,6 +5,7 @@ import ODG from '../assets/odg-token.svg'
 import GRT from '../assets/grt.svg'
 import PT_wstETH_26JUN2025 from '../assets/pendle-pt-wsteth.svg'
 import PT_rETH_26JUN2025 from '../assets/pendle-pt-reth.svg'
+import ARB_GRIFF from '../assets/arb-griff.svg'
 import WSTETH from '../assets/wsteth.svg'
 import CBETH from '../assets/cbETH.svg'
 import RETH from '../assets/rETH.svg'
@@ -44,6 +45,7 @@ export function getTokenLogo(token: string): string {
         ETH: WETH,
         'PT-rETH-26JUN2025': PT_rETH_26JUN2025,
         'PT-wstETH-26JUN2025': PT_wstETH_26JUN2025,
+        'ARB-Griff': ARB_GRIFF,
     }
     return TOKEN_LOGOS[token] || FALLBACK_TOKEN_ICON
 }

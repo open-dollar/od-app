@@ -12,6 +12,8 @@ import Button from '~/components/Button'
 import useAnalyticsData from '~/hooks/useAnalyticsData'
 import { utils as gebUtils } from '@opendollar/sdk'
 
+import collateral from '../../../assets/collateral.svg'
+
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
 const CollateralAuctionBlock = (auction: Props) => {
@@ -34,8 +36,8 @@ const CollateralAuctionBlock = (auction: Props) => {
     const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
 
     useEffect(() => {
-        if (analyticsData) {
-            setMarketPriceOD(BigNumber.from(analyticsData.marketPrice))
+        if (analyticsData && analyticsData.marketPrice) {
+            setMarketPriceOD(BigNumber.from(analyticsData.marketPrice.toString()))
         }
     }, [analyticsData])
 
@@ -90,8 +92,8 @@ const CollateralAuctionBlock = (auction: Props) => {
             return (
                 <BtnContainer>
                     <Button
+                        primary
                         text={'Buy'}
-                        withArrow
                         disabled={auctionsState.isSubmitting || !(isOngoingAuction && userProxy)}
                         onClick={() => handleClick('buy')}
                     />
@@ -168,10 +170,7 @@ const CollateralAuctionBlock = (auction: Props) => {
     return (
         <Container>
             <Header onClick={() => setCollapse(!collapse)}>
-                <LeftAucInfo type={eventType.toLowerCase()}>
-                    <img src={require(`../../../assets/${eventType.toLowerCase()}.svg`)} alt="auction" />
-                    {`Auction #${auctionId}`}
-                </LeftAucInfo>
+                <LeftAucInfo type={eventType.toLowerCase()}>{`Auction #${auctionId}`}</LeftAucInfo>
 
                 <RightAucInfo>
                     <InfoContainer>
@@ -253,9 +252,12 @@ const CollateralAuctionBlock = (auction: Props) => {
 export default CollateralAuctionBlock
 
 const Container = styled.div`
-    border-radius: 15px;
+    border-radius: 8px;
     margin-bottom: 15px;
-    background: #05284c;
+    background: white;
+    border: 3px solid #1a74ec;
+    box-shadow: 6px 6px 0px 0px #1a74ec, 5px 5px 0px 0px #1a74ec, 4px 4px 0px 0px #1a74ec, 3px 3px 0px 0px #1a74ec,
+        2px 2px 0px 0px #1a74ec, 1px 1px 0px 0px #1a74ec;
 `
 const Header = styled.div`
     font-size: ${(props) => props.theme.font.small};
@@ -311,7 +313,8 @@ const InfoValue = styled.div`
 const Content = styled.div`
     padding: 20px 20px 20px 20px;
     border-top: 1px solid ${(props) => props.theme.colors.border};
-    background: #031f3a;
+    border: #031f3a;
+    border-width: 1px;
     border-radius: 0 0 15px 15px;
 `
 
@@ -320,11 +323,15 @@ const SectionContent = styled.div`
 `
 
 const BtnContainer = styled.div`
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
     padding-top: 15px;
     margin-bottom: -5px;
     margin-top: 10px;
     border-top: 1px solid ${(props) => props.theme.colors.border};
+    button {
+        width: 200px;
+    }
 `
 
 const LeftAucInfo = styled.div<{ type?: string }>`
@@ -392,7 +399,7 @@ const List = styled.div`
     align-items: center;
     border-radius: 10px;
     &:nth-child(even) {
-        background: #12385e;
+        // background: #12385e;
     }
     &.winner {
         background: ${(props) => props.theme.colors.greenish};

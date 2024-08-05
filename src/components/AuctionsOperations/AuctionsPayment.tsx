@@ -242,8 +242,13 @@ const AuctionsPayment = () => {
                 : BigNumber.from('0')
 
             // Collateral Error when you dont have enough balance
-            if (buyAmountBN.gt(totalRaiBalance) || valueBN.gt(odBalanceBN)) {
+            if (buyAmountBN.gt(totalRaiBalance)) {
                 setError(`Insufficient ${COIN_TICKER} balance.`)
+                return false
+            }
+
+            if (valueBN.gt(odBalanceBN)) {
+                setError(`Insufficient OD balance.`)
                 return false
             }
 

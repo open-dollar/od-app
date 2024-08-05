@@ -156,13 +156,13 @@ const Auctions = ({ className }: AuctionsProps) => {
 
                 <Switcher>
                     <Tab className={type === 'COLLATERAL' ? 'active' : ''} onClick={() => onTabClick('COLLATERAL')}>
-                        Collateral Auctions
+                        Collateral
                     </Tab>
                     <Tab className={type === 'SURPLUS' ? 'active' : ''} onClick={() => onTabClick('SURPLUS')}>
-                        Surplus Auctions
+                        Surplus
                     </Tab>
                     <Tab className={type === 'DEBT' ? 'active' : ''} onClick={() => onTabClick('DEBT')}>
-                        Debt Auctions
+                        Debt
                     </Tab>
                 </Switcher>
                 <Description>{getText()}</Description>
@@ -256,10 +256,10 @@ const Wrapper = styled.div`
 `
 
 const Description = styled.div`
-    background-color: white;
     border-radius: 3px;
-    padding: 20px;
-    font-size: 20px;
+    padding: 10px 20px;
+    background: white;
+
     font-weight: 700;
     color: ${(props) => props.theme.colors.accent};
     text-align: center;
@@ -292,10 +292,10 @@ const Content = styled.div`
 const Switcher = styled.div`
     display: flex;
     align-items: 'center';
-    border-radius: 4px;
+    border-radius: 8px;
     background: white;
     width: 100%;
-    margin: 40px auto;
+    margin: 10px 0 0 0;
     padding: 10px;
     flex-wrap: wrap;
     gap: 25px;

@@ -141,14 +141,12 @@ const Item = styled.div`
 
 const Label = styled.div`
     font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.secondary};
     letter-spacing: -0.09px;
     line-height: 21px;
 `
 
 const Value = styled.div`
     font-size: ${(props) => props.theme.font.small};
-    color: ${(props) => props.theme.colors.primary};
     letter-spacing: -0.09px;
     line-height: 21px;
     font-weight: 600;

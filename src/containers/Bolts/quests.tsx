@@ -292,14 +292,12 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         button: (
             <Button
                 secondary
-                onClick={() =>
-                    onClick('https://info.camelot.exchange/pair/v3/0xf935263c9950eb2881ff58bd6a76c3d2564a78d5')
-                }
+                onClick={() => onClick('https://app.camelot.exchange/pools/0xF935263c9950EB2881FF58Bd6a76c3D2564A78D5')}
             >
                 Go <LinkIcon />
             </Button>
         ),
-        text: 'Provide liquidity to the ODG/ETH pair on Camelot to earn Bolts daily.',
+        text: 'Provide liquidity to the ODG/ETH pair on Camelot to earn Bolts daily. NOTE: When depositing, you must select "Auto" mode and use Gamma to qualify.',
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '2,000 per ETH' },
@@ -319,14 +317,12 @@ export const QUESTS = (boltsEarnedData: BoltsEarnedData) => [
         button: (
             <Button
                 secondary
-                onClick={() =>
-                    onClick('https://info.camelot.exchange/pair/v3/0x824959a55907d5350e73e151ff48dabc5a37a657')
-                }
+                onClick={() => onClick('https://app.camelot.exchange/pools/0x824959a55907d5350e73e151Ff48DabC5A37a657')}
             >
                 Go <LinkIcon />
             </Button>
         ),
-        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily.',
+        text: 'Provide liquidity to the OD/ETH pair on Camelot to earn Bolts daily. NOTE: When depositing, you must select "Auto" mode and use Gamma to qualify.',
         items: [
             { title: 'Source', status: <CamelotLogo /> },
             { title: 'Bolts', status: '3,000 per ETH' },

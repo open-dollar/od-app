@@ -201,15 +201,15 @@ export const geb = new Geb(network_name(), provider)
 
 export const POOLS: any = [
     // {
-    //     // VELA-ETH
-    //     camelotPoolAddress: '0x626a551E910EcCA62e61DCeB37e3726C7d423185',
-    //     nitroPoolAddress: '0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B',
-    //     link: `https://app.camelot.exchange/nitro/0x2d879f8A38648a05c2dba7DeE2A33d00F440e04B`,
+    //     // OD-ETH (COMPLETED)
+    //     camelotPoolAddress: '0x824959a55907d5350e73e151Ff48DabC5A37a657',
+    //     nitroPoolAddress: '0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E',
+    //     link: `https://app.camelot.exchange/nitro/0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E`,
     // },
     {
         // OD-ETH
         camelotPoolAddress: '0x824959a55907d5350e73e151Ff48DabC5A37a657',
-        nitroPoolAddress: '0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E',
-        link: `https://app.camelot.exchange/nitro/0xdaE425D131069803Ce2D8E5cfA08356d3eDD125E`,
+        nitroPoolAddress: '0x501ff8669794c0477b1bE398D72FBf25A2884008',
+        link: `https://app.camelot.exchange/nitro/0x501ff8669794c0477b1bE398D72FBf25A2884008`,
     },
 ]

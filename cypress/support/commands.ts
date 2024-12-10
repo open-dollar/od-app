@@ -1,11 +1,6 @@
-// ***********************************************
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
 import 'cypress-wait-until'
 import { Wallet } from '@ethersproject/wallet'
-import { JsonRpcProvider } from '@ethersproject/providers'
+import { JsonRpcProvider, TransactionRequest, TransactionResponse } from '@ethersproject/providers'
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
 import { Signer } from '@ethersproject/abstract-signer'
 
@@ -41,66 +36,30 @@ export class CustomizedBridge extends Eip1193Bridge {
         this.address = address
         this.allowTx = allowTx
     }
-    //@ts-ignore
-    async sendAsync(...args) {
-        console.debug('sendAsync called', ...args)
-        return this.send(...args)
+    async sendAsync(
+        request: { method: string; params?: any[] },
+        callback: (error: any, response: any) => void
+    ): Promise<void> {
+        console.debug('sendAsync called', request)
+        this.send(request.method, request.params)
+            .then((result) => callback(null, { result }))
+            .catch((error) => callback(error, null))
     }
-    //@ts-ignore
-    async send(...args) {
-        console.debug('send called', ...args)
-        const isCallbackForm = typeof args[0] === 'object' && typeof args[1] === 'function'
-        let callback
-        let method
-        let params
-        if (isCallbackForm) {
-            callback = args[1]
-            method = args[0].method
-            params = args[0].params
-        } else {
-            method = args[0]
-            params = args[1]
-        }
-
+    async send(method: string, params?: any[]): Promise<any> {
+        console.debug('send called', method, params)
         if (method === 'eth_sendTransaction' && this.allowTx) {
-            const txReq = params[0]
+            const txReq: TransactionRequest = params![0]
             let custom_tx = renameKeys(txReq, { gas: 'gasLimit' })
-            const { hash } = await this.signer.sendTransaction(custom_tx)
-            if (isCallbackForm) {
-                callback(null, { result: hash })
-            } else {
-                return Promise.resolve(hash)
-            }
+            const { hash }: TransactionResponse = await this.signer.sendTransaction(custom_tx)
+            return hash
         }
         if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
-            if (isCallbackForm) {
-                callback({ result: [this.address] })
-            } else {
-                return Promise.resolve([this.address])
-            }
+            return [this.address]
         }
         if (method === 'eth_chainId') {
-            if (isCallbackForm) {
-                callback(null, { result: 42 })
-            } else {
-                return Promise.resolve(42)
-            }
+            return 42
         }
-        try {
-            const result = await super.send(method, params)
-            console.debug('result received', method, params, result)
-            if (isCallbackForm) {
-                callback(null, { result })
-            } else {
-                return result
-            }
-        } catch (error) {
-            if (isCallbackForm) {
-                callback(error, null)
-            } else {
-                throw error
-            }
-        }
+        return super.send(method, params)
     }
 }
 

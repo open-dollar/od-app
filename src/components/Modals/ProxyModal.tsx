@@ -46,8 +46,7 @@ const ProxyModal = () => {
 
         if (!account || !chainId) return false
         const txData = await geb.contracts.proxyRegistry.populateTransaction['build()']()
-        // @ts-ignore
-        const signer = provider.getSigner(account)
+        const signer = provider!.getSigner(account)
 
         try {
             setStatus('loading')

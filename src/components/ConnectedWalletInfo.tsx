@@ -32,7 +32,7 @@ const ConnectedWalletInfo = () => {
         popupsActions.setIsConnectorsWalletOpen(true)
     }
 
-    const formatConnectorName = () => {
+    const formatConnectorName = (): string | undefined => {
         const name = Object.keys(SUPPORTED_WALLETS)
             .filter(
                 (k) =>

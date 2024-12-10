@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-// @ts-ignore
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
@@ -46,25 +45,22 @@ export function useContract<T extends Contract = Contract>(
         else address = addressOrAddressMap[chainId]
         if (!address) return null
         try {
-            return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined)
+            return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined) as T
         } catch (error) {
             console.error('Failed to get contract', error)
             return null
         }
-    }, [addressOrAddressMap, ABI, provider, chainId, withSignerIfPossible, account]) as unknown as T
+    }, [addressOrAddressMap, ABI, provider, chainId, withSignerIfPossible, account])
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
-    // @ts-ignore
     return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-    // @ts-ignore
     return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
 export function useMulticall2Contract() {
-    // @ts-ignore
     return useContract<Multicall>(MULTICALL2_ADDRESSES, MULTICALL_ABI, false) as Multicall
 }

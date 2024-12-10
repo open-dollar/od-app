@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 
 import styled from 'styled-components'
 
-// @ts-ignore
 import Jazzicon from 'jazzicon'
 import { useWeb3React } from '@web3-react/core'
 

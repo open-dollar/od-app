@@ -13,14 +13,7 @@ export interface TypedEvent<EventArgs extends Result> extends Event {
 
 export type TypedListener<EventArgsArray extends Array<any>, EventArgsObject> = (
     ...listenerArg: [
-        // @ts-ignore
         ...EventArgsArray,
         TypedEvent<EventArgsArray & EventArgsObject>
     ]
 ) => void
-
-export type MinEthersFactory<C, ARGS> = {
-    deploy(...a: ARGS[]): Promise<C>
-}
-export type GetContractTypeFromFactory<F> = F extends MinEthersFactory<infer C, any> ? C : never
-export type GetARGsTypeFromFactory<F> = F extends MinEthersFactory<any, any> ? Parameters<F['deploy']> : never

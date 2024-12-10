@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Geb } from '@opendollar/sdk'
+import { Geb, GebDeployment } from '@opendollar/sdk'
 import { css } from 'styled-components'
 import { injected, walletconnect, walletlink } from '../connectors'
 import { SupportedChainId } from './chains'
@@ -57,7 +57,6 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
         color: '#E8831D',
     },
     WALLET_CONNECT: {
-        // @ts-ignore
         connector: walletconnect,
         name: 'WalletConnect',
         iconName: 'walletConnectIcon.svg',
@@ -187,7 +186,7 @@ export const INITIAL_INCENTIVE_ASSETS_STATE = {
     flx: INIT_VALUES,
 }
 
-export const network_name = () => {
+export const network_name = (): GebDeployment => {
     if (process.env.REACT_APP_NETWORK_ID === '42161') return 'arbitrum'
     if (process.env.REACT_APP_NETWORK_ID === '421614') return 'arbitrum-sepolia'
     if (process.env.REACT_APP_NETWORK_ID === '10') return 'optimism'
@@ -195,8 +194,6 @@ export const network_name = () => {
 }
 
 const provider = new ethers.providers.JsonRpcProvider(REACT_APP_NETWORK_URL)
-//TODO: Need to add OP goerli/sepolia to GebDeployment type in SDK
-// @ts-ignore
 export const geb = new Geb(network_name(), provider)
 
 export const POOLS: any = [

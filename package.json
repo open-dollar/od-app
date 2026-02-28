@@ -48,7 +48,7 @@
         "@web3-react/url": "^8.2.3",
         "@web3-react/walletconnect-v2": "^8.5.1",
         "@web3-react/walletlink-connector": "6.2.3",
-        "axios": "^1.6.7",
+        "axios": "^1.13.5",
         "classnames": "^2.2.6",
         "dayjs": "^1.9.4",
         "easy-peasy": "^5.1.0",

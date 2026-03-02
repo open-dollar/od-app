@@ -1,5 +1,5 @@
 import { BigNumber, constants, ethers } from 'ethers'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import _ from '~/utils/lodash'
 
@@ -7,10 +7,8 @@ import BidLine from '~/components/BidLine'
 import { useActiveWeb3React } from '~/hooks'
 import { useStoreActions, useStoreState } from '~/store'
 import { ICollateralAuction } from '~/types'
-import { COIN_TICKER, floatsTypes, formatDataNumber, formatNumber, parseWad } from '~/utils'
+import { COIN_TICKER, formatNumber, parseWad } from '~/utils'
 import Button from '~/components/Button'
-import useAnalyticsData from '~/hooks/useAnalyticsData'
-import { utils as gebUtils } from '@opendollar/sdk'
 
 type Props = ICollateralAuction & { isCollapsed: boolean }
 
@@ -27,17 +25,6 @@ const CollateralAuctionBlock = (auction: Props) => {
     } = useStoreState((state) => state)
 
     const [collapse, setCollapse] = useState(isCollapsed)
-    const analyticsData = useAnalyticsData()
-
-    const [marketPriceOD, setMarketPriceOD] = useState(BigNumber.from('1'))
-
-    const odBalance = gebUtils.decimalShift(BigNumber.from(auction.amountToRaise), floatsTypes.WAD - floatsTypes.RAD)
-
-    useEffect(() => {
-        if (analyticsData && analyticsData.marketPrice) {
-            setMarketPriceOD(BigNumber.from(analyticsData.marketPrice.toString()))
-        }
-    }, [analyticsData])
 
     const buySymbol = COIN_TICKER
 
@@ -139,21 +126,7 @@ const CollateralAuctionBlock = (auction: Props) => {
 
     const auctionDateString = calculateAuctionEnd()
 
-    let auctionPrice =
-        maxCollateral && maxCollateral.gt(BigNumber.from('0'))
-            ? BigNumber.from(odBalance).mul(BigNumber.from(marketPriceOD)).div(maxCollateral)
-            : BigNumber.from('0')
-
     const collateralLiquidationData = liquidationData ? liquidationData!.collateralLiquidationData[tokenSymbol] : null
-
-    const calculateAuctionDiscount = () => {
-        let marketPriceCollateral = collateralLiquidationData ? collateralLiquidationData!.currentPrice.value : '1'
-        const decimalAuctionPrice = ethers.utils.formatEther(auctionPrice)
-        const quotient = Number(decimalAuctionPrice) / Number(marketPriceCollateral ? marketPriceCollateral : '1')
-        return (1 - quotient) * 100
-    }
-
-    const auctionDiscount = calculateAuctionDiscount()
 
     return (
         <Container>
